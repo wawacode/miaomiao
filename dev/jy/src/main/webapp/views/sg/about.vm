@@ -1,0 +1,64 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="height=device-height,width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+<meta content="telephone=no" name="format-detection" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="360-site-verification" content="54794129ab3852e0b7f92693b70ef408" />
+<link href="http://vdian.com/weidian_offical_H5/css/common/base.css" type="text/css" rel="stylesheet"><title>喵喵鲜果</title>
+<link href="http://vdian.com/weidian_offical_H5/css/index/index.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+
+<header id="comm_hd" style="border-bottom:0px solid">
+	<h1 id="logo" class="left">
+    	<a id="logo_a"  class="comm_p24 block t_hide" style="height: 82px;background-image: url(http://imgqn.koudaitong.com/upload_files/2014/10/26/FvaQ9twVeX2rYjATCGwpakMMZHE2.png!60x60.jpg);background-size:45px 45px">喵喵鲜果</a>
+    
+    </h1>
+    <nav id="comm_nav" class="right" style="float: left;margin-left:-10px;margin-top:10px">
+    <span style="font-weight:bold;font-size:14px" >喵喵一下，鲜果到家</span >
+    
+    </nav>
+</header>
+<section id="" style="height:208px;">
+	<div id="kv_inner" class="margin_auto rel">
+    	
+    <img style="margin-top:5px;width:100%" src="http://imgqn.koudaitong.com/upload_files/2014/11/13/FjWO_rt-a6cAE8PBcSZ_2mJDo4qk.jpg!730x0.jpg">
+    </div>
+</section>
+<div class="feedback" style="position: relative;top: 20px;width:95%;margin: auto;font-size: 16px;">
+        <form id = "feedback"  name="feedback"   method="post"  action="feedback">
+            <!--<span style="display:block"  >反馈问题</span>-->
+            <textarea id ="ftext" rows="5" cols="20"  name="feedback" placeholder="您的问题和建议" style="-webkit-appearance: none;border-radius:0px;border: 1px solid #eee;text-indent: 5px;display:block;width: 100%;height:120px;margin-top:5px;font-size:18px"></textarea>
+            <div style="margin-top:10px">
+                <input id="contact" name="contact"  placeholder="手机/微信/QQ" style="-webkit-appearance: none;border-radius:0px;text-indent:5px;height:40px;font-size:18px;border: 1px solid #eee;float:right;width:100%" >
+            </div>
+            <div style="margin-top:10px">
+                <a  style="display:block;padding-top:6px;height:40px;width:100%;float:right;margin-top: 10px;background: -webkit-linear-gradient(top,#f5f5f5,#dfdfdf);border-radius:3px;line-height:30px;text-align:center;font-size:18px"  onclick="return s()">提交</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script  type="text/javascript" >
+    function   s(){
+     var f = document.getElementById("feedback");
+    var xmlhttp = new XMLHttpRequest();;
+    if (xmlhttp==null){
+        return;
+    }
+    var feedback = document.getElementById("ftext").value ;
+    var contact = document.getElementById("contact").value ;
+    var url="feedback?feedback=" +escape(feedback) + "&contact="+escape(contact)
+    xmlhttp.open("GET",url,true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send();
+    window.location.href="http://123.57.38.234/jy-1/sg/redirect";
+    }
+</script>
+</body>
+</html>
