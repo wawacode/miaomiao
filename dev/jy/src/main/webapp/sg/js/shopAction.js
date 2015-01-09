@@ -18,6 +18,9 @@ $(document).ready(function () {
         });
     }
 
+    var canLoadMore = true;
+    var inLoadingMore = false;
+
     function toggleSelectOnCategray(categray, selected) {
 
         if (selected) {
@@ -53,6 +56,8 @@ $(document).ready(function () {
 
                 $('.loadingMore').html('点击加载更多');
                 $('.loadingMore').show();
+                canLoadMore = true;
+                inLoadingMore = false;
             } else {
                 $(item).addClass('hidden');
             }
@@ -84,9 +89,8 @@ $(document).ready(function () {
     });
 
 
-    $(".loadingMore").click(function(){
+    function loadmoreHandler(){
 
-        var me = this;
         var visiableCate = $('.shop-product-categray-list:not(.hidden)');
         if (visiableCate) {
             var shop_id = $('#shop_id').val();
@@ -94,7 +98,8 @@ $(document).ready(function () {
             var from = $('.js-product-item', visiableCate).length;
             var offset = 20;
 
-            $(me).html('<i class="fa  fa-2x fa-spinner fa-spin"></i>');
+            $(".loadingMore").html('<i class="fa  fa-2x fa-spinner fa-spin"></i>');
+            inLoadingMore = true;
             $.getJSON(
                 "shop/getitems?shop_id=" + parseInt(shop_id) +
                     "&category_id=" + parseInt(cateId) + "&from=" + parseInt(from) +
@@ -112,17 +117,23 @@ $(document).ready(function () {
                             $(visiableCate).append(tmpl);
                         });
 
-                        $(me).html('点击加载更多');
+                        $(".loadingMore").html('点击加载更多');
+                        inLoadingMore = false;
+                        canLoadMore = true;
 
                     } else {
                         // code not 0
-                        $(me).html('点击加载更多');
-                        $(me).hide();
+                        $(".loadingMore").html('点击加载更多');
+                        $(".loadingMore").hide();
+                        canLoadMore = false;
+                        inLoadingMore = false;
                     }
                 }
             );
         }
-    });
+    }
+
+    $(".loadingMore").click(loadmoreHandler);
 
 
     $("#shopConfirm").submit(function (event) {
@@ -141,6 +152,15 @@ $(document).ready(function () {
     $(function() {
         FastClick.attach(document.body);
     });
+
+    //detect page scroll
+
+    $('.rightContent').bind('scroll', function() {
+        if(!canLoadMore || inLoadingMore)return;
+        if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight - 20) {
+            loadmoreHandler();
+        }
+    })
 
     shoppingCart.addAllCountChangeListener();
     shoppingCart.addAllPreviewListener();
