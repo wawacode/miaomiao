@@ -50,6 +50,8 @@ angular.module('ionic.tool', ['ionic'])
 
             navigator.geolocation.getCurrentPosition(function (pos) {
 
+                $ionicLoading.hide();
+
                 $scope.info.shop_lat = pos.coords.latitude;
                 $scope.info.shop_lng = pos.coords.longitude;
 
@@ -58,8 +60,6 @@ angular.module('ionic.tool', ['ionic'])
                 var marker = new BMap.Marker(point);
                 $scope.map.addOverlay(marker);
                 BMap.Convertor.translate(point,0,translateCallback);     //真实经纬度转成百度坐标
-
-                $ionicLoading.hide();
 
             }, function (error) {
                 alert('Unable to get location: ' + error.message);
