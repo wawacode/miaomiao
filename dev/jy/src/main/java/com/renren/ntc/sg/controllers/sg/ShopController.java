@@ -36,29 +36,27 @@ public class ShopController {
     @Autowired
     public ShopCategoryDAO shopCategoryDAO;
 
-    @Get("hot")
-    public String hot (Invocation inv,@Param("shop_id") long shop_id ){
-        // 校验合法性
-        if (0  >= shop_id){
-            shop_id = Constants.DEFAULT_SHOP ;
-        }
-        Shop shop = shopDAO.getShop(shop_id);
-
-        if(null == shop){
-            LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
-            shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
-        }
-        //获取 热门分类
-        List<Item> itemls = itemsDAO.hot(SUtils.generTableName(shop_id),shop_id,0,10);
-        inv.addModel("items", itemls);
-        return "hot";
-    }
+//    @Get("hot")
+//    public String hot (Invocation inv,@Param("shop_id") long shop_id ){
+//        // 校验合法性
+//        if (0  >= shop_id){
+//            shop_id = Constants.DEFAULT_SHOP ;
+//        }
+//        Shop shop = shopDAO.getShop(shop_id);
+//
+//        if(null == shop){
+//            LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
+//            shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
+//        }
+//        //获取 热门分类
+//        List<Item> itemls = itemsDAO.hot(SUtils.generTableName(shop_id),shop_id,0,10);
+//        inv.addModel("items", itemls);
+//        return "hot";
+//    }
 
 
     @Get("")
     public String index (Invocation inv,@Param("shop_id") long shop_id){
-
-
 
         if (0  >= shop_id){
             shop_id = Constants.DEFAULT_SHOP ;
@@ -118,7 +116,6 @@ public class ShopController {
             it.put("shop_id" ,i.getShop_id()) ;
             jarr.add(it);
         }
-
         jb.put("code",0);
         jb.put("data",jarr);
         return "@" + jb.toJSONString() ;
