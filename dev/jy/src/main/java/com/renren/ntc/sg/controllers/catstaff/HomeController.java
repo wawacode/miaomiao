@@ -30,7 +30,11 @@ public class HomeController {
                          @Param("shop_lat") String shop_lat,
                          @Param("shop_lng") String shop_lng) {
 
-           return "@";
+
+           JSONObject jb =  new JSONObject();
+           jb.put("code",0);
+           jb.put("url","http://www.mbianli.com/sg/shop?shop_id=1");
+           return "@" + jb.toJSONString();
     }
 
 

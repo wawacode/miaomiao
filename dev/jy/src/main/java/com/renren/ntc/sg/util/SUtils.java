@@ -208,4 +208,8 @@ public class SUtils {
     }
 
 
+    public static boolean Tokenislegal(String token) {
+          return true;
+
+    }
 }
