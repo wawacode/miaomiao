@@ -37,6 +37,10 @@ public class HomeController {
            return "@" + jb.toJSONString();
     }
 
-
+    @Get("test")
+    @Post("test")
+    public String  test (Invocation inv){
+        return "tool";
+    }
 
 }
