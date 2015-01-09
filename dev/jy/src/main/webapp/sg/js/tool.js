@@ -1,4 +1,4 @@
-angular.module('ionic.tool', ['ionic'])
+angular.module('ionic.tool', ['ionic','LocalStorageModule'])
     .config(function ($stateProvider, $urlRouterProvider) {
 
         $stateProvider
@@ -15,9 +15,11 @@ angular.module('ionic.tool', ['ionic'])
         $urlRouterProvider.otherwise('/tool');
     })
 
-    .controller('ToolCtrl', function ($scope, $ionicLoading, $compile,$http, $state) {
+    .controller('ToolCtrl', function ($scope, $ionicLoading, $compile,$http, $state,localStorageService) {
 
-        $scope.info = $scope.info || {};
+        $scope.info = localStorageService.get('info') || {};
+        $scope.info.shop_lat = undefined;
+        $scope.info.shop_lng = undefined;
 
         function initialize() {
 
@@ -26,6 +28,7 @@ angular.module('ionic.tool', ['ionic'])
             map.centerAndZoom(point, 15);
 
             $scope.map = map;
+
         }
 
         window.addEventListener('load', initialize , true);
@@ -81,6 +84,7 @@ angular.module('ionic.tool', ['ionic'])
             };
 
             $scope.submitHasError = false;
+            // check empty
             for(var key in _info){
                 if(!_info[key]){  // some value is empty
                     $scope.submitHasError = true;
@@ -88,6 +92,21 @@ angular.module('ionic.tool', ['ionic'])
                     return;
                 }
             }
+            // check speical not empty
+
+            function isValidTelNumber(number){
+                var regPhone = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+                var regMobile = /^1[3|4|5|6|7|8|9][0-9]{1}[0-9]{8}$/;
+                return regPhone.test(number) || regMobile.test(number);
+            }
+
+            if(!isValidTelNumber(_info['staff_phone']) || !isValidTelNumber(_info['shop_tel'])){
+                $scope.submitHasError = true;
+                $scope.error_message = '请确认电话号码格式正确';
+                return;
+            }
+
+            localStorageService.set('info', $scope.info);
 
             $http.post('commit',_info).
                 success(function (data, status, headers, config) {
