@@ -30,8 +30,11 @@ public interface ItemsDAO {
     static final String FIELDS = "id,serialNo, shop_id,name,category_id,category_sub_id,score ,price,price_new ,count,pic_url,create_time,update_time" ;
     static final String INSERT_FIELDS = "serialNo,shop_id,name,category_id,category_sub_id,score, price,price_new,count,pic_url" ;
 
-    @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where shop_id =:1")
-    public List<Item> getItems(long shop_id);
+    @SQL("select "+ FIELDS +" from  ##(:tableName)   where shop_id =:2  limit :3,:4")
+    public List<Item> getItems(@SQLParam("tableName") String tableName,long shop_id,int from,int offset);
+
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where serialNo =:2")
+    public  Item getItem(@SQLParam("tableName") String tableName,String  serialNo);
 
 
     @SQL("select "+ FIELDS +" from ##(:tableName)   where id =:3")

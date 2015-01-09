@@ -22,6 +22,7 @@ import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URLEncoder;
@@ -67,10 +68,27 @@ public class PrinterV2Controller {
     public String get(Invocation inv, @Param("pid") long pid, @Param("token") String token) {
 
         // 验证
-        if (0 > pid) {
+        if (0 > pid && StringUtils.isBlank(token)) {
             LoggerUtils.getInstance().log(String.format("pid illegal error param  %d ,%s", pid, token));
             return "@" + Constants.PARATERERROR;
         }
+        if(pid == 0 && SUtils.Tokenislegal(token)){
+            //创建打印机
+            Device d =  new Device();
+            d.setShop_id(0);
+            d.setToken(token);
+            d.setStatus("init");
+            d.setSecret_key("init");
+            long dev_id =  deviceDAO.insert(d);
+            JSONObject jb = new JSONObject();
+            //打印格式拼装好
+            jb.put("pid",dev_id);
+            jb.put("token",token);
+            jb.put("code", 101);
+            return  "@" + jb.toJSONString();
+        }
+
+
         Device dev = deviceDAO.getDev(pid);
         if (null == dev) {
             LoggerUtils.getInstance().log(String.format("dev is null error param  %d ,%s", pid, token));

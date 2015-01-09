@@ -22,7 +22,7 @@ public interface RegistUserDAO {
     public RegistUser getUserbyPhone(String phone);
 
     @ReturnGeneratedKeys
-    @SQL("insert into  "  + TABLE_NAME + " (" + INSERT_FIELDS  +") values (:1.name,:1.enable,:1.type,:1.pwd)")
+    @SQL("insert into  "  + TABLE_NAME + " (" + INSERT_FIELDS  +") values (:1.name,:1.phone,:1.enable,:1.type,:1.pwd)")
     public long  createUser(RegistUser user);
 
 
