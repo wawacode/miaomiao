@@ -20,38 +20,15 @@ angular.module('ionic.tool', ['ionic'])
         $scope.info = $scope.info || {};
 
         function initialize() {
-            var myLatlng = new google.maps.LatLng(39.92,116.46);
 
-            var mapOptions = {
-                center: myLatlng,
-                zoom: 16,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var map = new google.maps.Map(document.getElementById("map"),
-                mapOptions);
-
-            //Marker + infowindow + angularjs compiled ng-click
-            var contentString = "<div><a ng-click='clickTest()'>定位!</a></div>";
-            var compiled = $compile(contentString)($scope);
-
-            var infowindow = new google.maps.InfoWindow({
-                content: compiled[0]
-            });
-
-            var marker = new google.maps.Marker({
-                position: myLatlng,
-                map: map,
-                title: 'Uluru (Ayers Rock)'
-            });
-
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.open(map, marker);
-            });
+            var map = new BMap.Map(document.getElementById("map"));
+            var point = new BMap.Point(116.46 , 39.92);  // 创建点坐标
+            map.centerAndZoom(point, 15);
 
             $scope.map = map;
         }
 
-        google.maps.event.addDomListener(window, 'load', initialize);
+        window.addEventListener('load', initialize , true);
 
         $scope.centerOnMe = function () {
             if (!$scope.map) {
@@ -63,12 +40,25 @@ angular.module('ionic.tool', ['ionic'])
                 showBackdrop: false
             });
 
+            function translateCallback(point1){
+                var marker1 = new BMap.Marker(point1);
+                $scope.map.addOverlay(marker1);
+                var label = new BMap.Label("店在这儿",{offset:new BMap.Size(20,-10)});
+                marker1.setLabel(label); //添加百度label
+                $scope.map.setCenter(point1);
+            }
+
             navigator.geolocation.getCurrentPosition(function (pos) {
 
                 $scope.info.shop_lat = pos.coords.latitude;
                 $scope.info.shop_lng = pos.coords.longitude;
 
-                $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+                var point = new BMap.Point(pos.coords.longitude , pos.coords.latitude);  // 创建点坐标
+                $scope.map.centerAndZoom(point, 15);// 初始化地图，设置中心点坐标和地图级别
+                var marker = new BMap.Marker(point);
+                $scope.map.addOverlay(marker);
+                BMap.Convertor.translate(point,0,translateCallback);     //真实经纬度转成百度坐标
+
                 $ionicLoading.hide();
 
             }, function (error) {
@@ -99,7 +89,7 @@ angular.module('ionic.tool', ['ionic'])
                 }
             }
 
-            $http.post('catstaff/commit',_info).
+            $http.post('commit',_info).
                 success(function (data, status, headers, config) {
                     $scope.newShopURL = data.url;
                     $scope.newShopStatus = data.code;

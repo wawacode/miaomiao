@@ -4,13 +4,16 @@
     <title>喵喵工具</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
-    <link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
+    <link href="//code.ionicframework.com/1.0.0-beta.14/css/ionic.min.css" rel="stylesheet">
     <link href="/css/tool.css" rel="stylesheet">
 
-    <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
+    <script src="//code.ionicframework.com/1.0.0-beta.14/js/ionic.bundle.min.js"></script>
 
     <!-- google maps javascript -->
-    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true"></script>
+    <!--<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true"></script>-->
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
 
     <script src="/sg/js/tool.js"></script>
 
@@ -20,7 +23,6 @@
 <ion-nav-bar class="bar-positive">
     <ion-nav-back-button class="button-icon ion-arrow-left-c">
     </ion-nav-back-button>
-    <h1 class="title">喵喵工具</h1>
 </ion-nav-bar>
 
 <ion-nav-view></ion-nav-view>
@@ -107,7 +109,7 @@
 </script>
 
 <script id="templates/newshop.html" type="text/ng-template">
-    <ion-view view-title="New Shop">
+    <ion-view view-title="新店开好了~">
         <ion-content padding="true">
             <div ng-show="!newShopURL">
                 <p>创建地铺出错啦,请联系管理员:</p>
@@ -116,12 +118,10 @@
             </div>
             <div ng-show="newShopURL">
                 <p>店铺已经为您准备妥当,请访问:</p>
-                {{newShopData.url}}
                 <p>
-                    <a class="icon" ng-href="{{newShopURL}}">{{newShopData.url}}</a>
+                   <a class="icon" ng-href="{{newShopURL}}">{{newShopURL}}</a>
                 </p>
             </div>
-
         </ion-content>
     </ion-view>
 </script>
