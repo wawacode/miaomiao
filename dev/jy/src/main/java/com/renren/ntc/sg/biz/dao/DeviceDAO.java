@@ -27,6 +27,9 @@ public interface DeviceDAO {
     @SQL("update " + TABLE_NAME +" set status = :2 , update_time = now() where id =:1 ")
     public int update(long pid, String status) ;
 
+    @SQL("update " + TABLE_NAME +" set shop_id = :1 , update_time = now() where token =:2 ")
+    public int updateShop_id(long  shop_id, String token) ;
+
     @ReturnGeneratedKeys
     @SQL("insert into " + TABLE_NAME + "(" + FIELDS +" ) values"  + " (:1.shop_id,:1.type,:1.status,:1.token,:1.secret_key)")
     public long insert(Device o);
