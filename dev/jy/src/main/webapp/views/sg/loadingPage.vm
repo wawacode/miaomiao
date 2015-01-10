@@ -44,11 +44,11 @@
                 <i class="ion-arrow-left-c"></i> 返回
             </ion-nav-back-button>
             <ion-nav-title>
-                搜索店铺
+                定位失败,请搜索店铺
             </ion-nav-title>
-            <ion-nav-buttons side="primary">
-                <button class="button button-clear button-positive" ng-click="relocation()">重新定位</button>
-            </ion-nav-buttons>
+            <!--<ion-nav-buttons side="primary">-->
+                <!--<button class="button button-clear button-positive" ng-click="relocation()">重新定位</button>-->
+            <!--</ion-nav-buttons>-->
         </ion-nav-bar>
 
         <ion-content padding="true"
@@ -69,7 +69,9 @@
                 <div class="item item-divider">
                     商店列表
                 </div>
-                <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery" ng-click="goToShop(item)">{{item.text}}</div>
+                <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery" ng-click="goToShop(item)">
+                    <div>{{item.name}}</div>
+                </div>
             </div>
 
             <div class="list" ng-show="showShopHistory">
@@ -77,7 +79,7 @@
                     搜索历史
                 </div>
                 <div class="item item-body" ng-repeat="item in shop_history" ng-click="goToShop(item)">
-                    {{item.text}}
+                    {{item.name}}
                 </div>
             </div>
 

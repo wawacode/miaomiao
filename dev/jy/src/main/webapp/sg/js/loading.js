@@ -18,7 +18,7 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
     .controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout) {
 
 
-        $scope.getGeolocationTitle = "定位中......";
+        $scope.getGeolocationTitle = "定位中...";
         $scope.showLocateImg = true;
 
         var url = window.location.origin + "/sg/f";
@@ -87,20 +87,8 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
                 $scope.shop_data = {};
                 $scope.showShopList = false;
                 $scope.showShopHistory = true;
-                $scope.shop_items = [
-                    { id: '1', text: '海淀' },
-                    { id: '1', text: '朝阳' },
-                    { id: '1', text: '大行' },
-                    { id: '1', text: '丰台' },
-                    { id: '1', text: '东城' },
-                    { id: '1', text: '西城' }
-                ];
 
-                $scope.shop_history = [
-                    { id: '1', text: '回龙观' },
-                    { id: '1', text: '霍营' },
-                    { id: '1', text: '望京' }
-                ];
+                $scope.shop_history = localStorageService.get('shop_history') || [];
 
                 $scope.clearSearch = function () {
                     $scope.shop_data.searchQuery = '';
@@ -115,21 +103,33 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
 
                 $scope.goToShop = function(shop){
 
-                    window.location.url = window.location.origin + "/sg/shop?shop_id=" + shop.id;
+                    var shopExist = false;
+                    for(var i=0;i < $scope.shop_history.length;i++){
+                        if(shop.id == $scope.shop_history[i].id){
+                            shopExist = true;
+                            break;
+                        }
+                    }
+                    if(!shopExist){
+                        $scope.shop_history.push(shop);
+                    }
+
+                    localStorageService.set('shop_history', $scope.shop_history);
+
+                    window.location.href = window.location.origin + "/sg/shop?shop_id=" + shop.id;
                 }
                 $scope.relocation = function(){
                     $state.go('locate');
                     getLocation();
                 }
 
-                var info = {};
-                $http.post('shop/shopList', info).
+                var params = 'from=0&offset=100';
+                $http.get('shop/shopList?' + params).
                     success(function (data, status, headers, config) {
-
+                        $scope.shop_items = data.data;
                         $state.go('findshop');
                     }).
                     error(function (data, status, headers, config) {
-
                         $state.go('findshop');
                     });
             }, 500);
