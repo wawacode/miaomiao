@@ -115,8 +115,9 @@ body {
     overflow: auto;
 }
 
+/*dont edit this*/
 .scroll {
-    height: 100%;
+
 }
 
 .scrollable {
@@ -925,41 +926,3 @@ body {
     z-index: 100;
 }
 
-/* location related*/
-.loadingBackground{
-    position: absolute;width: 100%;height: 100%;
-}
-
-.getGeolocation {
-    z-index: 10;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 20;
-    text-align: center
-}
-
-.getGeolocation-img{
-    width: 80px;
-    height: auto;
-}
-
-.getGeolocation-title{
-    font-size: 24;color:#000000;padding-top: 10px
-}
-
-.getGeolocation-title.getGeolocation-title-normal{
-
-}
-
-.getGeolocation-title.getGeolocation-title-success{
-    color: green;
-}
-
-.getGeolocation-title.getGeolocation-title-fail{
-    color: red;
-}
-
-.clear-search {
-    font-size: 18px;
-}
