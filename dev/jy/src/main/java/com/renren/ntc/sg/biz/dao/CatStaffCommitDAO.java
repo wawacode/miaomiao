@@ -35,7 +35,7 @@ public interface CatStaffCommitDAO {
     public long insert (CatStaffCommit o );
 
 
-	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " id =:1 ")
+	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  id =:1 ")
 	public CatStaffCommit getCatStaffCommit(long id );
 
 }
