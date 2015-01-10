@@ -175,8 +175,23 @@ public class Item {
     public void setCount(int count) {
         this.count = count;
     }
+    
+    public Item(){
+    	
+    }
 
-
+    public Item(String serialNo,long shop_id, String name, int category_id, int score,
+			int count, String pic_url, int price) {
+		super();
+		this.serialNo = serialNo;
+		this.shop_id = shop_id;
+		this.name = name;
+		this.category_id = category_id;
+		this.score = score;
+		this.count = count;
+		this.pic_url = pic_url;
+		this.price_new = price;
+	}
 
 
 

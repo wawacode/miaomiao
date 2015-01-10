@@ -9,11 +9,13 @@ import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.constant.SgConstant;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
 import com.renren.ntc.sg.service.RegistUserService;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.FileUploadUtils;
 import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
@@ -22,6 +24,7 @@ import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -108,7 +111,8 @@ public class ShopConsoleController {
         }
         List<Item> itemls = itemsDAO.getItemsWithZero(SUtils.generTableName(shop_id),shop_id,category_id,from,offset);
         if(from != 0){
-            from = from - offset;
+        	int begin = from;
+        	begin = begin - offset;
            inv.addModel("previous_f", from< 0?0:from);
         }
         if(itemls.size() >=  offset){
@@ -119,20 +123,60 @@ public class ShopConsoleController {
         inv.addModel("curr_cate_id",category_id);
         return "shop";
 	}
-
+    
     @Post("del")
     @Get("del")
-    public String del(Invocation inv, @Param("id") long id){
-
-        return "items";
+    public String del(Invocation inv, @Param("id") long id,@Param("shop_id") long shopId){
+    	int result = itemsDAO.delItemsById(SUtils.generTableName(shopId), id);
+    	if(result == SgConstant.PROCESS_DB_SUC){
+    		return "@删除成功";
+    	}else {
+    		return "@删除失败";
+		}
     }
 
 
-    @Post("add")
-    public String add(Invocation inv,@Param("item") String item){
-
-        return  "@" ;
+    @Get("addindex")
+    public String add(Invocation inv,@Param("shop_id") long shopId){
+    	List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shopId);
+    	inv.addModel("shopId", shopId);
+    	inv.addModel("categoryls", categoryls);
+        return  "addItem";
     }
+    
+    @Post("addItem")
+	public String add(Invocation inv, @Param("shopId") long shopId,
+									  @Param("serialNo") String serialNo,
+									  @Param("name") String name,
+									  @Param("categoryId") int categoryId,
+									  @Param("count") int count,
+									  @Param("score") int score,
+									  @Param("price_new") int price,
+									  @Param("pic") MultipartFile pic) {
+    	if(pic == null){
+    		LoggerUtils.getInstance().log(String.format("upload pic is null,serialNo=%s",serialNo));
+    		return "@error" ;
+    	}
+    	String picName = pic.getOriginalFilename();
+    	String[] picNameArr = pic.getOriginalFilename().split("\\.");
+    	if(pic!=null && picNameArr.length ==2){
+    		picName = serialNo+"."+picNameArr[1];
+    	}else {
+    		LoggerUtils.getInstance().log(String.format("upload pic format is wrong,serialNo=%s",serialNo));
+			return "@error";
+		}
+    	boolean isSuc = new FileUploadUtils().uploadFile(pic, SgConstant.SAVE_PIC_PATH,picName);
+		if(!isSuc){
+			return "@error" ;
+		}
+		String picUrl = SgConstant.REMOTE_FILE_PATH_PRE.concat(picName);
+		Item item = new Item(serialNo,shopId, name, categoryId, score, count, picUrl, price);
+		int flag = itemsDAO.insert(SUtils.generTableName(shopId), item);
+		if (flag != 1) {
+            return "@error";
+        }
+		return "r:/console/shop?shop_id="+shopId+"&category_id="+categoryId;
+	}
 
     @Post("ud")
     @Get("ud")

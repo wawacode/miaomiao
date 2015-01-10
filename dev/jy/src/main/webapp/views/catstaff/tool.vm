@@ -4,18 +4,16 @@
     <title>喵喵工具</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
-    <link href="//code.ionicframework.com/1.0.0-beta.14/css/ionic.min.css" rel="stylesheet">
+    <link href="/css/ionic.min.css" rel="stylesheet">
     <link href="/css/tool.css" rel="stylesheet">
 
-    <script src="//code.ionicframework.com/1.0.0-beta.14/js/ionic.bundle.min.js"></script>
-
+    <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
+    <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
     <!-- google maps javascript -->
     <!--<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true"></script>-->
 
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
     <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
-
-    <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
 
     <script src="/sg/js/tool.js"></script>
 
