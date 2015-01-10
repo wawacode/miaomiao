@@ -116,11 +116,14 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
                 $scope.goToShop = function(shop){
 
                     window.location.url = window.location.origin + "/sg/shop?shop_id=" + shop.id;
-
+                }
+                $scope.relocation = function(){
+                    $state.go('locate');
+                    getLocation();
                 }
 
                 var info = {};
-                $http.post('ShopList', info).
+                $http.post('shop/shopList', info).
                     success(function (data, status, headers, config) {
 
                         $state.go('findshop');

@@ -16,11 +16,6 @@
 </head>
 <body ng-controller="LoadingCtrl">
 
-<ion-nav-bar class="bar-positive">
-    <ion-nav-back-button class="button-icon ion-arrow-left-c">
-    </ion-nav-back-button>
-</ion-nav-bar>
-
 <ion-nav-view></ion-nav-view>
 
 <script id="templates/locate.html" type="text/ng-template">
@@ -43,7 +38,19 @@
 </script>
 
 <script id="templates/findshop.html" type="text/ng-template">
-    <ion-view view-title="搜索店铺">
+    <ion-view>
+        <ion-nav-bar class="bar-primary">
+            <ion-nav-back-button class="button-icon">
+                <i class="ion-arrow-left-c"></i> 返回
+            </ion-nav-back-button>
+            <ion-nav-title>
+                搜索店铺
+            </ion-nav-title>
+            <ion-nav-buttons side="primary">
+                <button class="button button-clear button-positive" ng-click="relocation()">重新定位</button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+
         <ion-content padding="true"
                      has-tabs="true"
                      has-header="true">
@@ -51,7 +58,7 @@
             <div id="search-box" class="bar bar-header item-input-inset" style="border-bottom: solid 1px lightgray;margin-bottom: 5px">
                 <div class="item-input-wrapper">
                     <i class="icon ion-ios7-search placeholder-icon"></i>
-                    <input type="search" placeholder="Search" ng-model="shop_data.searchQuery" ng-focus=="startSearch()" ng-change="startSearch()">
+                    <input type="search" placeholder="Search" ng-model="shop_data.searchQuery" ng-focus="startSearch()" ng-change="startSearch()">
                 </div>
                 <button class="button button-clear" ng-click="clearSearch()">
                     Cancel
@@ -59,7 +66,10 @@
             </div>
 
             <div class="list" ng-show="showShopList">
-                <li class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery" ng-click="goToShop(item)">{{item.text}}</li>
+                <div class="item item-divider">
+                    商店列表
+                </div>
+                <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery" ng-click="goToShop(item)">{{item.text}}</div>
             </div>
 
             <div class="list" ng-show="showShopHistory">
