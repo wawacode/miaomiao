@@ -68,6 +68,7 @@ public class HomeController {
                 shop_id  =  loc_shop.getShop_id();
             }else{
                 LoggerUtils.getInstance().log( String.format("miss loc ,use default shop_id"));
+                return "r:/sg/loading#/findshop";
             }
         }
         return "r:/sg/shop?shop_id=" + shop_id + "&lat=" + lat + "&lng=" + lng  ;
