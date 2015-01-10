@@ -14,6 +14,15 @@ public class Shop {
 
     private  long id ;
 
+    public String getShop_address() {
+        return shop_address;
+    }
+
+    public void setShop_address(String shop_address) {
+        this.shop_address = shop_address;
+    }
+
+    private  String shop_address = "";
     private long owner_user_id = 0;
     private  String name = "";
     private  String  shop_url  = "";

@@ -27,7 +27,7 @@ CREATE TABLE `items` (
 public interface CatStaffCommitDAO {
     static final String TABLE_NAME= "catstaff_commit";
     static final String FIELDS = "id,name ,phone,pwd ,shop_name,shop_tel,shop_print,shop_lat,shop_lng,create_time,update_time " ;
-    static final String INSERT_FIELDS = "name ,phone,pwd ,shop_name,shop_tel,shop_print,shop_lat,shop_lng," ;
+    static final String INSERT_FIELDS = "name ,phone,pwd ,shop_name,shop_tel,shop_print,shop_lat,shop_lng" ;
 
     @ReturnGeneratedKeys
     @SQL("insert into " +  TABLE_NAME+ " (" +  INSERT_FIELDS +" ) values (:1.name ,:1.phone,:1.pwd ," +
@@ -35,7 +35,7 @@ public interface CatStaffCommitDAO {
     public long insert (CatStaffCommit o );
 
 
-	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " id =:1 ")
+	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  id =:1 ")
 	public CatStaffCommit getCatStaffCommit(long id );
 
 }
