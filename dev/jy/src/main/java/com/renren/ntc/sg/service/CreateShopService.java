@@ -5,6 +5,7 @@ import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.scanning.context.RoseAppContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,12 +13,19 @@ import java.util.List;
 
 @Service
 public class CreateShopService {
-    private static final long BASE_SHOP = 1 ;
-    private ShopDAO shopDao;
-    private ShopCategoryDAO shopCategoryDao;
-    private  RegistUserDAO registUserDAO;
-    private DeviceDAO deviceDao;
-    private ItemsDAO itemDao;
+    public static final long BASE_SHOP = 1 ;
+    @Autowired
+    public ShopDAO shopDao;
+    @Autowired
+    public ShopCategoryDAO shopCategoryDao;
+    @Autowired
+    public  RegistUserDAO registUserDAO;
+    @Autowired
+    public DeviceDAO deviceDao;
+    @Autowired
+    public ItemsDAO itemDao;
+
+    @Autowired
     private CatStaffCommitDAO catStaffCommitDAO;
 
     private  void del(long del_shop_id, ShopDAO shopDao, ShopCategoryDAO shopCategoryDao, RegistUserDAO registUserDAO, DeviceDAO deviceDao, ItemsDAO itemDao) {
