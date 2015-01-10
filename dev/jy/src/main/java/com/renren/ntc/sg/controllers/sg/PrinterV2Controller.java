@@ -74,6 +74,9 @@ public class PrinterV2Controller {
         }
         if(pid == 0 && SUtils.Tokenislegal(token)){
             //创建打印机
+            //生成token
+            token = SUtils.generToken(token);
+
             Device d =  new Device();
             d.setShop_id(0);
             d.setToken(token);

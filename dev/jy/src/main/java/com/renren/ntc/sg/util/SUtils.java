@@ -202,9 +202,7 @@ public class SUtils {
     }
 
     public static void  main(String [] args){
-        Item it = new Item();
-        it.setPic_url("1212") ;
-        System.out.println(parse(it).toJSONString());
+        System.out.println(generToken("cat_1232"));
     }
 
 
@@ -212,4 +210,15 @@ public class SUtils {
           return true;
 
     }
+
+    public static String generToken(String token) {
+        String [] tet = token.split("_");
+        StringBuffer sb = new StringBuffer() ;
+        String uuid = UUID.randomUUID().toString();
+        uuid = uuid.replaceAll("-", "");
+        sb.append(tet[0]).append("_").append(uuid.substring(0,8));
+        return sb.toString();
+    }
+
+
 }
