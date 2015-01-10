@@ -62,7 +62,15 @@ public class ShopController {
         List<Shop> shops = shopDAO.getShops(from, offset);
         inv.addModel("shops", shops);
 
-        return "shopList";
+        JSONObject jb =  new JSONObject() ;
+        JSONArray jarr =  new JSONArray() ;
+        for (Shop s : shops ){
+            JSONObject it = (JSONObject) JSONObject.toJSON(s);
+            jarr.add(it);
+        }
+        jb.put("code",0);
+        jb.put("data",jarr);
+        return "@" + jb.toJSONString() ;
     }
 
     @Get("")
@@ -111,7 +119,6 @@ public class ShopController {
         inv.addModel("items", itemls);
 
         JSONObject jb =  new JSONObject() ;
-        jb.put("code",0);
         JSONArray jarr =  new JSONArray() ;
         for (Item i : itemls ){
             JSONObject it =  new JSONObject() ;
