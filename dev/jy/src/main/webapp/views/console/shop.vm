@@ -28,6 +28,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/console/shop/order?shop_id=${shop_id}">我的订单</a></li>
+                <li><a href="/console/shop/addindex?shop_id=${shop_id}">+添加商品</a></li>
                 <li><a href="/console/shop/cate?shop_id=${shop_id}">分类编辑</a></li>
                 <li><a href="/console/product">产品总表</a></li>
             </ul>
@@ -77,6 +78,7 @@
                         <td class="edit" id="e-${item.shop_id}-count-$item.id">$item.count</td>
                         <td class="edit" id="e-${item.shop_id}-price-$item.id">$item.price</td>
                         <td class="edit" id="e-${item.shop_id}-pic_url-$item.id"> #if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end</td>
+                    	<td><button type="button" class="btn btn-danger" data-id="${item.id}" data-shopid="${item.shop_id}"><a>删除</a></button></td>
                     </tr>
                     #end
                     </tbody>
@@ -119,6 +121,20 @@
     tooltip : 'Click to edit...'
     });
     });
+    $(".btn").click(function(){
+		var result = confirm("是否确认删除"),
+			oThis = $(this);
+		if(result){
+		$.ajax({
+			type:"POST",url:"/console/shop/del",
+			data:{id:oThis.data('id'),shop_id:oThis.data('shopid')},
+			success:function(data){
+				  alert(data);
+				  location.reload();
+				}
+			});
+		}
+	});
 </script>
 </body>
 </html>
