@@ -58,6 +58,12 @@ public class ShopController {
     public String getlist (Invocation inv,@Param("city") String city ,@Param("district") String district ,
                            @Param("from") int from ,@Param("offset") int offset ){
 
+        if ( 0 == from){
+            from = 0;
+        }
+        if ( 0 == offset){
+            offset = 50 ;
+        }
         //获取 热门分类
         List<Shop> shops = shopDAO.getShops(from, offset);
         inv.addModel("shops", shops);
@@ -109,6 +115,13 @@ public class ShopController {
         if (0  >= shop_id){
             shop_id = Constants.DEFAULT_SHOP ;
         }
+        if ( 0 == from){
+            from = 0;
+        }
+        if ( 0 == offset){
+            offset = 50 ;
+        }
+
         Shop shop = shopDAO.getShop(shop_id);
 
         if(null == shop){

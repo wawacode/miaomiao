@@ -100,6 +100,7 @@ CREATE TABLE `shop` (
   `tel` varchar(32) NOT NULL DEFAULT '' ,
   `head_url` varchar(256) NOT NULL DEFAULT '' ,
   `shop_url` varchar(256) NOT NULL DEFAULT '',
+  `shop_address` varchar(256) NOT NULL DEFAULT '',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `open_time` timestamp NULL,
   `close_time` timestamp NULL,

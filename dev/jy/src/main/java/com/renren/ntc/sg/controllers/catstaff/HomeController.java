@@ -45,6 +45,7 @@ public class HomeController {
                         @Param("shop_print") String shop_print,
                         @Param("shop_lat") double shop_lat,
                         @Param("shop_lng") double shop_lng) {
+
         if (!legal(staff_phone, staff_name, staff_pwd)) {
             return "@" + Constants.PARATERERROR;
         }
@@ -54,9 +55,7 @@ public class HomeController {
                 StringUtils.isBlank(shop_name) ||
                 0 == shop_lat ||
                 0 == shop_lng) {
-
             return "@" + Constants.PARATERERROR;
-
         }
         CatStaffCommit catStaffCommit = new CatStaffCommit();
         catStaffCommit.setName(staff_name);
@@ -67,7 +66,9 @@ public class HomeController {
         catStaffCommit.setShop_print(shop_print);
         catStaffCommit.setShop_lat(shop_lat);
         catStaffCommit.setShop_lng(shop_lng);
+        System.out.println( "commit " + catStaffCommit.getShop_print());
         long catstaff_id = catStaffCommitDAO.insert(catStaffCommit);
+        System.out.println( "commit " + catstaff_id);
         JSONObject re = createShopService.createShop(catstaff_id);
         JSONObject jb = new JSONObject();
         jb.put("code", 0);
