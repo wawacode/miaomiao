@@ -939,6 +939,11 @@ body {
     text-align: center
 }
 
+.getGeolocation-img{
+    width: 80px;
+    height: auto;
+}
+
 .getGeolocation-title{
     font-size: 24;color:#000000;padding-top: 10px
 }
