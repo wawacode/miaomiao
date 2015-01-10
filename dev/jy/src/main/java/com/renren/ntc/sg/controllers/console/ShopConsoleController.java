@@ -37,8 +37,8 @@ import java.util.Map;
  * Regist
  */
 
-//@DenyCommonAccess
-//@LoginRequired
+@DenyCommonAccess
+@LoginRequired
 
 @Path("shop")
 public class ShopConsoleController {
