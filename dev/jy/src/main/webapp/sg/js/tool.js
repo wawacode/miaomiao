@@ -100,9 +100,15 @@ angular.module('ionic.tool', ['ionic','LocalStorageModule'])
                 return regPhone.test(number) || regMobile.test(number);
             }
 
-            if(!isValidTelNumber(_info['staff_phone']) || !isValidTelNumber(_info['shop_tel'])){
+            if(!isValidTelNumber(_info['staff_phone'])){
                 $scope.submitHasError = true;
-                $scope.error_message = '请确认电话号码格式正确';
+                $scope.error_message = '请确认工作人员电话号码格式正确';
+                return;
+            }
+
+            if(!isValidTelNumber(_info['shop_tel'])){
+                $scope.submitHasError = true;
+                $scope.error_message = '请确认店家电话号码格式正确';
                 return;
             }
 
