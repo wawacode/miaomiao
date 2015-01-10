@@ -4,14 +4,14 @@
     <title>喵喵</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
-    <link href="../../css/ionic.min.css" rel="stylesheet">
-    <link href="../../css/app.css" rel="stylesheet">
+    <link href="/css/ionic.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
 
-    <script type="text/javascript" src="../../js/ionic.bundle.min.js"></script>
+    <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
 
-    <script type="text/javascript" src="../../js/angular-local-storage.min.js"></script>
+    <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
 
-    <script type="text/javascript" src="../../sg/js/loading.js"></script>
+    <script type="text/javascript" src="/sg/js/loading.js"></script>
 
 </head>
 <body ng-controller="LoadingCtrl">
