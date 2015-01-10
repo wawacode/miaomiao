@@ -108,7 +108,7 @@ angular.module('ionic.tool', ['ionic','LocalStorageModule'])
 
             localStorageService.set('info', $scope.info);
 
-            $http.post('commit',_info).
+            $http.get('commit',{params: _info}).
                 success(function (data, status, headers, config) {
                     $scope.newShopURL = data.url;
                     $scope.newShopStatus = data.code;
