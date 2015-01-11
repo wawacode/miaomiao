@@ -56,6 +56,10 @@ public class HomeController {
     public String f (Invocation inv ,@Param("lat") float lat, @Param("lng") float lng){
         long shop_id = Constants.DEFAULT_SHOP_ID;
 
+        if (lat == 0 || lng == 0 ){
+            return "r:/sg/loading#/findshop";
+        }
+
         if (lat != 0 && lng != 0) {
             ShopLocation  loc =    new ShopLocation();
             loc.setLongitude(lng);
