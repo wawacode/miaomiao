@@ -30,6 +30,16 @@ public class Shop {
     private  Date  updatetime;
     private  String  owner_phone   = "";
     private  String  head_url   = "";
+
+    public int getAudit() {
+        return audit;
+    }
+
+    public void setAudit(int audit) {
+        this.audit = audit;
+    }
+
+    private int audit = 0 ;
     /**
      * 
      */

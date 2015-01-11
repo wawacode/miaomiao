@@ -28,6 +28,6 @@ public interface ShopDAO {
 	@SQL("insert into " + TABLE_NAME + "(" + INSERT_FIELDS +" ) values"  + " (:1.owner_user_id,:1.name,:1.shop_address,:1.owner_phone,:1.head_url,:1.shop_url,:1.lng,:1.lat)")
 	public int insert(Shop o);
 
-    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " limit :1,:2")
-    public List<Shop> getShops(int from, int offset);
+    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where audit = 1  limit :1,:2")
+    public List<Shop> getAuditedShops(int from, int offset);
 }

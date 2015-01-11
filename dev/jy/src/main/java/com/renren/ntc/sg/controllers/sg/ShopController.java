@@ -9,7 +9,6 @@ import com.renren.ntc.sg.bean.ShopCategory4v;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
-import com.renren.ntc.sg.dao.*;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
@@ -65,7 +64,7 @@ public class ShopController {
             offset = 50 ;
         }
         //获取 热门分类
-        List<Shop> shops = shopDAO.getShops(from, offset);
+        List<Shop> shops = shopDAO.getAuditedShops(from, offset);
         inv.addModel("shops", shops);
 
         JSONObject jb =  new JSONObject() ;
