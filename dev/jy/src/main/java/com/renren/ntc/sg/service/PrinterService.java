@@ -184,7 +184,7 @@ public class PrinterService {
         sb.append((char)33);
         //0b00111000
         sb.append((char)56);
-        sb.append("总价       :"+ (sum/100) +"\n");
+        sb.append("总价       :"+ (float)(sum/100) +"\n");
         sb.append("\n\n\n");
         return sb.toString();
     }
