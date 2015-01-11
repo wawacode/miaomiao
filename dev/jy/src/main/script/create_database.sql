@@ -101,6 +101,7 @@ CREATE TABLE `shop` (
   `head_url` varchar(256) NOT NULL DEFAULT '' ,
   `shop_url` varchar(256) NOT NULL DEFAULT '',
   `shop_address` varchar(256) NOT NULL DEFAULT '',
+  `audit` tinyint(4)  NOT NUll DEFAULT 0,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `open_time` timestamp NULL,
   `close_time` timestamp NULL,
@@ -171,6 +172,7 @@ CREATE TABLE `device` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL ,
    PRIMARY KEY (`id`),
+   UNIQUE KEY token (token),
    KEY shop_id(`shop_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
