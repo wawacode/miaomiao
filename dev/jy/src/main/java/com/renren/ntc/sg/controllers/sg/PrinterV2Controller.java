@@ -3,13 +3,11 @@ package com.renren.ntc.sg.controllers.sg;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
-import com.renren.ntc.sg.bean.Address;
-import com.renren.ntc.sg.bean.Device;
-import com.renren.ntc.sg.bean.Order;
-import com.renren.ntc.sg.bean.OrderInfo;
+import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
 import com.renren.ntc.sg.biz.dao.DeviceDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.dao.SWPOrderDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
@@ -38,6 +36,9 @@ public class PrinterV2Controller {
     public DeviceDAO deviceDAO;
 
     @Autowired
+    ShopDAO shopDao ;
+
+    @Autowired
     public OrdersDAO ordersDAO ;
 
     @Autowired
@@ -56,7 +57,7 @@ public class PrinterV2Controller {
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "1015";
-    public static String USER_TID = "794";
+    public static String USER_TID = "791";
     public  boolean  nn = true;
     /**
      * 用于处理用户喜欢和不喜欢的ajax请求，成功返回1，失败返回0
@@ -159,6 +160,8 @@ public class PrinterV2Controller {
             // 更新成功给用户发消息
             if (r == 1) {
                 try {
+                    Shop shop = shopDao.getShop(dev.getShop_id());
+                    if ( null != shop ){
                     Order value = ordersDAO.getOrder(orderId,SUtils.generOrderTableName(dev.getShop_id()));
                     String v = null;
                     String url;
@@ -166,7 +169,7 @@ public class PrinterV2Controller {
                     byte[] t = null;
                     String vv = value.getOrder_id() ;
                     vv = vv.replaceAll("=", "").replaceAll("&", "");
-                    String message = "#order_id#=" + vv;
+                    String message = "#order_id#=" + vv + "&#shop_name#="+shop.getName() + "&#phone#="+ shop.getOwner_phone();
                     message = URLEncoder.encode(message,"utf-8");
                     long adr_id =  value.getAddress_id();
                     Address adrs  = addressDAO.getAddress(adr_id);
@@ -175,7 +178,8 @@ public class PrinterV2Controller {
                     t = SHttpClient.getURLData(url, "");
                     String  response = SUtils.toString(t);
                     System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-                } catch (Throwable e) {
+                    }
+                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
             }
@@ -185,8 +189,6 @@ public class PrinterV2Controller {
         if (r != 1) {
             LoggerUtils.getInstance().log(String.format("fail to update order %s  pid  %d  token %s", orderId, pid, token));
         }
-
-
 
         //发短信通知
         try {

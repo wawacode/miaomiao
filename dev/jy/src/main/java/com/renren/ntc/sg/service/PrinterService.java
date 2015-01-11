@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.OrderInfo;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.util.Constants;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,6 +18,9 @@ import java.util.List;
 
 @Service
 public class PrinterService {
+
+    @Autowired
+    public ShopDAO shopDao ;
 
     public  String getString(List<Order> ol)   {
            JSONArray jarr = new JSONArray();
@@ -135,8 +141,12 @@ public class PrinterService {
         sb.append((char)27);
         sb.append((char)97);
         sb.append((char)1);
-        sb.append("乐邻便利店\n");
-
+        String shop_name = "乐邻便利店";
+        Shop sh = shopDao.getShop(o.getShop_id());
+        if (null != sh ){
+            shop_name = sh.getName();
+        }
+        sb.append( shop_name + "\n");
         // esc/pos命令: ESC ! n
         // 设置字体为正常字体
         sb.append((char)27);
