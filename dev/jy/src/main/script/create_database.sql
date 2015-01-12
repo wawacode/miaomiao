@@ -28,6 +28,7 @@ CREATE TABLE `catstaff_commit` (
   `phone`varchar(24) NOT NULL DEFAULT '' ,
   `pwd` varchar(24) NOT NULL DEFAULT '',
   `shop_name` varchar(32) DEFAULT 0 ,
+  `shop_address` varchar(256) NOT NULL DEFAULT '',
   `shop_tel` varchar(32) DEFAULT 0  ,
   `shop_print` varchar(32) DEFAULT 0  ,
   `shop_lat`  FLOAT(16,12) NOT NULL DEFAULT 0.00,

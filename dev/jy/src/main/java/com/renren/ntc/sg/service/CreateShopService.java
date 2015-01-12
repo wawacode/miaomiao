@@ -40,6 +40,7 @@ public class CreateShopService {
         String admin_phone = catStaffCommit.getShop_tel();
         String admin_name = catStaffCommit.getShop_tel();
         String admin_pwd = catStaffCommit.getShop_tel();
+        String shop_address = catStaffCommit.getShop_address();
         String shop_name =   catStaffCommit.getShop_name();
         String shop_print = catStaffCommit.getShop_print();
         double lat =  catStaffCommit.getShop_lat();
@@ -63,6 +64,8 @@ public class CreateShopService {
         shop.setLat(lat);
         shop.setLng(lng);
         shop.setOwner_phone(admin_phone);
+        shop.setTel(admin_phone);
+        shop.setShop_address(shop_address);
         shop.setOwner_user_id(admin_id);
         long shop_id = shopDao.insert(shop) ;
         LoggerUtils.getInstance().log(String.format("create new shop  %d, shop_name %s ",shop_id, shop_name));

@@ -26,12 +26,12 @@ CREATE TABLE `items` (
 @DAO(catalog = "ABC")
 public interface CatStaffCommitDAO {
     static final String TABLE_NAME= "catstaff_commit";
-    static final String FIELDS = "id,name ,phone,pwd ,shop_name,shop_tel,shop_print,shop_lat,shop_lng,create_time,update_time " ;
-    static final String INSERT_FIELDS = "name ,phone,pwd ,shop_name,shop_tel,shop_print,shop_lat,shop_lng" ;
+    static final String FIELDS = "id,name ,phone,pwd ,shop_name,shop_address,shop_tel,shop_print,shop_lat,shop_lng,create_time,update_time " ;
+    static final String INSERT_FIELDS = "name ,phone,pwd ,shop_name,shop_address,shop_tel,shop_print,shop_lat,shop_lng" ;
 
     @ReturnGeneratedKeys
     @SQL("insert into " +  TABLE_NAME+ " (" +  INSERT_FIELDS +" ) values (:1.name ,:1.phone,:1.pwd ," +
-            ":1.shop_name,:1.shop_tel,:1.shop_print,:1.shop_lat,:1.shop_lng) ")
+            ":1.shop_name,:1.shop_address,:1.shop_tel,:1.shop_print,:1.shop_lat,:1.shop_lng) ")
     public long insert (CatStaffCommit o );
 
 

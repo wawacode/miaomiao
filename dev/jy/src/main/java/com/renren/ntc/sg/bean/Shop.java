@@ -14,6 +14,20 @@ public class Shop {
 
     private  long id ;
 
+
+
+    private  String shop_address = "";
+    private long owner_user_id = 0;
+    private  String name = "";
+
+    private  String tel = "";
+    private  String  shop_url  = "";
+    private Date create_time ;
+    private  Date  updatetime;
+    private  String  owner_phone   = "";
+    private  String  head_url   = "";
+
+
     public String getShop_address() {
         return shop_address;
     }
@@ -22,15 +36,13 @@ public class Shop {
         this.shop_address = shop_address;
     }
 
-    private  String shop_address = "";
-    private long owner_user_id = 0;
-    private  String name = "";
-    private  String  shop_url  = "";
-    private Date create_time ;
-    private  Date  updatetime;
-    private  String  owner_phone   = "";
-    private  String  head_url   = "";
+    public String getTel() {
+        return tel;
+    }
 
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
     public int getAudit() {
         return audit;
     }

@@ -18,10 +18,20 @@ public class CatStaffCommit {
     private String shop_name;
     private String shop_tel;
     private String shop_print;
+
+    private String shop_address;
     private double   shop_lat;
     private double    shop_lng;
     private Date create_time ;
     private Date update_time ;
+
+    public String getShop_address() {
+        return shop_address;
+    }
+
+    public void setShop_address(String shop_address) {
+        this.shop_address = shop_address;
+    }
 
     public long getId() {
         return id;
