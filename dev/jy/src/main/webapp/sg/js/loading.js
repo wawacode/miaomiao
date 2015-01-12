@@ -21,6 +21,7 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
 
 
         $scope.getGeolocationTitle = "定位中...";
+        $scope.getGeolocationTitleClass = 'blink_me';
         $scope.showLocateImg = true;
 
         var url = window.location.origin + "/sg/f";
@@ -84,11 +85,7 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
 
             }
             // let user see the error message
-            $timeout(function () {
-
-                $state.go('findshop');
-
-            }, 500);
+            $state.go('findshop');
 
         }
 
