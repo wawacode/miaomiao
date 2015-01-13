@@ -16,14 +16,25 @@ public class CatStaffCommit {
     private String  phone;
     private String pwd;
     private String shop_name;
+
+    private String shop_owner_phone;
     private String shop_tel;
     private String shop_print;
 
     private String shop_address;
-    private double   shop_lat;
-    private double    shop_lng;
+    private double  shop_lat;
+    private double  shop_lng;
     private Date create_time ;
     private Date update_time ;
+
+
+    public String getShop_owner_phone() {
+        return shop_owner_phone;
+    }
+
+    public void setShop_owner_phone(String shop_owner_phone) {
+        this.shop_owner_phone = shop_owner_phone;
+    }
 
     public String getShop_address() {
         return shop_address;

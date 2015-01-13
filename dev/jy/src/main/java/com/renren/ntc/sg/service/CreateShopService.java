@@ -37,8 +37,8 @@ public class CreateShopService {
     public JSONObject createShop(long id ) {
 
         CatStaffCommit  catStaffCommit  = catStaffCommitDAO.getCatStaffCommit(id);
-        String admin_phone = catStaffCommit.getShop_tel();
-        String admin_name = catStaffCommit.getShop_tel();
+        String admin_phone = catStaffCommit.getShop_owner_phone();
+        String admin_tel = catStaffCommit.getShop_tel();
         String admin_pwd = catStaffCommit.getShop_tel();
         String shop_address = catStaffCommit.getShop_address();
         String shop_name =   catStaffCommit.getShop_name();
@@ -49,22 +49,22 @@ public class CreateShopService {
         JSONObject jb =  new    JSONObject ();
         //创建管理用户
         RegistUser regist =   new RegistUser();
-        regist.setPhone(admin_phone);
-        regist.setName(admin_name);
-        regist.setPwd(admin_pwd);
+        regist.setPhone(admin_tel);
+        regist.setName(admin_tel);
+        regist.setPwd(admin_tel);
         long admin_id = registUserDAO.createUser(regist);
         jb.put("admin_id",admin_id);
-        jb.put("admin_name",admin_name);
+        jb.put("admin_name",admin_tel);
         jb.put("admin_pwd",admin_pwd);
 
-        LoggerUtils.getInstance().log(String.format("create new shop admin  %d , name %s ,  pwd %s ",admin_id ,admin_name , admin_pwd));
+        LoggerUtils.getInstance().log(String.format("create new shop admin  %d , name %s ,  pwd %s ",admin_id ,admin_tel , admin_pwd));
         // 初始化店铺
         Shop shop =  new Shop();
         shop.setName(shop_name);
         shop.setLat(lat);
         shop.setLng(lng);
         shop.setOwner_phone(admin_phone);
-        shop.setTel(admin_phone);
+        shop.setTel(admin_tel);
         shop.setShop_address(shop_address);
         shop.setOwner_user_id(admin_id);
         long shop_id = shopDao.insert(shop) ;

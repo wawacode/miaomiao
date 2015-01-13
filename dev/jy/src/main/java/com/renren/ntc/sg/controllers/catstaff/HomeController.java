@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.catstaff;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.CatStaffCommit;
@@ -41,6 +42,7 @@ public class HomeController {
     public String index(Invocation inv, @Param("staff_phone") String staff_phone,
                         @Param("staff_name") String staff_name, @Param("staff_pwd") String staff_pwd,
                         @Param("shop_name") String shop_name,
+                        @Param("shop_owner_phone") String shop_owner_phone,
                         @Param("shop_address") String shop_address,
                         @Param("shop_tel") String shop_tel,
                         @Param("shop_print") String shop_print,
@@ -65,6 +67,7 @@ public class HomeController {
         catStaffCommit.setPhone(staff_phone);
         catStaffCommit.setPwd(staff_pwd);
         catStaffCommit.setShop_name(shop_name);
+        catStaffCommit.setShop_owner_phone(shop_owner_phone);
         catStaffCommit.setShop_tel(shop_tel);
         catStaffCommit.setShop_print(shop_print);
         catStaffCommit.setShop_address(shop_address);
@@ -82,10 +85,35 @@ public class HomeController {
 
     private boolean legal(String phone, String staff_name, String staff_pwd) {
 
-
         return true;
     }
 
+    @Get("query")
+    @Post("query")
+    public String index(Invocation inv, @Param("staff_phone") String staff_phone,
+                        @Param("staff_name") String staff_name,
+                        @Param("staff_pwd") String staff_pwd,@Param("from") int from, @Param("offset") int offset)
+    {
+        if (!legal(staff_phone, staff_name, staff_pwd)) {
+        return "@" + Constants.PARATERERROR;
+    }
+        List<CatStaffCommit>  catls =  catStaffCommitDAO.getCatStaffCommit(staff_name ,staff_pwd,from ,offset);
+
+        JSONArray jarr = (JSONArray) JSON.toJSON(catls);
+
+        JSONObject jb = new JSONObject();
+        jb.put("code",0);
+        jb.put("data",jarr);
+        return "@"+jb.toJSONString() ;
+    }
+
+    // 这个接口可以测试用
+    @Get("test2")
+    @Post("test2")
+    public String test2(Invocation inv) {
+
+        return "tool2";
+    }
 
     @Get("test")
     @Post("test")
