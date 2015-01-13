@@ -57,7 +57,7 @@
                         <th>创建时间</th>
                     </tr>
                     </thead>
-                    #foreach($shop in $ shopls)
+                    #foreach($shop in $shopls)
                     <tr>
                         <td>${order.id}</td>
                         <td class="" id="$shop.id">$shop.id</td>
