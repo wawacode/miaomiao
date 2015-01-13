@@ -59,11 +59,11 @@
                     </thead>
                     #foreach($shop in $shopls)
                     <tr>
-                        <td>${order.id}</td>
-                        <td class="" id="$shop.id">$shop.id</td>
+                        <td>$shop.id</td>
+                        <td class="" id="$shop.id">$shop.name</td>
                         <td class="" >$shop.tel</td>
-                        <td class="" >$shop.owner_phone}</td>
-                        <td class="" >$order.create_time</td>
+                        <td class="" >$shop.owner_phone</td>
+                        <td class="" >$shop.create_time</td>
                     </tr>
                     #end
                     </tbody>
