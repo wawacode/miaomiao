@@ -39,7 +39,6 @@ import java.util.Map;
 
 @DenyCommonAccess
 @LoginRequired
-
 @Path("shop")
 public class ShopConsoleController {
 
