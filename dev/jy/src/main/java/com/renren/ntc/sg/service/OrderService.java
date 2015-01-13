@@ -34,6 +34,7 @@ public class OrderService {
             o.setPhone(adr.getPhone());
             o.setAddress(adr.getAddress());
             o.setStatus4V(toStr(o.getStatus(),first));
+            o.setPrice4V(((float )o.getPrice()/100) +"");
             oo.add(o);
             first ++;
         }

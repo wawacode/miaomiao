@@ -67,7 +67,7 @@
                         <td class="" id="e-{$item.shop_id}-name-$item.id">$order.create_time</td>
                         <td class="" id="e-{$item.shop_id}-status-$item.id"> #if($order.status ==1 ) 下单成功 #end  #if($order.status ==2) 打印完成 #end</td>
                         <td class="" id="e-{$item.shop_id}-address-$item.id">${order.address}  ${order.phone}</td>
-                        <td class="" id="e-{$item.shop_id}-price-$item.id">${order.price}分</td>
+                        <td class="" id="e-{$item.shop_id}-price-$item.id">${order.price4V}元</td>
                         <td class="" id="e-{$item.category_id}-category_id-$item.id">$order.info</td>
                     </tr>
                     #end
