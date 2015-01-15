@@ -4,6 +4,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
+import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.log4j.Logger;
 
 public class GeoService {
@@ -234,28 +238,20 @@ public class GeoService {
 	}
 
     public static void main (String [] args){
+        long shop_id = 10020;
+        RoseAppContext  rose = new RoseAppContext();
+        ShopDAO shopDao = rose.getBean(ShopDAO.class);
         GeoService  geoService =  new GeoService() ;
         ShopLocation shop_location = new ShopLocation()  ;
-        shop_location.setLatitude(39.976004);
-        shop_location.setLongitude(116.341316);
-        shop_location.setShop_id(2);
-        System.out.println(geoService.updateLocation(shop_location));
-         shop_location = new ShopLocation()  ;
-        shop_location.setLatitude(40.976004);
-        shop_location.setLongitude(116.341316);
-        shop_location.setShop_id(1);
-        System.out.println(geoService.updateLocation(shop_location));
+        Shop shop = shopDao.getShop(shop_id) ;
         shop_location = new ShopLocation()  ;
-        shop_location.setLatitude(44.976004);
-        shop_location.setLongitude(116.341316);
-        shop_location.setShop_id(4);
+        shop_location.setLatitude(shop.getLat());
+        shop_location.setLongitude(shop.getLng());
+        shop_location.setShop_id(shop.getId());
         System.out.println(geoService.updateLocation(shop_location));
+        shopDao.audit(shop.getId());
 
-        shop_location = new ShopLocation()  ;
-        shop_location.setLatitude(44.976004);
-        shop_location.setLongitude(117.341316);
-        shop_location.setShop_id(3);
-        System.out.println(geoService.updateLocation(shop_location));
+
         ShopLocation shopL = new ShopLocation () ;
         shopL.setShop_id(10);
         shopL.setLatitude(39.976004);
@@ -264,6 +260,7 @@ public class GeoService {
         for (GeoQueryResult geo :ls ) {
             System.out.println(String.format("shop_id %d  , lng %f , lat %f ",geo.getShopLocation().getShop_id() , geo.getShopLocation().getLongitude(),geo.getShopLocation().getLatitude()));
         }
+//        geoService.removeLocation(10014);
     }
 
 }

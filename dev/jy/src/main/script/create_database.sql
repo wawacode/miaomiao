@@ -3,6 +3,8 @@ CREATE TABLE `product` (
   `serialNo` varchar(24) NOT NULL DEFAULT '' ,
   `name` varchar(24) NOT NULL DEFAULT '', 
   `pic_url` varchar(256) DEFAULT 0 ,
+  `price` int(11) DEFAULT 0  ,
+  `score` int(11) DEFAULT 0  ,
   `category_id` int(11) DEFAULT 0  ,
   `category_sub_id` int(11) DEFAULT 0  ,
  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
