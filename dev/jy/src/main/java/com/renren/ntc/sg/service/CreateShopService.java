@@ -63,7 +63,7 @@ public class CreateShopService {
         shop.setName(shop_name);
         shop.setLat(lat);
         shop.setLng(lng);
-        shop.setOwner_phone(admin_phone);
+        shop.setOwner_phone(admin_tel);
         shop.setTel(admin_tel);
         shop.setShop_address(shop_address);
         shop.setOwner_user_id(admin_id);
