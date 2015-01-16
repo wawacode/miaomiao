@@ -91,7 +91,7 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
 
         function getLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
+                navigator.geolocation.getCurrentPosition(showPosition, showError,{timeout:5000 , maximumAge:3600000});
             } else {
                 $scope.showLocateImg = false;
                 $scope.getGeolocationTitle = "您的浏览器不支持定位！";
