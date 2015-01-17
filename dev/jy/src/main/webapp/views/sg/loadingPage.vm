@@ -46,49 +46,53 @@
 
 <script id="templates/findshop.html" type="text/ng-template">
     <ion-view>
-        <ion-nav-bar class="bar-primary">
-            <ion-nav-back-button class="button button-positive button-clear">
-                <!--<i class="ion-arrow-left-c"></i>-->
-            </ion-nav-back-button>
-            <ion-nav-title class="assertive">
-                定位失败,请搜索店铺
-            </ion-nav-title>
+        <ion-header-bar class="bar-lightgary" style="text-align: left;height: 29px">
+            <!--<ion-nav-back-button class="button button-positive button-clear">-->
+                <!--&lt;!&ndash;<i class="ion-arrow-left-c"></i>&ndash;&gt;-->
+            <!--</ion-nav-back-button>-->
+            <div style="font-size: 12px;margin: auto 10px; text-align: left">
+                定位失败，您可以从下面选择或搜索你所在的小区
+            </div>
             <!--<ion-nav-buttons side="primary">-->
             <!--<button class="button button-clear button-positive" ng-click="relocation()">重新定位</button>-->
             <!--</ion-nav-buttons>-->
-        </ion-nav-bar>
+        </ion-header-bar>
 
-        <ion-content padding="true"
-                     has-tabs="true"
-                     has-header="true">
+        <ion-content padding="false"
+                     has-tabs="false"
+                     has-header="false" style="top: 29">
 
-            <div id="search-box" class="bar bar-header item-input-inset"
-                 style="border-bottom: solid 1px lightgray;margin-bottom: 5px;padding: 0">
-                <div class="item-input-wrapper">
-                    <i class="icon ion-ios7-search placeholder-icon"></i>
-                    <input type="search" placeholder="请输入商店名称或者地址" ng-model="shop_data.searchQuery"
-                           ng-focus="startSearch()" ng-change="startSearch()">
+            <div style=";height: 57px;padding-top: 10px;">
+                <div id="search-box" class="item-input-inset"
+                     style=";margin: auto;height: 36px">
+                    <div class="item-input-wrapper">
+                        <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
+                        <input type="search" placeholder="请输入商店名称或者地址" ng-model="shop_data.searchQuery"
+                               ng-focus="startSearch()" ng-change="startSearch()" style="color: #7a7a7a">
+                        <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px" ng-click="clearSearch()"></i>
+                    </div>
+                    <!--<button class="button button-clear button-positive" ng-click="clearSearch()">-->
+                        <!--取消-->
+                    <!--</button>-->
                 </div>
-                <button class="button button-clear button-positive" ng-click="clearSearch()">
-                    取消
-                </button>
             </div>
 
             <div class="list" ng-show="showShopList">
-                <div class="item item-divider">
+                <div class="item-hint">
                     商店列表
                 </div>
                 <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
                      ng-click="goToShop(item)">
-                    <div>{{item.name}}</div>
+                    <div style="font-size: 14px">{{item.name}}</div>
                 </div>
             </div>
 
             <div class="list" ng-show="showShopHistory">
-                <div class="item item-divider" ng-show="shop_history.length">
-                    搜索历史
+
+                <div class="item-hint" ng-show="shop_history.length">
+                    历史位置
                 </div>
-                <div class="item item-body" ng-repeat="item in shop_history" ng-click="goToShop(item)">
+                <div class="item-shop-history" ng-repeat="item in shop_history" ng-click="goToShop(item)" style="">
                     {{item.name}}
                 </div>
             </div>
