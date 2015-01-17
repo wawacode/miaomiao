@@ -18,39 +18,88 @@
     <script src="/sg/js/tool.js"></script>
 
 </head>
-<body ng-controller="ToolCtrl">
+
+<body>
 
 <ion-nav-bar class="bar-positive">
-    <ion-nav-back-button class="button-icon ion-arrow-left-c">
-    </ion-nav-back-button>
+    <!--<ion-nav-back-button class="button-icon ion-arrow-left-c">-->
+    <!--</ion-nav-back-button>-->
 </ion-nav-bar>
 
 <ion-nav-view></ion-nav-view>
 
+<script id="templates/sign-in.html" type="text/ng-template">
+    <ion-view view-title="喵喵地推人员工具">
+
+        <ion-content class="padding">
+            <div class="list">
+
+                <div class="item item-input" >
+                    <span class="input-label"><span class="necessary">*</span>姓名</span>
+                    <input type="text"  ng-model="user.name">
+                </div>
+                <div class="item item-input" >
+                    <span class="input-label"><span class="necessary">*</span>手机:</span>
+                    <input type="text"  ng-model="user.phone">
+                </div>
+                <div class="item item-input" >
+                    <span class="input-label"><span class="necessary">*</span>密码:</span>
+                    <input type="password" ng-model="user.password">
+                </div>
+            </div>
+            <div class="padding">
+                <button class="button button-block button-positive" ng-click="signIn(user)">
+                    登陆
+                </button>
+                <p class="text-center assertive">
+                    {{signStatasMessage}}
+                </p>
+                <p class="text-center">
+                    <a href="#/forgot-password">需要帮助</a>
+                </p>
+
+            </div>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="templates/forgot-password.html" type="text/ng-template">
+    <ion-view view-title="Forgot Password">
+        <ion-content padding="true">
+            <p>
+                找团队帮忙.
+            </p>
+
+            <p>
+                Return to <a href="#/sign-in">登陆</a>.
+            </p>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="templates/tabs.html" type="text/ng-template">
+    <ion-view>
+        <ion-tabs class="tabs-icon-top tabs-light">
+
+            <ion-tab title="推广工具" icon="ion-film-marker" class="tab-item-balanced" href="#/tab/tool">
+                <ion-nav-view name="tool-tab"></ion-nav-view>
+            </ion-tab>
+
+            <ion-tab title="我的推广" icon="ion-android-contacts" class="tab-item-balanced" href="#/tab/my">
+                <ion-nav-view name="my-tab"></ion-nav-view>
+            </ion-tab>
+
+            <ion-tab title="退出" icon="ion-log-out" class="tab-item-balanced" href="#/sign-in">
+            </ion-tab>
+
+        </ion-tabs>
+    </ion-view>
+</script>
+
+
 <script id="templates/tool.html" type="text/ng-template">
     <ion-view view-title="喵喵工具">
         <ion-content>
-
-            <div class="list card">
-                <div class="item item-divider">
-                    推广人员信息
-                </div>
-                <div class="item item-body">
-
-                    <label class="item item-input">
-                        <span class="input-label"><span class="necessary">*</span>姓名:</span>
-                        <input type="text" ng-model="info.staff_name" required>
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label"><span class="necessary">*</span>电话:</span>
-                        <input type="tel" ng-model="info.staff_phone" required>
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">密码:</span>
-                        <input type="password" ng-model="info.staff_pwd">
-                    </label>
-                </div>
-            </div>
 
             <div class="list card">
                 <div class="item item-divider">
@@ -64,6 +113,10 @@
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店铺电话:</span>
                         <input type="text" ng-model="info.shop_tel" required>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>店长电话:</span>
+                        <input type="text" ng-model="info.shop_owner_phone" required>
                     </label>
                     <label class="item item-input">
                         <span class="input-label">店铺地址:</span>
@@ -104,6 +157,53 @@
                     提交
                 </button>
             </div>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="templates/my.html" type="text/ng-template">
+    <ion-view view-title="我的推广">
+        <ion-content padding="false">
+
+            <ion-refresher refreshing-icon='ion-loading-c' on-refresh="doRefresh()">
+            </ion-refresher>
+
+            <div class="list card">
+                <div class="item item-divider">
+                    推广人员信息
+                </div>
+                <div class="item item-body">
+
+                    <label class="item item-input">
+                        <span class="input-label">姓名:</span>
+                        <input type="text" ng-model="user.name" required>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">电话:</span>
+                        <input type="tel" ng-model="user.phone" required>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">密码:</span>
+                        <input type="password" ng-model="user.password">
+                    </label>
+                </div>
+            </div>
+
+            <ul class="list">
+
+                <li ng-repeat="item in myCustomersInfo"
+                    href=""
+                    class="item">
+
+                    <h2>{{ item.shop_name }}</h2>
+                    <h4>{{ item.shop_tel }}</h4>
+                    <h4>{{ item.shop_print }}</h4>
+                    <h4>{{ item.shop_address }}</h4>
+                    <h4>{{ item.create_time }}</h4>
+
+                </li>
+            </ul>
+
         </ion-content>
     </ion-view>
 </script>
