@@ -92,7 +92,7 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
         function getLocation() {
             if (navigator.geolocation) {
                 var position_option = {
-                    timeout: 5000
+                    timeout: 10000
                 };
 
                 navigator.geolocation.getCurrentPosition(showPosition, showError, position_option);
