@@ -92,8 +92,6 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
         function getLocation() {
             if (navigator.geolocation) {
                 var position_option = {
-                    enableHighAccuracy: true,
-                    maximumAge: 30000,
                     timeout: 5000
                 };
 
