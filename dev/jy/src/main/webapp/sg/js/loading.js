@@ -6,18 +6,18 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
             .state('locate', {
                 url: '/',
                 templateUrl: 'templates/locate.html',
-                controller:'LoadingCtrl'
+                controller: 'LoadingCtrl'
             })
             .state('findshop', {
                 url: '/findshop',
-                templateUrl: 'templates/findshop.html' ,
-                controller:'FindShopCtrl'
+                templateUrl: 'templates/findshop.html',
+                controller: 'FindShopCtrl'
             });
 
         $urlRouterProvider.otherwise('/');
     })
 
-    .controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout) {
+    .controller('LoadingCtrl',function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout) {
 
 
         $scope.getGeolocationTitle = "定位中...";
@@ -91,11 +91,11 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
 
         function getLocation() {
             if (navigator.geolocation) {
-                 var  = {
-                                  enableHighAccuracy: true,
-                                  maximumAge: 30000,
-                                  timeout: 10000
-                                 };
+                var position_option = {
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 5000
+                };
 
                 navigator.geolocation.getCurrentPosition(showPosition, showError, position_option);
             } else {
@@ -126,16 +126,16 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
             $scope.showShopHistory = false;
         };
 
-        $scope.goToShop = function(shop){
+        $scope.goToShop = function (shop) {
 
             var shopExist = false;
-            for(var i=0;i < $scope.shop_history.length;i++){
-                if(shop.id == $scope.shop_history[i].id){
+            for (var i = 0; i < $scope.shop_history.length; i++) {
+                if (shop.id == $scope.shop_history[i].id) {
                     shopExist = true;
                     break;
                 }
             }
-            if(!shopExist){
+            if (!shopExist) {
                 $scope.shop_history.push(shop);
             }
 
