@@ -243,20 +243,20 @@ public class GeoService {
     public static void main (String [] args){
         //116.509389,39.930979
         GeoService geoService =  new GeoService() ;
-        ShopLocation shopN = new ShopLocation () ;
-        shopN.setShop_id(10014);
-        shopN.setLatitude(39.979473114014);
-        shopN.setLongitude(116.304931640625);
-        geoService.updateLocation(shopN);
-//
-//        ShopLocation shopL = new ShopLocation () ;
-//        shopL.setShop_id(1);
-//        shopL.setLatitude(39.931073);
-//        shopL.setLongitude(116.50938);
-//        List<GeoQueryResult> ls  = geoService.queryNear(shopL, 1 * 1000);
-//        for (GeoQueryResult geo :ls ) {
-//            System.out.println(String.format("shop_id %d  , lng %f , lat %f ",geo.getShopLocation().getShop_id() , geo.getShopLocation().getLongitude(),geo.getShopLocation().getLatitude()));
-//        }
+//        ShopLocation shopN = new ShopLocation () ;
+//        shopN.setShop_id(1);
+//        shopN.setLatitude(39.923363928720);
+//        shopN.setLongitude(116.49686149332345);
+//        geoService.updateLocation(shopN);
+//            //116.50938,39.930973
+        ShopLocation shopL = new ShopLocation () ;
+        shopL.setShop_id(1);
+        shopL.setLatitude(39.923363);
+        shopL.setLongitude(116.496861);
+        List<GeoQueryResult> ls  = geoService.queryNear(shopL, 20 * 1000);
+        for (GeoQueryResult geo :ls ) {
+            System.out.println(String.format("shop_id %d  , lng %f , lat %f ",geo.getShopLocation().getShop_id() , geo.getShopLocation().getLongitude(),geo.getShopLocation().getLatitude()));
+        }
     }
 
 }
