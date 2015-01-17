@@ -56,7 +56,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
 
             $scope.signStatasMessage = undefined;
 
-            $http.get('query', {params: {staff_name: $scope.user.name, staff_phone: $scope.user.phone, staff_pwd: $scope.user.password }}).
+            $http.get('query', {params: {staff_name: $scope.user.name, staff_phone: $scope.user.phone, staff_pwd: $scope.user.password ,from:0 , offset:100}}).
                 success(function (data, status, headers, config) {
 
                     $ionicLoading.hide();
@@ -81,7 +81,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
         };
     })
 
-    .controller('ToolTabCtrl',function ($scope, $ionicLoading, $compile, $http, $state, localStorageService) {
+    .controller('ToolTabCtrl',function ($scope, $ionicLoading, $compile, $http, $state, $timeout, localStorageService) {
 
         $scope.info = localStorageService.get('info') || {};
         $scope.user = $scope.info.user = localStorageService.get('user') || {};
@@ -101,7 +101,9 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
 
         }
 
-        window.addEventListener('load', initialize, true);
+        $timeout(function(){
+            initialize();
+        },1000);
 
         $scope.centerOnMe = function () {
             if (!$scope.map) {
@@ -147,6 +149,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                 'staff_name': $scope.user.name,
                 'staff_pwd': $scope.user.password,
                 'shop_tel': $scope.info.shop_tel,
+                'shop_owner_phone': $scope.info.shop_owner_phone,
                 'shop_name': $scope.info.shop_name,
                 'shop_address': $scope.info.shop_address,
                 'shop_print': $scope.info.shop_print,

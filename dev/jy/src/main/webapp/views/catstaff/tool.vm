@@ -81,7 +81,7 @@
     <ion-view>
         <ion-tabs class="tabs-icon-top tabs-light">
 
-            <ion-tab title="推广工具" icon="ion-film-marker" class="tab-item-balanced" href="#/tab/tool">
+            <ion-tab title="推广工具" icon="ion-settings" class="tab-item-balanced" href="#/tab/tool">
                 <ion-nav-view name="tool-tab"></ion-nav-view>
             </ion-tab>
 
@@ -103,7 +103,7 @@
 
             <div class="list card">
                 <div class="item item-divider">
-                    店铺信息
+                    新店铺信息
                 </div>
                 <div class="item item-body">
                     <label class="item item-input">
@@ -119,7 +119,7 @@
                         <input type="text" ng-model="info.shop_owner_phone" required>
                     </label>
                     <label class="item item-input">
-                        <span class="input-label">店铺地址:</span>
+                        <span class="input-label"><span class="necessary">*</span>店铺地址:</span>
                         <input type="text" ng-model="info.shop_address">
                     </label>
                     <label class="item item-input">
@@ -170,7 +170,7 @@
 
             <div class="list card">
                 <div class="item item-divider">
-                    推广人员信息
+                    <i class="icon ion-person"></i>&nbsp;我的信息
                 </div>
                 <div class="item item-body">
 
@@ -182,25 +182,26 @@
                         <span class="input-label">电话:</span>
                         <input type="tel" ng-model="user.phone" required>
                     </label>
-                    <label class="item item-input">
-                        <span class="input-label">密码:</span>
-                        <input type="password" ng-model="user.password">
-                    </label>
                 </div>
             </div>
 
-            <ul class="list">
+            <ul class="list card">
+                <div class="item item-divider">
+                    <i class="icon ion-navicon-round"></i>&nbsp;我推广的店铺(共{{myCustomersInfo.length}}家)
+                </div>
 
                 <li ng-repeat="item in myCustomersInfo"
                     href=""
-                    class="item">
-
-                    <h2>{{ item.shop_name }}</h2>
-                    <h4>{{ item.shop_tel }}</h4>
-                    <h4>{{ item.shop_print }}</h4>
-                    <h4>{{ item.shop_address }}</h4>
-                    <h4>{{ item.create_time }}</h4>
-
+                    class="item item-body" style="padding: 2px">
+                    <div class="list card">
+                        <div class="item">
+                            <h2><i class="icon ion-ios7-cart"></i>&nbsp;{{ item.shop_name }}</h2>
+                            <p><i class="icon ion-ios7-telephone"></i>&nbsp;{{ item.shop_tel }}</p>
+                            <p><i class="icon ion-ios7-location"></i>&nbsp;{{ item.shop_address }}</p>
+                            <p><i class="icon ion-ios7-time"></i>&nbsp;{{ item.create_time | date:'medium' }}</p>
+                            <p><i class="icon ion-ios7-printer"></i>&nbsp;{{ item.shop_print }}</p>
+                        </div>
+                    </div>
                 </li>
             </ul>
 
