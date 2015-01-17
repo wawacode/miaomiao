@@ -105,7 +105,11 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
             }
         }
 
-        window.addEventListener('load', getLocation, true);
+        $timeout(function() {
+                getLocation();
+            },1000
+        );
+//        window.addEventListener('load', getLocation, true);
 
     }).controller('FindShopCtrl', function ($scope, $http, $state, localStorageService) {
 
