@@ -11,7 +11,9 @@
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
     <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
 
+    <script src="/sg/js/services/httpClient.js"></script>
     <script src="/sg/js/controllers/shopController.js"></script>
+
 
 </head>
 <body>
@@ -120,14 +122,69 @@
 
 <script id="templates/search.html" type="text/ng-template">
     <ion-view>
+
         <ion-header-bar class="bar-lightgary" style="text-align: left;height: 29px">
 
         </ion-header-bar>
 
-        <ion-content padding="false"
+        <ion-content padding="true"
                      has-tabs="false"
-                     has-header="false" style="top: 29">
+                     has-header="true" >
+            <div class="shop-product-list">
+                <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list">
+                    #if($itemls && ! $itemls.isEmpty())
+                    #foreach($item in $itemls)
+                    <li class="product-item js-product-item" id="$item.id">
 
+                        <input type="hidden" class="js-product-item-id" value="$item.id"
+                               data-value="$item.id"/>
+
+                        <input type="hidden" class="js-product-category-id" value="$item.category_id"
+                               data-value="$item.category_id"/>
+                        <div class="prod_icon_clickable"></div>
+                        <div class="prod_icon" style='background-image: url("$item.pic_url")' data-imageurl="$item.pic_url">
+                        </div>
+                        <div>
+                            <span class="product-title oneline js-product-item-name"
+                                  data-value="$item.name">$item.name </span>
+                            #set($itempricemain = $item.price/100)
+                            #set($itempriceleft = $item.price%100)
+                            <div class="prod_info">
+                                <div class="product-price js-product-item-price" data-value="$item.price">
+                                    $itempricemain<span>.$itempriceleft</span>
+                                </div>
+                                <div class="product_stepper">
+                                    <div class="product_stepper_minus countChangeAction countChangeActionMinus"
+                                         style="">
+                                        -
+                                    </div>
+                                    <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
+                                        0
+                                    </div>
+                                    <div class="product_stepper_add countChangeAction countChangeActionAdd">
+                                        +
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-popup" style="display: none" data-popup-id="$item.id">
+                            <!--<span class="button b-close"><span>X</span></span>-->
+                            <!--<div class="prod-popup-title">$item.name </div>-->
+                            <div class="prod-popup-icon">
+                                <img class="prod-popup-image" src="" data-imageurl="$item.pic_url">
+                            </div>
+                        </div>
+
+                    </li>
+                    #end
+                    #else
+                    <div class="no-result-display" style="text-align: center">
+                        没有结果
+                    </div>
+                    #end
+                </ul>
+            </div>
 
     </ion-view>
 </script>
