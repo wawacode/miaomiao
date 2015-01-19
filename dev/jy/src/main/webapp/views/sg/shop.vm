@@ -285,13 +285,10 @@
 
                 <div id="shop-product-list" style="padding-bottom: 80px">
                     <ul style="margin: 0.0em; padding:0px 9px">
-                        <li class="product-item js-product-item" ng-repeat="item in itemls">
-
+                        <li class="product-item js-product-item" ng-repeat="item in checkedShoppingCartItems">
                             <div class="prod_icon" back-img="{{item.pic_url}}"></div>
-
                             <div>
                                 <span class="product-title oneline js-product-item-name">{{item.name}}</span>
-
                                 <div class="prod_info">
                                     <div class="product-price js-product-item-price" data-value="$item.price">
                                         <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
@@ -311,7 +308,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </li>
                     </ul>
 

@@ -107,7 +107,7 @@ public class ShopCarController {
             return "@" + Constants.UKERROR;
         }
         List<Address>  addressls = addressDAO.getAddresses(user_id, 0, 20);
-        inv.addModel( "addressls",addressls);
+        inv.addModel("addressls",addressls);
         inv.addModel("shop", shop);
         inv.addModel("itemls", itemls);
         if (!ok) {
