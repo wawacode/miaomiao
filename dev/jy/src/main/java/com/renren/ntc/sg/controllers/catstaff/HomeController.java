@@ -78,10 +78,10 @@ public class HomeController {
         long catstaff_id = catStaffCommitDAO.insert(catStaffCommit);
         System.out.println( "commit " + catstaff_id);
         JSONObject re = createShopService.createShop(catstaff_id);
+        System.out.println("create shop " + re.toJSONString());
         JSONObject jb = new JSONObject();
         jb.put("code", 0);
         jb.put("url", "http://www.mbianli.com/sg/shop?shop_id=" + re.getLong("shop_id"));
-        System.out.println("create shop " + jb.toJSONString());
         return "@" + jb.toJSONString();
     }
 
