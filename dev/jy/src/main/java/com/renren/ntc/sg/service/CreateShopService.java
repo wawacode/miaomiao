@@ -17,7 +17,11 @@ public class CreateShopService {
     @Autowired
     public ShopDAO shopDao;
     @Autowired
+    public CatStaffCommitDAO catstaffCommitDao;
+
+    @Autowired
     public ShopCategoryDAO shopCategoryDao;
+
     @Autowired
     public  RegistUserDAO registUserDAO;
     @Autowired
@@ -90,6 +94,10 @@ public class CreateShopService {
             it.setShop_id(shop_id);
             itemDao.insert(SUtils.generTableName(shop_id),it) ;
         }
+        JSONObject shop_info = new JSONObject();
+        shop_info.put("shop_id",shop_id);
+        shop_info.put("shop_url","http://www.mbianli.com/shop?shop_id="+shop_id);
+        catstaffCommitDao.update(id, shop_id,shop_info.toJSONString());
         // 结束并打印程序
         LoggerUtils.getInstance().log(String.format("mov 3 item " ));
         return jb;

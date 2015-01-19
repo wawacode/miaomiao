@@ -69,11 +69,16 @@ public class HomeController {
             if (resu != null &&  resu.size() > 0){
                 ShopLocation loc_shop = resu.get(0).getShopLocation();
                 LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",loc_shop.getShop_id(),loc_shop.getLatitude(),loc_shop.getLongitude()));
+
+
                 shop_id  =  loc_shop.getShop_id();
+
             }else{
                 LoggerUtils.getInstance().log( String.format("miss loc ,use default shop_id"));
                 return "r:/sg/loading#/findshop";
             }
+
+
         }
         return "r:/sg/shop?shop_id=" + shop_id + "&lat=" + lat + "&lng=" + lng  ;
     }

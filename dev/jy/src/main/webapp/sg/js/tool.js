@@ -190,8 +190,14 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
 
             $http.get('commit', {params: _info}).
                 success(function (data, status, headers, config) {
-                    $scope.newShopURL = data.url;
-                    $scope.newShopStatus = data.code;
+
+                    if(data.code != 0){
+                        $scope.newShopURL = undefined;
+                        $scope.newShopStatus = '创建店铺失败: ' + data.msg;
+                    }else{
+                        $scope.newShopURL = data.url;
+                        $scope.newShopStatus = '创建店铺成功';
+                    }
                     $state.go('newshop');
                 }).
                 error(function (data, status, headers, config) {
