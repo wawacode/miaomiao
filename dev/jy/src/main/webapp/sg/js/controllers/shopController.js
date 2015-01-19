@@ -53,6 +53,8 @@ angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
         $scope.currentDisplayCategory = {};
         $scope.currentDisplayItems = [];
 
+        $scope.shoppingCartTotalCount = 0;
+        $scope.shoppingCartTotalPrice = 0;
         $scope.shoppingCartItems = $scope.shoppingCartItems || [];
 
         $timeout(function(){
@@ -157,6 +159,24 @@ angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
 
         $scope.shoppingCartItems = [];
 
+        function updateShoppingCart(){
+
+            var totalCnt = 0,totalPrice = 0.0;
+            for (var item_idx = 0; item_idx < $scope.shoppingCartItems.length; item_idx++) {
+                totalCnt += parseInt($scope.shoppingCartItems[item_idx].selectedCnt || 0);
+                totalPrice += parseFloat($scope.shoppingCartItems[item_idx].price || 0.0) * parseInt($scope.shoppingCartItems[item_idx].selectedCnt || 0);
+            }
+
+            $scope.shoppingCartTotalCount = totalCnt;
+            $scope.shoppingCartTotalPrice = totalPrice/100.0;
+
+        }
+
+        $scope.cartReadyToShip = function(){
+            updateShoppingCart();
+            return $scope.shoppingCartTotalPrice >= 20.0;
+        }
+
         $scope.selectItem = function(item){
 
             item.selectedCnt += 1;
@@ -172,20 +192,17 @@ angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
         $scope.removeItem = function(item, removeUIElementWhenEmtpy){
 
             item.selectedCnt -= 1;
-            item.selectedCnt = item.selectedCnt >= 0 ? item.selectedCnt : 0;
+            if(item.selectedCnt <= 0){
+                item.selectedCnt = 0;
+                var index = $scope.shoppingCartItems.indexOf(item);
+                if (index > -1) {
+                    $scope.shoppingCartItems.splice(index, 1);
+                }
+            }
 
             $scope.currentDisplayCategory.totalCnt -= 1 ;
-            $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ?
-                $scope.currentDisplayCategory.totalCnt : 0;
+            $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ?$scope.currentDisplayCategory.totalCnt : 0;
 
-            var index = $scope.shoppingCartItems.indexOf(item);
-            if (index > -1) {
-                $scope.shoppingCartItems.splice(index, 1);
-            }
-
-            if(removeUIElementWhenEmtpy){
-
-            }
         }
 
     })

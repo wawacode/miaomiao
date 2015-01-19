@@ -20,12 +20,45 @@
 
 <ion-nav-view></ion-nav-view>
 
+<script id="productdetail.html" type="text/ng-template">
+    <div class="prod_icon_clickable"></div>
+    <div class="prod_icon" back-img="{{item.pic_url}}" ></div>
+    <div>
+        <span class="product-title oneline js-product-item-name">{{item.name}}</span>
+        <div class="prod_info">
+            <div class="product-price js-product-item-price" data-value="$item.price">
+                <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
+            </div>
+            <div class="product_stepper">
+                <div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)">
+                    -
+                </div>
+                <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
+                    {{item.selectedCnt}}
+                </div>
+                <div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">
+                    +
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
 <script id="templates/productlist.html" type="text/ng-template">
     <ion-view>
 
         <input type="hidden" value="$shop.id" name="shop_id" ng-model="shopId"  ng-init="shopId='$shop.id'">
 
         <ion-header-bar class="bar-dark" style="text-align: left;">
+
+            <div class="buttons">
+                <button class="button button-outline button-icon ion-ios7-person" ng-click=""></button>
+            </div>
+            <h1 class="title">{{shop.name}}</h1>
+            <div class="buttons">
+                <button class="button button-outline button-icon ion-ios7-search assertive"></button>
+            </div>
+
             <!--<button class="button button-icon base-icon-user button-positive" ng-click="">-->
                 <!--我的-->
             <!--</button>-->
@@ -69,31 +102,28 @@
 
                         <div class="shop-product-list">
                             <ul class="shop-product-categray-list js-shop-product-categray-list list">
-
-                                <li ng-repeat="item in currentDisplayItems" class="product-item js-product-item">
-
-                                    <div class="prod_icon_clickable"></div>
-                                    <div class="prod_icon" back-img="{{item.pic_url}}" ></div>
-                                    <div>
-
-                                    <span class="product-title oneline js-product-item-name">{{item.name}}</span>
-                                        <div class="prod_info">
-                                            <div class="product-price js-product-item-price" data-value="$item.price">
-                                                <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
-                                            </div>
-                                            <div class="product_stepper">
-                                                <div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)">
-                                                    -
-                                                </div>
-                                                <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
-                                                    {{item.selectedCnt}}
-                                                </div>
-                                                <div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">
-                                                    +
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <li ng-repeat="item in currentDisplayItems" class="product-item js-product-item" ng-include="productdetail.html">
+                                    <!--<div class="prod_icon_clickable"></div>-->
+                                    <!--<div class="prod_icon" back-img="{{item.pic_url}}" ></div>-->
+                                    <!--<div>-->
+                                        <!--<span class="product-title oneline js-product-item-name">{{item.name}}</span>-->
+                                        <!--<div class="prod_info">-->
+                                            <!--<div class="product-price js-product-item-price" data-value="$item.price">-->
+                                                <!--<span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="product_stepper">-->
+                                                <!--<div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)">-->
+                                                    <!----->
+                                                <!--</div>-->
+                                                <!--<div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">-->
+                                                    <!--{{item.selectedCnt}}-->
+                                                <!--</div>-->
+                                                <!--<div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">-->
+                                                    <!--+-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                 </li>
                             </ul>
                             <ion-infinite-scroll
@@ -111,7 +141,7 @@
                 <span><img src="/images/cart-64.png" class="base-icon-shopping-cart"></span>
             </div>
             <div class="footer-container-right base-cart-prepare js-cart-checkout" style="">
-                <button class="sidebar-cart-checkout js-cart-checkout" ng-class="">
+                <button class="sidebar-cart-checkout js-cart-checkout" ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip() }">
                     <span class=" base-font js-checkout-hit">去结算</span>
                         <span class="base-font"><br>
                             总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>

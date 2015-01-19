@@ -455,7 +455,18 @@ body {
     color: white;
     border: none;
     height: 100%;
+    padding: 5px 0 0;
+    border-radius: 0;
+    text-shadow: none;
+}
 
+.sidebar-cart-checkout-ready {
+    background-color: #F54447;
+    width: 100%;
+    margin: 0em;
+    color: white;
+    border: none;
+    height: 100%;
     padding: 5px 0 0;
     border-radius: 0;
     text-shadow: none;
@@ -463,7 +474,7 @@ body {
 
 .shop-product-list {
     background-color: #ffffff;
-    padding-bottom: 10px;
+    padding-bottom: 44px;
 }
 
 .shop-product-categray-list {
