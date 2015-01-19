@@ -13,6 +13,7 @@ import com.renren.ntc.sg.geo.ShopLocation;
 import com.renren.ntc.sg.service.GeoService;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -77,11 +78,10 @@ public class HomeController {
                     LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
                     shop_id  = shopLoc.getShop_id();
                     Shop shop = shopDAO.getShop(shop_id);
-                    if(online(now, shop){
-
+                    if(SUtils.online(now, shop)){
+                         shop_id = shop.getId();
+                         break;
                     }
-
-
                 }
             }else{
                 LoggerUtils.getInstance().log( String.format("miss loc ,use default shop_id"));
