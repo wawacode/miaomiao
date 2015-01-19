@@ -44,7 +44,7 @@
                     -
                 </div>
                 <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
-                    {{item.selectedCnt}}
+                    {{item.count}}
                 </div>
                 <div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">
                     +
@@ -64,7 +64,7 @@
             <div class="buttons">
                 <button class="button button-outline button-icon ion-ios7-person" ng-click=""></button>
             </div>
-            <h1 class="title">{{shop.name}}</h1>
+            <h1 class="title">$shop.name</h1>
 
             <div class="buttons">
                 <button class="button button-outline button-icon ion-ios7-search assertive"></button>
@@ -130,7 +130,7 @@
                                                     -
                                                 </div>
                                                 <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
-                                                    {{item.selectedCnt}}
+                                                    {{item.count}}
                                                 </div>
                                                 <div class="product_stepper_add countChangeAction countChangeActionAdd"
                                                      ng-click="selectItem(item)">
@@ -242,9 +242,6 @@
 
 <script id="templates/checkout.html" type="text/ng-template">
     <ion-view>
-        <ion-header-bar class="bar-lightgary" style="text-align: left;height: 29px">
-
-        </ion-header-bar>
 
         <ion-content padding="true"
                      has-tabs="false"
@@ -270,7 +267,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="js-addAddress firstTimeAddAddress"
                      style="border-bottom: solid 1px lightgray;overflow: hidden" ng-if="addressls && !addressls.length">
@@ -289,6 +285,9 @@
                             <div class="prod_icon" back-img="{{item.pic_url}}"></div>
                             <div>
                                 <span class="product-title oneline js-product-item-name">{{item.name}}</span>
+                                <span class="product-title oneline assertive"
+                                      ng-if="item.count > item.ext">商品库存不足</span>
+
                                 <div class="prod_info">
                                     <div class="product-price js-product-item-price" data-value="$item.price">
                                         <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
@@ -299,7 +298,7 @@
                                             -
                                         </div>
                                         <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
-                                            {{item.selectedCnt}}
+                                            {{item.count}}
                                         </div>
                                         <div class="product_stepper_add countChangeAction countChangeActionAdd"
                                              ng-click="selectItem(item)">
@@ -327,6 +326,20 @@
             </div>
             </div>
 
+            <ion-footer-bar class="bar-light" style="padding:0;overflow: hidden">
+
+                <div style="text-align: center;height: 100%; width: 100%; padding: 0em;">
+                    <button class="sidebar-cart-checkout js-cart-checkout"
+                            ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip() }" ng-click="confirmCheckout()">
+                        <span class="base-font js-checkout-hit">货到付款</span>
+                        <span class="base-font"><br>
+                            总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>
+                        <span class="base-font rmbSpan">￥</span><span id="js-shop-total-price"
+                                                                      class="js-shop-total-price base-font">{{shoppingCartItems | getTotolPrice}}</span>
+                    </button>
+                </div>
+
+            </ion-footer-bar>
 
     </ion-view>
 </script>
@@ -339,7 +352,7 @@
 
         <ion-content padding="false"
                      has-tabs="false"
-                     has-header="false" >
+                     has-header="false">
 
             <div class="" style="overflow: hidden;">
                 <div class="">
@@ -436,8 +449,9 @@
 
         <ion-content padding="false"
                      has-tabs="false"
-                     has-header="false" style="top: 29">
+                     has-header="false">
 
+            <div>订单成功，将为您跳转</div>
 
     </ion-view>
 </script>
@@ -450,7 +464,7 @@
 
         <ion-content padding="false"
                      has-tabs="false"
-                     has-header="false" style="top: 29">
+                     has-header="false" >
 
 
     </ion-view>

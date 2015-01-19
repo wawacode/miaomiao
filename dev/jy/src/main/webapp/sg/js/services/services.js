@@ -50,8 +50,12 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
             doGet('address', 'shop_id=' + shopId, success, fail);
         },
         getConfirmCartList: function (shopId, items, success, fail) {
-            doPost('shopCar/confirm?shop_id=1', {'items': JSON.stringify(items)}, success, fail);
+            doPost('shopCar/confirm?shop_id=' + shopId, {'items': JSON.stringify(items)}, success, fail);
+        },
+        getOrderSave: function (shopId, items, success, fail) {
+            doPost('order/save?shop_id=' + shopId, {'items': JSON.stringify(items)}, success, fail);
         }
+
     };
 }]);
 

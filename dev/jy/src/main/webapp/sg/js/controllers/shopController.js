@@ -42,7 +42,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
                         $scope.categoryls[idx].selected = 1;
                     }
                     for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                        $scope.categoryls[idx].itemls[item_idx].selectedCnt = 0;
+                        $scope.categoryls[idx].itemls[item_idx].count = 0;
                     }
                 }
 
@@ -97,7 +97,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
                 }
 
                 for (var item_idx = 0; item_idx < dataDetail.items.length; item_idx++) {
-                    dataDetail.items[item_idx].selectedCnt = 0;
+                    dataDetail.items[item_idx].count = 0;
                 }
                 $scope.currentDisplayItems =  $scope.currentDisplayItems.concat(dataDetail.items);
 
@@ -117,8 +117,8 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
 
             var totalCnt = 0,totalPrice = 0.0;
             for (var item_idx = 0; item_idx < $scope.shoppingCartItems.length; item_idx++) {
-                totalCnt += parseInt($scope.shoppingCartItems[item_idx].selectedCnt || 0);
-                totalPrice += parseFloat($scope.shoppingCartItems[item_idx].price || 0.0) * parseInt($scope.shoppingCartItems[item_idx].selectedCnt || 0);
+                totalCnt += parseInt($scope.shoppingCartItems[item_idx].count || 0);
+                totalPrice += parseFloat($scope.shoppingCartItems[item_idx].price || 0.0) * parseInt($scope.shoppingCartItems[item_idx].count || 0);
             }
 
             $scope.shoppingCartTotalCount = totalCnt;
@@ -133,7 +133,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
 
         $scope.selectItem = function(item){
 
-            item.selectedCnt += 1;
+            item.count += 1;
             $scope.currentDisplayCategory.totalCnt += 1 ;
 
             var index = $scope.shoppingCartItems.indexOf(item);
@@ -145,9 +145,9 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
 
         $scope.removeItem = function(item, removeUIElementWhenEmtpy){
 
-            item.selectedCnt -= 1;
-            if(item.selectedCnt <= 0){
-                item.selectedCnt = 0;
+            item.count -= 1;
+            if(item.count <= 0){
+                item.count = 0;
                 var index = $scope.shoppingCartItems.indexOf(item);
                 if (index > -1) {
                     $scope.shoppingCartItems.splice(index, 1);

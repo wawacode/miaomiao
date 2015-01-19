@@ -76,7 +76,7 @@ miaomiao.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'templates/addaddress.html',
                 controller: 'AddAddressCtrl'
             })
-            .state('orderSucess', {
+            .state('orderSuccess', {
                 url: '/ordersuccess',
                 templateUrl: 'templates/ordersuccess.html',
                 controller: 'OrderSuccessCtrl'

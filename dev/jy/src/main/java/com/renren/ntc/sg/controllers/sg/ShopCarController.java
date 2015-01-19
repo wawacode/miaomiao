@@ -76,7 +76,7 @@ public class ShopCarController {
         for (int i = 0; i < jbarr.size(); i++) {
 
             JSONObject jb = (JSONObject) jbarr.get(i);
-              long item_id = jb.getLong("item_id");
+              long item_id = jb.getLong("id");
               int count = jb.getIntValue("count");
 
             Item item = itemsDAO.getItem(SUtils.generTableName(shop_id),shop_id, item_id);
