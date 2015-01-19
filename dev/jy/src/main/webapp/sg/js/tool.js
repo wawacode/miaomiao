@@ -37,7 +37,8 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
             })
             .state('newshop', {
                 url: '/newshop',
-                templateUrl: 'templates/newshop.html'
+                templateUrl: 'templates/newshop.html',
+                controller: 'NewShopCtrl'
             });
 
 
@@ -198,6 +199,8 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                         $scope.newShopURL = data.url;
                         $scope.newShopStatus = '创建店铺成功';
                     }
+                    localStorageService.set('shopInfo', {'url': $scope.newShopURL, 'status':$scope.newShopStatus});
+
                     $state.go('newshop');
                 }).
                 error(function (data, status, headers, config) {
@@ -213,5 +216,13 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
         $scope.doRefresh = function(){
 
         }
+    }).controller('NewShopCtrl', function ($scope, $ionicLoading, $compile, $http, $state, localStorageService) {
+
+        $scope.shopInfo = localStorageService.get('shopInfo') || {};
+
+        $scope.newShopURL =  $scope.shopInfo.url;
+        $scope.newShopStatus =  $scope.shopInfo.status;
+
+
     });
 
