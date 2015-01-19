@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.sg;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
@@ -103,17 +104,24 @@ public class ShopCarController {
         }catch(Exception e){
             e.printStackTrace();
             inv.addModel("msg", "服务器累了,请稍候再试");
-            return "order_confirm";
+            return "@" + Constants.UKERROR;
         }
         List<Address>  addressls = addressDAO.getAddresses(user_id, 0, 20);
-
         inv.addModel( "addressls",addressls);
         inv.addModel("shop", shop);
         inv.addModel("itemls", itemls);
         if (!ok) {
           inv.addModel("msg", "部分商品库存不足");
+          return "@" + Constants.LEAKERROR;
         }
-        return "order_confirm";
+
+        JSONObject  j=  new JSONObject() ;
+        j.put("addressls", JSON.toJSON(addressls));
+        j.put("shop", JSON.toJSON(shop));
+        JSONObject respone =  new JSONObject();
+        respone.put("code" ,0);
+        respone.put("data" ,j);
+        return "@" + respone.toJSONString();
     }
 }
 

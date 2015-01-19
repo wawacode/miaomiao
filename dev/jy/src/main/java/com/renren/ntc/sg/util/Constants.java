@@ -28,11 +28,13 @@ public class Constants {
     public static final String HOST = "www.mbianli.com" ;
 
     public static  final String PARATERERROR = "{\"code\":1,\"msg\":\"paramter error\"}";
+    public static  final String LEAKERROR = "{\"code\":100,\"msg\":\"库存不足\"}";
+    public static  final String UKERROR = "{\"code\":500,\"msg\":\"服务器异常\"}";
     public static  final String DONE = "{\"code\":0,\"msg\":\"done\"}";
 
     public static  final String ALLREADYNEW = "{\"code\":0,\"msg\":\"allready new version\"}";
     public static final long DEFAULT_SHOP = 1 ;
-//    public static final String DOMAIN = "miaomiao.com" ;
+//    public static final String DOMAIN = "miaomiao.com" ;UK
     public static final String DOMAIN = "127.0.0.1" ;
     public static final String DOMAIN2 = "123.57.38.234" ;
     public static final String DOMAIN3 = "mbianli.com" ;
