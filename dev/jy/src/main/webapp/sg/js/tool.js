@@ -189,9 +189,13 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
 
             localStorageService.set('info', $scope.info);
 
+            $ionicLoading.show({
+                template: '正在提交...'
+            });
+
             $http.get('commit', {params: _info}).
                 success(function (data, status, headers, config) {
-
+                    $ionicLoading.hide();
                     if(data.code != 0){
                         $scope.newShopURL = undefined;
                         $scope.newShopStatus = '创建店铺失败: ' + data.msg;
@@ -204,6 +208,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                     $state.go('newshop');
                 }).
                 error(function (data, status, headers, config) {
+                    $ionicLoading.hide();
                     $scope.newShopURL = undefined;
                     $scope.newShopStatus = '创建店铺失败: ' + data;
                     $state.go('newshop');
