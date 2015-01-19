@@ -50,8 +50,14 @@ public class ShopController {
         }
         //获取 热门分类
         List<Item> itemls = itemsDAO.hot(SUtils.generTableName(shop_id),shop_id,0,10);
-        inv.addModel("items", itemls);
-        return "hot";
+        JSONObject jb =  new JSONObject() ;
+        JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
+        JSONObject data =  new JSONObject() ;
+        data.put("shop",shopob);
+        data.put("items", itemls);
+        jb.put("data",data);
+        jb.put("code",0);
+        return "@" + jb.toJSONString();
     }
 
     @Get("shopList")
@@ -74,8 +80,12 @@ public class ShopController {
             JSONObject it = (JSONObject) JSONObject.toJSON(s);
             jarr.add(it);
         }
+
+        JSONObject data =  new JSONObject() ;
+        data.put("shop",jarr);
+
+        jb.put("data",data);
         jb.put("code",0);
-        jb.put("data",jarr);
         return "@" + jb.toJSONString() ;
     }
 
@@ -182,8 +192,13 @@ public class ShopController {
             it.put("shop_id" ,i.getShop_id()) ;
             jarr.add(it);
         }
+        JSONObject data =  new JSONObject() ;
+        JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
+
+        data.put("shop",shopob);
+        data.put("items", jarr) ;
         jb.put("code",0);
-        jb.put("data",jarr);
+        jb.put("data",data);
         return "@" + jb.toJSONString() ;
     }
 
