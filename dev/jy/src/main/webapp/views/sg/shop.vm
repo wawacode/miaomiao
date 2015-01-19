@@ -11,8 +11,13 @@
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
     <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
 
-    <script src="/sg/js/services/httpClient.js"></script>
-    <script src="/sg/js/controllers/shopController.js"></script>
+
+    <script src="/sg/js/services/router.js"></script>
+    <script src="/sg/js/services/directives.js"></script>
+    <script src="/sg/js/services/filters.js"></script>
+    <script src="/sg/js/services/services.js"></script>
+    <script src="/sg/js/controllers/ShopController.js"></script>
+    <script src="/sg/js/controllers/CheckoutController.js"></script>
 
 
 </head>
@@ -102,28 +107,28 @@
 
                         <div class="shop-product-list">
                             <ul class="shop-product-categray-list js-shop-product-categray-list list">
-                                <li ng-repeat="item in currentDisplayItems" class="product-item js-product-item" ng-include="productdetail.html">
-                                    <!--<div class="prod_icon_clickable"></div>-->
-                                    <!--<div class="prod_icon" back-img="{{item.pic_url}}" ></div>-->
-                                    <!--<div>-->
-                                        <!--<span class="product-title oneline js-product-item-name">{{item.name}}</span>-->
-                                        <!--<div class="prod_info">-->
-                                            <!--<div class="product-price js-product-item-price" data-value="$item.price">-->
-                                                <!--<span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>-->
-                                            <!--</div>-->
-                                            <!--<div class="product_stepper">-->
-                                                <!--<div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)">-->
-                                                    <!----->
-                                                <!--</div>-->
-                                                <!--<div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">-->
-                                                    <!--{{item.selectedCnt}}-->
-                                                <!--</div>-->
-                                                <!--<div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">-->
-                                                    <!--+-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
+                                <li ng-repeat="item in currentDisplayItems" class="product-item js-product-item">
+                                    <div class="prod_icon_clickable"></div>
+                                    <div class="prod_icon" back-img="{{item.pic_url}}" ></div>
+                                    <div>
+                                        <span class="product-title oneline js-product-item-name">{{item.name}}</span>
+                                        <div class="prod_info">
+                                            <div class="product-price js-product-item-price" data-value="$item.price">
+                                                <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
+                                            </div>
+                                            <div class="product_stepper">
+                                                <div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)">
+                                                    -
+                                                </div>
+                                                <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
+                                                    {{item.selectedCnt}}
+                                                </div>
+                                                <div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">
+                                                    +
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </li>
                             </ul>
                             <ion-infinite-scroll
@@ -141,7 +146,7 @@
                 <span><img src="/images/cart-64.png" class="base-icon-shopping-cart"></span>
             </div>
             <div class="footer-container-right base-cart-prepare js-cart-checkout" style="">
-                <button class="sidebar-cart-checkout js-cart-checkout" ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip() }">
+                <button class="sidebar-cart-checkout js-cart-checkout" ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip() }" ng-click="checkout()">
                     <span class=" base-font js-checkout-hit">去结算</span>
                         <span class="base-font"><br>
                             总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>
@@ -229,9 +234,107 @@
 
         </ion-header-bar>
 
-        <ion-content padding="false"
+        <ion-content padding="true"
                      has-tabs="false"
-                     has-header="false" style="top: 29">
+                     has-header="true">
+
+            <div class="mainContainer scroll">
+                <div class="" style="overflow: hidden" ng-if="addressls && addressls.length">
+                    <div class="addressItem addressDefault addressSelected">
+                        <div class="addressAndBadge" style="">
+                            <div class="addressItem-address addressDefault-address"
+                                 data-default-address="$DEFAULT_ADDR.getAddress()"><span
+                                    class="addressTitle">收货地址:</span>
+                                {{addressls[0].address}}
+                            </div>
+                            <div class="addressItem-phone addressDefault-phone"
+                                 data-default-phone="$DEFAULT_ADDR.getPhone()"><span
+                                    class="addressTitle">联系电话:</span> {{addressls[0].phone}}
+                            </div>
+                        </div>
+                        <div class="addressItem-bage" ng-click="goToAddressList()">
+                            <div class="swithDefaultAddress">
+                                <span><img src="/images/forward-64.png" class="base-icon-forword"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="js-addAddress firstTimeAddAddress" style="border-bottom: solid 1px lightgray;overflow: hidden" ng-if="addressls && !addressls.length">
+                    <div class="addNewAddressHint" style="text-shadow:none">
+                        您还没有添加收货人信息,请添加
+                    </div>
+                    <div style="padding: 15px 9px;">
+                        <input id="newOrderAddress" type="text" placeholder="收货地址:" value="">
+                        <input id="newOrderPhone" type="number" placeholder="联系电话:" value="">
+                    </div>
+                </div>
+
+                <div id="shop-product-list" style="padding-bottom: 80px">
+                    <ul style="margin: 0.0em; padding:0px 9px">
+                        #foreach($item in $itemls)
+                        <li class="product-item js-product-item" id="$item.id">
+
+                            <input type="hidden" class="js-product-item-id" value="$item.id"
+                                   data-value="$item.id"/>
+
+                            <input type="hidden" class="js-product-category-id" value="$item.category_id"
+                                   data-value="$item.category_id"/>
+
+                            <div class="prod_icon" style='background-image: url("$item.pic_url")'>
+                            </div>
+
+                            <div>
+                                #if($msg)
+                                <strong>$msg</strong>
+                                #end
+
+                                        <span class="product-title oneline js-product-item-name"
+                                              data-value="$item.name">$item.name </span>
+
+                                #set($itempricemain = $item.price/100)
+                                #set($itempriceleft = $item.price%100)
+                                <div class="prod_info">
+
+                                    <div class="product-price js-product-item-price" data-value="$item.price">
+                                        $itempricemain<span>.$itempriceleft</span>
+                                    </div>
+
+                                    <div class="product_stepper">
+
+                                        <div class="product_stepper_minus countChangeAction countChangeActionMinus"
+                                             style="">
+                                            -
+                                        </div>
+                                        <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
+                                            $item.count
+                                        </div>
+                                        <div class="product_stepper_add countChangeAction countChangeActionAdd">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        #end
+                    </ul>
+
+                    <ul class="no-item-hint hidden" style="padding:0px 9px;text-align: center;">
+                        <div style="font-size: 14px;padding-top: 50px;padding-bottom: 50px;">
+                            <a href="javascript:;"> 点击返回,重新下单 </a>
+                        </div>
+                    </ul>
+
+                    <ul class="remarks" style="margin-top: 1.0em; padding:0px 9px;">
+                        <li style="padding: 0px 0px;display:block;">
+                            <input id="orderRemarks" type="text" placeholder="给卖家留言"
+                                   style="background-color: lightgray;text-shadow: none;font-size: 14px;">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+
 
 
     </ion-view>
