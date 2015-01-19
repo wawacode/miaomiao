@@ -40,6 +40,10 @@ function makeGo(path){
     document.location.replace(path);
 }
 
+function makeHerf(path){
+    document.location.url = path;
+}
+
 
 function addSpinner(){
     $('<div class="overlay" id="commonSpinner"><div class="spinner"><i class="fa fa-spinner fa-spin fa-2x"></i></div></div>').appendTo(document.body);

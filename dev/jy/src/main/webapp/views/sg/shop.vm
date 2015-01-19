@@ -30,23 +30,36 @@
         <!--<a href="shop?shop_id=$shop.id" data-ajax="false"><i class="fa fa-2x fa-home"-->
                                                              <!--style="color: #808080;padding-top: 5px;"></i></a>-->
     <!--</div>-->
-    <div style="display: inline-block;float: left;width: 90%;text-align: center">
-        <form id="searchForm" action="search/qvm?shop_id=$shop.id" method="get" data-ajax="false">
-            <input type="hidden" value="$shop.id" name="shop_id">
 
-            <div class="searchBar">
-                <input type="search" name="key" class="searchBar-input" value="" placeholder="搜索商品..." results="100"/>
-            </div>
-        </form>
-    </div>
-    <div style="display: inline-block;float: right;text-align: center;width: 10%">
+    <div style="display: inline-block;float: left;text-align: center;width: 15%">
         <a href="user/profile?shop_id=$shop.id" data-ajax="false">
             <span>
                 <img src="/images/user-64.png" class="base-icon-user">
             </span>
-            <!--<i class="fa fa-2x fa-user" style="color: #808080;padding-top: 5px;"></i>-->
         </a>
     </div>
+
+    <div style="display: inline-block;float: left;width: 70%;text-align: center;">
+
+        <div class="switch-shop js-switch-shop">
+
+            <a href="loading#/findshop" data-ajax="false" style="cursor:pointer;
+            text-decoration:none; color:#000000;font-size: 20px;font-weight: normal">
+                $shop.name<i class="fa fa-angle-down" style="padding-left: 5px"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+    <div style="display: inline-block;float: left;text-align: center;width: 15%">
+        <a href="search/qvm?shop_id=$shop.id" data-ajax="false">
+            <span>
+                <img src="/images/search-128.png" class="base-icon-user">
+            </span>
+        </a>
+    </div>
+
 </div>
 
 <div class="search-overlay hidden">

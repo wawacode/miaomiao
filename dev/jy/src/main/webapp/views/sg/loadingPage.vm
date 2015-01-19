@@ -51,7 +51,7 @@
                 <!--&lt;!&ndash;<i class="ion-arrow-left-c"></i>&ndash;&gt;-->
             <!--</ion-nav-back-button>-->
             <div style="font-size: 12px;margin: auto 10px; text-align: left">
-                定位失败，您可以从下面选择或搜索你所在的小区
+                您可以从下面选择或搜索你所在的小区
             </div>
             <!--<ion-nav-buttons side="primary">-->
             <!--<button class="button button-clear button-positive" ng-click="relocation()">重新定位</button>-->
@@ -83,17 +83,35 @@
                 </div>
                 <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
                      ng-click="goToShop(item)">
-                    <div style="font-size: 14px">{{item.name}}</div>
+                    <div style="font-size: 14px">{{item.name}}
+                    </div>
+                    <p style="font-size: 12px">
+                        <i class="icon ion-ios7-location" style="font-size: 12px"></i> {{item.shop_address}}
+                    </p>
                 </div>
             </div>
 
-            <div class="list" ng-show="showShopHistory">
+            <div class="list" ng-if="showShopHistory" style="margin-bottom: 5px">
 
                 <div class="item-hint" ng-show="shop_history.length">
                     历史位置
                 </div>
                 <div class="item-shop-history" ng-repeat="item in shop_history" ng-click="goToShop(item)" style="">
                     {{item.name}}
+                </div>
+            </div>
+
+            <div class="list" ng-show="showShopHot">
+                <div class="item-hint">
+                    热门店铺
+                </div>
+                <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
+                     ng-click="goToShop(item)">
+
+                    <div style="font-size: 14px">{{item.name}}</div>
+                    <div style="font-size: 10px">
+                        <i class="icon ion-ios7-location" style="font-size: 12px"></i> &nbsp;{{item.shop_address}}
+                    </div>
                 </div>
             </div>
 
