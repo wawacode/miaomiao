@@ -41,7 +41,7 @@ public class CreateShopService {
     public JSONObject createShop(long id ) {
 
         CatStaffCommit  catStaffCommit  = catStaffCommitDAO.getCatStaffCommit(id);
-        String admin_phone = catStaffCommit.getShop_owner_phone();
+        String onwer_phone = catStaffCommit.getShop_owner_phone();
         String admin_tel = catStaffCommit.getShop_tel();
         String admin_pwd = catStaffCommit.getShop_tel();
         String shop_address = catStaffCommit.getShop_address();
@@ -67,7 +67,7 @@ public class CreateShopService {
         shop.setName(shop_name);
         shop.setLat(lat);
         shop.setLng(lng);
-        shop.setOwner_phone(admin_tel);
+        shop.setOwner_phone(onwer_phone);
         shop.setTel(admin_tel);
         shop.setShop_address(shop_address);
         shop.setOwner_user_id(admin_id);
