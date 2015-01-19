@@ -49,7 +49,7 @@ public class SUtils {
         int close_t = close_hours * 60 + close_minutes;
         System.out.println(" close_t " + close_t);
         if (close_t < open_t) {
-            if (t > open_t && t <= 24 * 60) {
+            if (t > open_t && t <= (24 * 60)) {
                 return true;
             }
             if (t < close_t && t >= 0) {
