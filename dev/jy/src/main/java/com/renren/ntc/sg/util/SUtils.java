@@ -37,15 +37,15 @@ public class SUtils {
 
         Calendar calendar_o = Calendar.getInstance();
         calendar_o.setTime(open_time);
-        int open_hours = calendar.get(Calendar.HOUR_OF_DAY);
-        int open_minutes = calendar.get(Calendar.MINUTE);
+        int open_hours = calendar_o.get(Calendar.HOUR_OF_DAY);
+        int open_minutes = calendar_o.get(Calendar.MINUTE);
         int open_t = open_hours * 60 + open_minutes;
         System.out.println(" open_time " + open_t);
 
         Calendar calendar_c = Calendar.getInstance();
-        calendar_c.setTime(open_time);
-        int close_hours = calendar.get(Calendar.HOUR_OF_DAY);
-        int close_minutes = calendar.get(Calendar.MINUTE);
+        calendar_c.setTime(close_time);
+        int close_hours = calendar_c.get(Calendar.HOUR_OF_DAY);
+        int close_minutes = calendar_c.get(Calendar.MINUTE);
         int close_t = close_hours * 60 + close_minutes;
         System.out.println(" close_t " + close_t);
         if (close_t < open_t) {
