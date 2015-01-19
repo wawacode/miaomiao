@@ -1,50 +1,5 @@
 angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
-    .config(function ($stateProvider, $urlRouterProvider) {
-
-        $stateProvider
-
-            .state('productList', {
-                url: '/productlist',
-                templateUrl: 'templates/productlist.html',
-                controller: 'ProductCtrl'
-
-            })
-            .state('search', {
-                url: '/search',
-                templateUrl: 'templates/search.html',
-                controller: 'ProductCtrl'
-
-            })
-            .state('checkout', {
-                url: '/checkout',
-                templateUrl: 'templates/checkout.html',
-                controller: 'CheckoutCtrl'
-            })
-            .state('addressList', {
-                url: '/addresslist',
-                templateUrl: 'templates/addresslist.html',
-                controller: 'AddressListCtrl'
-            })
-            .state('addAddress', {
-                url: '/addaddress',
-                templateUrl: 'templates/addaddress.html',
-                controller: 'AddAddressCtrl'
-            })
-            .state('orderSucess', {
-                url: '/ordersuccess',
-                templateUrl: 'templates/ordersuccess.html',
-                controller: 'OrderSuccessCtrl'
-            })
-            .state('myOrders', {
-                url: '/myorders',
-                templateUrl: 'templates/myorders.html',
-                controller: 'MyOrdersCtrl'
-            });
-
-
-        $urlRouterProvider.otherwise('/productlist');
-
-    }).controller('ProductCtrl', function ($scope, $ionicLoading, $ionicPopup, $http, $state, $timeout,localStorageService, httpClient) {
+    .controller('ProductCtrl', function ($scope, $ionicLoading, $ionicPopup, $http, $state, $timeout,localStorageService, httpClient) {
 
         $ionicLoading.show({
             template: 'Loading...'
@@ -53,6 +8,8 @@ angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
         $scope.currentDisplayCategory = {};
         $scope.currentDisplayItems = [];
 
+        $scope.shoppingCartTotalCount = 0;
+        $scope.shoppingCartTotalPrice = 0;
         $scope.shoppingCartItems = $scope.shoppingCartItems || [];
 
         $timeout(function(){
@@ -157,6 +114,24 @@ angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
 
         $scope.shoppingCartItems = [];
 
+        function updateShoppingCart(){
+
+            var totalCnt = 0,totalPrice = 0.0;
+            for (var item_idx = 0; item_idx < $scope.shoppingCartItems.length; item_idx++) {
+                totalCnt += parseInt($scope.shoppingCartItems[item_idx].selectedCnt || 0);
+                totalPrice += parseFloat($scope.shoppingCartItems[item_idx].price || 0.0) * parseInt($scope.shoppingCartItems[item_idx].selectedCnt || 0);
+            }
+
+            $scope.shoppingCartTotalCount = totalCnt;
+            $scope.shoppingCartTotalPrice = totalPrice/100.0;
+
+        }
+
+        $scope.cartReadyToShip = function(){
+            updateShoppingCart();
+            return $scope.shoppingCartTotalPrice >= 20.0;
+        }
+
         $scope.selectItem = function(item){
 
             item.selectedCnt += 1;
@@ -172,90 +147,27 @@ angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
         $scope.removeItem = function(item, removeUIElementWhenEmtpy){
 
             item.selectedCnt -= 1;
-            item.selectedCnt = item.selectedCnt >= 0 ? item.selectedCnt : 0;
+            if(item.selectedCnt <= 0){
+                item.selectedCnt = 0;
+                var index = $scope.shoppingCartItems.indexOf(item);
+                if (index > -1) {
+                    $scope.shoppingCartItems.splice(index, 1);
+                }
+            }
 
             $scope.currentDisplayCategory.totalCnt -= 1 ;
-            $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ?
-                $scope.currentDisplayCategory.totalCnt : 0;
+            $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ?$scope.currentDisplayCategory.totalCnt : 0;
 
-            var index = $scope.shoppingCartItems.indexOf(item);
-            if (index > -1) {
-                $scope.shoppingCartItems.splice(index, 1);
-            }
-
-            if(removeUIElementWhenEmtpy){
-
-            }
         }
 
-    })
-    .controller('CheckoutCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService) {
+        $scope.checkout = function(){
 
-    })
-    .controller('AddressListCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService) {
+            localStorageService.set('shoppingCart',$scope.shoppingCartItems);
+            localStorageService.set('shop',$scope.shop);
 
-    })
-    .controller('AddAddressCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService) {
+            $state.go('checkout');
 
-    })
-    .controller('OrderSuccessCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService) {
-
-    })
-    .controller('MyOrdersCtrl',function ($scope, $ionicLoading, $http, $state, localStorageService) {
-
-    }).directive('backImg',function () {
-        return function (scope, element, attrs) {
-            var url = attrs.backImg;
-            element.css({
-                'background-image': 'url(' + url + ')',
-                'background-size': 'cover'
-            });
-        };
-    }).factory('httpClient', ['$http', function ($http) {
-
-        var doRequest = function (path, params, success, fail) {
-            $http({
-                method: 'GET',
-                url: path + '?' + params
-            }).
-                success(function (data, status, headers, config) {
-                    success(data, status, headers, config)
-                }).
-                error(function (data, status, headers, config) {
-                    fail(data, status, headers, config)
-                });
-            ;
         }
-        return {
-            getProductList: function (shopId, success, fail) {
-                doRequest('shop/category/get', 'shop_id=' + shopId, success, fail);
-            },
-            getMoreProductList: function (shopId, cateId,from,offset, success, fail) {
 
-                doRequest('shop/getitems', "shop_id=" + shopId +
-                "&category_id=" + cateId + "&from=" + from +
-                    "&offset=" + offset, success, fail);
-            }
-        };
-    }]).filter('getTotolCount', function() {
-        return function(input) {
-            input = input || [];
-
-            var total = 0;
-            for (var item_idx = 0; item_idx < input.length; item_idx++) {
-                total += parseInt(input[item_idx].selectedCnt || 0);
-            }
-            return total;
-        };
-    }).filter('getTotolPrice', function() {
-        return function(input) {
-            input = input || [];
-
-            var total = 0.0;
-            for (var item_idx = 0; item_idx < input.length; item_idx++) {
-                total += parseFloat(input[item_idx].price || 0.0) * parseInt(input[item_idx].selectedCnt || 0);
-            }
-            return total/100.0;
-        };
     });
 
