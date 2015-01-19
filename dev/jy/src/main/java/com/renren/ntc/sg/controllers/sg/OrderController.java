@@ -33,6 +33,8 @@ public class OrderController {
 
     @Autowired
     public OrdersDAO orderDAO;
+    @Autowired
+    public OrdersDAO cDAO;
 
     @Autowired
     public NtcHostHolder holder;
@@ -52,7 +54,7 @@ public class OrderController {
 
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
-    public static String TID = "1015";
+    public static String TID = "777";
 
 
     @Get("loading")
@@ -183,27 +185,32 @@ public class OrderController {
             String url;
             String mobile = "";
             byte[] t = null;
-            String response = "Create Order";
+            String response = "用户下单";
             long adr_id = value.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String vv = adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id() ;
-            String orde = "..";
+            float  p = (float)value.getPrice() /100 ;
             vv = vv.replaceAll("=", "").replaceAll("&", "");
             String ro = response.replace("=", "").replace("&", "");
-            String message = "#address#=" + vv + "&#status#=" + ro + "&#orderDetail#=" + orde;
+            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            //短信通知
+            // 发短信给  黄炜元
             url = SUtils.forURL(SMSURL, APPKEY, TID, "18612274066", message);
             System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
             t = SHttpClient.getURLData(url, "");
             response = SUtils.toString(t);
             System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-//            url = SUtils.forURL(SMSURL, APPKEY, TID, "18600326217", message);
-//            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-//            t = SHttpClient.getURLData(url, "");
-//            response = SUtils.toString(t);
-//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+
+            // 发短信给  地推人员
+            phone =
+            url = SUtils.forURL(SMSURL, APPKEY, TID,phone , message);
+            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+            t = SHttpClient.getURLData(url, "");
+            response = SUtils.toString(t);
+            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

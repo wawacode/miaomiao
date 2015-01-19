@@ -28,7 +28,7 @@ CREATE TABLE `items` (
 @DAO(catalog = "ABC")
 public interface CatStaffCommitDAO {
     static final String TABLE_NAME= "catstaff_commit";
-    static final String FIELDS = "id,name ,phone,pwd ,shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,create_time,update_time " ;
+    static final String FIELDS = "id,name ,phone,pwd ,shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,shop_info,create_time,update_time " ;
     static final String INSERT_FIELDS = "name ,phone,pwd ,shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng" ;
 
     @ReturnGeneratedKeys
@@ -42,4 +42,10 @@ public interface CatStaffCommitDAO {
 
     @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where name =:1 and pwd = :2  limit :3,:4")
     public List<CatStaffCommit> getCatStaffCommit(String staff_name, String staff_pwd, int from, int offset);
+
+    @SQL("update " +  TABLE_NAME   + " set shop_info =:3 ,shop_id= :2  where id = :1")
+    public int  update(long id,long shop_id,String shop_info);
+
+    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  shop_id =:1 ")
+    public CatStaffCommit getbyShopid(long shop_id);
 }
