@@ -2,12 +2,15 @@ package com.renren.ntc.sg.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.CatStaffCommit;
+import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.service.CreateShopService;
 import net.paoding.rose.scanning.context.RoseAppContext;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,7 +47,18 @@ public class Test {
 //        System.out.println(re.toJSONString());
 //    }
      public static void main(String [] args){
-         float  f = (float)2223/100;
-         System.out.println(f);
+//         RoseAppContext rose = new RoseAppContext();
+//         ShopDAO  shopDao = rose.getBean(ShopDAO.class);
+//         Shop shop = shopDao.getShop(1);
+//         System.out.println(shop.getOpen_time());
+//         System.out.println( shop.getClose_time());
+
+         Calendar calendar = Calendar.getInstance();
+         calendar.setTime(new Date());
+         int close_hours = calendar.get(Calendar.HOUR_OF_DAY);
+         int close_minutes = calendar.get(Calendar.MINUTE);
+         System.out.println(close_hours + " " + close_minutes);
+         int close_t = close_hours*60 + close_minutes;
+
      }
 }
