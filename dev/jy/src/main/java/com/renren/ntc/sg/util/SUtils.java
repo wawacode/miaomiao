@@ -3,10 +3,7 @@ package com.renren.ntc.sg.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.renren.ntc.sg.bean.Address;
-import com.renren.ntc.sg.bean.Item;
-import com.renren.ntc.sg.bean.Order;
-import com.renren.ntc.sg.bean.OrderInfo;
+import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.service.PrinterService;
 import org.apache.commons.lang.StringUtils;
 
@@ -24,6 +21,37 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class SUtils {
+
+    public static  boolean online(long now, Shop shop) {
+         Date open_time = shop.getOpen_time();
+         Date close_time = shop.getClose_time();
+        if(open_time == null  || close_time == null){
+            return true;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(now));
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int t = hours*60 + minutes;
+
+        Calendar calendar_o = Calendar.getInstance();
+        calendar.setTime(open_time);
+        int open_hours = calendar.get(Calendar.HOUR_OF_DAY);
+        int open_minutes = calendar.get(Calendar.MINUTE);
+        int open_t = open_hours*60 + open_minutes;
+
+
+        Calendar calendar_c = Calendar.getInstance();
+        calendar.setTime(open_time);
+        int close_hours = calendar.get(Calendar.HOUR_OF_DAY);
+        int close_minutes = calendar.get(Calendar.MINUTE);
+        int close_t = close_hours*60 + close_minutes;
+        if (t >open_t && t < close_t){
+            return true;
+        }
+        return false;
+    }
+
 
     public static String toString(byte[] text) {
         try {

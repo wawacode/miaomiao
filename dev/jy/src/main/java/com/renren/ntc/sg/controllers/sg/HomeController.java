@@ -20,6 +20,7 @@ import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -71,14 +72,16 @@ public class HomeController {
             if (resuls != null &&  resuls.size() > 0){
                 shop_id = resuls.get(0).getShopLocation().getShop_id();
                 for (GeoQueryResult  res : resuls){
-                    long time = System.currentTimeMillis();
-                    Date now =  new Date(time);
+                    long now = System.currentTimeMillis();
                     ShopLocation shopLoc =  res.getShopLocation();
                     LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
                     shop_id  = shopLoc.getShop_id();
                     Shop shop = shopDAO.getShop(shop_id);
-                    shop.getOpen_time();
-                    shop.getClose_time();
+                    if(online(now, shop){
+
+                    }
+
+
                 }
             }else{
                 LoggerUtils.getInstance().log( String.format("miss loc ,use default shop_id"));
@@ -89,6 +92,7 @@ public class HomeController {
         }
         return "r:/sg/shop?shop_id=" + shop_id + "&lat=" + lat + "&lng=" + lng  ;
     }
+
 
 
     @Post("feedback")
