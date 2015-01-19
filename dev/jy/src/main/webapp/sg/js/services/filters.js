@@ -1,5 +1,4 @@
-angular.module('miaomiao.shop', ['ionic'])
-    .filter('getTotolCount', function() {
+angular.module('miaomiao.shop').filter('getTotolCount', function() {
         return function(input) {
             input = input || [];
 

@@ -1,5 +1,6 @@
-angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
-    .config(function ($stateProvider, $urlRouterProvider) {
+var miaomiao = angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule']);
+
+miaomiao.config(function ($stateProvider, $urlRouterProvider) {
 
         $stateProvider
 
@@ -40,7 +41,6 @@ angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
                 templateUrl: 'templates/myorders.html',
                 controller: 'MyOrdersCtrl'
             });
-
 
         $urlRouterProvider.otherwise('/productlist');
 

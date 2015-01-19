@@ -1,5 +1,6 @@
-angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
-  .factory('httpClient', ['$http', function ($http) {
+var miaomiao =angular.module('miaomiao.shop');
+
+miaomiao.factory('httpClient', ['$http', function ($http) {
 
         var doRequest = function (path, params, success, fail) {
             $http({

@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
+angular.module('miaomiao.shop')
     .controller('CheckoutCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, httpClient) {
 
         $scope.shoppingCartItems = localStorageService.get('shoppingCart');
@@ -14,11 +14,9 @@ angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
 
         });
 
-
         $scope.goToAddressList = function(){
             $state.go('addressList');
         }
-
 
     });
 

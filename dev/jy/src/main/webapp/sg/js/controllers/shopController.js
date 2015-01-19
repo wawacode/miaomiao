@@ -1,5 +1,4 @@
-angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
-    .controller('ProductCtrl', function ($scope, $ionicLoading, $ionicPopup, $http, $state, $timeout,localStorageService, httpClient) {
+angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ionicLoading, $ionicPopup, $http, $state, $timeout,localStorageService, httpClient) {
 
         $ionicLoading.show({
             template: 'Loading...'

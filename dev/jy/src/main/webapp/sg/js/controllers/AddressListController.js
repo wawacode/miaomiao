@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
+angular.module('miaomiao.shop')
     .controller('AddressListCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService) {
 
     });
