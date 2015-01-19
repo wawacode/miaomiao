@@ -2,6 +2,7 @@ package com.renren.ntc.sg.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.CatStaffCommit;
+import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.service.CreateShopService;
 import net.paoding.rose.scanning.context.RoseAppContext;
@@ -44,7 +45,11 @@ public class Test {
 //        System.out.println(re.toJSONString());
 //    }
      public static void main(String [] args){
-         float  f = (float)2223/100;
-         System.out.println(f);
+         RoseAppContext rose = new RoseAppContext();
+         ShopDAO  shopDao = rose.getBean(ShopDAO.class);
+         Shop shop = shopDao.getShop(1);
+         System.out.println(shop.getOpen_time());
+         System.out.println( shop.getClose_time());
+
      }
 }

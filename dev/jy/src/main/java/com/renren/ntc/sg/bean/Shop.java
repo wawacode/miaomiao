@@ -22,10 +22,31 @@ public class Shop {
 
     private  String tel = "";
     private  String  shop_url  = "";
+
+
+    private Date open_time ;
+    private Date close_time ;
     private Date create_time ;
     private  Date  updatetime;
     private  String  owner_phone   = "";
     private  String  head_url   = "";
+
+
+    public Date getOpen_time() {
+        return open_time;
+    }
+
+    public void setOpen_time(Date open_time) {
+        this.open_time = open_time;
+    }
+
+    public Date getClose_time() {
+        return close_time;
+    }
+
+    public void setClose_time(Date close_time) {
+        this.close_time = close_time;
+    }
 
 
     public String getShop_address() {
