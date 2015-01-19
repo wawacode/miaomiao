@@ -213,9 +213,8 @@
     <ion-view view-title="新店开好了~">
         <ion-content padding="true">
             <div ng-show="!newShopURL">
-                <p>创建地铺出错啦,请联系管理员:</p>
-                    {{newShopStatus}}
-                </p>
+                <p>创建地铺出错啦,请联系管理员:{{newShopStatus}}</p>
+
             </div>
             <div ng-show="newShopURL">
                 <p>店铺已经为您准备妥当,请访问:</p>
