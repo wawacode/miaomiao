@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.sg;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Item;
@@ -105,6 +106,42 @@ public class ShopController {
         inv.addModel("shop",shop);
         return "shop" ;
         }
+
+    @Get("category/get")
+    @Post("category/get")
+    public String category (Invocation inv,@Param("shop_id") long shop_id){
+
+        if (0  >= shop_id){
+            shop_id = Constants.DEFAULT_SHOP ;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+
+        if(null == shop){
+            LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
+            shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
+        }
+        List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
+        List<ShopCategory4v> shopCategoryls =  new ArrayList< ShopCategory4v >() ;
+        for (ShopCategory category : categoryls)  {
+            ShopCategory4v s  =  new ShopCategory4v();
+            s.setName(category.getName());
+            s.setCategory_id(category.getCategory_id());
+            List<Item> itemls = itemsDAO.getItems(SUtils.generTableName(shop_id),shop_id,category.getCategory_id(),0,10);
+            s.setItemls(itemls);
+            shopCategoryls.add(s);
+        }
+        JSONObject jb =  new JSONObject() ;
+        JSONObject data =  new JSONObject() ;
+        JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
+        JSONArray  jarr  = (JSONArray)JSON.toJSON(shopCategoryls);
+
+        data.put("shop",shopob);
+        data.put("categoryls", jarr) ;
+        jb.put("code",0);
+        jb.put("data",data);
+        return "@" + jb.toJSONString() ;
+    }
+
 
     @Get("getitems")
     @Post("getitems")
