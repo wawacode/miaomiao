@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'])
+angular.module('miaomiao.shop')
     .controller('ShoppingCartCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService) {
 
     });

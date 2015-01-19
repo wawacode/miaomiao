@@ -8,10 +8,12 @@ angular.module('miaomiao.shop')
             template: 'Loading Data...'
         });
 
-        httpClient.getConfirmCartList($scope.shop.id,$scope.shoppingCartItems, function(data, status){
+        httpClient.getConfirmCartList($scope.shop.id, $scope.shoppingCartItems, function(data, status){
+
+            $ionicLoading.hide();
 
         },function(data, status){
-
+            $ionicLoading.hide();
         });
 
         $scope.goToAddressList = function(){
