@@ -1,7 +1,7 @@
 <html ng-app="miaomiao.shop">
 <head>
     <meta charset="utf-8">
-    <title>喵喵-{{shop.name}}</title>
+    <title>喵喵-$shop.name</title>
 
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
@@ -22,6 +22,9 @@
 
 <script id="templates/productlist.html" type="text/ng-template">
     <ion-view>
+
+        <input type="hidden" value="$shop.id" name="shop_id" ng-model="shop.id">
+
         <ion-header-bar class="bar-dark" style="text-align: left;">
             <button class="button button-icon base-icon-user button-positive" ng-click="">
                 我的
@@ -32,7 +35,8 @@
                     <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
                     <input type="search" placeholder="请输入商店名称或者地址" ng-model="shop_data.searchQuery"
                            ng-focus="startSearch()" ng-change="startSearch()" style="color: #7a7a7a">
-                    <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px" ng-click="clearSearch()"></i>
+                    <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"
+                       ng-click="clearSearch()"></i>
                 </div>
             </div>
         </ion-header-bar>
@@ -47,13 +51,13 @@
                     <div class="leftContent">
                         <div class="shop-categray-list" style="width: 90%">
                             <ul style="margin: 0.0em;padding: 0px;padding-top: 2px;">
-                                #foreach($category in $categoryls)
-                                <li class="shop-categray" data-categray-id="$category.category_id">
-                                    <div class="shop-categray-item-decorate hidden"></div>
-                                    <div class="shop-categray-item" style="">$category.name</div>
-                                    <div class="shop-categray-item-edge hidden"></div>
+                                <li ng-repeat="category in categoryls" class="shop-categray">
+                                    <div class="shop-categray-item-decorate" ng-show="category.selected"></div>
+                                    <div class="shop-categray-item" style="">{{ category.name }}</div>
+                                    <div class="shop-categray-item-edge" ng-show="category.totalCnt">
+                                        {{category.totalCnt}}
+                                    </div>
                                 </li>
-                                #end
                             </ul>
                         </div>
                     </div>
@@ -64,58 +68,40 @@
                         <input type="hidden" value="$shop.id" name="shop_id" id="shop_id">
 
                         <div class="shop-product-list">
-                            #foreach($category in $categoryls)
-                            <ul class="shop-product-categray-list js-shop-product-categray-list"
-                                data-categray-id="$category.category_id">
-                                #foreach($item in $category.getItemls())
-                                <li class="product-item js-product-item" id="$item.id">
+                            <ul class="shop-product-categray-list js-shop-product-categray-list">
 
-                                    <input type="hidden" class="js-product-item-id" value="$item.id"
-                                           data-value="$item.id"/>
-                                    <input type="hidden" class="js-product-category-id" value="$item.category_id"
-                                           data-value="$item.category_id"/>
+                                <li ng-repeat="item in currentDisplayItems" class="product-item js-product-item">
 
                                     <div class="prod_icon_clickable"></div>
-                                    <div class="prod_icon" style="" data-imageurl="$item.pic_url"></div>
-
+                                    <div class="prod_icon" back-img="item.pic_url" ></div>
                                     <div>
-                        <span class="product-title oneline js-product-item-name"
-                              data-value="$item.name">$item.name </span>
-                                        #set($itempricemain = $item.price/100)
-                                        #set($itempriceleft = $item.price%100)
+
+                                    <span class="product-title oneline js-product-item-name">{{item.name}}</span>
                                         <div class="prod_info">
                                             <div class="product-price js-product-item-price" data-value="$item.price">
-                                                <span style="font-weight: normal">¥</span>$itempricemain<span>.$itempriceleft</span>
+                                                <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
                                             </div>
                                             <div class="product_stepper">
-                                                <div class="product_stepper_minus countChangeAction countChangeActionMinus">
+                                                <div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)">
                                                     -
                                                 </div>
                                                 <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
-                                                    0
+                                                    {{item.selectedCnt}}
                                                 </div>
-                                                <div class="product_stepper_add countChangeAction countChangeActionAdd">
+                                                <div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">
                                                     +
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="product-popup" style="display: none" data-popup-id="$item.id">
-                                        <div class="prod-popup-icon">
-                                            <img class="prod-popup-image" src="" data-imageurl="$item.pic_url">
-                                        </div>
-                                    </div>
                                 </li>
-                                #end
                             </ul>
-                            #end
                             <div style="text-align: center;height: 20px;padding: 15px" class="loadingMore">
                                 <i class="">点击加载更多</i>
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
         </ion-content>
     </ion-view>
 </script>
@@ -129,7 +115,7 @@
 
         <ion-content padding="true"
                      has-tabs="false"
-                     has-header="true" >
+                     has-header="true">
             <div class="shop-product-list">
                 <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list">
                     #if($itemls && ! $itemls.isEmpty())
@@ -141,8 +127,10 @@
 
                         <input type="hidden" class="js-product-category-id" value="$item.category_id"
                                data-value="$item.category_id"/>
+
                         <div class="prod_icon_clickable"></div>
-                        <div class="prod_icon" style='background-image: url("$item.pic_url")' data-imageurl="$item.pic_url">
+                        <div class="prod_icon" style='background-image: url("$item.pic_url")'
+                             data-imageurl="$item.pic_url">
                         </div>
                         <div>
                             <span class="product-title oneline js-product-item-name"
