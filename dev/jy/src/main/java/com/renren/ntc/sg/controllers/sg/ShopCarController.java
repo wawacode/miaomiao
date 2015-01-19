@@ -118,6 +118,7 @@ public class ShopCarController {
         JSONObject  j=  new JSONObject() ;
         j.put("addressls", JSON.toJSON(addressls));
         j.put("shop", JSON.toJSON(shop));
+        j.put("itemls", JSON.toJSON(itemls));
         JSONObject respone =  new JSONObject();
         respone.put("code" ,0);
         respone.put("data" ,j);
