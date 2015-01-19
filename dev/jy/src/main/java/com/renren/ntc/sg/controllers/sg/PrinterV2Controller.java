@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.*;
-import com.renren.ntc.sg.biz.dao.AddressDAO;
-import com.renren.ntc.sg.biz.dao.DeviceDAO;
-import com.renren.ntc.sg.biz.dao.OrdersDAO;
-import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.dao.SWPOrderDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
@@ -45,7 +42,7 @@ public class PrinterV2Controller {
     public OrderService orderService ;
 
     @Autowired
-    public SWPOrderDAO swpOrderDAO;
+    public CatStaffCommitDAO catStaffCommitDao;
 
     @Autowired
     public PrinterService printerService ;
@@ -56,7 +53,7 @@ public class PrinterV2Controller {
 
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
-    public static String TID = "1015";
+    public static String TID = "777";
     public static String USER_TID = "791";
     public  boolean  nn = true;
     /**
@@ -103,20 +100,6 @@ public class PrinterV2Controller {
             return "@" + Constants.PARATERERROR;
         }
 
-        // abc 测试用
-//        if(nn){
-//            nn = false;
-//            LoggerUtils.getInstance().log("use  old order ");
-//            List<OrderInfo> orderinfo = swpOrderDAO.getOrder2Print();
-//            JSONObject jb = new JSONObject();
-//            jb.put("code", 0);
-//            jb.put("data",printerService.getString2(orderinfo));
-//            deviceDAO.update(pid, "looping");
-//            return "@" + jb.toJSONString();
-//
-//        } else{
-//            nn = true;
-//        }
         List<Order> orderls = ordersDAO.getOrder2Print(dev.getShop_id(),SUtils.generOrderTableName(dev.getShop_id()));
         orderls = orderService.forV(orderls) ;
         deviceDAO.update(pid, "looping");
@@ -152,12 +135,6 @@ public class PrinterV2Controller {
                 System.out.println( String.format( "%d, %s %s" ,2, orderId,SUtils.generOrderTableName(dev.getShop_id())));
                 r = ordersDAO.update(2, orderId,SUtils.generOrderTableName(dev.getShop_id()));
             }
-            //避免干扰线上打印机
-//            else{
-//                r = swpOrderDAO.update(3, orderId);
-//            }
-
-            // 更新成功给用户发消息
             if (r == 1) {
                 try {
                     Shop shop = shopDao.getShop(dev.getShop_id());
@@ -207,7 +184,7 @@ public class PrinterV2Controller {
             String message = "#address#=" + vv + "&#status#=" + ro + "&#orderDetail#=" + orde;
             message = SUtils.span(message);
             message = URLEncoder.encode(message,"utf-8");
-            //短信通知
+            //短信通知 黄炜元  朱允铭
             url = forURL(SMSURL, APPKEY, TID, "18612274066", message);
             System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
             t = SHttpClient.getURLData(url, "");
@@ -218,6 +195,28 @@ public class PrinterV2Controller {
             t = SHttpClient.getURLData(url, "");
             response = SUtils.toString(t);
             System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+
+            //短信通知 地推人员
+            CatStaffCommit  catStaffCommit  = catStaffCommitDao.getbyShopid(dev.getShop_id());
+            if (catStaffCommit != null ){
+                String phone =catStaffCommit.getPhone();
+                url = forURL(SMSURL, APPKEY, TID, phone, message);
+                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+                t = SHttpClient.getURLData(url, "");
+                response = SUtils.toString(t);
+                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+            }
+
+            //短信通知 老板
+            Shop  shop  = shopDao.getShop(dev.getShop_id());
+            if (shop != null ){
+                String phone = shop.getOwner_phone();
+                url = forURL(SMSURL, APPKEY, TID, phone, message);
+                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+                t = SHttpClient.getURLData(url, "");
+                response = SUtils.toString(t);
+                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+            }
         } catch (Throwable e) {
             e.printStackTrace();
         }

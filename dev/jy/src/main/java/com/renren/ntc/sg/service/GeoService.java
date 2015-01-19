@@ -15,7 +15,6 @@ import java.util.Map;
 @Service
 public class GeoService {
 
-	private static int DEFAULT_MAX_DISTANCE = 2 * 1000; // 50km
 	private static int DEFAULT_MAX_NUM = 100;
 
 	private static final Logger logger = Logger.getLogger(GeoService.class);
@@ -33,9 +32,6 @@ public class GeoService {
 	}
 
 
-	public static void setDefaultMaxDistance(int distance) {
-		DEFAULT_MAX_DISTANCE = distance;
-	}
 
 	public static void setDefaultMaxNum(int maxNum) {
 		DEFAULT_MAX_NUM = maxNum;
