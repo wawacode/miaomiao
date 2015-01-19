@@ -74,8 +74,11 @@ public class ShopController {
             JSONObject it = (JSONObject) JSONObject.toJSON(s);
             jarr.add(it);
         }
+        JSONObject data =  new JSONObject() ;
+        data.put("shop",jarr);
+
+        jb.put("data",data);
         jb.put("code",0);
-        jb.put("data",jarr);
         return "@" + jb.toJSONString() ;
     }
 
@@ -182,8 +185,13 @@ public class ShopController {
             it.put("shop_id" ,i.getShop_id()) ;
             jarr.add(it);
         }
+        JSONObject data =  new JSONObject() ;
+        JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
+
+        data.put("shop",shopob);
+        data.put("items", jarr) ;
         jb.put("code",0);
-        jb.put("data",jarr);
+        jb.put("data",data);
         return "@" + jb.toJSONString() ;
     }
 
