@@ -136,6 +136,10 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
 
         $scope.goToShop = function (shop) {
 
+            if(shop.status4V != "营业中"){
+                return;
+            }
+
             var shopExist = false;
             for (var i = 0; i < $scope.shop_history.length; i++) {
                 if (shop.id == $scope.shop_history[i].id) {
