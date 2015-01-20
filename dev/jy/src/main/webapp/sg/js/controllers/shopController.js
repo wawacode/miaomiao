@@ -153,7 +153,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     }
 
-
+    
     $scope.checkout = function () {
 
         localStorageService.set('shop', $scope.shop);
