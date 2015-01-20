@@ -1,5 +1,5 @@
-angular.module('miaomiao.shop').factory('ShoppingCart', ['$http','localStorageService','$localStorage',
-    '$sessionStorage', function ($http,localStorageService,$localStorage,$sessionStorage) {
+angular.module('miaomiao.shop').factory('ShoppingCart', ['$http','$rootScope','localStorageService','$localStorage',
+    '$sessionStorage', function ($http, $rootScope,localStorageService,$localStorage,$sessionStorage) {
 
 
     return {
@@ -25,8 +25,17 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http','localStorageSe
 
             var items = this._shoppingItems();
 
-            if(!this.itemExistInCart(item, items)){
+            var index = -1;
+            for (var idx=0;idx < items.length ;idx ++) {
+                if (item.id == items[idx].id){
+                    {index = idx; break;}
+                }
+            }
+
+            if(index == -1){
                 items.push(item);
+            }else{
+                items[index].count = item.count;
             }
 
             $sessionStorage.savedShoppingCartItems = items;
@@ -41,9 +50,15 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http','localStorageSe
                 if (item.id == items[idx].id)
                 {index = idx; break;}
             }
+            //find the item
             if (index > -1) {
-                items.splice(index, 1);
+                if (item.count <= 0) {
+                    items.splice(index, 1);
+                }else{
+                    items[index].count = item.count;
+                }
             }
+
             $sessionStorage.savedShoppingCartItems = items;
 
         },
@@ -97,8 +112,18 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http','localStorageSe
         cartReadyToShip: function () {
 
             return this.getTotalPrice() >= 20.0;
-        }
+        },
 
+        itemChangeEventTriggered : function(item){
+            $rootScope.$broadcast('itemSelectionChanged', {
+                item: item
+            });
+        },
+        onItemChangeEventTriggered : function ($scope, handler) {
+            $scope.$on('itemSelectionChanged', function (event, message) {
+                handler(message);
+            });
+        }
     }
 }]);
 

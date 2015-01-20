@@ -1,11 +1,11 @@
 angular.module('miaomiao.shop')
     .controller('CheckoutCtrl', function ($scope, $ionicLoading,$ionicPopup, $http, $state, localStorageService, httpClient,ShoppingCart) {
 
-
+        $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.shop = localStorageService.get('shop');
 
         $ionicLoading.show({
-            template: 'Loading Data...'
+            template: '正在加载，请稍候...'
         });
 
         $scope.info = {};
@@ -27,7 +27,6 @@ angular.module('miaomiao.shop')
             }
 
             $scope.shop = dataDetail.shop;
-            $scope.shoppingCartItems = ShoppingCart.getAllItems();
 
             // check results
             for(var i=0;i< dataDetail.itemls.length;i++){
@@ -64,8 +63,7 @@ angular.module('miaomiao.shop')
 
             item.count += 1;
 
-            //TODO: emit to let shop controller know the category changed
-
+            ShoppingCart.itemChangeEventTriggered(item);
         }
 
         $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
@@ -77,8 +75,7 @@ angular.module('miaomiao.shop')
                 ShoppingCart.removeItemFromCart(item);
             }
 
-            //TODO: emit to let shop controller know the category changed
-
+            ShoppingCart.itemChangeEventTriggered(item);
         }
 
         function isValidTelNumber(number) {

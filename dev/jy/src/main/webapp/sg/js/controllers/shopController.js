@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
+angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
 
     $ionicLoading.show({
         template: 'Loading...'
@@ -6,7 +6,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
 
     $scope.currentDisplayCategory = {};
     $scope.currentDisplayItems = [];
-
+    $scope.info = {};
 
     $timeout(function () {
         httpClient.getProductList($scope.shopId, function (data, status) {
@@ -136,12 +136,11 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
     $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
 
         item.count -= 1;
-        if (item.count <= 0) {
-            item.count = 0;
-            ShoppingCart.removeItemFromCart(item);
+        item.count = item.count <= 0 ? 0: item.count;
 
-            updateShoppingCart();
-        }
+        ShoppingCart.removeItemFromCart(item);
+
+        updateShoppingCart();
 
         $scope.currentDisplayCategory.totalCnt -= 1;
         $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ? $scope.currentDisplayCategory.totalCnt : 0;
@@ -156,5 +155,48 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
 
     }
 
+    $scope.showShoppingCart = function(){
+        $scope.info.showCart = ! $scope.info.showCart;
+    }
+
+    // we update item slection in shopping car ,will have to update shop list
+
+    ShoppingCart.onItemChangeEventTriggered($scope, function (message) {
+
+        var item = message.item;
+
+        // handle item change event
+        for (var idx = 0; idx < $scope.categoryls.length; idx++) {
+
+            if($scope.categoryls[idx].category_id == item.category_id){
+
+                $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
+
+                for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
+                    var itm =  $scope.categoryls[idx].itemls[item_idx];
+                    if(itm.id == item.id){
+                        itm.count = ShoppingCart.getCountForItem(itm);
+                    }
+                }
+                break;
+            }
+        }
+    });
+
+    $rootScope.$on('$stateChangeStart',
+        function (event, toState, toParams){
+            if(toState.url=='/productlist'){
+                // back to self page, do a  reload
+                // handle item change event
+                for (var idx = 0; idx < $scope.categoryls.length; idx++) {
+                    $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
+
+                    for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
+                        var itm =  $scope.categoryls[idx].itemls[item_idx];
+                        itm.count = ShoppingCart.getCountForItem(itm);
+                    }
+                }
+            }
+    });
 });
 
