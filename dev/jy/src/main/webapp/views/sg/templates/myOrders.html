@@ -79,10 +79,8 @@
                         <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
                     </div>
 
-                    <div class="orderSnapshot">
-
-                        <div style="display: block;min-height: 20px;" ng-repeat="orderItem in order.items">
-
+                    <div style="padding: 15px 9px 15px;" class="order-snapshots">
+                        <div class="orderSnapshot" ng-repeat="orderItem in order.items">
                             <div class="orderSnapshotItem">
                                 {{orderItem.name}}
                             </div>
@@ -92,14 +90,13 @@
                             </div>
 
                         </div>
-                    </div>
-
-
-                    <div class="orderSnapshotTotal">
-                        <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
+                        <div class="orderSnapshotTotal">
+                            <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
                         <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
                         </span>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
