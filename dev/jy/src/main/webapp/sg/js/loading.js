@@ -113,22 +113,32 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
 
         $scope.shop_data = {};
         $scope.showShopList = false;
-        $scope.showShopHistory = true;
+        $scope.showShopHistory = false;
+        $scope.showShopHot = true;
 
         $scope.shop_history = localStorageService.get('shop_history') || [];
+        if($scope.shop_history.length){
+            $scope.showShopHistory = true;
+        }
 
         $scope.clearSearch = function () {
             $scope.shop_data.searchQuery = '';
             $scope.showShopList = false;
             $scope.showShopHistory = true;
+            $scope.showShopHot = true;
         };
 
         $scope.startSearch = function () {
             $scope.showShopList = true;
             $scope.showShopHistory = false;
+            $scope.showShopHot = false;
         };
 
         $scope.goToShop = function (shop) {
+
+            if(shop.status4V !=undefined && shop.status4V != "营业中"){
+                return;
+            }
 
             var shopExist = false;
             for (var i = 0; i < $scope.shop_history.length; i++) {

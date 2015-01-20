@@ -43,6 +43,10 @@ public class OrderController {
     @Autowired
     public ItemsDAO itemsDAO;
 
+
+    @Autowired
+    public CatStaffCommitDAO catStaffCommitDao;
+
     @Autowired
     public DeviceDAO deviceDAO;
 
@@ -116,7 +120,7 @@ public class OrderController {
         List<Item4V> itemls = new ArrayList<Item4V>();
         for (int i = 0; i < jbarr.size(); i++) {
             JSONObject jb = (JSONObject) jbarr.get(i);
-            long item_id = jb.getLong("item_id");
+            long item_id = jb.getLong("id");
             int count = jb.getInteger("count");
             Item item = itemsDAO.getItem(SUtils.generTableName(shop_id), shop_id, item_id);
             //计算库存是否足够
@@ -203,14 +207,15 @@ public class OrderController {
             System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
 
             // 发短信给  地推人员
-            phone =
+            CatStaffCommit  catStaffCommit  = catStaffCommitDao.getbyShopid(shop_id);
+            if (catStaffCommit != null ){
+            phone = catStaffCommit.getPhone();
             url = SUtils.forURL(SMSURL, APPKEY, TID,phone , message);
             System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
             t = SHttpClient.getURLData(url, "");
             response = SUtils.toString(t);
             System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-
-
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -174,14 +174,14 @@ public class PrinterV2Controller {
             String url;
             String mobile = "";
             byte[] t = null;
-            String response = "Done";
+            String response = "打印完成";
             long adr_id =  value.getAddress_id();
             Address adrs  = addressDAO.getAddress(adr_id);
             String vv = adrs.getAddress() + " " + adrs.getPhone() +  " " + value.getOrder_id() ;
-            String orde = "..";
             vv = vv.replaceAll("=", "").replaceAll("&", "");
             String ro = response.replace("=", "").replace("&", "");
-            String message = "#address#=" + vv + "&#status#=" + ro + "&#orderDetail#=" + orde;
+            float  p = (float)value.getPrice() /100 ;
+            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
             message = SUtils.span(message);
             message = URLEncoder.encode(message,"utf-8");
             //短信通知 黄炜元  朱允铭

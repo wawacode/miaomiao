@@ -4,7 +4,7 @@ angular.module('miaomiao.shop').filter('getTotolCount', function() {
 
             var total = 0;
             for (var item_idx = 0; item_idx < input.length; item_idx++) {
-                total += parseInt(input[item_idx].selectedCnt || 0);
+                total += parseInt(input[item_idx].count || 0);
             }
             return total;
         };
@@ -14,7 +14,7 @@ angular.module('miaomiao.shop').filter('getTotolCount', function() {
 
             var total = 0.0;
             for (var item_idx = 0; item_idx < input.length; item_idx++) {
-                total += parseFloat(input[item_idx].price || 0.0) * parseInt(input[item_idx].selectedCnt || 0);
+                total += parseFloat(input[item_idx].price || 0.0) * parseInt(input[item_idx].count || 0);
             }
             return total/100.0;
         };

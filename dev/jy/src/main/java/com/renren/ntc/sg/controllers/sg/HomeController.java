@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.OrderInfo;
+import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.DeviceDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.dao.SWPOrderDAO;
@@ -12,6 +13,7 @@ import com.renren.ntc.sg.geo.ShopLocation;
 import com.renren.ntc.sg.service.GeoService;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -19,7 +21,9 @@ import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Path("")
@@ -65,14 +69,20 @@ public class HomeController {
             loc.setLongitude(lng);
             loc.setLatitude(lat);
             // 20 公里
-            List<GeoQueryResult>  resu = geoService.queryNear(loc, 20000);
-            if (resu != null &&  resu.size() > 0){
-                ShopLocation loc_shop = resu.get(0).getShopLocation();
-                LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",loc_shop.getShop_id(),loc_shop.getLatitude(),loc_shop.getLongitude()));
-
-
-                shop_id  =  loc_shop.getShop_id();
-
+            List<GeoQueryResult>  resuls = geoService.queryNear(loc, 20000);
+            if (resuls != null &&  resuls.size() > 0){
+                shop_id = resuls.get(0).getShopLocation().getShop_id();
+                for (GeoQueryResult  res : resuls){
+                    long now = System.currentTimeMillis();
+                    ShopLocation shopLoc =  res.getShopLocation();
+                    LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
+                    shop_id  = shopLoc.getShop_id();
+                    Shop shop = shopDAO.getShop(shop_id);
+                    if(SUtils.online(now, shop)){
+                         shop_id = shop.getId();
+                         break;
+                    }
+                }
             }else{
                 LoggerUtils.getInstance().log( String.format("miss loc ,use default shop_id"));
                 return "r:/sg/loading#/findshop";
@@ -82,6 +92,7 @@ public class HomeController {
         }
         return "r:/sg/shop?shop_id=" + shop_id + "&lat=" + lat + "&lng=" + lng  ;
     }
+
 
 
     @Post("feedback")
