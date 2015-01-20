@@ -44,7 +44,7 @@
         <div class="switch-shop js-switch-shop">
 
             <a href="loading#/findshop" data-ajax="false" style="cursor:pointer;
-            text-decoration:none; color:#000000;font-size: 20px;font-weight: normal">
+            text-decoration:none; color:#000000;font-size: 18px;font-weight: normal">
                 $shop.name<i class="fa fa-angle-down" style="padding-left: 5px"></i>
             </a>
 
