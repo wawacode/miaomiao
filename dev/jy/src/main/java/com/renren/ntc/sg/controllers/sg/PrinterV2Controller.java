@@ -185,16 +185,16 @@ public class PrinterV2Controller {
             message = SUtils.span(message);
             message = URLEncoder.encode(message,"utf-8");
             //短信通知 黄炜元  朱允铭
-            url = forURL(SMSURL, APPKEY, TID, "18612274066", message);
-            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-            t = SHttpClient.getURLData(url, "");
-            response = SUtils.toString(t);
-            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-            url = forURL(SMSURL, APPKEY, TID, "18600326217", message);
-            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-            t = SHttpClient.getURLData(url, "");
-            response = SUtils.toString(t);
-            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+//            url = forURL(SMSURL, APPKEY, TID, "18612274066", message);
+//            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+//            t = SHttpClient.getURLData(url, "");
+//            response = SUtils.toString(t);
+//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+//            url = forURL(SMSURL, APPKEY, TID, "18600326217", message);
+//            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+//            t = SHttpClient.getURLData(url, "");
+//            response = SUtils.toString(t);
+//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
 
             //短信通知 地推人员
             CatStaffCommit  catStaffCommit  = catStaffCommitDao.getbyShopid(dev.getShop_id());
