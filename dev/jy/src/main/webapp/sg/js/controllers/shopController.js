@@ -32,14 +32,16 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
              "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
              * */
             for (var idx = 0; idx < $scope.categoryls.length; idx++) {
-                $scope.categoryls[idx].totalCnt = 0;
+
+                $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
                 $scope.categoryls[idx].selected = 0;
                 $scope.categoryls[idx].canLoadMore = 1;
                 if (idx == 0) {
                     $scope.categoryls[idx].selected = 1;
                 }
                 for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                    $scope.categoryls[idx].itemls[item_idx].count = 0;
+                    var item =  $scope.categoryls[idx].itemls[item_idx];
+                    item.count = ShoppingCart.getCountForItem(item);
                 }
             }
 
@@ -94,9 +96,13 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
             }
 
             for (var item_idx = 0; item_idx < dataDetail.items.length; item_idx++) {
-                dataDetail.items[item_idx].count = 0;
+
+                var item =  dataDetail.items[item_idx];
+                item.count = ShoppingCart.getCountForItem(item);
+
             }
             $scope.currentDisplayItems = $scope.currentDisplayItems.concat(dataDetail.items);
+            $scope.currentDisplayCategory.totalCnt = ShoppingCart.getCountForCategroy($scope.currentDisplayCategory.category_id);
 
             $scope.$broadcast('scroll.infiniteScrollComplete');
 
@@ -109,7 +115,12 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
     }
 
 
-    $scope.shoppingCartItems = ShoppingCart.getAllItems();
+    function updateShoppingCart(){
+        $scope.shoppingCartItems = ShoppingCart.getAllItems();
+        $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
+    }
+
+    updateShoppingCart();
 
     $scope.selectItem = function (item) {
 
@@ -117,7 +128,8 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
         $scope.currentDisplayCategory.totalCnt += 1;
 
         ShoppingCart.addItemToCart(item);
-        $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
+
+        updateShoppingCart();
 
     }
 
@@ -127,7 +139,8 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
         if (item.count <= 0) {
             item.count = 0;
             ShoppingCart.removeItemFromCart(item);
-            $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
+
+            updateShoppingCart();
         }
 
         $scope.currentDisplayCategory.totalCnt -= 1;
@@ -139,7 +152,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $ion
 
         localStorageService.set('shop', $scope.shop);
 
-        $state.go('checkout');
+        $state.go('checkout',null, { reload: true });
 
     }
 

@@ -1,14 +1,14 @@
 angular.module('miaomiao.shop')
     .controller('CheckoutCtrl', function ($scope, $ionicLoading,$ionicPopup, $http, $state, localStorageService, httpClient,ShoppingCart) {
 
-        $scope.shoppingCartItems = ShoppingCart.getAllItems();
+
         $scope.shop = localStorageService.get('shop');
 
         $ionicLoading.show({
             template: 'Loading Data...'
         });
 
-        httpClient.getConfirmCartList($scope.shop.id, $scope.shoppingCartItems, function(data, status){
+        httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function(data, status){
 
             $ionicLoading.hide();
 
@@ -22,30 +22,65 @@ angular.module('miaomiao.shop')
             }
 
             $scope.shop = dataDetail.shop;
-            $scope.checkedShoppingCartItems = dataDetail.itemls;
+            $scope.shoppingCartItems = ShoppingCart.getAllItems();
 
             // check results
             for(var i=0;i< dataDetail.itemls.length;i++){
-
+                var item = dataDetail.itemls[i];
+                for(var j=0; j < $scope.shoppingCartItems.length;j++ ){
+                    if(item.id == $scope.shoppingCartItems[j].id){
+                        if(item.ext != item.count){
+                            $scope.shoppingCartItems[j].message = '库存不足';
+                        }
+                    }
+                }
             }
 
             $scope.addressls = dataDetail.addressls;
 
         },function(data, status){
+
+            $scope.shoppingCartItems = ShoppingCart.getAllItems();
             $ionicLoading.hide();
         });
 
         $scope.goToAddressList = function(){
-            $state.go('addressList');
+            $state.go('addressList', null, { reload: true });
         }
 
+        $scope.goback = function(){
+            $state.go('productList', null, { reload: true });
+        }
 
-        $scope.cartReadyToShip = function(){
+        $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
 
-            return ShoppingCart.cartReadyToShip();
+        $scope.selectItem = function (item) {
+
+            item.count += 1;
+
+            //TODO: emit to let shop controller know the category changed
+//            $scope.currentDisplayCategory.totalCnt += 1;
+
+//            ShoppingCart.addItemToCart(item);
+
+//            updateShoppingCart();
 
         }
 
+        $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
+
+            item.count -= 1;
+
+            if (item.count <= 0) {
+                item.count = 0;
+                ShoppingCart.removeItemFromCart(item);
+            }
+
+            //TODO: emit to let shop controller know the category changed
+//            $scope.currentDisplayCategory.totalCnt -= 1;
+//            $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ? $scope.currentDisplayCategory.totalCnt : 0;
+
+        }
 
         $scope.confirmCheckout = function(){
 

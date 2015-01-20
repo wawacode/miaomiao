@@ -1,4 +1,4 @@
-var miaomiao = angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule'], function($httpProvider) {
+var miaomiao = angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule','ngStorage'], function($httpProvider) {
 
     // Use x-www-form-urlencoded Content-Type
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -51,39 +51,39 @@ miaomiao.config(function ($stateProvider, $urlRouterProvider) {
 
             .state('productList', {
                 url: '/productlist',
-                templateUrl: 'templates/productlist.html',
+                templateUrl: '/views/sg/templates/productList.html',
                 controller: 'ProductCtrl'
 
             })
             .state('search', {
                 url: '/search',
-                templateUrl: 'templates/search.html',
+                templateUrl: '/views/sg/templates/search.html',
                 controller: 'ProductCtrl'
 
             })
             .state('checkout', {
                 url: '/checkout',
-                templateUrl: 'templates/checkout.html',
+                templateUrl: '/views/sg/templates/checkout.html',
                 controller: 'CheckoutCtrl'
             })
             .state('addressList', {
                 url: '/addresslist',
-                templateUrl: 'templates/addresslist.html',
+                templateUrl: '/views/sg/templates/addressList.html',
                 controller: 'AddressListCtrl'
             })
             .state('addAddress', {
                 url: '/addaddress',
-                templateUrl: 'templates/addaddress.html',
+                templateUrl: '/views/sg/templates/addAddress.html',
                 controller: 'AddAddressCtrl'
             })
             .state('orderSuccess', {
                 url: '/ordersuccess',
-                templateUrl: 'templates/ordersuccess.html',
+                templateUrl: '/views/sg/templates/orderSuccess.html',
                 controller: 'OrderSuccessCtrl'
             })
             .state('myOrders', {
                 url: '/myorders',
-                templateUrl: 'templates/myorders.html',
+                templateUrl: '/views/sg/templates/myOrders.html',
                 controller: 'MyOrdersCtrl'
             });
 

@@ -1,0 +1,101 @@
+<ion-view>
+
+    <ion-content padding="true"
+                 has-tabs="false"
+                 has-header="true">
+
+        <div class="mainContainer scroll">
+            <div class="" style="overflow: hidden" ng-if="addressls && addressls.length">
+                <div class="addressItem addressDefault addressSelected">
+                    <div class="addressAndBadge" style="">
+                        <div class="addressItem-address addressDefault-address"
+                             data-default-address="$DEFAULT_ADDR.getAddress()"><span
+                                class="addressTitle">收货地址:</span>
+                            {{addressls[0].address}}
+                        </div>
+                        <div class="addressItem-phone addressDefault-phone"
+                             data-default-phone="$DEFAULT_ADDR.getPhone()"><span
+                                class="addressTitle">联系电话:</span> {{addressls[0].phone}}
+                        </div>
+                    </div>
+                    <div class="addressItem-bage" ng-click="goToAddressList()">
+                        <div class="swithDefaultAddress">
+                            <span><img src="/images/forward-64.png" class="base-icon-forword"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="js-addAddress firstTimeAddAddress"
+                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-if="addressls && !addressls.length">
+                <div class="addNewAddressHint" style="text-shadow:none">
+                    您还没有添加收货人信息,请添加
+                </div>
+                <div style="padding: 15px 9px;">
+                    <input id="newOrderAddress" type="text" placeholder="收货地址:" value="" ng-model="newOrderAddress">
+                    <input id="newOrderPhone" type="number" placeholder="联系电话:" value="" ng-model="newOrderPhone">
+                </div>
+            </div>
+
+            <div id="shop-product-list" style="padding-bottom: 80px">
+                <ul style="margin: 0.0em; padding:0px 9px">
+                    <li class="product-item js-product-item" ng-repeat="item in shoppingCartItems">
+                        <div class="prod_icon" back-img="{{item.pic_url}}"></div>
+                        <div>
+                            <span class="product-title oneline js-product-item-name">{{item.name}}</span>
+                                <span class="product-title oneline" style="color: red"
+                                      ng-if="item.message">商品库存不足</span>
+
+                            <div class="prod_info">
+                                <div class="product-price js-product-item-price" data-value="$item.price">
+                                    <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
+                                </div>
+                                <div class="product_stepper">
+                                    <div class="product_stepper_minus countChangeAction countChangeActionMinus"
+                                         ng-click="removeItem(item)">
+                                        -
+                                    </div>
+                                    <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
+                                        {{item.count}}
+                                    </div>
+                                    <div class="product_stepper_add countChangeAction countChangeActionAdd"
+                                         ng-click="selectItem(item)">
+                                        +
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <ul class="no-item-hint" style="padding:0px 9px;text-align: center;" ng-show="shoppingCartItems && shoppingCartItems.length == 0">
+                    <div style="font-size: 14px;padding-top: 50px;padding-bottom: 50px;">
+                        <a href="javascript:;" ui-sref="productList" ng-click="goback()"> 点击返回,重新下单 </a>
+                    </div>
+                </ul>
+
+                <ul class="remarks" style="margin-top: 1.0em; padding:0px 9px;" ng-show="shoppingCartItems.length">
+                    <li style="padding: 0px 0px;display:block;">
+                        <input id="orderRemarks" type="text" placeholder="给卖家留言"
+                               style="background-color: lightgray;text-shadow: none;font-size: 14px;">
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </div>
+
+        <ion-footer-bar class="bar-light" style="padding:0;overflow: hidden">
+
+            <div style="text-align: center;height: 100%; width: 100%; padding: 0em;">
+                <button class="sidebar-cart-checkout js-cart-checkout"
+                        ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip }" ng-click="confirmCheckout()">
+                    <span class="base-font js-checkout-hit">货到付款</span>
+                        <span class="base-font"><br>
+                            总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>
+                    <span class="base-font rmbSpan">￥</span><span id="js-shop-total-price"
+                                                                  class="js-shop-total-price base-font">{{shoppingCartItems | getTotolPrice}}</span>
+                </button>
+            </div>
+
+        </ion-footer-bar>
+
+</ion-view>
