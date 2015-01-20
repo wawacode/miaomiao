@@ -136,7 +136,7 @@ angular.module('ionic.loading', ['ionic', 'LocalStorageModule'])
 
         $scope.goToShop = function (shop) {
 
-            if(shop.status4V != "营业中"){
+            if(shop.status4V !=undefined && shop.status4V != "营业中"){
                 return;
             }
 
