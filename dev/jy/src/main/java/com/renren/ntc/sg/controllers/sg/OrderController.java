@@ -86,14 +86,14 @@ public class OrderController {
 
         if (null == shop) {
             LoggerUtils.getInstance().log(String.format("can't find shop  %d  ", shop_id));
-            return "error";
+            return "@" + Constants.PARATERERROR;
         }
 
         if (address_id == 0) {
             Address add = new Address();
             if (StringUtils.isBlank(phone) || StringUtils.isBlank(address)) {
                 inv.addModel("msg", " phone or adderes is null");
-                return "error";
+                return "@" + Constants.PARATERERROR;
             }
             add.setPhone(phone);
             add.setAddress(address);
@@ -106,7 +106,7 @@ public class OrderController {
 
         if (StringUtils.isBlank(items)) {
             LoggerUtils.getInstance().log(String.format("can't find shop  %d  items %s", shop_id, items));
-            return "error";
+            return "@" + Constants.PARATERERROR;
         }
         inv.addModel("remarks", remarks);
         boolean ok = true;
@@ -149,7 +149,7 @@ public class OrderController {
         inv.addModel("order_id", order_id);
         inv.addModel("itemls", itemls);
         if (!ok) {
-            return "order_confirm";
+            return "@" + Constants.LEAKERROR;
         }
 
 
@@ -176,7 +176,7 @@ public class OrderController {
         order.setUser_id(user_id);
         int re = orderDAO.insertUpdate(order, SUtils.generOrderTableName(shop_id));
         if (re != 1) {
-            return "error";
+            return "@" + Constants.UKERROR;
         }
         //发送短信通知
         try {
@@ -215,8 +215,13 @@ public class OrderController {
             e.printStackTrace();
         }
 
+        JSONObject response =  new JSONObject();
+        JSONObject data =  new JSONObject();
+        response.put("data", data);
+        response.put("code", 0);
+        return "@" +  Constants.DONE;
         // 发送短信通知
-        return "r:/sg/user/profile?shop_id=" + shop_id;
+//        return "r:/sg/user/profile?shop_id=" + shop_id;
     }
 
 
