@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.sg;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
@@ -66,11 +67,7 @@ public class UserController {
         }
 
         Shop shop = shopDAO.getShop(shop_id);
-
-
         List<Address>  addressls = addressDAO.getAddresses(user_id,0,1);
-        System.out.println( "addressls" + addressls.size()  );
-
         List<Order>  orders = orderDAO.getOrder(user_id,0,20,SUtils.generOrderTableName(shop_id));
 
         inv.addModel( "addressls",addressls);
@@ -78,7 +75,16 @@ public class UserController {
         inv.addModel("shop",shop);
         inv.addModel( "orders",orders);
 
-        return "user";
+        JSONObject response =  new JSONObject();
+        JSONObject data =  new JSONObject();
+        data.put("shop", JSON.toJSON(shop));
+        data.put("orders", JSON.toJSON(orders));
+        data.put("addressls", JSON.toJSON(addressls));
+        response.put("data", data);
+        response.put("code", 0);
+
+        return "@" + response.toJSONString();
+//        return "user";
     }
 }
 
