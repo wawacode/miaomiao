@@ -68,10 +68,10 @@
                     #foreach($item in $itemls)
                     <tr>
                         <td>${item.id}</td>
-                        <td class="edit" id="e-${item.shop_id}-serialNo-$item.id">$item.serialNo</td>
-                        <td class="edit" id="e-{$item.shop_id}-name-$item.id">$item.name</td>
-                        <td class="edit" id="e-{$item.shop_id}-category_id-$item.id">$item.category_id</td>
-                        <td class="edit" id="e-${item.shop_id}-pic_url-$item.id"> #if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end</td>
+                        <td class="" id="e-${item.shop_id}-serialNo-$item.id">$item.serialNo</td>
+                        <td class="" id="e-{$item.shop_id}-name-$item.id">$item.name</td>
+                        <td class="" id="e-{$item.shop_id}-category_id-$item.id">$item.category_id</td>
+                        <td class="" id="e-${item.shop_id}-pic_url-$item.id"> #if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end</td>
                     </tr>
                     #end
                     </tbody>
