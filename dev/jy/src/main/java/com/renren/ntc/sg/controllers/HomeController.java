@@ -36,20 +36,6 @@ public class HomeController {
 
 
 
-    @Get("rd")
-    @Post("rd")
-    public String index( Invocation inv,@Param("phone")String phone) {
-        String dps = CookieManager.getInstance().getCookie(inv.getRequest(),"CAT_DPS");
-        if (!StringUtils.isBlank(dps)) {
-            LoggerUtils.getInstance().log(String.format("Catstaff  rec first time phone %s access ",phone));
-            CookieManager.getInstance().saveCookie(inv.getResponse(),"CAT_DPS","hello");
-        }else{
-            LoggerUtils.getInstance().log(String.format("Catstaff  rec not first time phone %s access ",phone));
-        }
-        return "r:http://weixin.qq.com/r/l3UsNBHEW0wkrVVX9yCF";
-    }
-
-
     @Get("query")
     public String query (Invocation inv ,@Param("chn") String chn){
         JSONArray jarr =  new JSONArray();
