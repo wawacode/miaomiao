@@ -6,19 +6,17 @@
 
         <div class="mainContainer scroll">
             <div class="" style="overflow: hidden" ng-show="addressls && addressls.length">
-                <div class="addressItem addressDefault addressSelected">
+                <div class="addressItem addressDefault addressSelected" ng-click="goToAddressList()">
                     <div class="addressAndBadge" style="">
-                        <div class="addressItem-address addressDefault-address"
-                             data-default-address="$DEFAULT_ADDR.getAddress()"><span
+                        <div class="addressItem-address addressDefault-address"><span
                                 class="addressTitle">收货地址:</span>
                             {{addressls[0].address}}
                         </div>
-                        <div class="addressItem-phone addressDefault-phone"
-                             data-default-phone="$DEFAULT_ADDR.getPhone()"><span
+                        <div class="addressItem-phone addressDefault-phone"><span
                                 class="addressTitle">联系电话:</span> {{addressls[0].phone}}
                         </div>
                     </div>
-                    <div class="addressItem-bage" ng-click="goToAddressList()">
+                    <div class="addressItem-bage" >
                         <div class="swithDefaultAddress">
                             <span><img src="/images/forward-64.png" class="base-icon-forword"></span>
                         </div>
@@ -26,7 +24,7 @@
                 </div>
             </div>
             <div class="js-addAddress firstTimeAddAddress"
-                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-show="addressls && !addressls.length">
+                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-show="info.showAddNewAddress">
                 <div class="addNewAddressHint" style="text-shadow:none">
                     您还没有添加收货人信息,请添加
                 </div>

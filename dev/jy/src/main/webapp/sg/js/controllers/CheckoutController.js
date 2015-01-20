@@ -5,25 +5,31 @@ angular.module('miaomiao.shop')
         $scope.shop = localStorageService.get('shop');
 
         $ionicLoading.show({
-            template: '正在加载，请稍候...'
+            template: '正在核对,请稍候...'
         });
 
         $scope.info = {};
         $scope.info.address = {};
         $scope.info.newOrderAddress = '';
         $scope.info.newOrderPhone = '';
+        $scope.info.showAddNewAddress = true;
 
         httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function(data, status){
 
             $ionicLoading.hide();
 
             var code = data.code, dataDetail = data.data;
-            if (!code == 0) {
+            if (code == 500) {
                 $ionicPopup.alert({
-                    title: '加载数据失败',
+                    title: '加载数据失败:' + data.msg,
                     template: ''
                 });
                 return;
+            }else if(code == 100){
+                $ionicPopup.alert({
+                    title: '部分商品不足，请谨慎购买:' + data.msg,
+                    template: ''
+                });
             }
 
             $scope.shop = dataDetail.shop;
@@ -33,8 +39,8 @@ angular.module('miaomiao.shop')
                 var item = dataDetail.itemls[i];
                 for(var j=0; j < $scope.shoppingCartItems.length;j++ ){
                     if(item.id == $scope.shoppingCartItems[j].id){
-                        if(item.ext != item.count){
-                            $scope.shoppingCartItems[j].message = '库存不足';
+                        if(item.info){
+                            $scope.shoppingCartItems[j].message = item.info;
                         }
                     }
                 }
@@ -42,6 +48,10 @@ angular.module('miaomiao.shop')
 
             $scope.addressls = dataDetail.addressls;
             $scope.info.address = $scope.addressls && $scope.addressls[0];
+
+            if($scope.info.address){
+                $scope.info.showAddNewAddress = false;
+            }
 
         },function(data, status){
 
@@ -63,7 +73,7 @@ angular.module('miaomiao.shop')
 
             item.count += 1;
 
-            ShoppingCart.itemChangeEventTriggered(item);
+            ShoppingCart.itemChangeEventInShoppingCart(item);
         }
 
         $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
@@ -75,7 +85,7 @@ angular.module('miaomiao.shop')
                 ShoppingCart.removeItemFromCart(item);
             }
 
-            ShoppingCart.itemChangeEventTriggered(item);
+            ShoppingCart.itemChangeEventInShoppingCart(item);
         }
 
         function isValidTelNumber(number) {
@@ -104,23 +114,30 @@ angular.module('miaomiao.shop')
             }
 
             $ionicLoading.show({
-                template: '正在生成订单...'
+                template: '正在生成订单,请稍候...'
             });
 
             httpClient.getOrderSave($scope.shop.id,$scope.info.address.address_id,$scope.info.address.address,$scope.info.address.phone,
-                $scope.info.remarks, $scope.shoppingCartItems,$scope.info.order_id, function(data, status){
+                $scope.info.remarks || '', $scope.shoppingCartItems,$scope.info.order_id, function(data, status){
 
                 $ionicLoading.hide();
 
-                var code = data.code, dataDetail = data.data;
-                if (!code == 0) {
-                    $ionicPopup.alert({
-                        title: '生成订单失败，请重新购买',
-                        template: ''
-                    });
-                    return;
-                }
-                $state.go('orderSuccess');
+                    var code = data.code, dataDetail = data.data;
+                    if (code == 500) {
+                        $ionicPopup.alert({
+                            title: '生成订单失败，请重新购买:' + data.msg,
+                            template: ''
+                        });
+                        return;
+                    }else if(code == 100){
+                        $ionicPopup.alert({
+                            title: '部分商品不足，请重新购买:' + data.msg,
+                            template: ''
+                        });
+                        return;
+                    }
+
+                    $state.go('orderSuccess');
 
             },function(data, status){
                 $ionicLoading.hide();

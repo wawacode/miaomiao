@@ -17,14 +17,10 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
 
     var doPost = function (path, params, success, fail) {
 
-//        var transform = function(data){
-//            return $.param(data);
-//        }
 
         $http.post(path, params,
             {
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-//                transformRequest: transform
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
             }).
             success(function (data, status, headers, config) {
                 success(data, status, headers, config)
@@ -49,6 +45,24 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
         getAddressList: function (shopId, success, fail) {
             doGet('address', 'shop_id=' + shopId, success, fail);
         },
+
+        setDefaultAddress: function (shopId, addr , success, fail) {
+
+            doPost('address/default?shop_id=' + shopId,
+                {'address_id': addr.id,
+                    'address': addr.address, 'phone': addr.phone},
+                success, fail);
+
+        },
+
+        addAddress: function (shopId, addr , success, fail) {
+
+            doPost('address/add?shop_id=' + shopId,
+                { 'address': addr.address, 'phone': addr.phone },
+                success, fail);
+
+        },
+
         getConfirmCartList: function (shopId, items, success, fail) {
             doPost('shopCar/confirm?shop_id=' + shopId, {'items': JSON.stringify(items)}, success, fail);
         },
@@ -58,6 +72,10 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
                     'address': address, 'phone': phone,
                     'remarks': remarks, 'order_id': orderId},
                 success, fail);
+        },
+
+        getMyOrders: function (shopId, success, fail) {
+            doGet('user/profile', 'shop_id=' + shopId, success, fail);
         }
 
     };

@@ -76,6 +76,16 @@ miaomiao.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: '/views/sg/templates/addAddress.html',
                 controller: 'AddAddressCtrl'
             })
+            .state('userAddressList', {
+                url: '/useraddresslist',
+                templateUrl: '/views/sg/templates/addressList.html',
+                controller: 'UserAddressListCtrl'
+            })
+            .state('userAddAddress', {
+                url: '/useraddaddress',
+                templateUrl: '/views/sg/templates/addAddress.html',
+                controller: 'UserAddAddressCtrl'
+            })
             .state('orderSuccess', {
                 url: '/ordersuccess',
                 templateUrl: '/views/sg/templates/orderSuccess.html',

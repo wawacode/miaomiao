@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('AddressListCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,httpClient) {
+    .controller('UserAddressListCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,httpClient) {
 
         $scope.shop = localStorageService.get('shop');
 
@@ -28,6 +28,7 @@ angular.module('miaomiao.shop')
             }
 
         },function(data, status){
+
             $scope.addressls = [];
             $ionicPopup.alert({
                 title: '加载数据失败,请刷新',
@@ -36,7 +37,7 @@ angular.module('miaomiao.shop')
         })
 
         $scope.goToAddNewAddress = function(){
-            $state.go('addAddress');
+            $state.go('userAddAddress');
         }
 
         $scope.setDefaultAddress = function(addr){
@@ -63,7 +64,7 @@ angular.module('miaomiao.shop')
 
                 $ionicLoading.hide();
 
-                $state.go('checkout',null, { reload: true });
+                $state.go('myOrders',null, { reload: true });
 
 
             },function(data, status){
@@ -74,7 +75,6 @@ angular.module('miaomiao.shop')
                 });
             })
         }
-
 
     });
 

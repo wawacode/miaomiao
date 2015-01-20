@@ -7,6 +7,8 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     $scope.currentDisplayCategory = {};
     $scope.currentDisplayItems = [];
     $scope.info = {};
+    $scope.shop = {};
+    $scope.shop.name = "喵喵生活";
 
     $timeout(function () {
         httpClient.getProductList($scope.shopId, function (data, status) {
@@ -116,8 +118,10 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
 
     function updateShoppingCart(){
+
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
+
     }
 
     updateShoppingCart();
@@ -128,8 +132,9 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         $scope.currentDisplayCategory.totalCnt += 1;
 
         ShoppingCart.addItemToCart(item);
-
         updateShoppingCart();
+
+        ShoppingCart.itemChangeEventInProductList(item);
 
     }
 
@@ -139,13 +144,15 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         item.count = item.count <= 0 ? 0: item.count;
 
         ShoppingCart.removeItemFromCart(item);
-
         updateShoppingCart();
+
+        ShoppingCart.itemChangeEventInProductList(item);
 
         $scope.currentDisplayCategory.totalCnt -= 1;
         $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ? $scope.currentDisplayCategory.totalCnt : 0;
 
     }
+
 
     $scope.checkout = function () {
 
@@ -159,11 +166,19 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         $scope.info.showCart = ! $scope.info.showCart;
     }
 
-    // we update item slection in shopping car ,will have to update shop list
 
-    ShoppingCart.onItemChangeEventTriggered($scope, function (message) {
+    function fullyUpdateForProductList(){
+        for (var idx = 0; idx < $scope.categoryls.length; idx++) {
+            $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
 
-        var item = message.item;
+            for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
+                var itm =  $scope.categoryls[idx].itemls[item_idx];
+                itm.count = ShoppingCart.getCountForItem(itm);
+            }
+        }
+    }
+
+    function partUpdateForProductList(item){
 
         // handle item change event
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
@@ -181,6 +196,19 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                 break;
             }
         }
+    }
+
+
+    // we update item slection in shopping car ,will have to update shop list
+
+    ShoppingCart.onItemChangeEventInShoppingCart($scope, function (message) {
+
+        var item = message.item;
+        if(item){
+            partUpdateForProductList(item);
+        }else{
+            fullyUpdateForProductList();
+        }
     });
 
     $rootScope.$on('$stateChangeStart',
@@ -188,14 +216,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
             if(toState.url=='/productlist'){
                 // back to self page, do a  reload
                 // handle item change event
-                for (var idx = 0; idx < $scope.categoryls.length; idx++) {
-                    $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
-
-                    for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                        var itm =  $scope.categoryls[idx].itemls[item_idx];
-                        itm.count = ShoppingCart.getCountForItem(itm);
-                    }
-                }
+                fullyUpdateForProductList();
             }
     });
 });

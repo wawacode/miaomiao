@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('AddAddressCtrl', function ($scope, $ionicLoading,$ionicPopup, $http, $state, localStorageService,httpClient) {
+    .controller('UserAddAddressCtrl', function ($scope, $ionicPopup,$ionicLoading, $http, $state, localStorageService,httpClient,$sessionStorage) {
 
         $scope.shop = localStorageService.get('shop');
         $scope.address = {};
@@ -37,10 +37,25 @@ angular.module('miaomiao.shop')
                     return;
                 }
 
-                $ionicLoading.hide();
+                httpClient.getMyOrders($scope.shop.id ,function(data, status){
 
-                $state.go('checkout',null, { reload: true });
+                    var code = data.code, dataDetail = data.data;
 
+                    $scope.shop = dataDetail.shop;
+                    $scope.addressls = dataDetail.addressls;
+                    $scope.orders = dataDetail.orders;
+
+                    $sessionStorage.orderAddresses = $scope.addressls;
+                    $sessionStorage.orderOrders = $scope.orders;
+
+                    $ionicLoading.hide();
+
+                    $state.go('myOrders',null, { reload: true });
+
+                },function(data, status){
+                    $ionicLoading.hide();
+                    $state.go('myOrders',null, { reload: true });
+                });
 
             },function(data, status){
 
@@ -49,15 +64,14 @@ angular.module('miaomiao.shop')
                     template: ''
                 });
 
-                $state.go('addressList');
+                $state.go('userAddressList');
             })
         }
 
         $scope.addNewAddressCancel = function(){
 
-            $state.go('checkout', null, { reload: false });
+            $state.go('myOrders', null, { reload: false });
 
         }
-
     });
 

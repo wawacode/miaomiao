@@ -1,25 +1,36 @@
 angular.module('miaomiao.shop')
-    .controller('OrderSuccessCtrl', function ($scope, $ionicLoading, $http, $state, $timeout,localStorageService) {
+    .controller('OrderSuccessCtrl', function ($scope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage) {
 
-        $scope.counter = 3;
+        $scope.shop = localStorageService.get('shop');
 
+        httpClient.getMyOrders($scope.shop.id ,function(data, status){
 
-        $scope.onTimeout = function(){
-
-            mytimeout = $timeout($scope.onTimeout,1000);
-
-            $scope.counter--;
-
-            if($scope.counter == 0){
-
-                $timeout.cancel(mytimeout);
-
-                $state.go('myOrders');
-
+            var code = data.code, dataDetail = data.data;
+            if (code == 500) {
+                $ionicPopup.alert({
+                    title: '加载数据失败:' + data.msg,
+                    template: ''
+                });
+                return;
             }
-        }
 
-        var mytimeout = $timeout($scope.onTimeout,1000);
+            $scope.shop = dataDetail.shop;
+            $scope.addressls = dataDetail.addressls;
+            $scope.orders = dataDetail.orders;
+
+            $sessionStorage.orderAddresses = $scope.addressls;
+            $sessionStorage.orderOrders = $scope.orders;
+
+            $state.go('myOrders');
+
+
+        },function(data, status){
+
+            $ionicPopup.alert({
+                title: '加载数据失败,请刷新',
+                template: ''
+            });
+        })
 
     });
 

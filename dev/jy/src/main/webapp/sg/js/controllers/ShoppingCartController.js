@@ -7,7 +7,7 @@ angular.module('miaomiao.shop')
 
             item.count += 1;
 
-            ShoppingCart.itemChangeEventTriggered(item);
+            ShoppingCart.itemChangeEventInShoppingCart(item);
         }
 
         $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
@@ -19,7 +19,18 @@ angular.module('miaomiao.shop')
                 ShoppingCart.removeItemFromCart(item);
             }
 
-            ShoppingCart.itemChangeEventTriggered(item);
+            ShoppingCart.itemChangeEventInShoppingCart(item);
         }
+
+        $scope.clearShoppingCart = function(){
+            $scope.shoppingCartItems = [];
+            ShoppingCart.clearAll();
+        }
+
+        ShoppingCart.onItemChangeEventInProductList($scope, function (message) {
+
+            $scope.shoppingCartItems = ShoppingCart.getAllItems();
+
+        });
     });
 

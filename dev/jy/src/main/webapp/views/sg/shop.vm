@@ -27,6 +27,8 @@
     <script src="/sg/js/controllers/MyOrdersController.js"></script>
     <script src="/sg/js/controllers/ShoppingCartController.js"></script>
     <script src="/sg/js/controllers/OrderSuccessCtroller.js"></script>
+    <script src="/sg/js/controllers/UserAddAddressController.js"></script>
+    <script src="/sg/js/controllers/UserAddressListController.js"></script>
 
 
 </head>

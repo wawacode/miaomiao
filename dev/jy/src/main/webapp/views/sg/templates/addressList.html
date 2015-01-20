@@ -1,7 +1,4 @@
 <ion-view>
-    <ion-header-bar class="bar-lightgary" style="text-align: left;height: 29px">
-
-    </ion-header-bar>
 
     <ion-content padding="false"
                  has-tabs="false"
@@ -10,16 +7,18 @@
         <div class="" style="overflow: hidden;">
             <div class="">
                 <div class="addressListSelection">
-                    <div class="addressItem addressCandidate addressSelected" ng-repeat="addr in addressls">
+                    <div class="addressItem addressCandidate" ng-class="{'addressSelected': addr.isDefault ,'addressUnselected':  !addr.isDefault}"
+                         ng-repeat="addr in addressls"
+                            ng-click="setDefaultAddress(addr)">
 
                         <div class="addressAndBadge" style="">
                             <div class="addressItem-address"><span
                                     class="addressTitle">收货地址:</span><span
-                                    class="addressAddrValue">addr.address</span>
+                                    class="addressAddrValue">{{addr.address}}</span>
                             </div>
                             <div class="addressItem-phone"><span
                                     class="addressTitle">联系电话:</span><span
-                                    class="addressPhoneValue">addr.phone</span>
+                                    class="addressPhoneValue">{{addr.phone}}</span>
                             </div>
                         </div>
                         <div class="addressItem-bage">
@@ -29,8 +28,8 @@
                         </div>
                     </div>
 
-                    <div style="text-align: center;padding-top: 30px;display: inline-block;width: 100%;">
-                        <div class="addressButton useNewAddress">使用其他地址</div>
+                    <div style="text-align: center;padding-top: 30px;display: inline-block;width: 100%;" ng-show="addressls">
+                        <div class="addressButton useNewAddress" ng-click="goToAddNewAddress()">使用其他地址</div>
                     </div>
                 </div>
             </div>

@@ -1,22 +1,22 @@
 <ion-view>
-    <ion-header-bar class="bar-lightgary" style="text-align: left;height: 29px">
-
-    </ion-header-bar>
 
     <ion-content padding="false"
                  has-tabs="false"
-                 has-header="false" style="top: 29">
-        <div style="padding: 15px 9px;display: none"
-             class="addNewAddressIntoList js-addAddress">
+                 has-header="false">
 
+        <div style="" class="addNewAddressIntoList js-addAddress">
+
+            <div class="addNewAddressHint" style="text-shadow:none">
+                添加收货人信息
+            </div>
             <div style="border-bottom: solid 1px lightgray;padding: 0px 0px 9px 0px">
                 <input class="addOrderAddress" type="text" placeholder="收货地址:" ng-model='address.address' value="">
                 <input class="addOrderPhone" type="number" placeholder="联系电话:" ng-model='address.phone' value="">
             </div>
 
             <div style="text-align: center;padding-top: 20px;display: inline-block;width: 100%">
-                <div class="newAddressButton confirmNewAddress" style="">确定</div>
-                <div class="newAddressButton cancelNewAddress" style="margin-left: 10px">取消
+                <div class="newAddressButton confirmNewAddress" style="" ng-click="addNewAddressConfirm()">确定</div>
+                <div class="newAddressButton cancelNewAddress" style="margin-left: 10px" ng-click="addNewAddressCancel()">取消
                 </div>
             </div>
         </div>
