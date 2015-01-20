@@ -67,10 +67,15 @@
                 <button class="button button-outline button-icon ion-ios7-person" ng-click=""></button>
             </div>
 
-            <a href="loading#/findshop" data-ajax="false" style="cursor:pointer;
-            text-decoration:none; color:#000000;font-size: 18px;font-weight: normal">
-                $shop.name<i class="fa fa-angle-down" style="padding-left: 5px"></i>
-            </a>
+
+            <h1 class="title">
+                <!--<a href="loading#/findshop" data-ajax="false" style="cursor:pointer;-->
+            <!--text-decoration:none; color:#000000;font-size: 18px;font-weight: normal">-->
+                    <!--$shop.name<i class="fa fa-angle-down" style="padding-left: 5px"></i>-->
+                <!--</a>-->
+
+                $shop.name
+            </h1>
 
             <div class="buttons">
                 <button class="button button-outline button-icon ion-ios7-search assertive"></button>
