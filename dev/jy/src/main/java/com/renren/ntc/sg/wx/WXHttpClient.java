@@ -121,16 +121,30 @@ public class WXHttpClient {
             return ;
         }
         JSONObject ob =(JSONObject) JSONObject.parse(e);
-//        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
 
-        String url = "https://api.weixin.qq.com/datacube/getusersummary?access_token={token}";
-        url = url.replace("{token}",ob.getString("access_token")) ;
+        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
+        url = url.replace("{token}",ob.getString("access_token"));
         JSONObject jb = new JSONObject() ;
-        jb.put("begin_date","2015-01-19") ;
-        jb.put("end_date","2015-01-20") ;
+        jb.put("action_name","QR_LIMIT_STR_SCENE") ;
+        JSONObject action_info = new JSONObject() ;
+        JSONObject scene_str = new JSONObject() ;
+        scene_str.put("scene_str",12) ;
+        action_info.put("scene",scene_str);
+        jb.put("action_info",action_info) ;
+
         t = WXHttpClient.sendPostRequest(url,jb.toJSONString() ) ;
         e = new String(t);
-            System.out.println("rec data "+e);
+        System.out.println("rec data "+e);
+
+//        {"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "123"}}}
+//        String url = "https://api.weixin.qq.com/datacube/getusersummary?access_token={token}";
+//        url = url.replace("{token}",ob.getString("access_token")) ;
+//        JSONObject jb = new JSONObject() ;
+//        jb.put("begin_date","2015-01-19") ;
+//        jb.put("end_date","2015-01-20") ;
+//        t = WXHttpClient.sendPostRequest(url,jb.toJSONString() ) ;
+//        e = new String(t);
+//            System.out.println("rec data "+e);
 
     }
 }

@@ -123,13 +123,4 @@ public class HomeController {
     public String test(Invocation inv) {
         return "tool";
     }
-
-
-    @Get("rd")
-    @Post("rd")
-    public String rd(Invocation inv) {
-         String url = "" ;
-
-        return "r:" + "/" ;
-    }
 }
