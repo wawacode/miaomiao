@@ -1,7 +1,9 @@
 package com.renren.ntc.sg.wx;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,10 +17,10 @@ public class WXHttpClient {
 
 
 
-    private static String encodingAesKey = "00WsV2hbh3BYF08ycvHn8qAjPXRjtaFNeRJTA3UwElu";
-    private static String token = "toooken";
-    private static String appKey = "84f42e0563644d1608814d5b1c2ec1d8";
-    private static String appId = "wx871a815b6738e26d";
+    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
+    private static String token = "tooooken";
+    private static String appKey = "ebd5d6bf4c597a617b2420341da1c03d";
+    private static String appId = "wxd64a39a599e2ce3a";
 
 	private static final int CONN_TIMEOUT = 10000;
 	private static final int READ_TIMEOUT = 10000;
@@ -92,7 +94,7 @@ public class WXHttpClient {
 
         // Create a method instance.
         PostMethod method = new PostMethod(url);
-        method.setParameter("data",postParam );
+        method.setRequestBody(postParam);
         try {
             client.executeMethod(method);
             byte[] responseBody = method.getResponseBody();
@@ -104,15 +106,31 @@ public class WXHttpClient {
         return null;
     }
 
+    public static String  getTicket(){
+
+           return "" ;
+    }
+
     public static void main(String[] args) throws IOException {
          byte [] t = WXHttpClient.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
                 "grant_type=client_credential&appid=" + appId +"&secret=" + appKey);
           String e = new String(t);
-        System.out.println(" return " + e);
+        System.out.println(e);
+        if (StringUtils.isBlank(e)){
+            System.out.println("rec"+e);
+            return ;
+        }
+        JSONObject ob =(JSONObject) JSONObject.parse(e);
+//        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
 
-
-        String access_token = "wfrtExTPf-1XyCXYpMomMkVsfQchVGNKg6SFxVPHwzhHfpT6Idm7G1AGEE3NfIMSafTHEl-BrNMhk0rzI-0SsAOM5SL4fJHM2TrjYuN32aA";
-
+        String url = "https://api.weixin.qq.com/datacube/getusersummary?access_token={token}";
+        url = url.replace("{token}",ob.getString("access_token")) ;
+        JSONObject jb = new JSONObject() ;
+        jb.put("begin_date","2015-01-19") ;
+        jb.put("end_date","2015-01-20") ;
+        t = WXHttpClient.sendPostRequest(url,jb.toJSONString() ) ;
+        e = new String(t);
+            System.out.println("rec data "+e);
 
     }
 }
