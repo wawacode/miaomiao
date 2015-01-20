@@ -16,6 +16,8 @@
     <script src="/sg/js/services/directives.js"></script>
     <script src="/sg/js/services/filters.js"></script>
     <script src="/sg/js/services/services.js"></script>
+    <script src="/sg/js/services/shoppingCart.js"></script>
+
     <script src="/sg/js/controllers/ShopController.js"></script>
     <script src="/sg/js/controllers/CheckoutController.js"></script>
     <script src="/sg/js/controllers/AddressListController.js"></script>
@@ -157,7 +159,7 @@
             </div>
             <div class="footer-container-right base-cart-prepare js-cart-checkout" style="">
                 <button class="sidebar-cart-checkout js-cart-checkout"
-                        ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip() }" ng-click="checkout()">
+                        ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip }" ng-click="checkout()">
                     <span class=" base-font js-checkout-hit">去结算</span>
                         <span class="base-font"><br>
                             总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>
@@ -274,8 +276,8 @@
                         您还没有添加收货人信息,请添加
                     </div>
                     <div style="padding: 15px 9px;">
-                        <input id="newOrderAddress" type="text" placeholder="收货地址:" value="">
-                        <input id="newOrderPhone" type="number" placeholder="联系电话:" value="">
+                        <input id="newOrderAddress" type="text" placeholder="收货地址:" value="" ng-model="newOrderAddress">
+                        <input id="newOrderPhone" type="number" placeholder="联系电话:" value="" ng-model="newOrderPhone">
                     </div>
                 </div>
 

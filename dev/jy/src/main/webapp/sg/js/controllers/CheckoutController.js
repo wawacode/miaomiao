@@ -1,7 +1,7 @@
 angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope, $ionicLoading,$ionicPopup, $http, $state, localStorageService, httpClient) {
+    .controller('CheckoutCtrl', function ($scope, $ionicLoading,$ionicPopup, $http, $state, localStorageService, httpClient,ShoppingCart) {
 
-        $scope.shoppingCartItems = localStorageService.get('shoppingCart');
+        $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.shop = localStorageService.get('shop');
 
         $ionicLoading.show({
@@ -40,22 +40,10 @@ angular.module('miaomiao.shop')
         }
 
 
-        function updateShoppingCart(){
-
-            var totalCnt = 0,totalPrice = 0.0;
-            for (var item_idx = 0; item_idx < $scope.checkedShoppingCartItems.length; item_idx++) {
-                totalCnt += parseInt($scope.checkedShoppingCartItems[item_idx].count || 0);
-                totalPrice += parseFloat($scope.checkedShoppingCartItems[item_idx].price || 0.0) * parseInt($scope.checkedShoppingCartItems[item_idx].count || 0);
-            }
-
-            $scope.shoppingCartTotalCount = totalCnt;
-            $scope.shoppingCartTotalPrice = totalPrice/100.0;
-
-        }
-
         $scope.cartReadyToShip = function(){
-            updateShoppingCart();
-            return $scope.shoppingCartTotalPrice >= 20.0;
+
+            return ShoppingCart.cartReadyToShip();
+
         }
 
 
