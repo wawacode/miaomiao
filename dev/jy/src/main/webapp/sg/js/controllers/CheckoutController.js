@@ -8,6 +8,11 @@ angular.module('miaomiao.shop')
             template: 'Loading Data...'
         });
 
+        $scope.info = {};
+        $scope.info.address = {};
+        $scope.info.newOrderAddress = '';
+        $scope.info.newOrderPhone = '';
+
         httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function(data, status){
 
             $ionicLoading.hide();
@@ -37,6 +42,7 @@ angular.module('miaomiao.shop')
             }
 
             $scope.addressls = dataDetail.addressls;
+            $scope.info.address = $scope.addressls && $scope.addressls[0];
 
         },function(data, status){
 
@@ -59,11 +65,6 @@ angular.module('miaomiao.shop')
             item.count += 1;
 
             //TODO: emit to let shop controller know the category changed
-//            $scope.currentDisplayCategory.totalCnt += 1;
-
-//            ShoppingCart.addItemToCart(item);
-
-//            updateShoppingCart();
 
         }
 
@@ -77,18 +78,40 @@ angular.module('miaomiao.shop')
             }
 
             //TODO: emit to let shop controller know the category changed
-//            $scope.currentDisplayCategory.totalCnt -= 1;
-//            $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ? $scope.currentDisplayCategory.totalCnt : 0;
 
         }
 
+        function isValidTelNumber(number) {
+            var regPhone = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+            var regMobile = /^1[3|4|5|6|7|8|9][0-9]{1}[0-9]{8}$/;
+            return regPhone.test(number) || regMobile.test(number);
+        }
+
+
+
         $scope.confirmCheckout = function(){
+
+            if($scope.addressls && $scope.addressls.length){
+                $scope.info.address =  $scope.addressls[0];
+            }else{
+                $scope.info.address = {'address_id':'','address':$scope.info.newOrderAddress,'phone':$scope.info.newOrderPhone};
+
+                if(!$scope.info.newOrderAddress || !$scope.info.newOrderPhone ||
+                    ! isValidTelNumber($scope.info.newOrderPhone)){
+                    $ionicPopup.alert({
+                        title: '请填写正确的地址电话',
+                        template: ''
+                    });
+                    return;
+                }
+            }
 
             $ionicLoading.show({
                 template: '正在生成订单...'
             });
 
-            httpClient.getOrderSave($scope.shop.id, $scope.checkedShoppingCartItems, function(data, status){
+            httpClient.getOrderSave($scope.shop.id,$scope.info.address.address_id,$scope.info.address.address,$scope.info.address.phone,
+                $scope.info.remarks, $scope.shoppingCartItems,$scope.info.order_id, function(data, status){
 
                 $ionicLoading.hide();
 

@@ -120,7 +120,7 @@ public class OrderController {
         List<Item4V> itemls = new ArrayList<Item4V>();
         for (int i = 0; i < jbarr.size(); i++) {
             JSONObject jb = (JSONObject) jbarr.get(i);
-            long item_id = jb.getLong("item_id");
+            long item_id = jb.getLong("id");
             int count = jb.getInteger("count");
             Item item = itemsDAO.getItem(SUtils.generTableName(shop_id), shop_id, item_id);
             //计算库存是否足够

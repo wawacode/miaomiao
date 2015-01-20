@@ -5,7 +5,7 @@
                  has-header="true">
 
         <div class="mainContainer scroll">
-            <div class="" style="overflow: hidden" ng-if="addressls && addressls.length">
+            <div class="" style="overflow: hidden" ng-show="addressls && addressls.length">
                 <div class="addressItem addressDefault addressSelected">
                     <div class="addressAndBadge" style="">
                         <div class="addressItem-address addressDefault-address"
@@ -26,13 +26,13 @@
                 </div>
             </div>
             <div class="js-addAddress firstTimeAddAddress"
-                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-if="addressls && !addressls.length">
+                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-show="addressls && !addressls.length">
                 <div class="addNewAddressHint" style="text-shadow:none">
                     您还没有添加收货人信息,请添加
                 </div>
                 <div style="padding: 15px 9px;">
-                    <input id="newOrderAddress" type="text" placeholder="收货地址:" value="" ng-model="newOrderAddress">
-                    <input id="newOrderPhone" type="number" placeholder="联系电话:" value="" ng-model="newOrderPhone">
+                    <input id="newOrderAddress" type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress" required>
+                    <input id="newOrderPhone" type="number" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"  required>
                 </div>
             </div>
 
@@ -75,7 +75,7 @@
 
                 <ul class="remarks" style="margin-top: 1.0em; padding:0px 9px;" ng-show="shoppingCartItems.length">
                     <li style="padding: 0px 0px;display:block;">
-                        <input id="orderRemarks" type="text" placeholder="给卖家留言"
+                        <input id="orderRemarks" ng-model="info.remarks" type="text" placeholder="给卖家留言"
                                style="background-color: lightgray;text-shadow: none;font-size: 14px;">
                     </li>
                 </ul>
