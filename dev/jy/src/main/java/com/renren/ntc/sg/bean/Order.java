@@ -16,8 +16,8 @@ public class Order {
     private long   shop_id ;
     private long   user_id;
     private long address_id ;
-    private String remarks ;
-    private String snapshot ;
+    private String remarks ="";
+    private String snapshot="" ;
     private int status    ;
     private String info ;
 
