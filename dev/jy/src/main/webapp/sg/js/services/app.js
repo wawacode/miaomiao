@@ -58,7 +58,7 @@ miaomiao.config(function ($stateProvider, $urlRouterProvider) {
             .state('search', {
                 url: '/search',
                 templateUrl: '/views/sg/templates/search.html',
-                controller: 'ProductCtrl'
+                controller: 'SearchCtrl'
 
             })
             .state('checkout', {

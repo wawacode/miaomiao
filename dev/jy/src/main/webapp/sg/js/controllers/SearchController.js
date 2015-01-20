@@ -1,84 +1,11 @@
-angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
+angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
 
-    $ionicLoading.show({
-        template: 'Loading...'
-    });
 
-    $scope.currentDisplayCategory = {};
-    $scope.currentDisplayItems = [];
     $scope.info = {};
     $scope.shop = {};
     $scope.shop.name = "喵喵生活";
 
-    $timeout(function () {
-        httpClient.getProductList($scope.shopId, function (data, status) {
-            $ionicLoading.hide();
-
-            var code = data.code, dataDetail = data.data;
-            if (!code == 0) {
-                $ionicPopup.alert({
-                    title: '加载数据失败',
-                    template: ''
-                });
-                return;
-            }
-
-            $scope.shop = dataDetail.shop;
-            $scope.categoryls = dataDetail.categoryls;
-
-            // extend for use
-            /*
-             {"category_id":15,"category_sub_id":0,"id":0,
-             "itemls":[{"category_id":15,"category_sub_id":0,"count":956,"create_time":1419821656000,"ext":0,"id":28062,"name":"哈哈镜鸭爪买一赠一",
-             "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
-             "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
-             * */
-            for (var idx = 0; idx < $scope.categoryls.length; idx++) {
-
-                $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
-                $scope.categoryls[idx].selected = 0;
-                $scope.categoryls[idx].canLoadMore = 1;
-                if (idx == 0) {
-                    $scope.categoryls[idx].selected = 1;
-                }
-                for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                    var item =  $scope.categoryls[idx].itemls[item_idx];
-                    item.count = ShoppingCart.getCountForItem(item);
-                }
-            }
-
-            $scope.currentDisplayCategory = $scope.categoryls.length && $scope.categoryls[0];
-            $scope.currentDisplayItems = $scope.currentDisplayCategory && $scope.currentDisplayCategory.itemls;
-
-        }, function (data, status) {
-            $ionicLoading.hide();
-            $ionicPopup.alert({
-                title: '加载数据失败',
-                template: ''
-            });
-            return;
-        });
-    }, 0);
-
-    $scope.selectCategory = function (category) {
-
-        for (var idx = 0; idx < $scope.categoryls.length; idx++) {
-            $scope.categoryls[idx].selected = 0;
-        }
-        category.selected = 1;
-
-        $scope.currentDisplayCategory = category;
-        $scope.currentDisplayItems = category.itemls;
-
-    }
-
-    var canLoadMore = true, inLoadingMore = false;
-
-    $scope.moreDataCanBeLoaded = function () {
-        return $scope.currentDisplayCategory.canLoadMore;
-    }
-
-    $scope.addItems = function () {
+    $scope.performSearch = function (key) {
 
         var cateId = $scope.currentDisplayCategory.category_id,
             from = $scope.currentDisplayItems.length,
@@ -162,14 +89,9 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     }
 
-    $scope.goToSearch = function(){
-        $state.go('search',null, { reload: true });
-    }
-
     $scope.showShoppingCart = function(){
         $scope.info.showCart = ! $scope.info.showCart;
     }
-
 
     function fullyUpdateForProductList(){
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
@@ -215,13 +137,5 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         }
     });
 
-    $rootScope.$on('$stateChangeStart',
-        function (event, toState, toParams){
-            if(toState.url=='/productlist'){
-                // back to self page, do a  reload
-                // handle item change event
-                fullyUpdateForProductList();
-            }
-    });
 });
 
