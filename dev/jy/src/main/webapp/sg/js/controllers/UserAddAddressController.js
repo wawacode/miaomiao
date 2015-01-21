@@ -22,8 +22,10 @@ angular.module('miaomiao.shop')
                 return;
             }
 
+            $scope.LoadingMessage = '正在添加新地址...';
             $ionicLoading.show({
-                template: '正在添加新地址...'
+                templateUrl: '/views/sg/templates/loadingIndicator.html',
+                scope: $scope
             });
 
             httpClient.addAddress($scope.shop.id, $scope.address, function(data, status){

@@ -3,8 +3,10 @@ angular.module('miaomiao.shop')
 
         $scope.shop = localStorageService.get('MMMETA_shop');
 
+        $scope.LoadingMessage = '正在加载地址列表...';
         $ionicLoading.show({
-            template: '正在加载地址列表...'
+            templateUrl: '/views/sg/templates/loadingIndicator.html',
+            scope: $scope
         });
 
         httpClient.getAddressList($scope.shop.id ,function(data, status){
@@ -46,8 +48,10 @@ angular.module('miaomiao.shop')
             }
             addr.isDefault = true;
 
+            $scope.LoadingMessage = '正在切换默认地址...';
             $ionicLoading.show({
-                template: '正在切换默认地址...'
+                templateUrl: '/views/sg/templates/loadingIndicator.html',
+                scope: $scope
             });
 
             httpClient.setDefaultAddress($scope.shop.id, addr, function(data, status){

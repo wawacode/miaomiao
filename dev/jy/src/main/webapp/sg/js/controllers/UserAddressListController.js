@@ -47,8 +47,10 @@ angular.module('miaomiao.shop')
             }
             addr.isDefault = true;
 
+            $scope.LoadingMessage = '正在切换默认地址...';
             $ionicLoading.show({
-                template: '正在切换默认地址...'
+                templateUrl: '/views/sg/templates/loadingIndicator.html',
+                scope: $scope
             });
 
             httpClient.setDefaultAddress($scope.shop.id, addr, function(data, status){

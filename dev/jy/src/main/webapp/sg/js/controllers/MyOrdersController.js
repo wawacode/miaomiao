@@ -27,8 +27,10 @@ angular.module('miaomiao.shop')
 
         function reloadInfo(){
 
+            $scope.LoadingMessage = '正在加载,请稍候...';
             $ionicLoading.show({
-                template: '正在加载,请稍候...'
+                templateUrl: '/views/sg/templates/loadingIndicator.html',
+                scope: $scope
             });
 
             httpClient.getMyOrders($scope.shop.id ,function(data, status){

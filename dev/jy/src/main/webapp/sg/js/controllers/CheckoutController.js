@@ -10,8 +10,10 @@ angular.module('miaomiao.shop')
         $scope.info.newOrderPhone = '';
         $scope.info.showAddNewAddress = false;
 
+        $scope.LoadingMessage = '正在核对,请稍候...';
         $ionicLoading.show({
-            template: '正在核对,请稍候...'
+            templateUrl: '/views/sg/templates/loadingIndicator.html',
+            scope: $scope
         });
 
         httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function (data, status) {
@@ -113,8 +115,10 @@ angular.module('miaomiao.shop')
                 }
             }
 
+            $scope.LoadingMessage = '正在生成订单,请稍候...';
             $ionicLoading.show({
-                template: '正在生成订单,请稍候...'
+                templateUrl: '/views/sg/templates/loadingIndicator.html',
+                scope: $scope
             });
 
             httpClient.getOrderSave($scope.shop.id, $scope.info.address.address_id, $scope.info.address.address, $scope.info.address.phone,
@@ -160,8 +164,10 @@ angular.module('miaomiao.shop')
 
         function updateDefaultOrderAddress() {
 
+            $scope.LoadingMessage = '正在更新地址...';
             $ionicLoading.show({
-                template: '正在更新地址...'
+                templateUrl: '/views/sg/templates/loadingIndicator.html',
+                scope: $scope
             });
 
             httpClient.getAddressList($scope.shop.id, function (data, status) {

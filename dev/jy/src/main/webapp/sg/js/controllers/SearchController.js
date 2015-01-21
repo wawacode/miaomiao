@@ -11,10 +11,11 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
         var KEY = key || $scope.info.key;
 
+        $scope.LoadingMessage = '正在搜索...';
         $ionicLoading.show({
-            template: '正在搜索...'
+            templateUrl: '/views/sg/templates/loadingIndicator.html',
+            scope: $scope
         });
-
 
         httpClient.getSearchResults($scope.shop.id, KEY, function (data, status) {
 

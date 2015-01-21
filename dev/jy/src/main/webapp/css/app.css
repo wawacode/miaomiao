@@ -1001,3 +1001,12 @@ body {
     right: 0;
     top: 0;
 }
+
+.loading{
+    /*background-color: rgba(0, 0, 0, 0.7) !important;*/
+}
+
+.icon{
+    font-size: 35px !important;
+    padding: 0;
+}
