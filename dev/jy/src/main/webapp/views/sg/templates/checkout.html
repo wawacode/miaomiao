@@ -4,9 +4,11 @@
         商品结算
     </ion-nav-title>
 
-    <ion-content padding="true"
+    <ion-content padding="false"
                  has-tabs="false"
-                 has-header="true">
+                 has-header="true"
+                 scroll="false"
+                 style="bottom: 49px;">
 
         <div class="mainContainer scroll">
             <div class="" style="overflow: hidden" ng-show="!info.showAddNewAddress">
@@ -20,7 +22,7 @@
                                 class="addressTitle">联系电话:</span> {{addressls[0].phone}}
                         </div>
                     </div>
-                    <div class="addressItem-bage" >
+                    <div class="addressItem-bage">
                         <div class="swithDefaultAddress">
                             <span><img src="/images/forward-64.png" class="base-icon-forword"></span>
                         </div>
@@ -33,8 +35,10 @@
                     您还没有添加收货人信息,请添加
                 </div>
                 <div style="padding: 15px 9px;">
-                    <input id="newOrderAddress" type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress" required>
-                    <input id="newOrderPhone" type="number" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"  required>
+                    <input id="newOrderAddress" type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress"
+                           required>
+                    <input id="newOrderPhone" type="number" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"
+                           required>
                 </div>
             </div>
 
@@ -69,7 +73,8 @@
                     </li>
                 </ul>
 
-                <ul class="no-item-hint" style="padding:0px 9px;text-align: center;" ng-show="shoppingCartItems && shoppingCartItems.length == 0">
+                <ul class="no-item-hint" style="padding:0px 9px;text-align: center;"
+                    ng-show="shoppingCartItems && shoppingCartItems.length == 0">
                     <div style="font-size: 14px;padding-top: 50px;padding-bottom: 50px;">
                         <a href="javascript:;" ui-sref="productList" ng-click="goback()"> 点击返回,重新下单 </a>
                     </div>
@@ -85,21 +90,22 @@
         </div>
         </div>
 
-        <ion-footer-bar class="bar-light" style="padding:0;overflow: hidden;height: 49">
 
-            <div style="text-align: center;height: 100%; width: 100%; padding: 0em;">
-                <button class="sidebar-cart-checkout js-cart-checkout"
-                        ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip }" ng-click="confirmCheckout()">
-                    <span class="base-font js-checkout-hit">货到付款</span>
+    </ion-content>
+
+    <ion-footer-bar class="bar-light" style="padding:0;overflow: hidden;height: 49">
+
+        <div style="text-align: center;height: 100%; width: 100%; padding: 0em;">
+            <button class="sidebar-cart-checkout js-cart-checkout"
+                    ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip }" ng-click="confirmCheckout()">
+                <span class="base-font js-checkout-hit">货到付款</span>
                         <span class="base-font"><br>
                             总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>
-                    <span class="base-font rmbSpan">￥</span><span id="js-shop-total-price"
-                                                                  class="js-shop-total-price base-font">{{shoppingCartItems | getTotolPrice}}</span>
-                </button>
-            </div>
+                <span class="base-font rmbSpan">￥</span><span id="js-shop-total-price"
+                                                              class="js-shop-total-price base-font">{{shoppingCartItems | getTotolPrice}}</span>
+            </button>
+        </div>
 
-        </ion-footer-bar>
-
-        </ion-content>
+    </ion-footer-bar>
 
 </ion-view>
