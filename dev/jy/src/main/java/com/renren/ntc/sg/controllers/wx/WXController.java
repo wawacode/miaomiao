@@ -48,14 +48,15 @@ public class WXController {
         String body = "";
         try {
              body = getBodyString(request.getReader());
+            LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
         } catch (IOException e) {
             e.printStackTrace();
         }
         if(!StringUtils.isBlank(body)){
             String str = parse(body);
+            LoggerUtils.getInstance().log(String.format("return %s  ", str)) ;
             return "@" + str;
         }
-        LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
         return "@" + echostr;
     }
 

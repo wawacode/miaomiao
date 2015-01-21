@@ -29,7 +29,9 @@ public class WXHttpClient {
 //    private static String appKey = "2cc1f5c798b91b3ed0c7db6b0b259914";
 //    private static String appId = "wx24526189c97e6be3";
 
-// ceshigongzong hao
+//    <xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421833304</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[r]]></Content><MsgId>6106727541249712803</MsgId></xml>
+
+    // ceshigongzong hao
     private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
     private static String token = "tooooken";
     private static String appKey = "ebd5d6bf4c597a617b2420341da1c03d";
