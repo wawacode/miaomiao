@@ -46,7 +46,6 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
         }
         RegistUser u = null    ;
         String uuid  = CookieManager.getInstance().getCookie(inv.getRequest(), Constants.COOKIE_KEY_REGISTUSER);
-        LoggerUtils.getInstance().log("Console accesss " + "abc");
         if(null  != uuid) {
             u = registUserDAO.getUser(SUtils.unwrapper(uuid));
             hostHolder.setUser(u);
