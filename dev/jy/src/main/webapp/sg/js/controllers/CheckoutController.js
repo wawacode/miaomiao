@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope,$rootScope, $ionicLoading,$ionicPopup, $http, $state, localStorageService, httpClient,ShoppingCart) {
+    .controller('CheckoutCtrl', function ($scope,$rootScope, $ionicLoading,$ionicPopup, $http, $state, localStorageService, httpClient,ShoppingCart,AddressService) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.shop = localStorageService.get('MMMETA_shop');
@@ -11,6 +11,7 @@ angular.module('miaomiao.shop')
         $scope.info.showAddNewAddress = true;
 
         function reloadInfo(){
+
             $ionicLoading.show({
                 template: '正在核对,请稍候...'
             });
@@ -149,15 +150,13 @@ angular.module('miaomiao.shop')
         }
 
 
-        $rootScope.$on('$stateChangeStart',
-            function (event, toState, toParams){
-                if(toState.url=='/checkout'){
-                    // back to self page, do a  reload
-                    // handle item change event
-                    reloadInfo();
-                }
-            });
+        AddressService.onAddressChangeEventSwitchDefault($scope,function(){
+            reloadInfo();
+        });
 
+        AddressService.onAddressChangeEventAddNew($scope,function(){
+            reloadInfo();
+        });
 
     });
 

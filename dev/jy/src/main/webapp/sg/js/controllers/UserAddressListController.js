@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('UserAddressListCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,httpClient) {
+    .controller('UserAddressListCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,httpClient,AddressService) {
 
         $scope.shop = localStorageService.get('MMMETA_shop');
 
@@ -63,6 +63,8 @@ angular.module('miaomiao.shop')
                 }
 
                 $ionicLoading.hide();
+
+                AddressService.addressChangeEventSwitchDefault(addr);
 
                 $state.go('myOrders',null, { reload: true });
 

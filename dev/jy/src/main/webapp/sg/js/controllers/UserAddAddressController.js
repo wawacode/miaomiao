@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('UserAddAddressCtrl', function ($scope, $ionicPopup,$ionicLoading, $http, $state, localStorageService,httpClient,$sessionStorage) {
+    .controller('UserAddAddressCtrl', function ($scope, $ionicPopup,$ionicLoading, $http, $state, localStorageService,httpClient,$sessionStorage,AddressService) {
 
         $scope.shop = localStorageService.get('MMMETA_shop');
         $scope.address = {};
@@ -37,25 +37,8 @@ angular.module('miaomiao.shop')
                     return;
                 }
 
-                httpClient.getMyOrders($scope.shop.id ,function(data, status){
+                AddressService.addressChangeEventAddNew($scope.address);
 
-                    var code = data.code, dataDetail = data.data;
-
-                    $scope.shop = dataDetail.shop;
-                    $scope.addressls = dataDetail.addressls;
-                    $scope.orders = dataDetail.orders;
-
-                    $sessionStorage.orderAddresses = $scope.addressls;
-                    $sessionStorage.orderOrders = $scope.orders;
-
-                    $ionicLoading.hide();
-
-                    $state.go('myOrders',null, { reload: true });
-
-                },function(data, status){
-                    $ionicLoading.hide();
-                    $state.go('myOrders',null, { reload: true });
-                });
 
             },function(data, status){
 
