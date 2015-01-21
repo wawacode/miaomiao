@@ -29,6 +29,9 @@ public class WXController {
             "<MsgType><![CDATA[text]]></MsgType>\n" +
             "<Content><![CDATA[{content}]]></Content>\n" +
             "</xml>";
+
+
+
     static final String content = "喵喵生活为您连接身边便利，在家动动手指，便利百货为您送货上门。\n" +
             "\n" +
             "配送商品: 便利百货，在便利店能买到的我们都能送；\n" +
@@ -62,14 +65,44 @@ public class WXController {
 
 
 
-    private String parse(String body) {
+    private  String parse(String body) {
+        String mtype =  getMtype(body);
         String toUser = getToUser(body);
         String fromUser = getFromUser(body);
+        if ("event".equals(mtype)) {
+//            "<xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421840190</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[subscribe]]></Event><EventKey><![CDATA[qrscene_1000]]></EventKey><Ticket><![CDATA[gQEf8ToAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL0cwTWlTc1hsLXhxR2Q4OW1FMl82AAIEski_VAMEAAAAAA==]]></Ticket></xml>  "
+
+            String event = getEvent(body);
+            String eventType = getEventType(body);
+            String eventKey = getEventKey(body);
+            LoggerUtils.getInstance().log( String.format(" rec event from wx eventType %s ,eventKey %s",eventType ));
+
+            return  "";
+        }
+
         String response = CONTENT.replace("{content}", content);
         response = response.replace("{toUser}",fromUser);
         response = response.replace("{fromUser}",toUser);
         response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
         return  response;
+    }
+
+    private static String getEventKey(String body) {
+        return null;
+    }
+
+    private static String getEventType(String body) {
+        return null;
+    }
+
+    private static  String getEvent(String body) {
+        return null;
+    }
+
+    private static  String getMtype(String body) {
+        int start =body.indexOf("<MsgType><![CDATA[");
+        int end =body.indexOf("]]></MsgType>");
+        return body.substring( 18 + start ,end);
     }
 
     private static String getFromUser(String body) {
@@ -116,5 +149,6 @@ public class WXController {
         String s = "<xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421837689</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[A地方法规和]]></Content><MsgId>6106746374681307894</MsgId></xml> ";
         System.out.println(getToUser(s));
         System.out.println(getFromUser(s));
+        System.out.println(getMtype(s));
     }
 }
