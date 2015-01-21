@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $ionicScrollDelegate,$http, $state, $timeout, localStorageService, httpClient, ShoppingCart,OrderService) {
+angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope,$window, $ionicLoading, $ionicPopup, $ionicScrollDelegate,$http, $state, $timeout, localStorageService, httpClient, ShoppingCart,OrderService) {
 
     $scope.LoadingMessage = '正在为您加载商品 ...';
     $ionicLoading.show({
@@ -174,6 +174,10 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     $scope.showShoppingCart = function(){
         $scope.info.showCart = ! $scope.info.showCart;
+    }
+
+    $scope.switchShop =  function(){
+        $window.location.href = 'loading#/findshop';
     }
 
 

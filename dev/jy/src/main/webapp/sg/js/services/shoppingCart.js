@@ -128,7 +128,7 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
 
             cartNotReadyLeftPrice: function () {
 
-                 return 20.0 - this.getTotalPrice();
+                 return Math.round((20.0 - this.getTotalPrice()) * 100) / 100;
             },
 
             itemChangeEventInShoppingCart: function (item) {
