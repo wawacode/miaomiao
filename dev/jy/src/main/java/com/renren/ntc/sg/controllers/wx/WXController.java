@@ -25,7 +25,7 @@ public class WXController {
     static final String CONTENT ="<xml>\n" +
             "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
             "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
-            "<CreateTime>12345678</CreateTime>\n" +
+            "<CreateTime>{time}</CreateTime>\n" +
             "<MsgType><![CDATA[text]]></MsgType>\n" +
             "<Content><![CDATA[{content}]]></Content>\n" +
             "</xml>";
@@ -63,8 +63,25 @@ public class WXController {
 
 
     private String parse(String body) {
-        String response = CONTENT.replace("{content}",content);
+        String toUser = getToUser(body);
+        String fromUser = getFromUser(body);
+        String response = CONTENT.replace("{content}", content);
+        response = response.replace("{toUser}",fromUser);
+        response = response.replace("{fromUser}",toUser);
+        response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
         return  response;
+    }
+
+    private static String getFromUser(String body) {
+        int start =body.indexOf("<FromUserName><![CDATA[");
+        int end =body.indexOf("]]></FromUserName>");
+        return body.substring( 23 + start ,end);
+    }
+
+    private static String getToUser(String body) {
+        int start =body.indexOf("<ToUserName><![CDATA[");
+        int end =body.indexOf("]]></ToUserName>");
+        return body.substring( 21 + start ,end);
     }
 
     public static String getBodyString(BufferedReader br) {
@@ -94,4 +111,10 @@ public class WXController {
         return "r:http://weixin.qq.com/r/l3UsNBHEW0wkrVVX9yCF";
     }
 
+    public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis());
+        String s = "<xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421837689</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[A地方法规和]]></Content><MsgId>6106746374681307894</MsgId></xml> ";
+        System.out.println(getToUser(s));
+        System.out.println(getFromUser(s));
+    }
 }
