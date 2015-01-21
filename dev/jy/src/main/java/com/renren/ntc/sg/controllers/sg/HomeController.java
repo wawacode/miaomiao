@@ -61,14 +61,20 @@ public class HomeController {
         long shop_id = Constants.DEFAULT_SHOP_ID;
 
         if (lat == 0 || lng == 0 ){
-            return "r:/sg/loading#/findshop";
+            JSONObject response =  new JSONObject();
+            JSONObject data =  new JSONObject();
+            response.put("data", data);
+            response.put("code", 0);
+            return "@" + response.toJSONString();
+//            return "r:/sg/loading#/findshop";
         }
-
+        Shop shop = null;
         if (lat != 0 && lng != 0) {
             ShopLocation  loc =    new ShopLocation();
             loc.setLongitude(lng);
             loc.setLatitude(lat);
             // 20 公里
+
             List<GeoQueryResult>  resuls = geoService.queryNear(loc, 20000);
             if (resuls != null &&  resuls.size() > 0){
                 shop_id = resuls.get(0).getShopLocation().getShop_id();
@@ -77,7 +83,7 @@ public class HomeController {
                     ShopLocation shopLoc =  res.getShopLocation();
                     LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
                     shop_id  = shopLoc.getShop_id();
-                    Shop shop = shopDAO.getShop(shop_id);
+                    shop = shopDAO.getShop(shop_id);
                     if(SUtils.online(now, shop)){
                          shop_id = shop.getId();
                          break;
@@ -90,7 +96,16 @@ public class HomeController {
 
 
         }
-        return "r:/sg/shop?shop_id=" + shop_id + "&lat=" + lat + "&lng=" + lng  ;
+
+        JSONObject response =  new JSONObject();
+        JSONObject data =  new JSONObject();
+        if(null != shop) {
+           data.put("shop",shop);
+        }
+        response.put("data", data);
+        response.put("code", 0);
+        return "@" + response.toJSONString();
+//        return "r:/sg/shop?shop_id=" + shop_id + "&lat=" + lat + "&lng=" + lng  ;
     }
 
 
