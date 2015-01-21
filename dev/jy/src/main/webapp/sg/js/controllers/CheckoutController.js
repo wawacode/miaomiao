@@ -162,36 +162,48 @@ angular.module('miaomiao.shop')
         }
 
 
-        function updateDefaultOrderAddress() {
+        function updateDefaultOrderAddress(addr) {
 
-            $scope.LoadingMessage = '正在更新地址...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
 
-            httpClient.getAddressList($scope.shop.id, function (data, status) {
+            if(addr){
 
-                var code = data.code, dataDetail = data.data;
-                if (code != 0) {
+                $scope.addressls = $scope.addressls || [];
+                $scope.addressls[0] = addr;
+                $scope.info.address = $scope.addressls[0];
+
+            }else{
+                // update from server
+                $scope.LoadingMessage = '正在更新地址...';
+                $ionicLoading.show({
+                    templateUrl: '/views/sg/templates/loadingIndicator.html',
+                    scope: $scope
+                });
+
+                httpClient.getAddressList($scope.shop.id, function (data, status) {
+
+                    var code = data.code, dataDetail = data.data;
+                    if (code != 0) {
+                        $ionicPopup.alert({
+                            title: '加载数据失败:' + data.msg,
+                            template: ''
+                        });
+                        return;
+                    }
+
+                    $ionicLoading.hide();
+
+                    $scope.addressls = dataDetail.addressls || [];
+
+                }, function (data, status) {
+                    $scope.addressls = [];
                     $ionicPopup.alert({
-                        title: '加载数据失败:' + data.msg,
+                        title: '加载数据失败,请重试',
                         template: ''
                     });
-                    return;
-                }
+                })
+            }
 
-                $ionicLoading.hide();
 
-                $scope.addressls = dataDetail.addressls || [];
-
-            }, function (data, status) {
-                $scope.addressls = [];
-                $ionicPopup.alert({
-                    title: '加载数据失败,请重试',
-                    template: ''
-                });
-            })
         }
 
 
@@ -203,12 +215,12 @@ angular.module('miaomiao.shop')
 
         }
 
-        AddressService.onAddressChangeEventSwitchDefault($scope, function () {
-            updateDefaultOrderAddress();
+        AddressService.onAddressChangeEventSwitchDefault($scope, function (message) {
+            updateDefaultOrderAddress(message.item);
         });
 
-        AddressService.onAddressChangeEventAddNew($scope, function () {
-            updateDefaultOrderAddress();
+        AddressService.onAddressChangeEventAddNew($scope, function (message) {
+            updateDefaultOrderAddress(message.item);
         });
 
         OrderService.onOrderChangeEventSuccess($scope,function(){

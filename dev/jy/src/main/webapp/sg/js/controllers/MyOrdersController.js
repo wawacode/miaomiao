@@ -25,52 +25,61 @@ angular.module('miaomiao.shop')
         $scope.orders = $sessionStorage.MMMETA_OrderOrders;
         transformOrderData($scope.orders);
 
-        function reloadInfo(){
+        function reloadInfo(addr){
 
-            $scope.LoadingMessage = '正在加载,请稍候...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
+            if(addr){
 
-            httpClient.getMyOrders($scope.shop.id ,function(data, status){
+                $scope.addressls = $scope.addressls || [];
+                $scope.addressls[0] = addr;
+                $scope.info.address = $scope.addressls[0];
 
-                $ionicLoading.hide();
+            }else{
+                $scope.LoadingMessage = '正在加载,请稍候...';
+                $ionicLoading.show({
+                    templateUrl: '/views/sg/templates/loadingIndicator.html',
+                    scope: $scope
+                });
 
-                var code = data.code, dataDetail = data.data;
+                httpClient.getMyOrders($scope.shop.id ,function(data, status){
 
-                $scope.shop = dataDetail.shop;
+                    $ionicLoading.hide();
 
-                $scope.addressls = dataDetail.addressls;
-                if($scope.addressls.length)$scope.info.hasAddress = true;
+                    var code = data.code, dataDetail = data.data;
 
-                $scope.orders = dataDetail.orders;
-                transformOrderData($scope.orders);
+                    $scope.shop = dataDetail.shop;
 
-                if($scope.orders.length)$scope.info.hasOrder = true;
+                    $scope.addressls = dataDetail.addressls;
+                    if($scope.addressls.length)$scope.info.hasAddress = true;
 
-                $sessionStorage.orderAddresses = $scope.addressls;
-                $sessionStorage.orderOrders = $scope.orders;
+                    $scope.orders = dataDetail.orders;
+                    transformOrderData($scope.orders);
 
-            },function(data, status){
+                    if($scope.orders.length)$scope.info.hasOrder = true;
 
-                $scope.info.hasOrder = false;
-                $scope.info.hasAddress = false;
+                    $sessionStorage.orderAddresses = $scope.addressls;
+                    $sessionStorage.orderOrders = $scope.orders;
 
-                $ionicLoading.hide();
-            });
+                },function(data, status){
+
+                    $scope.info.hasOrder = false;
+                    $scope.info.hasAddress = false;
+
+                    $ionicLoading.hide();
+                });
+            }
+
         }
 
 //        reloadInfo();
 
         OrderService.orderChangeEventSuccess();
 
-        AddressService.onAddressChangeEventSwitchDefault($scope,function(){
-            reloadInfo();
+        AddressService.onAddressChangeEventSwitchDefault($scope,function(message){
+            reloadInfo(message.item);
         });
 
-        AddressService.onAddressChangeEventAddNew($scope,function(){
-            reloadInfo();
+        AddressService.onAddressChangeEventAddNew($scope,function(message){
+            reloadInfo(message.item);
         });
 
     });

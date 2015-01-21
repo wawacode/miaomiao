@@ -48,6 +48,8 @@ angular.module('miaomiao.shop')
 
             },function(data, status){
 
+                $ionicLoading.hide();
+
                 $ionicPopup.alert({
                     title: '添加新地址失败,请刷新',
                     template: ''

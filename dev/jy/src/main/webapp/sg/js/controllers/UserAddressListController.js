@@ -73,6 +73,8 @@ angular.module('miaomiao.shop')
 
             },function(data, status){
 
+                $ionicLoading.hide();
+
                 $ionicPopup.alert({
                     title: '加载数据失败,请刷新',
                     template: ''

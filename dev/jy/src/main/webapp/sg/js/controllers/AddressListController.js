@@ -71,7 +71,10 @@ angular.module('miaomiao.shop')
 
                 AddressService.addressChangeEventSwitchDefault(addr);
 
+
             },function(data, status){
+
+                $ionicLoading.hide();
 
                 $ionicPopup.alert({
                     title: '加载数据失败,请刷新',

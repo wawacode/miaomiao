@@ -491,7 +491,6 @@ body {
 
 .shop-categray-list {
     background-color: #f8f8f8;
-    padding-bottom: 10px;
 }
 
 .shop-categray {
@@ -695,6 +694,11 @@ body {
     padding: 10px 20px;
     border: solid 1px #F54447;
     border-radius: 2px;
+}
+
+.addressInput{
+    border: solid 1px lightgray;
+    border-radius: 10px;
 }
 
 /* remove jqm ui css*/

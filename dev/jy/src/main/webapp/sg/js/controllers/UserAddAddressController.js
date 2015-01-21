@@ -39,12 +39,16 @@ angular.module('miaomiao.shop')
                     return;
                 }
 
+                $ionicLoading.hide();
+
                 AddressService.addressChangeEventAddNew($scope.address);
 
                 $state.go('myOrders',null, { reload: true });
 
 
             },function(data, status){
+
+                $ionicLoading.hide();
 
                 $ionicPopup.alert({
                     title: '添加新地址失败,请刷新',
