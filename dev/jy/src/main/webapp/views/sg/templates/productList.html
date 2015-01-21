@@ -27,7 +27,7 @@
         </ion-nav-buttons>
 
         <ion-nav-title>
-            {{shop.name}}
+            {{shop.name}}<i class="icon ion-chevron-down" style=" font-size: 15px !important"></i>
         </ion-nav-title>
 
     </ion-nav-bar>
@@ -36,7 +36,7 @@
                  has-tabs="false"
                  has-header="true"
                  scroll="false"
-                 has-bouncing="false" style="bottom: 49px;">
+                 has-bouncing="false" style="bottom: 49; top: 45">
 
         <div class="commonProductList" style="overflow: hidden">
 
@@ -48,7 +48,6 @@
                              scrollbar-y="false"
                              overflow-scroll="false">
 
-                    <!--<div class="leftContent">-->
                         <div class="shop-categray-list" style="width: 100%;">
                             <ul style="margin: 0.0em;padding: 0px;">
                                 <li ng-repeat="category in categoryls" class="shop-categray"
@@ -65,7 +64,6 @@
                                 </li>
                             </ul>
                         </div>
-                    <!--</div>-->
 
                 </ion-content>
 
@@ -76,9 +74,9 @@
                 <ion-content padding="false"
                              scroll="true"
                              has-bouncing="true"
-                             overflow-scroll="false">
+                             overflow-scroll="false"
+                             delegate-handle="productScroll">
 
-                    <!--<div class="rightContent">-->
 
                         <div class="shop-product-list">
                             <ul class="shop-product-categray-list js-shop-product-categray-list list">
@@ -86,15 +84,17 @@
                                     ng-include
                                     src="'/views/sg/templates/productDetail.html'">
                                 </li>
+
+                                <ion-infinite-scroll
+                                        ng-if="moreDataCanBeLoaded()"
+                                        icon="ion-loading-c"
+                                        on-infinite="addItems()">
+                                </ion-infinite-scroll>
+
                             </ul>
-                            <ion-infinite-scroll
-                                    ng-if="moreDataCanBeLoaded()"
-                                    icon="ion-loading-c"
-                                    on-infinite="addItems()">
-                            </ion-infinite-scroll>
+
                         </div>
 
-                    <!--</div>-->
                 </ion-content>
             </div>
         </div>

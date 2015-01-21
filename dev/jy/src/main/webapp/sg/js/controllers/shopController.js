@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart,OrderService) {
+angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $ionicScrollDelegate,$http, $state, $timeout, localStorageService, httpClient, ShoppingCart,OrderService) {
 
     $scope.LoadingMessage = '正在为您加载商品 ...';
     $ionicLoading.show({
@@ -73,6 +73,8 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
         $scope.currentDisplayCategory = category;
         $scope.currentDisplayItems = category.itemls;
+
+        $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
 
     }
 
