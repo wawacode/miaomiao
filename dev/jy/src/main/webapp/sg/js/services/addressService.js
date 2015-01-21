@@ -1,12 +1,14 @@
-angular.module('miaomiao.shop').factory('AddressService', ['$http', '$rootScope',
-    '$sessionStorage', function ($http, $rootScope) {
+angular.module('miaomiao.shop').factory('AddressService', ['$http','$rootScope','$timeout', function ($http, $rootScope,$timeout) {
 
         return {
 
             addressChangeEventSwitchDefault: function (item) {
-                $rootScope.$broadcast('MMEVENT_AddressChangeEventSwitchDefault', {
-                    item: item
+                $timeout(function(){
+                    $rootScope.$broadcast('MMEVENT_AddressChangeEventSwitchDefault', {
+                        item: item
+                    });
                 });
+
             },
 
             onAddressChangeEventSwitchDefault: function ($scope, handler) {
@@ -16,8 +18,10 @@ angular.module('miaomiao.shop').factory('AddressService', ['$http', '$rootScope'
             },
 
             addressChangeEventAddNew: function (item) {
-                $rootScope.$broadcast('MMEVENT_AddressChangeEventAddNew', {
-                    item: item
+                $timeout(function(){
+                    $rootScope.$broadcast('MMEVENT_AddressChangeEventAddNew', {
+                        item: item
+                    });
                 });
             },
 

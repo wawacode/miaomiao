@@ -39,6 +39,8 @@ angular.module('miaomiao.shop')
 
                 AddressService.addressChangeEventAddNew($scope.address);
 
+                $state.go('myOrders',null, { reload: true });
+
 
             },function(data, status){
 

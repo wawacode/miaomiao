@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 'localStorageService', '$localStorage',
-    '$sessionStorage', function ($http, $rootScope, localStorageService, $localStorage, $sessionStorage) {
+    '$sessionStorage','$timeout', function ($http, $rootScope, localStorageService, $localStorage, $sessionStorage, $timeout) {
 
 
         return {
@@ -127,8 +127,11 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
             },
 
             itemChangeEventInShoppingCart: function (item) {
-                $rootScope.$broadcast('MMEVENT_ItemSelectionChangedInShoppingCart', {
-                    item: item
+
+                $timeout(function(){
+                    $rootScope.$broadcast('MMEVENT_ItemSelectionChangedInShoppingCart', {
+                        item: item
+                    });
                 });
             },
             onItemChangeEventInShoppingCart: function ($scope, handler) {
@@ -138,8 +141,10 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
             },
 
             itemChangeEventInProductList: function (item) {
-                $rootScope.$broadcast('MMEVENT_ItemSelectionChangedInProductList', {
-                    item: item
+                $timeout(function(){
+                    $rootScope.$broadcast('MMEVENT_ItemSelectionChangedInProductList', {
+                        item: item
+                    });
                 });
             },
 

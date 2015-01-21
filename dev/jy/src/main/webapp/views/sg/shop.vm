@@ -18,6 +18,7 @@
     <script src="/sg/js/services/directives.js"></script>
     <script src="/sg/js/services/filters.js"></script>
     <script src="/sg/js/services/services.js"></script>
+    <script src="/sg/js/services/addressService.js"></script>
     <script src="/sg/js/services/shoppingCart.js"></script>
 
     <script src="/sg/js/controllers/ShopController.js"></script>

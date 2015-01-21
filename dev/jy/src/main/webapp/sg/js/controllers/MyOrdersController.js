@@ -52,7 +52,6 @@ angular.module('miaomiao.shop')
         }
 
 
-
         AddressService.onAddressChangeEventSwitchDefault($scope,function(){
             reloadInfo();
         });

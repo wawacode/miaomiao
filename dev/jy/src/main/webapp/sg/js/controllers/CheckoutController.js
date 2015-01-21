@@ -10,59 +10,54 @@ angular.module('miaomiao.shop')
         $scope.info.newOrderPhone = '';
         $scope.info.showAddNewAddress = true;
 
-        function reloadInfo(){
+        $ionicLoading.show({
+            template: '正在核对,请稍候...'
+        });
 
-            $ionicLoading.show({
-                template: '正在核对,请稍候...'
-            });
+        httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function(data, status){
 
-            httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function(data, status){
+            $ionicLoading.hide();
 
-                $ionicLoading.hide();
+            var code = data.code, dataDetail = data.data;
+            if (code == 500) {
+                $ionicPopup.alert({
+                    title: '加载数据失败:' + data.msg,
+                    template: ''
+                });
+                return;
+            }else if(code == 100){
+                $ionicPopup.alert({
+                    title: '部分商品不足，请谨慎购买:' + data.msg,
+                    template: ''
+                });
+            }
 
-                var code = data.code, dataDetail = data.data;
-                if (code == 500) {
-                    $ionicPopup.alert({
-                        title: '加载数据失败:' + data.msg,
-                        template: ''
-                    });
-                    return;
-                }else if(code == 100){
-                    $ionicPopup.alert({
-                        title: '部分商品不足，请谨慎购买:' + data.msg,
-                        template: ''
-                    });
-                }
+            $scope.shop = dataDetail.shop;
 
-                $scope.shop = dataDetail.shop;
-
-                // check results
-                for(var i=0;i< dataDetail.itemls.length;i++){
-                    var item = dataDetail.itemls[i];
-                    for(var j=0; j < $scope.shoppingCartItems.length;j++ ){
-                        if(item.id == $scope.shoppingCartItems[j].id){
-                            if(item.info){
-                                $scope.shoppingCartItems[j].message = item.info;
-                            }
+            // check results
+            for(var i=0;i< dataDetail.itemls.length;i++){
+                var item = dataDetail.itemls[i];
+                for(var j=0; j < $scope.shoppingCartItems.length;j++ ){
+                    if(item.id == $scope.shoppingCartItems[j].id){
+                        if(item.info){
+                            $scope.shoppingCartItems[j].message = item.info;
                         }
                     }
                 }
+            }
 
-                $scope.addressls = dataDetail.addressls;
-                $scope.info.address = $scope.addressls && $scope.addressls[0];
+            $scope.addressls = dataDetail.addressls;
+            $scope.info.address = $scope.addressls && $scope.addressls[0];
 
-                if($scope.info.address){
-                    $scope.info.showAddNewAddress = false;
-                }
+            if($scope.info.address){
+                $scope.info.showAddNewAddress = false;
+            }
 
-            },function(data, status){
+        },function(data, status){
 
-                $scope.shoppingCartItems = ShoppingCart.getAllItems();
-                $ionicLoading.hide();
-            });
-        }
-
-        reloadInfo();
+            $scope.shoppingCartItems = ShoppingCart.getAllItems();
+            $ionicLoading.hide();
+        });
 
         $scope.goToAddressList = function(){
             $state.go('addressList', null, { reload: true });
@@ -150,12 +145,43 @@ angular.module('miaomiao.shop')
         }
 
 
+        function updateDefaultOrderAddress(){
+
+            $ionicLoading.show({
+                template: '正在更新地址...'
+            });
+
+            httpClient.getAddressList($scope.shop.id ,function(data, status){
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '加载数据失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+
+                $ionicLoading.hide();
+
+                $scope.addressls = dataDetail.addressls || [];
+
+            },function(data, status){
+                $scope.addressls = [];
+                $ionicPopup.alert({
+                    title: '加载数据失败,请重试',
+                    template: ''
+                });
+            })
+        }
+
+
         AddressService.onAddressChangeEventSwitchDefault($scope,function(){
-            reloadInfo();
+            updateDefaultOrderAddress();
         });
 
         AddressService.onAddressChangeEventAddNew($scope,function(){
-            reloadInfo();
+            updateDefaultOrderAddress();
         });
 
     });

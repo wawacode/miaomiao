@@ -63,10 +63,9 @@ angular.module('miaomiao.shop')
 
                 $ionicLoading.hide();
 
-                AddressService.addressChangeEventSwitchDefault(addr);
-
                 $state.go('checkout',null, { reload: true });
 
+                AddressService.addressChangeEventSwitchDefault(addr);
 
             },function(data, status){
 
