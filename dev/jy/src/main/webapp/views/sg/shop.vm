@@ -37,8 +37,8 @@
 <body>
 
 <ion-nav-bar class="bar-dark">
-    <ion-nav-back-button class="button-dark">
-        <i class="ion-arrow-left-c"></i> Back
+    <ion-nav-back-button class="button-dark button-clear">
+        <i class="ion-arrow-left-c light"></i>
     </ion-nav-back-button>
 </ion-nav-bar>
 
