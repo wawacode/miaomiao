@@ -10,7 +10,7 @@
 
         <div class="shop-container">
 
-            <div class="" style="overflow: hidden" ng-if=" addressls && addressls.length">
+            <div class="" style="overflow: hidden" ng-show="info.hasAddress && addressls && addressls[0]">
                 <div class="addressItem addressDefault addressSelected" ng-click="goToAddressList()">
                     <div class="addressAndBadge" style="">
                         <div class="addressItem-address addressDefault-address"><span
@@ -30,7 +30,7 @@
             </div>
 
             <div class="js-addAddress firstTimeAddAddress" style=";overflow: hidden"
-                 ng-if=" !addressls || !addressls.length">
+                 ng-show="!info.hasAddress">
                 <div class="addNewAddressHint" style="text-shadow:none">
                     您还没有添加收货人信息,请添加
                 </div>
@@ -48,7 +48,7 @@
 
             <div class="noOrderHint"
                  style="position: fixed; bottom: 0px;left: 0; width: 100%;padding: 0px;height: auto;display: inline-block"
-                 ng-if="!orders || !orders.length">
+                 ng-show="!info.hasOrder">
 
                 <div style="display:block;padding: 15px">
                     <div style="display: inline-block;background-color: #EFF0F4;width: 100%; height: 100%; border: dotted 2px lightgray">
@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="order-list" style="" ng-if="orders && orders.length">
+            <div class="order-list" style="" ng-show="info.hasOrder">
 
 
                 <div class="order-item" style="" ng-repeat=" order in orders">

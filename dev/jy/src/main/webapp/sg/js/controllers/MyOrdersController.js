@@ -1,21 +1,6 @@
 angular.module('miaomiao.shop')
     .controller('MyOrdersCtrl',function ($scope, $ionicLoading, $http, $state, localStorageService,$sessionStorage,httpClient,AddressService) {
 
-        function transformOrderData(){
-
-            for(var i=0;i< $scope.orders.length;i++){
-                var order = $scope.orders[i];
-
-                order.items = JSON.parse(order.snapshot);
-
-            }
-        }
-
-        $scope.addressls = $sessionStorage.orderAddresses || [];
-        $scope.orders = $sessionStorage.orderOrders || [];
-
-        transformOrderData();
-
         $scope.goToAddressList = function(){
             $state.go('userAddressList', null, { reload: true });
         }
@@ -23,6 +8,18 @@ angular.module('miaomiao.shop')
         $scope.backToHome = function(){
             $state.go('productList');
         }
+
+        function transformOrderData(orders){
+
+            for(var i=0;i< orders.length;i++){
+                var order = orders[i];
+                order.items = JSON.parse(order.snapshot);
+            }
+        }
+
+        $scope.info = {};
+        $scope.info.hasOrder = true;
+        $scope.info.hasAddress = true;
 
         function reloadInfo(){
 
@@ -39,18 +36,27 @@ angular.module('miaomiao.shop')
                 $scope.shop = dataDetail.shop;
 
                 $scope.addressls = dataDetail.addressls;
-                $scope.orders = dataDetail.orders;
-                transformOrderData();
+                if($scope.addressls.length)$scope.info.hasAddress = true;
 
-                $sessionStorage.orderAddresses = $scope.addressls;
-                $sessionStorage.orderOrders = $scope.orders;
+                $scope.orders = dataDetail.orders;
+                transformOrderData($scope.orders);
+
+                if($scope.orders.length)$scope.info.hasOrder = true;
+
+//                $sessionStorage.orderAddresses = $scope.addressls;
+//                $sessionStorage.orderOrders = $scope.orders;
 
 
             },function(data, status){
+
+                $scope.info.hasOrder = false;
+                $scope.info.hasAddress = false;
+
                 $ionicLoading.hide();
             });
         }
 
+        reloadInfo();
 
         AddressService.onAddressChangeEventSwitchDefault($scope,function(){
             reloadInfo();

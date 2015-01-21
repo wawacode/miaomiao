@@ -83,5 +83,59 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
         }
 
     };
-}]);
+}])
+    .factory('AddressService', ['$http','$rootScope','$timeout', function ($http, $rootScope,$timeout) {
+
+        return {
+
+            addressChangeEventSwitchDefault: function (item) {
+                $timeout(function(){
+                    $rootScope.$broadcast('MMEVENT_AddressChangeEventSwitchDefault', {
+                        item: item
+                    });
+                });
+
+            },
+
+            onAddressChangeEventSwitchDefault: function ($scope, handler) {
+                $scope.$on('MMEVENT_AddressChangeEventSwitchDefault', function (event, message) {
+                    handler(message);
+                });
+            },
+
+            addressChangeEventAddNew: function (item) {
+                $timeout(function(){
+                    $rootScope.$broadcast('MMEVENT_AddressChangeEventAddNew', {
+                        item: item
+                    });
+                });
+            },
+
+            onAddressChangeEventAddNew: function ($scope, handler) {
+                $scope.$on('MMEVENT_AddressChangeEventAddNew', function (event, message) {
+                    handler(message);
+                });
+            }
+        }
+    }])
+    .factory('OrderService', ['$http','$rootScope','$timeout', function ($http, $rootScope,$timeout) {
+
+        return {
+
+            orderChangeEventSuccess: function (item) {
+                $timeout(function(){
+                    $rootScope.$broadcast('MMEVENT_OrderChangeEventSuccess', {
+                        item: item
+                    });
+                });
+
+            },
+
+            onOrderChangeEventSuccess: function ($scope, handler) {
+                $scope.$on('MMEVENT_OrderChangeEventSuccess', function (event, message) {
+                    handler(message);
+                });
+            }
+        }
+    }]);
 

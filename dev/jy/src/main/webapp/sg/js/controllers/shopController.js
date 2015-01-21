@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
+angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart,OrderService) {
 
     $ionicLoading.show({
         template: 'Loading...'
@@ -159,6 +159,8 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
         localStorageService.set('MMMETA_shop', $scope.shop);
 
+        if(!$scope.cartReadyToShip)return;
+
         $state.go('checkout',null, { reload: true });
 
     }
@@ -219,13 +221,10 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         }
     });
 
-    $rootScope.$on('$stateChangeStart',
-        function (event, toState, toParams){
-            if(toState.url=='/productlist'){
-                // back to self page, do a  reload
-                // handle item change event
-                fullyUpdateForProductList();
-            }
+    OrderService.onOrderChangeEventSuccess($scope,function(){
+        updateShoppingCart();
+        fullyUpdateForProductList();
     });
+
 });
 

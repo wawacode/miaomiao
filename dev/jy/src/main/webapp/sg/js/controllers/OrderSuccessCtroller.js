@@ -1,6 +1,7 @@
 angular.module('miaomiao.shop')
-    .controller('OrderSuccessCtrl', function ($scope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage) {
+    .controller('OrderSuccessCtrl', function ($scope, $rootScope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage,ShoppingCart) {
 
+        // go to orders page
         $scope.shop = localStorageService.get('MMMETA_shop');
 
         httpClient.getMyOrders($scope.shop.id ,function(data, status){
@@ -21,7 +22,7 @@ angular.module('miaomiao.shop')
             $sessionStorage.orderAddresses = $scope.addressls;
             $sessionStorage.orderOrders = $scope.orders;
 
-            $state.go('myOrders');
+            $state.go('myOrders',null,{reload:true});
 
 
         },function(data, status){
@@ -30,7 +31,6 @@ angular.module('miaomiao.shop')
                 title: '加载数据失败,请刷新',
                 template: ''
             });
-        })
-
+        });
     });
 
