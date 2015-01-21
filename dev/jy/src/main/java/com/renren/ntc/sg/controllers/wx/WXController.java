@@ -150,5 +150,6 @@ public class WXController {
         System.out.println(getToUser(s));
         System.out.println(getFromUser(s));
         System.out.println(getMtype(s));
+        System.out.println(getEvent(s));
     }
 }
