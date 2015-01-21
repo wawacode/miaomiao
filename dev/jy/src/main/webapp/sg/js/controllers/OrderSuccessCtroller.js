@@ -1,8 +1,9 @@
 angular.module('miaomiao.shop')
-    .controller('OrderSuccessCtrl', function ($scope, $rootScope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage,ShoppingCart) {
+    .controller('OrderSuccessCtrl', function ($scope, $rootScope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage,ShoppingCart,OrderService) {
 
         // go to orders page
         $scope.shop = localStorageService.get('MMMETA_shop');
+        $scope.message = "订单成功，即将为您跳转...";
 
         httpClient.getMyOrders($scope.shop.id ,function(data, status){
 
@@ -19,8 +20,8 @@ angular.module('miaomiao.shop')
             $scope.addressls = dataDetail.addressls;
             $scope.orders = dataDetail.orders;
 
-            $sessionStorage.orderAddresses = $scope.addressls;
-            $sessionStorage.orderOrders = $scope.orders;
+            $sessionStorage.MMMETA_OrderAddresses = $scope.addressls;
+            $sessionStorage.MMMETA_OrderOrders = $scope.orders;
 
             $state.go('myOrders',null,{reload:true});
 
@@ -32,5 +33,10 @@ angular.module('miaomiao.shop')
                 template: ''
             });
         });
+
+        OrderService.onOrderChangeEventSuccess($scope,function(){
+            $scope.message = "订单提交成功，请返回";
+        });
+
     });
 

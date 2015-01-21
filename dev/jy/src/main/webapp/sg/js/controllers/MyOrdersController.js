@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('MyOrdersCtrl',function ($scope, $ionicLoading, $http, $state, localStorageService,$sessionStorage,httpClient,AddressService) {
+    .controller('MyOrdersCtrl',function ($scope, $ionicLoading, $http, $state, localStorageService,$sessionStorage,httpClient,AddressService,OrderService) {
 
         $scope.goToAddressList = function(){
             $state.go('userAddressList', null, { reload: true });
@@ -20,6 +20,10 @@ angular.module('miaomiao.shop')
         $scope.info = {};
         $scope.info.hasOrder = true;
         $scope.info.hasAddress = true;
+
+        $scope.addressls = $sessionStorage.MMMETA_OrderAddresses;
+        $scope.orders = $sessionStorage.MMMETA_OrderOrders;
+        transformOrderData($scope.orders);
 
         function reloadInfo(){
 
@@ -43,9 +47,8 @@ angular.module('miaomiao.shop')
 
                 if($scope.orders.length)$scope.info.hasOrder = true;
 
-//                $sessionStorage.orderAddresses = $scope.addressls;
-//                $sessionStorage.orderOrders = $scope.orders;
-
+                $sessionStorage.orderAddresses = $scope.addressls;
+                $sessionStorage.orderOrders = $scope.orders;
 
             },function(data, status){
 
@@ -56,7 +59,9 @@ angular.module('miaomiao.shop')
             });
         }
 
-        reloadInfo();
+//        reloadInfo();
+
+        OrderService.orderChangeEventSuccess();
 
         AddressService.onAddressChangeEventSwitchDefault($scope,function(){
             reloadInfo();

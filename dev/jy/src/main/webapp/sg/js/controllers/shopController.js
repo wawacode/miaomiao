@@ -125,8 +125,6 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     }
 
-    updateShoppingCart();
-
     $scope.selectItem = function (item) {
 
         item.count += 1;
@@ -221,9 +219,11 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         }
     });
 
-    OrderService.onOrderChangeEventSuccess($scope,function(){
+    $scope.$on( "$ionicView.enter",function(){
+
         updateShoppingCart();
         fullyUpdateForProductList();
+
     });
 
 });

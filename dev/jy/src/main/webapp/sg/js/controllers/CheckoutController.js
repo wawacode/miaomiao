@@ -8,7 +8,7 @@ angular.module('miaomiao.shop')
         $scope.info.address = {};
         $scope.info.newOrderAddress = '';
         $scope.info.newOrderPhone = '';
-        $scope.info.showAddNewAddress = true;
+        $scope.info.showAddNewAddress = false;
 
         $ionicLoading.show({
             template: '正在核对,请稍候...'
@@ -140,12 +140,12 @@ angular.module('miaomiao.shop')
                     // clear all shopping cart
                     ShoppingCart.clearAll();
 
+                    updateShoppingCart();
+
                     // goto order success
-//                    $state.go('orderSuccess');
+                    $state.go('orderSuccess');
 
-                    OrderService.orderChangeEventSuccess();
-
-                    $state.go('myOrders', null, {reload: true});
+//                    $state.go('myOrders', null, {reload: true});
 
                 }, function (data, status) {
                     $ionicLoading.hide();
