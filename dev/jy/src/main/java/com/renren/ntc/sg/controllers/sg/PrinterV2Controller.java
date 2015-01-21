@@ -128,6 +128,7 @@ public class PrinterV2Controller {
             LoggerUtils.getInstance().log(String.format("token illegal error param  %d ,%s ,%s ", pid, token, dev.getToken()));
             return "@" + Constants.PARATERERROR;
         }
+        Shop shop = shopDao.getShop(dev.getShop_id());
         int r = 0;
         if ("true".equals(re)) {
             // AB 测试
@@ -135,9 +136,9 @@ public class PrinterV2Controller {
                 System.out.println( String.format( "%d, %s %s" ,2, orderId,SUtils.generOrderTableName(dev.getShop_id())));
                 r = ordersDAO.update(2, orderId,SUtils.generOrderTableName(dev.getShop_id()));
             }
+
             if (r == 1) {
                 try {
-                    Shop shop = shopDao.getShop(dev.getShop_id());
                     if ( null != shop ){
                     Order value = ordersDAO.getOrder(orderId,SUtils.generOrderTableName(dev.getShop_id()));
                     String v = null;
@@ -146,7 +147,7 @@ public class PrinterV2Controller {
                     byte[] t = null;
                     String vv = value.getOrder_id() ;
                     vv = vv.replaceAll("=", "").replaceAll("&", "");
-                    String message = "#order_id#=" + vv + "&#shop_name#="+shop.getName() + "&#phone#="+ shop.getOwner_phone();
+                    String message = "#order_id#=" + vv + "&#shop_name#="+shop.getName() + "&#phone#="+ shop.getTel();
                     message = URLEncoder.encode(message,"utf-8");
                     long adr_id =  value.getAddress_id();
                     Address adrs  = addressDAO.getAddress(adr_id);
@@ -177,7 +178,7 @@ public class PrinterV2Controller {
             String response = "打印完成";
             long adr_id =  value.getAddress_id();
             Address adrs  = addressDAO.getAddress(adr_id);
-            String vv = adrs.getAddress() + " " + adrs.getPhone() +  " " + value.getOrder_id() ;
+            String vv = shop.getName() + " " +adrs.getAddress() + " " + adrs.getPhone() +  " " + value.getOrder_id() ;
             vv = vv.replaceAll("=", "").replaceAll("&", "");
             String ro = response.replace("=", "").replace("&", "");
             float  p = (float)value.getPrice() /100 ;
@@ -208,7 +209,6 @@ public class PrinterV2Controller {
             }
 
             //短信通知 老板
-            Shop  shop  = shopDao.getShop(dev.getShop_id());
             if (shop != null ){
                 String phone = shop.getOwner_phone();
                 url = forURL(SMSURL, APPKEY, TID, phone, message);

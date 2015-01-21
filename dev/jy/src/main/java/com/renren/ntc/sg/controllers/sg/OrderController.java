@@ -192,7 +192,7 @@ public class OrderController {
             String response = "用户下单";
             long adr_id = value.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
-            String vv = adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id() ;
+            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id() ;
             float  p = (float)value.getPrice() /100 ;
             vv = vv.replaceAll("=", "").replaceAll("&", "");
             String ro = response.replace("=", "").replace("&", "");
