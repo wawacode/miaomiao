@@ -22,6 +22,21 @@ import java.util.Map;
 
 @Path("")
 public class WXController {
+    static final String CONTENT ="<xml>\n" +
+            "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
+            "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
+            "<CreateTime>12345678</CreateTime>\n" +
+            "<MsgType><![CDATA[text]]></MsgType>\n" +
+            "<Content><![CDATA[{content}]]></Content>\n" +
+            "</xml>";
+    static final String content = "喵喵生活为您连接身边便利，在家动动手指，便利百货为您送货上门。\n" +
+            "\n" +
+            "配送商品: 便利百货，在便利店能买到的我们都能送；\n" +
+            "配送方式: 20元起送, 货到付款, 免运费；\n" +
+            "配送时间: 24小时覆盖，30分钟送货上门；\n" +
+            "\n" +
+            "\n" +
+            "微信预定请点击下方“我要下单”";
 
     @Get("")
     @Post("")
@@ -36,9 +51,19 @@ public class WXController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        if(!StringUtils.isBlank(body)){
+            String str = parse(body);
+            return "@" + str;
+        }
         LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
         return "@" + echostr;
+    }
+
+
+
+    private String parse(String body) {
+        String response = CONTENT.replace("{content}",content);
+        return  response;
     }
 
     public static String getBodyString(BufferedReader br) {
