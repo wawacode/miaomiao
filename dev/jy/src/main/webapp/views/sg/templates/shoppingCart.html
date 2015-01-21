@@ -1,41 +1,15 @@
-<div class="shoppingCartList" ng-controller="ShoppingCartCtrl">
-    <div class="shoppingCartListContent">
-        <div class="shop-cart-list">
-            <ul style="margin: 0.0em; padding:0px 9px;" class="">
-                <div style="border-bottom: solid 1px #F54447;">
-                    <div class="clearShoppingCart" style="">
-                        <span><img src="/images/trash-64.png" class="base-icon-empty-cart"><span style="float: right;padding-top: 12px;">清空购物车</span></span>
-                    </div>
+<div class="shoppingCartListContent">
+    <div class="shop-cart-list">
+        <ul style="margin: 0.0em; padding:0px 9px;" class="">
+            <div style="border-bottom: solid 1px #F54447;">
+                <div class="clearShoppingCart" style="" ng-click="clearShoppingCart()">
+                    <span><img src="/images/trash-64.png" class="base-icon-empty-cart"><span style="float: right;padding-top: 12px;">清空购物车</span></span>
                 </div>
-            </ul>
-            <ul style="margin: 0.0em; padding:0px 9px" class="js-shop-cart-list">
-                <li ng-repeat="item in shoppingCartItems" class="product-item js-product-item">
-                    <div class="prod_icon_clickable"></div>
-                    <div class="prod_icon" back-img="{{item.pic_url}}"></div>
-                    <div>
-                        <span class="product-title oneline js-product-item-name">{{item.name}}</span>
-
-                        <div class="prod_info">
-                            <div class="product-price js-product-item-price" data-value="$item.price">
-                                <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
-                            </div>
-                            <div class="product_stepper">
-                                <div class="product_stepper_minus countChangeAction countChangeActionMinus"
-                                     ng-click="removeItem(item)">
-                                    -
-                                </div>
-                                <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
-                                    {{item.count}}
-                                </div>
-                                <div class="product_stepper_add countChangeAction countChangeActionAdd"
-                                     ng-click="selectItem(item)">
-                                    +
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
+            </div>
+        </ul>
+        <ul style="margin: 0.0em; padding:0px 9px" class="js-shop-cart-list">
+            <li ng-repeat="item in shoppingCartItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
+            </li>
+        </ul>
     </div>
 </div>

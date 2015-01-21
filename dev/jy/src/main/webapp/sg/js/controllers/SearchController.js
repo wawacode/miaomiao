@@ -1,45 +1,48 @@
 angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
 
 
+
+    $scope.shop = localStorageService.get('shop') || {};
+
     $scope.info = {};
-    $scope.shop = {};
-    $scope.shop.name = "喵喵生活";
+    $scope.info.hasNoResults = false;
 
     $scope.performSearch = function (key) {
 
-        var cateId = $scope.currentDisplayCategory.category_id,
-            from = $scope.currentDisplayItems.length,
-            offset = 20;
+        var KEY = key || $scope.info.key;
 
-        httpClient.getMoreProductList($scope.shopId, cateId, from, offset, function (data, status) {
+        $ionicLoading.show({
+            template: '正在搜索...'
+        });
+
+
+        httpClient.getSearchResults($scope.shop.id, KEY, function (data, status) {
 
             /*
              * {"code":0,"data":[{"category_id":15,"count":956,"id":28062,"name":"哈哈镜鸭爪买一赠一","pic_url":
              * "http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
              * "score":99999,"shop_id":1},{"category_id":15,"count":921,"id":28063,"name":"哈哈镜鸭翅买一赠*/
 
+            $ionicLoading.hide();
+
             var code = data.code, dataDetail = data.data;
-            if (!code == 0 || dataDetail.items.length == 0) {
-                $scope.currentDisplayCategory.canLoadMore = false;
+            if (!code == 0 || dataDetail.length == 0) {
+                $scope.info.hasNoResults = true;
                 return;
             }
 
-            for (var item_idx = 0; item_idx < dataDetail.items.length; item_idx++) {
+            $scope.info.hasNoResults = false;
+            for (var item_idx = 0; item_idx < dataDetail.length; item_idx++) {
 
-                var item =  dataDetail.items[item_idx];
+                var item =  dataDetail[item_idx];
                 item.count = ShoppingCart.getCountForItem(item);
 
             }
-            $scope.currentDisplayItems = $scope.currentDisplayItems.concat(dataDetail.items);
-            $scope.currentDisplayCategory.totalCnt = ShoppingCart.getCountForCategroy($scope.currentDisplayCategory.category_id);
-
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.searchResultsItems = dataDetail;
 
         }, function (data, status) {
-
-            $scope.currentDisplayCategory.canLoadMore = false;
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-
+            $ionicLoading.hide();
+            $scope.info.hasNoResults = true;
         });
     }
 
@@ -56,7 +59,6 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
     $scope.selectItem = function (item) {
 
         item.count += 1;
-        $scope.currentDisplayCategory.totalCnt += 1;
 
         ShoppingCart.addItemToCart(item);
         updateShoppingCart();
@@ -75,15 +77,13 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
         ShoppingCart.itemChangeEventInProductList(item);
 
-        $scope.currentDisplayCategory.totalCnt -= 1;
-        $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ? $scope.currentDisplayCategory.totalCnt : 0;
+    }
+
+    $scope.clearSearch = function(){
 
     }
 
-
     $scope.checkout = function () {
-
-        localStorageService.set('shop', $scope.shop);
 
         $state.go('checkout',null, { reload: true });
 
@@ -93,37 +93,6 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
         $scope.info.showCart = ! $scope.info.showCart;
     }
 
-    function fullyUpdateForProductList(){
-        for (var idx = 0; idx < $scope.categoryls.length; idx++) {
-            $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
-
-            for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                var itm =  $scope.categoryls[idx].itemls[item_idx];
-                itm.count = ShoppingCart.getCountForItem(itm);
-            }
-        }
-    }
-
-    function partUpdateForProductList(item){
-
-        // handle item change event
-        for (var idx = 0; idx < $scope.categoryls.length; idx++) {
-
-            if($scope.categoryls[idx].category_id == item.category_id){
-
-                $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
-
-                for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                    var itm =  $scope.categoryls[idx].itemls[item_idx];
-                    if(itm.id == item.id){
-                        itm.count = ShoppingCart.getCountForItem(itm);
-                    }
-                }
-                break;
-            }
-        }
-    }
-
 
     // we update item slection in shopping car ,will have to update shop list
 
@@ -131,9 +100,9 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
         var item = message.item;
         if(item){
-            partUpdateForProductList(item);
+//            partUpdateForProductList(item);
         }else{
-            fullyUpdateForProductList();
+//            fullyUpdateForProductList();
         }
     });
 

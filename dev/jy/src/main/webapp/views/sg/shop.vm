@@ -35,7 +35,13 @@
 </head>
 <body>
 
-<ion-nav-view></ion-nav-view>
+<ion-nav-view>
+
+    <input type="hidden" value="$shop.id" name="shop_id" ng-model="shopId" ng-init="shop.id='$shop.id'">
+    <input type="hidden" value="$shop.name" name="shop_name" ng-model="shop.name" ng-init="shop.name='$shop.name'">
+
+</ion-nav-view>
+
 
 </body>
 </html>

@@ -5,8 +5,7 @@
              style="width: 100%;">
             <div class="item-input-wrapper">
                 <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
-                <input type="search" placeholder="请输入商品名称" ng-model="shop_data.searchQuery"
-                       ng-focus="startSearch()" ng-change="startSearch()" style="color: #7a7a7a">
+                <input type="search" placeholder="请输入商品名称"  ng-model="info.key" ng-focus="startSearch()" ng-keyup="$event.keyCode == 13 && performSearch(info.key)" style="color: #7a7a7a">
                 <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"
                    ng-click="clearSearch()"></i>
             </div>
@@ -18,34 +17,10 @@
                  has-header="true">
         <div class="shop-product-list">
             <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list">
-                <li ng-repeat="item in searchResultsItems" class="product-item js-product-item">
-                    <div class="prod_icon_clickable"></div>
-                    <div class="prod_icon" back-img="{{item.pic_url}}"></div>
-                    <div>
-                        <span class="product-title oneline js-product-item-name">{{item.name}}</span>
-
-                        <div class="prod_info">
-                            <div class="product-price js-product-item-price" data-value="$item.price">
-                                <span style="font-weight: normal">¥{{item.price/100}}.{{item.price%100}}</span>
-                            </div>
-                            <div class="product_stepper">
-                                <div class="product_stepper_minus countChangeAction countChangeActionMinus"
-                                     ng-click="removeItem(item)">
-                                    -
-                                </div>
-                                <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
-                                    {{item.count}}
-                                </div>
-                                <div class="product_stepper_add countChangeAction countChangeActionAdd"
-                                     ng-click="selectItem(item)">
-                                    +
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <li ng-repeat="item in searchResultsItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
                 </li>
 
-                <div class="no-result-display" style="text-align: center">
+                <div class="no-result-display" style="text-align: center" ng-show="info.hasNoResults">
                     没有结果
                 </div>
 
@@ -53,5 +28,26 @@
         </div>
 
         </ion-content>
+
+    <ion-footer-bar class="bar-light" style="padding-top: 0;padding-bottom: 0;overflow: hidden">
+        <div class="footer-container-left base-sidebar-shopping-cart js-shopping-cart" ng-click="showShoppingCart()">
+            <span><img src="/images/cart-64.png" class="base-icon-shopping-cart"></span>
+        </div>
+        <div class="footer-container-right base-cart-prepare js-cart-checkout" style="">
+            <button class="sidebar-cart-checkout js-cart-checkout"
+                    ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip }" ng-click="checkout()">
+                <span class=" base-font js-checkout-hit">去结算</span>
+                        <span class="base-font"><br>
+                            总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>
+                <span class="base-font rmbSpan">￥</span><span id="js-shop-total-price"
+                                                              class="js-shop-total-price base-font">{{shoppingCartItems | getTotolPrice}}</span>
+            </button>
+        </div>
+    </ion-footer-bar>
+
+    <div class="shoppingCartDisplay cssSlideUp"  ng-hide="!info.showCart">
+        <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include src="'/views/sg/templates/shoppingCart.html'">
+        </div>
+    </div>
 
 </ion-view>

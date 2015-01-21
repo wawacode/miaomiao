@@ -7,11 +7,12 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     $scope.currentDisplayCategory = {};
     $scope.currentDisplayItems = [];
     $scope.info = {};
-    $scope.shop = {};
-    $scope.shop.name = "喵喵生活";
+
+    // save shop info for further use
+    localStorageService.set('shop', $scope.shop);
 
     $timeout(function () {
-        httpClient.getProductList($scope.shopId, function (data, status) {
+        httpClient.getProductList($scope.shop.id, function (data, status) {
             $ionicLoading.hide();
 
             var code = data.code, dataDetail = data.data;

@@ -722,7 +722,7 @@ body {
     height: 0;
     background-color: #ffffff;
     position: absolute;
-    bottom: 0;
+    bottom: 44;
     left: 0;
     width: 100%;
     overflow: scroll;

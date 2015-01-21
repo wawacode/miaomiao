@@ -76,6 +76,10 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
 
         getMyOrders: function (shopId, success, fail) {
             doGet('user/profile', 'shop_id=' + shopId, success, fail);
+        },
+
+        getSearchResults: function (shopId, key,success, fail) {
+            doGet('search/query', 'shop_id=' + shopId + '&key='+ key, success, fail);
         }
 
     };
