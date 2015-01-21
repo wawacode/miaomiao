@@ -1,7 +1,7 @@
 angular.module('miaomiao.shop')
     .controller('UserAddAddressCtrl', function ($scope, $ionicPopup,$ionicLoading, $http, $state, localStorageService,httpClient,$sessionStorage) {
 
-        $scope.shop = localStorageService.get('shop');
+        $scope.shop = localStorageService.get('MMMETA_shop');
         $scope.address = {};
 
         function isValidTelNumber(number) {

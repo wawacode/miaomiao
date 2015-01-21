@@ -1,7 +1,7 @@
 angular.module('miaomiao.shop')
     .controller('AddressListCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,httpClient) {
 
-        $scope.shop = localStorageService.get('shop');
+        $scope.shop = localStorageService.get('MMMETA_shop');
 
         $ionicLoading.show({
             template: '正在加载地址列表...'

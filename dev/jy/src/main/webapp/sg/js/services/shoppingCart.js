@@ -6,7 +6,7 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
 
             _shoppingItems: function () {
 
-                var shopItems = $sessionStorage.savedShoppingCartItems || [];
+                var shopItems = $sessionStorage.MMMETA_SavedShoppingCartItems || [];
                 return shopItems;
 
             },
@@ -41,7 +41,7 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
                     items[index].count = item.count;
                 }
 
-                $sessionStorage.savedShoppingCartItems = items;
+                $sessionStorage.MMMETA_SavedShoppingCartItems = items;
             },
 
             removeItemFromCart: function (item) {
@@ -64,7 +64,7 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
                     }
                 }
 
-                $sessionStorage.savedShoppingCartItems = items;
+                $sessionStorage.MMMETA_SavedShoppingCartItems = items;
 
             },
 
@@ -75,7 +75,7 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
 
             clearAll: function () {
 
-                $sessionStorage.savedShoppingCartItems = [];
+                $sessionStorage.MMMETA_SavedShoppingCartItems = [];
 
                 this.itemChangeEventInShoppingCart();
             },
@@ -127,24 +127,24 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
             },
 
             itemChangeEventInShoppingCart: function (item) {
-                $rootScope.$broadcast('itemSelectionChangedInShoppingCart', {
+                $rootScope.$broadcast('MMEVENT_ItemSelectionChangedInShoppingCart', {
                     item: item
                 });
             },
             onItemChangeEventInShoppingCart: function ($scope, handler) {
-                $scope.$on('itemSelectionChangedInShoppingCart', function (event, message) {
+                $scope.$on('MMEVENT_ItemSelectionChangedInShoppingCart', function (event, message) {
                     handler(message);
                 });
             },
 
             itemChangeEventInProductList: function (item) {
-                $rootScope.$broadcast('itemSelectionChangedInProductList', {
+                $rootScope.$broadcast('MMEVENT_ItemSelectionChangedInProductList', {
                     item: item
                 });
             },
 
             onItemChangeEventInProductList: function ($scope, handler) {
-                $scope.$on('itemSelectionChangedInProductList', function (event, message) {
+                $scope.$on('MMEVENT_ItemSelectionChangedInProductList', function (event, message) {
                     handler(message);
                 });
             }

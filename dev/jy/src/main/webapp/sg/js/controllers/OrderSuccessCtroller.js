@@ -1,7 +1,7 @@
 angular.module('miaomiao.shop')
     .controller('OrderSuccessCtrl', function ($scope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage) {
 
-        $scope.shop = localStorageService.get('shop');
+        $scope.shop = localStorageService.get('MMMETA_shop');
 
         httpClient.getMyOrders($scope.shop.id ,function(data, status){
 

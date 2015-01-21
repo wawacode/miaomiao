@@ -1,12 +1,8 @@
 angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope, $ionicLoading,$ionicPopup, $http, $state, localStorageService, httpClient,ShoppingCart) {
+    .controller('CheckoutCtrl', function ($scope,$rootScope, $ionicLoading,$ionicPopup, $http, $state, localStorageService, httpClient,ShoppingCart) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
-        $scope.shop = localStorageService.get('shop');
-
-        $ionicLoading.show({
-            template: '正在核对,请稍候...'
-        });
+        $scope.shop = localStorageService.get('MMMETA_shop');
 
         $scope.info = {};
         $scope.info.address = {};
@@ -14,50 +10,58 @@ angular.module('miaomiao.shop')
         $scope.info.newOrderPhone = '';
         $scope.info.showAddNewAddress = true;
 
-        httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function(data, status){
+        function reloadInfo(){
+            $ionicLoading.show({
+                template: '正在核对,请稍候...'
+            });
 
-            $ionicLoading.hide();
+            httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function(data, status){
 
-            var code = data.code, dataDetail = data.data;
-            if (code == 500) {
-                $ionicPopup.alert({
-                    title: '加载数据失败:' + data.msg,
-                    template: ''
-                });
-                return;
-            }else if(code == 100){
-                $ionicPopup.alert({
-                    title: '部分商品不足，请谨慎购买:' + data.msg,
-                    template: ''
-                });
-            }
+                $ionicLoading.hide();
 
-            $scope.shop = dataDetail.shop;
+                var code = data.code, dataDetail = data.data;
+                if (code == 500) {
+                    $ionicPopup.alert({
+                        title: '加载数据失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }else if(code == 100){
+                    $ionicPopup.alert({
+                        title: '部分商品不足，请谨慎购买:' + data.msg,
+                        template: ''
+                    });
+                }
 
-            // check results
-            for(var i=0;i< dataDetail.itemls.length;i++){
-                var item = dataDetail.itemls[i];
-                for(var j=0; j < $scope.shoppingCartItems.length;j++ ){
-                    if(item.id == $scope.shoppingCartItems[j].id){
-                        if(item.info){
-                            $scope.shoppingCartItems[j].message = item.info;
+                $scope.shop = dataDetail.shop;
+
+                // check results
+                for(var i=0;i< dataDetail.itemls.length;i++){
+                    var item = dataDetail.itemls[i];
+                    for(var j=0; j < $scope.shoppingCartItems.length;j++ ){
+                        if(item.id == $scope.shoppingCartItems[j].id){
+                            if(item.info){
+                                $scope.shoppingCartItems[j].message = item.info;
+                            }
                         }
                     }
                 }
-            }
 
-            $scope.addressls = dataDetail.addressls;
-            $scope.info.address = $scope.addressls && $scope.addressls[0];
+                $scope.addressls = dataDetail.addressls;
+                $scope.info.address = $scope.addressls && $scope.addressls[0];
 
-            if($scope.info.address){
-                $scope.info.showAddNewAddress = false;
-            }
+                if($scope.info.address){
+                    $scope.info.showAddNewAddress = false;
+                }
 
-        },function(data, status){
+            },function(data, status){
 
-            $scope.shoppingCartItems = ShoppingCart.getAllItems();
-            $ionicLoading.hide();
-        });
+                $scope.shoppingCartItems = ShoppingCart.getAllItems();
+                $ionicLoading.hide();
+            });
+        }
+
+        reloadInfo();
 
         $scope.goToAddressList = function(){
             $state.go('addressList', null, { reload: true });
@@ -143,6 +147,16 @@ angular.module('miaomiao.shop')
                 $ionicLoading.hide();
             })
         }
+
+
+        $rootScope.$on('$stateChangeStart',
+            function (event, toState, toParams){
+                if(toState.url=='/checkout'){
+                    // back to self page, do a  reload
+                    // handle item change event
+                    reloadInfo();
+                }
+            });
 
 
     });

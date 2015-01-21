@@ -9,7 +9,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     $scope.info = {};
 
     // save shop info for further use
-    localStorageService.set('shop', $scope.shop);
+    localStorageService.set('MMMETA_shop', $scope.shop);
 
     $timeout(function () {
         httpClient.getProductList($scope.shop.id, function (data, status) {
@@ -157,7 +157,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     $scope.checkout = function () {
 
-        localStorageService.set('shop', $scope.shop);
+        localStorageService.set('MMMETA_shop', $scope.shop);
 
         $state.go('checkout',null, { reload: true });
 
@@ -181,6 +181,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                 itm.count = ShoppingCart.getCountForItem(itm);
             }
         }
+        updateShoppingCart();
     }
 
     function partUpdateForProductList(item){
@@ -201,6 +202,8 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                 break;
             }
         }
+
+        updateShoppingCart();
     }
 
 
