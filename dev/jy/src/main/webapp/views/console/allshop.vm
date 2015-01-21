@@ -55,6 +55,7 @@
                         <th>店铺电话</th>
                         <th>店长电话</th>
                         <th>创建时间</th>
+                        <th>店铺地址</th>
                     </tr>
                     </thead>
                     #foreach($shop in $shopls)
@@ -64,6 +65,8 @@
                         <td class="" >$shop.tel</td>
                         <td class="" >$shop.owner_phone</td>
                         <td class="" >$shop.create_time</td>
+                        <td class="" ><a href="http://www.mbianli.com/sg/shop?shop_id=${shop.id}">访问店铺 </a><br/>
+                            <a href="http://www.mbianli.com/console/login">店铺后台 </a></td>
                     </tr>
                     #end
                     </tbody>
