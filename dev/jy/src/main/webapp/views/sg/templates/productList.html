@@ -1,20 +1,35 @@
 <ion-view>
 
-    <ion-header-bar class="bar-dark" style="text-align: left;">
+    <!--<ion-header-bar class="bar-dark" style="text-align: left;">-->
 
-        <div class="buttons">
+        <!--<div class="buttons">-->
+            <!--<button class="button button-outline button-icon ion-ios7-person" ng-click=""></button>-->
+        <!--</div>-->
+
+        <!--<h1 class="title">-->
+            <!--{{shop.name}} <i class="icon ion-chevron-down" style=" font-size: 15px !important"></i>-->
+        <!--</h1>-->
+
+        <!--<div class="buttons">-->
+            <!--<button class="button button-outline button-icon ion-ios7-search assertive" ng-click="goToSearch()"></button>-->
+        <!--</div>-->
+
+    <!--</ion-header-bar>-->
+    <ion-nav-bar class="bar-dark">
+
+        <ion-nav-buttons side="left" class="button-dark">
             <button class="button button-outline button-icon ion-ios7-person" ng-click=""></button>
-        </div>
+        </ion-nav-buttons>
 
-        <h1 class="title">
-            {{shop.name}}
-        </h1>
-
-        <div class="buttons">
+        <ion-nav-buttons side="right">
             <button class="button button-outline button-icon ion-ios7-search assertive" ng-click="goToSearch()"></button>
-        </div>
+        </ion-nav-buttons>
 
-    </ion-header-bar>
+        <ion-nav-title>
+            {{shop.name}}
+        </ion-nav-title>
+
+    </ion-nav-bar>
 
     <ion-content padding="true"
                  has-tabs="false"
@@ -24,13 +39,13 @@
 
             <div class="leftContainer">
                 <div class="leftContent">
-                    <div class="shop-categray-list" style="width: 90%">
-                        <ul style="margin: 0.0em;padding: 0px;padding-top: 2px;">
+                    <div class="shop-categray-list" style="width: 90%;">
+                        <ul style="margin: 0.0em;padding: 0px;">
                             <li ng-repeat="category in categoryls" class="shop-categray"
                                 ng-click="selectCategory(category)"
-                                ng-class="{'shop-categray-selected': category.selected , 'shop-categray': !category.selected}">
+                                ng-class="{'shop-categray-selected': category.selected}">
                                 <div class="shop-categray-item-decorate" ng-show="category.selected"></div>
-                                <div class="shop-categray-item" style="">{{ category.name }}</div>
+                                <div class="shop-categray-item" style="" ng-class="{'shop-categray-item-selected': category.selected}">{{ category.name }}</div>
                                 <div class="shop-categray-item-edge" ng-show="category.totalCnt">
                                     {{category.totalCnt}}
                                 </div>
@@ -61,14 +76,14 @@
 
     </ion-content>
 
-    <ion-footer-bar class="bar-light" style="padding-top: 0;padding-bottom: 0;overflow: hidden">
+    <ion-footer-bar class="bar-light" style="padding:0; overflow: hidden;height: 49px;">
         <div class="footer-container-left base-sidebar-shopping-cart js-shopping-cart" ng-click="showShoppingCart()">
             <span><img src="/images/cart-64.png" class="base-icon-shopping-cart"></span>
         </div>
         <div class="footer-container-right base-cart-prepare js-cart-checkout" style="">
             <button class="sidebar-cart-checkout js-cart-checkout"
                     ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip }" ng-click="checkout()">
-                <span class=" base-font js-checkout-hit">去结算</span>
+                <span class=" base-font js-checkout-hit">{{checkoutHintMessage}}</span>
                         <span class="base-font"><br>
                             总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>
                 <span class="base-font rmbSpan">￥</span><span id="js-shop-total-price"

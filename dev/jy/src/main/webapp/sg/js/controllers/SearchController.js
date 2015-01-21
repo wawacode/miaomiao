@@ -52,7 +52,7 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
-
+        $scope.checkoutHintMessage = $scope.cartReadyToShip? "去结算" : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
     }
 
     updateShoppingCart();
@@ -100,11 +100,7 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
     ShoppingCart.onItemChangeEventInShoppingCart($scope, function (message) {
 
         var item = message.item;
-        if(item){
-//            partUpdateForProductList(item);
-        }else{
-//            fullyUpdateForProductList();
-        }
+        updateShoppingCart();
     });
 
 });

@@ -36,6 +36,12 @@
 </head>
 <body>
 
+<ion-nav-bar class="bar-dark">
+    <ion-nav-back-button class="button-dark">
+        <i class="ion-arrow-left-c"></i> Back
+    </ion-nav-back-button>
+</ion-nav-bar>
+
 <ion-nav-view>
 
     <input type="hidden" value="$shop.id" name="shop_id" ng-model="shopId" ng-init="shop.id='$shop.id'">

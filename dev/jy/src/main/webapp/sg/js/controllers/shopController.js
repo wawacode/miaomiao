@@ -125,7 +125,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
-
+        $scope.checkoutHintMessage = $scope.cartReadyToShip? "去结算" : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
     }
 
     $scope.selectItem = function (item) {
@@ -176,6 +176,9 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
 
     function fullyUpdateForProductList(){
+
+        if(!$scope.categoryls)return;
+
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
             $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
 
@@ -189,7 +192,9 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     function partUpdateForProductList(item){
 
+        if(!$scope.categoryls)return;
         // handle item change event
+
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
 
             if($scope.categoryls[idx].category_id == item.category_id){
@@ -225,6 +230,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     $scope.$on( "$ionicView.enter",function(){
 
         updateShoppingCart();
+        if($scope.categoryls){}
         fullyUpdateForProductList();
 
     });

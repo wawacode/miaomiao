@@ -126,6 +126,11 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
                 return this.getTotalPrice() >= 20.0;
             },
 
+            cartNotReadyLeftPrice: function () {
+
+                 return 20.0 - this.getTotalPrice();
+            },
+
             itemChangeEventInShoppingCart: function (item) {
 
                 $timeout(function(){
