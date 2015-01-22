@@ -108,6 +108,13 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
         var item = message.item;
         updateShoppingCart();
+
+        // update items
+        for (var item_idx = 0; item_idx < $scope.searchResultsItems.length; item_idx++) {
+            var item =  $scope.searchResultsItems[item_idx];
+            item.count = ShoppingCart.getCountForItem(item);
+        }
+
     });
 
 });

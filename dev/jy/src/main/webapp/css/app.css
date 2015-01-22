@@ -630,6 +630,7 @@ body {
     vertical-align: middle;
     padding-top: 2px;
     color: #F54447;
+    font-weight: bold;
 }
 
 .product_stepper_count_input {

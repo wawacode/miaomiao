@@ -8,10 +8,10 @@
             <span style="font-weight: normal">¥ {{item.price/100.0}}</span>
         </div>
         <div class="product_stepper">
-            <div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)">
+            <div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)" ng-show="item.count">
                 -
             </div>
-            <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity">
+            <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity" ng-show="item.count">
                 {{item.count}}
             </div>
             <div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">
