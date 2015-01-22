@@ -70,16 +70,15 @@ public class WXController {
         String toUser = getToUser(body);
         String fromUser = getFromUser(body);
         if ("event".equals(mtype)) {
-//            "<xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421840190</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[subscribe]]></Event><EventKey><![CDATA[qrscene_1000]]></EventKey><Ticket><![CDATA[gQEf8ToAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL0cwTWlTc1hsLXhxR2Q4OW1FMl82AAIEski_VAMEAAAAAA==]]></Ticket></xml>  "
-
             String event = getEvent(body);
-            String eventType = getEventType(body);
             String eventKey = getEventKey(body);
-            LoggerUtils.getInstance().log( String.format(" rec event from wx eventType %s ,eventKey %s",eventType ));
-
-            return  "";
+            LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
+            String response = CONTENT.replace("{content}", content);
+            response = response.replace("{toUser}",fromUser);
+            response = response.replace("{fromUser}",toUser);
+            response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+            return  response;
         }
-
         String response = CONTENT.replace("{content}", content);
         response = response.replace("{toUser}",fromUser);
         response = response.replace("{fromUser}",toUser);
@@ -88,15 +87,31 @@ public class WXController {
     }
 
     private static String getEventKey(String body) {
-        return null;
+        String s = "<EventKey><![CDATA[";
+        String e = "]]></EventKey>";
+        int start =body.indexOf(s);
+        int end =body.indexOf(e);
+        if (-1 == start || -1 == end){
+            return "" ;
+        }
+        return body.substring( s.length() + start ,end);
+
     }
 
     private static String getEventType(String body) {
-        return null;
+        String s = "<Event><![CDATA[";
+        String e = "]]></Event>";
+        int start =body.indexOf(s);
+        int end =body.indexOf(e);
+        return body.substring( s.length() + start ,end);
     }
 
     private static  String getEvent(String body) {
-        return null;
+        String s = "<Event><![CDATA[";
+        String e = "]]></Event>";
+        int start =body.indexOf(s);
+        int end =body.indexOf(e);
+        return body.substring( s.length() + start ,end);
     }
 
     private static  String getMtype(String body) {

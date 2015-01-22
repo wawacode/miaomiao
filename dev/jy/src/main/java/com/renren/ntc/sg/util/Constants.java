@@ -28,6 +28,8 @@ public class Constants {
     public static final String HOST = "www.mbianli.com" ;
 
     public static  final String PARATERERROR = "{\"code\":1,\"msg\":\"paramter error\"}";
+
+    public static  final String PRERROR = "{\"code\":1,\"msg\":\"{msg}\"}";
     public static  final String DONE = "{\"code\":0,\"msg\":\"done\"}";
 
     public static  final String ALLREADYNEW = "{\"code\":0,\"msg\":\"allready new version\"}";

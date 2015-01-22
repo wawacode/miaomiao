@@ -28,4 +28,7 @@ public interface RegistUserDAO {
 
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where phone =:1 and pwd =:2")
     public RegistUser getUser(String phone, String pwd);
+
+    @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where phone =:1 ")
+    public  RegistUser getUser(String shop_tel);
 }

@@ -17,11 +17,11 @@ import java.net.URLConnection;
 public class WXHttpClient {
 
 
-// miaomiao shenghuo
-//    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
-//    private static String token = "tooooken";
-//    private static String appKey = "914f4388312ca90e4cb750b817d15368";
-//    private static String appId = "wx762f832959951212";
+//miaomiao shenghuo
+    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
+    private static String token = "tooooken";
+    private static String appKey = "914f4388312ca90e4cb750b817d15368";
+    private static String appId = "wx762f832959951212";
 
 // jiajiaxianguo
 //    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
@@ -32,11 +32,11 @@ public class WXHttpClient {
 //    <xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421833304</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[r]]></Content><MsgId>6106727541249712803</MsgId></xml>
 
     // ceshigongzong hao
-    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
-    private static String token = "tooooken";
-    private static String appKey = "ebd5d6bf4c597a617b2420341da1c03d";
-    private static String appId = "wxd64a39a599e2ce3a";
 
+//    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
+//    private static String token = "tooooken";
+//    private static String appKey = "ebd5d6bf4c597a617b2420341da1c03d";
+//    private static String appId = "wxd64a39a599e2ce3a";
 
     private static final int CONN_TIMEOUT = 10000;
 	private static final int READ_TIMEOUT = 10000;
@@ -165,6 +165,7 @@ public class WXHttpClient {
         }
         JSONObject ob =(JSONObject) JSONObject.parse(e);
         createMenu(ob.getString("access_token"));
+
 //        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
 //        String access_token = ob.getString("access_token");
 //        url = url.replace("{token}",access_token);
@@ -172,7 +173,7 @@ public class WXHttpClient {
 //        jb.put("action_name","QR_LIMIT_STR_SCENE") ;
 //        JSONObject action_info = new JSONObject() ;
 //        JSONObject scene_str = new JSONObject() ;
-//        scene_str.put("scene_str",12) ;
+//        scene_str.put("scene_str","18600326217") ;
 //        action_info.put("scene",scene_str);
 //        jb.put("action_info",action_info) ;
 //
