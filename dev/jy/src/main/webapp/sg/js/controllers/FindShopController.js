@@ -47,9 +47,6 @@ angular.module('miaomiao.shop').
         if($scope.modal){
             $scope.modal.hide();
         }
-        
-        $state.go('productList');
-
     }
 
     $timeout(function(){

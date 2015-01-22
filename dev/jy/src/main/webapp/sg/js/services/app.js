@@ -1,4 +1,4 @@
-var miaomiao = angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule','ngStorage','ngAnimate'], function($httpProvider) {
+var miaomiao = angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule','ngStorage','ngAnimate'], function($httpProvider,$provide) {
 
     // Use x-www-form-urlencoded Content-Type
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -108,5 +108,16 @@ miaomiao.config(function ($stateProvider, $urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/locate');
 
+    }).config(function($provide) {
+        $provide.decorator('$state', function($delegate, $stateParams) {
+            $delegate.forceReload = function() {
+                return $delegate.go($delegate.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+            };
+            return $delegate;
+        });
     });
 

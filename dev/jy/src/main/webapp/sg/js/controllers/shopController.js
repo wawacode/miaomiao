@@ -1,22 +1,22 @@
 angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
                                                                     $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService) {
 
-    $scope.LoadingMessage = '正在为您加载商品 ...';
-    $ionicLoading.show({
-        templateUrl: '/views/sg/templates/loadingIndicator.html',
-        scope: $scope,
-        noBackdrop: true
-    });
-
     // get shop info from local storage cause in locate page we have got one
     $scope.shop = localStorageService.get('MMMETA_shop');
-
+    $scope.info = {};
     $scope.currentDisplayCategory = {};
     $scope.currentDisplayItems = [];
-    $scope.info = {};
+    $scope.categoryls = [];
 
+    function initShopData(){
 
-    $timeout(function () {
+        $scope.LoadingMessage = '正在为您加载商品 ...';
+        $ionicLoading.show({
+            templateUrl: '/views/sg/templates/loadingIndicator.html',
+            scope: $scope,
+            noBackdrop: true
+        });
+
         httpClient.getProductList($scope.shop.id, function (data, status) {
             $ionicLoading.hide();
 
@@ -29,7 +29,6 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                 return;
             }
 
-            $scope.shop = dataDetail.shop;
             $scope.categoryls = dataDetail.categoryls;
 
             // extend for use
@@ -64,7 +63,11 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
             });
             return;
         });
-    }, 0);
+    }
+
+    $timeout(function () {
+        initShopData();
+    });
 
     $scope.selectCategory = function (category) {
 
@@ -186,10 +189,31 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     });
 
     $scope.switchShop = function () {
-        //TODO: make slide up
         $scope.modal.show();
     }
 
+    //Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
+    // Execute action on hide modal
+    $scope.$on('modal.hidden', function() {
+        console.log('dddddebug');
+
+        var shop = localStorageService.get('MMMETA_shop');
+        if(shop.id != $scope.shop.id){
+
+            $scope.shop = shop;
+
+            // clear all data if switch shop
+            ShoppingCart.clearAll();
+            updateShoppingCart();
+
+            $timeout(function () {
+                initShopData();
+            });
+        }
+    });
 
     function fullyUpdateForProductList() {
 
