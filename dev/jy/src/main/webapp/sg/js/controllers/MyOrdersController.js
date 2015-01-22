@@ -74,8 +74,6 @@ angular.module('miaomiao.shop')
 
         }
 
-//        reloadInfo();
-
         OrderService.orderChangeEventSuccess();
 
         AddressService.onAddressChangeEventSwitchDefault($scope,function(message){
@@ -86,5 +84,8 @@ angular.module('miaomiao.shop')
             reloadInfo(message.item);
         });
 
+        $scope.$on("$ionicView.enter", function () {
+    //        reloadInfo();
+        });
     });
 
