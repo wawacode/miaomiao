@@ -10,7 +10,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     function initShopData(){
 
-        $scope.LoadingMessage = '正在为您加载商品 ...';
+        $scope.LoadingMessage = '正在加载商品 ...';
         $ionicLoading.show({
             templateUrl: '/views/sg/templates/loadingIndicator.html',
             scope: $scope,

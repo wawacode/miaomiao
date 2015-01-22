@@ -84,7 +84,7 @@ angular.module('miaomiao.shop').
     }
 
     $timeout(function() {
-            var shop = localStorageService.set('MMMETA_shop');
+            var shop = localStorageService.get('MMMETA_shop');
             if(shop && shop.id){
                 $state.go('productList');
             }else{
