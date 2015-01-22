@@ -253,6 +253,7 @@ public class ShopConsoleController {
         query = SUtils.wrap(query);
         List<Item>  itemls =  itemsDAO.search(SUtils.generTableName(shop_id),shop_id,query);
 
+        inv.addModel("shop", shop);
         inv.addModel("curr_cate_id",category_id);
         inv.addModel("categoryls",categoryls);
         inv.addModel("itemls", itemls);
