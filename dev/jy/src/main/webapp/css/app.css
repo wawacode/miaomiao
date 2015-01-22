@@ -1150,11 +1150,11 @@ body {
     top: 0;
 }
 
-.loading{
+.loadingIndicator{
     /*background-color: rgba(0, 0, 0, 0.7) !important;*/
 }
 
-.icon{
+.loadingIndicatorIcon{
     font-size: 35px !important;
     padding: 0;
 }

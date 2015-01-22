@@ -1,10 +1,15 @@
 <ion-view>
 
-    <ion-nav-title>
-        搜索商品
-    </ion-nav-title>
+    <ion-nav-bar class="bar-dark">
+        <ion-nav-back-button class="button-dark button-clear">
+            <i class="ion-arrow-left-c light"></i>
+        </ion-nav-back-button>
+        <ion-nav-title>
+            搜索商品
+        </ion-nav-title>
+    </ion-nav-bar>
 
-    <ion-header-bar class="bar-lightgary" style="text-align: left;">
+    <ion-header-bar class="bar-lightgary" style="text-align: left;top: 44">
         <div id="search-box" class="item-input-inset"
              style="width: 100%;">
             <div class="item-input-wrapper">
@@ -14,6 +19,7 @@
                    ng-click="clearSearch()"></i>
             </div>
         </div>
+
     </ion-header-bar>
 
     <ion-content padding="true"

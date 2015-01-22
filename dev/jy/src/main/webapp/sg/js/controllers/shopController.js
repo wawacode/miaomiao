@@ -234,6 +234,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         }
     });
 
+    // when back from checkout or other state, just refresh the numbers
     $scope.$on( "$ionicView.enter",function(){
 
         updateShoppingCart();

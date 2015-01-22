@@ -52,13 +52,9 @@ angular.module('miaomiao.shop').
 
         httpClient.getShopList(0, 100,function(data,status){
             var code = data.code, dataDetail = data.data;
-
             if (code == 0 || ! MMUtils.isEmptyObject(dataDetail)) {
-
-                $scope.shop_items = dataDetail;
-
+                $scope.shop_items = dataDetail.shop;
             }
-
         },function(data,status){
 
         });
