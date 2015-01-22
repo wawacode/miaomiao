@@ -171,7 +171,12 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
 
                 return true;
 
+            },
 
+            isValidTelNumber: function (number) {
+                var regPhone = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+                var regMobile = /^1[3|4|5|6|7|8|9][0-9]{1}[0-9]{8}$/;
+                return regPhone.test(number) || regMobile.test(number);
             }
         }
     }]);

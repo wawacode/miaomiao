@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService) {
+    .controller('CheckoutCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService,MMUtils) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.shop = localStorageService.get('MMMETA_shop');
@@ -49,10 +49,10 @@ angular.module('miaomiao.shop')
             }
 
             $scope.addressls = dataDetail.addressls;
-            $scope.info.address = $scope.addressls && $scope.addressls[0];
+            $scope.info.address = $scope.addressls && $scope.addressls.length && $scope.addressls[0];
 
-            if ($scope.info.address) {
-                $scope.info.showAddNewAddress = false;
+            if (!$scope.info.address) {
+                $scope.info.showAddNewAddress = true;
             }
 
         }, function (data, status) {
@@ -90,13 +90,6 @@ angular.module('miaomiao.shop')
             ShoppingCart.itemChangeEventInShoppingCart(item);
         }
 
-        function isValidTelNumber(number) {
-            var regPhone = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
-            var regMobile = /^1[3|4|5|6|7|8|9][0-9]{1}[0-9]{8}$/;
-            return regPhone.test(number) || regMobile.test(number);
-        }
-
-
         $scope.confirmCheckout = function () {
 
             if(!$scope.cartReadyToShip)return;
@@ -106,7 +99,7 @@ angular.module('miaomiao.shop')
             } else {
                 $scope.info.address = {'address_id': '', 'address': $scope.info.newOrderAddress, 'phone': $scope.info.newOrderPhone};
 
-                if (!$scope.info.newOrderAddress || !$scope.info.newOrderPhone || !isValidTelNumber($scope.info.newOrderPhone)) {
+                if (!$scope.info.newOrderAddress || !$scope.info.newOrderPhone || ! MMUtils.isValidTelNumber($scope.info.newOrderPhone)) {
                     $ionicPopup.alert({
                         title: '请填写正确的地址电话',
                         template: ''

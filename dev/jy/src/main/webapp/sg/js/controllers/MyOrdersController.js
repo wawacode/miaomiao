@@ -10,10 +10,14 @@ angular.module('miaomiao.shop')
         }
 
         function transformOrderData(orders){
-
+            if(!orders) return;
             for(var i=0;i< orders.length;i++){
                 var order = orders[i];
-                order.items = JSON.parse(order.snapshot);
+                try{
+                    order.items = JSON.parse(order.snapshot);
+                }catch (e){
+
+                }
             }
         }
 

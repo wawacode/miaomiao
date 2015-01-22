@@ -46,6 +46,8 @@ angular.module('miaomiao.shop').
 
         if($scope.modal){
             $scope.modal.hide();
+        }else{
+            $state.go('productList');
         }
     }
 
