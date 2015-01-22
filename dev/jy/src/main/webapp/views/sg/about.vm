@@ -17,10 +17,10 @@
 
 <header id="comm_hd" style="border-bottom:0px solid">
 	<h1 id="logo" class="left">
-    	<a id="logo_a"  class="comm_p24 block t_hide" style="height: 82px;background-image: url(http://imgqn.koudaitong.com/upload_files/2014/10/26/FvaQ9twVeX2rYjATCGwpakMMZHE2.png!60x60.jpg);background-size:45px 45px">喵喵鲜果</a>
+    	<a id="logo_a"  class="comm_p24 block t_hide" style="height: 82px;background-image: url(http://imgqn.koudaitong.com/upload_files/2014/10/26/FvaQ9twVeX2rYjATCGwpakMMZHE2.png!60x60.jpg);background-size:45px 45px">喵喵生活</a>
     
     </h1>
-    <nav id="comm_nav" class="right" style="float: left;margin-left:-10px;margin-top:10px">
+    <nav id="comm_nav" class="right" style="float: left;margin-left:10px;margin-top:10px">
     <span style="font-weight:bold;font-size:14px" >喵喵一下，便利到家</span >
     
     </nav>
