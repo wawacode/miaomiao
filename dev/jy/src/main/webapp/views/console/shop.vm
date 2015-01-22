@@ -35,7 +35,7 @@
             </ul>
             <form id="query_form" class="navbar-form navbar-right" action="/console/shop/query">
                 <input id="query_input" name="query" type="text" class="form-control"  placeholder="Search...">
-
+                <input id="query_shop" name="shop_id" value="${shop_id}" style="display:none">
             </form>
         </div>
     </div>
