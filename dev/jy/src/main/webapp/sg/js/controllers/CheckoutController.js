@@ -57,12 +57,8 @@ angular.module('miaomiao.shop')
                     $scope.info.showAddNewAddress = true;
                 }
 
-                $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
-                $scope.checkoutHintMessage = $scope.cartReadyToShip? "货到付款" : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
-
             }, function (data, status) {
 
-                $scope.shoppingCartItems = ShoppingCart.getAllItems();
                 $ionicLoading.hide();
             });
         }
@@ -232,6 +228,7 @@ angular.module('miaomiao.shop')
         });
 
         $scope.$on("$ionicView.enter", function () {
+            updateShoppingCart();
             checkOrders();
         });
 
