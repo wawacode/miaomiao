@@ -7,7 +7,9 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
     $scope.info = {};
     $scope.info.hasNoResults = false;
 
-    $scope.performSearch = function (key) {
+    $scope.performSearch = function (key,$event) {
+
+        $event.target.blur();
 
         var KEY = key || $scope.info.key;
 
@@ -28,6 +30,7 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
             var code = data.code, dataDetail = data.data;
             if (!code == 0 || dataDetail.length == 0) {
+                $scope.searchResultsItems = [];
                 $scope.info.hasNoResults = true;
                 return;
             }
@@ -85,7 +88,7 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
     }
 
     $scope.clearSearch = function(){
-
+        $scope.info.key = '';
     }
 
     $scope.checkout = function () {
