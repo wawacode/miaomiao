@@ -44,6 +44,10 @@ angular.module('miaomiao.shop').
         localStorageService.set('MMMETA_shop_history', $scope.shop_history);
         localStorageService.set('MMMETA_shop',shop);
 
+        if($scope.modal){
+            $scope.modal.hide();
+        }
+        
         $state.go('productList');
 
     }

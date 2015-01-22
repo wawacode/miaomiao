@@ -1,4 +1,5 @@
-angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope,$window, $ionicLoading, $ionicPopup,$ionicModal, $ionicScrollDelegate,$http, $state, $timeout, localStorageService, httpClient, ShoppingCart,OrderService) {
+angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
+                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService) {
 
     $scope.LoadingMessage = '正在为您加载商品 ...';
     $ionicLoading.show({
@@ -47,7 +48,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                     $scope.categoryls[idx].selected = 1;
                 }
                 for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                    var item =  $scope.categoryls[idx].itemls[item_idx];
+                    var item = $scope.categoryls[idx].itemls[item_idx];
                     item.count = ShoppingCart.getCountForItem(item);
                 }
             }
@@ -106,7 +107,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
             for (var item_idx = 0; item_idx < dataDetail.items.length; item_idx++) {
 
-                var item =  dataDetail.items[item_idx];
+                var item = dataDetail.items[item_idx];
                 item.count = ShoppingCart.getCountForItem(item);
 
             }
@@ -124,11 +125,11 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     }
 
 
-    function updateShoppingCart(){
+    function updateShoppingCart() {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
-        $scope.checkoutHintMessage = $scope.cartReadyToShip? "去结算" : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
+        $scope.checkoutHintMessage = $scope.cartReadyToShip ? "去结算" : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
     }
 
     $scope.selectItem = function (item) {
@@ -146,7 +147,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
 
         item.count -= 1;
-        item.count = item.count <= 0 ? 0: item.count;
+        item.count = item.count <= 0 ? 0 : item.count;
 
         ShoppingCart.removeItemFromCart(item);
         updateShoppingCart();
@@ -163,61 +164,62 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
         localStorageService.set('MMMETA_shop', $scope.shop);
 
-        if(!$scope.cartReadyToShip)return;
+        if (!$scope.cartReadyToShip)return;
 
-        $state.go('checkout',null, { reload: true });
+        $state.go('checkout', null, { reload: true });
 
     }
 
-    $scope.goToSearch = function(){
-        $state.go('search',null, { reload: true });
+    $scope.goToSearch = function () {
+        $state.go('search', null, { reload: true });
     }
 
-    $scope.showShoppingCart = function(){
-        $scope.info.showCart = ! $scope.info.showCart;
+    $scope.showShoppingCart = function () {
+        $scope.info.showCart = !$scope.info.showCart;
     }
 
-    $scope.switchShop =  function(){
+    $ionicModal.fromTemplateUrl('/views/sg/templates/switchShop.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function (modal) {
+        $scope.modal = modal;
+    });
+
+    $scope.switchShop = function () {
         //TODO: make slide up
-
-        $ionicModal.fromTemplateUrl('/views/sg/templates/findShop.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.modal = modal;
-            $scope.modal.show();
-        });
+        $scope.modal.show();
     }
 
 
-    function fullyUpdateForProductList(){
+    function fullyUpdateForProductList() {
 
-        if(!$scope.categoryls)return;
+        if (!$scope.categoryls)return;
 
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
             $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
 
             for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                var itm =  $scope.categoryls[idx].itemls[item_idx];
+                var itm = $scope.categoryls[idx].itemls[item_idx];
                 itm.count = ShoppingCart.getCountForItem(itm);
             }
         }
         updateShoppingCart();
     }
 
-    function partUpdateForProductList(item){
+    function partUpdateForProductList(item) {
 
-        if(!$scope.categoryls)return;
+        if (!$scope.categoryls)return;
         // handle item change event
 
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
 
-            if($scope.categoryls[idx].category_id == item.category_id){
+            if ($scope.categoryls[idx].category_id == item.category_id) {
 
                 $scope.categoryls[idx].totalCnt = ShoppingCart.getCountForCategroy($scope.categoryls[idx].category_id);
 
                 for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
-                    var itm =  $scope.categoryls[idx].itemls[item_idx];
-                    if(itm.id == item.id){
+                    var itm = $scope.categoryls[idx].itemls[item_idx];
+                    if (itm.id == item.id) {
                         itm.count = ShoppingCart.getCountForItem(itm);
                     }
                 }
@@ -234,18 +236,19 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     ShoppingCart.onItemChangeEventInShoppingCart($scope, function (message) {
 
         var item = message.item;
-        if(item){
+        if (item) {
             partUpdateForProductList(item);
-        }else{
+        } else {
             fullyUpdateForProductList();
         }
     });
 
     // when back from checkout or other state, just refresh the numbers
-    $scope.$on( "$ionicView.enter",function(){
+    $scope.$on("$ionicView.enter", function () {
 
         updateShoppingCart();
-        if($scope.categoryls){}
+        if ($scope.categoryls) {
+        }
         fullyUpdateForProductList();
 
     });
