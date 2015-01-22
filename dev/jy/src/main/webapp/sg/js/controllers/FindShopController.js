@@ -1,12 +1,12 @@
 angular.module('miaomiao.shop').
-    controller('FindShopCtrl', function ($scope, $http, $state, localStorageService) {
+    controller('FindShopCtrl', function ($scope, $http, $state, localStorageService,httpClient,MMUtils,$timeout) {
 
     $scope.shop_data = {};
     $scope.showShopList = false;
     $scope.showShopHistory = false;
     $scope.showShopHot = true;
 
-    $scope.shop_history = localStorageService.get('shop_history') || [];
+    $scope.shop_history = localStorageService.get('MMMETA_shop_history') || [];
     if($scope.shop_history.length){
         $scope.showShopHistory = true;
     }
@@ -41,18 +41,27 @@ angular.module('miaomiao.shop').
             $scope.shop_history.push(shop);
         }
 
-        localStorageService.set('shop_history', $scope.shop_history);
+        localStorageService.set('MMMETA_shop_history', $scope.shop_history);
+        localStorageService.set('MMMETA_shop',shop);
 
-        window.location.href = window.location.origin + "/sg/shop?shop_id=" + shop.id;
+        $state.go('productList');
+
     }
 
+    $timeout(function(){
 
-    var params = 'from=0&offset=100';
-    $http.get('shop/shopList?' + params).
-        success(function (data, status, headers, config) {
-            $scope.shop_items = data.data;
-        }).
-        error(function (data, status, headers, config) {
+        httpClient.getShopList(0, 100,function(data,status){
+            var code = data.code, dataDetail = data.data;
+
+            if (code == 0 || ! MMUtils.isEmptyObject(dataDetail)) {
+
+                $scope.shop_items = dataDetail;
+
+            }
+
+        },function(data,status){
 
         });
+    });
+
 });

@@ -91,7 +91,14 @@ public class HomeController {
                 }
             }else{
                 LoggerUtils.getInstance().log( String.format("miss loc ,use default shop_id"));
-                return "r:/sg/loading#/findshop";
+
+                JSONObject response =  new JSONObject();
+                JSONObject data =  new JSONObject();
+                response.put("data", data);
+                response.put("code", 0);
+                return "@" + response.toJSONString();
+
+//                return "r:/sg/loading#/findshop";
             }
 
 

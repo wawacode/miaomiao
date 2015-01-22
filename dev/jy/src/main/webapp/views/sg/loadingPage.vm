@@ -1,144 +1,44 @@
-<html ng-app="ionic.loading">
+<html ng-app="miaomiao.shop">
 <head>
+
     <meta charset="utf-8">
     <title>喵喵</title>
+
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
     <link href="/css/ionic.min.css" rel="stylesheet">
-    <link href="/css/loading.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
 
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
-
+    <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
+    <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
 
-    <script type="text/javascript" src="/sg/js/loading.js"></script>
+
+    <script src="/sg/js/services/app.js"></script>
+    <script src="/sg/js/services/directives.js"></script>
+    <script src="/sg/js/services/filters.js"></script>
+    <script src="/sg/js/services/services.js"></script>
+    <script src="/sg/js/services/shoppingCart.js"></script>
+
+    <script src="/sg/js/controllers/GetLocationController.js"></script>
+    <script src="/sg/js/controllers/FindShopController.js"></script>
+    <script src="/sg/js/controllers/ShopController.js"></script>
+    <script src="/sg/js/controllers/SearchController.js"></script>
+    <script src="/sg/js/controllers/CheckoutController.js"></script>
+    <script src="/sg/js/controllers/AddressListController.js"></script>
+    <script src="/sg/js/controllers/AddAddressController.js"></script>
+    <script src="/sg/js/controllers/ShowProductDetailController.js"></script>
+    <script src="/sg/js/controllers/MyOrdersController.js"></script>
+    <script src="/sg/js/controllers/ShoppingCartController.js"></script>
+    <script src="/sg/js/controllers/OrderSuccessCtroller.js"></script>
+    <script src="/sg/js/controllers/UserAddAddressController.js"></script>
+    <script src="/sg/js/controllers/UserAddressListController.js"></script>
 
 </head>
 <body>
 
 <ion-nav-view></ion-nav-view>
-
-<script id="templates/locate.html" type="text/ng-template">
-    <ion-view view-title="喵喵">
-        <ion-content>
-
-            <div class="loadingBackground">
-
-                <img class="background-img"
-                     style="width: 100%;height: 100%; position: absolute;top: 0;bottom: 0;left: 0;right: 0;"
-                     src="/images/loadingpage-short.jpg">
-            </div>
-
-            <div class="getGeolocation">
-                <!--<img class="getGeolocation-img" src="../../images/getlocation.gif" ng-show="showLocateImg">-->
-                <div class="getGeolocation-title" ng-class="getGeolocationTitleClass">
-                    {{getGeolocationTitle}}
-                </div>
-            </div>
-
-        </ion-content>
-    </ion-view>
-</script>
-
-<script id="templates/findshop.html" type="text/ng-template">
-    <ion-view>
-        <ion-header-bar class="bar-lightgary" style="text-align: left;height: 29px">
-            <!--<ion-nav-back-button class="button button-positive button-clear">-->
-            <!--&lt;!&ndash;<i class="ion-arrow-left-c"></i>&ndash;&gt;-->
-            <!--</ion-nav-back-button>-->
-            <div style="font-size: 12px;margin: auto 10px; text-align: left">
-                您可以从下面选择或搜索你所在的小区
-            </div>
-            <!--<ion-nav-buttons side="primary">-->
-            <!--<button class="button button-clear button-positive" ng-click="relocation()">重新定位</button>-->
-            <!--</ion-nav-buttons>-->
-        </ion-header-bar>
-
-        <ion-content padding="false"
-                     has-tabs="false"
-                     has-header="false" style="top: 29">
-
-            <div style=";height: 57px;padding-top: 10px;">
-                <div id="search-box" class="item-input-inset"
-                     style=";margin: auto;height: 36px">
-                    <div class="item-input-wrapper">
-                        <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
-                        <input type="search" placeholder="请输入商店名称或者地址" ng-model="shop_data.searchQuery"
-                               ng-focus="startSearch()" ng-change="startSearch()" style="color: #7a7a7a">
-                        <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"
-                           ng-click="clearSearch()"></i>
-                    </div>
-                    <!--<button class="button button-clear button-positive" ng-click="clearSearch()">-->
-                    <!--取消-->
-                    <!--</button>-->
-                </div>
-            </div>
-
-            <div class="list" ng-show="showShopList">
-                <div class="item-hint">
-                    商店列表
-                </div>
-                <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
-                     ng-click="goToShop(item)">
-
-                    <div>
-                        <div style="font-size: 14px;display: inline-block">{{item.name}}</div>
-                        <div style="display: inline-block; float:right;font-size: 14px;color: #ffffff;background-color: red;padding: 1px 3px 1px 3px;border-radius: 8px">
-                            {{item.status4V}}
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style="font-size: 10px;display: inline-block">
-                            <i class="icon ion-ios7-location" style="font-size: 12px"></i> &nbsp;{{item.shop_address}}
-                        </div>
-                        <div style="font-size: 10px;display: inline-block;position:absolute;right: 15">
-                            {{item.open_time| date:'shortTime'}} - {{item.close_time| date:'shortTime'}}
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="list" ng-if="showShopHistory" style="margin-bottom: 5px">
-
-                <div class="item-hint" ng-show="shop_history.length">
-                    历史位置
-                </div>
-                <div class="item-shop-history" ng-repeat="item in shop_history" ng-click="goToShop(item)" style="">
-                    {{item.name}}
-                </div>
-            </div>
-
-            <div class="list" ng-show="showShopHot">
-                <div class="item-hint">
-                    热门店铺
-                </div>
-                <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
-                     ng-click="goToShop(item)">
-
-                    <div>
-                        <div style="font-size: 14px;display: inline-block">{{item.name}}</div>
-                        <div style="display: inline-block; float:right;font-size: 14px;color: #ffffff;background-color: red;padding: 1px 3px 1px 3px;border-radius: 8px">
-                            {{item.status4V}}
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style="font-size: 10px;display: inline-block">
-                            <i class="icon ion-ios7-location" style="font-size: 12px"></i> &nbsp;{{item.shop_address}}
-                        </div>
-                        <div style="font-size: 10px;display: inline-block;position:absolute;right: 15">
-                            {{item.open_time| date:'shortTime'}} - {{item.close_time| date:'shortTime'}}
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </ion-content>
-    </ion-view>
-</script>
 
 </body>
 </html>

@@ -48,7 +48,16 @@ var miaomiao = angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule','n
 miaomiao.config(function ($stateProvider, $urlRouterProvider) {
 
         $stateProvider
-
+            .state('locate', {
+                url: '/locate',
+                templateUrl: '/views/sg/templates/locate.html',
+                controller: 'LoadingCtrl'
+            })
+            .state('findshop', {
+                url: '/findshop',
+                templateUrl: '/views/sg/templates/findShop.html',
+                controller: 'FindShopCtrl'
+            })
             .state('productList', {
                 url: '/productlist',
                 templateUrl: '/views/sg/templates/productList.html',
@@ -97,7 +106,7 @@ miaomiao.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'MyOrdersCtrl'
             });
 
-        $urlRouterProvider.otherwise('/productlist');
+        $urlRouterProvider.otherwise('/locate');
 
     });
 

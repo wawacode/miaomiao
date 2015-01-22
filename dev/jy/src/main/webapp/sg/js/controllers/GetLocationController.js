@@ -1,69 +1,66 @@
 angular.module('miaomiao.shop').
-    controller('LoadingCtrl',function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout) {
+    controller('LoadingCtrl',function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout,httpClient,MMUtils) {
 
-
-    $scope.getGeolocationTitle = "定位中...";
-    $scope.getGeolocationTitleClass = 'blink_me';
-    $scope.showLocateImg = true;
-
-    var url = window.location.origin + "/sg/f";
-
-    function forceUpdate(cb) {
-        $scope.$apply(function () {
-            cb();
-        });
-    }
+    $scope.info = {};
+    $scope.info.getGeolocationTitle = "定位中...";
+    $scope.info.getGeolocationTitleClass = 'blink_me';
+    $scope.info.showLocateImg = true;
 
     function showPosition(position) {
+
         if (position) {
 
-            forceUpdate(function () {
-                $scope.getGeolocationTitle = "定位成功，正在加载请稍候...";
-                $scope.getGeolocationTitleClass = 'getGeolocation-title-success';
-            })
+            $scope.info.getGeolocationTitle = "定位成功，正在加载请稍候...";
+            $scope.info.getGeolocationTitleClass = 'getGeolocation-title-success';
 
-            url = url + "?" + "lat=" + position.coords.latitude + "&lng=" + position.coords.longitude;
-            window.location.href = url;
+            httpClient.getShopByGEOLocation(position.coords.latitude, position.coords.longitude,function(data,status){
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0 || MMUtils.isEmptyObject(dataDetail)) {
+
+                    $scope.info.getGeolocationTitle = "没有找到最近的店...";
+
+                    $state.go('findshop');
+                    return;
+                }
+                var shop = dataDetail.shop;
+
+                localStorageService.set('MMMETA_shop',shop);
+
+                $state.go('productList');
+
+            },function(data,status){
+                $state.go('findshop');
+            });
+
         } else {
-            window.location.href = url;
+            $state.go('findshop');
         }
     }
 
     function showError(error) {
 
-        forceUpdate(function () {
-            $scope.getGeolocationTitleClass = 'getGeolocation-title-fail';
-        })
+        $scope.info.getGeolocationTitleClass = 'getGeolocation-title-fail';
 
         switch (error.code) {
             case error.PERMISSION_DENIED:
-                forceUpdate(function () {
-                    $scope.getGeolocationTitle = "定位失败，请确认您开启位置服务";
-                })
+                $scope.info.getGeolocationTitle = "定位失败，请确认您开启位置服务";
 
                 break;
             case error.POSITION_UNAVAILABLE:
-                forceUpdate(function () {
-                    $scope.getGeolocationTitle = "定位失败，请确认您开启位置服务";
-                })
+                $scope.info.getGeolocationTitle = "定位失败，请确认您开启位置服务";
 
                 break;
             case error.TIMEOUT:
-                forceUpdate(function () {
-                    $scope.getGeolocationTitle = "定位超时，请您重试";
-                })
+                $scope.info.getGeolocationTitle = "定位超时，请您重试";
 
                 break;
             case error.UNKNOWN_ERROR:
-                forceUpdate(function () {
-                    $scope.getGeolocationTitle = "定位出现未知错误，请您重试";
-                })
+                $scope.info.getGeolocationTitle = "定位出现未知错误，请您重试";
 
                 break;
             default:
-                forceUpdate(function () {
-                    $scope.getGeolocationTitle = "定位失败，请您重试";
-                })
+                $scope.info.getGeolocationTitle = "定位失败，请您重试";
 
         }
         // let user see the error message
@@ -78,16 +75,22 @@ angular.module('miaomiao.shop').
             };
 
             navigator.geolocation.getCurrentPosition(showPosition, showError, position_option);
+
         } else {
-            $scope.showLocateImg = false;
-            $scope.getGeolocationTitle = "您的浏览器不支持定位！";
+            $scope.info.showLocateImg = false;
+            $scope.info.getGeolocationTitle = "您的浏览器不支持定位！";
             $state.go('findshop');
         }
     }
 
     $timeout(function() {
-            getLocation();
-        },1000
+            var shop = localStorageService.set('MMMETA_shop');
+            if(shop && shop.id){
+                $state.go('productList');
+            }else{
+                getLocation();
+            }
+        }
     );
 
 });

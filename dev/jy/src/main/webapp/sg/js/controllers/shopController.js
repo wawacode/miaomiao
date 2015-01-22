@@ -7,12 +7,13 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         noBackdrop: true
     });
 
+    // get shop info from local storage cause in locate page we have got one
+    $scope.shop = localStorageService.get('MMMETA_shop');
+
     $scope.currentDisplayCategory = {};
     $scope.currentDisplayItems = [];
     $scope.info = {};
 
-    // save shop info for further use
-    localStorageService.set('MMMETA_shop', $scope.shop);
 
     $timeout(function () {
         httpClient.getProductList($scope.shop.id, function (data, status) {

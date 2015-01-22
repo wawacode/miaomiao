@@ -374,6 +374,151 @@ body {
     background-color: red;
 }
 
+/* loading page */
+
+/* location related*/
+
+/*ionic extendtion*/
+.bar.bar-lightgary {
+    border-color: #7a7a7a;
+    background-color: #7a7a7a;
+    background-image: linear-gradient(0deg, #7a7a7a, #7a7a7a 50%, transparent 50%);
+    color: #fff;
+}
+
+.bar.bar-lightgary .title {
+    color: #fff;
+}
+
+.bar.bar-lightgary.bar-footer {
+    background-image: linear-gradient(180deg, #7a7a7a, #7a7a7a 50%, transparent 50%);
+}
+
+/* app related */
+
+.loadingBackground {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.getGeolocation {
+    z-index: 10;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 22%;
+    text-align: center
+}
+
+.getGeolocation-img {
+    width: 80px;
+    height: auto;
+}
+
+.getGeolocation-title {
+    font-size: 12;
+    color: #ffffff;
+    padding-top: 10px
+}
+
+.getGeolocation-title.getGeolocation-title-normal {
+
+}
+
+.getGeolocation-title.getGeolocation-title-success {
+    color: #ffffff;
+}
+
+.getGeolocation-title.getGeolocation-title-fail {
+    color: #ffffff;
+}
+
+.clear-search {
+    font-size: 18px;
+}
+
+.getGeolocation-title.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 0.6s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 0.6s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blinker;
+    animation-duration: 0.6s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.item-hint {
+    height: 25px;
+    border-top: solid 1px #ededed;
+    margin: auto;
+    padding-left: 11px;
+    padding-top:2px;
+    background-color: #ededed;
+    color: #999999;
+    font-size: 12px;
+    box-shadow: inset 0 2px 5px #ededee;
+
+}
+.item-hint-shadow{
+    height: 1px;
+    box-shadow:0 2px 5px gray;
+    padding: 0;
+}
+.item-shop-history {
+    display: inline-block;
+    background-color: #ededed;
+    padding: 5px 10px 5px 10px;
+    border: solid 1px #ededed;
+    margin: 10px 5px 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+
 .product-title {
 
     font-size: 13;
