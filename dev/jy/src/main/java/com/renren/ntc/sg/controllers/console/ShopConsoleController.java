@@ -164,7 +164,8 @@ public class ShopConsoleController {
     		LoggerUtils.getInstance().log(String.format("upload pic format is wrong,serialNo=%s",serialNo));
 			return "@error";
 		}
-    	boolean isSuc = new FileUploadUtils().uploadFile(pic, SgConstant.SAVE_PIC_PATH,picName);
+    	String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shopId));
+    	boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
 		if(!isSuc){
 			return "@error" ;
 		}
