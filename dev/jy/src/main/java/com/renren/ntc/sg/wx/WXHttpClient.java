@@ -142,7 +142,7 @@ public class WXHttpClient {
         JSONObject button2  = new JSONObject();
         button2.put("type","view");
         button2.put("name","关于喵喵");
-        button2.put("url","http://123.57.38.234/jy-1/sg/about" );
+        button2.put("url","http://www.mbianli.com/sg/about" );
         buttons.add(button2);
 
 

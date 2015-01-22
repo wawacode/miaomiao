@@ -44,14 +44,11 @@ public class WXController {
     @Get("")
     @Post("")
     public String index( Invocation inv,@Param("echostr") String echostr) {
-        LoggerUtils.getInstance().log(String.format("rec echostr %s  ",echostr));
-        Map map =  inv.getRequest().getParameterMap();
-        LoggerUtils.getInstance().log(String.format("rec echostr %s  ", JSON.toJSON(map)));
         HttpServletRequest request =  inv.getRequest();
         String body = "";
         try {
              body = getBodyString(request.getReader());
-            LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
+             LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
         } catch (IOException e) {
             e.printStackTrace();
         }
