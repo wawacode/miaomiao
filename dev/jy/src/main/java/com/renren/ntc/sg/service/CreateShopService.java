@@ -96,7 +96,7 @@ public class CreateShopService {
         }
         JSONObject shop_info = new JSONObject();
         shop_info.put("shop_id",shop_id);
-        shop_info.put("shop_url","http://www.mbianli.com/shop?shop_id="+shop_id);
+        shop_info.put("shop_url","http://www.mbianli.com/sg/shop?shop_id="+shop_id);
         catstaffCommitDao.update(id, shop_id,shop_info.toJSONString());
         // 结束并打印程序
         LoggerUtils.getInstance().log(String.format("mov 3 item " ));
