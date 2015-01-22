@@ -80,6 +80,10 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
     }
 
+    $scope.startSearch = function(){
+
+    }
+
     $scope.clearSearch = function(){
 
     }
