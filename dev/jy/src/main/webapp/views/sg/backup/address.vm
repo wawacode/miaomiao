@@ -15,10 +15,10 @@
     <script src="/js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>
     <script src="/js/fastclick.min.js" type="text/javascript"></script>
 
-    <script src="/sg/js/utils.js" type="text/javascript"></script>
-    <script src="/sg/js/prevent-scroll.js" type="text/javascript"></script>
-    <script src="/sg/js/ShoppingCart.js" type="text/javascript"></script>
-    <script src="/sg/js/addressAction.js" type="text/javascript"></script>
+    <script src="/sg/js/backup/utils.js" type="text/javascript"></script>
+    <script src="/sg/js/backup/prevent-scroll.js" type="text/javascript"></script>
+    <script src="/sg/js/backup/ShoppingCart.js" type="text/javascript"></script>
+    <script src="/sg/js/backup/addressAction.js" type="text/javascript"></script>
 
 </head>
 <body>
