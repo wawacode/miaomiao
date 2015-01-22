@@ -5,9 +5,13 @@
         <button class="button button-clear button-primary" ng-click="modal.hide()">取消</button>
     </ion-header-bar>
 
-    <div ng-include
-                 src="'/views/sg/templates/findShop.html'" ng-controller="FindShopCtrl">
+    <ion-content padding="false"
+                 has-tabs="false"
+                 has-header="true" >
+    <div ng-include src="'/views/sg/templates/shoplist.html'" ng-controller="FindShopCtrl">
 
     </div>
+
+    </ion-content>
 
 </ion-modal-view>
