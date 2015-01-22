@@ -3,6 +3,16 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     // get shop info from local storage cause in locate page we have got one
     $scope.shop = localStorageService.get('MMMETA_shop');
+
+    if(!$scope.shop){
+
+        $ionicPopup.alert({
+            title: '加载店铺失败,请重新选择店铺',
+            template: ''
+        });
+        return;
+    }
+
     $scope.info = {};
     $scope.currentDisplayCategory = {};
     $scope.currentDisplayItems = [];
@@ -100,7 +110,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
             offset = 20;
 
         inLoadingMore = true;
-        httpClient.getMoreProductList($scope.shopId, cateId, from, offset, function (data, status) {
+        httpClient.getMoreProductList($scope.shop.id, cateId, from, offset, function (data, status) {
 
             /*
              * {"code":0,"data":[{"category_id":15,"count":956,"id":28062,"name":"哈哈镜鸭爪买一赠一","pic_url":

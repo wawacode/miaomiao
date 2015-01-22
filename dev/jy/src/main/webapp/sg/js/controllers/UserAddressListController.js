@@ -3,38 +3,42 @@ angular.module('miaomiao.shop')
 
         $scope.shop = localStorageService.get('MMMETA_shop');
 
-        $ionicLoading.show({
-            template: '正在加载地址列表...'
-        });
+        function updateAddress(){
+            $scope.LoadingMessage = '正在加载地址列表...';
+            $ionicLoading.show({
+                templateUrl: '/views/sg/templates/loadingIndicator.html',
+                scope: $scope
+            });
 
-        httpClient.getAddressList($scope.shop.id ,function(data, status){
+            httpClient.getAddressList($scope.shop.id ,function(data, status){
 
-            var code = data.code, dataDetail = data.data;
-            if (code != 0) {
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '加载数据失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+
+                $ionicLoading.hide();
+
+                $scope.shop = dataDetail.shop;
+                $scope.addressls = dataDetail.addressls || [];
+
+                if($scope.addressls && $scope.addressls.length){
+                    $scope.addressls[0].isDefault = true;
+                }
+
+            },function(data, status){
+
+                $scope.addressls = [];
                 $ionicPopup.alert({
-                    title: '加载数据失败:' + data.msg,
+                    title: '加载数据失败,请刷新',
                     template: ''
                 });
-                return;
-            }
-
-            $ionicLoading.hide();
-
-            $scope.shop = dataDetail.shop;
-            $scope.addressls = dataDetail.addressls || [];
-
-            if($scope.addressls && $scope.addressls.length){
-                $scope.addressls[0].isDefault = true;
-            }
-
-        },function(data, status){
-
-            $scope.addressls = [];
-            $ionicPopup.alert({
-                title: '加载数据失败,请刷新',
-                template: ''
-            });
-        })
+            })
+        }
 
         $scope.goToAddNewAddress = function(){
             $state.go('userAddAddress');
@@ -81,6 +85,11 @@ angular.module('miaomiao.shop')
                 });
             })
         }
+
+
+        $scope.$on("$ionicView.enter", function () {
+            updateAddress();
+        });
 
     });
 

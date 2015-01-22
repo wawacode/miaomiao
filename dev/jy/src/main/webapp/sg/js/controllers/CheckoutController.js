@@ -113,6 +113,10 @@ angular.module('miaomiao.shop')
                     });
                     return;
                 }
+
+                $scope.addressls = $scope.addressls || [];
+                $scope.addressls[0] = $scope.info.address ;
+                $scope.info.showAddNewAddress = false;
             }
 
             $scope.LoadingMessage = '正在生成订单,请稍候...';
