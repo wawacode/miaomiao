@@ -119,8 +119,11 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
             var code = data.code, dataDetail = data.data;
             if (!code == 0 || dataDetail.items.length == 0) {
+
                 $scope.currentDisplayCategory.canLoadMore = false;
+                inLoadingMore = false;
                 return;
+
             }
 
             for (var item_idx = 0; item_idx < dataDetail.items.length; item_idx++) {
