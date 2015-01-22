@@ -69,7 +69,13 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         initShopData();
     });
 
+
+    var canLoadMore = true, inLoadingMore = false;
+
     $scope.selectCategory = function (category) {
+
+        // if in loading more, can't select
+        if(inLoadingMore)return;
 
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
             $scope.categoryls[idx].selected = 0;
@@ -83,8 +89,6 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     }
 
-    var canLoadMore = true, inLoadingMore = false;
-
     $scope.moreDataCanBeLoaded = function () {
         return $scope.currentDisplayCategory.canLoadMore;
     }
@@ -95,6 +99,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
             from = $scope.currentDisplayItems.length,
             offset = 20;
 
+        inLoadingMore = true;
         httpClient.getMoreProductList($scope.shopId, cateId, from, offset, function (data, status) {
 
             /*
@@ -117,10 +122,12 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
             $scope.currentDisplayItems = $scope.currentDisplayItems.concat(dataDetail.items);
             $scope.currentDisplayCategory.totalCnt = ShoppingCart.getCountForCategroy($scope.currentDisplayCategory.category_id);
 
+            inLoadingMore = false;
             $scope.$broadcast('scroll.infiniteScrollComplete');
 
         }, function (data, status) {
 
+            inLoadingMore = false;
             $scope.currentDisplayCategory.canLoadMore = false;
             $scope.$broadcast('scroll.infiniteScrollComplete');
 
