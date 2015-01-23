@@ -200,11 +200,11 @@ public class OrderController {
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             // 发短信给  黄炜元
-            url = SUtils.forURL(SMSURL, APPKEY, TID, "18612274066", message);
-            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-            t = SHttpClient.getURLData(url, "");
-            response = SUtils.toString(t);
-            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+//            url = SUtils.forURL(SMSURL, APPKEY, TID, "18612274066", message);
+//            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+//            t = SHttpClient.getURLData(url, "");
+//            response = SUtils.toString(t);
+//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
 
             // 发短信给  地推人员
             CatStaffCommit  catStaffCommit  = catStaffCommitDao.getbyShopid(shop_id);
@@ -212,9 +212,9 @@ public class OrderController {
             phone = catStaffCommit.getPhone();
             url = SUtils.forURL(SMSURL, APPKEY, TID,phone , message);
             System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-            t = SHttpClient.getURLData(url, "");
-            response = SUtils.toString(t);
-            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+//            t = SHttpClient.getURLData(url, "");
+//            response = SUtils.toString(t);
+//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
             }
         } catch (Exception e) {
             e.printStackTrace();
