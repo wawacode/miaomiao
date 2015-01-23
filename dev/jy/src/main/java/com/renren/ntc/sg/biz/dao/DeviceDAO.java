@@ -21,6 +21,10 @@ public interface DeviceDAO {
     @SQL("select * from " + TABLE_NAME +" where id =:1")
     public Device getDev(long pid) ;
 
+
+    @SQL("select * from " + TABLE_NAME +" where token =:1")
+    public Device getDev(String  token) ;
+
     @SQL("select * from " + TABLE_NAME )
     public List<Device> getDevs()  ;
 

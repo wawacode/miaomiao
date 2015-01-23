@@ -35,7 +35,6 @@ public class HomeController {
     }
 
 
-
     @Get("query")
     public String query (Invocation inv ,@Param("chn") String chn){
         JSONArray jarr =  new JSONArray();

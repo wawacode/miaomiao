@@ -5,9 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.CatStaffCommit;
 import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.bean.RegistUser;
 import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
 import com.renren.ntc.sg.biz.dao.CatStaffDAO;
 import com.renren.ntc.sg.biz.dao.DeviceDAO;
+import com.renren.ntc.sg.biz.dao.RegistUserDAO;
 import com.renren.ntc.sg.service.CreateShopService;
 import com.renren.ntc.sg.util.Constants;
 import net.paoding.rose.web.Invocation;
@@ -29,7 +31,10 @@ public class HomeController {
 
 
     @Autowired
-    public CatStaffDAO catStaffDAO;
+    public RegistUserDAO registUserDAO;
+
+    @Autowired
+    public DeviceDAO deviceDAO;
 
     @Autowired
     public CatStaffCommitDAO catStaffCommitDAO;
@@ -63,6 +68,17 @@ public class HomeController {
                 0 == shop_lng) {
             return "@" + Constants.PARATERERROR;
         }
+        RegistUser reuser = registUserDAO.getUser(shop_tel) ;
+        if(null != reuser ){
+            String message = Constants.PRERROR.replace("{msg}","店铺电话已经注册过");
+            return "@" + message  ;
+        }
+        Device device = deviceDAO.getDev(shop_print) ;
+        if(null == device ){
+            String message = Constants.PRERROR.replace("{msg}","提交打印机码错误");
+            return "@" + message ;
+        }
+
         CatStaffCommit catStaffCommit = new CatStaffCommit();
         catStaffCommit.setName(staff_name);
         catStaffCommit.setPhone(staff_phone);
