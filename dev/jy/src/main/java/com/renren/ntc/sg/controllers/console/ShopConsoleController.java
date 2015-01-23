@@ -176,7 +176,8 @@ public class ShopConsoleController {
 		if(!isSuc){
 			return "@error" ;
 		}
-		String picUrl = SgConstant.REMOTE_FILE_PATH_PRE.concat(picName);
+		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
+		String picUrl = imageUrl.concat(picName);
 		Item item = new Item(serialNo,shopId, name, categoryId, score, count, picUrl, price);
 		int flag = itemsDAO.insert(SUtils.generTableName(shopId), item);
 		if (flag != 1) {
