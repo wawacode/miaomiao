@@ -206,7 +206,7 @@ body {
     margin-right: 5px;
 }
 
-.switch-shop{
+.switch-shop {
     display: inline-block;
     width: auto;
     padding-top: 12px;
@@ -409,34 +409,46 @@ body {
     background-image: linear-gradient(180deg, #FE6A66, #FE6A66 50%, transparent 50%);
 }
 
-
 .button.button-miaomiao {
     border-color: #FE6A66;
     background-color: #FE6A66;
-    color: #fff; }
+    color: #fff;
+}
+
 .button.button-miaomiao:hover {
     color: #fff;
-    text-decoration: none; }
+    text-decoration: none;
+}
+
 .button.button-miaomiao.active, .button.button-miaomiao.activated {
     border-color: #FE6A66;
     background-color: #FE6A66;
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
 .button.button-miaomiao.button-clear {
     border-color: transparent;
     background: none;
     box-shadow: none;
-    color: #FE6A66; }
+    color: #FE6A66;
+}
+
 .button.button-miaomiao.button-icon {
     border-color: transparent;
-    background: none; }
+    background: none;
+}
+
 .button.button-miaomiao.button-outline {
     border-color: #FE6A66;
     background: transparent;
-    color: #fff; }
+    color: #fff;
+}
+
 .button.button-miaomiao.button-outline.active, .button.button-miaomiao.button-outline.activated {
     background-color: #FE6A66;
     box-shadow: none;
-    color: #fff; }
+    color: #fff;
+}
 
 /* app related */
 
@@ -540,18 +552,20 @@ body {
     border-top: solid 1px #ededed;
     margin: auto;
     padding-left: 11px;
-    padding-top:2px;
+    padding-top: 2px;
     background-color: #ededed;
     color: #999999;
     font-size: 12px;
     box-shadow: inset 0 2px 5px #ededee;
 
 }
-.item-hint-shadow{
+
+.item-hint-shadow {
     height: 1px;
-    box-shadow:0 2px 5px gray;
+    box-shadow: 0 2px 5px gray;
     padding: 0;
 }
+
 .item-shop-history {
     display: inline-block;
     background-color: #ededed;
@@ -561,7 +575,6 @@ body {
     border-radius: 5px;
     font-size: 14px;
 }
-
 
 .product-title {
 
@@ -887,7 +900,7 @@ body {
     border-radius: 2px;
 }
 
-.addressInput{
+.addressInput {
     border: solid 1px lightgray;
     border-radius: 10px;
 }
@@ -909,9 +922,9 @@ body {
     text-align: center;
 }
 
-.shoppingCartDisplayBackground{
+.shoppingCartDisplayBackground {
     height: 100%;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     position: absolute;
     bottom: 44;
     left: 0;
@@ -1074,7 +1087,7 @@ body {
     padding-top: 8px;
 }
 
-.base-icon-arrow-down{
+.base-icon-arrow-down {
     width: 20px;
     width: 20px;
     padding-top: 10px;
@@ -1169,7 +1182,7 @@ body {
 }
 
 .ng-hide-add.ng-hide-add-active
-    .ng-hide-remove.ng-hide-remove-active {
+.ng-hide-remove.ng-hide-remove-active {
     -webkit-transition: .2s linear all;
     transition: .2s linear all;
 }
@@ -1179,7 +1192,7 @@ body {
     height: 50%;
 }
 
-.cssSlideUp.ng-hide-add.ng-hide-add-active{
+.cssSlideUp.ng-hide-add.ng-hide-add-active {
     /*-webkit-transition: .5s linear all;*/
     /*transition: .5s linear all;*/
 }
@@ -1190,18 +1203,20 @@ body {
 }
 
 .cssSlideUp.ng-hide {
-    height:0;
+    height: 0;
 }
 
 .transparent {
     background: transparent !important;
 }
+
 .image-modal {
     width: 100% !important;
     height: 100%;
     top: 0 !important;
     left: 0 !important;
 }
+
 .fullscreen-image {
     max-width: 100%;
     max-height: 100%;
@@ -1214,11 +1229,25 @@ body {
     top: 0;
 }
 
-.loadingIndicator{
+.loadingIndicator {
     /*background-color: rgba(0, 0, 0, 0.7) !important;*/
 }
 
-.loadingIndicatorIcon{
+.loadingIndicatorIcon {
     font-size: 35px !important;
     padding: 0;
+}
+
+.shopItem {
+
+}
+
+.shopItemStatus {
+    display: inline-block;
+    float: right;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #ef5356;
+    padding: 2px 5px 2px 5px;
+    border-radius: 4px
 }

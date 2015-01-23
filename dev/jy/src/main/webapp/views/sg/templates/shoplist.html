@@ -16,23 +16,7 @@
         商店列表
     </div>
     <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
-         ng-click="goToShop(item)">
-
-        <div>
-            <div style="font-size: 14px;display: inline-block">{{item.name}}</div>
-            <div style="display: inline-block; float:right;font-size: 14px;color: #ffffff;background-color: red;padding: 1px 3px 1px 3px;border-radius: 8px">
-                {{item.status4V}}
-            </div>
-        </div>
-
-        <div>
-            <div style="font-size: 10px;display: inline-block">
-                <i class="icon ion-ios7-location" style="font-size: 12px"></i> &nbsp;{{item.shop_address}}
-            </div>
-            <div style="font-size: 10px;display: inline-block;position:absolute;right: 15">
-                {{item.open_time| date:'shortTime'}} - {{item.close_time| date:'shortTime'}}
-            </div>
-        </div>
+         ng-click="goToShop(item)" ng-include = "'shop-item.html'">
 
     </div>
 </div>
@@ -49,26 +33,42 @@
 
 <div class="list" ng-show="showShopHot">
     <div class="item-hint">
-        热门店铺
+        热门店铺 <i class="icon ion-loading-c" style="font-size: 12px" ng-show="!shop_items.length"></i>
     </div>
     <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
-         ng-click="goToShop(item)">
+         ng-click="goToShop(item)" ng-include = "'shop-item.html'">
 
+    </div>
+</div>
+
+<script id="shop-item.html" type="text/ng-template">
+
+    <div style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
         <div>
-            <div style="font-size: 14px;display: inline-block">{{item.name}}</div>
-            <div style="display: inline-block; float:right;font-size: 14px;color: #ffffff;background-color: red;padding: 1px 3px 1px 3px;border-radius: 8px">
+            <div style="font-size: 18px;display: inline-block;color: #191919">
+                {{item.name}}
+            </div>
+            <div class="shopItemStatus">
                 {{item.status4V}}
             </div>
         </div>
 
-        <div>
-            <div style="font-size: 10px;display: inline-block">
-                <i class="icon ion-ios7-location" style="font-size: 12px"></i> &nbsp;{{item.shop_address}}
+        <div style="margin-top: 12px;color: #6a6a6a">
+            <div style="font-size: 12px;">
+                <div style=" display: inline-block" ng-show="item.open_time || item.close_time">
+                    <i class="icon ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> 早{{item.open_time| date:'shortTime' | removeAMPM}} - 晚{{item.close_time| date:'shortTime' | removeAMPM}}
+                </div>
+                <div style=" display: inline-block;" ng-show="!item.open_time && !item.close_time">
+                    <i class="icon ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>全天营业
+                </div>
+                <div style=" display: inline-block;float: right; padding-right: 40%">
+                    <i class="icon ion-ios7-pricetags" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>20元起送
+                </div>
             </div>
-            <div style="font-size: 10px;display: inline-block;position:absolute;right: 15">
-                {{item.open_time| date:'shortTime'}} - {{item.close_time| date:'shortTime'}}
+            <div style="font-size: 12px;" ng-show="item.shop_address">
+                <i class="icon ion-ios7-location" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>{{item.shop_address}}
             </div>
         </div>
-
     </div>
-</div>
+
+</script>
