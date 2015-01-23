@@ -38,6 +38,7 @@ angular.module('miaomiao.shop')
                 $scope.info.address = $scope.addressls[0];
 
             }else{
+
                 $scope.LoadingMessage = '正在加载,请稍候...';
                 $ionicLoading.show({
                     templateUrl: '/views/sg/templates/loadingIndicator.html',

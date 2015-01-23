@@ -40,6 +40,15 @@
 
         </ion-content>
 
+    <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart">
+    </div>
+
+    <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
+        <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
+             src="'/views/sg/templates/shoppingCart.html'">
+        </div>
+    </div>
+
     <ion-footer-bar class="bar-light" style="padding-top: 0;padding-bottom: 0;overflow: hidden;height: 49">
         <div class="footer-container-left base-sidebar-shopping-cart js-shopping-cart" ng-click="showShoppingCart()">
             <span><img src="/images/cart-64.png" class="base-icon-shopping-cart"></span>
@@ -55,10 +64,5 @@
             </button>
         </div>
     </ion-footer-bar>
-
-    <div class="shoppingCartDisplay"  bn-slide-show="info.showCart" slide-show-duration="2000">
-        <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include src="'/views/sg/templates/shoppingCart.html'">
-        </div>
-    </div>
 
 </ion-view>

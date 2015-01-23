@@ -53,22 +53,22 @@
                              scrollbar-y="false"
                              overflow-scroll="false">
 
-                        <div class="shop-categray-list" style="width: 100%;">
-                            <ul style="margin: 0.0em;padding: 0px;">
-                                <li ng-repeat="category in categoryls" class="shop-categray"
-                                    ng-click="selectCategory(category)"
-                                    ng-class="{'shop-categray-selected': category.selected}">
-                                    <div class="shop-categray-item-decorate" ng-show="category.selected"></div>
-                                    <div class="shop-categray-item" style=""
-                                         ng-class="{'shop-categray-item-selected': category.selected}">{{ category.name
-                                        }}
-                                    </div>
-                                    <div class="shop-categray-item-edge" ng-show="category.totalCnt">
-                                        {{category.totalCnt}}
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="shop-categray-list" style="width: 100%;">
+                        <ul style="margin: 0.0em;padding: 0px;">
+                            <li ng-repeat="category in categoryls" class="shop-categray"
+                                ng-click="selectCategory(category)"
+                                ng-class="{'shop-categray-selected': category.selected}">
+                                <div class="shop-categray-item-decorate" ng-show="category.selected"></div>
+                                <div class="shop-categray-item" style=""
+                                     ng-class="{'shop-categray-item-selected': category.selected}">{{ category.name
+                                    }}
+                                </div>
+                                <div class="shop-categray-item-edge" ng-show="category.totalCnt">
+                                    {{category.totalCnt}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
 
                 </ion-content>
 
@@ -83,22 +83,22 @@
                              delegate-handle="productScroll">
 
 
-                        <div class="shop-product-list">
-                            <ul class="shop-product-categray-list js-shop-product-categray-list list">
-                                <li ng-repeat="item in currentDisplayItems" class="product-item js-product-item"
-                                    ng-include
-                                    src="'/views/sg/templates/productDetail.html'">
-                                </li>
+                    <div class="shop-product-list">
+                        <ul class="shop-product-categray-list js-shop-product-categray-list list">
+                            <li ng-repeat="item in currentDisplayItems" class="product-item js-product-item"
+                                ng-include
+                                src="'/views/sg/templates/productDetail.html'">
+                            </li>
 
-                                <ion-infinite-scroll
-                                        ng-if="moreDataCanBeLoaded()"
-                                        icon="ion-loading-c"
-                                        on-infinite="addItems()">
-                                </ion-infinite-scroll>
+                            <ion-infinite-scroll
+                                    ng-if="moreDataCanBeLoaded()"
+                                    icon="ion-loading-c"
+                                    on-infinite="addItems()">
+                            </ion-infinite-scroll>
 
-                            </ul>
+                        </ul>
 
-                        </div>
+                    </div>
 
                 </ion-content>
             </div>
@@ -106,8 +106,10 @@
 
     </ion-content>
 
-    <div class="shoppingCartDisplay " bn-slide-show="info.showCart" slide-show-duration="2000" >
+    <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart">
+    </div>
 
+    <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
         <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
              src="'/views/sg/templates/shoppingCart.html'">
         </div>
