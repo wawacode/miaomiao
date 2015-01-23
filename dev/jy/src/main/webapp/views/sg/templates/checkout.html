@@ -2,9 +2,14 @@
 
     <ion-nav-bar class="bar-dark">
 
-        <ion-nav-back-button class="button-dark button-clear">
-        <i class="ion-arrow-left-c light"></i>
-        </ion-nav-back-button>
+        <!--<ion-nav-back-button class="button-dark ion-ios7-cart">-->
+        <!--&lt;!&ndash;<i class="ion-arrow-left-c light"></i>&ndash;&gt;-->
+            <!--<i class="icon" ui-sref="productList"></i>-->
+        <!--</ion-nav-back-button>-->
+
+        <ion-nav-buttons side="left">
+            <button class="button button-icon ion-ios7-cart" ui-sref="productList"></button>
+        </ion-nav-buttons>
 
         <ion-nav-title>
             商品结算
@@ -20,7 +25,8 @@
                  scroll="false"
                  style="bottom: 49px;">
 
-        <div class="mainContainer scroll">
+        <div class="mainContainer" style="overflow: scroll">
+
             <div class="" style="overflow: hidden" ng-show="!info.showAddNewAddress" ng-animate="{show:'animate-show', hide:'animate-hide'}">
                 <div class="addressItem addressDefault addressSelected" ng-click="goToAddressList()">
                     <div class="addressAndBadge" style="">
@@ -39,6 +45,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="js-addAddress firstTimeAddAddress"
                  style="border-bottom: solid 1px lightgray;overflow: hidden" ng-show="info.showAddNewAddress" ng-animate="{show:'animate-show', hide:'animate-hide'}">
                 <div class="addNewAddressHint" style="text-shadow:none">
@@ -46,13 +53,13 @@
                 </div>
                 <div style="padding: 15px 9px;">
                     <input class="addressInput" type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress"
-                           required style="padding-left:10px;border: solid 1px lightgray;border-radius: 5px;">
+                           required style="padding-left:10px;border: solid 1px lightgray;">
                     <input class="addressInput" type="number" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"
-                           required style="padding-left:10px;border: solid 1px lightgray;border-radius: 5px;margin-top: 10px">
+                           required style="padding-left:10px;border: solid 1px lightgray;margin-top: 10px">
                 </div>
             </div>
 
-            <div id="shop-product-list" style="padding-bottom: 80px">
+            <div id="shop-product-list" style="padding-bottom: 10px">
                 <ul style="margin: 0.0em; padding:0px 9px">
                     <li class="product-item js-product-item" ng-repeat="item in shoppingCartItems">
                         <div class="prod_icon" back-img="{{item.pic_url}}"></div>
@@ -91,9 +98,9 @@
                 </ul>
 
                 <ul class="remarks" style="margin-top: 1.0em; padding:0px 9px;" ng-show="shoppingCartItems.length">
-                    <li style="padding: 0px 0px;display:block;">
-                        <input id="orderRemarks" ng-model="info.remarks" type="text" placeholder="给卖家留言"
-                               style="background-color: lightgray;text-shadow: none;font-size: 14px;padding-left: 10px;border-radius: 5px">
+                    <li style="padding: 0px 0px">
+                        <input class="orderRemarks" ng-model="info.remarks" type="text" placeholder="给卖家留言"
+                               style="">
                     </li>
                 </ul>
             </div>
