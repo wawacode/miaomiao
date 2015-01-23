@@ -106,7 +106,7 @@
 
     </ion-content>
 
-    <div class="shoppingCartDisplay cssSlideUp" ng-hide="!info.showCart">
+    <div class="shoppingCartDisplay cssSlideUp" ng-show="info.showCart" ng-hide="!info.showCart">
 
         <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
              src="'/views/sg/templates/shoppingCart.html'">

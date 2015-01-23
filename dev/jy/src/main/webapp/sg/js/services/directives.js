@@ -3,7 +3,7 @@ angular.module('miaomiao.shop').directive('backImg',function () {
             var url = attrs.backImg;
             element.css({
                 'background-image': 'url(' + url + ')',
-                'background-size': 'cover'
+                'background-size': 'contain'
             });
         };
 

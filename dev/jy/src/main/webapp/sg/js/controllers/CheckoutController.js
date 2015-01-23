@@ -79,6 +79,7 @@ angular.module('miaomiao.shop')
             item.count += 1;
 
             ShoppingCart.itemChangeEventInShoppingCart(item);
+            updateShoppingCart();
         }
 
         $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
@@ -91,6 +92,7 @@ angular.module('miaomiao.shop')
             }
 
             ShoppingCart.itemChangeEventInShoppingCart(item);
+            updateShoppingCart();
         }
 
         $scope.confirmCheckout = function () {

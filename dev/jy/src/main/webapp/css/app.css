@@ -1155,6 +1155,12 @@ body {
     display: block !important; /* yes, important */
 }
 
+.ng-hide-add.ng-hide-add-active
+    .ng-hide-remove.ng-hide-remove-active {
+    -webkit-transition: .2s linear all;
+    transition: .2s linear all;
+}
+
 .cssSlideUp {
     overflow: hidden;
     height: 50%;
