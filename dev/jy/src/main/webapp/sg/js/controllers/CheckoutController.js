@@ -102,7 +102,7 @@ angular.module('miaomiao.shop')
             if ($scope.addressls && $scope.addressls.length) {
                 $scope.info.address = $scope.addressls[0];
             } else {
-                $scope.info.address = {'address_id': '', 'address': $scope.info.newOrderAddress, 'phone': $scope.info.newOrderPhone};
+                $scope.info.address = {'id': '', 'address': $scope.info.newOrderAddress, 'phone': $scope.info.newOrderPhone};
 
                 if (!$scope.info.newOrderAddress || !$scope.info.newOrderPhone || ! MMUtils.isValidTelNumber($scope.info.newOrderPhone)) {
                     $ionicPopup.alert({
@@ -123,7 +123,7 @@ angular.module('miaomiao.shop')
                 scope: $scope
             });
 
-            httpClient.getOrderSave($scope.shop.id, $scope.info.address.address_id, $scope.info.address.address, $scope.info.address.phone,
+            httpClient.getOrderSave($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
                 $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
 
                     $ionicLoading.hide();
