@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <title> 喵喵-!${shop.name}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
