@@ -231,6 +231,7 @@ public class ShopConsoleController {
             inv.addModel("next_f", from  + offset);
         }
         orderls = orderService.forV(orderls);
+        inv.addModel("shop",shop);
         inv.addModel("orderls",orderls);
         return "orders";
     }
