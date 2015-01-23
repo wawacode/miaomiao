@@ -20,6 +20,7 @@ angular.module('miaomiao.shop').filter('getTotolCount',function () {
         };
     }).filter('removeAMPM', function () {
         return function (text) {
+            if(!text) return;
             return text.replace(/AM/, '').replace(/PM/, ''); // Characters after Colon
         };
     });

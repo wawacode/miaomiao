@@ -21,7 +21,7 @@
                  style="bottom: 49px;">
 
         <div class="mainContainer scroll">
-            <div class="" style="overflow: hidden" ng-show="!info.showAddNewAddress">
+            <div class="" style="overflow: hidden" ng-show="!info.showAddNewAddress" ng-animate="{show:'animate-show', hide:'animate-hide'}">
                 <div class="addressItem addressDefault addressSelected" ng-click="goToAddressList()">
                     <div class="addressAndBadge" style="">
                         <div class="addressItem-address addressDefault-address"><span
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="js-addAddress firstTimeAddAddress"
-                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-show="info.showAddNewAddress">
+                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-show="info.showAddNewAddress" ng-animate="{show:'animate-show', hide:'animate-hide'}">
                 <div class="addNewAddressHint" style="text-shadow:none">
                     您还没有添加收货人信息,请添加
                 </div>
