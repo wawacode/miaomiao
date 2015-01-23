@@ -81,4 +81,10 @@ public interface ItemsDAO {
     
     @SQL("delete from ##(:tableName) where id =:2")
     public int delItemsById(@SQLParam("tableName") String tableName, long itemId);
+    
+    @SQL("select "+ FIELDS +" from  ##(:tableName)   where  shop_id=:2 and (name like :3 or serialNo like :3) order by id  limit 0 , 20")
+    public  List<Item> indistinctSearch(@SQLParam("tableName") String tableName, long shop_id, String key);
+    
+    @SQL("select "+ FIELDS +" from  ##(:tableName)   where  shop_id=:2  order by id limit 0 , 20")
+    public  List<Item> search(@SQLParam("tableName") String tableName, long shop_id);
 }
