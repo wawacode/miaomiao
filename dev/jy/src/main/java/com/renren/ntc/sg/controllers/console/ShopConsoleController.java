@@ -5,6 +5,7 @@ import com.renren.ntc.sg.annotations.AuthorizeCheck;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.annotations.LoginRequired;
 import com.renren.ntc.sg.bean.*;
+import com.renren.ntc.sg.biz.dao.CategoryDAO;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
@@ -22,12 +23,15 @@ import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
+
+import org.apache.commons.lang.NumberUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +63,9 @@ public class ShopConsoleController {
 
 	@Autowired
 	private RegistHostHolder hostHolder;
+	
+	@Autowired
+	private CategoryDAO categoryDAO;
 
     private Map keys = new HashMap();
 
@@ -169,7 +176,8 @@ public class ShopConsoleController {
 		if(!isSuc){
 			return "@error" ;
 		}
-		String picUrl = SgConstant.REMOTE_FILE_PATH_PRE.concat(picName);
+		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
+		String picUrl = imageUrl.concat(picName);
 		Item item = new Item(serialNo,shopId, name, categoryId, score, count, picUrl, price);
 		int flag = itemsDAO.insert(SUtils.generTableName(shopId), item);
 		if (flag != 1) {
@@ -251,9 +259,15 @@ public class ShopConsoleController {
         }
         List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
         long category_id =  categoryls.get(0).getId();
-        query = SUtils.wrap(query);
-        query = SUtils.wrap(query);
-        List<Item>  itemls =  itemsDAO.search(SUtils.generTableName(shop_id),shop_id,query);
+        List<Item>  itemls = new ArrayList<Item>();
+        if(StringUtils.isBlank(query)){
+        	itemls = itemsDAO.search(SUtils.generTableName(shop_id), shop_id); //默认查出20条
+        }else {
+			query = query.trim();
+			query = SUtils.wrap(query);
+		    query = SUtils.wrap(query);
+		    itemls =  itemsDAO.indistinctSearch(SUtils.generTableName(shop_id),shop_id,query);//支持产品条形码和商品名称
+		}
 
         inv.addModel("shop", shop);
         inv.addModel("curr_cate_id",category_id);
@@ -313,29 +327,73 @@ public class ShopConsoleController {
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",category_id));
             return "@error" ;
         }
-        shopCategoryDAO.del(shop_id,category_id) ;
-        return  "@"+Constants.DONE ;
+        int result = shopCategoryDAO.del(shop_id,category_id) ;
+        if(result == SgConstant.PROCESS_DB_SUC){
+        	return  "@"+SgConstant.DEL_SHOP_CAT_SUC_RESULT;
+        }else {
+        	return  "@"+SgConstant.DEL_SHOP_CAT_FAILED_RESULT;
+		}
+        
     }
 
     @Post("cate/add")
-    @Get("cate/add")
-    public String addcate(Invocation inv,  @Param("shop_id") long  shop_id,
-                          @Param("category_id") int category_id){
+    public String addcate(Invocation inv,  @Param("shopId") long  shop_id,
+                          @Param("categoryId") int category_id,
+                          @Param("scorce") int score,
+                          @Param("categoryName") String categoryName){
         if( 0 == shop_id){
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",shop_id));
             return "@error" ;
+        }
+        if(StringUtils.isBlank(categoryName)){
+        	 LoggerUtils.getInstance().log(String.format("cate_add categoryName is null %d ",shop_id));
+             return "@error" ;
         }
         if ( 0 == category_id ) {
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",category_id));
             return "@error" ;
         }
+        boolean isInWholeCats = false;
+        List<Category> cats = categoryDAO.getCategory();
+        for(Category category : cats){
+        	if(category.getId() == category_id){
+        		isInWholeCats = true;
+        		break;
+        	}
+        }
+        if(!isInWholeCats){
+        	Category category = new Category();
+        	category.setName(categoryName);
+        	category.setType(0);
+        	categoryDAO.insert(category);
+        }
         ShopCategory shopCate = new ShopCategory();
         shopCate.setCategory_id(category_id);
         shopCate.setShop_id(shop_id);
-        shopCate.setScore(0);
-        shopCate.setName("ee");
-        shopCategoryDAO.insert(shopCate) ;
-        return  "@"+Constants.DONE ;
+        shopCate.setScore(score);
+        shopCate.setName(categoryName);
+        boolean isExistShopCats = false;
+        List<ShopCategory> shopCats = shopCategoryDAO.getCategory(shop_id);
+        for(ShopCategory shopCategory : shopCats){
+        	if(shopCategory.getCategory_id() == category_id){
+        		isExistShopCats = true;
+        		break;
+        	}
+        }
+        if(!isExistShopCats){
+        	shopCategoryDAO.insert(shopCate);
+        	return  "@"+SgConstant.ADD_CAT_SUC_RESULT;
+        }else {
+        	return  "@"+SgConstant.ADD_CAT_EXIST_RESULT;
+		}
+    }
+    
+    @Get("cate/addIndex")
+    public String addCateIndex(Invocation inv,@Param("shop_id") long shopId){
+    	List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shopId);
+    	inv.addModel("shopId", shopId);
+    	inv.addModel("categoryls", categoryls);
+        return  "addShopCat";
     }
 
     @Post("item/del")

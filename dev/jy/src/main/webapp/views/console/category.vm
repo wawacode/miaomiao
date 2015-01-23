@@ -26,10 +26,12 @@
             <a class="navbar-brand" href="#"> Cat </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-
             <form class="navbar-form navbar-right" action="/console/order/query">
                 <input name="query" type="text" class="form-control" placeholder="Search...">
             </form>
+            <ul class="nav navbar-nav navbar-right">
+			<li><a href="/console/shop/cate/addIndex?shop_id=${shop_id}">添加分类</a></li>
+			</ul>
         </div>
     </div>
 </nav>
@@ -66,6 +68,7 @@
                         <td class="edit" id="e-${category.shop_id}-category_id-$category.id">$category.category_id</td>
                         <td class="edit" id="e-${category.shop_id}-name-$category.id">$category.name</td>
                         <td class="edit" id="e-${category.shop_id}-score-$category.id">$category.score</td>
+                        <td><button type="button" class="btn btn-danger" data-catid="${category.id}" data-shopid="${category.shop_id}"><a>删除</a></button></td>
                     </tr>
                     #end
                     </tbody>
@@ -108,6 +111,20 @@
     tooltip : 'Click to edit...'
     });
     });
+      $(".btn").click(function(){
+		var result = confirm("是否确认删除"),
+			oThis = $(this);
+		if(result){
+		$.ajax({
+			type:"POST",url:"/console/shop/cate/del",
+			data:{category_id:oThis.data('catid'),shop_id:oThis.data('shopid')},
+			success:function(data){
+				  alert(data);
+				  location.reload();
+				}
+			});
+		}
+	});
 </script>
 </body>
 </html>
