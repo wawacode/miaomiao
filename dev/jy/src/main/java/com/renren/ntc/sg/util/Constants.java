@@ -36,7 +36,7 @@ public class Constants {
     public static final long DEFAULT_SHOP = 1 ;
 //    public static final String DOMAIN = "miaomiao.com" ;UK
     public static final String DOMAIN = "127.0.0.1" ;
-    public static final String DOMAIN2 = "123.57.38.234" ;
+    public static final String DOMAIN2 = "mbianli.com:8088" ;
     public static final String DOMAIN3 = "mbianli.com" ;
     public static final String COOKIE_KEY_USER ="cat_p" ;
     public static final String COOKIE_KEY_REGISTUSER ="cat_reg_p" ;
