@@ -911,7 +911,7 @@ body {
 
 .shoppingCartDisplay {
 
-    height: 0;
+    height: 50%;
     background-color: #ffffff;
     position: absolute;
     bottom: 44;
@@ -919,6 +919,7 @@ body {
     width: 100%;
     overflow: scroll;
     z-index: 200;
+    display: none;
     border-top: solid 2px #F54447;
     -webkit-overflow-scrolling: touch;
 }

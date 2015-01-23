@@ -56,7 +56,7 @@
         </div>
     </ion-footer-bar>
 
-    <div class="shoppingCartDisplay cssSlideUp"  ng-hide="!info.showCart">
+    <div class="shoppingCartDisplay"  bn-slide-show="info.showCart" slide-show-duration="2000">
         <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include src="'/views/sg/templates/shoppingCart.html'">
         </div>
     </div>
