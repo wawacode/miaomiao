@@ -5,8 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,7 +40,6 @@ public class WXHttpClient {
 	private static final int READ_TIMEOUT = 10000;
 	private static final int RETRY = 2;
 
-	public static Logger logger = LoggerFactory.getLogger(WXHttpClient.class);
 
 	private static byte[] getStreamData(InputStream is) throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -56,13 +53,10 @@ public class WXHttpClient {
 				out.flush();
 			}
 		} catch (Exception e) {
-			logger.info("getStreamData Exception!!");
-			logger.info(e.getMessage());
 			e.printStackTrace();
 			throw e;
 		}
 		byte[] btemp = out.toByteArray();
-		logger.info("download size: " + downloadSize + ", byte array size: " + out.size());
 		out.close();
 		is.close();
 		return btemp;
@@ -92,7 +86,6 @@ public class WXHttpClient {
 				c.setRequestProperty("Cookie", WXHttpClient._GetCookie());
 				c.setDoOutput(true);
 				c.setDoInput(true);
-				logger.info("use to download url: " + url);
 				b = getStreamData(c.getInputStream());
 				bsuccess = true;
 			} catch (Exception e) {
