@@ -75,9 +75,35 @@ angular.module('miaomiao.shop').
             }
         };
 
+        $scope.getSuggestions = function(key, $event){
+
+            var options = {
+                onSearchComplete: function(results){
+                    if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                        // 判断状态是否正确
+                        var address_suggestions = [];
+                        for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                            address_suggestions.push({'title': results.getPoi(i).title ,'address':results.getPoi(i).address});
+                        }
+                        $scope.info.address_suggestions = address_suggestions;
+                    }
+
+                    $scope.info.isGettingSuggestions = false;
+                }
+            };
+
+            $scope.info.isGettingSuggestions = true;
+            var local = new BMap.LocalSearch("北京市", options);
+            local.search(key);
+        };
+
+        $scope.goToSearchAddress = function(item){
+            $scope.performSearch(item.title);
+        }
+
         $scope.performSearch = function (key, $event) {
 
-            $event.target.blur();
+            if($event)$event.target.blur();
 
             var KEY = key || $scope.shop_data.searchQuery;
 
