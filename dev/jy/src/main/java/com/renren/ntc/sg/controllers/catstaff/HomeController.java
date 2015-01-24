@@ -11,6 +11,7 @@ import com.renren.ntc.sg.biz.dao.CatStaffDAO;
 import com.renren.ntc.sg.biz.dao.DeviceDAO;
 import com.renren.ntc.sg.biz.dao.RegistUserDAO;
 import com.renren.ntc.sg.service.CreateShopService;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
@@ -75,6 +76,7 @@ public class HomeController {
         }
         Device device = deviceDAO.getDev(shop_print) ;
         if(null == device ){
+            LoggerUtils.getInstance().log(String.format(" input %s; ",shop_print));
             String message = Constants.PRERROR.replace("{msg}","提交打印机码错误");
             return "@" + message ;
         }
