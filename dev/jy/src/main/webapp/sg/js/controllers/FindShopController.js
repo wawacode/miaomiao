@@ -77,6 +77,8 @@ angular.module('miaomiao.shop').
 
         $scope.getSuggestions = function(key, $event){
 
+            $scope.info.isGettingSuggestions = true;
+
             var options = {
                 onSearchComplete: function(results){
                     if (local.getStatus() == BMAP_STATUS_SUCCESS){
@@ -85,16 +87,18 @@ angular.module('miaomiao.shop').
                         for (var i = 0; i < results.getCurrentNumPois(); i ++){
                             address_suggestions.push({'title': results.getPoi(i).title ,'address':results.getPoi(i).address});
                         }
-                        $scope.info.address_suggestions = address_suggestions;
+                        $timeout(function(){
+                            $scope.info.address_suggestions = address_suggestions;
+                        });
                     }
-
                     $scope.info.isGettingSuggestions = false;
                 }
             };
 
-            $scope.info.isGettingSuggestions = true;
             var local = new BMap.LocalSearch("北京市", options);
             local.search(key);
+
+
         };
 
         $scope.goToSearchAddress = function(item){
