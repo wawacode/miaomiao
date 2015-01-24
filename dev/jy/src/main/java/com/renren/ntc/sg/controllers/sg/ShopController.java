@@ -60,6 +60,8 @@ public class ShopController {
         return "@" + jb.toJSONString();
     }
 
+
+
     @Get("shopList")
     public String getlist (Invocation inv,@Param("city") String city ,@Param("district") String district ,
                            @Param("from") int from ,@Param("offset") int offset ){
