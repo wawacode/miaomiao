@@ -126,6 +126,8 @@ angular.module('miaomiao.shop').
 
             function showPosition(position) {
 
+                $ionicLoading.hide();
+
                 if (position) {
 
                     $scope.info.locationMessage = "定位成功";
@@ -142,6 +144,7 @@ angular.module('miaomiao.shop').
             }
 
             function showError(){
+                $ionicLoading.hide();
                 $scope.info.locationMessage = "定位失败！";
             }
 
@@ -149,7 +152,13 @@ angular.module('miaomiao.shop').
                 var position_option = {
                     timeout: 10000
                 };
-                $scope.info.locationMessage = "正在重新定位请稍候...";
+
+                $scope.LoadingMessage = '正在重新定位...';
+                $ionicLoading.show({
+                    templateUrl: '/views/sg/templates/loadingIndicator.html',
+                    scope: $scope
+                });
+
                 navigator.geolocation.getCurrentPosition(showPosition, showError, position_option);
             }else{
                 $scope.info.locationMessage = "浏览器不支持定位";
@@ -188,11 +197,14 @@ angular.module('miaomiao.shop').
                             $scope.shop_items[i].rate = 5;
                             $scope.shop_items[i].maxRate = 5;
                         }
+
+                        $scope.info.showAddressSuggestion = false;
                         $scope.info.showShopList = true;
                     }
 
                 }, function (data, status) {
                     // still show it and with no item hint
+                    $scope.info.showAddressSuggestion = false;
                     $scope.info.showShopList = true;
                 });
             }
