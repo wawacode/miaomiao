@@ -13,27 +13,15 @@ angular.module('miaomiao.shop').
                 $scope.info.getGeolocationTitle = "定位成功，正在加载请稍候...";
                 $scope.info.getGeolocationTitleClass = 'getGeolocation-title-success';
 
-                httpClient.getShopByGEOLocation(position.coords.latitude, position.coords.longitude, function (data, status) {
+                localStorageService.set('MMMETA_location_pos_ready',1);
+                localStorageService.set('MMMETA_location_pos_data',
+                    {'lat':position.coords.latitude,'lng':position.coords.longitude});
 
-                    var code = data.code, dataDetail = data.data;
-                    if (code != 0 || MMUtils.isEmptyObject(dataDetail)) {
-
-                        $scope.info.getGeolocationTitle = "没有找到最近的店...";
-
-                        $state.go('findshop');
-                        return;
-                    }
-                    var shop = dataDetail.shop;
-
-                    localStorageService.set('MMMETA_shop', shop);
-
-                    $state.go('productList');
-
-                }, function (data, status) {
-                    $state.go('findshop');
-                });
+                $state.go('findshop');
 
             } else {
+                $scope.info.getGeolocationTitle = "定位失败...";
+                localStorageService.set('MMMETA_location_pos_ready',0);
                 $state.go('findshop');
             }
         }
@@ -64,6 +52,7 @@ angular.module('miaomiao.shop').
 
             }
             // let user see the error message
+            localStorageService.set('MMMETA_location_pos_ready',0);
             $state.go('findshop');
 
         }
@@ -79,10 +68,12 @@ angular.module('miaomiao.shop').
             } else {
                 $scope.info.showLocateImg = false;
                 $scope.info.getGeolocationTitle = "您的浏览器不支持定位！";
+                localStorageService.set('MMMETA_location_pos_ready',0);
                 $state.go('findshop');
             }
         }
 
+        // not first time loading, just go to shop
         var shop = localStorageService.get('MMMETA_shop');
         if (shop && shop.id) {
             $state.go('productList');

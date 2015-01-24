@@ -3,25 +3,25 @@
          style=";margin: auto;height: 36px">
         <div class="item-input-wrapper">
             <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
-            <input type="search" placeholder="请输入商店名称或者地址" ng-model="shop_data.searchQuery"
-                   ng-focus="startSearch()" ng-change="startSearch()" style="color: #7a7a7a">
+            <input type="search" placeholder="请输入地址例如,五道口" ng-model="shop_data.searchQuery"
+                   ng-focus="startSearch()" ng-keyup="$event.keyCode == 13 && performSearch(info.key,$event)" style="color: #7a7a7a">
             <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"
                ng-click="clearSearch()"></i>
         </div>
     </div>
 </div>
 
-<div class="list" ng-show="showShopList">
+<div class="list" ng-show="info.showAddressSuggestion">
     <div class="item-hint">
-        商店列表
+        地址列表
     </div>
-    <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
-         ng-click="goToShop(item)" ng-include = "'shop-item.html'">
-
+    <div class="item" ng-repeat="item in address_suggestions"
+         ng-click="goToSearchAddress(item)">
+        {{item.name}}
     </div>
 </div>
 
-<div class="list" ng-if="showShopHistory" style="margin-bottom: 5px">
+<div class="list" ng-if="info.showShopHistory" style="margin-bottom: 5px">
 
     <div class="item-hint" ng-show="shop_history.length">
         历史位置
@@ -31,11 +31,14 @@
     </div>
 </div>
 
-<div class="list" ng-show="showShopHot">
+<div class="list" ng-show="info.showShopList">
     <div class="item-hint">
-        热门店铺 <i class="icon ion-loading-c" style="font-size: 12px" ng-show="!shop_items.length"></i>
+        附近的便利店
     </div>
-    <div class="item" ng-repeat="item in shop_items | filter: shop_data.searchQuery"
+    <div ng-show="!shop_items.length" style="color: darkgray;text-align: center;font-size: 12px;padding-top: 10px">
+        没有结果
+    </div>
+    <div class="item" ng-repeat="item in shop_items"
          ng-click="goToShop(item)" ng-include = "'shop-item.html'">
 
     </div>
@@ -45,9 +48,14 @@
 
     <div style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
         <div>
-            <div style="font-size: 18px;display: inline-block;color: #191919">
+            <div style="font-size: 16px;display: inline-block;color: #191919">
                 {{item.name}}
             </div>
+
+            <div style="display: inline-block;margin-left: 10px">
+                <rating ng-model="item.rate" max="item.maxRate" class="assertive"></rating>
+            </div>
+
             <div class="shopItemStatus">
                 {{item.status4V}}
             </div>

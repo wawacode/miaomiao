@@ -8,12 +8,17 @@
     <meta name="format-detection" content="telephone=no">
 
     <link href="/css/ionic.min.css" rel="stylesheet">
+    <link href="/js/ionic-rating/ionic-rating.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
 
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
     <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
+    <script type="text/javascript" src="/js/ionic-rating/ionic-rating.min.js"></script>
 
 
     <script src="/sg/js/services/app.js"></script>

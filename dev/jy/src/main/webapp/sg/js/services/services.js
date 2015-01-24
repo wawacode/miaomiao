@@ -90,9 +90,22 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
 
                 doGet('shop/shopList', 'from=' + from + '&offset=' + offset, success, fail);
 
+            },
+            getNearShopList: function (lat, lng, success, fail) {
+
+                doGet('near', 'lat=' + lat + '&lng=' + lng, success, fail);
+
             }
 
         };
+    }]).factory('GEOLocationService', ['$timeout', function ($timeout) {
+
+        return {
+
+            GEOLocationSupported: function (obj) {
+                return  navigator.geolocation
+            }
+        }
     }])
     .factory('AddressService', ['$http', '$rootScope', '$timeout', function ($http, $rootScope, $timeout) {
 

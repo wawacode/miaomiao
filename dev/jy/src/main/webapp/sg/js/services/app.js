@@ -1,4 +1,4 @@
-var miaomiao = angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule','ngStorage','ngAnimate'], function($httpProvider,$provide) {
+var miaomiao = angular.module('miaomiao.shop', ['ionic', 'LocalStorageModule','ngStorage','ngAnimate','ionic.rating'], function($httpProvider,$provide) {
 
     // Use x-www-form-urlencoded Content-Type
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
