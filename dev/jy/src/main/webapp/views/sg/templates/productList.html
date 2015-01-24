@@ -58,7 +58,7 @@
                             <li ng-repeat="category in categoryls" class="shop-categray"
                                 ng-click="selectCategory(category)"
                                 ng-class="{'shop-categray-selected': category.selected}">
-                                <div class="shop-categray-item-decorate" ng-show="category.selected"></div>
+                                <div class="shop-categray-item-decorate" ng-show="category.selected" ng-animate="{show:'animate-show', hide:'animate-hide'}"></div>
                                 <div class="shop-categray-item" style=""
                                      ng-class="{'shop-categray-item-selected': category.selected}">{{ category.name
                                     }}

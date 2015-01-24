@@ -5,6 +5,7 @@
     <title>喵喵</title>
 
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="format-detection" content="telephone=no">
 
     <link href="/css/ionic.min.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
@@ -39,6 +40,14 @@
 <body>
 
 <ion-nav-view></ion-nav-view>
+
+<script type="text/javascript">
+    document.body.addEventListener('touchmove', function(evt) {
+        //In this case, the default behavior is scrolling the body, which
+        //would result in an overflow.  Since we don't want that, we preventDefault.
+        evt.preventDefault();
+    })
+</script>
 
 </body>
 </html>
