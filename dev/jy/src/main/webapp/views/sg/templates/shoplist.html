@@ -58,12 +58,12 @@
                 {{item.name}}
             </div>
 
-            <div style="display: inline-block;margin-left: 10px">
-                <rating ng-model="item.rate" max="item.maxRate" class="assertive" readonly></rating>
+            <div style="display: inline-block;margin-left: 2px">
+                <rating ng-model="item.rate" max="item.maxRate" readonly></rating>
             </div>
 
-            <div class="shopItemStatus">
-                {{item.status4V}}
+            <div ng-class="{'shopItemStatusOpen':item.status,'shopItemStatusClosed': !item.status }">
+                {{item.status | getShopStatusString }}
             </div>
         </div>
 
@@ -76,7 +76,7 @@
                     <i class="icon ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>全天营业
                 </div>
                 <div style=" display: inline-block;float: right; padding-right: 40%">
-                    <i class="icon ion-ios7-pricetags" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> {{ item.base_price/100 }}元起送
+                    <i class="icon ion-ios7-pricetags" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> {{ item.base_price | getShopMinPrice }}元起送
                 </div>
             </div>
             <div style="font-size: 12px;" ng-show="item.shop_address">

@@ -23,6 +23,15 @@ angular.module('miaomiao.shop').filter('getTotolCount',function () {
             if(!text) return;
             return text.replace(/AM/, '').replace(/PM/, ''); // Characters after Colon
         };
+    }).filter('getShopStatusString', function () {
+        return function(input){
+            return input ? "营业中":"打烊了";
+        }
+    }).filter('getShopMinPrice', function () {
+        return function(input){
+            return input ? input/100 : 20;
+        }
     });
-;
+
+
 
