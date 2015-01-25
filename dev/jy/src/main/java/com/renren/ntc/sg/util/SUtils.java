@@ -257,4 +257,16 @@ public class SUtils {
     }
 
 
+    public static  void forV(List<Shop> shops) {
+        long time = System.currentTimeMillis();
+        for (Shop s : shops){
+            if(SUtils.online(time,s)){
+                s.setStatus4V("营业中");
+                s.setStatus(0);
+            }else {
+                s.setStatus4V("打烊了");
+                s.setStatus(1);
+            }
+        }
+    }
 }
