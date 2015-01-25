@@ -23,6 +23,26 @@ public class Shop {
     private  String tel = "";
     private  String  shop_url  = "";
 
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getBase_price() {
+        return base_price;
+    }
+
+    public void setBase_price(int base_price) {
+        this.base_price = base_price;
+    }
+
+    private int status = 0;
+    private int base_price = 2000;
+
     private String  status4V = "" ;
     private Date open_time ;
     private Date close_time ;
@@ -30,6 +50,8 @@ public class Shop {
     private  Date  updatetime;
     private  String  owner_phone   = "";
     private  String  head_url   = "";
+
+
 
 
     public String getStatus4V() {
