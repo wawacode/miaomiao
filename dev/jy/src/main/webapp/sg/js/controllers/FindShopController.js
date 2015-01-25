@@ -165,7 +165,7 @@ angular.module('miaomiao.shop').
 
                 if (position) {
 
-                    $scope.shop_info.locationMessage = "定位成功";
+                    $scope.shop_info.locationMessage = "定位成功,正在获取地址...";
 
                     localStorageService.set('MMMETA_location_pos_ready', 1);
                     localStorageService.set('MMMETA_location_pos_data',
@@ -208,8 +208,10 @@ angular.module('miaomiao.shop').
             // 根据坐标得到地址描述
             myGeo.getLocation(new BMap.Point(lng, lat), function (result) {
                 if (result) {
-                    $scope.shop_info.locationMessage = "当前地址:" + result.address;
                     localStorageService.set('MMMETA_location_pos_addr', result.address);
+                    $timeout(function () {
+                        $scope.shop_info.locationMessage = "当前地址:" + result.address;
+                    });
                 }
             });
         }
