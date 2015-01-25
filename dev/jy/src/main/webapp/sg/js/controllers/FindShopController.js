@@ -155,6 +155,8 @@ angular.module('miaomiao.shop').
             }, "北京市");
         };
 
+        $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr') || "切换地址";
+
         $scope.relocation = function(){
 
             function showPosition(position) {
