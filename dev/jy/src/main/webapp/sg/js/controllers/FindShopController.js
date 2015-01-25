@@ -203,6 +203,7 @@ angular.module('miaomiao.shop').
                 if (result) {
                     alert(result.address);
                     $scope.info.locationMessage = result.address;
+                    localStorageService.set('MMMETA_location_pos_addr',result.address);
                 }
             });
         }

@@ -209,6 +209,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     });
 
     $scope.switchShop = function () {
+
         $scope.modal.show();
     }
 
@@ -218,7 +219,6 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
     });
     // Execute action on hide modal
     $scope.$on('modal.hidden', function() {
-        console.log('dddddebug');
 
         var shop = localStorageService.get('MMMETA_shop');
         if(shop.id != $scope.shop.id){
