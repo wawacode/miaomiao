@@ -11,11 +11,11 @@
     </div>
 </div>
 
-<div class="list" ng-show="info.showAddressSuggestion">
+<div class="list" ng-show="shop_info.showAddressSuggestion">
     <div class="item-hint">
-        地址列表 <i class="icon ion-loading-c" ng-show="info.isGettingSuggestions"></i>
+        地址列表
     </div>
-    <div class="item" ng-repeat="item in info.address_suggestions"
+    <div class="item" ng-repeat="item in shop_info.address_suggestions"
          ng-click="goToSearchAddress(item)">
         <div style="font-size: 16px">
             {{item.title}}
@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<div class="list" ng-if="info.showShopHistory" style="margin-bottom: 5px">
+<div class="list" ng-if="shop_info.showShopHistory" style="margin-bottom: 5px">
 
     <div class="item-hint" ng-show="shop_history.length">
         历史位置
@@ -37,7 +37,7 @@
     </div>
 </div>
 
-<div class="list" ng-show="info.showShopList">
+<div class="list" ng-show="shop_info.showShopList">
     <div class="item-hint">
         附近的便利店
     </div>
