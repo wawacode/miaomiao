@@ -25,7 +25,7 @@ angular.module('miaomiao.shop').filter('getTotolCount',function () {
         };
     }).filter('getShopStatusString', function () {
         return function(input){
-            return input ? "营业中":"打烊了";
+            return input == 0 ? "营业中":"打烊了";
         }
     }).filter('getShopMinPrice', function () {
         return function(input){
