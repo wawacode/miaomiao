@@ -208,7 +208,6 @@ angular.module('miaomiao.shop').
             // 根据坐标得到地址描述
             myGeo.getLocation(new BMap.Point(lat,lng), function (result) {
                 if (result) {
-                    alert(result.address);
                     $scope.shop_info.locationMessage = result.address;
                     localStorageService.set('MMMETA_location_pos_addr',result.address);
                 }
