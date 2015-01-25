@@ -3,10 +3,10 @@ angular.module('miaomiao.shop')
 
         // go to orders page
         $scope.shop = localStorageService.get('MMMETA_shop');
-        $scope.message = "订单成功，即将为您跳转...";
+        $scope.message = "订单成功，将为您跳转...";
 
         OrderService.onOrderChangeEventSuccess($scope,function(){
-            $scope.message = "订单提交成功，请返回";
+            $scope.message = "订单提交成功";
         });
         $scope.hasDisplaySuccessMessage = false;
         // when back from checkout or other state, just refresh the numbers
