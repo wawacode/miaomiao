@@ -50,7 +50,7 @@ angular.module('miaomiao.shop').
         $scope.goToShop = function (shop) {
 
             //TODO: check shop status
-            if (shop.status != undefined && shop.status != 1) {
+            if (shop.status != undefined && shop.status != 0) {
                 return;
             }
 

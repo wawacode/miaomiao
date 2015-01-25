@@ -62,7 +62,7 @@
                 <rating ng-model="item.rate" max="item.maxRate" readonly></rating>
             </div>
 
-            <div ng-class="{'shopItemStatusOpen':item.status,'shopItemStatusClosed': !item.status }">
+            <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
                 {{item.status | getShopStatusString }}
             </div>
         </div>
