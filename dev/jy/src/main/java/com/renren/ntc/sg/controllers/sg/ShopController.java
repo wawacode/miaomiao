@@ -75,7 +75,7 @@ public class ShopController {
         //获取 热门分类
         List<Shop> shops = shopDAO.getAuditedShops(from, offset);
 
-        forV(shops) ;
+        SUtils.forV(shops) ;
         inv.addModel("shops", shops);
 
         JSONObject jb =  new JSONObject() ;
@@ -93,18 +93,7 @@ public class ShopController {
         return "@" + jb.toJSONString() ;
     }
 
-    private void forV(List<Shop> shops) {
-        long time = System.currentTimeMillis();
-        for (Shop s : shops){
-            if(SUtils.online(time,s)){
-                s.setStatus4V("营业中");
-                s.setStatus(0);
-            }else {
-                s.setStatus4V("打烊了");
-                s.setStatus(1);
-            }
-        }
-    }
+
 
     @Get("")
     public String index (Invocation inv,@Param("shop_id") long shop_id){

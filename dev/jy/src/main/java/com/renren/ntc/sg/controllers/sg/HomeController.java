@@ -137,6 +137,7 @@ public class HomeController {
                     LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
                     long shop_id  = shopLoc.getShop_id();
                     shop = shopDAO.getShop(shop_id);
+                    SUtils.forV(shop);
                     shops.add(JSON.toJSON(shop));
                 }
             }else{
