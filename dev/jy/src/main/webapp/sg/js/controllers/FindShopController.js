@@ -75,6 +75,9 @@ angular.module('miaomiao.shop').
             }
         };
 
+        // for shop star
+        $scope.readonly = true;
+
         $scope.getSuggestions = function(key, $event){
 
             $scope.shop_info.isGettingSuggestions = true;
