@@ -6,6 +6,9 @@ angular.module('miaomiao.shop').
         $scope.info.getGeolocationTitleClass = 'blink_me';
         $scope.info.showLocateImg = true;
 
+        // not first time loading, just go to shop
+        $scope.info.lastShop = localStorageService.get('MMMETA_shop');
+
         function showPosition(position) {
 
             if (position) {
@@ -62,9 +65,7 @@ angular.module('miaomiao.shop').
                 var position_option = {
                     timeout: 10000
                 };
-
                 navigator.geolocation.getCurrentPosition(showPosition, showError, position_option);
-
             } else {
                 $scope.info.showLocateImg = false;
                 $scope.info.getGeolocationTitle = "您的浏览器不支持定位！";
@@ -73,14 +74,15 @@ angular.module('miaomiao.shop').
             }
         }
 
-        // not first time loading, just go to shop
-        var shop = localStorageService.get('MMMETA_shop');
-        if (shop && shop.id) {
-            $state.go('productList');
-        } else {
-            $timeout(function () {
+        $scope.$on("$ionicView.enter", function () {
+
+            if ($scope.info.lastShop && $scope.info.lastShop.id) {
+                $state.go('productList');
+            } else {
+                $timeout(function () {
                     getLocation();
                 }, 1000);
-        }
+            }
+        });
 
     });
