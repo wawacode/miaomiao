@@ -155,7 +155,7 @@ angular.module('miaomiao.shop').
             }, "北京市");
         };
 
-        $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr') || "切换地址";
+//        $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr') || "切换地址";
 
         $scope.relocation = function(){
 
@@ -202,13 +202,13 @@ angular.module('miaomiao.shop').
             }
         }
 
-        function updateRealGEOAddressByGEOData(lat,lng){
+        function updateRealGEOAddressByGEOData(lng,lat){
 
             var myGeo = new BMap.Geocoder();
             // 根据坐标得到地址描述
-            myGeo.getLocation(new BMap.Point(lat,lng), function (result) {
+            myGeo.getLocation(new BMap.Point(lng,lat), function (result) {
                 if (result) {
-                    $scope.shop_info.locationMessage = result.address;
+                    $scope.shop_info.locationMessage = "当前地址:" + result.address;
                     localStorageService.set('MMMETA_location_pos_addr',result.address);
                 }
             });
@@ -222,18 +222,21 @@ angular.module('miaomiao.shop').
 
                 $scope.shop_info.locationData = localStorageService.get('MMMETA_location_pos_data');
 
-                updateRealGEOAddressByGEOData($scope.shop_info.locationData.lat, $scope.shop_info.locationData.lng);
+                updateRealGEOAddressByGEOData($scope.shop_info.locationData.lng , $scope.shop_info.locationData.lat);
 
                 httpClient.getNearShopList($scope.shop_info.locationData.lat, $scope.shop_info.locationData.lng, function (data, status) {
 
                     var code = data.code, dataDetail = data.data;
 
                     if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
-                        $scope.shop_items = dataDetail.shops;
-                        for (var i = 0; i < $scope.shop_items.length; i++) {
-                            $scope.shop_items[i].rate = 5;
-                            $scope.shop_items[i].maxRate = 5;
-                        }
+
+                        $timeout(function(){
+                            $scope.shop_items = dataDetail.shops;
+                            for (var i = 0; i < $scope.shop_items.length; i++) {
+                                $scope.shop_items[i].rate = 5;
+                                $scope.shop_items[i].maxRate = 5;
+                            }
+                        })
 
                         $scope.shop_info.showAddressSuggestion = false;
                         $scope.shop_info.showShopList = true;

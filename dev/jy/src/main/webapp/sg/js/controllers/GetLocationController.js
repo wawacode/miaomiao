@@ -54,6 +54,17 @@ angular.module('miaomiao.shop').
                     $scope.info.getGeolocationTitle = "定位失败，请您重试";
 
             }
+
+            //TODO: test code, remove this
+            $scope.info.getGeolocationTitle = "定位成功，正在加载请稍候...";
+            $scope.info.getGeolocationTitleClass = 'getGeolocation-title-success';
+
+            localStorageService.set('MMMETA_location_pos_ready',1);
+            localStorageService.set('MMMETA_location_pos_data',
+                {'lat':116.515155,'lng':39.931855});
+            $state.go('findshop');
+            return;
+
             // let user see the error message
             localStorageService.set('MMMETA_location_pos_ready',0);
             $state.go('findshop');
