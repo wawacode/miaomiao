@@ -18,7 +18,7 @@
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
     <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
-    <script type="text/javascript" src="/js/ionic-rating/ionic-rating.min.js"></script>
+    <!--<script type="text/javascript" src="/js/ionic-rating/ionic-rating.min.js"></script>-->
 
 
     <script src="/sg/js/services/app.js"></script>
