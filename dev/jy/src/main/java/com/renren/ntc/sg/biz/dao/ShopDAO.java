@@ -13,7 +13,7 @@ public interface ShopDAO {
     static final String TABLE_NAME= "shop";
     static final String FIELDS = "id, owner_user_id, name,open_time,close_time,shop_address,tel,owner_phone,head_url,shop_url,lng,lat,create_time" ;
     static final String INSERT_FIELDS = "owner_user_id,name,shop_address,tel,owner_phone,head_url,shop_url,lng,lat" ;
-
+    static final String SHOP_NAME_FIELDS = "id,name";
 	@SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where  lat < :1 and lat > :2 and lng < :3 and lng > :4")
 	public List<Shop> getShop(double lat2, double lng1, double lng2);
 	
@@ -37,4 +37,7 @@ public interface ShopDAO {
 
     @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " limit :1,:2")
     public List<Shop> getAllShops(int from, int offset);
+    
+    @SQL("select " +SHOP_NAME_FIELDS  + "  from "  + TABLE_NAME + " where audit = :1")
+    public List<Shop> getAllShopsByAudit(int audit);
 }

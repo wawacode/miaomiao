@@ -56,5 +56,8 @@ public interface OrdersDAO {
 
     @SQL("select "+ FIELDS +" from ##(:tableName)  where order_id =:1 ")
     public Order getOrder(String orderId,@SQLParam("tableName") String tableName);
+    
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where create_time between :1 and :2")
+    public List<Order> getOrder(String beginTime,String endTime,@SQLParam("tableName") String tableName);
 
 }
