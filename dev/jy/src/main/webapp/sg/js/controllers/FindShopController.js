@@ -210,7 +210,7 @@ angular.module('miaomiao.shop').
                 if (result) {
                     localStorageService.set('MMMETA_location_pos_addr', result.address);
                     $timeout(function () {
-                        $scope.shop_info.locationMessage = "当前地址:" + result.address;
+                        $scope.shop_info.locationMessage = result.address;
                     });
                 }
             });
