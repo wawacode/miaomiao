@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop').
-    controller('FindShopCtrl', function ($scope, $http, $state, $ionicLoading , localStorageService, httpClient, MMUtils, $timeout) {
+    controller('FindShopCtrl', function ($scope, $http, $state, $ionicLoading, localStorageService, httpClient, MMUtils, $timeout) {
 
         $scope.shop_data = {};
         $scope.shop_items = [];
@@ -26,14 +26,14 @@ angular.module('miaomiao.shop').
             hideSearchSuggestions();
         };
 
-        function showSearchSuggestions(){
+        function showSearchSuggestions() {
             $scope.shop_info.showAddressSuggestion = true;
 
             $scope.shop_info.showShopList = false;
             $scope.shop_info.showShopHistory = false;
         }
 
-        function hideSearchSuggestions(){
+        function hideSearchSuggestions() {
 
             $scope.shop_info.showAddressSuggestion = false;
             $scope.shop_info.showShopList = true;
@@ -78,19 +78,19 @@ angular.module('miaomiao.shop').
         // for shop star
         $scope.readonly = true;
 
-        $scope.getSuggestions = function(key, $event){
+        $scope.getSuggestions = function (key, $event) {
 
             $scope.shop_info.isGettingSuggestions = true;
 
             var options = {
-                onSearchComplete: function(results){
-                    if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                onSearchComplete: function (results) {
+                    if (local.getStatus() == BMAP_STATUS_SUCCESS) {
                         // 判断状态是否正确
                         var address_suggestions = [];
-                        for (var i = 0; i < results.getCurrentNumPois(); i ++){
-                            address_suggestions.push({'title': results.getPoi(i).title ,'address':results.getPoi(i).address});
+                        for (var i = 0; i < results.getCurrentNumPois(); i++) {
+                            address_suggestions.push({'title': results.getPoi(i).title, 'address': results.getPoi(i).address});
                         }
-                        $timeout(function(){
+                        $timeout(function () {
                             $scope.shop_info.address_suggestions = address_suggestions;
                         });
                     }
@@ -104,13 +104,13 @@ angular.module('miaomiao.shop').
 
         };
 
-        $scope.goToSearchAddress = function(item){
+        $scope.goToSearchAddress = function (item) {
             $scope.performSearch(item.title);
         }
 
         $scope.performSearch = function (key, $event) {
 
-            if($event)$event.target.blur();
+            if ($event)$event.target.blur();
 
             var KEY = key || $scope.shop_data.searchQuery;
 
@@ -121,7 +121,7 @@ angular.module('miaomiao.shop').
             });
 
             var myGeo = new BMap.Geocoder();
-            myGeo.getPoint(KEY, function(point){
+            myGeo.getPoint(KEY, function (point) {
                 if (point) {
 
                     httpClient.getNearShopList(point.lat, point.lng, function (data, status) {
@@ -146,7 +146,7 @@ angular.module('miaomiao.shop').
                         hideSearchSuggestions();
                     });
 
-                }else{
+                } else {
 
                     $ionicLoading.hide();
                     hideSearchSuggestions();
@@ -157,7 +157,7 @@ angular.module('miaomiao.shop').
 
 //        $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr') || "切换地址";
 
-        $scope.relocation = function(){
+        $scope.relocation = function () {
 
             function showPosition(position) {
 
@@ -167,9 +167,9 @@ angular.module('miaomiao.shop').
 
                     $scope.shop_info.locationMessage = "定位成功";
 
-                    localStorageService.set('MMMETA_location_pos_ready',1);
+                    localStorageService.set('MMMETA_location_pos_ready', 1);
                     localStorageService.set('MMMETA_location_pos_data',
-                        {'lat':position.coords.latitude,'lng':position.coords.longitude});
+                        {'lat': position.coords.latitude, 'lng': position.coords.longitude});
 
                     updateUIWhenPositionDataReady();
 
@@ -178,9 +178,9 @@ angular.module('miaomiao.shop').
                 }
             }
 
-            function showError(){
+            function showError() {
                 $ionicLoading.hide();
-                $timeout(function(){
+                $timeout(function () {
                     $scope.shop_info.locationMessage = "定位失败！";
                 })
             }
@@ -197,24 +197,24 @@ angular.module('miaomiao.shop').
                 });
 
                 navigator.geolocation.getCurrentPosition(showPosition, showError, position_option);
-            }else{
+            } else {
                 $scope.shop_info.locationMessage = "浏览器不支持定位";
             }
         }
 
-        function updateRealGEOAddressByGEOData(lng,lat){
+        function updateRealGEOAddressByGEOData(lng, lat) {
 
             var myGeo = new BMap.Geocoder();
             // 根据坐标得到地址描述
-            myGeo.getLocation(new BMap.Point(lng,lat), function (result) {
+            myGeo.getLocation(new BMap.Point(lng, lat), function (result) {
                 if (result) {
                     $scope.shop_info.locationMessage = "当前地址:" + result.address;
-                    localStorageService.set('MMMETA_location_pos_addr',result.address);
+                    localStorageService.set('MMMETA_location_pos_addr', result.address);
                 }
             });
         }
 
-        function updateUIWhenPositionDataReady(){
+        function updateUIWhenPositionDataReady() {
 
             $scope.shop_info.locationReady = localStorageService.get('MMMETA_location_pos_ready');
 
@@ -222,7 +222,7 @@ angular.module('miaomiao.shop').
 
                 $scope.shop_info.locationData = localStorageService.get('MMMETA_location_pos_data');
 
-                updateRealGEOAddressByGEOData($scope.shop_info.locationData.lng , $scope.shop_info.locationData.lat);
+                updateRealGEOAddressByGEOData($scope.shop_info.locationData.lng, $scope.shop_info.locationData.lat);
 
                 httpClient.getNearShopList($scope.shop_info.locationData.lat, $scope.shop_info.locationData.lng, function (data, status) {
 
@@ -230,22 +230,24 @@ angular.module('miaomiao.shop').
 
                     if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
 
-                        $timeout(function(){
+                        $timeout(function () {
                             $scope.shop_items = dataDetail.shops;
                             for (var i = 0; i < $scope.shop_items.length; i++) {
                                 $scope.shop_items[i].rate = 5;
                                 $scope.shop_items[i].maxRate = 5;
                             }
-                        })
 
-                        $scope.shop_info.showAddressSuggestion = false;
-                        $scope.shop_info.showShopList = true;
+                            $scope.shop_info.showAddressSuggestion = false;
+                            $scope.shop_info.showShopList = true;
+                        });
                     }
 
                 }, function (data, status) {
                     // still show it and with no item hint
-                    $scope.shop_info.showAddressSuggestion = false;
-                    $scope.shop_info.showShopList = true;
+                    $timeout(function () {
+                        $scope.shop_info.showAddressSuggestion = false;
+                        $scope.shop_info.showShopList = true;
+                    });
                 });
             }
         }
@@ -266,7 +268,7 @@ angular.module('miaomiao.shop').
                 $scope.shop_info.showShopHistory = true;
             }
 
-            if($scope.shop_items.length){
+            if ($scope.shop_items.length) {
                 $scope.shop_info.showShopList = true;
             }
         });
