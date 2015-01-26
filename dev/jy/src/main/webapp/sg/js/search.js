@@ -25,7 +25,7 @@ $(document).ready(function () {
         document.activeElement.blur(); //hide keyboard
 
         var q = $('.searchBar-input', this).val();
-        var destURL = location.origin + location.pathname.replace(/qvm/, 'query') + '&key=' + q;
+        var destURL = location.href.replace(/qvm/, 'query') + '&key=' + q;
 
         addSpinner();
         hideNoResults();
