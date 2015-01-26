@@ -114,6 +114,20 @@
                         <span class="input-label"><span class="necessary">*</span>店铺电话:</span>
                         <input type="text" ng-model="info.shop_tel" required>
                     </label>
+                    <label class="item">
+                        <div class="list">
+                            <span class="input-label"><span class="necessary">*</span>营业时间:</span>
+                            <label class="item item-input">
+                                <span class="input-label"><span class="necessary">*</span>开始时间:</span>
+                                <input type="text" ng-model="info.shop_openTime" placeholder="" required>
+                            </label>
+                            <label class="item item-input">
+                                <span class="input-label"><span class="necessary">*</span>结束时间:</span>
+                                <input type="text" ng-model="info.shop_CloseTime" required>
+                            </label>
+                        </div>
+
+                    </label>
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店长电话:</span>
                         <input type="text" ng-model="info.shop_owner_phone" required>

@@ -10,6 +10,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
             title: '加载店铺失败,请重新选择店铺',
             template: ''
         });
+        $state.go('findshop');
         return;
     }
 
