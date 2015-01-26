@@ -12,6 +12,7 @@ angular.module('miaomiao.shop')
 
         function checkOrders(){
 
+            $scope.info.remarks = "";
             $scope.LoadingMessage = '正在核对,请稍候...';
             $ionicLoading.show({
                 templateUrl: '/views/sg/templates/loadingIndicator.html',

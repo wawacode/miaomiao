@@ -192,7 +192,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
         localStorageService.set('MMMETA_shop', $scope.shop);
 
-        if (!$scope.cartReadyToShip)return;
+        if (!$scope.info.cartReadyToShip)return;
 
         $state.go('checkout', null, { reload: true });
 
