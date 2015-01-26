@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop').
-    controller('FindShopCtrl', function ($scope, $http, $state, $ionicLoading, localStorageService, httpClient, MMUtils, $timeout) {
+    controller('FindShopCtrl', function ($scope, $http, $state,$location, $ionicLoading, localStorageService, httpClient, MMUtils, $timeout) {
 
         $scope.shop_data = {};
         $scope.shop_items = [];
@@ -73,7 +73,7 @@ angular.module('miaomiao.shop').
             if ($scope.modal) {
                 $scope.modal.hide();
             } else {
-                $state.go('productList');
+                $state.go('productList',null,{reload: true});
             }
         };
 

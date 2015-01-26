@@ -120,6 +120,8 @@ public class ShopController {
 //
 //        inv.addModel("categoryls",shopCategoryls);
 
+        SUtils.forV(shop);
+
         JSONObject jb =  new JSONObject() ;
         JSONObject shopJson = (JSONObject) JSONObject.toJSON(shop);
         JSONObject data =  new JSONObject() ;

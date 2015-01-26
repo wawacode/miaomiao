@@ -224,7 +224,11 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         var shop = localStorageService.get('MMMETA_shop');
         if(shop.id != $scope.shop.id){
 
-            $scope.shop = shop;
+            $timeout(function () {
+                $scope.shop = shop;
+            });
+
+            checkShopStatus();
 
             // clear all data if switch shop
             ShoppingCart.clearAll();
@@ -288,8 +292,36 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         }
     });
 
+    function checkShopStatus(){
+        // must check shop status
+
+        var shopInfo = localStorageService.get('MMMETA_shop');
+        $timeout(function () {
+            $scope.shop = shopInfo;
+        });
+        
+        httpClient.getShopInfo(shopInfo.id, function (data, status) {
+            var code = data.code, dataDetail = data.data;
+            if (dataDetail.shop && dataDetail.shop.status != 0) {
+
+                var alertPopup = $ionicPopup.alert({
+                    title: dataDetail.shop.name + '打烊啦，去其他店铺看看？',
+                    template: ''
+                });
+                alertPopup.then(function(res) {
+                    $state.go('findshop' ,null, { reload: true });
+                    return;
+                });
+            }
+        },function(data, status){
+
+        });
+    }
+
     // when back from checkout or other state, just refresh the numbers
     $scope.$on("$ionicView.enter", function () {
+
+        checkShopStatus();
 
         updateShoppingCart();
         if ($scope.categoryls) {

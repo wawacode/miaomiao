@@ -8,16 +8,9 @@ angular.module('miaomiao.shop')
         OrderService.onOrderChangeEventSuccess($scope,function(){
             $scope.message = "订单提交成功";
         });
-        $scope.hasDisplaySuccessMessage = false;
+
         // when back from checkout or other state, just refresh the numbers
         $scope.$on("$ionicView.enter", function () {
-
-            if($scope.hasDisplaySuccessMessage){
-                $scope.message = "订单成功";
-                return;
-            }
-
-            $scope.hasDisplaySuccessMessage = true;
 
             httpClient.getMyOrders($scope.shop.id ,function(data, status){
 
