@@ -29,9 +29,11 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/console/shop/order?shop_id=${shop_id}">我的订单</a></li>
                 <li><a href="/console/shop/addindex?shop_id=${shop_id}">+添加商品</a></li>
+                #if($shop.id != 1 && $shop.id!=10025)
                 <li><a href="/console/shop/cate?shop_id=${shop_id}">分类编辑</a></li>
                 <li><a href="/console/allshop">所有店铺</a></li>
                 <li><a href="/console/product">产品总表</a></li>
+                #end
             </ul>
             <form id="query_form" class="navbar-form navbar-right" action="/console/shop/query">
                 <input id="query_input" name="query" type="text" class="form-control"  placeholder="Search...">
@@ -68,18 +70,29 @@
                         <th>库存</th>
                         <th>零售价</th>
                         <th>图片</th>
+                        <th>上传本地图片操作</th>
                     </tr>
                     </thead>
                     #foreach($item in $itemls)
                     <tr>
                         <td>${item.id}</td>
-                        <td class="edit" id="e-${item.shop_id}-serialNo-$item.id">$item.serialNo</td>
+                        <td>$item.serialNo</td>
                         <td class="edit" id="e-${item.shop_id}-name-$item.id">$item.name</td>
                         <td class="edit" id="e-${item.shop_id}-category_id-$item.id">$item.category_id</td>
                         <td class="edit" id="e-${item.shop_id}-score-$item.id">$item.score</td>
                         <td class="edit" id="e-${item.shop_id}-count-$item.id">$item.count</td>
                         <td class="edit" id="e-${item.shop_id}-price-$item.id">$item.price</td>
                         <td class="edit" id="e-${item.shop_id}-pic_url-$item.id"> #if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end</td>
+                    	<td>
+                    	<form class="form-horizontal" method="post"  enctype="multipart/form-data"  action="/console/shop/uploadPic">
+                    	<input name="shop_id" style="display:none" value="${item.shop_id}">
+                    	<input name="id" style="display:none" value="${item.id}">
+                    	<input name="serialNo" style="display:none" value="${item.serialNo}">
+                    	<input name="categoryId" style="display:none" value="${item.categoryId}">
+                    	<input type="file" id="${item.id}-inputfile" name="pic" onChange="fileChange(this);">
+                    	<button type="submit" class="form-add" data-id="${item.id}-inputfile" >添加</button>
+                    	</form>
+                    	</td>
                     	<td><button type="button" class="btn btn-danger" data-id="${item.id}" data-shopid="${item.shop_id}"><a>删除</a></button></td>
                     </tr>
                     #end
@@ -144,6 +157,31 @@
       $("#query_form").submit();
     }
     });
+    function fileChange(item) {
+            var ss = (item.value).split('.');
+            if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
+                $("#fileName").val(item.value);
+            } else {
+                var obj = document.getElementById("inputfile");
+               obj.outerHTML = obj.outerHTML;
+                $("#inputfile").val("");
+                alert("用户源配置文件格式错误");
+            }
+        }
+    $(".form-add").click(function(){
+		var result = confirm("是否确认提交"),
+		oThis = $(this);
+		if(result){
+			var pic = oThis.data('id');
+			var picVal =$('#'+ pic).val();
+			if(picVal == ''){
+			  alert("请上传图片");
+			  return false;
+			}
+			return true;
+		}
+		return false;
+	});
 </script>
 </body>
 </html>

@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 public class Dateutils {
 	public static final String FORMAT_ALL = "yyyy-MM-dd HH:mm:ss";
 	private static SimpleDateFormat SDF = new SimpleDateFormat(FORMAT_ALL);
@@ -31,5 +33,19 @@ public class Dateutils {
 			return "";
 		}
 		return DSDF.format(date);
+	}
+	
+	public static String getDateStrByCondition(String condition){
+		if(StringUtils.isBlank(condition)){
+			return "";
+		}
+		String[] dateStr = condition.split(":");
+		Calendar now = Calendar.getInstance();
+		now.setTime(new Date());
+		now.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateStr[0]));
+		now.set(Calendar.MINUTE, Integer.parseInt(dateStr[1]));
+		now.set(Calendar.SECOND, 0);
+		now.set(Calendar.MILLISECOND, 0);
+		return tranferDate2Str(now.getTime());
 	}
 }

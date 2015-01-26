@@ -119,7 +119,7 @@ public class ShopConsoleController {
         if(from != 0){
         	int begin = from;
         	begin = begin - offset;
-           inv.addModel("previous_f", from< 0?0:from);
+           inv.addModel("previous_f", begin< 0?0:begin);
         }
         if(itemls.size() >=  offset){
            inv.addModel("next_f", from  + offset);
@@ -430,5 +430,37 @@ public class ShopConsoleController {
         itemsDAO.insert(SUtils.generTableName(shop_id),it) ;
         return  "@"+Constants.DONE ;
     }
+    
+    @Post("uploadPic")
+	public String addItemPic(Invocation inv, @Param("id") long itemId,
+									  @Param("serialNo") String serialNo,
+									  @Param("shop_id") long shopId,
+									  @Param("categoryId") int categoryId,
+									  @Param("pic") MultipartFile pic) {
+    	if(pic == null){
+    		LoggerUtils.getInstance().log(String.format("uploadPic is null,serialNo=%s",serialNo));
+    		return "@error" ;
+    	}
+    	String picName = pic.getOriginalFilename();
+    	String[] picNameArr = pic.getOriginalFilename().split("\\.");
+    	if(pic!=null && picNameArr.length ==2){
+    		picName = serialNo+"."+picNameArr[1];
+    	}else {
+    		LoggerUtils.getInstance().log(String.format("uploadPic format is wrong,serialNo=%s",serialNo));
+			return "@error";
+		}
+    	String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shopId));
+    	boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
+		if(!isSuc){
+			return "@error" ;
+		}
+		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
+		String picUrl = imageUrl.concat(picName);
+		int flag = itemsDAO.updateByItemId(SUtils.generTableName(shopId), picUrl, itemId);
+		if (flag != 1) {
+            return "@error";
+        }
+		return "r:/console/shop?shop_id="+shopId+"&category_id="+categoryId;
+	}
 
 }

@@ -55,18 +55,30 @@
                         <th>店铺电话</th>
                         <th>店长电话</th>
                         <th>创建时间</th>
+                        <th>经度</th>
+                        <th>纬度</th>
+                        <th>开业时间</th>
+                        <th>闭业时间</th>
                         <th>店铺地址</th>
+                        <th>店铺已上线(0:下线 1:上线)</th>
+                        <th>店铺操作</th>
                     </tr>
                     </thead>
                     #foreach($shop in $shopls)
                     <tr>
                         <td>$shop.id</td>
-                        <td class="" id="$shop.id">$shop.name</td>
-                        <td class="" >$shop.tel</td>
-                        <td class="" >$shop.owner_phone</td>
-                        <td class="" >$shop.create_time</td>
-                        <td class="" ><a href="http://www.mbianli.com/sg/shop?shop_id=${shop.id}">访问店铺 </a><br/>
-                            <a href="http://www.mbianli.com/console/login">店铺后台 </a></td>
+                        <td class="edit" id="e-${shop.id}-name">$shop.name</td>
+                        <td class="edit" id="e-${shop.id}-tel">$shop.tel</td>
+                        <td class="edit" id="e-${shop.id}-owner_phone">$shop.owner_phone</td>
+                        <td class="edit" id="e-${shop.id}-create_time">$shop.create_time</td>
+                        <td class="edit" id="e-${shop.id}-lng">$shop.lng</td>
+                        <td class="edit" id="e-${shop.id}-lat">$shop.lat</td>
+                        <td class="edit" id="e-${shop.id}-open_time">#if (! $shop.open_time) 无 #else $date.format('HH:mm',$shop.open_time) #end</td>
+                        <td class="edit" id="e-${shop.id}-close_time">#if (! $shop.close_time) 无 #else $date.format('HH:mm',$shop.close_time) #end</td>
+                        <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
+                        <td class="edit" id="e-${shop.id}-audit">$shop.audit</td>
+                        <td><a href="/sg/shop?shop_id=${shop.id}">访问店铺 </a><br/>
+                            <a href="/console/login">店铺后台 </a></td>
                     </tr>
                     #end
                     </tbody>
@@ -75,10 +87,10 @@
                     <ul class="pager">
                         #if($previous_f)
                         <li>
-                          <a href="/console/shop/order?shop_id=${shop_id}&from=$previous_f&offset=50">Previous</a></li>
+                          <a href="/console/allshop?from=$previous_f&offset=10">Previous</a></li>
                         #end
                         #if($next_f)
-                        <li><a href="/console/shop/order?shop_id=${shop_id}&from=$next_f&offset=50">Next</a></li>
+                        <li><a href="/console/allshop?from=$next_f&offset=10">Next</a></li>
                         #end
                     </ul>
                 </nav>
@@ -95,13 +107,13 @@
 <script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-    $('.edit').editable('/console/shop/ud',{
+    $('.edit').editable('/console/allshop/edit',{
     tooltip : 'Click to edit...',
     callback : function(value, settings) {
     location.reload() ;
     }
     });
-    $('.edit_area').editable('/console/shop/ud' ,{
+    $('.edit_area').editable('/console/allshop/edit' ,{
     type : 'textarea',
     cancel : 'Cancel',
     submit : 'OK',

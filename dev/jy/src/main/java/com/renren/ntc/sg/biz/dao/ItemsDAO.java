@@ -87,4 +87,7 @@ public interface ItemsDAO {
     
     @SQL("select "+ FIELDS +" from  ##(:tableName)   where  shop_id=:2  order by id limit 0 , 20")
     public  List<Item> search(@SQLParam("tableName") String tableName, long shop_id);
+    
+    @SQL("update  ##(:tableName) set pic_url=:2 where id =:3")
+    public  int updateByItemId(@SQLParam("tableName") String tableName,String picUrl, long id);
 }
