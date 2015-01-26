@@ -1,7 +1,10 @@
 package com.renren.ntc.sg.controllers.sg;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.dao.SWPOrderDAO;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.AddressService;
@@ -22,6 +25,9 @@ public class AddressController {
     private static int DEFAULT_SHOP_ID = 1;
 
     @Autowired
+    public ShopDAO shopDAO;
+
+    @Autowired
     public AddressService addressService;
 
     @Autowired
@@ -38,13 +44,24 @@ public class AddressController {
         User u = ntcHostHolder.getUser();
         if ( null ==u ||  0 >= u.getId()){
             return "error";
-
         }
 
+        Shop shop = shopDAO.getShop(shop_id);
+
+        if(null == shop){
+            LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
+            shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
+        }
+        JSONObject data =  new JSONObject() ;
+        JSONObject shopob =  (JSONObject) JSON.toJSON(shop) ;
+        JSONObject  j=  new JSONObject() ;
+        data.put("shop",shopob);
         List<Address> ls  = addressService.getAddresses(u.getId());
-        inv.addModel("addressls",ls);
-        inv.addModel("origUrl",origUrl);
-        return "address" ;
+        data.put("addressls",(JSONArray)JSON.toJSON(ls));
+        data.put("origUrl",origUrl);
+        j.put("code",0);
+        j.put("data",data);
+        return "@" + j.toJSONString() ;
     }
 
     @Get("del")

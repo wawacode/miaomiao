@@ -1,0 +1,53 @@
+<html ng-app="miaomiao.shop">
+<head>
+    <meta charset="utf-8">
+    <title>喵喵-$shop.name</title>
+
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+    <link href="/css/ionic.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+
+    <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
+    <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
+    <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
+
+
+    <script src="/sg/js/services/app.js"></script>
+    <script src="/sg/js/services/directives.js"></script>
+    <script src="/sg/js/services/filters.js"></script>
+    <script src="/sg/js/services/services.js"></script>
+    <script src="/sg/js/services/shoppingCart.js"></script>
+
+    <script src="/sg/js/controllers/ShopController.js"></script>
+    <script src="/sg/js/controllers/SearchController.js"></script>
+    <script src="/sg/js/controllers/CheckoutController.js"></script>
+    <script src="/sg/js/controllers/AddressListController.js"></script>
+    <script src="/sg/js/controllers/AddAddressController.js"></script>
+    <script src="/sg/js/controllers/ShowProductDetailController.js"></script>
+    <script src="/sg/js/controllers/MyOrdersController.js"></script>
+    <script src="/sg/js/controllers/ShoppingCartController.js"></script>
+    <script src="/sg/js/controllers/OrderSuccessCtroller.js"></script>
+    <script src="/sg/js/controllers/UserAddAddressController.js"></script>
+    <script src="/sg/js/controllers/UserAddressListController.js"></script>
+
+
+</head>
+<body>
+
+<ion-nav-bar class="bar-dark">
+    <ion-nav-back-button class="button-dark button-clear">
+        <i class="ion-arrow-left-c light"></i>
+    </ion-nav-back-button>
+</ion-nav-bar>
+
+<ion-nav-view>
+
+    <input type="hidden" value="$shop.id" name="shop_id" ng-model="shopId" ng-init="shop.id='$shop.id'">
+    <input type="hidden" value="$shop.name" name="shop_name" ng-model="shop.name" ng-init="shop.name='$shop.name'">
+
+</ion-nav-view>
+
+</body>
+</html>

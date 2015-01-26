@@ -1,0 +1,15 @@
+<div class="shoppingCartListContent">
+    <div class="shop-cart-list">
+        <ul style="margin: 0.0em; padding:0px 9px;" class="">
+            <div style="border-bottom: solid 1px #F54447;">
+                <div class="clearShoppingCart" style="" ng-click="clearShoppingCart()">
+                    <span><img src="/images/trash-64.png" class="base-icon-empty-cart"><span style="float: right;padding-top: 12px;">清空购物车</span></span>
+                </div>
+            </div>
+        </ul>
+        <ul style="margin: 0.0em; padding:0px 9px" class="js-shop-cart-list">
+            <li ng-repeat="item in info.shoppingCartItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.sg;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Item;
@@ -49,9 +50,17 @@ public class ShopController {
         }
         //获取 热门分类
         List<Item> itemls = itemsDAO.hot(SUtils.generTableName(shop_id),shop_id,0,10);
-        inv.addModel("items", itemls);
-        return "hot";
+        JSONObject jb =  new JSONObject() ;
+        JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
+        JSONObject data =  new JSONObject() ;
+        data.put("shop",shopob);
+        data.put("items", itemls);
+        jb.put("data",data);
+        jb.put("code",0);
+        return "@" + jb.toJSONString();
     }
+
+
 
     @Get("shopList")
     public String getlist (Invocation inv,@Param("city") String city ,@Param("district") String district ,
@@ -66,7 +75,7 @@ public class ShopController {
         //获取 热门分类
         List<Shop> shops = shopDAO.getAuditedShops(from, offset);
 
-        forV(shops) ;
+        SUtils.forV(shops) ;
         inv.addModel("shops", shops);
 
         JSONObject jb =  new JSONObject() ;
@@ -75,21 +84,16 @@ public class ShopController {
             JSONObject it = (JSONObject) JSONObject.toJSON(s);
             jarr.add(it);
         }
+
+        JSONObject data =  new JSONObject() ;
+        data.put("shop",jarr);
+
+        jb.put("data",data);
         jb.put("code",0);
-        jb.put("data",jarr);
         return "@" + jb.toJSONString() ;
     }
 
-    private void forV(List<Shop> shops) {
-        long time = System.currentTimeMillis();
-        for (Shop s : shops){
-            if(SUtils.online(time,s)){
-                s.setStatus4V("营业中");
-            }else {
-                s.setStatus4V("打烊了");
-            }
-        }
-    }
+
 
     @Get("")
     public String index (Invocation inv,@Param("shop_id") long shop_id){
@@ -103,6 +107,47 @@ public class ShopController {
              LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
               shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
         }
+//        List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
+//        List<ShopCategory4v> shopCategoryls =  new ArrayList< ShopCategory4v >() ;
+//        for (ShopCategory category : categoryls)  {
+//            ShopCategory4v s  =  new ShopCategory4v();
+//            s.setName(category.getName());
+//            s.setCategory_id(category.getCategory_id());
+//            List<Item> itemls = itemsDAO.getItems(SUtils.generTableName(shop_id),shop_id,category.getCategory_id(),0,10);
+//            s.setItemls(itemls);
+//            shopCategoryls.add(s);
+//        }
+//
+//        inv.addModel("categoryls",shopCategoryls);
+
+        SUtils.forV(shop);
+
+        JSONObject jb =  new JSONObject() ;
+        JSONObject shopJson = (JSONObject) JSONObject.toJSON(shop);
+        JSONObject data =  new JSONObject() ;
+        data.put("shop",shopJson);
+
+        jb.put("data",data);
+        jb.put("code",0);
+
+        return "@" + jb.toJSONString() ;
+//        inv.addModel("shop",shop);
+//        return "shop" ;
+    }
+
+    @Get("category/get")
+    @Post("category/get")
+    public String category (Invocation inv,@Param("shop_id") long shop_id){
+
+        if (0  >= shop_id){
+            shop_id = Constants.DEFAULT_SHOP ;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+
+        if(null == shop){
+            LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
+            shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
+        }
         List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
         List<ShopCategory4v> shopCategoryls =  new ArrayList< ShopCategory4v >() ;
         for (ShopCategory category : categoryls)  {
@@ -113,11 +158,18 @@ public class ShopController {
             s.setItemls(itemls);
             shopCategoryls.add(s);
         }
+        JSONObject jb =  new JSONObject() ;
+        JSONObject data =  new JSONObject() ;
+        JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
+        JSONArray  jarr  = (JSONArray)JSON.toJSON(shopCategoryls);
 
-        inv.addModel("categoryls",shopCategoryls);
-        inv.addModel("shop",shop);
-        return "shop" ;
-        }
+        data.put("shop",shopob);
+        data.put("categoryls", jarr) ;
+        jb.put("code",0);
+        jb.put("data",data);
+        return "@" + jb.toJSONString() ;
+    }
+
 
     @Get("getitems")
     @Post("getitems")
@@ -158,8 +210,13 @@ public class ShopController {
             it.put("shop_id" ,i.getShop_id()) ;
             jarr.add(it);
         }
+        JSONObject data =  new JSONObject() ;
+        JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
+
+        data.put("shop",shopob);
+        data.put("items", jarr) ;
         jb.put("code",0);
-        jb.put("data",jarr);
+        jb.put("data",data);
         return "@" + jb.toJSONString() ;
     }
 

@@ -23,9 +23,9 @@ public class Shop {
     private  String tel = "";
     private  String  shop_url  = "";
 
-    private int  status = 0 ;
+    private int status = 0;
+    private int base_price = 2000;
 
-    private int  base_price = 0 ;
     private String  status4V = "" ;
     private Date open_time ;
     private Date close_time ;
@@ -33,6 +33,7 @@ public class Shop {
     private  Date  updatetime;
     private  String  owner_phone   = "";
     private  String  head_url   = "";
+
 
 
     public int getStatus() {

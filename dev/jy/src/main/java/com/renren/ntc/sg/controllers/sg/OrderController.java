@@ -90,14 +90,14 @@ public class OrderController {
 
         if (null == shop) {
             LoggerUtils.getInstance().log(String.format("can't find shop  %d  ", shop_id));
-            return "error";
+            return "@" + Constants.PARATERERROR;
         }
 
         if (address_id == 0) {
             Address add = new Address();
             if (StringUtils.isBlank(phone) || StringUtils.isBlank(address)) {
                 inv.addModel("msg", " phone or adderes is null");
-                return "error";
+                return "@" + Constants.PARATERERROR;
             }
             add.setPhone(phone);
             add.setAddress(address);
@@ -110,7 +110,7 @@ public class OrderController {
 
         if (StringUtils.isBlank(items)) {
             LoggerUtils.getInstance().log(String.format("can't find shop  %d  items %s", shop_id, items));
-            return "error";
+            return "@" + Constants.PARATERERROR;
         }
         inv.addModel("remarks", remarks);
         boolean ok = true;
@@ -120,7 +120,7 @@ public class OrderController {
         List<Item4V> itemls = new ArrayList<Item4V>();
         for (int i = 0; i < jbarr.size(); i++) {
             JSONObject jb = (JSONObject) jbarr.get(i);
-            long item_id = jb.getLong("item_id");
+            long item_id = jb.getLong("id");
             int count = jb.getInteger("count");
             Item item = itemsDAO.getItem(SUtils.generTableName(shop_id), shop_id, item_id);
             //计算库存是否足够
@@ -153,7 +153,7 @@ public class OrderController {
         inv.addModel("order_id", order_id);
         inv.addModel("itemls", itemls);
         if (!ok) {
-            return "order_confirm";
+            return "@" + Constants.LEAKERROR;
         }
 
 
@@ -180,48 +180,36 @@ public class OrderController {
         order.setUser_id(user_id);
         int re = orderDAO.insertUpdate(order, SUtils.generOrderTableName(shop_id));
         if (re != 1) {
-            return "error";
+            return "@" + Constants.UKERROR;
         }
         //发送短信通知
         try {
-            Order value = orderDAO.getOrder(order_id, SUtils.generOrderTableName(shop_id));
-            String v = null;
-            String url;
-            String mobile = "";
-            byte[] t = null;
-            String response = "用户下单";
-            long adr_id = value.getAddress_id();
-            Address adrs = addressDAO.getAddress(adr_id);
-            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id() ;
-            float  p = (float)value.getPrice() /100 ;
-            vv = vv.replaceAll("=", "").replaceAll("&", "");
-            String ro = response.replace("=", "").replace("&", "");
-            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
-            message = SUtils.span(message);
-            message = URLEncoder.encode(message, "utf-8");
-            // 发短信给  黄炜元
-//            url = SUtils.forURL(SMSURL, APPKEY, TID, "18612274066", message);
-//            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-//            t = SHttpClient.getURLData(url, "");
-//            response = SUtils.toString(t);
-//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-
-            // 发短信给  地推人员
-//            CatStaffCommit  catStaffCommit  = catStaffCommitDao.getbyShopid(shop_id);
-//            if (catStaffCommit != null ){
-//            phone = catStaffCommit.getPhone();
-//            url = SUtils.forURL(SMSURL, APPKEY, TID,phone , message);
-//            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-//            t = SHttpClient.getURLData(url, "");
-//            response = SUtils.toString(t);
-//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-//            }
+//            Order value = orderDAO.getOrder(order_id, SUtils.generOrderTableName(shop_id));
+//            String v = null;
+//            String url;
+//            String mobile = "";
+//            byte[] t = null;
+//            String response = "用户下单";
+//            long adr_id = value.getAddress_id();
+//            Address adrs = addressDAO.getAddress(adr_id);
+//            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id() ;
+//            float  p = (float)value.getPrice() /100 ;
+//            vv = vv.replaceAll("=", "").replaceAll("&", "");
+//            String ro = response.replace("=", "").replace("&", "");
+//            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
+//            message = SUtils.span(message);
+//            message = URLEncoder.encode(message, "utf-8");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        JSONObject response =  new JSONObject();
+        JSONObject data =  new JSONObject();
+        response.put("data", data);
+        response.put("code", 0);
+        return "@" +  Constants.DONE;
         // 发送短信通知
-        return "r:/sg/user/profile?shop_id=" + shop_id;
+//        return "r:/sg/user/profile?shop_id=" + shop_id;
     }
 
 

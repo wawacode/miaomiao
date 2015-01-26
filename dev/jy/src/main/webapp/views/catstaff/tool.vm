@@ -15,7 +15,7 @@
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
     <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
 
-    <script src="/sg/js/tool.js"></script>
+    <script src="/sg/js/backup/tool.js"></script>
 
 </head>
 
@@ -113,6 +113,20 @@
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店铺电话:</span>
                         <input type="text" ng-model="info.shop_tel" required>
+                    </label>
+                    <label class="item">
+                        <div class="list">
+                            <span class="input-label"><span class="necessary">*</span>营业时间:</span>
+                            <label class="item item-input">
+                                <span class="input-label"><span class="necessary">*</span>开始时间:</span>
+                                <input type="text" ng-model="info.shop_openTime" placeholder="" required>
+                            </label>
+                            <label class="item item-input">
+                                <span class="input-label"><span class="necessary">*</span>结束时间:</span>
+                                <input type="text" ng-model="info.shop_CloseTime" required>
+                            </label>
+                        </div>
+
                     </label>
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店长电话:</span>
@@ -213,9 +227,8 @@
     <ion-view view-title="新店开好了~">
         <ion-content padding="true">
             <div ng-show="!newShopURL">
-                <p>创建地铺出错啦,请联系管理员:</p>
-                    {{newShopStatus}}
-                </p>
+                <p>创建地铺出错啦,请联系管理员:{{newShopStatus}}</p>
+
             </div>
             <div ng-show="newShopURL">
                 <p>店铺已经为您准备妥当,请访问:</p>

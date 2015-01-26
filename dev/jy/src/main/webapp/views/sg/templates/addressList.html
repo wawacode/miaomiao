@@ -1,0 +1,52 @@
+<ion-view>
+
+    <ion-nav-bar class="bar-dark">
+
+        <ion-nav-back-button class="button-dark button-clear">
+            <i class="ion-chevron-left light">&nbsp;返回</i>
+        </ion-nav-back-button>
+
+        <ion-nav-title>
+            选择送货地址
+        </ion-nav-title>
+
+    </ion-nav-bar>
+
+    <ion-content padding="false"
+                 has-tabs="false"
+                 has-header="false">
+
+        <div class="" style="overflow: hidden;">
+            <div class="">
+                <div class="addressListSelection">
+                    <div class="addressItem addressCandidate" ng-class="{'addressSelected': addr.isDefault ,'addressUnselected':  !addr.isDefault}"
+                         ng-repeat="addr in addressls"
+                            ng-click="setDefaultAddress(addr)">
+
+                        <div class="addressAndBadge" style="">
+                            <div class="addressItem-address"><span
+                                    class="addressTitle">收货地址:</span><span
+                                    class="addressAddrValue">{{addr.address}}</span>
+                            </div>
+                            <div class="addressItem-phone"><span
+                                    class="addressTitle">联系电话:</span><span
+                                    class="addressPhoneValue">{{addr.phone}}</span>
+                            </div>
+                        </div>
+                        <div class="addressItem-bage">
+                            <div class="swithDefaultAddress">
+                                <span><img src="/images/check-64.png" class="base-icon-checked"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;padding-top: 30px;display: inline-block;width: 100%;" ng-show="addressls">
+                        <div class="addressButton useNewAddress" ng-click="goToAddNewAddress()">使用其他地址</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ion-content>
+
+</ion-view>

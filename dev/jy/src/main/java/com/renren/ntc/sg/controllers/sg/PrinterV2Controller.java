@@ -139,24 +139,25 @@ public class PrinterV2Controller {
 
             if (r == 1) {
                 try {
-                    if ( null != shop ){
-                    Order value = ordersDAO.getOrder(orderId,SUtils.generOrderTableName(dev.getShop_id()));
-                    String v = null;
-                    String url;
-                    String mobile = "";
-                    byte[] t = null;
-                    String vv = value.getOrder_id() ;
-                    vv = vv.replaceAll("=", "").replaceAll("&", "");
-                    String message = "#order_id#=" + vv + "&#shop_name#="+shop.getName() + "&#phone#="+ shop.getTel();
-                    message = URLEncoder.encode(message,"utf-8");
-                    long adr_id =  value.getAddress_id();
-                    Address adrs  = addressDAO.getAddress(adr_id);
-                    url = forURL(SMSURL, APPKEY, USER_TID, adrs.getPhone().trim(), message);
-                    System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-                    t = SHttpClient.getURLData(url, "");
-                    String  response = SUtils.toString(t);
-                    System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-                    }
+//                    if ( null != shop ){
+//                    Order value = ordersDAO.getOrder(orderId,SUtils.generOrderTableName(dev.getShop_id()));
+//                    String v = null;
+//                    String url;
+//                    String mobile = "";
+//                    byte[] t = null;
+//                    String vv = value.getOrder_id() ;
+//                    vv = vv.replaceAll("=", "").replaceAll("&", "");
+//                    String message = "#order_id#=" + vv + "&#shop_name#="+shop.getName() + "&#phone#="+ shop.getTel();
+//                    message = URLEncoder.encode(message,"utf-8");
+//                    long adr_id =  value.getAddress_id();
+//                    Address adrs  = addressDAO.getAddress(adr_id);
+//                    url = forURL(SMSURL, APPKEY, USER_TID, adrs.getPhone().trim(), message);
+//                    System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+//                    t = SHttpClient.getURLData(url, "");
+//                    String  response = SUtils.toString(t);
+//                    System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+//                    }
+
                  } catch (Throwable e) {
                     e.printStackTrace();
                 }
@@ -170,6 +171,7 @@ public class PrinterV2Controller {
 
         //发短信通知
         try {
+
             Order value = ordersDAO.getOrder(orderId,SUtils.generOrderTableName(dev.getShop_id()));
             String v = null;
             String url;
@@ -186,37 +188,27 @@ public class PrinterV2Controller {
             message = SUtils.span(message);
             message = URLEncoder.encode(message,"utf-8");
             //短信通知 黄炜元  朱允铭
-//            url = forURL(SMSURL, APPKEY, TID, "18612274066", message);
-//            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-//            t = SHttpClient.getURLData(url, "");
-//            response = SUtils.toString(t);
-//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-//            url = forURL(SMSURL, APPKEY, TID, "18600326217", message);
-//            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-//            t = SHttpClient.getURLData(url, "");
-//            response = SUtils.toString(t);
-//            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
 
-            //短信通知 地推人员
-            CatStaffCommit  catStaffCommit  = catStaffCommitDao.getbyShopid(dev.getShop_id());
-            if (catStaffCommit != null ){
-                String phone =catStaffCommit.getPhone();
-                url = forURL(SMSURL, APPKEY, TID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                response = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-            }
-
-            //短信通知 老板
-            if (shop != null ){
-                String phone = shop.getOwner_phone();
-                url = forURL(SMSURL, APPKEY, TID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                response = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-            }
+//            //短信通知 地推人员
+//            CatStaffCommit  catStaffCommit  = catStaffCommitDao.getbyShopid(dev.getShop_id());
+//            if (catStaffCommit != null ){
+//                String phone =catStaffCommit.getPhone();
+//                url = forURL(SMSURL, APPKEY, TID, phone, message);
+//                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+//                t = SHttpClient.getURLData(url, "");
+//                response = SUtils.toString(t);
+//                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+//            }
+//
+//            //短信通知 老板
+//            if (shop != null ){
+//                String phone = shop.getOwner_phone();
+//                url = forURL(SMSURL, APPKEY, TID, phone, message);
+//                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+//                t = SHttpClient.getURLData(url, "");
+//                response = SUtils.toString(t);
+//                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+//            }
         } catch (Throwable e) {
             e.printStackTrace();
         }
