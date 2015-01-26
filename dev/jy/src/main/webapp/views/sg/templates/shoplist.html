@@ -6,7 +6,7 @@
             <input type="search" placeholder="请输入地址例如,五道口" ng-model="shop_data.searchQuery"
                    ng-focus="startSearch()" ng-change='getSuggestions(shop_data.searchQuery,$event)' ng-keyup="$event.keyCode == 13 && performSearch(shop_data.searchQuery,$event)" style="color: #7a7a7a">
             <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"
-               ng-click="clearSearch()"></i>
+               ng-click="clearSearch()" ng-show="shop_info.startSearch"></i>
         </div>
     </div>
 </div>

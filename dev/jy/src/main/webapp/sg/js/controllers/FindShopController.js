@@ -23,6 +23,7 @@ angular.module('miaomiao.shop').
 
         $scope.clearSearch = function () {
             $scope.shop_data.searchQuery = '';
+            $scope.shop_info.startSearch = false;
             hideSearchSuggestions();
         };
 
@@ -44,6 +45,7 @@ angular.module('miaomiao.shop').
         }
 
         $scope.startSearch = function () {
+            $scope.shop_info.startSearch = true;
             showSearchSuggestions();
         };
 
@@ -119,6 +121,7 @@ angular.module('miaomiao.shop').
 
             $timeout(function () {
                 $scope.shop_info.locationMessage = KEY;
+                $scope.shop_info.startSearch = false;
             });
 
             $scope.LoadingMessage = '正在搜索' + KEY + '附近的店...';
