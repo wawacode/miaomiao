@@ -165,7 +165,9 @@ angular.module('miaomiao.shop').
 
                 if (position) {
 
-                    $scope.shop_info.locationMessage = "定位成功,正在获取地址...";
+                    $timeout(function () {
+                        $scope.shop_info.locationMessage = "定位成功,正在获取地址...";
+                    });
 
                     localStorageService.set('MMMETA_location_pos_ready', 1);
                     localStorageService.set('MMMETA_location_pos_data',
@@ -174,7 +176,9 @@ angular.module('miaomiao.shop').
                     updateUIWhenPositionDataReady();
 
                 } else {
-                    $scope.shop_info.locationMessage = "定位失败！";
+                    $timeout(function () {
+                        $scope.shop_info.locationMessage = "定位失败！";
+                    });
                 }
             }
 
@@ -182,7 +186,7 @@ angular.module('miaomiao.shop').
                 $ionicLoading.hide();
                 $timeout(function () {
                     $scope.shop_info.locationMessage = "定位失败！";
-                })
+                });
             }
 
             if (navigator.geolocation) {

@@ -11,6 +11,17 @@
     </div>
 </div>
 
+<div style="padding-top:3px;padding-bottom:3px;margin-bottom:10px;  background-color: #ededed;color: #999999;" ng-click="relocation()">
+
+    <div style="display: inline-block;padding-left: 10px">
+        {{shop_info.locationMessage}}
+    </div>
+    <div style="display: inline-block;float: right;padding-right: 15px;">
+        重新定位 <i class="icon ion-ios7-location-outline" style="font-size: 18px"></i>
+    </div>
+
+</div>
+
 <div class="list" ng-show="shop_info.showAddressSuggestion">
     <div class="item-hint">
         地址列表
@@ -27,6 +38,19 @@
     </div>
 </div>
 
+<div class="list" ng-show="shop_info.showShopList">
+    <div class="item-hint">
+        附近的便利店
+    </div>
+    <div ng-show="!shop_items.length" style="color: darkgray;text-align: center;font-size: 12px;padding-top: 10px">
+        对不起,小喵还没覆盖到您所在的区域呢~
+    </div>
+    <div class="item" ng-repeat="item in shop_items"
+         ng-click="goToShop(item)" ng-include = "'shop-item.html'">
+
+    </div>
+</div>
+
 <div class="list" ng-if="shop_info.showShopHistory" style="margin-bottom: 5px">
 
     <div class="item-hint" ng-show="shop_history.length">
@@ -34,19 +58,6 @@
     </div>
     <div class="item-shop-history" ng-repeat="item in shop_history" ng-click="goToShop(item)" style="">
         {{item.name}}
-    </div>
-</div>
-
-<div class="list" ng-show="shop_info.showShopList">
-    <div class="item-hint">
-        附近的便利店
-    </div>
-    <div ng-show="!shop_items.length" style="color: darkgray;text-align: center;font-size: 12px;padding-top: 10px">
-        没有结果
-    </div>
-    <div class="item" ng-repeat="item in shop_items"
-         ng-click="goToShop(item)" ng-include = "'shop-item.html'">
-
     </div>
 </div>
 
