@@ -1,7 +1,7 @@
 angular.module('miaomiao.shop')
     .controller('ShoppingCartCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,ShoppingCart) {
 
-        $scope.shoppingCartItems = ShoppingCart.getAllItems();
+        $scope.info.shoppingCartItems = ShoppingCart.getAllItems();
 
         $scope.selectItem = function (item) {
 
@@ -23,13 +23,13 @@ angular.module('miaomiao.shop')
         }
 
         $scope.clearShoppingCart = function(){
-            $scope.shoppingCartItems = [];
+            $scope.info.shoppingCartItems = [];
             ShoppingCart.clearAll();
         }
 
         ShoppingCart.onItemChangeEventInProductList($scope, function (message) {
 
-            $scope.shoppingCartItems = ShoppingCart.getAllItems();
+            $scope.info.shoppingCartItems = ShoppingCart.getAllItems();
 
         });
     });

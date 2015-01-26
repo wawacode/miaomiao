@@ -121,12 +121,12 @@
         </div>
         <div class="footer-container-right base-cart-prepare js-cart-checkout" style="">
             <button class="sidebar-cart-checkout js-cart-checkout"
-                    ng-class="{'sidebar-cart-checkout-ready': cartReadyToShip }" ng-click="checkout()">
-                <span class=" base-font js-checkout-hit">{{checkoutHintMessage}}</span>
+                    ng-class="{'sidebar-cart-checkout-ready': info.cartReadyToShip }" ng-click="checkout()">
+                <span class=" base-font js-checkout-hit">{{info.checkoutHintMessage}}</span>
                         <span class="base-font"><br>
-                            总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{shoppingCartItems | getTotolCount}}</span> 件</span>
+                            总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{info.shoppingCartItems | getTotolCount}}</span> 件</span>
                 <span class="base-font rmbSpan">￥</span><span id="js-shop-total-price"
-                                                              class="js-shop-total-price base-font">{{shoppingCartItems | getTotolPrice}}</span>
+                                                              class="js-shop-total-price base-font">{{info.shoppingCartItems | getTotolPrice}}</span>
             </button>
         </div>
     </ion-footer-bar>
