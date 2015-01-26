@@ -66,10 +66,12 @@ public class ShopOrderReportDaliy {
 	  String to1 = "dev@lizi-inc.com";
 	  String to2 = "huangweiyuan@lizi-inc.com";
 	  String to3 = "luziyu@lizi-inc.com";
-	  String[] to = new String[3];
+	  String to4 = "zhuyunming@lizi-inc.com";
+	  String[] to = new String[4];
 	  to[0] = to1;
 	  to[1] = to2;
 	  to[2] = to3;
+	  to[3] = to4;
 	  mailSendServer.sendTextInfo(new MailSendInfo("喵喵每日订单详情",getHtmlInfo(shopOrderReports), to, new String[0]),false);
 	}
 	
