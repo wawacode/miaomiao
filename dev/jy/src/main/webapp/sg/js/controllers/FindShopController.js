@@ -105,6 +105,9 @@ angular.module('miaomiao.shop').
         };
 
         $scope.goToSearchAddress = function (item) {
+            $timeout(function () {
+                $scope.shop_info.locationMessage = item.title;
+            });
             $scope.performSearch(item.title);
         }
 
@@ -113,6 +116,10 @@ angular.module('miaomiao.shop').
             if ($event)$event.target.blur();
 
             var KEY = key || $scope.shop_data.searchQuery;
+
+            $timeout(function () {
+                $scope.shop_info.locationMessage = KEY;
+            });
 
             $scope.LoadingMessage = '正在搜索' + KEY + '附近的店...';
             $ionicLoading.show({

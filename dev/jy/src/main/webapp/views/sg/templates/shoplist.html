@@ -11,7 +11,8 @@
     </div>
 </div>
 
-<div style="padding-top:3px;padding-bottom:3px;margin-bottom:10px;  background-color: #ededed;color: #999999;" ng-click="relocation()">
+<div style="padding-top:3px;padding-bottom:3px;margin-bottom:10px;  background-color: #ededed;color: #999999;" ng-click="relocation()"
+        ng-hide="shop_info.showAddressSuggestion">
 
     <div style="display: inline-block;padding-left: 10px">
         {{shop_info.locationMessage}}
@@ -38,7 +39,7 @@
     </div>
 </div>
 
-<div class="list" ng-show="shop_info.showShopList">
+<div class="list" ng-hide="shop_info.showAddressSuggestion">
     <div class="item-hint">
         附近的便利店
     </div>
@@ -51,7 +52,7 @@
     </div>
 </div>
 
-<div class="list" ng-if="shop_info.showShopHistory" style="margin-bottom: 5px">
+<div class="list" ng-if="shop_info.showShopHistory" style="margin-bottom: 5px" ng-hide="shop_info.showAddressSuggestion">
 
     <div class="item-hint" ng-show="shop_history.length">
         历史位置
