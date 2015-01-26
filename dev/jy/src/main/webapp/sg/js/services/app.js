@@ -64,6 +64,12 @@ miaomiao.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'ProductCtrl'
 
             })
+            .state('goToShop', {
+                url: "/shop?shop_id",
+                templateUrl: '/views/sg/templates/productList.html',
+                controller: 'GoToShopCtrl'
+
+            })
             .state('search', {
                 url: '/search',
                 templateUrl: '/views/sg/templates/search.html',

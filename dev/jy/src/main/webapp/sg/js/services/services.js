@@ -91,6 +91,11 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
                 doGet('shop/shopList', 'from=' + from + '&offset=' + offset, success, fail);
 
             },
+            getShopInfo: function (shop_id, success, fail) {
+
+                doGet('shop', 'shop_id=' + shop_id , success, fail);
+
+            },
             getNearShopList: function (lat, lng, success, fail) {
 
                 doGet('near', 'lat=' + lat + '&lng=' + lng, success, fail);

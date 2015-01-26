@@ -119,9 +119,19 @@ public class ShopController {
 //        }
 //
 //        inv.addModel("categoryls",shopCategoryls);
-        inv.addModel("shop",shop);
-        return "shop" ;
-        }
+
+        JSONObject jb =  new JSONObject() ;
+        JSONObject shopJson = (JSONObject) JSONObject.toJSON(shop);
+        JSONObject data =  new JSONObject() ;
+        data.put("shop",shopJson);
+
+        jb.put("data",data);
+        jb.put("code",0);
+
+        return "@" + jb.toJSONString() ;
+//        inv.addModel("shop",shop);
+//        return "shop" ;
+    }
 
     @Get("category/get")
     @Post("category/get")
