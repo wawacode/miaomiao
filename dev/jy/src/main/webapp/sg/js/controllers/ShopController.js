@@ -299,7 +299,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         $timeout(function () {
             $scope.shop = shopInfo;
         });
-        
+
         httpClient.getShopInfo(shopInfo.id, function (data, status) {
             var code = data.code, dataDetail = data.data;
             if (dataDetail.shop && dataDetail.shop.status != 0) {

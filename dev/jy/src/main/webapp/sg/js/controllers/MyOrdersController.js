@@ -21,12 +21,14 @@ angular.module('miaomiao.shop')
             }
         }
 
+        $scope.shop = localStorageService.get('MMMETA_shop');
+
         $scope.info = {};
         $scope.info.hasOrder = true;
         $scope.info.hasAddress = true;
 
-        $scope.addressls = $sessionStorage.MMMETA_OrderAddresses;
-        $scope.orders = $sessionStorage.MMMETA_OrderOrders;
+        $scope.addressls = $sessionStorage.MMMETA_OrderAddresses || [];
+        $scope.orders = $sessionStorage.MMMETA_OrderOrders || [];
         transformOrderData($scope.orders);
 
         function reloadInfo(addr){
@@ -86,7 +88,7 @@ angular.module('miaomiao.shop')
         });
 
         $scope.$on("$ionicView.enter", function () {
-    //        reloadInfo();
+            reloadInfo();
         });
     });
 
