@@ -59,5 +59,10 @@ angular.module('miaomiao.shop')
             $state.go('myOrders', null, { reload: false });
 
         }
+
+        $scope.$on("$ionicView.enter", function () {
+            $scope.address.address = '';
+            $scope.address.phone = '';
+        });
     });
 
