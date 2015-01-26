@@ -1,17 +1,18 @@
 package com.renren.ntc.sg.biz.dao;
 
-import com.renren.ntc.sg.bean.Item;
-import com.renren.ntc.sg.bean.Shop;
+import java.util.List;
+
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
+import net.paoding.rose.jade.annotation.SQLParam;
 
-import java.util.List;
+import com.renren.ntc.sg.bean.Shop;
 
 @DAO(catalog = "ABC")
 public interface ShopDAO {
     static final String TABLE_NAME= "shop";
-    static final String FIELDS = "id, owner_user_id, name,open_time,close_time,shop_address,tel,owner_phone,head_url,shop_url,lng,lat,create_time" ;
+    static final String FIELDS = "id, owner_user_id, name,open_time,close_time,shop_address,tel,owner_phone,head_url,shop_url,lng,lat,create_time,audit" ;
     static final String INSERT_FIELDS = "owner_user_id,name,shop_address,tel,owner_phone,head_url,shop_url,lng,lat" ;
     static final String SHOP_NAME_FIELDS = "id,name";
 	@SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where  lat < :1 and lat > :2 and lng < :3 and lng > :4")
@@ -40,4 +41,7 @@ public interface ShopDAO {
     
     @SQL("select " +SHOP_NAME_FIELDS  + "  from "  + TABLE_NAME + " where audit = :1")
     public List<Shop> getAllShopsByAudit(int audit);
+    
+    @SQL("update " + TABLE_NAME + " set ##(:key) = :3  where id =:1")
+    public int update(long id, @SQLParam("key") String key, String value);
 }

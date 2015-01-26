@@ -68,6 +68,7 @@
                         <th>库存</th>
                         <th>零售价</th>
                         <th>图片</th>
+                        <th>上传本地图片操作</th>
                     </tr>
                     </thead>
                     #foreach($item in $itemls)
@@ -80,6 +81,16 @@
                         <td class="edit" id="e-${item.shop_id}-count-$item.id">$item.count</td>
                         <td class="edit" id="e-${item.shop_id}-price-$item.id">$item.price</td>
                         <td class="edit" id="e-${item.shop_id}-pic_url-$item.id"> #if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end</td>
+                    	<td>
+                    	<form class="form-horizontal" method="post"  enctype="multipart/form-data"  action="/console/shop/uploadPic">
+                    	<input name="shop_id" style="display:none" value="${item.shop_id}">
+                    	<input name="id" style="display:none" value="${item.id}">
+                    	<input name="serialNo" style="display:none" value="${item.serialNo}">
+                    	<input name="categoryId" style="display:none" value="${item.categoryId}">
+                    	<input type="file" id="${item.id}-inputfile" name="pic" onChange="fileChange(this);">
+                    	<button type="submit" class="form-add" data-id="${item.id}-inputfile" >添加</button>
+                    	</form>
+                    	</td>
                     	<td><button type="button" class="btn btn-danger" data-id="${item.id}" data-shopid="${item.shop_id}"><a>删除</a></button></td>
                     </tr>
                     #end
@@ -144,6 +155,31 @@
       $("#query_form").submit();
     }
     });
+    function fileChange(item) {
+            var ss = (item.value).split('.');
+            if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
+                $("#fileName").val(item.value);
+            } else {
+                var obj = document.getElementById("inputfile");
+               obj.outerHTML = obj.outerHTML;
+                $("#inputfile").val("");
+                alert("用户源配置文件格式错误");
+            }
+        }
+    $(".form-add").click(function(){
+		var result = confirm("是否确认提交"),
+		oThis = $(this);
+		if(result){
+			var pic = oThis.data('id');
+			var picVal =$('#'+ pic).val();
+			if(picVal == ''){
+			  alert("请上传图片");
+			  return false;
+			}
+			return true;
+		}
+		return false;
+	});
 </script>
 </body>
 </html>
