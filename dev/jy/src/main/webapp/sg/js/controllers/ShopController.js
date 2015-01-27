@@ -339,9 +339,5 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         }
     });
 
-    $scope.$on('$ionicView.beforeLeave', function(){
-        $ionicLoading.hide();
-    });
-
 });
 

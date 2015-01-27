@@ -234,8 +234,5 @@ angular.module('miaomiao.shop')
             updateShoppingCart();
             checkOrders();
         });
-        $scope.$on('$ionicView.beforeLeave', function(){
-            $ionicLoading.hide();
-        });
     });
 
