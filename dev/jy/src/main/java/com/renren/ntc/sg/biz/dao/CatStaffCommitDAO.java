@@ -28,7 +28,7 @@ CREATE TABLE `items` (
 @DAO(catalog = "ABC")
 public interface CatStaffCommitDAO {
     static final String TABLE_NAME= "catstaff_commit";
-    static final String FIELDS = "id,name ,phone,pwd ,shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,shop_info,create_time,update_time " ;
+    static final String FIELDS = "id,name ,phone,pwd ,shop_id,shop_info,shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,shop_info,create_time,update_time " ;
     static final String INSERT_FIELDS = "name ,phone,pwd ,shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng" ;
 
     @ReturnGeneratedKeys

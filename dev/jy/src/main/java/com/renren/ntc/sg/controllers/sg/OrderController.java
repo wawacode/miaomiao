@@ -182,26 +182,6 @@ public class OrderController {
         if (re != 1) {
             return "@" + Constants.UKERROR;
         }
-        //发送短信通知
-        try {
-//            Order value = orderDAO.getOrder(order_id, SUtils.generOrderTableName(shop_id));
-//            String v = null;
-//            String url;
-//            String mobile = "";
-//            byte[] t = null;
-//            String response = "用户下单";
-//            long adr_id = value.getAddress_id();
-//            Address adrs = addressDAO.getAddress(adr_id);
-//            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id() ;
-//            float  p = (float)value.getPrice() /100 ;
-//            vv = vv.replaceAll("=", "").replaceAll("&", "");
-//            String ro = response.replace("=", "").replace("&", "");
-//            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
-//            message = SUtils.span(message);
-//            message = URLEncoder.encode(message, "utf-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         JSONObject response =  new JSONObject();
         JSONObject data =  new JSONObject();
