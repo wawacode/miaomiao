@@ -332,6 +332,11 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         }
         fullyUpdateForProductList();
 
+        if(!$scope.currentDisplayItems || !$scope.currentDisplayItems.length){
+            $timeout(function () {
+                initShopData();
+            });
+        }
     });
 
 });

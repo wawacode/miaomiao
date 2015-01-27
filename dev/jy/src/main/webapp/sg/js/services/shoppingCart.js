@@ -123,12 +123,17 @@ angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 
 
             cartReadyToShip: function () {
 
-                return this.getTotalPrice() >= 20.0;
+                var shop = localStorageService.get('MMMETA_shop') || {},
+                    basePrice = shop.base_price || 20.0;
+
+                return this.getTotalPrice() >= basePrice/100.0;
             },
 
             cartNotReadyLeftPrice: function () {
+                var shop = localStorageService.get('MMMETA_shop') || {},
+                    basePrice = shop.base_price || 20.0;
 
-                 return Math.round((20.0 - this.getTotalPrice()) * 100) / 100;
+                 return Math.round((basePrice/100.0 - this.getTotalPrice()) * 100) / 100;
             },
 
             itemChangeEventInShoppingCart: function (item) {
