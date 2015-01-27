@@ -6,9 +6,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -147,6 +145,47 @@ public class WXHttpClient {
 
     }
 
+    public static void writeFile(String strUrl, String fileName) {
+        String dir = "d:\\tick\\";
+        if(new File(dir + fileName).exists()){
+            return ;
+        }
+        int bytesRead = 0;
+        URL url = null;
+        OutputStream os = null;
+        URLConnection is = null;
+        InputStream i = null ;
+        System.out.println("down load " + strUrl);
+        try {
+            url = new URL(strUrl);
+            is = url.openConnection();
+            is.setConnectTimeout(5000);
+            is.setReadTimeout(5000);
+            i = is.getInputStream();
+            File f = new File(dir);
+            if(!f.exists()){
+                f.mkdirs();
+            }
+            os = new FileOutputStream(dir + fileName);
+            bytesRead = 0;
+            byte[] buffer = new byte[8192];
+            while ((bytesRead = i.read(buffer, 0, 8192)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                os.close();
+                i.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     public static void main(String[] args) throws IOException {
          byte [] t = WXHttpClient.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
                 "grant_type=client_credential&appid=" + appId +"&secret=" + appKey);
@@ -158,30 +197,31 @@ public class WXHttpClient {
         }
         JSONObject ob =(JSONObject) JSONObject.parse(e);
 //        createMenu(ob.getString("access_token"));
-
+         //scene
+        for (int i =1 ; i <10000 ; i++) {
         String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
         String access_token = ob.getString("access_token");
         url = url.replace("{token}",access_token);
         JSONObject jb = new JSONObject() ;
-        jb.put("action_name","QR_LIMIT_STR_SCENE") ;
+        jb.put("action_name","QR_LIMIT_SCENE") ;
         JSONObject action_info = new JSONObject() ;
         JSONObject scene_str = new JSONObject() ;
-        scene_str.put("scene_str","18600326217") ;
+        scene_str.put("scene_id",i) ;
         action_info.put("scene",scene_str);
         jb.put("action_info",action_info) ;
         System.out.println(jb.toJSONString());
         t = WXHttpClient.sendPostRequest(url,jb.toJSONString() ) ;
-        e = new String(t);
-        System.out.println("rec data "+e);
 
-//        {"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "123"}}}
-//        String url = "https://api.weixin.qq.com/datacube/getusersummary?access_token={token}";
-//        url = url.replace("{token}",ob.getString("access_token")) ;
-//        JSONObject jb = new JSONObject() ;
-//        jb.put("begin_date","2015-01-19") ;
-//        jb.put("end_date","2015-01-20") ;
-//        t = WXHttpClient.sendPostRequest(url,jb.toJSONString() ) ;
-//        e = new String(t);
-//        System.out.println("rec data " + e);
+        if(null == t){
+            continue;
+        }
+        e = new String(t);
+            System.out.println(e);
+        JSONObject  ticket =(JSONObject) JSONObject.parse(e);
+        String tkt =    ticket.getString("ticket");
+           String TICKET = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={ticket}";
+           String  tkturl =  TICKET.replace("{ticket}",tkt);
+           writeFile(tkturl,i+".jpg");
+        }
     }
 }
