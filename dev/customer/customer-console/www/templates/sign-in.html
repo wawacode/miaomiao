@@ -1,0 +1,28 @@
+<ion-view view-title="喵喵商家管理工具">
+
+    <ion-content class="padding">
+        <div class="list">
+
+            <div class="item item-input" >
+                <span class="input-label"><span class="necessary">*</span>用户名</span>
+                <input type="text"  ng-model="user.name">
+            </div>
+            <div class="item item-input" >
+                <span class="input-label"><span class="necessary">*</span>密码:</span>
+                <input type="password" ng-model="user.password">
+            </div>
+        </div>
+        <div class="padding">
+            <button class="button button-block button-positive" ng-click="signIn(user)">
+                登陆
+            </button>
+            <p class="text-center assertive">
+                {{signStatasMessage}}
+            </p>
+            <p class="text-center">
+                <a href="#/forgot-password">需要帮助</a>
+            </p>
+
+        </div>
+    </ion-content>
+</ion-view>
