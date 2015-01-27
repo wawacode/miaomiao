@@ -1,0 +1,61 @@
+<ion-view>
+
+    <ion-nav-bar class="bar-dark">
+
+        <ion-nav-buttons side="left" class="button-dark">
+            <button class="button button-icon ion-ios7-home" ui-sref="productList" ng-click=""></button>
+        </ion-nav-buttons>
+
+        <ion-nav-title>
+            我的订单
+        </ion-nav-title>
+
+    </ion-nav-bar>
+
+    <ion-content padding="false"
+                 has-tabs="false"
+                 has-header="true"
+                 scroll="false">
+
+        <div class="order-list" style="" ng-show="info.hasOrder">
+
+
+            <div class="order-item" style="" ng-repeat=" order in orders">
+
+                <div style="display: inline-block;background-color: #EFF0F4;width: 100%;">
+                    <div class="orderDate">{{order.create_time}}</div>
+                    <div class="orderStatus">
+                        {{order.status4V}}
+                    </div>
+                </div>
+
+                <div style="padding: 15px 9px 15px;border-bottom: solid 1px lightgray;">
+                    <div>收货地址: {{order.address}}</div>
+                    <div>联系电话: {{order.phone}}</div>
+                    <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
+                </div>
+
+                <div style="padding: 15px 9px 15px;" class="order-snapshots">
+                    <div class="orderSnapshot" ng-repeat="orderItem in order.items">
+                        <div class="orderSnapshotItem">
+                            {{orderItem.name}}
+                        </div>
+
+                        <div class="orderSnapshotCount">
+                            <span>￥</span> {{(orderItem.price || 0)/100.0}}<span
+                                class="orderSnapshotCountNumber"> X {{orderItem.count}} </span>
+                        </div>
+
+                    </div>
+                    <div class="orderSnapshotTotal">
+                        <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
+                        <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>
