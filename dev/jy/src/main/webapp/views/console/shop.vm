@@ -92,7 +92,7 @@
                     	<input name="serialNo" style="display:none" value="${item.serialNo}">
                     	<input name="categoryId" style="display:none" value="${item.categoryId}">
                     	<input type="file" id="${item.id}-inputfile" name="pic" onChange="fileChange(this);">
-                    	<button type="submit" class="form-add" data-id="${item.id}-inputfile" >添加</button>
+                    	<button type="submit" class="form-add" data-id="${item.id}-inputfile" >提交</button>
                     	</form>
                     	</td>
                     	<td><button type="button" class="btn btn-danger" data-id="${item.id}" data-shopid="${item.shop_id}"><a>删除</a></button></td>
