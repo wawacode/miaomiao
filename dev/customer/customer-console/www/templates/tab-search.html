@@ -1,8 +1,12 @@
 <ion-view>
-  <ion-nav-title>
-    <!-- this view supplied its own ion-header-bar to be used instead of the app's default ion-nav-bar -->
-    <fp-search-bar search-model="searchTerm" focused="focused" submit="search(searchTerm)"></fp-search-bar>
-  </ion-nav-title>
+    <ion-nav-bar class="bar-light">
+        <ion-nav-title>
+            <!-- this view supplied its own ion-header-bar to be used instead of the app's default ion-nav-bar -->
+            <fp-search-bar search-model="searchTerm" focused="focused" submit="search(searchTerm)"></fp-search-bar>
+        </ion-nav-title>
+    </ion-nav-bar>
+
+
   <ion-content class="has-header">
     <ion-list>
       <ion-item class="post-list"
@@ -29,7 +33,7 @@
       </ion-item>
 
       <div class="spinner ng-hide" ng-show="searching" ng-style="{'top':getHalfHeight()+'px'}" >
-        <i class="icon ion-loading-d energized"></i>
+        <i class="icon ion-loading-d balanced"></i>
       </div>
     </ion-list>
   </ion-content>

@@ -15,9 +15,9 @@ angular.module('miaomiao.console.directives', [])
     },
     template:function(){
       if(ionic.Platform.isAndroid()){
-        return '<form class="bar bar-header bar-energized item-input-inset" ng-submit="submit()">' +
+        return '<form class="bar bar-header bar-balanced item-input-inset" ng-submit="submit()">' +
           '<div class="item-input-wrapper light-bg" ng-class="alignment" ng-click="focus()">' +
-          '<i class="icon ion-android-search placeholder-icon"></i>' +
+          '<i class="icon ion-android-search placeholder-icon assertive"></i>' +
           '<input type="search"' +
           'id="searchInput"' +
           'placeholder="Search HN"' +
@@ -28,9 +28,9 @@ angular.module('miaomiao.console.directives', [])
           '<i class="icon ion-ios7-close dark" ng-show="searchModel.length" ng-click="clear()"></i>' +
           '</form>'
       }
-      return '<form class="bar bar-header bar-energized item-input-inset" ng-submit="submit()">' +
-        '<div class="item-input-wrapper energized-bg" ng-class="alignment" ng-click="focus()">' +
-        '<i class="icon ion-ios7-search placeholder-icon"></i>' +
+      return '<form class="bar bar-header bar-balanced item-input-inset" ng-submit="submit()">' +
+        '<div class="item-input-wrapper light-bg" ng-class="alignment" ng-click="focus()">' +
+        '<i class="icon ion-ios7-search placeholder-icon assertive"></i>' +
         '<input type="search"' +
         'id="searchInput"' +
         'placeholder="Search"' +
