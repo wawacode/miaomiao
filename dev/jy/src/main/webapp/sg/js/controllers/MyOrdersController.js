@@ -90,5 +90,9 @@ angular.module('miaomiao.shop')
         $scope.$on("$ionicView.enter", function () {
             reloadInfo();
         });
+
+        $scope.$on('$ionicView.beforeLeave', function(){
+            $ionicLoading.hide();
+        });
     });
 
