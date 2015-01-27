@@ -43,4 +43,9 @@ public class Constants {
     public static final String COOKIE_KEY_USER ="cat_p" ;
     public static final String COOKIE_KEY_REGISTUSER ="cat_reg_p" ;
     public static final Object DOMAIN_URL = "";
+
+    public static String SMSURL = "http://v.juhe.cn/sms/send";
+    public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
+    public static String TID = "777";
+    public static String USER_TID = "791";
 }
