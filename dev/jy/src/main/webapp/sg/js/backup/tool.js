@@ -65,10 +65,17 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                         $scope.signStatasMessage = '无法验证您的身份，请联系管理员';
                         return;
                     }
+                    // update online shop url
 
+
+                    var customInfo = data.data;
+                    for (var item_idx = 0; item_idx < customInfo.length; item_idx++) {
+                        var item = customInfo[item_idx];
+                        item.shop_online_url = location.origin +'/sg/loading#/shop?shop_id=' + item.shop_id;
+                    }
                     // save code
                     localStorageService.set('user', $scope.user);
-                    localStorageService.set('customersInfo', data.data);
+                    localStorageService.set('customersInfo', customInfo);
 
                     $state.go('tabs.my');
 
@@ -225,7 +232,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
 
         $scope.shopInfo = localStorageService.get('shopInfo') || {};
 
-        $scope.newShopURL =  $scope.shopInfo.url;
+        $scope.newShopURL =  location.origin + $scope.shopInfo.url;
         $scope.newShopStatus =  $scope.shopInfo.status;
 
 

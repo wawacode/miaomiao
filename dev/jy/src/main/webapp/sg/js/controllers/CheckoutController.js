@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService,MMUtils) {
+    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService, MMUtils) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.shop = localStorageService.get('MMMETA_shop');
@@ -10,7 +10,7 @@ angular.module('miaomiao.shop')
         $scope.info.newOrderPhone = '';
         $scope.info.showAddNewAddress = false;
 
-        function checkOrders(){
+        function checkOrders() {
 
             $scope.info.remarks = "";
             $scope.LoadingMessage = '正在核对,请稍候...';
@@ -98,14 +98,14 @@ angular.module('miaomiao.shop')
 
         $scope.confirmCheckout = function () {
 
-            if(!$scope.cartReadyToShip)return;
+            if (!$scope.cartReadyToShip)return;
 
             if ($scope.addressls && $scope.addressls.length) {
                 $scope.info.address = $scope.addressls[0];
             } else {
                 $scope.info.address = {'id': '', 'address': $scope.info.newOrderAddress, 'phone': $scope.info.newOrderPhone};
 
-                if (!$scope.info.newOrderAddress || !$scope.info.newOrderPhone || ! MMUtils.isValidTelNumber($scope.info.newOrderPhone)) {
+                if (!$scope.info.newOrderAddress || !$scope.info.newOrderPhone || !MMUtils.isValidTelNumber($scope.info.newOrderPhone)) {
                     $ionicPopup.alert({
                         title: '请填写正确的地址电话',
                         template: ''
@@ -114,7 +114,7 @@ angular.module('miaomiao.shop')
                 }
 
                 $scope.addressls = $scope.addressls || [];
-                $scope.addressls[0] = $scope.info.address ;
+                $scope.addressls[0] = $scope.info.address;
                 $scope.info.showAddNewAddress = false;
             }
 
@@ -168,13 +168,13 @@ angular.module('miaomiao.shop')
         function updateDefaultOrderAddress(addr) {
 
 
-            if(addr){
+            if (addr) {
 
                 $scope.addressls = $scope.addressls || [];
                 $scope.addressls[0] = addr;
                 $scope.info.address = $scope.addressls[0];
 
-            }else{
+            } else {
                 // update from server
                 $scope.LoadingMessage = '正在更新地址...';
                 $ionicLoading.show({
@@ -210,11 +210,12 @@ angular.module('miaomiao.shop')
         }
 
 
-        function updateShoppingCart(){
-
-            $scope.shoppingCartItems = ShoppingCart.getAllItems();
-            $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
-            $scope.checkoutHintMessage = $scope.cartReadyToShip? "货到付款" : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
+        function updateShoppingCart() {
+            $timeout(function () {
+                $scope.shoppingCartItems = ShoppingCart.getAllItems();
+                $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
+                $scope.checkoutHintMessage = $scope.cartReadyToShip ? "货到付款" : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
+            });
 
         }
 
@@ -226,7 +227,7 @@ angular.module('miaomiao.shop')
             updateDefaultOrderAddress(message.item);
         });
 
-        OrderService.onOrderChangeEventSuccess($scope,function(){
+        OrderService.onOrderChangeEventSuccess($scope, function () {
             updateShoppingCart();
         });
 
@@ -234,6 +235,5 @@ angular.module('miaomiao.shop')
             updateShoppingCart();
             checkOrders();
         });
-
     });
 
