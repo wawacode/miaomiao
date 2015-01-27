@@ -14,12 +14,10 @@
 
     <ion-content padding="false"
                  has-tabs="false"
-                 has-header="false"
-                 scroll="false">
+                 has-header="true"
+                 scroll="true">
 
-    <div class="mainContainer">
-
-        <div class="shop-container">
+        <div class="shop-container" style="overflow: scroll">
 
             <div class="" style="overflow: hidden" ng-show="info.hasAddress && addressls && addressls[0]">
                 <div class="addressItem addressDefault addressSelected" ng-click="goToAddressList()">
@@ -110,8 +108,6 @@
 
                 </div>
             </div>
-
-        </div>
 
     </div>
     </ion-content>
