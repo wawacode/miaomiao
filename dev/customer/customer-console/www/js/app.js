@@ -80,7 +80,7 @@ angular.module('miaomiao.console', [
                 navigator.splashscreen.hide();
             }
 
-            /* $ionicUpdate.initialize(ionic.Config.app_id);
+            $ionicUpdate.initialize(ionic.Config.app_id);
              $ionicUpdate.check().then(function (response) {
              console.log('got a response', response);
              // response will be true/false
@@ -116,7 +116,7 @@ angular.module('miaomiao.console', [
              }, function (error) {
              console.log('error checking for update');
              // Error checking for updates
-             })*/
+             })
         });
     })
 

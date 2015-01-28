@@ -26,8 +26,10 @@
     overflow: hidden;
     position: relative;
     width: 100%;
-    padding: 0;
-    margin: 0;
+}
+
+.shop-categray-list {
+    background-color: #f8f8f8;
 }
 
 .shop-categray-selected {
@@ -75,6 +77,18 @@
     color: #F54447;
 }
 
+
+.shop-product-list {
+    background-color: #ffffff;
+}
+
+.shop-product-categray-list {
+    margin: 0.0em;
+    padding: 0px 9px 9px 12px;
+    padding-left: 5px;
+}
+
+
 .prod_icon {
     position: relative;
     width: 70px;
@@ -105,11 +119,9 @@
 .product-item {
     display: list-item;
     border-bottom: 1px solid #E0E3EF;
-    padding: 9px 9px 9px 9px;
+    padding: 9px 0px 9px 0px;
     overflow: hidden;
-    margin: 0;
     position: relative;
-    width: 100%;
 }
 
 .product-title {
@@ -139,11 +151,9 @@
 
 .product_action {
     position: absolute;
-    bottom: 0;
     right: 0;
     text-align: center;
     display: inline-block;
-    float: right;
     margin-right: 6px;
 }
 
@@ -153,7 +163,6 @@
     height: 35px;
     float: left;
     font-size: 20px;
-    border: solid 1px lightgray;
     cursor: pointer;
 }
 
@@ -163,7 +172,6 @@
     float: left;
     height: 35px;
     font-size: 20px;
-    border: solid 1px lightgray;
     border-right: none;
     cursor: pointer;
     vertical-align: middle;
