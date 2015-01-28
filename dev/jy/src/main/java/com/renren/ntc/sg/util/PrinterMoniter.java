@@ -19,6 +19,7 @@ import com.renren.ntc.sg.service.SMSService;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.collections.CollectionUtils;
 
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class PrinterMoniter {
         //add to DB
         BasicDBObject foj = new BasicDBObject("msg", message);
         coll.update(query,foj);
-        smsService.send( message , tid , phone);
+        send( message , tid , phone);
     }
 
     private static boolean ofline(Date update_time) {
@@ -90,5 +91,23 @@ public class PrinterMoniter {
         return diff > (1000*60*5) ;
     }
 
-
+    public static  void send ( String msg, String tid ,String phone) {
+        //发送短信通知
+        try {
+            String v = null;
+            String url;
+            String mobile = "";
+            byte[] t = null;
+            String message = "#msg#=" + msg ;
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, tid, phone, message);
+            LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s,%s ", mobile, url));
+            t = SHttpClient.getURLData(url, "");
+            String response = SUtils.toString(t);
+            LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s  %s ", response, mobile, url));
+        } catch (Throwable  e) {
+            e.printStackTrace();
+        }
+    }
 }
