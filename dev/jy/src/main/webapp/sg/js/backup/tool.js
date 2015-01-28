@@ -233,7 +233,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
         $scope.doRefresh = function () {
 
         }
-    }).controller('NewShopCtrl', function ($scope, $ionicLoading, $compile, $http, $state, localStorageService) {
+    }).controller('NewShopCtrl', function ($scope, $ionicLoading, $compile, $http, $state, localStorageService,$timeout) {
 
         $scope.shopInfo = localStorageService.get('MMMETA_shopInfo') || {};
 
@@ -245,6 +245,8 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
             $timeout(function () {
 
                 $scope.shopInfo = localStorageService.get('MMMETA_shopInfo') || {};
+                $scope.info.newShopSuccess = $scope.shopInfo.url;
+
                 $scope.info.newShopURL = location.origin + $scope.shopInfo.url;
                 $scope.info.newShopStatus = $scope.shopInfo.status;
 

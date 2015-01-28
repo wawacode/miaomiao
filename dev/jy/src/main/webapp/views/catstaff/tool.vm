@@ -231,11 +231,11 @@
 <script id="templates/newshop.html" type="text/ng-template">
     <ion-view view-title="新店开张">
         <ion-content padding="true">
-            <div ng-show="!info.newShopURL">
-                <p>创建地铺出错啦,请联系管理员:{{info.newShopStatus}}</p>
+            <div ng-show="!info.newShopSuccess">
+                <p>创建地铺出错啦,请联系管理员:</br>{{info.newShopStatus}}</p>
 
             </div>
-            <div ng-show="info.newShopURL">
+            <div ng-show="info.newShopSuccess">
                 <p>店铺已经为您准备妥当,请访问:</p>
                 <p>
                    <a class="icon" ng-href="{{info.newShopURL}}">{{info.newShopURL}}</a>
