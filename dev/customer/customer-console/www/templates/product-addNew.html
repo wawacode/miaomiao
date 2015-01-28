@@ -1,12 +1,12 @@
 <ion-modal-view>
 
     <ion-header-bar class="bar bar-header bar-dark">
-        <h1 class="title">编辑商品</h1>
+        <h1 class="title">添加新商品</h1>
         <button class="button button-clear button-primary" ng-click="closeModal()">取消</button>
     </ion-header-bar>
 
     <ion-content padding="true"
-                 has-tabs="true"
+                 has-tabs="false"
                  has-header="true"
                  scroll="true"
                  has-bouncing="true">
@@ -17,16 +17,21 @@
                 <input type="text" value="{{item.name}}">
             </label>
             <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">条形码:</span>
+                <input type="text" value="{{item.serNo}}">
+            </label>
+            <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">价格(元):</span>
-                <input type="text" value="{{item.price/100.0}}">
+                <input type="text" value="{{item.price}}">
             </label>
 
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">图片:</span>
-                <div class="" style="text-align: center">
-                    <img class="full-image" ng-src="{{item.pic_url}}" style="width: 150px;height: auto">
+                <div class="positive">
+                    说明:请填写正确的条形码，喵喵会为您添加高质量图片
                 </div>
             </label>
+
             <label class="item item-input item-select">
                 <div class="input-label assertive">
                     销售状态:

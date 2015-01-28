@@ -1,6 +1,9 @@
 angular.module('miaomiao.console.controllers')
 
     .controller('SearchCtrl', function($scope, Algolia, $state, $timeout) {
+
+        $scope.pageName = '搜索商品或者订单';
+
         $scope.focused= 'centered';
         $scope.searchTerm = '';
         $scope.posts = [];

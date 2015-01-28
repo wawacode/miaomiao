@@ -1,57 +1,31 @@
-<ion-view>
-
-    <ion-nav-bar class="bar-dark">
-
-        <ion-nav-buttons side="left" class="button-dark">
-            <button class="button button-icon ion-ios7-home" ui-sref="productList" ng-click=""></button>
-        </ion-nav-buttons>
-
-        <ion-nav-title>
-            我的订单
-        </ion-nav-title>
-
-    </ion-nav-bar>
+<ion-view title="{{pageName}}">
 
     <ion-content padding="false"
-                 has-tabs="false"
+                 has-tabs="true"
                  has-header="true"
-                 scroll="false">
+                 scroll="true">
 
-        <div class="order-list" style="" ng-show="info.hasOrder">
+        <div class="order-list list" style="">
 
+            <div class="order-item" style="" ng-repeat="order in info.orders">
 
-            <div class="order-item" style="" ng-repeat=" order in orders">
+                <div class="item item-divider">
+                    {{$index + 1}}. {{order.create_time |  date:'short'}}
+                    <span class="item-note">
+                        共计:{{order.items | getTotolCount }} 件<span class="assertive">￥ {{order.items | getTotolPrice }}</span>
+                    </span>
 
-                <div style="display: inline-block;background-color: #EFF0F4;width: 100%;">
-                    <div class="orderDate">{{order.create_time}}</div>
-                    <div class="orderStatus">
-                        {{order.status4V}}
-                    </div>
                 </div>
 
-                <div style="padding: 15px 9px 15px;border-bottom: solid 1px lightgray;">
-                    <div>收货地址: {{order.address}}</div>
-                    <div>联系电话: {{order.phone}}</div>
-                    <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
-                </div>
+                <div class="item item-button-right">
 
-                <div style="padding: 15px 9px 15px;" class="order-snapshots">
-                    <div class="orderSnapshot" ng-repeat="orderItem in order.items">
-                        <div class="orderSnapshotItem">
-                            {{orderItem.name}}
-                        </div>
+                        <div>收货地址: {{order.address}}</div>
+                        <div>联系电话: {{order.phone}}</div>
+                        <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
 
-                        <div class="orderSnapshotCount">
-                            <span>￥</span> {{(orderItem.price || 0)/100.0}}<span
-                                class="orderSnapshotCountNumber"> X {{orderItem.count}} </span>
-                        </div>
-
-                    </div>
-                    <div class="orderSnapshotTotal">
-                        <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
-                        <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
-                        </span>
-                    </div>
+                    <button class="button button-balanced">
+                        <i class="icon ion-ios7-telephone"></i>
+                    </button>
                 </div>
 
             </div>

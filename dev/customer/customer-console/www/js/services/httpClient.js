@@ -81,6 +81,9 @@ miaomiao.factory('httpClient', ['$http','serverInfo', function ($http,serverInfo
         },
 
         getMyOrders: function (shopId, success, fail) {
+
+            return success(testdata.orderInfo);
+
             doGet('user/profile', 'shop_id=' + shopId, success, fail);
         },
 

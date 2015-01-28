@@ -1,8 +1,8 @@
-angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$scope', '$ionicModal',
+angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope', '$ionicModal',
 
     function ($scope, $ionicModal) {
 
-        $ionicModal.fromTemplateUrl('/templates/product-edit.html', {
+        $ionicModal.fromTemplateUrl('/templates/product-addNew.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
@@ -33,8 +33,9 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
 
         });
 
-        $scope.EditItem = function(item) {
-            $scope.item = item;
+        $scope.AddItem = function(cateId) {
+            $scope.currentCateId = cateId;
+            $scope.item = {};
             $scope.openModal();
         }
         $scope.saveItem = function(item){

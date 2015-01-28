@@ -1,13 +1,25 @@
-<ion-view>
-    <ion-nav-bar class="bar-light">
-        <ion-nav-title>
-            <!-- this view supplied its own ion-header-bar to be used instead of the app's default ion-nav-bar -->
-            <fp-search-bar search-model="searchTerm" focused="focused" submit="search(searchTerm)"></fp-search-bar>
-        </ion-nav-title>
-    </ion-nav-bar>
+<ion-view title="{{pageName}}">
 
+    <!--<ion-nav-bar class="bar-light" style="background-color: lightgray">-->
+        <!--<ion-nav-title>-->
+            <!--&lt;!&ndash; this view supplied its own ion-header-bar to be used instead of the app's default ion-nav-bar &ndash;&gt;-->
+            <!--<fp-search-bar search-model="searchTerm" focused="focused" submit="search(searchTerm)"></fp-search-bar>-->
+        <!--</ion-nav-title>-->
+
+    <!--</ion-nav-bar>-->
 
   <ion-content class="has-header">
+
+      <div class="bar bar-header item-input-inset">
+          <label class="item-input-wrapper">
+              <i class="icon ion-ios7-search placeholder-icon"></i>
+              <input type="search" placeholder="Search">
+          </label>
+          <button class="button button-clear">
+              Cancel
+          </button>
+      </div>
+
     <ion-list>
       <ion-item class="post-list"
                 collection-repeat="post in posts"

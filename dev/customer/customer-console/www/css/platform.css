@@ -152,6 +152,7 @@
 .product_action {
     position: absolute;
     right: 0;
+    bottom:0;
     text-align: center;
     display: inline-block;
     margin-right: 6px;
@@ -189,4 +190,14 @@
     color: #F54447;
     font-weight: bold;
 }
+.mgray, a.mgray {
+    color: darkgrey; }
+
+.mgray-bg {
+    background-color: darkgrey; }
+
+.mgray-border {
+    border-color: darkgrey; }
+
+
 

@@ -7,12 +7,8 @@
             <span style="font-weight: normal">¥ {{item.price/100.0}}</span>
         </div>
         <div class="product_action" ng-controller="EditProductCtrl">
-            <button class="button button-icon icon " ng-click="VoteItem(item)">
-                <i class="energized icon ion-thumbsup"></i>
-            </button>
-            <button class="button button-icon icon" ng-click="EditItem(item)" ng-show="item.count">
-                <i class="energized icon ion-settings"></i>
-            </button>
+            <a class="mgray button button-small button-icon icon ion-thumbsup" ng-click="VoteItem(item)"></a>
+            <a class="mgray button button-small button-icon icon ion-settings"  ng-click="EditItem(item)"></a>
         </div>
     </div>
 </div>
