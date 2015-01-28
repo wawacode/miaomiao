@@ -1,8 +1,8 @@
-angular.module('miaomiao.console.controllers').controller('ProductDetailCtrl', ['$scope', '$ionicModal',
+angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$scope', '$ionicModal',
 
     function ($scope, $ionicModal) {
 
-        $ionicModal.fromTemplateUrl('/templates/product-preview.html', {
+        $ionicModal.fromTemplateUrl('/templates/product-edit.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
@@ -33,8 +33,8 @@ angular.module('miaomiao.console.controllers').controller('ProductDetailCtrl', [
 
         });
 
-        $scope.showImage = function(item) {
-            $scope.imageSrc = item.pic_url;
+        $scope.EditItem = function(item) {
+            $scope.item = item;
             $scope.openModal();
         }
     }

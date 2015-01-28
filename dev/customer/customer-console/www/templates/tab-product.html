@@ -20,22 +20,21 @@
                              has-bouncing="true"
                              scrollbar-y="false"
                              overflow-scroll="false">
-                    <ul class="list" >
-                        <li class="shop-categray item"
-                                  ng-repeat="category in info.categoryls"
-                                  ng-click="selectCategory(category)"
-                                  ng-class="{'shop-categray-selected': category.selected}">
 
-                            <div class="shop-categray-item-decorate" ng-show="category.selected"></div>
-                            <div class="shop-categray-item" style=""
-                                 ng-class="{'shop-categray-item-selected': category.selected}">{{ category.name
-                                }}
-                            </div>
-                            <div class="shop-categray-item-edge" ng-show="category.totalCnt">
-                                {{category.totalCnt}}
-                            </div>
-                            <li>
-                    </ul>
+                    <div class="shop-categray-list" style="width: 100%;">
+                        <ul style="margin: 0.0em;padding: 0px;">
+                            <li ng-repeat="category in info.categoryls" class="shop-categray"
+                                ng-click="selectCategory(category)"
+                                ng-class="{'shop-categray-selected': category.selected}">
+
+                                <div class="shop-categray-item-decorate" ng-show="category.selected"></div>
+                                <div class="shop-categray-item" style=""
+                                     ng-class="{'shop-categray-item-selected': category.selected}">{{ category.name
+                                    }}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </ion-content>
             </div>
             <div class="rightContainer">
@@ -44,19 +43,24 @@
                              has-bouncing="true"
                              overflow-scroll="false"
                              delegate-handle="productScroll">
-                    <ul class="list" >
-                        <li class="product-item item"
-                                  ng-repeat="item in info.currentDisplayItems"
-                                  ng-include
-                                  src="'/templates/product-detail.html'">
 
-                        <li>
-                    </ul>
-                    <ion-infinite-scroll
-                            ng-if="moreDataCanBeLoaded()"
-                            icon="ion-loading-c"
-                            on-infinite="addItems()">
-                    </ion-infinite-scroll>
+                    <div class="shop-product-list">
+                        <ul class="shop-product-categray-list list">
+                            <li ng-repeat="item in info.currentDisplayItems" class="product-item"
+                                ng-include
+                                src="'/templates/product-detail.html'">
+                            </li>
+
+                            <ion-infinite-scroll
+                                    ng-if="moreDataCanBeLoaded()"
+                                    icon="ion-loading-c"
+                                    on-infinite="addItems()">
+                            </ion-infinite-scroll>
+
+                        </ul>
+
+                    </div>
+
 
                 </ion-content>
             </div>

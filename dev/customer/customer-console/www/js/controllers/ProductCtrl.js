@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('ProductCtrl', function($scope, $ionicPopup, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate,localStorageService,httpClient) {
+    .controller('ProductCtrl', function($scope, $ionicPopup,$ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate,localStorageService,httpClient) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose

@@ -1,0 +1,48 @@
+<ion-modal-view ng-click="closeModal()">
+
+    <ion-header-bar class="bar bar-header bar-yahoo">
+        <h1 class="title">编辑商品</h1>
+        <button class="button button-clear button-primary" ng-click="modal.hide()">取消</button>
+    </ion-header-bar>
+
+    <ion-content padding="true"
+                 has-tabs="false"
+                 has-header="true"
+                 scroll="true"
+                 has-bouncing="true">
+
+        <div class="list card">
+
+            <div class="item item-avatar">
+                <h2>{{item.name}}</h2>
+                <p>¥ {{item.price/100.0}}</p>
+            </div>
+
+            <div class="item item-body">
+                <img class="full-image" ng-src="{{item.pic_url}}">
+                <p>
+                    <a href="#" class="subdued">1 Like</a>
+                    <a href="#" class="subdued">5 Comments</a>
+                </p>
+            </div>
+
+            <div class="item tabs tabs-secondary tabs-icon-left">
+                <a class="tab-item" href="#">
+                    <i class="icon ion-thumbsup"></i>
+                    Like
+                </a>
+                <a class="tab-item" href="#">
+                    <i class="icon ion-chatbox"></i>
+                    Comment
+                </a>
+                <a class="tab-item" href="#">
+                    <i class="icon ion-share"></i>
+                    Share
+                </a>
+            </div>
+
+        </div>
+
+    </ion-content>
+</ion-modal-view>>
+

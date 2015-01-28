@@ -1,20 +1,18 @@
-<div class="prod_icon_clickable" ng-controller="ProductDetailCtrl" ng-click="showImage(item)"></div>
 <div class="prod_icon" back-img="{{item.pic_url}}"></div>
 <div>
-    <span class="product-title oneline js-product-item-name">{{item.name}}</span>
+    <span class="product-title oneline ">{{item.name}}</span>
 
     <div class="prod_info">
-        <div class="product-price js-product-item-price" data-value="$item.price">
+        <div class="product-price" data-value="$item.price">
             <span style="font-weight: normal">¥ {{item.price/100.0}}</span>
         </div>
-        <div class="product_action">
-            <div class="product_action_vote assertive" ng-click="VoteItem(item)">
-                <i class="icon ion-thumbsup"></i>
-            </div>
-            <div class="product_action_edit assertive" ng-click="EditItem(item)" ng-show="item.count">
-                <i class="icon ion-settings"></i>
-            </div>
-
+        <div class="product_action" ng-controller="EditProductCtrl">
+            <button class="button button-icon icon " ng-click="VoteItem(item)">
+                <i class="energized icon ion-thumbsup"></i>
+            </button>
+            <button class="button button-icon icon" ng-click="EditItem(item)" ng-show="item.count">
+                <i class="energized icon ion-settings"></i>
+            </button>
         </div>
     </div>
 </div>
