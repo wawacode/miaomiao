@@ -15,7 +15,6 @@ import com.renren.ntc.sg.mail.MailSendInfo;
 import com.renren.ntc.sg.mail.MailSendServer;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
-import com.renren.ntc.sg.service.SMSService;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -41,7 +40,6 @@ public class PrinterMoniter {
       RoseAppContext rose = new RoseAppContext();
       ShopDAO  shopDao = rose.getBean(ShopDAO.class);
       DeviceDAO deviceDao = rose.getBean(DeviceDAO.class);
-      SMSService smsService = rose.getBean(SMSService.class);
 	  List<Shop> shops = shopDao.getAllShopsByAudit(1);
 	  if(CollectionUtils.isEmpty(shops)){
 		  return;
@@ -51,18 +49,18 @@ public class PrinterMoniter {
           if (null == device ){
               String  message = "{shop_name} 打印机状态异常";
               message = message.replace("{shop_name}",shop.getName()) ;
-              toSend(message , TID , MONITERPHONE,smsService);
+              toSend(message , TID , MONITERPHONE);
           }
           if(ofline(device.getUpdate_time())) {
              String  message = "{shop_name} 打印机离线";
              message = message.replace("{shop_name}",shop.getName()) ;
-              toSend(message , TID , MONITERPHONE,smsService);
+              toSend(message , TID , MONITERPHONE);
 
           }
        }
 
 	}
-    private static void toSend(String message ,String tid , String phone,SMSService smsService){
+    private static void toSend(String message ,String tid , String phone){
         MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
         DBCollection coll = mongoDBUtil.getCollectionforcache();
         Date date =  new Date();
