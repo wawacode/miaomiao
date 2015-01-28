@@ -1,5 +1,8 @@
 package com.renren.ntc.sg.util;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
@@ -10,11 +13,14 @@ import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.mail.MailSendInfo;
 import com.renren.ntc.sg.mail.MailSendServer;
+import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.SMSService;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.collections.CollectionUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +60,29 @@ public class PrinterMoniter {
        }
 
 	}
+    private static void toSend(String message ,String tid , String phone){
+        MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
+        DBCollection coll = mongoDBUtil.getCollectionforcache();
+        Date date =  new Date();
+        SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dat  =  sFormat.format(date);
 
+        String key = message + "#" + phone +"#"+ dat;
+        BasicDBObject query = new BasicDBObject();
+        query.put("key", key);
+        BasicDBObject foj = new BasicDBObject("key", "12323");
+        coll.update(query,foj);
+
+        DBCursor cur = coll.find(query);
+        BasicDBObject boj = null;
+
+        if (cur.hasNext()) {
+            boj = (BasicDBObject) cur.next();
+            System.out.println(boj.toString());
+        }
+
+
+    }
     private static boolean ofline(Date update_time) {
         long now = System.currentTimeMillis();
         long uptime = update_time.getTime();

@@ -1,7 +1,9 @@
 package com.renren.ntc.sg.mongo;
 
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 import com.renren.ntc.sg.util.Constants;
@@ -61,6 +63,11 @@ public class MongoDBUtil {
     }
 
 
+    public DBCollection getCollectionforcache() {
+        return db.getCollection("sg_cache");
+    }
+
+
     private static boolean reCheck(WriteResult re) {
 		if (null == re.getError()) {
 			return true;
@@ -71,17 +78,18 @@ public class MongoDBUtil {
 			MongoException {
 
 		MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
-		DBCollection coll = mongoDBUtil.getCollection();
+		DBCollection coll = mongoDBUtil.getCollectionforcache();
         BasicDBObject query = new BasicDBObject();
-        query.put("key", "1233");
-        BasicDBObject foj = new BasicDBObject("key", "1223");
-        foj.put("ccc","ddd");
-        BasicDBObject tbj = new BasicDBObject();
-        tbj.put("$addToSet", new BasicDBObject("sg_shop", foj));
-        WriteResult re = coll.update(query, tbj, true, false);
-       System.out.println( reCheck(re));
-
-
+//        query.put("key", "1223");
+//        BasicDBObject foj = new BasicDBObject("key", "12323");
+//        foj.put("ccc","ddd");
+//        BasicDBObject tbj = new BasicDBObject();
+//        tbj.put("$addToSet", new BasicDBObject("data", foj));
+//        WriteResult re = coll.update(query, tbj, true, false);
+//        System.out.println( reCheck(re));
+//
+        query = new BasicDBObject();
+        query.put("key", "1223");
         DBCursor cur = coll.find(query);
 		BasicDBObject boj = null;
 
@@ -89,6 +97,15 @@ public class MongoDBUtil {
 			boj = (BasicDBObject) cur.next();
             System.out.println(boj.toString());
 		}
+        Date date =  new Date();
+        SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dat  =  sFormat.format(date);
+
+        String key = "message" + "#" + "18600326217" +"#"+ dat;
+        query = new BasicDBObject();
+        query.put("key", key);
+        BasicDBObject foj = new BasicDBObject("key", "12323");
+        coll.update(query,foj);
 
     }
 
