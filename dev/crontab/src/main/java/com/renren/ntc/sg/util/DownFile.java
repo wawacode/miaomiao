@@ -4,10 +4,6 @@ import com.renren.ntc.sg.bean.Product;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
 import net.paoding.rose.scanning.context.RoseAppContext;
-import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.*;
 import java.net.URL;
