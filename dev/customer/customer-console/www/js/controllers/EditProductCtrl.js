@@ -2,7 +2,7 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
 
     function ($scope, $ionicModal) {
 
-        $ionicModal.fromTemplateUrl('/templates/product-edit.html', {
+        $ionicModal.fromTemplateUrl('templates/product-edit.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
