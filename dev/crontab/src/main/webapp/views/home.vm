@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>喵喵</title>
+    <link rel="stylesheet" href="http://s.xnimg.cn/a50178/raydv/css/reset.css" type="text/css">
+    <link rel="stylesheet" href="http://s.xnimg.cn/a44416/raydv/css/index.css" type="text/css">
+</head>
+<body>
+<!--<div id="header">
+</div> -->
+<div id="container">
+    <img class="index_cam" src="images/1024.png">
+    <div class="index_text">
+        <p class="index_text_slogan"></p>
+        <p class="zz">&gt;极速便利网购</p>
+        <p class="zz">&gt;最接地气的社区购物服务商</p>
+    </div>
+    <img class="index_2d" src="images/2dimcode.png">
+</div>
+<div class="index_bg_black"></div>
+<div id="footer">
+    <div class="footer_line"></div>
+    <p class="color_gray">wlwh@lizi-inc.com</p>
+</div>
+<style>
+    .index_cam{
+
+    }
+    .zz{
+     color:#000000;
+     font-weight: bold;
+
+    }
+    #container{
+    width:700px;
+    height:600px;
+    min-height:0px;
+    }
+    .index_2d{
+       margin-top:100px;
+       margin-right:50px;
+       float:right;
+
+    }
+    .index_bg_black{
+    background: #EFE0E0;
+    top:0px;
+    }
+</style>
+</body></html>

@@ -1,0 +1,117 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>微店</title>
+    <link href="http://s.koudai.com/css/common/base.css?v=2010922" type="text/css" rel="stylesheet" />
+    <link href="http://s.koudai.com/css/cart/cart.css?v=2010922" type="text/css" rel="stylesheet" />
+</head>
+<body style="padding-bottom: 46px;">
+<header id="common_hd" class="c_txt rel">
+    <a id="hd_back" class="abs comm_p8 hide" href="http://wd.koudai.com/item.html?itemID=279822350&amp;p=0&amp;hd_back=1" style="display: block;">返回</a>
+    <a id="common_hd_logo" class="t_hide abs" href="/plaza/plaza.html">微店</a>
+    <h1 class="hd_tle">购物车</h1>
+    <a id="hd_edit" class="abs hide">删除</a>
+</header>
+<section class="cart_sec" id="select_items">
+    <div class="cart_wrap">
+        <p class="cart_list_title">已选购的商品</p>
+        <div id="cart_empty" class="hide">
+            还没有选购商品
+        </div>
+        <ul id="cart_ul" class="hide" style="display: block;">
+            <li class="cart_li rel" data-item-id="279822350" data-item-sku="" data-item-price="100"><mark class="cart_mask abs already_mask" style="display: none;">&nbsp;</mark><a href="/item.html?itemID=279822350" class="cart_img abs"><img src="http://wd.geilicdn.com/vshop166971282-1412830790-1.jpg?w=110&amp;h=110&amp;cp=1" width="70" height="70" /></a><a href="/item.html?itemID=279822350" class="cart_tle over_hidden">java笔记本</a>
+                <div class="control_count abs" data-stock="1" data-current-num="1">
+                    <div class="left">
+                        <span class="i_pri">￥100.00</span>&nbsp;x&nbsp;
+                    </div>
+                    <div class="control_num left c_txt bold">
+                        <input type="tel" class="item_num bold c_txt block" value="1" />
+                    </div>
+                </div></li>
+        </ul>
+    </div>
+</section>
+<section class="cart_sec hide" id="disable_items">
+    <div class="cart_wrap">
+        <p class="cart_list_title">当前不可购买的商品</p>
+        <ul id="cart_ul_dis"></ul>
+    </div>
+</section>
+<section class="cart_sec hide" id="userLogin"></section>
+<section class="cart_sec" id="address_sec">
+    <div class="cart_wrap" id="address_wrap">
+        <div class="cart_list_title rel" id="address_title">
+            收货人信息
+            <div id="share_wx_addr" class="abs hide">
+                &nbsp;
+            </div>
+        </div>
+        <div id="address_default" class="hide"></div>
+        <div id="address_form" class="hide" style="display: block;">
+            <p class="address_p rel"><label for="nam" class="abs"><span class="hide hidename" style="color:#f00">*</span>收货人</label><input type="text" id="nam" name="nam" class="block input" value="" tabindex="1" /></p>
+            <p class="address_p rel"><label for="tele" class="abs"><b class="hide hidename" style="color:#f00">*</b>手机号码</label><input type="tel" id="tele" name="tele" maxlength="11" class="block input" tabindex="2" /></p>
+            <p class="address_p rel"><label for="province" class="abs">省份</label><select id="province" name="province" class="block input" tabindex="3"><option value="-1">--省份--</option><option value="0">北京</option><option value="1">安徽</option><option value="2">福建</option><option value="3">甘肃</option><option value="4">广东</option><option value="5">广西</option><option value="6">贵州</option><option value="7">海南</option><option value="8">河北</option><option value="9">河南</option><option value="10">黑龙江</option><option value="11">湖北</option><option value="12">湖南</option><option value="13">吉林</option><option value="14">江苏</option><option value="15">江西</option><option value="16">辽宁</option><option value="17">内蒙古</option><option value="18">宁夏</option><option value="19">青海</option><option value="20">山东</option><option value="21">山西</option><option value="22">陕西</option><option value="23">上海</option><option value="24">四川</option><option value="25">天津</option><option value="26">西藏</option><option value="27">新疆</option><option value="28">云南</option><option value="29">浙江</option><option value="30">重庆</option><option value="31">香港</option><option value="32">澳门</option><option value="33">台湾</option></select></p>
+            <p class="address_p rel"><label for="city" class="abs">城市</label><select id="city" name="city" class="block input" tabindex="4"><option value="-1">--城市--</option></select></p>
+            <p class="address_p rel"><label for="district" class="abs">地区</label><select id="district" name="district" class="block input" tabindex="5"><option value="-1">--地区--</option></select></p>
+            <p class="address_p rel address_p_area"><label for="detail_add" class="abs">详细地址</label><textarea name="detail_add" cols="" rows="" id="detail_add" class="block input" tabindex="6"></textarea></p>
+        </div>
+        <div class="paddingMark">
+            <p class="address_p rel address_p_area"><label for="remark" class="abs">备注</label><textarea name="remark" cols="" rows="" id="remark" placeholder="给卖家留言（选填）" class="block input" tabindex="7"></textarea></p>
+            <p class="address_p rel"><label for="wxID" class="abs">微信号</label><input type="text" id="wxID" name="wxID" class="block input" placeholder="方便卖家与你联系（选填）" tabindex="8" /></p>
+        </div>
+    </div>
+</section>
+<footer id="cart_footer">
+    <div class="rel">
+        <div id="money_calc" class="ellipsis over_hidden">
+            合计(不含运费):
+            <span id="money_count" class="i_pri">￥100.00</span>
+        </div>
+        <a id="go_cash" class="btnok block for_gaq" data-for-gaq="结算">结算(<span id="cash_count" class="bold">1</span>)</a>
+    </div>
+</footer>
+<!--
+<script src="http://s.koudai.com/script/common/tool_bar.js?ver=915"></script>
+<script src="http://s.koudai.com/script/common/regions.js?ver=915"></script>
+<script src="http://wd.koudai.com/vshop/1/H5/H5TrackVisit.php?buyer_id=&amp;track_type=3&amp;item_id=&amp;user_id=166971282&amp;guid=1413440610879_923356915358454&amp;wfr=wx&amp;callback=jsonpcallback_1413446284119_7479783408343792&amp;ver=915"></script>
+<script src="http://s.koudai.com/script/cart/requestAddress.js?ver=915"></script>
+<script src="http://s.koudai.com/script/cart/bindSelect.js?ver=915"></script>
+<script src="http://wd.koudai.com/wd/item/getPubInfo?param={&quot;itemID&quot;:&quot;279822350&quot;}&amp;callback=jsonpcallback_1413446283680_9166983214672655&amp;ver=915"></script>
+<script src="http://s.koudai.com/script/cart/bindGoCash.js?ver=915"></script>
+<script src="http://s.koudai.com/script/cart/cashNow.js?ver=915"></script>
+<script async="" src="//www.google-analytics.com/analytics.js"></script>
+<script src="http://s.koudai.com/script/common/base_H5.js?v=2010922"></script>
+<script>var Cart={isMcro:function(){return"mcro"==M.urlQuery("status")},_money:0,_count:0,cartUl:$("#cart_ul"),cartUlDis:$("#cart_ul_dis"),moneyCount:$("#money_count"),cashCount:$("#cash_count"),hdEdit:$("#hd_edit"),sellerID:"",is_Resk:0,refreshCartLength:!1,checkEmpty:function(){return $(".cart_li").length()?!1:!0},cart_li:"",cart_li_dis:"",requestItem:function(e,t,a){var r=new Array;r=e.split("_");var i={itemID:r[0]};M.jsonp("http://wd.koudai.com/wd/item/getPubInfo?param="+M.toJSON(i),function(i){if(0===Number(i.status.status_code)){var s,o,l,d,c,_,u,n=i.result,m="";if(s=n.itemName,d=n.thumbImgs[0],is_active=Number(n.is_active),n.sku.length){var C,h=n.sku;for(var p in h)h[p].id==r[1]&&(C=h[p].title,o=Number(h[p].price),l=Number(h[p].stock));_=r[1],u=a?Number(r[2]):""}else _="",o=Number(n.price),l=Number(n.stock),u=a?Number(r[1]):"";if(!Cart.sellerID){var b=n.seller_id;Cart.sellerID=b;var k=Number(M.getCookie("WD_seller"));if(k!=b&&Cart.isMcro()){console.log(k+"--"+b);var y=M.getCookie("WD_buyNowItem");M.switchCookie(),M.setCookie("WD_buyNowItem",y)}M.setCookie("WD_seller",b),M.loadToolBar(b)}if(Cart.isMcro()&&$("#hd_back").show().attr("href",M.sUrl(Cart.sellerID)),l&&0===Number(n.isDelete)&&0===Number(n.isClose)&&!is_active)a?u>l?(c=l,n.sku.length?M.setCookie("WD_buyNowItem",r[0]+"_"+r[1]+"_"+l):M.setCookie("WD_buyNowItem",r[0]+"_"+l)):c=u:Number(M.getCookie("WD_"+e))?Number(M.getCookie("WD_"+e))>l?(c=l,M.setCookie("WD_"+e,l),Cart.refreshCartLength=!0):c=Number(M.getCookie("WD_"+e)):(c=1,M.setCookie("WD_"+e,1),Cart.refreshCartLength=!0),Cart._money+=Number(o*c),m+="<li class='cart_li rel' data-item-id='"+r[0]+"' data-item-sku='"+_+"' data-item-price='"+o+"'>",m+="<mark class='cart_mask abs already_mask'>&nbsp;</mark>",m+=Cart.isMcro()?"<a class='cart_img abs'><img src='' width='70' height='70'></a>":"<a href='"+M.sUrl(Cart.sellerID,r[0])+"' class='cart_img abs'><img src='"+d+"' width='70' height='70'></a>",m+=Cart.isMcro()?"<a class='cart_tle over_hidden'></a>":"<a href='"+M.sUrl(Cart.sellerID,r[0])+"' class='cart_tle over_hidden'>"+s+"</a>",C&&(m+="<p class='cart_cls over_hidden ellipsis'>"+C+"</p>"),m+="<div class='control_count abs' data-stock='"+l+"' data-current-num='"+c+"'>",m+="<div class='left'><span class='i_pri'>￥"+o.toFixed(2)+"</span>",m+=Cart.isMcro()?"</div><div class='control_num left c_txt bold hide'><input type='tel' class='item_num bold c_txt block' value='"+c+"' disabled=true />":"&nbsp;x&nbsp;</div><div class='control_num left c_txt bold'><input type='tel' class='item_num bold c_txt block' value='"+c+"' />",m+="</div></div>",m+="</li>",Cart.cart_li+=m,Cart._count++;else{var v=is_active?"商品秒杀中,点击进入详情页购买":"商品失效,点击查看最新情况";m+="<li class='cart_li_dis rel' data-item-id='"+r[0]+"' data-item-sku='"+_+"'>",m+="<a href='"+M.sUrl(Cart.sellerID,r[0])+"' class='cart_img_dis abs'><img src='"+d+"' width='70' height='70'></a>",m+="<a href='"+M.sUrl(Cart.sellerID,r[0])+"' class='cart_tle_dis over_hidden'>"+s+"</a>",m+="<a href='"+M.sUrl(Cart.sellerID,r[0])+"' class='cart_des_dis gray_txt'>"+v+"</a>",m+="<a class='del_dis_item abs'>[删除]</a>",m+="</li>",Cart.cart_li_dis+=m}t?t():""}else M._alert("商品获取出错")})},cartEmpty:function(){$(".cart_li").length()||($("#cart_loading").length()&&$("#cart_loading").remove(),$("#cart_empty").show(),Cart.cartUl.hide(),Cart.hdEdit.hide()),Cart.cashCount.html(0),Cart.moneyCount.html("￥0.00")},checkDisEmpty:function(){!$(".del_dis_item").length()&&$("#disable_items").remove()},checkRemove:function(){$(".already_mask").length()?Cart.hdEdit.removeClass("disable_edit"):Cart.hdEdit.addClass("disable_edit")},calc:function(){var e=$(".already_mask").length();if(e){if(1==e){var t=$(".already_mask").eq(0).parent(),a=Number(t.attr("data-item-price")),r=Number(t.find(".item_num").eq(0).val());Cart.moneyCount.html("￥"+Number(r*a).toFixed(2))}else{Cart._money=0,Cart._count=0;for(var i=e;i--;){var s=$(".already_mask").eq(i).parent(),o=Number(s.attr("data-item-price")),l=Number(s.find(".item_num").eq(0).val());Cart._count+=l,Cart._money+=l*o}Cart.moneyCount.html("￥"+Cart._money.toFixed(2))}Cart.cashCount.html(e)}else Cart.cartEmpty()},changeItemCount:function(e){function t(e,t,a,r){e.attr("data-current-num",a),Cart.calc(),Cart.buyNowItem||(Cart.refreshCookie(t,a),M.setCookie("WD_c_l",Number(M.getCookie("WD_c_l"))-(r-a)))}var a=e,r=Number(a.val()),i=e.parent().parent(),s=Number(i.attr("data-stock")),o=i.parent(),l="WD_"+o.attr("data-item-id")+(Number(o.attr("data-item-sku"))?"_"+o.attr("data-item-sku"):""),d=Number(i.attr("data-current-num")),c=e,_=r;if(!_)return M._alert("数量不可为空"),c.val(1),void t(i,l,1,d);if(isNaN(_))return M._alert("数量必须为数字"),c.val(1),void t(i,l,1,d);if(Number(_)<1)return M._alert("客官至少买一件嘛"),c.val(1),void t(i,l,1,d);var u=_,n=!1;-1!=u.toString().indexOf(".")&&(n=!0,u=Math.floor(_));var m=s;Number(_)>m?(M._alert("库存只有"+m+"件了"),c.val(m),t(i,l,m,d)):(n&&M._alert("数量必须为整数"),c.val(u),t(i,l,u,d))},refreshCookie:function(e,t){if(t)M.setCookie(e,t);else{M.delCookie(e);var a=M.getCookie("WD_i"),r=e.substr(3);-1!=a.indexOf(r+"|")?M.setCookie("WD_i",a.replace(r+"|","")):-1!=a.indexOf("|"+r)?M.setCookie("WD_i",a.replace("|"+r,"")):M.delCookie("WD_i")}},nam:$("#nam"),tele:$("#tele"),province:$("#province"),city:$("#city"),district:$("#district"),detail_add:$("#detail_add"),remark:"",setCookieVal:"",buyNowItem:"",init:function(){if(M.doHistory(M.urlQuery("umk")+"_cart_refer"),M.urlQuery("p")&&M.setCookie("WD_viewedPage",M.urlQuery("p")),M.delCookie("WD_prePay"),M.delCookie("WD_buyString"),M.urlQuery("buyItems")&&M.getCookie("WD_buyNowItem")?(Cart.buyNowItem=M.getCookie("WD_buyNowItem"),M.loadScript("http://s.koudai.com/script/cart/cashNow.js")):(M.delCookie("WD_buyNowItem"),M.getCookie("WD_i")?M.loadScript("http://s.koudai.com/script/cart/cashCookie.js"):(Cart.cartEmpty(),M.loadToolBar(M.getCookie("WD_seller")))),M.loadScript("http://s.koudai.com/script/cart/bindGoCash.js"),Cart.isMcro()){var e=document,t=e.createElement("a");t.setAttribute("id","iWantWeixinMoney"),e.body.appendChild(t),$("#iWantWeixinMoney").attr({href:"http://www.vdian.com",target:"_blank"}).html("我也要用微信收款"),$(".hidename").removeClass("hide")}setTimeout(function(){M.loadScript("http://s.koudai.com/script/cart/requestAddress.js",function(){M.isWeixinPay()&&M.loadScript("http://s.koudai.com/script/cart/share_wx_addr.js",function(){doWXAddr(function(e){if(M.getCookie("WD_b_id")&&M.getCookie("WD_b_wduss")){var t={buyer_id:M.getCookie("WD_b_id"),wduss:M.getCookie("WD_b_wduss"),is_default:0,buyer_name:e.nam,buyer_phone:e.tel,buyer_country:"",buyer_country_val:"",buyer_province:e.prov_id,buyer_province_val:e.prov,buyer_city:e.city_id,buyer_city_val:e.city,buyer_area:e.dist_id,buyer_area_val:e.dist,buyer_street:e.deta.replace(/#/g,"＃")};M.jsonp("http://wd.koudai.com/wd/buyer/address/add?param="+M.toJSON(t),function(t){if(0===Number(t.status.status_code)){M.setCookie("defaultAdress",1),Cart.setCookieVal=[e.nam,e.tel,e.prov_id,e.city_id,e.dist_id,e.deta];{t.result}$("#address_form").hide();var a="<a class='adressinfo' href='/user/userinfo/addressList.html?umk="+M.getCookie("WD_seller")+"&id=cart'> <p>"+e.nam+"<span>"+e.tel+"</span><em></em></p> <p>"+e.prov+" "+e.city+" "+e.dist+" "+e.deta+"</p> </a>";$("#address_default").html(a).show(),M._alert("共享微信收货地址成功！")}else M._alert("地址添加失败")})}else{var a=new Array;a.push(escape(e.nam)),a.push(e.tel),a.push(e.prov_id),a.push(e.city_id),a.push(e.dist_id),a.push(escape(e.deta)),a.push(escape($("#remark").val())),a.push(escape($("#wxID").val())),M.setCookie("WD_a",a.join("|")),F.getCookieAddress(),M._alert("共享微信收货地址成功！")}})})}),M.trackVisit({track_type:3,item_id:"",user_id:M.getCookie("WD_seller")}),!Cart.isMcro()&&M.getCookie("WD_dis")&&Number(M.getCookie("WD_seller"))&&1!=Number(M.getCookie("WD_hide_dis"))&&M.loadScript("http://s.koudai.com/script/common/wd_discount.js")},500)}};Cart.init();</script>
+-->
+<footer id="toolbar" style="-webkit-transition: opacity 200ms ease; transition: opacity 200ms ease; opacity: 1; display: block;">
+    <ul id="footermenu">
+        <li id="ftm-search"> <a class="tb_serch_toggle"></a></li>
+        <li id="ftm-classes" class="rel">
+            <div id="ftm-icon-classes-txt" class="inline_b">
+                商品分类
+            </div>
+            <div id="ftm-classes-div" class="abs wrap">
+                <ul id="ftm-classes-child"></ul>
+                <em id="ftm-classes-child-icon-a" class="abs">&nbsp;</em>
+                <em id="ftm-classes-child-icon-b" class="abs">&nbsp;</em>
+            </div> </li>
+        <li id="ftm-user">
+            <div class="inline_b">
+                我的微店
+            </div></li>
+        <li id="ftm-scart">
+            <div class="inline_b rel">
+                购物车
+                <div id="cart-count">
+                    1
+                </div>
+            </div></li>
+    </ul>
+</footer>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+  <meta content="telephone=no" name="format-detection" />
+  <meta name="apple-touch-fullscreen" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <title>崔健帽子</title>
+  <link href="http://s.koudai.com/css/common/base.css?v=2010915" type="text/css" rel="stylesheet" />
+  <link href="http://s.koudai.com/css/index/index.css?v=929" type="text/css" rel="stylesheet" />
+  <link href="http://s.koudai.com/css/item/item.css?v=1006" type="text/css" rel="stylesheet" />
+ </head>
+ <body style="padding-bottom: 46px;">
+  <div id="item_show_wrap">
+   <header id="common_hd" class="c_txt rel">
+    <a id="hd_back" class="abs comm_p8" href="/?userid=166971282">返回</a> 
+    <a id="common_hd_logo" class="t_hide abs" href="/plaza/plaza.html">微店</a>
+    <h1 class="hd_tle">商品详情</h1>
+    <div id="favorite" class="favorite for_gaq t_hide hide" data-for-gaq="收藏商品" style="-webkit-transition: opacity 200ms ease; transition: opacity 200ms ease; opacity: 1; display: block;">
+     收藏商品
+     <em id="favourite_line" class="abs">&nbsp;</em>
+    </div>
+   </header>
+   <div id="item_wrap_loading" class="loading" style="display: none;">
+    &nbsp;
+   </div>
+   <div id="item_info_for_show_wrap" class="hide" style="display: block;">
+    <section id="item_info" class="rel">
+     <article id="item_show" class="loading c_txt">
+      <img width="100%" src="http://wd.geilicdn.com/vshop166971282-1412830701-1.jpg?w=480&amp;h=0" data-share-src="http://wd.geilicdn.com/vshop166971282-1412830701-1.jpg?w=110&amp;h=110&amp;cp=1" />
+     </article>
+     <h2 id="item_name">崔健帽子</h2>
+     <div id="item_price_wrap">
+      <span id="item_price" class="i_pri">￥100.00</span> 
+      <span id="seckill_price" class="hide"></span>
+      <p id="express_money_show" class="hide"></p>
+     </div>
+     <div id="share_for_money" class="abs hide">
+      <em id="share_for_money_icon" class="inline_b c_txt">&yen;</em> 点我有奖
+     </div>
+     <div class="itemrank" id="itemrank">
+      <span id="sold">总销量0</span>
+     </div>
+    </section>
+    <section id="item_control">
+     <div id="control_wrap">
+      <div id="control_info">
+       <div id="control_seckill" class="hide"></div>
+       <div id="control_title" class="hide">
+        <p id="show_controls" class="rel"><em class="gray_txt">请选择</em> <em>型号/数量</em> <i id="show_controls_icon" class="abs am"></i></p>
+       </div>
+       <div id="control_sku" class="hide">
+        <p class="control_tle gray_txt">型号：</p>
+        <ul id="sku_ul"></ul>
+       </div>
+       <div id="control_count" class="hide" style="display: block;">
+        <p class="control_tle gray_txt">数量：</p>
+        <div id="control_num" class="left c_txt bold">
+         <input type="tel" name="item_num" id="item_num" class="bold c_txt block" value="1" />
+        </div>
+        <div id="control_stock" class="left bold" data-stock="1">
+         仅剩最后1件，赶快下手！
+        </div>
+        <div class="clear"></div>
+       </div>
+      </div>
+      <div id="control_btn_loading" class="loading" style="display: none;">
+       &nbsp;
+      </div>
+      <div id="control_btn" class="rel hide" style="display: block;">
+       <a id="my_cart" class="btncancel abs for_gaq" data-for-gaq="我的购物车" >我的购物车</a> 
+       <a id="add_cart" class="c_txt block margin_auto for_gaq" data-for-gaq="加入购物车">加入购物车</a> 
+       <a id="buy_now" class="btnok abs for_gaq" data-for-gaq="立即购买">立即购买</a>
+      </div>
+     </div>
+    </section>
+    <div id="guarantee" class="guarantee hide rel" style="display: block;">
+     <p class="invited" id="invite_open_warrant">邀请卖家开通担保交易，购物更放心！</p>
+     <em id="invited_em" class="abs">&nbsp;</em>
+    </div>
+    <section id="item_seller">
+     <div id="item_seller_loading" class="loading" style="display: none;">
+      &nbsp;
+     </div>
+     <a id="enter_shop" class="for_gaq hide" data-for-gaq="进入店铺" href="/?userid=166971282" style="display: block;">
+      <div id="seller_wrap" class="rel">
+       <div id="seller_thumb_wrap" class="abs">
+        <img width="57" height="57" id="seller_thumb" class="abs" src="" />
+       </div>
+       <p id="seller_name" class="over_hidden ellipsis">奶油蛋糕</p>
+       <div id="seller_weixin" class="rel hide">
+        <div id="wx_icon_a" class="abs">
+         <em class="wx_icon_em_a abs">&nbsp;</em> 
+         <em class="wx_icon_em_b abs">&nbsp;</em> 
+         <em class="wx_icon_em_c abs">&nbsp;</em>
+        </div>
+        <div id="wx_icon_b" class="abs">
+         <em class="wx_icon_em_a abs">&nbsp;</em> 
+         <em class="wx_icon_em_b abs">&nbsp;</em> 
+         <em class="wx_icon_em_c abs">&nbsp;</em>
+        </div>
+       </div>
+       <div id="enter_shop_txt" class="abs">
+        进入店铺 
+       </div>
+      </div></a>
+    </section>
+    <section id="item_detail">
+     <div id="detail_wrap">
+      <h3 class="i_title">商品详情</h3>
+      <div id="video_wrap" class="hide">
+       &nbsp;
+      </div>
+      <img src="http://wd.geilicdn.com/vshop166971282-1412830701-1.jpg?w=480&amp;h=0" width="100%" />
+     </div>
+     <a href="http://wd.koudai.com/others/campaignLt/info.html" class="c_txt for_gaq hide" data-for-gaq="我也要卖“柳桃”" id="liutao" style="padding:10px;background:#fff"><span style="background:#ff7b00;display:block;width:90%;height:40px;line-height:40px;margin:0 auto;border-radius:10px;color:#fff">我也要卖“柳桃”</span></a>
+     <a href="http://www.vdian.com/weidian_offical_PC/?from=iWantItem" target="_blank" id="iWantAShop" class="block c_txt for_gaq" data-for-gaq="详情页－我也要开微店" style="margin-top: 40px;">我也要开微店<span id="doReport1" style="position: absolute; right: 15px;"></span></a>
+     <a style="padding-right: 15px; float: right; margin-top: -40px;" href="/others/report/index.html?itemID=279820085">举报</a>
+    </section>
+   </div>
+  </div>
+  <div id="noItem" class="hide">
+   <header id="common_hd_none" class="c_txt">
+    <a id="hd_back_none" class="abs comm_p8" href="/?userid=166971282">返回</a> 
+    <a id="common_hd_logo" class="t_hide abs" href="http://vdian.com">微店</a>
+    <h1 class="hd_tle bold">商品详情</h1>
+   </header>
+   <div id="noItemShow" class="c_txt">
+    你访问的商品已下架。
+   </div>
+  </div>
+  <div id="cps_wrap" class="fix hide"></div>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!--script type="text/javascript" src="js/H5_Base.js"></script>-->
+
+
+  <!--<a id="enter_im" href="http://im.koudai.com/chat/?from_platform=h&amp;from_user_id=1412837924481_5457846662029624&amp;to_platform=a&amp;to_user_id=166971282&amp;kduss=&amp;im_enter=item&amp;im_item_id=279820085" class="fix" style="-webkit-transition: opacity 200ms ease; transition: opacity 200ms ease; opacity: 1; display: block;">
+   <div id="to_user_list">
+    <div id="to_user_list_icon_div" class="rel left">
+     <em class="to_user_list_icon_em_a abs">&nbsp;</em>
+     <em class="to_user_list_icon_em_b abs">&nbsp;</em>
+     <em class="to_user_list_icon_em_c abs">&nbsp;</em>
+     <em class="to_user_list_icon_em_d abs">&nbsp;</em>
+     <em id="to_user_list_icon_em_num" class="hide abs">0</em>
+    </div>
+    <p id="to_user_list_txt" class="left">联系卖家</p>
+   </div></a>-->
+  <footer id="toolbar" style="-webkit-transition: opacity 200ms ease; transition: opacity 200ms ease; opacity: 1; display: block;">
+   <ul id="footermenu"> 
+    <li id="ftm-search"> <a class="tb_serch_toggle"></a></li> 
+    <li id="ftm-classes" class="rel">
+     <div id="ftm-icon-classes-txt" class="inline_b">
+      商品分类
+     </div> 
+     <div id="ftm-classes-div" class="abs wrap">
+      <ul id="ftm-classes-child"></ul>
+      <em id="ftm-classes-child-icon-a" class="abs">&nbsp;</em> 
+      <em id="ftm-classes-child-icon-b" class="abs">&nbsp;</em>
+     </div> </li> 
+    <li id="ftm-user">
+     <div class="inline_b">
+      我的微店
+     </div></li> 
+    <li id="ftm-scart">
+     <div class="inline_b rel">
+      购物车
+      <div id="cart-count" style="display: none">
+       0
+      </div>
+     </div></li> 
+   </ul>
+      <script  type="text/javascript" >
+          M = {
+          getCookie: function(a) {
+          var b = document.cookie.indexOf(a + "="),
+          c = document.cookie.indexOf(";", b);
+          return - 1 == b ? "": unescape(document.cookie.substring(b + a.length + 1, c > b ? c: document.cookie.length))
+          },
+          setCookie: function(a, b, c) {
+          var d = new Date;
+          d.setTime(d.getTime() + 2592e6);
+          var e = "; path=/" + ( - 1 != document.domain.indexOf("vdian.com") ? "; domain=vdian.com": -1 != document.domain.indexOf("koudai.com") ? "; domain=koudai.com": "");
+          if ("object" == typeof a) for (var f in a) {
+          var g = escape(f) + "=" + escape(a[f]);
+          document.cookie = g + "; expires=" + d.toGMTString() + e
+          } else {
+          var g = escape(a) + "=" + escape(b);
+          document.cookie = g + (c ? "": "; expires=" + d.toGMTString()) + e
+          }
+          },
+          delCookie: function(a) {
+          var b = "; path=/" + ( - 1 != document.domain.indexOf("vdian.com") ? "; domain=vdian.com": -1 != document.domain.indexOf("koudai.com") ? "; domain=koudai.com": "");
+          document.cookie = escape(a) + "=; expires=" + new Date(0).toUTCString() + b
+          },
+          clearCookie: function() {
+          var a = document.cookie.match(/[^ =;]+(?=\=)/g);
+          if (a) for (var b = a.length,
+          c = b; c--;) M.delCookie(a[c])
+          },
+          _confirm: function(a, b, c, d, e) {
+          var f = document,
+          g = f.createElement("div");
+          g.setAttribute("id", "_confirm_bg"),
+          f.body.appendChild(g);
+          var h = f.createElement("div");
+          h.setAttribute("id", "_confirm_content"),
+          g.appendChild(h);
+          var i = $("#_confirm_content"),
+          j = "";
+          j = j + "<p>" + a + "</p>",
+          j += "<div id='_confirm_btnW'>",
+          c && c[0] ? (j = j + "<div id='_confirm_btnA' class='" + b[1] + "'>" + b[0] + "</div>", j = j + "<div id='_confirm_btnB' class='" + c[1] + "'>" + c[0] + "</div>") : j = j + "<div id='_confirm_btnA' class='" + b[1] + "' style='width:100%;border-right:none'>" + b[0] + "</div>",
+          j += "</div>",
+          i.html(j).fadeIn(),
+          $("#_confirm_btnA").bind("click",
+          function() {
+          e && e(),
+          i.fadeOut(),
+          $("#_confirm_bg").fadeOut(function() {
+          $(this).remove()
+          })
+          }),
+          c && c[0] && $("#_confirm_btnB").bind("click",
+          function() {
+          d && d(),
+          i.fadeOut(),
+          $("#_confirm_bg").fadeOut(function() {
+          $(this).remove()
+          })
+          })
+          },
+          updateCartNum : function(num){
+          if($('#cart-count')){
+          if(isNaN(num))num = 0;
+          var curNum = parseInt($('#cart-count').html());
+          num += curNum;
+          if(num>0){
+          $('#cart-count').css({'display':'inline-block'});
+          $('#cart-count').html(num);
+          }else{
+          $('#cart-count').hide().html(0);
+          }
+          }
+          },
+          _alert: function(a, b, c) {
+          function d(a) {
+          c ? b && b() : setTimeout(function() {
+          a.fadeOut(function() {
+          a.parent().fadeOut(function() {
+          $(this).remove()
+          }),
+          b && b()
+          })
+          },
+          1500)
+          }
+          //if ($("#_alert_bg").length) $("#_alert_content").html(a),d($("#_alert_content"));
+          if ($("#_alert_bg").length) $("#_alert_content").html(a),d($("#_alert_content"));
+          else {
+          var e = window.top.document,
+          f = e.createElement("div");
+          f.setAttribute("id", "_alert_bg"),
+          e.body.appendChild(f);
+          var g = e.createElement("div");
+          g.setAttribute("id", "_alert_content"),
+          f.appendChild(g),
+          $(g).html(a).fadeIn(function() {
+          d($(this))
+          })
+          }
+          }
+          }
+
+          var cart_count = M.getCookie("WD_i") ? M.getCookie("WD_i").split("|").length : 0;
+          if(cart_count>0){
+          cartStr = M.updateCartNum&& M.updateCartNum(cart_count);
+          }
+          $("#add_cart").bind("click",
+          function() {
+          M.updateCartNum(1)
+          var t = Number($("#item_num").val());
+          var i = Number($("#item_num").val());
+          var r = "WD_" + i;
+          Number(M.getCookie(r)) ? M._alert("商品已在购物车咯") :
+          ("function" == typeof M.updateCartNum && M.updateCartNum(1), M.setCookie("WD_c_l", Number(M.getCookie("WD_c_l")) + t), M.setCookie(r, t), M.setCookie("WD_i", M.getCookie("WD_i") ? M.getCookie("WD_i") + "|" + i: i), M._confirm("已添加购物车", ["再逛逛", ""], ["去结算", ""],
+          function() {
+          location.href = "/" + M.cartUrl() + "?umk=" + Item.sellerID
+          }))
+          });
+          $("#buy_now").bind("click",
+          function() {
+          location.href = "cart"
+
+          });
+          $("#my_cart").bind("click",
+          function() {
+          location.href = "cart"
+
+          });
+
+      </script>
+  </footer>
+ </body>
+</html>
