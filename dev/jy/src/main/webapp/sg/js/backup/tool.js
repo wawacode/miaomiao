@@ -57,7 +57,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
 
             $scope.signStatasMessage = undefined;
 
-            $http.get('query', {params: {staff_name: $scope.user.name, staff_phone: $scope.user.phone, staff_pwd: $scope.user.password ,from:0 , offset:100}}).
+            $http.get('query', {params: {staff_name: $scope.user.name, staff_phone: $scope.user.phone, staff_pwd: $scope.user.password, from: 0, offset: 100}}).
                 success(function (data, status, headers, config) {
 
                     $ionicLoading.hide();
@@ -71,7 +71,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                     var customInfo = data.data;
                     for (var item_idx = 0; item_idx < customInfo.length; item_idx++) {
                         var item = customInfo[item_idx];
-                        item.shop_online_url = location.origin +'/sg/loading#/shop?shop_id=' + item.shop_id;
+                        item.shop_online_url = location.origin + '/sg/loading#/shop?shop_id=' + item.shop_id;
                     }
                     // save code
                     localStorageService.set('user', $scope.user);
@@ -109,9 +109,9 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
 
         }
 
-        $timeout(function(){
+        $timeout(function () {
             initialize();
-        },1000);
+        }, 1000);
 
         $scope.centerOnMe = function () {
             if (!$scope.map) {
@@ -162,7 +162,11 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                 'shop_address': $scope.info.shop_address,
                 'shop_print': $scope.info.shop_print,
                 'shop_lat': $scope.info.shop_lat,
-                'shop_lng': $scope.info.shop_lng
+                'shop_lng': $scope.info.shop_lng,
+
+                'shop_openTime': $scope.info.shop_openTime,
+                'shop_closeTime': $scope.info.shop_closeTime,
+                'shop_basePrice': $scope.info.shop_basePrice
             };
 
             $scope.submitHasError = false;
@@ -203,14 +207,14 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
             $http.get('commit', {params: _info}).
                 success(function (data, status, headers, config) {
                     $ionicLoading.hide();
-                    if(data.code != 0){
+                    if (data.code != 0) {
                         $scope.newShopURL = undefined;
                         $scope.newShopStatus = '创建店铺失败: ' + data.msg;
-                    }else{
+                    } else {
                         $scope.newShopURL = data.url;
                         $scope.newShopStatus = '创建店铺成功';
                     }
-                    localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status':$scope.newShopStatus});
+                    localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status': $scope.newShopStatus});
 
                     $state.go('newshop');
                 }).
@@ -218,15 +222,15 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                     $ionicLoading.hide();
                     $scope.newShopURL = undefined;
                     $scope.newShopStatus = '创建店铺失败: ' + data;
-                    localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status':$scope.newShopStatus});
+                    localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status': $scope.newShopStatus});
                     $state.go('newshop');
                 });
         }
-    }).controller('MyTabCtrl', function ($scope, $ionicLoading, $compile, $http, $state, localStorageService) {
+    }).controller('MyTabCtrl',function ($scope, $ionicLoading, $compile, $http, $state, localStorageService) {
 
         $scope.user = localStorageService.get('user') || {};
         $scope.myCustomersInfo = localStorageService.get('customersInfo') || {};
-        $scope.doRefresh = function(){
+        $scope.doRefresh = function () {
 
         }
     }).controller('NewShopCtrl', function ($scope, $ionicLoading, $compile, $http, $state, localStorageService) {
@@ -234,17 +238,17 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
         $scope.shopInfo = localStorageService.get('MMMETA_shopInfo') || {};
 
         $scope.info = {};
-        $scope.info.newShopURL =  location.origin + $scope.shopInfo.url;
-        $scope.info.newShopStatus =  $scope.shopInfo.status;
+        $scope.info.newShopURL = location.origin + $scope.shopInfo.url;
+        $scope.info.newShopStatus = $scope.shopInfo.status;
 
-        $scope.$on('$ionicView.afterEnter', function(){
-            $timeout(function(){
+        $scope.$on('$ionicView.afterEnter', function () {
+            $timeout(function () {
 
                 $scope.shopInfo = localStorageService.get('MMMETA_shopInfo') || {};
-                $scope.info.newShopURL =  location.origin + $scope.shopInfo.url;
-                $scope.info.newShopStatus =  $scope.shopInfo.status;
-                
-            },100);
+                $scope.info.newShopURL = location.origin + $scope.shopInfo.url;
+                $scope.info.newShopStatus = $scope.shopInfo.status;
+
+            }, 100);
         });
 
     });

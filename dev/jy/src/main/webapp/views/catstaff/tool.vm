@@ -116,17 +116,21 @@
                     </label>
                     <label class="item">
                         <div class="list">
-                            <span class="input-label"><span class="necessary">*</span>营业时间:</span>
+                            <span class="input-label"><span class="necessary">*</span>营业时间</span>
                             <label class="item item-input">
-                                <span class="input-label"><span class="necessary">*</span>开始时间:</span>
-                                <input type="text" ng-model="info.shop_openTime" placeholder="" required>
+                                <span class="input-label"><span class="necessary">*</span>开店时间:</span>
+                                <input type="text" ng-model="info.shop_openTime" placeholder="8:00 AM" required>
                             </label>
                             <label class="item item-input">
-                                <span class="input-label"><span class="necessary">*</span>结束时间:</span>
-                                <input type="text" ng-model="info.shop_CloseTime" required>
+                                <span class="input-label"><span class="necessary">*</span>打烊时间:</span>
+                                <input type="text" ng-model="info.shop_closeTime" placeholder="10:00 PM" required>
                             </label>
                         </div>
 
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>起送价格:</span>
+                        <input type="text" ng-model="info.shop_basePrice" placeholder="30" required>
                     </label>
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店长电话:</span>
