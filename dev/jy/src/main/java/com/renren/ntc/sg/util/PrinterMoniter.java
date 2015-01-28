@@ -50,17 +50,18 @@ public class PrinterMoniter {
           if (null == device ){
               String  message = "{shop_name} 打印机状态异常";
               message = message.replace("{shop_name}",shop.getName()) ;
-              smsService.send( message , TID , MONITERPHONE);
+              toSend(message , TID , MONITERPHONE,smsService);
           }
           if(ofline(device.getUpdate_time())) {
              String  message = "{shop_name} 打印机离线";
              message = message.replace("{shop_name}",shop.getName()) ;
-             smsService.send( message , TID , MONITERPHONE);
+              toSend(message , TID , MONITERPHONE,smsService);
+
           }
        }
 
 	}
-    private static void toSend(String message ,String tid , String phone){
+    private static void toSend(String message ,String tid , String phone,SMSService smsService){
         MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
         DBCollection coll = mongoDBUtil.getCollectionforcache();
         Date date =  new Date();
@@ -70,24 +71,24 @@ public class PrinterMoniter {
         String key = message + "#" + phone +"#"+ dat;
         BasicDBObject query = new BasicDBObject();
         query.put("key", key);
-        BasicDBObject foj = new BasicDBObject("key", "12323");
-        coll.update(query,foj);
-
         DBCursor cur = coll.find(query);
-        BasicDBObject boj = null;
-
         if (cur.hasNext()) {
-            boj = (BasicDBObject) cur.next();
-            System.out.println(boj.toString());
+            //今天已经发送过了
+            LoggerUtils.getInstance().log(String.format("allready push sms % s " ,key));
+            return ;
         }
-
-
+        //add to DB
+        BasicDBObject foj = new BasicDBObject("msg", message);
+        coll.update(query,foj);
+        smsService.send( message , tid , phone);
     }
+
     private static boolean ofline(Date update_time) {
         long now = System.currentTimeMillis();
         long uptime = update_time.getTime();
         long diff =  ( now - uptime);
         return diff > (1000*60*5) ;
     }
+
 
 }
