@@ -10,10 +10,6 @@
     <title>Dashboard Template for Bootstrap</title>
     <!-- Bootstrap core CSS -->
     <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-	a { text-decoration:none;}
-	#preview { position:absolute; border:1px solid #ccc; background:#333; padding:5px; display:none; color:#fff; }
-	</style>
 </head>
 
 <body>
@@ -73,6 +69,7 @@
                         <th>排序</th>
                         <th>库存</th>
                         <th>零售价</th>
+                        <th>预览图片</th>
                         <th>图片</th>
                         <th>上传本地图片操作</th>
                     </tr>
@@ -86,7 +83,8 @@
                         <td class="edit" id="e-${item.shop_id}-score-$item.id">$item.score</td>
                         <td class="edit" id="e-${item.shop_id}-count-$item.id">$item.count</td>
                         <td class="edit" id="e-${item.shop_id}-price-$item.id">$item.price</td>
-                        <td class="edit" id="e-${item.shop_id}-pic_url-$item.id"><a href="$item.pic_url" class="preview"> #if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end </a></td>
+                        <td ><a href="$item.pic_url">预览商品</a></td>
+                        <td class="edit" id="e-${item.shop_id}-pic_url-$item.id">#if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end</td>
                     	<td>
                     	<form class="form-horizontal" method="post"  enctype="multipart/form-data"  action="/console/shop/uploadPic">
                     	<input name="shop_id" style="display:none" value="${item.shop_id}">
@@ -94,7 +92,7 @@
                     	<input name="serialNo" style="display:none" value="${item.serialNo}">
                     	<input name="categoryId" style="display:none" value="${item.categoryId}">
                     	<input type="file" id="${item.id}-inputfile" name="pic" onChange="fileChange(this);">
-                    	<button type="submit" class="form-add" data-id="${item.id}-inputfile" >添加</button>
+                    	<button type="submit" class="form-add" data-id="${item.id}-inputfile" >提交</button>
                     	</form>
                     	</td>
                     	<td><button type="button" class="btn btn-danger" data-id="${item.id}" data-shopid="${item.shop_id}"><a>删除</a></button></td>
@@ -125,38 +123,7 @@
 <script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
 <script type="text/javascript">
-this.imagePreview = function(){	
-	/* CONFIG */
-		
-		xOffset = 10;
-		yOffset = 30;
-		
-		// these 2 variable determine popup's distance from the cursor
-		// you might want to adjust to get the right result
-		
-	/* END CONFIG */
-	$("a.preview").hover(function(e){
-		this.t = this.title;
-		this.title = "";	
-		var c = (this.t != "") ? "<br/>" + this.t : "";
-		$("body").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' />"+ c +"</p>");								 
-		$("#preview")
-			.css("top",(e.pageY - xOffset) + "px")
-			.css("left",(e.pageX + yOffset) + "px")
-			.fadeIn("fast");						
-    },
-	function(){
-		this.title = this.t;	
-		$("#preview").remove();
-    });	
-	$("a.preview").mousemove(function(e){
-		$("#preview")
-			.css("top",(e.pageY - xOffset) + "px")
-			.css("left",(e.pageX + yOffset) + "px");
-	});			
-};
     $(document).ready(function() {
-    imagePreview();
     $('.edit').editable('/console/shop/ud',{
     tooltip : 'Click to edit...',
     callback : function(value, settings) {
