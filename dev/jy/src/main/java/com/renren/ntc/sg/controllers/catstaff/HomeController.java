@@ -48,12 +48,17 @@ public class HomeController {
     public String index(Invocation inv, @Param("staff_phone") String staff_phone,
                         @Param("staff_name") String staff_name, @Param("staff_pwd") String staff_pwd,
                         @Param("shop_name") String shop_name,
+                        @Param("base_price") String base_price,
+                        @Param("open_time") String open_time,
+                        @Param("close_time") String close_time,
                         @Param("shop_owner_phone") String shop_owner_phone,
                         @Param("shop_address") String shop_address,
                         @Param("shop_tel") String shop_tel,
                         @Param("shop_print") String shop_print,
                         @Param("shop_lat") double shop_lat,
                         @Param("shop_lng") double shop_lng) {
+
+        LoggerUtils.getInstance().log(String.format("ext info  %s ,%s , %s ,%s ",staff_phone ,base_price,open_time,close_time));
 
         if (!legal(staff_phone, staff_name, staff_pwd)) {
             return "@" + Constants.PARATERERROR;
