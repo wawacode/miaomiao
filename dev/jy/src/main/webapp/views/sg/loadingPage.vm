@@ -51,13 +51,15 @@
 
 <ion-nav-view></ion-nav-view>
 
-<!--<script type="text/javascript">-->
-    <!--document.body.addEventListener('touchmove', function(evt) {-->
-        <!--//In this case, the default behavior is scrolling the body, which-->
-        <!--//would result in an overflow.  Since we don't want that, we preventDefault.-->
-        <!--evt.preventDefault();-->
-    <!--})-->
-<!--</script>-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?39973e3981da4da56b413e225a122b0f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 
 </body>
 </html>

@@ -1,0 +1,4 @@
+每日订单的脚本
+先把当前的工程打一个线上的war
+crontab:
+38 0 * * * /bin/bash report.sh
