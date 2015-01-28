@@ -60,7 +60,6 @@ angular.module('miaomiao.shop')
 
             }, function (data, status) {
                 $ionicLoading.hide();
-                $scope.info.showAddNewAddress = true;
             });
         }
 

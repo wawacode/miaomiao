@@ -1,7 +1,10 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('FrontPageCtrl', function($scope, HNFirebase, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate) {
-        $scope.pageName = '首页';
+    .controller('OrderCtrl', function($scope, HNFirebase, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate) {
+        // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
+        // but the purpose of this app is to be an example to people getting started with angular and ionic.
+        // Therefore we err on repeating logic and being verbose
+        $scope.pageName = '订单';
         cfpLoadingBar.start();
 
         // just kicking the tires
@@ -27,5 +30,5 @@ angular.module('miaomiao.console.controllers')
                 $scope.timesUp = true;
             }
         },5000);
+    })
 
-    });
