@@ -237,6 +237,15 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
         $scope.info.newShopURL =  location.origin + $scope.shopInfo.url;
         $scope.info.newShopStatus =  $scope.shopInfo.status;
 
+        $scope.$on('$ionicView.afterEnter', function(){
+            $timeout(function(){
+
+                $scope.shopInfo = localStorageService.get('MMMETA_shopInfo') || {};
+                $scope.info.newShopURL =  location.origin + $scope.shopInfo.url;
+                $scope.info.newShopStatus =  $scope.shopInfo.status;
+                
+            },100);
+        });
 
     });
 
