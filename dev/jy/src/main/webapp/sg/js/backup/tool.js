@@ -210,7 +210,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                         $scope.newShopURL = data.url;
                         $scope.newShopStatus = '创建店铺成功';
                     }
-                    localStorageService.set('shopInfo', {'url': $scope.newShopURL, 'status':$scope.newShopStatus});
+                    localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status':$scope.newShopStatus});
 
                     $state.go('newshop');
                 }).
@@ -218,6 +218,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                     $ionicLoading.hide();
                     $scope.newShopURL = undefined;
                     $scope.newShopStatus = '创建店铺失败: ' + data;
+                    localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status':$scope.newShopStatus});
                     $state.go('newshop');
                 });
         }
@@ -230,10 +231,11 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
         }
     }).controller('NewShopCtrl', function ($scope, $ionicLoading, $compile, $http, $state, localStorageService) {
 
-        $scope.shopInfo = localStorageService.get('shopInfo') || {};
+        $scope.shopInfo = localStorageService.get('MMMETA_shopInfo') || {};
 
-        $scope.newShopURL =  location.origin + $scope.shopInfo.url;
-        $scope.newShopStatus =  $scope.shopInfo.status;
+        $scope.info = {};
+        $scope.info.newShopURL =  location.origin + $scope.shopInfo.url;
+        $scope.info.newShopStatus =  $scope.shopInfo.status;
 
 
     });
