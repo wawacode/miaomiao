@@ -13,7 +13,7 @@ angular.module('miaomiao.console.controllers')
 
         $scope.getSummaryInfo = function(success, fail){
 
-            httpClient.getSummary($scope.info.shop.id, null,null, function (data, status) {
+            httpClient.getSummary($scope.info.shop.id, '', '', function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
