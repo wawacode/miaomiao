@@ -267,7 +267,6 @@
 
 .shopItemStatusOpen {
     display: inline-block;
-    float: right;
     font-size: 14px;
     color: #ffffff;
     background-color: #ef5356;
@@ -277,7 +276,6 @@
 
 .shopItemStatusClosed {
     display: inline-block;
-    float: right;
     font-size: 14px;
     color: #ffffff;
     background-color: #a6a6a6;

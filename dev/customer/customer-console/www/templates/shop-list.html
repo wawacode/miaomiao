@@ -1,7 +1,7 @@
 <ion-modal-view>
 
     <ion-header-bar class="bar bar-header bar-dark">
-        <h1 class="title">切换地铺</h1>
+        <h1 class="title">管理店铺</h1>
         <button class="button button-clear button-primary" ng-click="closeModal()">取消</button>
     </ion-header-bar>
 
@@ -20,6 +20,11 @@
                     <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
                         {{item.status | getShopStatusString }}
                     </div>
+
+                    <div style="display: inline-block;float: right" ng-click="editShop(item)">
+                        <button class="positive button button-icon ion-settings">编辑</button>
+                    </div>
+
                 </div>
 
                 <div style="margin-top: 12px;color: #6a6a6a">
@@ -44,6 +49,52 @@
                            style="font-size: 15px;margin-right: 9px;color: lightgray"></i>{{item.shop_address}}
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="list" ng-show="editingShop">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">店名:</span>
+                <input type="text" value="{{editingShop.name}}">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">起送价格(元):</span>
+                <input type="text" value="{{editingShop.base_price}}">
+            </label>
+
+            <label class="item item-input-inset item-stacked-label">
+                <div class="list">
+                    <span class="input-label assertive">营业时间</span>
+                    <label class="item item-input" style="border: none">
+                        <span class="input-label">开店时间:</span>
+                        <input type="text" value="{{editingShop.open_time | date :'shortTime'}}" placeholder="8:00 AM" required>
+                    </label>
+                    <label class="item item-input" style="border: none">
+                        <span class="input-label">打烊时间:</span>
+                        <input type="text" value="{{editingShop.close_time | date :'shortTime'}}" placeholder="10:00 PM" required>
+                    </label>
+                </div>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label assertive">
+                    管理:
+                </div>
+                <select>
+                    <option selected>正在营业</option>
+                    <option>打烊</option>
+                </select>
+            </label>
+
+            <div class="item tabs tabs-icon-left tabs-light">
+                <a class="tab-item positive" ng-click="cancelEditShop()">
+                    <i class="icon ion-close-circled"></i>
+                    取消
+                </a>
+
+                <a class="tab-item positive" ng-click="saveShop(editingShop)">
+                    <i class="icon ion-checkmark-circled"></i>
+                    保存
+                </a>
             </div>
         </div>
     </ion-content>

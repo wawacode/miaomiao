@@ -40,9 +40,19 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
         $scope.ShowShopList = function() {
             $scope.openModal();
         }
-        $scope.saveItem = function(item){
+
+        $scope.cancelEditShop = function(item){
             // TODO: compare and save
-            $scope.closeModal();
+            $scope.editingShop = null;
+        }
+
+        $scope.saveShop = function(item){
+            // TODO: compare and save
+            $scope.editingShop = null;
+        }
+
+        $scope.editShop = function(item){
+            $scope.editingShop = item;
         }
     }
 ]);
