@@ -96,4 +96,7 @@ public interface ItemsDAO {
     
     @SQL("update  ##(:tableName) set serialNo=:2,name=:3,category_id=:4,score=:5,count=:6,price=:7,update_time=now() where id =:8")
     public  int updateItemById(@SQLParam("tableName") String tableName,String serialNo, String name,int category_id,int score,int count,int price,long id);
+    
+    @SQL("select count(1) from ##(:tableName)   where shop_id =:2")
+    public int getCountOfItemByShopId(@SQLParam("tableName") String tableName, long shop_id);
 }
