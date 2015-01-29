@@ -183,13 +183,40 @@ public class OrderController {
             return "@" + Constants.UKERROR;
         }
 
-        JSONObject response =  new JSONObject();
-        JSONObject data =  new JSONObject();
+
+        // 发送短信通知
+
+        //短信通知 地推人员
+        try {
+            String mobile = "";
+            byte[] t = null;
+            String info = "用户下单";
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
+            vv = vv.replaceAll("=", "").replaceAll("&", "");
+            String ro = info.replace("=", "").replace("&", "");
+            float p = (float) order.getPrice() / 100;
+            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            CatStaffCommit catStaffCommit = catStaffCommitDao.getbyShopid(shop_id);
+            if (catStaffCommit != null) {
+                String sphone = catStaffCommit.getPhone();
+                String url = SUtils.forURL(SMSURL, APPKEY, TID, sphone, message);
+                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, order.getOrder_id(), url));
+                t = SHttpClient.getURLData(url, "");
+                String r = SUtils.toString(t);
+                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, mobile, url));
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        JSONObject response = new JSONObject();
+        JSONObject data = new JSONObject();
         response.put("data", data);
         response.put("code", 0);
-        return "@" +  Constants.DONE;
-        // 发送短信通知
-//        return "r:/sg/user/profile?shop_id=" + shop_id;
+        return "@" + Constants.DONE;
     }
 
 
