@@ -200,4 +200,63 @@
     border-color: darkgrey; }
 
 
+.order-item {
+    margin: 9px;
+    border: solid 1px lightgray;
+    border-radius: 2px
+}
 
+.orderSnapshot {
+    display: inline-block;
+    width: 100%
+}
+
+.orderSnapshotItem {
+    float: left
+}
+
+.orderSnapshotCount {
+    float: right;
+    padding-right: 6px;
+    font-weight: bold;
+}
+
+.orderSnapshotTotal {
+
+    display: block;
+    width: 100%;
+    text-align: right;
+    margin-top: 20px;
+    padding-right: 6px;
+}
+
+.orderSnapshotCountNumber {
+    font-size: 14px;
+    margin-left: 2px;
+    font-weight: 100;
+    color: #808080;
+}
+
+.orderDate {
+    float: left;
+    padding: 0.8em;
+}
+
+.orderStatus {
+
+    float: right;
+    color: #ffffff;
+    background-color: #F54447;
+    text-shadow: none;
+    padding: 2px 10px 2px 10px;
+    font-size: 18px;
+    margin-top: 9px;
+}
+
+.orderRemarks {
+    background-color: lightgray;
+    text-shadow: none;
+    font-size: 14px;
+    padding-left: 10px;
+    border-radius: 5px
+}

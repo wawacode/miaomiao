@@ -93,7 +93,7 @@ angular.module('miaomiao.console', [
                         $ionicDeploy.extract().then(function () {
                             console.log('update extracted, loading');
                             // Load the updated version
-                            $ionicTrack.load();
+//                            $ionicTrack.load();
                         }, function (error) {
                             console.log('error extracting');
                             // Error extracting
@@ -120,7 +120,7 @@ angular.module('miaomiao.console', [
         });
     })
 
-    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/sg/'})
+    .constant('serverInfo', {host: 'http://localhost:8010', context: '/sg/'})
 
     .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;
@@ -129,8 +129,6 @@ angular.module('miaomiao.console', [
         try {
             $ionicAppProvider.identify({
                 "app_id": ionic.Config.app_id
-//                ,
-//                "api_write_key": ionic.Config.api_write_key
             });
         } catch (e) {
             console.error('ionic.Config not set. Make sure config.js is loaded', e)
