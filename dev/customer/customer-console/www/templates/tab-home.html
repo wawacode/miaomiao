@@ -1,32 +1,53 @@
-<ion-view title="{{pageName}}">
-    <ion-content class="has-header" delegate-handle="mainScroll">
-        <ion-list>
-            <ion-item class="post-list"
-                      collection-repeat="post in posts"
-                      collection-item-width="'100%'"
-                      collection-item-height="92"
-                      ng-class="post.points > 0?'item-icon-right':''"
-                      ng-show="post.title.length"
-                      fp-share
-                      ng-click="open(post.url)">
+<ion-view>
 
-                <a class="ion-chatbubble icon light"
-                   ng-click="loadComments(post.id, post.kids.length, $event)"
-                   ng-hide="post.type != 'story'">
-                    {{post.kids.length || 0}}
-                </a>
-                <h2>{{post.title}}</h2>
-                <p>
-                    <span ng-if="post.score">{{post.score}} points &nbsp;</span>
-                    {{post.time | timeAgo}} &nbsp;
-                    {{post.by}}
-                </p>
-            </ion-item>
-            <ion-item class="padding text-center" ng-if="!posts && timesUp">
-                <h3>Request Failed</h3>
-                <small>Check that you are online. If you are, the server may be offline.</small>
-            </ion-item>
-        </ion-list>
-        <ion-infinite-scroll ng-if="loadMore" on-infinite="loadMore()" distance="5%" icon=""></ion-infinite-scroll>
+    <ion-nav-bar class="bar-dark">
+        <ion-nav-buttons side="left">
+            <button class="button button-icon ion-ios7-person"
+                    ng-click=""></button>
+        </ion-nav-buttons>
+        <ion-nav-title ng-click="switchShop()">
+            {{info.shopName}} <i class="icon ion-chevron-down" style=" font-size: 15px !important"></i>
+        </ion-nav-title>
+    </ion-nav-bar>
+
+    <ion-content delegate-handle="mainScroll"
+                 padding="false"
+                 has-tabs="false"
+                 has-header="false"
+                 scroll="true">
+
+        <ul class="list">
+
+            <div class="item item-divider">
+                商品
+            </div>
+
+            <a class="item item-icon-left" href="#/tab/product">
+                <i class="icon ion-ios7-paper balanced"></i>
+                商品总数
+                <span class="badge badge-assertive">0</span>
+            </a>
+            <a class="item item-icon-left" href="#/tab/product">
+                <i class="icon ion-navicon-round balanced"></i>
+                商品总分类数
+                <span class="badge badge-assertive">0</span>
+            </a>
+
+            <div class="item item-divider">
+                订单
+            </div>
+
+            <a class="item item-icon-left" href="#/tab/order">
+                <i class="icon ion-stats-bars balanced"></i>
+                订单总数
+                <span class="badge badge-assertive">0</span>
+            </a>
+            <a class="item item-icon-left" href="#/tab/order">
+                <i class="icon ion-arrow-graph-up-right balanced"></i>
+                订单总收入
+                <span class="badge badge-assertive">0</span>
+            </a>
+        </ul>
+
     </ion-content>
 </ion-view>

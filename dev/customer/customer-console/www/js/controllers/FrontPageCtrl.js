@@ -2,6 +2,10 @@ angular.module('miaomiao.console.controllers')
 
     .controller('FrontPageCtrl', function($scope, HNFirebase, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate) {
         $scope.pageName = '首页';
+        $scope.info = {};
+
+        $scope.info.shopName = "首页";
+
         cfpLoadingBar.start();
 
         // just kicking the tires

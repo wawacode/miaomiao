@@ -217,11 +217,14 @@ public class WXHttpClient {
         }
         e = new String(t);
             System.out.println(e);
-        JSONObject  ticket =(JSONObject) JSONObject.parse(e);
-        String tkt =    ticket.getString("ticket");
+           JSONObject  ticket =(JSONObject) JSONObject.parse(e);
+           String tkt =    ticket.getString("ticket");
+           String u =    ticket.getString("url");
+           u = u.replaceAll(":","#");
+            u = u.replaceAll("/","#");
            String TICKET = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={ticket}";
            String  tkturl =  TICKET.replace("{ticket}",tkt);
-           writeFile(tkturl,i+".jpg");
+           writeFile(tkturl,i+"_"+ u +".jpg");
         }
     }
 }

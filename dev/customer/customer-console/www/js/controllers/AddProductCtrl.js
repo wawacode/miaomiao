@@ -1,8 +1,8 @@
-angular.module('miaomiao.console.controllers').controller('ProductDetailCtrl', ['$scope', '$ionicModal',
+angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope', '$ionicModal',
 
     function ($scope, $ionicModal) {
 
-        $ionicModal.fromTemplateUrl('/templates/product-preview.html', {
+        $ionicModal.fromTemplateUrl('templates/product-addNew.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
@@ -33,9 +33,14 @@ angular.module('miaomiao.console.controllers').controller('ProductDetailCtrl', [
 
         });
 
-        $scope.showImage = function(item) {
-            $scope.imageSrc = item.pic_url;
+        $scope.AddItem = function(cateId) {
+            $scope.currentCateId = cateId;
+            $scope.item = {};
             $scope.openModal();
+        }
+        $scope.saveItem = function(item){
+            // TODO: compare and save
+            $scope.closeModal();
         }
     }
 ]);

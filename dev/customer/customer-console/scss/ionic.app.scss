@@ -114,24 +114,6 @@ form.item-input-inset{
     top:-10px;
   }
 }
-
-// list item styles
-.item{
-  margin: -1px 15px;
-  padding: 15px 0 15px 0;
-  border-right: none;
-  border-left: none;
-  @include calc(width, "100% - 30px");
-  text-overflow: clip;
-  white-space: normal;
-  border-bottom: none;
-  overflow: hidden;
-  overflow-x: hidden;
-  overflow-wrap: break-word;
-  &.post-list{
-    padding: 0 0 0 0;
-    height:92px
-  }
   h2{
     font-weight: 300;
     font-size:95%;
@@ -201,30 +183,7 @@ form.item-input-inset{
   }
 
 }
-.ion-chatbubble.light{
-  font-family: $font-family-sans-serif;
-  color:$stable;
-  -webkit-text-stroke: 0px transparent;
-  font-size: 14px;
-  width: 50px;
-  padding-top:29px;
-  text-align: center;
-  position:relative;
-  right:-5px;
-  display:block;
-  float:right;
-  height: 86px;
 
-  background:url('../img/comments-icon.png') 5px 19px no-repeat;
-
-  background-size:41px 41px;
-  &::before{
-    display:none;
-  }
-}
-ion-tabs{
-  overflow-x: hidden;
-}
 .bar .button.ion-ios7-arrow-back{
   font-size: 16px;
   padding: 0 16px 0 0;

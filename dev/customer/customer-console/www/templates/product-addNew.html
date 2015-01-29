@@ -1,0 +1,64 @@
+<ion-modal-view>
+
+    <ion-header-bar class="bar bar-header bar-dark">
+        <h1 class="title">添加新商品</h1>
+        <button class="button button-clear button-primary" ng-click="closeModal()">取消</button>
+    </ion-header-bar>
+
+    <ion-content padding="true"
+                 has-tabs="false"
+                 has-header="true"
+                 scroll="true"
+                 has-bouncing="true">
+
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">商品名称:</span>
+                <input type="text" value="{{item.name}}">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">条形码:</span>
+                <input type="text" value="{{item.serNo}}">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">价格(元):</span>
+                <input type="text" value="{{item.price}}">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">图片:</span>
+                <div class="positive">
+                    说明:请填写正确的条形码，喵喵会为您添加高质量图片
+                </div>
+            </label>
+
+            <label class="item item-input item-select">
+                <div class="input-label assertive">
+                    销售状态:
+                </div>
+                <select>
+                    <option selected>在售</option>
+                    <option>下架</option>
+                </select>
+            </label>
+        </div>
+
+    </ion-content>
+
+    <ion-footer-bar class="bar-light">
+        <div class="tabs tabs-icon-left tabs-light">
+            <a class="tab-item positive" ng-click="closeModal()">
+                <i class="icon ion-close-circled"></i>
+                取消
+            </a>
+
+            <a class="tab-item positive" ng-click="saveItem(item)">
+                <i class="icon ion-checkmark-circled"></i>
+                保存
+            </a>
+
+        </div>
+    </ion-footer-bar>
+
+</ion-modal-view>>
+
