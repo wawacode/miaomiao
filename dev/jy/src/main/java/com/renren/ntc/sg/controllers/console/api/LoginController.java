@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.console.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.annotations.DenyConsoleCommonAccess;
 import com.renren.ntc.sg.bean.RegistUser;
@@ -72,9 +73,12 @@ public class LoginController {
     @Get ("valid")
     @Post ("valid")
     public String Login(Invocation inv,@Param("phone") String phone,@Param("pwd") String pwd, @Param("origURL") String origURL) {
-        RegistUser user = hostHolder.getUser();
+    	JSONObject result = new JSONObject();
+    	result.put("code", -1);
+    	result.put("msg", "用户不存在");
+    	RegistUser user = hostHolder.getUser();
         if (user != null) {
-            return "r:" + origURL;
+            return "@" + result.toJSONString();
         }
         if (origURL == null || origURL.equals("")) {
             origURL = Constants.DOMAIN;
@@ -82,22 +86,26 @@ public class LoginController {
         try {
             origURL = URLEncoder.encode(origURL, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return "r:/";
+            return "@" + Constants.UKERROR;
         }
         inv.addModel("origURL", origURL);
         inv.addModel("msg", "");
         RegistUser u = userDAO.getUser(phone, pwd) ;
         if(null == u){
-            inv.addModel("msg","用户名字或密码不正确");
-            return "login";
+            result.put("code", -2);
+            result.put("msg", "用户名字或密码不正确");
+            return "@" + result.toJSONString();
         }
         Shop shop =  shopDAO.getShopbyOwner_id(u.getId());
         if (null == shop){
-            inv.addModel("msg","没有关联店铺");
-            return "login";
+        	result.put("code", -3);
+            result.put("msg", "没有店铺");
+            return "@" + result.toJSONString();
         }
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
-        return "r:/console/shop?shop_id=" + shop.getId()     ;
+        result.put("code", 0);
+        result.put("msg", "验证通过");
+        inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
+        return "@" + result.toJSONString();
     }
 }

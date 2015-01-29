@@ -1,22 +1,24 @@
 package com.renren.ntc.sg.interceptors;
 
-import com.renren.ntc.sg.annotations.DenyCommonAccess;
-import com.renren.ntc.sg.annotations.DenyConsoleCommonAccess;
-import com.renren.ntc.sg.bean.RegistUser;
-import com.renren.ntc.sg.biz.dao.RegistUserDAO;
-import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
-import com.renren.ntc.sg.service.LoggerUtils;
-import com.renren.ntc.sg.util.Constants;
-import com.renren.ntc.sg.util.CookieManager;
-import com.renren.ntc.sg.util.SUtils;
+import java.lang.annotation.Annotation;
+
 import net.paoding.rose.web.ControllerInterceptorAdapter;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Interceptor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.annotation.Annotation;
+import com.renren.ntc.sg.annotations.DenyConsoleCommonAccess;
+import com.renren.ntc.sg.bean.RegistUser;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.RegistUserDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.CookieManager;
+import com.renren.ntc.sg.util.SUtils;
 
 @Interceptor(oncePerRequest = true)
 public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter {
@@ -26,6 +28,9 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
 
     @Autowired
     private RegistUserDAO registUserDAO;
+    
+    @Autowired
+    private ShopDAO shopDAO;
 
 
     private static final Logger logger = LoggerFactory.getLogger(ConsoleAccessCommonInterceptor.class);
@@ -50,11 +55,23 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
             u = registUserDAO.getUser(SUtils.unwrapper(uuid));
             hostHolder.setUser(u);
         }
+        if(path.startsWith("/console/api/")){
+        	RegistUser user = hostHolder.getUser();
+    		if (user == null) {
+    			return "@json:" + Constants.PRERROR.replace("{msg}", "用户不存在");
+    		}
+    		long userId = user.getId();
+    		Shop shop =  shopDAO.getShopbyOwner_id(userId);
+    		if(shop == null){
+    			return "@json:" + Constants.PRERROR.replace("{msg}", "没有关联店铺");
+    		}
+    		inv.setAttribute("shop", shop);
+        }
         return true;
 	}
     
     protected Object after(Invocation inv, Object instruction) throws Exception {
-
+    	inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
         return instruction;
     }
 

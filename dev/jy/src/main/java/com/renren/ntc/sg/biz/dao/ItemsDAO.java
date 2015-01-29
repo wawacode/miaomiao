@@ -90,4 +90,10 @@ public interface ItemsDAO {
     
     @SQL("update  ##(:tableName) set pic_url=:2 where id =:3")
     public  int updateByItemId(@SQLParam("tableName") String tableName,String picUrl, long id);
+
+    @SQL("update  ##(:tableName) set serialNo=:2,name=:3,category_id=:4,score=:5,count=:6,price=:7,update_time=now(),pic_url=:9 where id =:8")
+    public  int updateItemById(@SQLParam("tableName") String tableName,String serialNo, String name,int category_id,int score,int count,int price,long id,String picUrl);
+    
+    @SQL("update  ##(:tableName) set serialNo=:2,name=:3,category_id=:4,score=:5,count=:6,price=:7,update_time=now() where id =:8")
+    public  int updateItemById(@SQLParam("tableName") String tableName,String serialNo, String name,int category_id,int score,int count,int price,long id);
 }
