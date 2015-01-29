@@ -34,6 +34,11 @@ miaomiao.factory('httpClient', ['$http','serverInfo', function ($http,serverInfo
 
     return {
 
+        login:function(phone,pwd, success, fail){
+
+            doPost('login/valid',{'phone': phone, pwd: pwd},success, fail);
+        },
+
         getProductList: function (shopId, success, fail) {
 
             return success(testdata.productInfo);
@@ -48,53 +53,25 @@ miaomiao.factory('httpClient', ['$http','serverInfo', function ($http,serverInfo
                 "&category_id=" + cateId + "&from=" + from +
                 "&offset=" + offset, success, fail);
         },
-        getAddressList: function (shopId, success, fail) {
-            doGet('address', 'shop_id=' + shopId, success, fail);
-        },
 
-        setDefaultAddress: function (shopId, addr, success, fail) {
-
-            doPost('address/default?shop_id=' + shopId,
-                {'address_id': addr.id,
-                    'address': addr.address, 'phone': addr.phone},
-                success, fail);
-
-        },
-
-        addAddress: function (shopId, addr, success, fail) {
-
-            doPost('address/add?shop_id=' + shopId,
-                { 'address': addr.address, 'phone': addr.phone },
-                success, fail);
-
-        },
-
-        getConfirmCartList: function (shopId, items, success, fail) {
-            doPost('shopCar/confirm?shop_id=' + shopId, {'items': JSON.stringify(items)}, success, fail);
-        },
-        getOrderSave: function (shopId, addressId, address, phone, remarks, items, orderId, success, fail) {
-            doPost('order/save?shop_id=' + shopId,
-                {'items': JSON.stringify(items), 'address_id': addressId,
-                    'address': address, 'phone': phone,
-                    'remarks': remarks, 'order_id': orderId},
-                success, fail);
-        },
-
-        getMyOrders: function (shopId, success, fail) {
+        getMyOrders: function (shopId,from,offset, success, fail) {
 
             return success(testdata.orderInfo);
 
-            doGet('user/profile', 'shop_id=' + shopId, success, fail);
+            doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);
+        },
+
+        getMoreMyOrders: function (shopId,from,offset, success, fail) {
+
+            return success(testdata.moreOrderInfo);
+
+            doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);
         },
 
         getSearchResults: function (shopId, key, success, fail) {
             doGet('search/query', 'shop_id=' + shopId + '&key=' + key, success, fail);
         },
-        getShopByGEOLocation: function (lat, lng, success, fail) {
 
-            doGet('f', 'lat=' + lat + '&lng=' + lng, success, fail);
-
-        },
         getShopList: function (from, offset, success, fail) {
 
             doGet('shop/shopList', 'from=' + from + '&offset=' + offset, success, fail);

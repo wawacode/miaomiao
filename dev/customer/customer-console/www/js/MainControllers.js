@@ -3,9 +3,9 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 .controller('MainCtrl', function($scope, $ionicTrack, cfpLoadingBar, $window){
   $scope.open = function(url){
     // Send event to analytics service
-    $ionicTrack.track('open', {
-      url: url
-    });
+//    $ionicTrack.track('open', {
+//      url: url
+//    });
 
     // open the page in the inAppBrowser plugin. Falls back to a blank page if the plugin isn't installed
     var params = 'location=no,' +

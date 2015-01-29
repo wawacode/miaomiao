@@ -7,7 +7,7 @@
 
         <div class="order-list list" style="">
 
-            <div class="order-item" style="" ng-repeat="order in info.orders">
+            <div class="order-item" style="" ng-repeat="order in info.orders" ng-controller="OrderDetailCtrl" ng-click="showOrderDetail(order)">
 
                 <div class="item item-divider">
                     {{$index + 1}}. {{order.create_time |  date:'short'}}
@@ -29,6 +29,13 @@
                 </div>
 
             </div>
+
+            <ion-infinite-scroll
+                    ng-if="moreOrderCanBeLoaded()"
+                    icon="ion-loading-c"
+                    on-infinite="addOrders()">
+            </ion-infinite-scroll>
+
         </div>
 
     </ion-content>

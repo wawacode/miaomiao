@@ -12,7 +12,7 @@
                  has-bouncing="true">
 
         <div class="item item-divider">
-            {{$index + 1}}. {{order.create_time |  date:'short'}}
+            订单时间: {{order.create_time |  date:'short'}}
         </div>
 
         <div class="item item-button-right">
@@ -20,10 +20,7 @@
             <div>收货地址: {{order.address}}</div>
             <div>联系电话: {{order.phone}}</div>
             <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
-            <button class="button button-positive">
-                <i class="icon ion-ios7-information"></i>
-            </button>
-            <button class="button button-positive">
+            <button class="button button-balanced">
                 <i class="icon ion-ios7-telephone"></i>
             </button>
         </div>
@@ -46,10 +43,6 @@
                         </span>
             </div>
 
-             <span class="item-note">
-                        共计:{{order.items | getTotolCount }} 件<span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}</span>
-
-             </span>
         </div>
 
 
