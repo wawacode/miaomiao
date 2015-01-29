@@ -41,8 +41,8 @@ public class OrderConsoleController extends BasicConsoleController{
 	OrderConsoleController(){
        
     }
-	@Post("search")
-    @Get("search")
+	@Post("summary")
+    @Get("summary")
     public String search(Invocation inv, @Param("beginDate") String beginDate, @Param("endDate") String endDate){
 		if(StringUtils.isBlank(beginDate) || StringUtils.isBlank(endDate)){
 			return "@"+Constants.PRERROR.replace("{msg}", "搜索订单开始或者结束日期为空");
