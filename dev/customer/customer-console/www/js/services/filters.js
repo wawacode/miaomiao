@@ -18,6 +18,19 @@ angular.module('miaomiao.console.services').filter('getTotolCount',function () {
             }
             return total / 100.0;
         };
+    }).filter('removeAMPM', function () {
+        return function (text) {
+            if(!text) return;
+            return text.replace(/AM/, '').replace(/PM/, ''); // Characters after Colon
+        };
+    }).filter('getShopStatusString', function () {
+        return function(input){
+            return input == 0 ? "营业中":"打烊了";
+        }
+    }).filter('getShopMinPrice', function () {
+        return function(input){
+            return input ? input/100 : 20;
+        }
     });
 
 

@@ -260,3 +260,27 @@
     padding-left: 10px;
     border-radius: 5px
 }
+
+.shopItem {
+
+}
+
+.shopItemStatusOpen {
+    display: inline-block;
+    float: right;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #ef5356;
+    padding: 2px 5px 2px 5px;
+    border-radius: 4px
+}
+
+.shopItemStatusClosed {
+    display: inline-block;
+    float: right;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #a6a6a6;
+    padding: 2px 5px 2px 5px;
+    border-radius: 4px
+}
