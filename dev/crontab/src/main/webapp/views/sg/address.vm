@@ -1,0 +1,117 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+
+    <!--<link rel="stylesheet" href="../js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">-->
+    <!--<link rel="stylesheet" href="../fonts/font-awesome/css/font-awesome.min.css">-->
+    <!--<link rel="stylesheet" href="../css/app.css">-->
+
+    <!--<script src="../js/jquery/dist/jquery.min.js" type="text/javascript"></script>-->
+    <!--<script src="../js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>-->
+    <!--<script src="../sg/js/ShoppingCart.js" type="text/javascript"></script>-->
+    <!--<script src="../sg/js/address.js" type="text/javascript"></script>-->
+    <!--<script src="../sg/js/addressAction.js" type="text/javascript"></script>-->
+
+    <!--for tomcat-->
+    <link rel="stylesheet" href="/js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/app.css">
+
+    <script src="/js/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>
+    <script src="/sg/js/ShoppingCart.js" type="text/javascript"></script>
+    <script src="/sg/js/address.js" type="text/javascript"></script>
+    <script src="/sg/js/addressAction.js" type="text/javascript"></script>
+
+</head>
+<body>
+<div class="scroll">
+    <div id="commonContainer">
+        <div class="commonContent">
+
+            <div class="shop-container" style="margin-bottom : 60px;">
+
+                <div id="addressSpinner" class="searchSpinner hidden">
+                    <div class="overlay">
+                        <div class="spinner"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    </div>
+                </div>
+
+
+                <div class="" style="overflow: hidden;">
+                    <div class="">
+                        <div class="addressListSelection">
+                            #foreach($addr in $addressls)
+                            #if( $addr == $addressls[0])
+                            <div class="addressItem addressCandidate addressSelected">
+                                <div style="float: left">
+                                    <div class="addressItem-address" data-default-address="$addr.getAddress()"><span
+                                            class="addressTitle">收货地址:</span><span class="addressAddrValue">$addr.getAddress()</span>
+                                    </div>
+                                    <div class="addressItem-phone" data-default-phone="$addr.getPhone()"><span
+                                            class="addressTitle">联系电话:</span><span class="addressPhoneValue">$addr.getPhone()</span>
+                                    </div>
+                                    <input class="addressItem-id" type="hidden" value="$addr.getId()"/>
+                                </div>
+                                <div class="addressItem-bage">
+                                    <div class="swithDefaultAddress">
+                                        <i class="fa fa-2x fa-check js-address-checked"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            #else
+                            <div class="addressItem addressCandidate">
+                                <div style="float: left">
+                                    <div class="addressItem-address" data-default-address="$addr.getAddress()"><span
+                                            class="addressTitle">收货地址:</span><span class="addressAddrValue">$addr.getAddress()</span>
+                                    </div>
+                                    <div class="addressItem-phone" data-default-phone="$addr.getPhone()"><span
+                                            class="addressTitle">联系电话:</span><span class="addressPhoneValue">$addr.getPhone()</span>
+                                    </div>
+                                    <input class="addressItem-id" type="hidden" value="$addr.getId()"/>
+                                </div>
+                                <div class="addressItem-bage">
+                                    <div class="swithDefaultAddress">
+                                        <i class="fa fa-2x js-address-checked"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            #end
+
+                            #end
+                            <div style="padding: 15px 9px;display: none"
+                                 class="addNewAddressIntoList js-addAddress">
+                                <input class="addOrderAddress" type="text" placeholder="收货地址:" value="">
+                                <input class="addOrderPhone" type="text" placeholder="联系电话:" value="">
+
+                                <div style="text-align: center;padding-top: 20px;display: inline-block;width: 100%">
+                                    <div class="newAddressButton confirmNewAddress" style="">确定</div>
+                                    <div class="newAddressButton cancelNewAddress" style="margin-left: 10px">取消
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="text-align: center;padding-top: 30px;display: inline-block;width: 100%;">
+
+                                <div class="addressButton" style="display: inline-block;margin: 0">
+                                    <form id="shopConfirm" action="shopCar/confirm?shop_id=" method="post"
+                                          data-ajax="false" style="margin: 0em">
+                                        <!--<input type="hidden" id="form_shop_id" name="shop_id" value=''/>-->
+                                        <input type="hidden" id="form_items" name="items" value=''/>
+
+                                        <div class="addressButton useThisAddress">使用选中地址</div>
+                                    </form>
+                                </div>
+                                <div class="addressButton useNewAddress">使用其他地址</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

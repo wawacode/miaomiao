@@ -1,0 +1,127 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+
+    <!--<link rel="stylesheet" href="../../js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">-->
+    <!--<link rel="stylesheet" href="../../fonts/font-awesome/css/font-awesome.min.css">-->
+    <!--<link rel="stylesheet" href="../../css/app.css">-->
+
+    <!--<script src="../../js/jquery/dist/jquery.min.js" type="text/javascript"></script>-->
+    <!--<script src="../../js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>-->
+    <!--&lt;!&ndash;<script src="../../sg/js/address.js" type="text/javascript"></script>&ndash;&gt;-->
+    <!--<script src="../../sg/js/userProfile.js" type="text/javascript"></script>-->
+
+    <!--for tomcat-->
+    <link rel="stylesheet" href="/js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/app.css">
+
+    <script src="/js/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>
+    <!--<script src="/sg/js/address.js" type="text/javascript"></script>-->
+    <script src="/sg/js/userProfile.js" type="text/javascript"></script>
+
+</head>
+<body>
+<div class="scroll">
+    <div id="mainContainer" role="page" style="top: 0">
+
+        <div class="shop-container">
+
+            <!--<div class="" style="padding-left: 0em;padding-right: 0em;margin-top: 1em">-->
+            <!--<div style="padding-left: 15px">-->
+            <!--<a href="../shop?shop_id=1" data-ajax="false" style="color: #F54447"><i-->
+            <!--class="fa fa-shopping-cart"></i>&nbsp;返回商店</a>-->
+
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="addressListSelection">-->
+
+                <!--#if($addressls && ! $addressls.isEmpty())-->
+                <!--#set($DEFAULT_ADDR = $addressls[0])-->
+                <!--<div class="">-->
+                    <!--<div class="addressItem addressDefault addressSelected">-->
+                        <!--<div style="float: left">-->
+                            <!--<div class="addressItem-address addressDefault-address"-->
+                                 <!--data-default-address="$DEFAULT_ADDR.getAddress()"><span-->
+                                    <!--class="addressTitle">收货地址:</span>-->
+                                <!--$DEFAULT_ADDR.getAddress()-->
+                            <!--</div>-->
+                            <!--<div class="addressItem-phone addressDefault-phone"-->
+                                 <!--data-default-phone="$DEFAULT_ADDR.getPhone()"><span-->
+                                    <!--class="addressTitle">联系电话:</span> $DEFAULT_ADDR.getPhone()-->
+                            <!--</div>-->
+                            <!--<input class="addressItem-id addressDefault-id" type="hidden"-->
+                                   <!--value="$DEFAULT_ADDR.getId()"/>-->
+                        <!--</div>-->
+                        <!--<div class="addressItem-bage">-->
+                            <!--<div class="swithDefaultAddress" style="color: #ffffff">-->
+                                <!--<i class="fa fa-2x fa-chevron-right"></i>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+                <!--#else-->
+                <!--<div class="js-addAddress firstTimeAddAddress" style="border-bottom: solid 1px lightgray">-->
+                    <!--<div class="addNewAddressHint" style="text-shadow:none">-->
+                        <!--您还没有添加收货人信息,请添加-->
+                    <!--</div>-->
+                    <!--<div style="padding: 15px 9px;">-->
+                        <!--<input id="newOrderAddress" type="text" placeholder="收货地址:" value="">-->
+                        <!--<input id="newOrderPhone" type="text" placeholder="联系电话:" value="">-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--#end-->
+            <!--</div>-->
+
+
+            #if(!$orders || $orders.isEmpty())
+            <div class="noOrderHint"
+                 style="position: fixed; bottom: 0px;width: 100%;padding: 0px;height: auto;display: inline-block">
+
+                <div style="display:block;padding: 10px">
+                    <div style="display: inline-block;background-color: #EFF0F4;width: 100%; height: 100%; border: dotted 2px lightgray">
+                        <div style="float: left;padding: 30px 10%;">还没有订单</div>
+                        <div style="float: right;color: #F54447;text-shadow: none;padding:30px 10px 2px 10% ;font-size: 18px;padding-right: 10%;}">
+                            <a href="../shop?shop_id=1" data-ajax="false" style="color: #F54447">去逛逛?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            #else
+            <div class="order-list" style="padding-left: 0em;padding-right: 0em;margin-top: 1em">
+
+                #foreach($order in $orders)
+
+                <div class="order-item" style="margin: 1em;border: solid 1px #808080 ; border-radius: 2px">
+
+                    <div style="display: inline-block;background-color: #EFF0F4;width: 100%;">
+                        <div style="float: left;padding: 0.8em">$order.getCreate_time()</div>
+                        <div style="float: right;color: #ffffff;background-color: #F54447;text-shadow: none;padding:2px 10px 2px 10px ;font-size: 18px;">
+                            $order.getStatus4V()
+                        </div>
+                    </div>
+
+                    <div style="padding: 15px 9px 15px;border-bottom: solid 1px lightgray;">
+                        <div>收货地址: $order.getAddress()</div>
+                        <div>联系电话: $order.getPhone()</div>
+                        <div style="margin-top: 10px;color: #808080">买家留言: $order.getRemarks()</div>
+                    </div>
+
+                    <div style="padding: 15px 9px 15px;" class="order-snapshots">
+                        <input class="order-snapshots-string" type="hidden" value='$order.getSnapshot()'>
+                    </div>
+                </div>
+
+                #end
+            </div>
+            #end
+        </div>
+    </div>
+</div>
+</body>
+</html>
