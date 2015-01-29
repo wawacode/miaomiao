@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope', '$ionicModal',
+angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService',
 
-    function ($scope, $ionicModal) {
+    function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService) {
 
         $ionicModal.fromTemplateUrl('templates/product-addNew.html', {
             scope: $scope,
@@ -35,12 +35,42 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         $scope.AddItem = function(cateId) {
             $scope.currentCateId = cateId;
-            $scope.item = {};
             $scope.openModal();
         }
+
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+
         $scope.saveItem = function(item){
-            // TODO: compare and save
-            $scope.closeModal();
+
+            var options ={'serialNo': item.serialNo,
+                name: item.name,
+                categoryId: $scope.currentCateId,
+                count: item.count,
+                score: item.score,
+                price_new: item.price * 100,
+                pic: item.pic
+            };
+
+            httpClient.addItem(options, $scope.info.shop.id, function (data, status) {
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '添加商品失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+                $scope.closeModal();
+
+            }, function (data, status) {
+                $ionicPopup.alert({
+                    title: '添加商品失败:',
+                    template: ''
+                });
+                return;
+                $scope.closeModal();
+            });
         }
     }
 ]);

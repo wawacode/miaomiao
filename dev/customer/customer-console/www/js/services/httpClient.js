@@ -42,21 +42,21 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
 
         getSummary: function (shopId, beginDate, endDate, success, fail) {
 
-            if(development)return success(testdata.summary);
+            if (development)return success(testdata.summary);
 
             doGet('order/summary', 'shop_id=' + shopId + '&beginDate=' + beginDate + "&endDate=" + endDate, success, fail);
         },
 
         getProductList: function (shopId, success, fail) {
 
-            if(development)return success(testdata.productInfo);
+            if (development)return success(testdata.productInfo);
 
             doGet('shop/category/get', 'shop_id=' + shopId, success, fail);
         },
 
         getMoreProductList: function (shopId, cateId, from, offset, success, fail) {
 
-            if(development)return success(testdata.moreProductInfo);
+            if (development)return success(testdata.moreProductInfo);
 
             doGet('shop/getitems', "shop_id=" + shopId +
                 "&category_id=" + cateId + "&from=" + from +
@@ -66,14 +66,14 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
 
         getMyOrders: function (shopId, from, offset, success, fail) {
 
-            if(development)return success(testdata.orderInfo);
+            if (development)return success(testdata.orderInfo);
 
             doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);
         },
 
         getMoreMyOrders: function (shopId, from, offset, success, fail) {
 
-            if(development)return success(testdata.moreOrderInfo);
+            if (development)return success(testdata.moreOrderInfo);
 
             doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);
         },
@@ -81,6 +81,47 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
         getSearchResults: function (shopId, key, success, fail) {
             doGet('search/query', 'shop_id=' + shopId + '&key=' + key, success, fail);
         },
+
+
+        deleteItem: function (itemId, shopId, success, fail) {
+            doGet('shopItem/del', 'itemId=' + itemId + '&shop_id=' + shopId, success, fail);
+        },
+
+        addItem: function (options, shopId, success, fail) {
+
+            doPost('shopItem/addItem',
+
+                {'serialNo': options.serialNo,
+                    name: options.name,
+                    categoryId: options.categoryId,
+                    count: options.count,
+                    score: options.score,
+                    price_new: options.price_new,
+                    pic: options.pic
+                },
+
+                success, fail);
+
+        },
+
+        updateItem: function (options, shopId, success, fail) {
+
+            doPost('shopItem/update',
+
+                {'itemName': options.itemName,
+                    itemId: options.itemId,
+                    serialNo: options.serialNo,
+                    category_id: options.category_id,
+                    count: options.count,
+                    score: options.score,
+                    price: options.price,
+                    pic: options.pic
+                },
+
+                success, fail);
+
+        },
+
 
         getShopList: function (from, offset, success, fail) {
 
