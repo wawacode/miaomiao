@@ -12,41 +12,25 @@
 
       <div class="bar bar-header item-input-inset">
           <label class="item-input-wrapper">
-              <i class="icon ion-ios7-search placeholder-icon"></i>
-              <input type="search" placeholder="Search">
+              <i class="icon ion-ios7-search placeholder-icon assertive"></i>
+              <input type="search" placeholder="搜索">
           </label>
           <button class="button button-clear">
-              Cancel
+              取消
           </button>
       </div>
 
     <ion-list>
       <ion-item class="post-list"
-                collection-repeat="post in posts"
+                collection-repeat="post in results"
                 collection-item-width="'100%'"
                 collection-item-height="92"
                 ng-class="post.points > 0?'item-icon-right':''"
                 ng-show="post.title.length"
                 fp-share style="">
 
-        <a ng-if="post.num_comments != null" class="icon ion-chatbubble light" ng-click="loadComments(post.objectID)">
-          {{post.num_comments}}
-        </a>
-        <h2 ng-click="open(post.url)">{{post.title}}</h2>
-        <p>
-          <span ng-if="post.points > 0">{{post.points}} points &nbsp;</span>
-          {{post.created_at_i | timeAgo}} &nbsp;
-          {{post.author}}
-        </p>
-      </ion-item>
-      <ion-item class="padding text-center" ng-if="error">
-        <h3>Request Failed</h3>
-        <small>Check that you are online. If you are, the server may be offline.</small>
-      </ion-item>
+          </ion-item>
 
-      <div class="spinner ng-hide" ng-show="searching" ng-style="{'top':getHalfHeight()+'px'}" >
-        <i class="icon ion-loading-d balanced"></i>
-      </div>
     </ion-list>
   </ion-content>
 </ion-view>

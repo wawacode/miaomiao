@@ -1,20 +1,74 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('FrontPageCtrl', function ($scope, $ionicActionSheet, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate) {
-        $scope.pageName = '首页';
+    .controller('FrontPageCtrl', function ($scope, $ionicActionSheet,$ionicPopup, $state, cfpLoadingBar, $timeout,localStorageService, $ionicScrollDelegate,httpClient) {
+
         $scope.info = {};
 
-        $scope.info.shopName = "首页";
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+        $scope.info.shopName = $scope.info.shop.name || "首页";
 
         cfpLoadingBar.start();
+        cfpLoadingBar.set(0.1);
+
+
+        $scope.getSummaryInfo = function(success, fail){
+
+            httpClient.getSummary($scope.info.shop.id, null,null, function (data, status) {
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '加载数据失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+                success(dataDetail);
+
+            }, function (data, status) {
+
+                fail();
+            });
+        }
+
+        $timeout(function () {
+
+            $scope.info.summary = {};
+            $ionicScrollDelegate.resize();
+
+            $scope.getSummaryInfo(function(dataDetail){
+
+                $scope.$broadcast('scroll.refreshComplete');
+                cfpLoadingBar.complete();
+
+                $scope.info.summary = dataDetail;
+
+            },function(){
+                $scope.$broadcast('scroll.refreshComplete');
+                cfpLoadingBar.complete();
+            })
+
+        });
 
         // just kicking the tires
         $scope.$on('$ionicView.afterEnter', function () {
-            $timeout(function () {
-                $scope.posts = [];
-                $ionicScrollDelegate.resize();
-            }, 100);
+
         });
+
+        $scope.doRefresh = function(){
+
+            $scope.info.summary = {};
+
+            $scope.getSummaryInfo(function(dataDetail){
+
+                $scope.$broadcast('scroll.refreshComplete');
+
+                $scope.info.summary = dataDetail;
+
+            },function(){
+                $scope.$broadcast('scroll.refreshComplete');
+            })
+        }
 
         $scope.showUserAction = function () {
             $ionicActionSheet.show({
@@ -39,20 +93,5 @@ angular.module('miaomiao.console.controllers')
                 }
             });
         }
-
-        var percentComplete = 1;
-        if (percentComplete >= 1) {
-            $scope.$broadcast('scroll.refreshComplete');
-            cfpLoadingBar.complete();
-        } else {
-            cfpLoadingBar.set(percentComplete);
-        }
-
-        $timeout(function () {
-            if ($scope.posts.length < 1) {
-                cfpLoadingBar.complete();
-                $scope.timesUp = true;
-            }
-        }, 5000);
 
     });

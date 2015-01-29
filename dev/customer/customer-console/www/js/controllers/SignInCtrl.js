@@ -24,8 +24,10 @@ angular.module('miaomiao.console.controllers')
                     });
                     return;
                 }
+
                 //success
                 localStorageService.set('MMCONSOLE_METADATA_USER',{'name':$scope.user.name , 'phone' : $scope.user.phone});
+                localStorageService.set('MMCONSOLE_METADATA_SHOP',dataDetail.shop);
 
                 $state.go('tab.front-page',null,{reload:true})
 

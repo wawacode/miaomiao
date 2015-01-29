@@ -7,11 +7,11 @@ angular.module('miaomiao.console.controllers')
         $scope.info = {};
         $scope.pageName = '商品';
 
-        $scope.info.shop = localStorageService.get('MMMETA_shop') || {};
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
 
         cfpLoadingBar.start();
 
-        httpClient.getProductList($scope.info.shop.id || 1, function (data, status) {
+        httpClient.getProductList($scope.info.shop.id, function (data, status) {
 
             var code = data.code, dataDetail = data.data;
             if (!code == 0) {
@@ -86,7 +86,7 @@ angular.module('miaomiao.console.controllers')
                 offset = 20;
 
             inLoadingMore = true;
-            httpClient.getMoreProductList($scope.info.shop.id || 1, cateId, from, offset, function (data, status) {
+            httpClient.getMoreProductList($scope.info.shop.id, cateId, from, offset, function (data, status) {
 
                 /*
                  * {"code":0,"data":[{"category_id":15,"count":956,"id":28062,"name":"哈哈镜鸭爪买一赠一","pic_url":
