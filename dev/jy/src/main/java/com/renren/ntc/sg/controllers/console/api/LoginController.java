@@ -78,7 +78,7 @@ public class LoginController {
     	result.put("msg", "用户不存在");
     	RegistUser user = hostHolder.getUser();
         if (user != null) {
-            return "@" + result.toJSONString();
+            return "@json:" + result.toJSONString();
         }
         if (origURL == null || origURL.equals("")) {
             origURL = Constants.DOMAIN;
@@ -86,7 +86,7 @@ public class LoginController {
         try {
             origURL = URLEncoder.encode(origURL, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            return "@" + Constants.UKERROR;
+            return "@json:" + Constants.UKERROR;
         }
         inv.addModel("origURL", origURL);
         inv.addModel("msg", "");
@@ -94,18 +94,18 @@ public class LoginController {
         if(null == u){
             result.put("code", -2);
             result.put("msg", "用户名字或密码不正确");
-            return "@" + result.toJSONString();
+            return "@json:" + result.toJSONString();
         }
         Shop shop =  shopDAO.getShopbyOwner_id(u.getId());
         if (null == shop){
         	result.put("code", -3);
             result.put("msg", "没有店铺");
-            return "@" + result.toJSONString();
+            return "@json:" + result.toJSONString();
         }
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
         result.put("code", 0);
         result.put("msg", "验证通过");
         inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
-        return "@" + result.toJSONString();
+        return "@json:" + result.toJSONString();
     }
 }

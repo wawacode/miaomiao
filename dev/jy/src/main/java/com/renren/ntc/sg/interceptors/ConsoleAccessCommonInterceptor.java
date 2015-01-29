@@ -55,18 +55,6 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
             u = registUserDAO.getUser(SUtils.unwrapper(uuid));
             hostHolder.setUser(u);
         }
-        if(path.startsWith("/console/api/")){
-        	RegistUser user = hostHolder.getUser();
-    		if (user == null) {
-    			return "@json:" + Constants.PRERROR.replace("{msg}", "用户不存在");
-    		}
-    		long userId = user.getId();
-    		Shop shop =  shopDAO.getShopbyOwner_id(userId);
-    		if(shop == null){
-    			return "@json:" + Constants.PRERROR.replace("{msg}", "没有关联店铺");
-    		}
-    		inv.setAttribute("shop", shop);
-        }
         return true;
 	}
     
