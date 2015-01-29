@@ -90,7 +90,7 @@ public class ShopConsoleController extends BasicConsoleController{
         result.put("itemls", itemls);
         result.put("categoryls",categoryls);
         result.put("curr_cate_id",category_id);
-        return "@json"+getDataResult(0, result);
+        return "@json:"+getDataResult(0, result);
 	}
 	
 
@@ -117,6 +117,6 @@ public class ShopConsoleController extends BasicConsoleController{
 
         data.put("shop",shopob);
         data.put("categoryls", jarr) ;
-        return "@json"+getDataResult(0, data);
+        return "@json:"+getDataResult(0, data);
     }
 }

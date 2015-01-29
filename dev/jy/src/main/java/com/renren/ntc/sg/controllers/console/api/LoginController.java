@@ -31,7 +31,7 @@ import java.net.URLEncoder;
 @DenyCommonAccess
 @DenyConsoleCommonAccess
 @Path("login")
-public class LoginController {
+public class LoginController extends BasicConsoleController{
 
 	@Autowired
 	private RegistHostHolder hostHolder;
@@ -103,9 +103,9 @@ public class LoginController {
             return "@json:" + result.toJSONString();
         }
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
-        result.put("code", 0);
-        result.put("msg", "验证通过");
+        JSONObject resultJson = new JSONObject();
+        resultJson.put("shop", shop);
         inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
-        return "@json:" + result.toJSONString();
+        return "@json:" + getDataResult(0, resultJson);
     }
 }

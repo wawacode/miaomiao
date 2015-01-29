@@ -63,7 +63,7 @@ public class ItemConsoleController extends BasicConsoleController{
     		resultJson.put("code", 500);
     		resultJson.put("msg", "删除失败");
 		}
-    	return "@json"+resultJson.toJSONString();
+    	return "@json:"+resultJson.toJSONString();
     }
 
 
@@ -78,7 +78,7 @@ public class ItemConsoleController extends BasicConsoleController{
     	List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shopId);
     	resultJson.put("shopId", shopId);
     	resultJson.put("categoryls", categoryls);
-    	return "@json"+ getDataResult(0, resultJson);
+    	return "@json:"+ getDataResult(0, resultJson);
     }
     
     @Post("addItem")
@@ -124,7 +124,7 @@ public class ItemConsoleController extends BasicConsoleController{
         }
 		resultJson.put("code", 0);
 		resultJson.put("msg", "添加商品成功");
-		return "@json"+resultJson.toJSONString();
+		return "@json:"+resultJson.toJSONString();
 	}
 
     @Post("update")
@@ -147,7 +147,7 @@ public class ItemConsoleController extends BasicConsoleController{
     	resultJson.put("code", 500);
 		resultJson.put("msg", "服务器异常");
 		if(StringUtils.isBlank(itemName) || StringUtils.isBlank(serialNo)){
-			 return "@json"+resultJson.toJSONString();
+			 return "@json:"+resultJson.toJSONString();
 		}
 		String picUrl = "";
 		int updateDbFlag = 0;
@@ -169,7 +169,7 @@ public class ItemConsoleController extends BasicConsoleController{
 			resultJson.put("code", 500);
 			resultJson.put("msg", "服务器异常");
 		}
-		return "@json"+resultJson.toJSONString();
+		return "@json:"+resultJson.toJSONString();
     }
     
     @Post("query")
@@ -198,6 +198,6 @@ public class ItemConsoleController extends BasicConsoleController{
         result.put("curr_cate_id",category_id);
         result.put("categoryls",categoryls);
         result.put("itemls", itemls);
-        return "@json"+ getDataResult(0, result);
+        return "@json:"+ getDataResult(0, result);
     }
 }
