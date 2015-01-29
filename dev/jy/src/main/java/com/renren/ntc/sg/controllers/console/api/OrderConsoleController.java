@@ -13,21 +13,19 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONObject;
-import com.renren.ntc.sg.annotations.AuthorizeCheck;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
-import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
 @DenyCommonAccess
 @Path("order")
-public class OrderConsoleController {
+public class OrderConsoleController extends BasicConsoleController{
 	@Autowired
 	private ShopDAO shopDAO;
 
@@ -70,20 +68,15 @@ public class OrderConsoleController {
         data.put("totalPrice", ((float )orderTotalPrice/100) +"元");
         result.put("data",data);
         result.put("code",0);
-        return "@" + result.toJSONString();
+        return "@json" + result.toJSONString();
 	}
     
     @Post("list")
     @Get("list")
     public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("from") int from, @Param("offset") int offset){
-        if (0  >= shop_id){
-            shop_id = Constants.DEFAULT_SHOP ;
-        }
-        Shop shop = shopDAO.getShop(shop_id);
-
-        if(null == shop){
-            LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
-            shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, "店铺不存在");
         }
 
         if ( 0 == from){
@@ -105,6 +98,6 @@ public class OrderConsoleController {
         orderls = orderService.forV(orderls);
         resultJson.put("shop",shop);
         resultJson.put("orderls",orderls);
-        return "@"+resultJson.toJSONString();
+        return "@json"+getDataResult(0, resultJson);
     }
 }

@@ -29,7 +29,7 @@ import com.renren.ntc.sg.util.FileUploadUtils;
 import com.renren.ntc.sg.util.SUtils;
 @DenyCommonAccess
 @Path("shopItem")
-public class ItemConsoleController {
+public class ItemConsoleController extends BasicConsoleController{
 	@Autowired
 	private ShopDAO shopDAO;
 
@@ -49,8 +49,11 @@ public class ItemConsoleController {
     @Post("del")
     @Get("del")
     @AuthorizeCheck
-    public String del(Invocation inv, @Param("id") long id){
-    	Shop shop = (Shop)inv.getAttribute("shop");
+    public String del(Invocation inv, @Param("id") long id,@Param("shop_id") long shop_id){
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, "店铺不存在");
+        }
     	JSONObject resultJson = new JSONObject();
     	int result = itemsDAO.delItemsById(SUtils.generTableName(shop.getId()), id);
     	if(result == SgConstant.PROCESS_DB_SUC){
@@ -60,19 +63,22 @@ public class ItemConsoleController {
     		resultJson.put("code", 500);
     		resultJson.put("msg", "删除失败");
 		}
-    	return "@"+resultJson.toJSONString();
+    	return "@json"+resultJson.toJSONString();
     }
 
 
     @Get("addindex")
-    public String add(Invocation inv){
-    	Shop shop = (Shop)inv.getAttribute("shop");
+    public String add(Invocation inv,@Param("shop_id") long shop_id){
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, "店铺不存在");
+        }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
     	List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shopId);
     	resultJson.put("shopId", shopId);
     	resultJson.put("categoryls", categoryls);
-    	return "@"+resultJson.toJSONString();
+    	return "@json"+ getDataResult(0, resultJson);
     }
     
     @Post("addItem")
@@ -82,8 +88,12 @@ public class ItemConsoleController {
 									  @Param("count") int count,
 									  @Param("score") int score,
 									  @Param("price_new") int price,
-									  @Param("pic") MultipartFile pic) {
-    	Shop shop = (Shop)inv.getAttribute("shop");
+									  @Param("pic") MultipartFile pic,
+									  @Param("shop_id") long shop_id) {
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, "店铺不存在");
+        }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
     	resultJson.put("code", -1);
@@ -114,7 +124,7 @@ public class ItemConsoleController {
         }
 		resultJson.put("code", 0);
 		resultJson.put("msg", "添加商品成功");
-		return "@"+resultJson.toJSONString();
+		return "@json"+resultJson.toJSONString();
 	}
 
     @Post("update")
@@ -126,14 +136,18 @@ public class ItemConsoleController {
                       				   @Param("count") int count,
                       				   @Param("price") int price,
                       				   @Param("serialNo") String serialNo,
-                      				   @Param("pic") MultipartFile pic){
-    	Shop shop = (Shop)inv.getAttribute("shop");
+                      				   @Param("pic") MultipartFile pic,
+                      				   @Param("shop_id") long shop_id){
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, "店铺不存在");
+        }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
     	resultJson.put("code", 500);
 		resultJson.put("msg", "服务器异常");
 		if(StringUtils.isBlank(itemName) || StringUtils.isBlank(serialNo)){
-			 return "@"+resultJson.toJSONString();
+			 return "@json"+resultJson.toJSONString();
 		}
 		String picUrl = "";
 		int updateDbFlag = 0;
@@ -155,14 +169,18 @@ public class ItemConsoleController {
 			resultJson.put("code", 500);
 			resultJson.put("msg", "服务器异常");
 		}
-		return "@"+resultJson.toJSONString();
+		return "@json"+resultJson.toJSONString();
     }
     
     @Post("query")
     @Get("query")
-    public String query(Invocation inv, @Param("query") String query){
+    public String query(Invocation inv, @Param("query") String query,
+    									@Param("shop_id") long shop_id){
 
-    	Shop shop = (Shop)inv.getAttribute("shop");
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, "店铺不存在");
+        }
     	long shopId = shop.getId();
         List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
         long category_id =  categoryls.get(0).getId();
@@ -180,9 +198,6 @@ public class ItemConsoleController {
         result.put("curr_cate_id",category_id);
         result.put("categoryls",categoryls);
         result.put("itemls", itemls);
-        JSONObject resultJson =  new JSONObject() ;
-        resultJson.put("data",result);
-        resultJson.put("code",0);
-        return "@"+resultJson.toJSONString();
+        return "@json"+ getDataResult(0, result);
     }
 }
