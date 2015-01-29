@@ -13,8 +13,8 @@ import java.util.List;
 public class mvShopItems {
 
     private static long shop_id = 1;
-    private static long to_shop_id = 10026;
-//    private static int category_id = 15;
+    private static long to_shop_id = 10030;
+    private static int category_id = 15;
 
 
     public mvShopItems() throws IOException {
@@ -29,21 +29,21 @@ public class mvShopItems {
         int offset = 100;
         for (int i = 0; i < 100000; ) {
             System.out.println( "get " + i + " " + offset );
-            List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id,category_id, i, offset);
             if (itemls.size() == 0) {
                 break;
             }
             for (Item item : itemls) {
                     item.setShop_id(to_shop_id);
 
-//*/                    Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), item.getSerialNo());
-//                    if (null == ii) {
-//                        System.out.println("insert " + item.getSerialNo());
-//                        itemDao.insert(SUtils.generTableName(to_shop_id), item);
-//                    }else{
-////                        System.out.println("update" + item.getSerialNo() + " " + item.getId() );*/
-                    itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
-//                    }
+                     Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), item.getSerialNo());
+                    if (null == ii) {
+                           System.out.println("insert " + item.getSerialNo());
+                           itemDao.insert(SUtils.generTableName(to_shop_id), item);
+                    }else{
+//                        System.out.println("update" + item.getSerialNo() + " " + item.getId() );*/
+                          itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
+                    }
             }
             i = i + offset;
         }
