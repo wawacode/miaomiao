@@ -48,4 +48,20 @@ public class Dateutils {
 		now.set(Calendar.MILLISECOND, 0);
 		return tranferDate2Str(now.getTime());
 	}
+	public static Date transferToDatebyCondition(String condition){
+		if(StringUtils.isBlank(condition)){
+			return null;
+		}
+		String[] dateStr = condition.split(" ");
+		String[] yMD = dateStr[0].split("-");
+		Calendar now = Calendar.getInstance();
+		String[] hMS = dateStr[1].split(":");
+		now.set(Calendar.YEAR, Integer.parseInt(yMD[0]));
+		now.set(Calendar.MONTH, Integer.parseInt(yMD[1]));
+		now.set(Calendar.HOUR_OF_DAY, Integer.parseInt(yMD[2]));
+		now.set(Calendar.MINUTE, Integer.parseInt(hMS[0]));
+		now.set(Calendar.SECOND, Integer.parseInt(hMS[1]));
+		now.set(Calendar.MILLISECOND, Integer.parseInt(hMS[2]));
+		return now.getTime();
+	}
 }
