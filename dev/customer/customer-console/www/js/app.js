@@ -10,6 +10,7 @@ angular.module('miaomiao.console', [
     'ionic',
     'LocalStorageModule',
     'ngStorage',
+    'ngDropdowns',
     'miaomiao.console.controllers',
     'miaomiao.console.services',
     'miaomiao.console.directives',
@@ -120,7 +121,7 @@ angular.module('miaomiao.console', [
         });
     })
 
-    .constant('serverInfo', {host: 'http://localhost:8010', context: '/sg/'})
+    .constant('serverInfo', {host: 'http://localhost:8010', context: '/console/api/'})
 
     .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;

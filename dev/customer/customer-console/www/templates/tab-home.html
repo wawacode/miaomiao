@@ -3,7 +3,10 @@
     <ion-nav-bar class="bar-dark">
         <ion-nav-buttons side="left">
             <button class="button button-icon ion-ios7-person"
-                    ng-click=""></button>
+                    dropdown-menu="ddSelectOptions"
+                    dropdown-model="ddSelectSelected">
+
+            </button>
         </ion-nav-buttons>
         <ion-nav-title ng-click="switchShop()">
             {{info.shopName}} <i class="icon ion-chevron-down" style=" font-size: 15px !important"></i>

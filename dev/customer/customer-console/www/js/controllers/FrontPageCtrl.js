@@ -16,6 +16,18 @@ angular.module('miaomiao.console.controllers')
             },100);
         });
 
+        $scope.ddSelectOptions = [
+            {
+                text: '修改密码',
+                value: 'changepwd'
+            },
+            {
+                text: '退出',
+                value: 'signout'
+            }
+        ];
+
+        $scope.ddSelectSelected = {};
 
         var percentComplete = 1;
         if(percentComplete >= 1){
