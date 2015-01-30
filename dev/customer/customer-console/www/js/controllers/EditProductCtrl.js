@@ -41,6 +41,32 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
             $scope.openModal();
         }
 
+        $scope.StickItem = function(item){
+
+            httpClient.stickItem(item.id, item.category_id, $scope.info.shop.id, function (data, status) {
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '置顶商品失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+                $scope.closeModal();
+
+                $scope.stickItemFromCurrentCategory(item);
+
+            }, function (data, status) {
+                $ionicPopup.alert({
+                    title: '置顶商品失败:',
+                    template: ''
+                });
+                return;
+                $scope.closeModal();
+            });
+        }
+
         $scope.saveItem = function(item){
             // TODO: compare and save
 

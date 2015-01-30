@@ -87,6 +87,10 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
             doGet('shopItem/del', 'itemId=' + itemId + '&shop_id=' + shopId, success, fail);
         },
 
+        stickItem: function (itemId,categoryId, shopId, success, fail) {
+            doGet('shopItem/sticky', 'itemId=' + itemId + '&category_id='+ categoryId + '&shop_id=' + shopId, success, fail);
+        },
+
         addItem: function (options, shopId, success, fail) {
 
             doPost('shopItem/addItem',
@@ -115,7 +119,8 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
                     count: options.count,
                     score: options.score,
                     price: options.price,
-                    pic: options.pic
+                    pic: options.pic,
+                    shop_id:shopId
                 },
 
                 success, fail);

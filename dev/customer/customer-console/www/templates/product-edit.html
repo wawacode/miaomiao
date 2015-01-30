@@ -14,18 +14,18 @@
         <div class="list">
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">商品名称:</span>
-                <input type="text" value="{{item.name}}">
+                <input type="text" value="{{item.name}}" ng-model="item.name">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">价格(元):</span>
-                <input type="text" value="{{item.price/100.0}}">
+                <input type="text" value="{{item.price/100.0}}" ng-model="item.price">
             </label>
 
             <label class="item item-input item-select">
                 <div class="input-label assertive">
                     销售状态:
                 </div>
-                <select>
+                <select ng-model="item.online">
                     <option selected>在售</option>
                     <option>下架</option>
                 </select>
@@ -34,7 +34,7 @@
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">图片:</span>
                 <div class="" style="text-align: center">
-                    <img class="full-image" ng-src="{{item.pic_url}}" style="width: 300px;height: auto">
+                    <img class="full-image" ng-src="{{item.pic_url}}" ng-model="item.pic_url" style="width: 300px;height: auto">
                 </div>
             </label>
 

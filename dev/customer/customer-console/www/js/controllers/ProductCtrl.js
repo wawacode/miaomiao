@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading,$ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService, httpClient) {
+    .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService, httpClient) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
@@ -37,9 +37,9 @@ angular.module('miaomiao.console.controllers')
              "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
              "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
              * */
-            if(!$scope.info.categoryls || !$scope.info.categoryls.length)return;
+            if (!$scope.info.categoryls || !$scope.info.categoryls.length)return;
 
-             for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
+            for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
 
                 $scope.info.categoryls[idx].selected = 0;
                 $scope.info.categoryls[idx].canLoadMore = 1;
@@ -59,7 +59,6 @@ angular.module('miaomiao.console.controllers')
             });
             return;
         });
-
 
 
         $scope.selectCategory = function (category) {
@@ -137,16 +136,37 @@ angular.module('miaomiao.console.controllers')
             }
         }
 
-        $scope.updateItemFromCurrentCategory = function (item) {
+        $scope.stickItemFromCurrentCategory = function (item) {
 
             var index = $scope.info.currentDisplayItems.indexOf(item);
+            if (index != -1) {
+                $timeout(function () {
+                    $scope.info.currentDisplayItems.splice(index, 1);
+                    $scope.info.currentDisplayItems.unshift(item);
+                })
+            }
 
         }
 
-        $scope.addProducteForCurrentCategory = function (item) {
+        $scope.updateItemFromCurrentCategory = function (item) {
+
             var index = $scope.info.currentDisplayItems.indexOf(item);
             if (index != -1) {
-                $scope.info.currentDisplayItems.push(item);
+                $timeout(function () {
+
+                    $scope.info.currentDisplayItems[index] = item;
+
+                })
+            }
+        }
+
+        $scope.addProducteForCurrentCategory = function (item) {
+
+            var index = $scope.info.currentDisplayItems.indexOf(item);
+            if (index == -1) {
+                $timeout(function () {
+                    $scope.info.currentDisplayItems.push(item);
+                })
             }
         }
 
