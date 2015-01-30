@@ -22,7 +22,10 @@ angular.module('miaomiao.console.controllers')
             }
         }
 
-        $scope.moreOrderCanBeLoaded = false;
+        var canLoadMore = false;
+        $scope.moreOrderCanBeLoaded = function(){
+            return canLoadMore;
+        };
 
         $scope.getOrdersInfo = function( from, offset, success,fail){
 
@@ -34,10 +37,10 @@ angular.module('miaomiao.console.controllers')
                         title: '加载数据失败',
                         template: ''
                     });
-                    $scope.moreOrderCanBeLoaded = false;
-                    return;
+                    canLoadMore = false;
+                    return fail();
                 }
-                $scope.moreOrderCanBeLoaded = true;
+                canLoadMore = true;
                 success(dataDetail);
 
             }, function (data, status) {
@@ -46,35 +49,31 @@ angular.module('miaomiao.console.controllers')
                     title: '加载数据失败',
                     template: ''
                 });
-                $scope.moreOrderCanBeLoaded = false;
+                canLoadMore = false;
                 return fail();
             });
         }
 
-        $timeout(function(){
+        var from = 0, offset = 20;
 
-            var from = 0, offset = 20;
+        $scope.LoadingMessage = '正在加载,请稍候...';
+        $ionicLoading.show({
+            templateUrl: 'templates/loadingIndicator.html',
+            scope: $scope
+        });
 
-            $scope.LoadingMessage = '正在加载,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+        $scope.getOrdersInfo(from,offset,function(dataDetail){
 
-            $scope.getOrdersInfo(from,offset,function(dataDetail){
+            $ionicLoading.hide();
 
-                $ionicLoading.hide();
+            $scope.info.orders = dataDetail.orderls;
+            transformOrderData($scope.info.orders);
 
-                $scope.info.orders = dataDetail.orders;
-                transformOrderData($scope.info.orders);
+        },function(){
 
-            },function(){
+            $ionicLoading.hide();
 
-                $ionicLoading.hide();
-
-            })
-        })
-
+        });
 
 
         $scope.addOrders = function () {
@@ -84,7 +83,7 @@ angular.module('miaomiao.console.controllers')
 
             $scope.getOrdersInfo(from,offset,function(dataDetail){
 
-                $scope.info.orders.concat(dataDetail.orders);
+                $scope.info.orders = $scope.info.orders.concat(dataDetail.orderls);
                 transformOrderData( $scope.info.orders);
 
                 $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -96,14 +95,13 @@ angular.module('miaomiao.console.controllers')
 
         $scope.doRefresh = function(){
 
-            $scope.info.orders = $scope.info.orders || [];
             var from = 0, offset = 20;
 
             $scope.getOrdersInfo(from,offset,function(dataDetail){
 
                 $scope.$broadcast('scroll.refreshComplete');
 
-                $scope.info.orders = dataDetail.orders;
+                $scope.info.orders = dataDetail.orderls;
                 transformOrderData($scope.info.orders);
 
             },function(){

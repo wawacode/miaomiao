@@ -19,7 +19,7 @@ angular.module('miaomiao.console.controllers')
                         title: '加载数据失败:' + data.msg,
                         template: ''
                     });
-                    return;
+                    return fail();
                 }
                 success(dataDetail);
 

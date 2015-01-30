@@ -37,7 +37,9 @@ angular.module('miaomiao.console.controllers')
              "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
              "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
              * */
-            for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
+            if(!$scope.info.categoryls || !$scope.info.categoryls.length)return;
+
+             for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
 
                 $scope.info.categoryls[idx].selected = 0;
                 $scope.info.categoryls[idx].canLoadMore = 1;
@@ -46,8 +48,8 @@ angular.module('miaomiao.console.controllers')
                 }
             }
 
-            $scope.info.currentDisplayCategory = $scope.info.categoryls.length && $scope.info.categoryls[0];
-            $scope.info.currentDisplayItems = $scope.info.currentDisplayCategory && $scope.info.currentDisplayCategory.itemls;
+            $scope.info.currentDisplayCategory = $scope.info.categoryls[0];
+            $scope.info.currentDisplayItems = $scope.info.currentDisplayCategory.itemls;
 
         }, function (data, status) {
             $ionicLoading.hide();
@@ -59,7 +61,6 @@ angular.module('miaomiao.console.controllers')
         });
 
 
-        var canLoadMore = true, inLoadingMore = false;
 
         $scope.selectCategory = function (category) {
 
@@ -82,6 +83,8 @@ angular.module('miaomiao.console.controllers')
             return $scope.info.currentDisplayCategory && $scope.info.currentDisplayCategory.canLoadMore;
         }
 
+        var inLoadingMore = false;
+
         $scope.addItems = function () {
 
             var cateId = $scope.info.currentDisplayCategory.category_id,
@@ -97,22 +100,24 @@ angular.module('miaomiao.console.controllers')
                  * "score":99999,"shop_id":1},{"category_id":15,"count":921,"id":28063,"name":"哈哈镜鸭翅买一赠*/
 
                 var code = data.code, dataDetail = data.data;
-                if (!code == 0 || dataDetail.items.length == 0) {
-
-                    $scope.info.currentDisplayCategory.canLoadMore = false;
+                if (!code == 0 || dataDetail.itemls.length == 0) {
                     inLoadingMore = false;
+                    $scope.info.currentDisplayCategory.canLoadMore = false;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
                     return;
 
                 }
 
-                $scope.info.currentDisplayItems = $scope.info.currentDisplayItems.concat(dataDetail.items);
+                inLoadingMore = false;
+
+                $scope.info.currentDisplayItems = $scope.info.currentDisplayItems.concat(dataDetail.itemls);
+
+                $scope.info.currentDisplayCategory.itemls = $scope.info.currentDisplayItems;
                 $scope.info.currentDisplayCategory.totalCnt = 0;
 
-                inLoadingMore = false;
                 $scope.$broadcast('scroll.infiniteScrollComplete');
 
             }, function (data, status) {
-
                 inLoadingMore = false;
                 $scope.info.currentDisplayCategory.canLoadMore = false;
                 $scope.$broadcast('scroll.infiniteScrollComplete');

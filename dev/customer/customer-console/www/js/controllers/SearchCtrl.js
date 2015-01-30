@@ -1,26 +1,59 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('SearchCtrl', function($scope, Algolia, $state, $timeout) {
+    .controller('SearchCtrl', function($scope, $ionicLoading, $state, $timeout,httpClient,localStorageService) {
 
         $scope.pageName = '搜索商品或者订单';
 
         $scope.focused= 'centered';
         $scope.searchTerm = '';
-        $scope.posts = [];
+
         $scope.$on('$ionicView.beforeEnter', function(){
-            $scope.starting = true;
-            $scope.searching = false;
-            $timeout(function(){$scope.starting = false},500)
+
         });
 
-        $scope.search = function(searchTerm){
-            if(searchTerm === '')return;
-            $scope.posts = [];
-            $scope.searching = true;
-            document.getElementById('searchInput').blur();
-        };
-        $scope.$on('fpSearchBar.clear', function(){
-            $scope.posts = [];
-            $scope.searchTerm = '';
-        });
+
+        $scope.info = {};
+        $scope.info.hasNoResults = false;
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+
+        $scope.performSearch = function (key,$event) {
+
+            $event.target.blur();
+
+            var KEY = key || $scope.info.key;
+
+            $scope.LoadingMessage = '正在搜索...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
+
+            httpClient.getSearchResults($scope.info.shop.id, KEY, function (data, status) {
+
+                /*
+                 * {"code":0,"data":[{"category_id":15,"count":956,"id":28062,"name":"哈哈镜鸭爪买一赠一","pic_url":
+                 * "http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
+                 * "score":99999,"shop_id":1},{"category_id":15,"count":921,"id":28063,"name":"哈哈镜鸭翅买一赠*/
+
+                $ionicLoading.hide();
+
+                var code = data.code, dataDetail = data.data;
+                if (!code == 0 || dataDetail.itemls.length == 0) {
+                    $scope.info.searchResultsItems = [];
+                    $scope.info.hasNoResults = true;
+                    return;
+                }
+
+                $scope.info.hasNoResults = false;
+                $scope.info.searchResultsItems = dataDetail.itemls;
+
+            }, function (data, status) {
+                $ionicLoading.hide();
+                $scope.info.hasNoResults = true;
+            });
+        }
+
+        $scope.clearSearch = function(){
+            $scope.info.key = '';
+        }
     });

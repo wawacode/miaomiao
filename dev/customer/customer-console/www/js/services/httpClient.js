@@ -79,7 +79,7 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
         },
 
         getSearchResults: function (shopId, key, success, fail) {
-            doGet('search/query', 'shop_id=' + shopId + '&key=' + key, success, fail);
+            doGet('shopItem/query', 'shop_id=' + shopId + '&query=' + key, success, fail);
         },
 
 
