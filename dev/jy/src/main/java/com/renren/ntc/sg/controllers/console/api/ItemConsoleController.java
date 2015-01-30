@@ -53,7 +53,7 @@ public class ItemConsoleController extends BasicConsoleController{
     public String del(Invocation inv, @Param("id") long id,@Param("shop_id") long shop_id){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	JSONObject resultJson = new JSONObject();
     	int result = itemsDAO.delItemsById(SUtils.generTableName(shop.getId()), id);
@@ -72,7 +72,7 @@ public class ItemConsoleController extends BasicConsoleController{
     public String add(Invocation inv,@Param("shop_id") long shop_id){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
@@ -93,7 +93,7 @@ public class ItemConsoleController extends BasicConsoleController{
 									  @Param("shop_id") long shop_id) {
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
@@ -141,7 +141,7 @@ public class ItemConsoleController extends BasicConsoleController{
                       				   @Param("shop_id") long shop_id){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
@@ -180,7 +180,7 @@ public class ItemConsoleController extends BasicConsoleController{
 
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
         List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
@@ -210,7 +210,7 @@ public class ItemConsoleController extends BasicConsoleController{
 
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
         if(itemId == 0){
         	return "@json:" + Constants.PARATERERROR;
