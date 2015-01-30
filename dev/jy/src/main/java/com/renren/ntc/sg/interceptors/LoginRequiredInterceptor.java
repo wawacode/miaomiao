@@ -63,9 +63,20 @@ public class LoginRequiredInterceptor extends ControllerInterceptorAdapter {
         if (user == null) {
             String origURL = SUtils.getResourceFullLocation(inv.getRequest());
             LoggerUtils.getInstance().log("the origURL is " + origURL);
-            return "r:" + "/console/login?rf=r&domain="
-                    + Constants.DOMAIN_URL + "&origURL="
-                    + origURL;
+            String path = inv.getRequest().getRequestURI() ;
+            if(path.startsWith("/console/api")){
+            	JSONObject result = new JSONObject();
+            	result.put("code", -1);
+            	result.put("msg", "");
+            	result.put("origURL", "/console/login?rf=r&domain="
+                        + Constants.DOMAIN_URL + "&origURL="
+                        + origURL);
+                return true;
+            }else {
+            	 return "r:" + "/console/login?rf=r&domain="
+                         + Constants.DOMAIN_URL + "&origURL="
+                         + origURL;
+			}
         }
         return true;
 	}
