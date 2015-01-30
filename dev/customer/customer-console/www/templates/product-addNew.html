@@ -1,4 +1,4 @@
-<ion-modal-view>
+<ion-modal-view xmlns="http://www.w3.org/1999/html">
 
     <ion-header-bar class="bar bar-header bar-dark">
         <h1 class="title">添加新商品</h1>
@@ -18,7 +18,7 @@
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">条形码:</span>
-                <input type="text" value="{{item.serNo}}">
+                <input type="text" value="{{item.serialNo}}">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">价格(元):</span>
@@ -28,7 +28,8 @@
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">图片:</span>
                 <div class="positive">
-                    说明:请填写正确的条形码，喵喵会为您添加高质量图片
+                    <p>说明:请填写正确的条形码，</br>
+                        喵喵会为您添加高质量图片</p>
                 </div>
             </label>
 

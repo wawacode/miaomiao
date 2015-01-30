@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('ProductCtrl', function($scope, $ionicPopup,$ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate,localStorageService,httpClient) {
+    .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService, httpClient) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
@@ -57,7 +57,7 @@ angular.module('miaomiao.console.controllers')
         $scope.selectCategory = function (category) {
 
             // if in loading more, can't select
-            if(inLoadingMore)return;
+            if (inLoadingMore)return;
 
             for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
                 $scope.info.categoryls[idx].selected = 0;
@@ -73,10 +73,6 @@ angular.module('miaomiao.console.controllers')
 
         $scope.moreDataCanBeLoaded = function () {
             return $scope.info.currentDisplayCategory.canLoadMore;
-        }
-
-        $scope.addProduct = function(){
-
         }
 
         $scope.addItems = function () {
@@ -117,27 +113,34 @@ angular.module('miaomiao.console.controllers')
             });
         }
 
-        // just kicking the tires
-        $scope.$on('$ionicView.afterEnter', function(){
-            $timeout(function(){
-                $scope.posts = [];
-                $ionicScrollDelegate.resize();
-            },100);
+        $scope.$on('modal.hidden', function () {
+
         });
 
+        $scope.deleteItemFromCurrentCategory = function (item) {
 
-        var percentComplete = 1;
-        if(percentComplete >= 1){
-            $scope.$broadcast('scroll.refreshComplete');
-            cfpLoadingBar.complete();
-        }else{
-            cfpLoadingBar.set(percentComplete);
+            var index = $scope.info.currentDisplayItems.indexOf(item);
+            if (index > -1) {
+                $scope.info.currentDisplayItems.splice(index, 1);
+            }
         }
 
-        $timeout(function(){
-            if($scope.posts.length < 1){
-                cfpLoadingBar.complete();
-                $scope.timesUp = true;
+        $scope.updateItemFromCurrentCategory = function (item) {
+
+            var index = $scope.info.currentDisplayItems.indexOf(item);
+
+        }
+
+        $scope.addProducteForCurrentCategory = function (item) {
+            var index = $scope.info.currentDisplayItems.indexOf(item);
+            if (index != -1) {
+                $scope.info.currentDisplayItems.push(item);
             }
-        },5000);
+        }
+
+        // just kicking the tires
+        $scope.$on('$ionicView.afterEnter', function () {
+
+        });
+
     })
