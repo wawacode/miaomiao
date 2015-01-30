@@ -77,6 +77,7 @@ public class LoginController extends BasicConsoleController{
     	JSONObject result = new JSONObject();
     	result.put("code", -1);
     	result.put("msg", "用户不存在");
+    	result.put("origURL", origURL);
     	RegistUser user = hostHolder.getUser();
         if (user != null) {
             return "@json:" + result.toJSONString();
@@ -87,10 +88,13 @@ public class LoginController extends BasicConsoleController{
         try {
             origURL = URLEncoder.encode(origURL, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            return "@json:" + Constants.UKERROR;
+        	e.printStackTrace();
+        	result.put("code", 500);
+        	result.put("msg", "url解析错误");
+        	result.put("origURL", "/");
+            return "@json:" + result.toJSONString();
         }
-        inv.addModel("origURL", origURL);
-        inv.addModel("msg", "");
+        result.put("origURL", origURL);
         RegistUser u = userDAO.getUser(phone, pwd) ;
         if(null == u){
             result.put("code", -2);
