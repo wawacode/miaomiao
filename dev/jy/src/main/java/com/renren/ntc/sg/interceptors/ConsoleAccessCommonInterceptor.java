@@ -6,6 +6,7 @@ import net.paoding.rose.web.ControllerInterceptorAdapter;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Interceptor;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,13 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
         if(null  != uuid) {
             u = registUserDAO.getUser(SUtils.unwrapper(uuid));
             hostHolder.setUser(u);
-        }
+        }else {
+			String cookie = inv.getRequest().getParameter("token");
+			if(StringUtils.isNotBlank(cookie)){
+				 u = registUserDAO.getUser(SUtils.unwrapper(uuid));
+		         hostHolder.setUser(u);
+			}
+		}
         return true;
 	}
     

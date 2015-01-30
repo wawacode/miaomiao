@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.AuthorizeCheck;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
+import com.renren.ntc.sg.annotations.LoginRequired;
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.ShopCategory;
