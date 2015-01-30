@@ -73,6 +73,7 @@ public class LoginController extends BasicConsoleController{
     @Get ("valid")
     @Post ("valid")
     public String Login(Invocation inv,@Param("phone") String phone,@Param("pwd") String pwd, @Param("origURL") String origURL) {
+    	inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
     	JSONObject result = new JSONObject();
     	result.put("code", -1);
     	result.put("msg", "用户不存在");
@@ -105,7 +106,6 @@ public class LoginController extends BasicConsoleController{
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
         JSONObject resultJson = new JSONObject();
         resultJson.put("shop", shop);
-        inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
         return "@json:" + getDataResult(0, resultJson);
     }
 }
