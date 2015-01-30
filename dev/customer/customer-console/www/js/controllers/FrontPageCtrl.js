@@ -1,14 +1,12 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('FrontPageCtrl', function ($scope, $ionicActionSheet,$ionicPopup, $state, cfpLoadingBar, $timeout,localStorageService, $ionicScrollDelegate,httpClient) {
+    .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet,$ionicPopup, $state, cfpLoadingBar, $timeout,localStorageService, $ionicScrollDelegate,httpClient) {
 
         $scope.info = {};
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
         $scope.info.shopName = $scope.info.shop.name || "首页";
 
-        cfpLoadingBar.start();
-        cfpLoadingBar.set(0.1);
 
 
         $scope.getSummaryInfo = function(success, fail){
@@ -36,16 +34,19 @@ angular.module('miaomiao.console.controllers')
             $scope.info.summary = {};
             $ionicScrollDelegate.resize();
 
+            $scope.LoadingMessage = '正在加载,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
+
             $scope.getSummaryInfo(function(dataDetail){
 
-                $scope.$broadcast('scroll.refreshComplete');
-                cfpLoadingBar.complete();
-
+                $ionicLoading.hide();
                 $scope.info.summary = dataDetail;
 
             },function(){
-                $scope.$broadcast('scroll.refreshComplete');
-                cfpLoadingBar.complete();
+                $ionicLoading.hide();
             })
 
         });
@@ -57,8 +58,6 @@ angular.module('miaomiao.console.controllers')
 
         $scope.doRefresh = function(){
 
-            $scope.info.summary = {};
-
             $scope.getSummaryInfo(function(dataDetail){
 
                 $scope.$broadcast('scroll.refreshComplete');
@@ -66,7 +65,9 @@ angular.module('miaomiao.console.controllers')
                 $scope.info.summary = dataDetail;
 
             },function(){
+
                 $scope.$broadcast('scroll.refreshComplete');
+
             })
         }
 

@@ -51,6 +51,7 @@ public class LoginController extends BasicConsoleController{
 	@Get ("")
     @Post ("")
 	public String newLogin(Invocation inv, @Param("origURL") String origURL) {
+		inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
         RegistUser user = hostHolder.getUser();
 		if (user != null) {
 			return "r:" + origURL;
@@ -65,7 +66,6 @@ public class LoginController extends BasicConsoleController{
 			return "r:/console/login";
 		}
 		inv.addModel("origURL", origURL);
-        inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
 		return "login";
 	}
 
@@ -73,9 +73,11 @@ public class LoginController extends BasicConsoleController{
     @Get ("valid")
     @Post ("valid")
     public String Login(Invocation inv,@Param("phone") String phone,@Param("pwd") String pwd, @Param("origURL") String origURL) {
+    	inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
     	JSONObject result = new JSONObject();
     	result.put("code", -1);
     	result.put("msg", "用户不存在");
+    	result.put("origURL", origURL);
     	RegistUser user = hostHolder.getUser();
         if (user != null) {
             return "@json:" + result.toJSONString();
@@ -86,10 +88,13 @@ public class LoginController extends BasicConsoleController{
         try {
             origURL = URLEncoder.encode(origURL, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            return "@json:" + Constants.UKERROR;
+        	e.printStackTrace();
+        	result.put("code", 500);
+        	result.put("msg", "url解析错误");
+        	result.put("origURL", "/");
+            return "@json:" + result.toJSONString();
         }
-        inv.addModel("origURL", origURL);
-        inv.addModel("msg", "");
+        result.put("origURL", origURL);
         RegistUser u = userDAO.getUser(phone, pwd) ;
         if(null == u){
             result.put("code", -2);
@@ -105,7 +110,6 @@ public class LoginController extends BasicConsoleController{
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
         JSONObject resultJson = new JSONObject();
         resultJson.put("shop", shop);
-        inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
         return "@json:" + getDataResult(0, resultJson);
     }
 }

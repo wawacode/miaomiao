@@ -8,6 +8,7 @@
 angular.module('miaomiao.console', [
     'ngAnimate',
     'ionic',
+    'ngCordova',
     'LocalStorageModule',
     'ngStorage',
     'ngDropdowns',
@@ -121,7 +122,7 @@ angular.module('miaomiao.console', [
         });
     })
 
-    .constant('serverInfo', {host: 'http://localhost:8010', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://127.0.0.1:8010', context: '/console/api/'})
 
     .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;
@@ -213,6 +214,16 @@ angular.module('miaomiao.console', [
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/sign-in');
 
+    }).factory(("ionPlatform"), function( $q ){
+        var ready = $q.defer();
+
+        ionic.Platform.ready(function( device ){
+            ready.resolve( device );
+        });
+
+        return {
+            ready: ready.promise
+        }
     })
 
     .filter('timeAgo', function () {
