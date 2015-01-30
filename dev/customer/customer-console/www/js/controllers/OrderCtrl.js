@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('OrderCtrl', function ($scope, $ionicPopup, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService) {
+    .controller('OrderCtrl', function ($scope, $ionicPopup,$ionicLoading , $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
@@ -9,9 +9,6 @@ angular.module('miaomiao.console.controllers')
         $scope.info = {};
         $scope.info.orders = [];
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
-
-        cfpLoadingBar.start();
-        cfpLoadingBar.set(0.1);
 
         function transformOrderData(orders){
             if(!orders) return;
@@ -25,10 +22,7 @@ angular.module('miaomiao.console.controllers')
             }
         }
 
-        var canLoadMore = true;
-        $scope.moreOrderCanBeLoaded = function () {
-            return canLoadMore;
-        }
+        $scope.moreOrderCanBeLoaded = false;
 
         $scope.getOrdersInfo = function( from, offset, success,fail){
 
@@ -40,9 +34,10 @@ angular.module('miaomiao.console.controllers')
                         title: '加载数据失败',
                         template: ''
                     });
-                    canLoadMore = false;
+                    $scope.moreOrderCanBeLoaded = false;
                     return;
                 }
+                $scope.moreOrderCanBeLoaded = true;
                 success(dataDetail);
 
             }, function (data, status) {
@@ -51,7 +46,7 @@ angular.module('miaomiao.console.controllers')
                     title: '加载数据失败',
                     template: ''
                 });
-                canLoadMore = false;
+                $scope.moreOrderCanBeLoaded = false;
                 return fail();
             });
         }
@@ -60,18 +55,22 @@ angular.module('miaomiao.console.controllers')
 
             var from = 0, offset = 20;
 
+            $scope.LoadingMessage = '正在加载,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
+
             $scope.getOrdersInfo(from,offset,function(dataDetail){
 
-                $scope.$broadcast('scroll.refreshComplete');
-                cfpLoadingBar.complete();
+                $ionicLoading.hide();
 
                 $scope.info.orders = dataDetail.orders;
                 transformOrderData($scope.info.orders);
 
             },function(){
 
-                $scope.$broadcast('scroll.refreshComplete');
-                cfpLoadingBar.complete();
+                $ionicLoading.hide();
 
             })
         })
