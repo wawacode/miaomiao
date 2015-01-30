@@ -59,6 +59,10 @@ public class CookieManager {
         cookie.setPath(path);
         cookie.setMaxAge(second);
         cookie.setDomain(Constants.DOMAIN3);
+        cookie = new Cookie(key, value);
+        cookie.setPath(path);
+        cookie.setMaxAge(second);
+        cookie.setDomain(Constants.DOMAIN4);
         response.addCookie(cookie);
 	}
 	public void saveCookie(HttpServletResponse response, String key,

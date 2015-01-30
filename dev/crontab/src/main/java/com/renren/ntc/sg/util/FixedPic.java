@@ -18,7 +18,7 @@ public class FixedPic {
 
     private static String URL ="http://s.1688.com/selloffer/offer_search.htm?keywords={key}";
 
-    private static long  shop_id= 10020;
+    private static long  shop_id= 10030;
 
     public FixedPic() throws IOException {
 
@@ -42,19 +42,18 @@ public class FixedPic {
                 if (StringUtils.isBlank(pic)|| -1 == pic.indexOf("cat/images")){
                     String fname = item.getSerialNo()+".jpg";
                     String serialNo = item.getSerialNo();
-
+                    String pic_url = "http://www.mbianli.com/cat/images/" + fname;
                     if(new File("D:\\webimg2\\"+fname).exists()){
+                        itemDao.update(SUtils.generTableName(shop_id),item.getSerialNo(),item.getName(),pic_url);
                         continue;
                     }
                     if( -1 == pic.indexOf("cat/images")) {
 
                         try{
                             writeFile (pic,fname);
-                            String pic_url = "http://www.mbianli.com/cat/images/" + fname;
-
                             if (new File("D:\\webimg2\\"+fname).exists()){
                                 System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-//                                itemDao.update(SUtils.generTableName(shop_id),item.getSerialNo(),item.getName(),pic_url);
+                                itemDao.update(SUtils.generTableName(shop_id),item.getSerialNo(),item.getName(),pic_url);
                                 continue;
                             }
                         }
@@ -90,11 +89,10 @@ public class FixedPic {
                             try{
 
                             writeFile (value,fname);
-                            String pic_url = "http://www.mbianli.com/cat/images/" + fname;
 
                             if (new File("D:\\webimg2\\"+fname).exists()){
                                 System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-//                                itemDao.update(SUtils.generTableName(shop_id),item.getSerialNo(),item.getName(),pic_url);
+                                itemDao.update(SUtils.generTableName(shop_id),item.getSerialNo(),item.getName(),pic_url);
                                 continue;
                                }
                             }
