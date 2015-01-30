@@ -48,7 +48,7 @@ public abstract class AbstractGeoMongodbService {
 			user.put("shop_id", uloc.getShop_id());
 			user.put("loc", makeLocationPoint(uloc));
 			user.put("uptime", new Date());
-			geoTable.update(new BasicDBObject("shop_id", uloc.getShop_id()), user, true, false);
+            System.out.println(geoTable.update(new BasicDBObject("shop_id", uloc.getShop_id()), user, true, false));
 			return true;
 		} else {
 			logger.error("can not update because geo mongodb not inited");

@@ -235,47 +235,51 @@ public class GeoService {
 	}
 
     public static void main (String [] args){
-        long shop_id = 10027;
+        long shop_id = 10031;
         RoseAppContext  rose = new RoseAppContext();
         ShopDAO shopDao = rose.getBean(ShopDAO.class);
         Shop shop = new Shop();
-        Date date = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        c.set(Calendar.HOUR_OF_DAY,9);
-        c.set(Calendar.MINUTE,0);
-        c.set(Calendar.SECOND,0);
-        shop.setOpen_time(c.getTime());
-        c = Calendar.getInstance();
-        c.setTime(date);
-        c.set(Calendar.HOUR_OF_DAY,22);
-        c.set(Calendar.SECOND,0);
-        c.set(Calendar.MINUTE,0);
-        shop.setClose_time(c.getTime());
         shop.setId(shop_id);
-        shopDao.update(shop) ;
+//        Date date = new Date();
+//        Calendar c = Calendar.getInstance();
+//        c.setTime(date);
+//        c.set(Calendar.HOUR_OF_DAY,9);
+//        c.set(Calendar.MINUTE,0);
+//        c.set(Calendar.SECOND,0);
+//        shop.setOpen_time(c.getTime());
+//        c = Calendar.getInstance();
+//        c.setTime(date);
+//        c.set(Calendar.HOUR_OF_DAY,22);
+//        c.set(Calendar.SECOND,0);
+//        c.set(Calendar.MINUTE,0);
+//        shop.setClose_time(c.getTime());
+
+//        shopDao.update(shop) ;
 
 
 
-      GeoService  geoService =  new GeoService() ;
+        GeoService  geoService =  new GeoService() ;
+        shop = shopDao.getShop(shop.getId());
         ShopLocation shop_location = new ShopLocation()  ;
-        shop_location = new ShopLocation()  ;
+        System.out.println(shop.getId());
+        System.out.println(shop.getLat());
+        System.out.println(shop.getLng());
         shop_location.setLatitude(shop.getLat());
         shop_location.setLongitude(shop.getLng());
         shop_location.setShop_id(shop.getId());
         System.out.println(geoService.updateLocation(shop_location));
-        shopDao.audit(shop.getId());
+//        shopDao.audit(shop.getId());
 //
 //
-//        ShopLocation shopL = new ShopLocation () ;
-//        shopL.setShop_id(10);
-//        shopL.setLatitude(39.976004);
-//        shopL.setLongitude(116.341316);
-//        List<GeoQueryResult> ls  = geoService.queryNearUser(shopL , 500 * 1000);
-//        for (GeoQueryResult geo :ls ) {
-//            System.out.println(String.format("shop_id %d  , lng %f , lat %f ",geo.getShopLocation().getShop_id() , geo.getShopLocation().getLongitude(),geo.getShopLocation().getLatitude()));
-//        }
-//        geoService.removeLocation(10020);
+        ShopLocation shopL = new ShopLocation () ;
+        shopL.setShop_id(10);
+        shopL.setLatitude(40.001361);
+        shopL.setLongitude(116.478426);
+        List<GeoQueryResult> ls  = geoService.queryNearUser(shopL , 20 * 1000);
+        for (GeoQueryResult geo :ls ) {
+            System.out.println(String.format("shop_id %d  , lng %f , lat %f ",geo.getShopLocation().getShop_id() , geo.getShopLocation().getLongitude(),geo.getShopLocation().getLatitude()));
+        }
+//        geoService.removeLocation(0);
     }
 
 }
