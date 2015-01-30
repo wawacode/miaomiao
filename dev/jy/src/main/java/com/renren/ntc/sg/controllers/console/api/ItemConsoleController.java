@@ -25,6 +25,7 @@ import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.constant.SgConstant;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.FileUploadUtils;
 import com.renren.ntc.sg.util.SUtils;
 @DenyCommonAccess
@@ -52,7 +53,7 @@ public class ItemConsoleController extends BasicConsoleController{
     public String del(Invocation inv, @Param("id") long id,@Param("shop_id") long shop_id){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	JSONObject resultJson = new JSONObject();
     	int result = itemsDAO.delItemsById(SUtils.generTableName(shop.getId()), id);
@@ -71,7 +72,7 @@ public class ItemConsoleController extends BasicConsoleController{
     public String add(Invocation inv,@Param("shop_id") long shop_id){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
@@ -92,7 +93,7 @@ public class ItemConsoleController extends BasicConsoleController{
 									  @Param("shop_id") long shop_id) {
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
@@ -140,7 +141,7 @@ public class ItemConsoleController extends BasicConsoleController{
                       				   @Param("shop_id") long shop_id){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
     	JSONObject resultJson = new JSONObject();
@@ -179,7 +180,7 @@ public class ItemConsoleController extends BasicConsoleController{
 
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
         List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
@@ -199,5 +200,27 @@ public class ItemConsoleController extends BasicConsoleController{
         result.put("categoryls",categoryls);
         result.put("itemls", itemls);
         return "@json:"+ getDataResult(0, result);
+    }
+    
+    @Post("sticky")
+    @Get("sticky")
+    public String sticky(Invocation inv, @Param("itemId") int itemId,
+    		 							 @Param("category_id") int category_id,
+    									 @Param("shop_id") long shop_id){
+
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
+        }
+        if(itemId == 0){
+        	return "@json:" + Constants.PARATERERROR;
+        }
+    	int maxItemScore = itemsDAO.getMaxScoreOfItem(SUtils.generTableName(shop_id),category_id);
+    	int flag = itemsDAO.stickyItemByCondition(SUtils.generTableName(shop_id), itemId, maxItemScore + 1);
+    	if(flag == SgConstant.PROCESS_DB_SUC){
+    		return "@json:"+ getActionResult(0, "置顶成功");
+    	}else {
+    		return "@json:"+ getActionResult(1, "置顶失败");
+		}
     }
 }

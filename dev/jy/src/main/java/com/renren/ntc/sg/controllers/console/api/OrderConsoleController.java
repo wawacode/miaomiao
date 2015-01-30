@@ -59,7 +59,7 @@ public class OrderConsoleController extends BasicConsoleController{
     									 @Param("shop_id") long shop_id){
 		Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
         List<Order> orders = new ArrayList<Order>();
 		if(StringUtils.isBlank(beginDate) && StringUtils.isBlank(endDate)){
@@ -109,7 +109,7 @@ public class OrderConsoleController extends BasicConsoleController{
     public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("from") int from, @Param("offset") int offset){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
-        	return "@json:" + getActionResult(1, "店铺不存在");
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
 
         if ( 0 == from){
