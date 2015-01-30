@@ -40,6 +40,9 @@ public class PrinterMoniter {
             return;
         }
         for (Shop shop : shops) {
+            if (shop.getId() == 10031 || shop.getId() == 10030){
+                continue;
+            }
             Device device = deviceDao.getDevByShopId(shop.getId());
             if (null == device) {
                 String message = "{shop_name} 打印机状态异常";

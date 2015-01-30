@@ -4,6 +4,7 @@ import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.OrderInfo;
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.SQL;
+import net.paoding.rose.jade.annotation.SQLParam;
 
 import java.util.List;
 
@@ -30,9 +31,15 @@ public interface OrdersDAO {
     static final String FIELDS = "id, order_id,shop_id,user_id,address_id,remarks ,info ,snapshot,status,price,create_time,update_time" ;
     static final String INSERT_FIELDS = " order_id,shop_id,user_id,address_id,remarks ,info,snapshot,status,price" ;
 
-	@SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where user_id =:1 order by create_time desc limit :2,:3")
-	public List<Order> getOrder(long user_id, int start, int offset);
 
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where order_id =:1 ")
+    public Order getOrder(String orderId,@SQLParam("tableName") String tableName);
+
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where create_time between :1 and :2")
+    public List<Order> getOrder(String beginTime,String endTime,@SQLParam("tableName") String tableName);
+
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where user_id =:1 order by create_time desc limit :2,:3")
+    public List<Order> getOrder(long user_id, int start, int offset ,@SQLParam("tableName") String tableName);
 
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where shop_id =:1 order by create_time desc limit :2,:3")
     public List<Order> getOrderByShop(long shop_id, int start, int offset);
