@@ -30,7 +30,6 @@ import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
 @DenyCommonAccess
-@LoginRequired
 @Path("order")
 public class OrderConsoleController extends BasicConsoleController{
 	@Autowired
