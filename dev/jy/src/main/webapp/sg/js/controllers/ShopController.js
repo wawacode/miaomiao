@@ -40,6 +40,12 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                 return;
             }
 
+            // force update shop info
+            $scope.shop = dataDetail.shop;
+            if($scope.shop){
+                localStorageService.set('MMMETA_shop',$scope.shop);
+            }
+
             $scope.categoryls = dataDetail.categoryls;
 
             // extend for use
