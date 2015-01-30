@@ -33,7 +33,6 @@ import com.renren.ntc.sg.util.SUtils;
  */
 
 @DenyCommonAccess
-@LoginRequired
 @Path("shop")
 public class ShopConsoleController extends BasicConsoleController{
 

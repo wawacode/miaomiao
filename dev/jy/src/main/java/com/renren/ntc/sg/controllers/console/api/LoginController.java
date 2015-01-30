@@ -52,9 +52,13 @@ public class LoginController extends BasicConsoleController{
     @Post ("")
 	public String newLogin(Invocation inv, @Param("origURL") String origURL) {
 		inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
+    	JSONObject result = new JSONObject();
+    	result.put("code", -1);
+    	result.put("msg", "用户不存在");
+    	result.put("origURL", origURL);
         RegistUser user = hostHolder.getUser();
 		if (user != null) {
-			return "r:" + origURL;
+			 return "@json:" + result.toJSONString();
 		}
 		if (origURL == null || origURL.equals("")) {
 			origURL = Constants.DOMAIN;
@@ -63,10 +67,11 @@ public class LoginController extends BasicConsoleController{
 			origURL = URLEncoder.encode(origURL, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			return "r:/console/login";
 		}
-		inv.addModel("origURL", origURL);
-		return "login";
+		result.put("code", 0);
+		result.put("msg", "");
+		result.put("origURL", "/console/login");
+		return "@json:" + result.toJSONString();
 	}
 
 
@@ -110,6 +115,7 @@ public class LoginController extends BasicConsoleController{
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
         JSONObject resultJson = new JSONObject();
         resultJson.put("shop", shop);
+        resultJson.put("token", SUtils.wrapper(u.getId()));
         return "@json:" + getDataResult(0, resultJson);
     }
 }
