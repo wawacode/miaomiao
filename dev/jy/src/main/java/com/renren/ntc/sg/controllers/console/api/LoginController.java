@@ -51,6 +51,7 @@ public class LoginController extends BasicConsoleController{
 	@Get ("")
     @Post ("")
 	public String newLogin(Invocation inv, @Param("origURL") String origURL) {
+		inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
         RegistUser user = hostHolder.getUser();
 		if (user != null) {
 			return "r:" + origURL;
@@ -65,7 +66,6 @@ public class LoginController extends BasicConsoleController{
 			return "r:/console/login";
 		}
 		inv.addModel("origURL", origURL);
-        inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
 		return "login";
 	}
 
