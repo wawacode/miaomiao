@@ -99,4 +99,10 @@ public interface ItemsDAO {
     
     @SQL("select count(1) from ##(:tableName)   where shop_id =:2")
     public int getCountOfItemByShopId(@SQLParam("tableName") String tableName, long shop_id);
+    
+    @SQL("select max(score) from ##(:tableName)   where category_id =:2")
+    public int getMaxScoreOfItem(@SQLParam("tableName") String tableName,int catId);
+    
+    @SQL("update ##(:tableName) set  score=:3 where id =:2")
+    public int stickyItemByCondition(@SQLParam("tableName") String tableName,long itemId,int score);
 }
