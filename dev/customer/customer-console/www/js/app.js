@@ -10,6 +10,7 @@ angular.module('miaomiao.console', [
     'ionic',
     'LocalStorageModule',
     'ngStorage',
+    'ngDropdowns',
     'miaomiao.console.controllers',
     'miaomiao.console.services',
     'miaomiao.console.directives',
@@ -120,7 +121,7 @@ angular.module('miaomiao.console', [
         });
     })
 
-    .constant('serverInfo', {host: 'http://localhost:8010', context: '/sg/'})
+    .constant('serverInfo', {host: 'http://localhost:8010', context: '/console/api/'})
 
     .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;
@@ -208,35 +209,6 @@ angular.module('miaomiao.console', [
                     }
                 }
             })
-            // the comments pages are identical but we'd like to have each tab have their own,
-            // so we'll just reuse the controller and template for each one
-            .state('tab.front-page-comments', {
-                url: '/front-page/comments/:storyID',
-                views: {
-                    'tab-front-page': {
-                        templateUrl: 'templates/tab-comments.html',
-                        controller: 'CommentsCtrl'
-                    }
-                }
-            })
-            .state('tab.newest-comments', {
-                url: '/newest/comments/:storyID',
-                views: {
-                    'tab-newest': {
-                        templateUrl: 'templates/tab-comments.html',
-                        controller: 'CommentsCtrl'
-                    }
-                }
-            })
-            .state('tab.search-comments', {
-                url: '/search/comments/:storyID',
-                views: {
-                    'tab-search': {
-                        templateUrl: 'templates/tab-comments.html',
-                        controller: 'CommentsCtrl'
-                    }
-                }
-            });
 
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/sign-in');

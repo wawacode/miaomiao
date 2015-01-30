@@ -1,6 +1,6 @@
 var miaomiao = angular.module('miaomiao.console.services');
 
-miaomiao.factory('httpClient', ['$http','serverInfo', function ($http,serverInfo) {
+miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverInfo) {
 
     var doGet = function (path, params, success, fail) {
 
@@ -32,38 +32,48 @@ miaomiao.factory('httpClient', ['$http','serverInfo', function ($http,serverInfo
 
     }
 
+    var development = true;
     return {
 
-        login:function(phone,pwd, success, fail){
+        login: function (phone, pwd, success, fail) {
 
-            doPost('login/valid',{'phone': phone, pwd: pwd},success, fail);
+            doPost('login/valid', {'phone': phone, pwd: pwd}, success, fail);
+        },
+
+        getSummary: function (shopId, beginDate, endDate, success, fail) {
+
+            if (development)return success(testdata.summary);
+
+            doGet('order/summary', 'shop_id=' + shopId + '&beginDate=' + beginDate + "&endDate=" + endDate, success, fail);
         },
 
         getProductList: function (shopId, success, fail) {
 
-            return success(testdata.productInfo);
+            if (development)return success(testdata.productInfo);
 
             doGet('shop/category/get', 'shop_id=' + shopId, success, fail);
         },
+
         getMoreProductList: function (shopId, cateId, from, offset, success, fail) {
 
-            return success(testdata.moreProductInfo);
+            if (development)return success(testdata.moreProductInfo);
 
             doGet('shop/getitems', "shop_id=" + shopId +
                 "&category_id=" + cateId + "&from=" + from +
                 "&offset=" + offset, success, fail);
         },
 
-        getMyOrders: function (shopId,from,offset, success, fail) {
 
-            return success(testdata.orderInfo);
+        getMyOrders: function (shopId, from, offset, success, fail) {
+
+            if (development)return success(testdata.orderInfo);
 
             doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);
         },
 
-        getMoreMyOrders: function (shopId,from,offset, success, fail) {
+        getMoreMyOrders: function (shopId, from, offset, success, fail) {
 
-            return success(testdata.moreOrderInfo);
+            if (development)return success(testdata.moreOrderInfo);
 
             doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);
         },
@@ -71,6 +81,47 @@ miaomiao.factory('httpClient', ['$http','serverInfo', function ($http,serverInfo
         getSearchResults: function (shopId, key, success, fail) {
             doGet('search/query', 'shop_id=' + shopId + '&key=' + key, success, fail);
         },
+
+
+        deleteItem: function (itemId, shopId, success, fail) {
+            doGet('shopItem/del', 'itemId=' + itemId + '&shop_id=' + shopId, success, fail);
+        },
+
+        addItem: function (options, shopId, success, fail) {
+
+            doPost('shopItem/addItem',
+
+                {'serialNo': options.serialNo,
+                    name: options.name,
+                    categoryId: options.categoryId,
+                    count: options.count,
+                    score: options.score,
+                    price_new: options.price_new,
+                    pic: options.pic
+                },
+
+                success, fail);
+
+        },
+
+        updateItem: function (options, shopId, success, fail) {
+
+            doPost('shopItem/update',
+
+                {'itemName': options.itemName,
+                    itemId: options.itemId,
+                    serialNo: options.serialNo,
+                    category_id: options.category_id,
+                    count: options.count,
+                    score: options.score,
+                    price: options.price,
+                    pic: options.pic
+                },
+
+                success, fail);
+
+        },
+
 
         getShopList: function (from, offset, success, fail) {
 

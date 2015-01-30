@@ -3,29 +3,25 @@
     <ion-nav-bar class="bar-positive">
 
         <ion-nav-buttons side="right" class="button-dark">
-            <button class="button button-icon ion-ios7-personadd" ui-sref="register" ng-click=""></button>
+            <button class="button button-icon ion-ios7-personadd" ng-click=""></button>
         </ion-nav-buttons>
-
-        <ion-nav-title>
-            我的订单
-        </ion-nav-title>
 
     </ion-nav-bar>
 
     <ion-content class="padding">
-        <div class="list">
+        <div class="list padding">
 
             <div class="item item-input" >
                 <span class="input-label">用户名</span>
-                <input type="text" ng-model="user.name" placeholder="注册店名">
+                <input type="text" ng-model="user.name" placeholder="店名">
             </div>
             <div class="item item-input" >
                 <span class="input-label">电话:</span>
-                <input type="password" ng-model="user.phone" placeholder="注册号码">
+                <input type="text" ng-model="user.phone" placeholder="号码">
             </div>
             <div class="item item-input" >
                 <span class="input-label">密码:</span>
-                <input type="password" ng-model="user.password" placeholder="注册密码">
+                <input type="password" ng-model="user.password" placeholder="">
             </div>
         </div>
         <div class="padding">

@@ -1,13 +1,14 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('OrderCtrl', function ($scope, $ionicPopup, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient) {
+    .controller('OrderCtrl', function ($scope, $ionicPopup, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
         $scope.pageName = '订单';
+
         $scope.info = {};
         $scope.info.orders = [];
-        $scope.info.shopid = 1;
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
 
         cfpLoadingBar.start();
         cfpLoadingBar.set(0.1);
@@ -24,49 +25,16 @@ angular.module('miaomiao.console.controllers')
             }
         }
 
-        var from = 0, offset = 20;
         var canLoadMore = true;
-        httpClient.getMyOrders($scope.info.shopid, from, offset, function (data, status) {
-
-            $scope.$broadcast('scroll.refreshComplete');
-            cfpLoadingBar.complete();
-
-            var code = data.code, dataDetail = data.data;
-            if (!code == 0) {
-                $ionicPopup.alert({
-                    title: '加载数据失败',
-                    template: ''
-                });
-                canLoadMore = false;
-                return;
-            }
-            $scope.info.orders = dataDetail.orders;
-            transformOrderData($scope.info.orders);
-
-        }, function (data, status) {
-
-            $scope.$broadcast('scroll.refreshComplete');
-            cfpLoadingBar.complete();
-
-            $ionicPopup.alert({
-                title: '加载数据失败',
-                template: ''
-            });
-            canLoadMore = false;
-            return;
-        });
-
         $scope.moreOrderCanBeLoaded = function () {
             return canLoadMore;
         }
 
-        $scope.addOrders = function () {
+        $scope.getOrdersInfo = function( from, offset, success,fail){
 
-            $scope.info.orders = $scope.info.orders || [];
-            var from = $scope.info.orders.length, offset = 20;
+            httpClient.getMyOrders($scope.info.shop.id, from, offset, function (data, status) {
 
-            httpClient.getMoreMyOrders($scope.info.shopid, from, offset, function (data, status) {
-                var code = data.code, dataDetail = data.data;
+               var code = data.code, dataDetail = data.data;
                 if (!code == 0) {
                     $ionicPopup.alert({
                         title: '加载数据失败',
@@ -75,10 +43,7 @@ angular.module('miaomiao.console.controllers')
                     canLoadMore = false;
                     return;
                 }
-
-                $scope.info.orders = $scope.info.orders.concat(dataDetail.orders);
-
-                $scope.$broadcast('scroll.infiniteScrollComplete');
+                success(dataDetail);
 
             }, function (data, status) {
 
@@ -87,24 +52,71 @@ angular.module('miaomiao.console.controllers')
                     template: ''
                 });
                 canLoadMore = false;
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-                return;
+                return fail();
             });
+        }
+
+        $timeout(function(){
+
+            var from = 0, offset = 20;
+
+            $scope.getOrdersInfo(from,offset,function(dataDetail){
+
+                $scope.$broadcast('scroll.refreshComplete');
+                cfpLoadingBar.complete();
+
+                $scope.info.orders = dataDetail.orders;
+                transformOrderData($scope.info.orders);
+
+            },function(){
+
+                $scope.$broadcast('scroll.refreshComplete');
+                cfpLoadingBar.complete();
+
+            })
+        })
+
+
+
+        $scope.addOrders = function () {
+
+            if(!$scope.info.orders.length) return;
+            var from = $scope.info.orders.length, offset = 20;
+
+            $scope.getOrdersInfo(from,offset,function(dataDetail){
+
+                $scope.info.orders.concat(dataDetail.orders);
+                transformOrderData( $scope.info.orders);
+
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+
+            },function(){
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        }
+
+        $scope.doRefresh = function(){
+
+            $scope.info.orders = $scope.info.orders || [];
+            var from = 0, offset = 20;
+
+            $scope.getOrdersInfo(from,offset,function(dataDetail){
+
+                $scope.$broadcast('scroll.refreshComplete');
+
+                $scope.info.orders = dataDetail.orders;
+                transformOrderData($scope.info.orders);
+
+            },function(){
+                $scope.$broadcast('scroll.refreshComplete');
+
+            })
         }
 
         // just kicking the tires
         $scope.$on('$ionicView.afterEnter', function () {
-            $timeout(function () {
-                $scope.posts = [];
-                $ionicScrollDelegate.resize();
-            }, 100);
+
         });
 
-        $timeout(function () {
-            if ($scope.posts.length < 1) {
-                cfpLoadingBar.complete();
-                $scope.timesUp = true;
-            }
-        }, 5000);
     })
 

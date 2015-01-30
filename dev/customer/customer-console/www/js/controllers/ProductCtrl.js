@@ -1,17 +1,17 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('ProductCtrl', function($scope, $ionicPopup,$ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate,localStorageService,httpClient) {
+    .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService, httpClient) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
         $scope.info = {};
         $scope.pageName = '商品';
 
-        $scope.info.shop = localStorageService.get('MMMETA_shop') || {};
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
 
         cfpLoadingBar.start();
 
-        httpClient.getProductList($scope.info.shop.id || 1, function (data, status) {
+        httpClient.getProductList($scope.info.shop.id, function (data, status) {
 
             var code = data.code, dataDetail = data.data;
             if (!code == 0) {
@@ -57,7 +57,7 @@ angular.module('miaomiao.console.controllers')
         $scope.selectCategory = function (category) {
 
             // if in loading more, can't select
-            if(inLoadingMore)return;
+            if (inLoadingMore)return;
 
             for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
                 $scope.info.categoryls[idx].selected = 0;
@@ -75,10 +75,6 @@ angular.module('miaomiao.console.controllers')
             return $scope.info.currentDisplayCategory.canLoadMore;
         }
 
-        $scope.addProduct = function(){
-
-        }
-
         $scope.addItems = function () {
 
             var cateId = $scope.info.currentDisplayCategory.category_id,
@@ -86,7 +82,7 @@ angular.module('miaomiao.console.controllers')
                 offset = 20;
 
             inLoadingMore = true;
-            httpClient.getMoreProductList($scope.info.shop.id || 1, cateId, from, offset, function (data, status) {
+            httpClient.getMoreProductList($scope.info.shop.id, cateId, from, offset, function (data, status) {
 
                 /*
                  * {"code":0,"data":[{"category_id":15,"count":956,"id":28062,"name":"哈哈镜鸭爪买一赠一","pic_url":
@@ -117,27 +113,34 @@ angular.module('miaomiao.console.controllers')
             });
         }
 
-        // just kicking the tires
-        $scope.$on('$ionicView.afterEnter', function(){
-            $timeout(function(){
-                $scope.posts = [];
-                $ionicScrollDelegate.resize();
-            },100);
+        $scope.$on('modal.hidden', function () {
+
         });
 
+        $scope.deleteItemFromCurrentCategory = function (item) {
 
-        var percentComplete = 1;
-        if(percentComplete >= 1){
-            $scope.$broadcast('scroll.refreshComplete');
-            cfpLoadingBar.complete();
-        }else{
-            cfpLoadingBar.set(percentComplete);
+            var index = $scope.info.currentDisplayItems.indexOf(item);
+            if (index > -1) {
+                $scope.info.currentDisplayItems.splice(index, 1);
+            }
         }
 
-        $timeout(function(){
-            if($scope.posts.length < 1){
-                cfpLoadingBar.complete();
-                $scope.timesUp = true;
+        $scope.updateItemFromCurrentCategory = function (item) {
+
+            var index = $scope.info.currentDisplayItems.indexOf(item);
+
+        }
+
+        $scope.addProducteForCurrentCategory = function (item) {
+            var index = $scope.info.currentDisplayItems.indexOf(item);
+            if (index != -1) {
+                $scope.info.currentDisplayItems.push(item);
             }
-        },5000);
+        }
+
+        // just kicking the tires
+        $scope.$on('$ionicView.afterEnter', function () {
+
+        });
+
     })

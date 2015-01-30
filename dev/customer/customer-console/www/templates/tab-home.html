@@ -1,13 +1,18 @@
 <ion-view>
 
-    <ion-nav-bar class="bar-dark">
-        <ion-nav-buttons side="left">
-            <button class="button button-icon ion-ios7-person"
-                    ng-click=""></button>
+    <ion-nav-bar class="bar-dark barWithDropdownMenu">
+        <ion-nav-buttons side="left" >
+
+            <button class="button button-clear" ng-click="showUserAction()">
+                <i class="icon ion-ios7-person"></i>
+            </button>
+
         </ion-nav-buttons>
-        <ion-nav-title ng-click="switchShop()">
-            {{info.shopName}} <i class="icon ion-chevron-down" style=" font-size: 15px !important"></i>
+
+        <ion-nav-title ng-controller="EditShopCtrl" ng-click="ShowShopList()">
+                {{info.shopName}} <i class="icon ion-chevron-down" style=" font-size: 15px !important" ></i>
         </ion-nav-title>
+
     </ion-nav-bar>
 
     <ion-content delegate-handle="mainScroll"
@@ -15,6 +20,10 @@
                  has-tabs="false"
                  has-header="false"
                  scroll="true">
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
 
         <ul class="list">
 
@@ -25,12 +34,12 @@
             <a class="item item-icon-left" href="#/tab/product">
                 <i class="icon ion-ios7-paper balanced"></i>
                 商品总数
-                <span class="badge badge-assertive">0</span>
+                <span class="badge badge-assertive">{{info.summary.product.totalCount}} 件</span>
             </a>
             <a class="item item-icon-left" href="#/tab/product">
                 <i class="icon ion-navicon-round balanced"></i>
                 商品总分类数
-                <span class="badge badge-assertive">0</span>
+                <span class="badge badge-assertive">{{info.summary.cat.totalCount}} 类</span>
             </a>
 
             <div class="item item-divider">
@@ -40,12 +49,12 @@
             <a class="item item-icon-left" href="#/tab/order">
                 <i class="icon ion-stats-bars balanced"></i>
                 订单总数
-                <span class="badge badge-assertive">0</span>
+                <span class="badge badge-assertive">{{info.summary.order.totalCount}} 单</span>
             </a>
             <a class="item item-icon-left" href="#/tab/order">
                 <i class="icon ion-arrow-graph-up-right balanced"></i>
                 订单总收入
-                <span class="badge badge-assertive">0</span>
+                <span class="badge badge-assertive">{{info.summary.order.totalPrice}}</span>
             </a>
         </ul>
 

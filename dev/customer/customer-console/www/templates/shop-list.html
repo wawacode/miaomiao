@@ -1,0 +1,102 @@
+<ion-modal-view>
+
+    <ion-header-bar class="bar bar-header bar-dark">
+        <h1 class="title">管理店铺</h1>
+        <button class="button button-clear button-primary" ng-click="closeModal()">取消</button>
+    </ion-header-bar>
+
+    <ion-content padding="true"
+                 has-tabs="false"
+                 has-header="true"
+                 scroll="true"
+                 has-bouncing="true">
+        <div class="list card" ng-repeat="item in info.shoplist">
+            <div class="item item-body" style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
+                <div>
+                    <div style="font-size: 16px;display: inline-block;color: #191919">
+                        {{item.name}}
+                    </div>
+
+                    <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
+                        {{item.status | getShopStatusString }}
+                    </div>
+
+                    <div style="display: inline-block;float: right" ng-click="editShop(item)">
+                        <button class="positive button button-icon ion-settings">编辑</button>
+                    </div>
+
+                </div>
+
+                <div style="margin-top: 12px;color: #6a6a6a">
+                    <div style="font-size: 12px;">
+                        <div style=" display: inline-block" ng-show="item.open_time || item.close_time">
+                            <i class="icon ion-ios7-clock"
+                               style="font-size: 15px;margin-right: 9px;color: lightgray"></i> 早{{item.open_time|
+                            date:'shortTime' | removeAMPM}} - 晚{{item.close_time| date:'shortTime' | removeAMPM}}
+                        </div>
+                        <div style=" display: inline-block;" ng-show="!item.open_time && !item.close_time">
+                            <i class="icon ion-ios7-clock"
+                               style="font-size: 15px;margin-right: 9px;color: lightgray"></i>全天营业
+                        </div>
+                        <div style=" display: inline-block; padding-left: 20px">
+                            <i class="icon ion-ios7-pricetags"
+                               style="font-size: 15px;margin-right: 9px;color: lightgray"></i> {{ item.base_price |
+                            getShopMinPrice }}元起送
+                        </div>
+                    </div>
+                    <div style="font-size: 12px;" ng-show="item.shop_address">
+                        <i class="icon ion-ios7-location"
+                           style="font-size: 15px;margin-right: 9px;color: lightgray"></i>{{item.shop_address}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="list" ng-show="editingShop">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">店名:</span>
+                <input type="text" value="{{editingShop.name}}">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">起送价格(元):</span>
+                <input type="text" value="{{editingShop.base_price}}">
+            </label>
+
+            <label class="item item-input-inset item-stacked-label">
+                <div class="list">
+                    <span class="input-label assertive">营业时间</span>
+                    <label class="item item-input" style="border: none">
+                        <span class="input-label">开店时间:</span>
+                        <input type="text" value="{{editingShop.open_time | date :'shortTime'}}" placeholder="8:00 AM" required>
+                    </label>
+                    <label class="item item-input" style="border: none">
+                        <span class="input-label">打烊时间:</span>
+                        <input type="text" value="{{editingShop.close_time | date :'shortTime'}}" placeholder="10:00 PM" required>
+                    </label>
+                </div>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label assertive">
+                    管理:
+                </div>
+                <select>
+                    <option selected>正在营业</option>
+                    <option>打烊</option>
+                </select>
+            </label>
+
+            <div class="item tabs tabs-icon-left tabs-light">
+                <a class="tab-item positive" ng-click="cancelEditShop()">
+                    <i class="icon ion-close-circled"></i>
+                    取消
+                </a>
+
+                <a class="tab-item positive" ng-click="saveShop(editingShop)">
+                    <i class="icon ion-checkmark-circled"></i>
+                    保存
+                </a>
+            </div>
+        </div>
+    </ion-content>
+
+</ion-modal-view>

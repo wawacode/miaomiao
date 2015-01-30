@@ -49,8 +49,8 @@ public class ShopConsoleController extends BasicConsoleController{
     ShopConsoleController(){
     }
 
-	@Post("")
-    @Get("")
+    @Get("getitems")
+    @Post("getitems")
 	public String index(Invocation inv,@Param("shop_id") long shop_id,
 									   @Param("category_id") int category_id ,
 									   @Param("from") int from, 

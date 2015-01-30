@@ -7,6 +7,7 @@
 
     <!--<link href="css/ionic.app.css" rel="stylesheet">-->
     <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
+    <link href="lib/angular-dropdowns/angular-dropdowns.css" rel="stylesheet">
     <link href="css/platform.css" rel="stylesheet">
 
     <!-- ionic/angularjs js -->
@@ -20,6 +21,7 @@
 
     <script src="lib/angular-local-storage.min.js"></script>
     <script src="lib/ngstorage/ngStorage.min.js"></script>
+    <script src="lib/angular-dropdowns/angular-dropdowns.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -42,6 +44,7 @@
     <script src="js/controllers/OrderDetailCtrl.js"></script>
     <script src="js/controllers/ProductCtrl.js"></script>
     <script src="js/controllers/EditProductCtrl.js"></script>
+    <script src="js/controllers/EditShopCtrl.js"></script>
     <script src="js/controllers/AddProductCtrl.js"></script>
     <script src="js/controllers/SearchCtrl.js"></script>
 
@@ -54,7 +57,9 @@
     <script src="lib/moment/min/moment.min.js"></script>
 
 </head>
-<body ng-app="miaomiao.console" ion-track-auto ng-controller="MainCtrl">
+
+<!--<body ng-app="miaomiao.console" ion-track-auto ng-controller="MainCtrl">-->
+<body ng-app="miaomiao.console" ng-controller="MainCtrl">
 
 <ion-nav-bar class="bar-dark">
     <ion-nav-back-button></ion-nav-back-button>

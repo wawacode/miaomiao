@@ -21,12 +21,6 @@
                 <input type="text" value="{{item.price/100.0}}">
             </label>
 
-            <label class="item item-input item-stacked-label">
-                <span class="input-label assertive">图片:</span>
-                <div class="" style="text-align: center">
-                    <img class="full-image" ng-src="{{item.pic_url}}" style="width: 150px;height: auto">
-                </div>
-            </label>
             <label class="item item-input item-select">
                 <div class="input-label assertive">
                     销售状态:
@@ -35,6 +29,17 @@
                     <option selected>在售</option>
                     <option>下架</option>
                 </select>
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">图片:</span>
+                <div class="" style="text-align: center">
+                    <img class="full-image" ng-src="{{item.pic_url}}" style="width: 300px;height: auto">
+                </div>
+            </label>
+
+            <label class="item item-input-inset" style="text-align: center">
+               <button class="button button-full button-assertive" ng-click="deleteItem(item)">删除此商品</button>
             </label>
         </div>
 
