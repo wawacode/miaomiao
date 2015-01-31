@@ -5,10 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.*;
-import com.renren.ntc.sg.dao.*;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
+import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.AddressService;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.SMSService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
@@ -21,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Path("order")
@@ -32,7 +32,7 @@ public class OrderController {
     public ShopDAO shopDAO;
 
     @Autowired
-    public OrdersDAO orderDAO;
+    public OrdersDAO ordersDAO;
     @Autowired
     public OrdersDAO cDAO;
 
@@ -56,9 +56,12 @@ public class OrderController {
     @Autowired
     public AddressService sddressService;
 
-    public static String SMSURL = "http://v.juhe.cn/sms/send";
-    public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
-    public static String TID = "777";
+    @Autowired
+    public SMSService smsService;
+
+//    public static String SMSURL = "http://v.juhe.cn/sms/send";
+//    public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
+//    public static String TID = "777";
 
 
     @Get("loading")
@@ -155,8 +158,6 @@ public class OrderController {
         if (!ok) {
             return "@" + Constants.LEAKERROR;
         }
-
-
         //库存变化 TODO
 
         for (Item4V it : itemls) {
@@ -178,46 +179,28 @@ public class OrderController {
         order.setSnapshot(items);
         order.setStatus(1);         //已经确认的状态
         order.setUser_id(user_id);
-        int re = orderDAO.insertUpdate(order, SUtils.generOrderTableName(shop_id));
+        int re = ordersDAO.insertUpdate(order, SUtils.generOrderTableName(shop_id));
         if (re != 1) {
             return "@" + Constants.UKERROR;
         }
-
-
+        smsService.sendSMS2LocPush(order_id, shop);
         // 发送短信通知
-
-        //短信通知 地推人员
-        try {
-            String mobile = "";
-            byte[] t = null;
-            String info = "用户下单";
-            long adr_id = order.getAddress_id();
-            Address adrs = addressDAO.getAddress(adr_id);
-            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
-            vv = vv.replaceAll("=", "").replaceAll("&", "");
-            String ro = info.replace("=", "").replace("&", "");
-            float p = (float) order.getPrice() / 100;
-            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
-            message = SUtils.span(message);
-            message = URLEncoder.encode(message, "utf-8");
-            CatStaffCommit catStaffCommit = catStaffCommitDao.getbyShopid(shop_id);
-            if (catStaffCommit != null) {
-                String sphone = catStaffCommit.getPhone();
-                String url = SUtils.forURL(SMSURL, APPKEY, TID, sphone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, order.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                String r = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, mobile, url));
-            }
-        } catch (Throwable t) {
-            t.printStackTrace();
+        Device devcie = deviceDAO.getDevByShopId(shop_id);
+        if (null == devcie || SUtils.isOffline(devcie)) {
+            System.out.println("device is null or  printer offline ");
+            // 发送通知给 用户和 老板
+            smsService.sendSMS2Boss(order_id, shop);
+            smsService.sendSMS2User(order_id, shop);
         }
+
         JSONObject response = new JSONObject();
         JSONObject data = new JSONObject();
         response.put("data", data);
         response.put("code", 0);
         return "@" + Constants.DONE;
     }
+
+
 
 
 }

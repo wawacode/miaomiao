@@ -1,11 +1,14 @@
 package com.renren.ntc.sg.mongo;
 
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 import com.renren.ntc.sg.util.Constants;
 
+import com.renren.ntc.sg.util.SUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -22,35 +25,34 @@ import com.mongodb.WriteResult;
 
 /**
  * @author allen
- *
  */
 //todo  mongo db 这些代码都需要优化
 public class MongoDBUtil {
 
-	private Mongo m;
-	private DB db;
+    private Mongo m;
+    private DB db;
 
-	static Log logger = LogFactory.getLog(MongoDBUtil.class);
+    static Log logger = LogFactory.getLog(MongoDBUtil.class);
 
-	private static MongoDBUtil instance = new MongoDBUtil();
+    private static MongoDBUtil instance = new MongoDBUtil();
 
-	private MongoDBUtil() {
-		try {
-			m = new Mongo(Constants.HOST, 27017);
-			db = m.getDB(Constants.DBNAME);
-            boolean  result = db.authenticate("sg","qwer$#@!".toCharArray());
-            System.out.println("re "  + result);
+    private MongoDBUtil() {
+        try {
+            m = new Mongo(Constants.HOST, 27017);
+            db = m.getDB(Constants.DBNAME);
+            boolean result = db.authenticate("sg", "qwer$#@!".toCharArray());
+            System.out.println("re " + result);
 
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (MongoException e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static MongoDBUtil getInstance() {
-		return instance;
-	}
+    public static MongoDBUtil getInstance() {
+        return instance;
+    }
 
     public DB getDB() {
         return db;
@@ -60,37 +62,65 @@ public class MongoDBUtil {
         return db.getCollection("sg_shop");
     }
 
+    public DBCollection getCollectionforSMScache() {
+        return db.getCollection("sms_cache");
+    }
 
     private static boolean reCheck(WriteResult re) {
-		if (null == re.getError()) {
-			return true;
-		}
-		return false;
-	}
-	public static void main(String[] args) throws UnknownHostException,
-			MongoException {
+        if (null == re.getError()) {
+            return true;
+        }
+        return false;
+    }
 
-		MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
-		DBCollection coll = mongoDBUtil.getCollection();
+    public static void main(String[] args) throws UnknownHostException,
+            MongoException {
+
+        MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
+        DBCollection coll = mongoDBUtil.getCollection();
         BasicDBObject query = new BasicDBObject();
         query.put("key", "1233");
         BasicDBObject foj = new BasicDBObject("key", "1223");
-        foj.put("ccc","ddd");
+        foj.put("ccc", "ddd");
         BasicDBObject tbj = new BasicDBObject();
         tbj.put("$addToSet", new BasicDBObject("sg_shop", foj));
         WriteResult re = coll.update(query, tbj, true, false);
-       System.out.println( reCheck(re));
+        System.out.println(reCheck(re));
 
 
         DBCursor cur = coll.find(query);
-		BasicDBObject boj = null;
+        BasicDBObject boj = null;
 
-		if (cur.hasNext()) {
-			boj = (BasicDBObject) cur.next();
+        if (cur.hasNext()) {
+            boj = (BasicDBObject) cur.next();
             System.out.println(boj.toString());
-		}
+        }
 
     }
 
+    public  boolean haveSend(String phone, String message) {
+        MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
+        DBCollection coll = mongoDBUtil.getCollectionforSMScache();
+        String key = SUtils.generSMSCacheKey(message,phone);
+        BasicDBObject query = new BasicDBObject();
+        query.put("key", key);
+        DBCursor cur = coll.find(query);
+        if (cur.hasNext()) {
+            return true;
+        }
+        return false;
+    }
+
+    public  void sendmark(String phone, String message) {
+        MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
+        DBCollection coll = mongoDBUtil.getCollectionforSMScache();
+        BasicDBObject query = new BasicDBObject();
+        String key = SUtils.generSMSCacheKey(message,phone);
+        query.put("key", key);
+        BasicDBObject foj = new BasicDBObject("msg", message);
+        BasicDBObject jrespone = new BasicDBObject();
+        jrespone.put("$addToSet", foj);
+        coll.update(query, jrespone, true, false);
+    }
+
 }
-	

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
+import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.PrinterService;
 import org.apache.commons.lang.StringUtils;
 
@@ -280,4 +281,21 @@ public class SUtils {
             }
         }
     }
+
+    public static boolean isOffline(Device device) {
+         Date date = device.getUpdate_time();
+        long now = System.currentTimeMillis();
+        long last_time = date.getTime();
+        return (now -last_time) > Constants.OFFLINEFLAG ;
+    }
+
+    public static String generSMSCacheKey(String message, String phone) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(message);
+        sb.append("#");
+        sb.append(phone);
+        return sb.toString();
+    }
+
+
 }
