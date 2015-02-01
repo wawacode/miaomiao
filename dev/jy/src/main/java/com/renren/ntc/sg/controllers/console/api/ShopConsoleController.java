@@ -9,13 +9,13 @@ import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
-import com.renren.ntc.sg.annotations.LoginRequired;
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.ShopCategory;
@@ -25,6 +25,7 @@ import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
 
 /**
@@ -117,5 +118,44 @@ public class ShopConsoleController extends BasicConsoleController{
         data.put("shop",shopob);
         data.put("categoryls", jarr) ;
         return "@json:"+getDataResult(0, data);
+    }
+	
+	@Get("updateShopInfo")
+    @Post("updateShopInfo")
+    public String updateShopInfo (Invocation inv,@Param("shop_id") long shop_id,
+    											 @Param("name") String name,
+    											 @Param("tel") String tel,
+    											 @Param("owner_phone") String owner_phone,
+    											 @Param("create_time") String creteTime,//2015-01-13 21:30:25
+    											 @Param("lng") String lng,
+    											 @Param("lat") String lat,
+    											 @Param("open_time") String openTime,//08:00
+    											 @Param("close_time") String closeTime,//20:00
+    											 @Param("shop_address") String shopAddress,
+    											 @Param("audit") int audit){
+		Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
+        }
+        String openShopTime = "";
+        String closeShopTime = "";
+        if(StringUtils.isNotBlank(openTime)){
+        	openShopTime = Dateutils.getDateStrByCondition(openTime);
+            if(StringUtils.isBlank(openShopTime)){
+            	return "@json:" + getActionResult(1, "开店时间格式不正确,格式如08:00");
+            }
+        }
+        if(StringUtils.isNotBlank(closeTime)){
+        	closeShopTime = Dateutils.getDateStrByCondition(closeTime);
+            if(StringUtils.isBlank(closeShopTime)){
+            	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00");
+            }
+        }
+        int result = shopDAO.updateShopDetail(shop_id, name, tel, owner_phone, creteTime, lng, lat, openShopTime, closeShopTime, shopAddress, audit);
+        if(result == 1){
+        	return "@json:"+getActionResult(0, "修改店铺成功");
+        }else {
+        	return "@json:"+getActionResult(1, "修改店铺失败");
+		}
     }
 }

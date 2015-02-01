@@ -190,7 +190,7 @@ public class Item {
 		this.score = score;
 		this.count = count;
 		this.pic_url = pic_url;
-		this.price_new = price;
+		this.price = price;
 	}
 
 

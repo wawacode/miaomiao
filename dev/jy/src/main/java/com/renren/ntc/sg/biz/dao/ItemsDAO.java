@@ -2,6 +2,7 @@ package com.renren.ntc.sg.biz.dao;
 
 import com.renren.ntc.sg.bean.Item;
 import net.paoding.rose.jade.annotation.DAO;
+import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 import net.paoding.rose.jade.annotation.SQLParam;
 
@@ -51,7 +52,7 @@ public interface ItemsDAO {
 
     @SQL("update  ##(:tableName) set count = count-:4  where id =:3")
     public void decr(@SQLParam("tableName") String tableName, long s_id, long i_id, int count);
-
+    @ReturnGeneratedKeys
     @SQL("insert into ##(:tableName) (" + INSERT_FIELDS + ")" +" value (:2.serialNo,:2.shop_id,:2.name," +
             ":2.category_id,:2.category_sub_id,:2.score,:2.price,:2.price_new,:2.count,:2.pic_url)")
     public  int insert(@SQLParam("tableName") String tableName, Item item);
@@ -105,4 +106,7 @@ public interface ItemsDAO {
     
     @SQL("update ##(:tableName) set  score=:3 where id =:2")
     public int stickyItemByCondition(@SQLParam("tableName") String tableName,long itemId,int score);
+    
+    @SQL("select "+ FIELDS +" from ##(:tableName) where shop_id =:2 and count = 0")
+    public List<Item> showNoSaleItems(@SQLParam("tableName") String tableName,long shopId);
 }

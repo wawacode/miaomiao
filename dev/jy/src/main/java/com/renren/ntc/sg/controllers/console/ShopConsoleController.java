@@ -157,7 +157,7 @@ public class ShopConsoleController {
 									  @Param("categoryId") int categoryId,
 									  @Param("count") int count,
 									  @Param("score") int score,
-									  @Param("price_new") int price,
+									  @Param("price") int price,
 									  @Param("pic") MultipartFile pic) {
     	if(pic == null){
     		LoggerUtils.getInstance().log(String.format("upload pic is null,serialNo=%s",serialNo));
@@ -180,7 +180,7 @@ public class ShopConsoleController {
 		String picUrl = imageUrl.concat(picName);
 		Item item = new Item(serialNo,shopId, name, categoryId, score, count, picUrl, price);
 		int flag = itemsDAO.insert(SUtils.generTableName(shopId), item);
-		if (flag != 1) {
+		if (flag == 0) {
             return "@error";
         }
 		return "r:/console/shop?shop_id="+shopId+"&category_id="+categoryId;

@@ -44,4 +44,7 @@ public interface ShopDAO {
     
     @SQL("update " + TABLE_NAME + " set ##(:key) = :3  where id =:1")
     public int update(long id, @SQLParam("key") String key, String value);
+    
+    @SQL("update " + TABLE_NAME + " set name = :2,tel = :3,owner_phone = :4,create_time = :5,lng = :6,lat = :7,open_time = :8,close_time = :9,shop_address = :10,audit = :11  where id =:1")
+    public int updateShopDetail(long id, String name, String tel,String owner_phone,String create_time,String lng,String lat,String open_time,String close_time,String shop_address,int audit);
 }

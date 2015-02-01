@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.AuthorizeCheck;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
-import com.renren.ntc.sg.annotations.LoginRequired;
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.ShopCategory;
@@ -84,12 +83,13 @@ public class ItemConsoleController extends BasicConsoleController{
     }
     
     @Post("addItem")
+    @Get("addItem")
 	public String add(Invocation inv, @Param("serialNo") String serialNo,
 									  @Param("name") String name,
 									  @Param("categoryId") int categoryId,
 									  @Param("count") int count,
 									  @Param("score") int score,
-									  @Param("price_new") int price,
+									  @Param("price") int price,
 									  @Param("pic") MultipartFile pic,
 									  @Param("shop_id") long shop_id) {
     	Shop shop = isExistShop(shop_id);
@@ -100,33 +100,34 @@ public class ItemConsoleController extends BasicConsoleController{
     	JSONObject resultJson = new JSONObject();
     	resultJson.put("code", -1);
 		resultJson.put("msg", "服务器错误，请稍后重试");
-    	if(pic == null){
-    		LoggerUtils.getInstance().log(String.format("upload pic is null,serialNo=%s",serialNo));
-    		return "@json:"+resultJson.toJSONString();
+		String picUrl = "";
+    	if(pic != null){
+    		String picName = pic.getOriginalFilename();
+        	String[] picNameArr = pic.getOriginalFilename().split("\\.");
+        	if(pic!=null && picNameArr.length ==2){
+        		picName = serialNo+"."+picNameArr[1];
+        	}else {
+        		LoggerUtils.getInstance().log(String.format("upload pic format is wrong,serialNo=%s",serialNo));
+        		return "@json:"+resultJson.toJSONString();
+    		}
+        	String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shopId));
+        	boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
+    		if(!isSuc){
+    			return "@json:"+resultJson.toJSONString();
+    		}
+    		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
+    		picUrl = imageUrl.concat(picName);
     	}
-    	String picName = pic.getOriginalFilename();
-    	String[] picNameArr = pic.getOriginalFilename().split("\\.");
-    	if(pic!=null && picNameArr.length ==2){
-    		picName = serialNo+"."+picNameArr[1];
-    	}else {
-    		LoggerUtils.getInstance().log(String.format("upload pic format is wrong,serialNo=%s",serialNo));
-    		return "@json:"+resultJson.toJSONString();
-		}
-    	String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shopId));
-    	boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
-		if(!isSuc){
-			return "@json:"+resultJson.toJSONString();
-		}
-		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
-		String picUrl = imageUrl.concat(picName);
 		Item item = new Item(serialNo,shopId, name, categoryId, score, count, picUrl, price);
-		int flag = itemsDAO.insert(SUtils.generTableName(shopId), item);
-		if (flag != 1) {
+		int itemId = itemsDAO.insert(SUtils.generTableName(shopId), item);
+		if (itemId == 0) {
 			return "@json:"+resultJson.toJSONString();
-        }
-		resultJson.put("code", 0);
-		resultJson.put("msg", "添加商品成功");
-		return "@json:"+resultJson.toJSONString();
+        }else {
+			item = itemsDAO.getItem(SUtils.generTableName(shopId), shopId, itemId);
+		}
+		JSONObject result = new JSONObject();
+		result.put("item", item);
+		return "@json:"+getDataResult(0, result);
 	}
 
     @Post("update")
@@ -223,5 +224,52 @@ public class ItemConsoleController extends BasicConsoleController{
     	}else {
     		return "@json:"+ getActionResult(1, "置顶失败");
 		}
+    }
+    
+    @Post("shelves")
+    @Get("shelves")
+    public String shelves(Invocation inv, @Param("itemId") int itemId,
+    									  @Param("shop_id") long shop_id,
+    		 							  @Param("sale") int sale){
+
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
+        }
+        if(itemId == 0){
+        	return "@json:" + Constants.PARATERERROR;
+        }
+        int itemCount = 0;
+        if(sale == Constants.ITEM_ON_SALE){//上架设置库存为100
+        	itemCount = 100;
+        }
+        int flag = itemsDAO.update(SUtils.generTableName(shop_id), itemId, "count", itemCount);
+    	if(sale == Constants.ITEM_ON_SALE){
+    		if(flag == SgConstant.PROCESS_DB_SUC){
+        		return "@json:"+ getActionResult(0, "商品上架成功");
+        	}else {
+        		return "@json:"+ getActionResult(1, "商品上架失败");
+    		}
+    	}else {
+    		if(flag == SgConstant.PROCESS_DB_SUC){
+        		return "@json:"+ getActionResult(0, "商品下架成功");
+        	}else {
+        		return "@json:"+ getActionResult(1, "商品下架失败");
+    		}
+		}
+    }
+    
+    @Post("shownosales")
+    @Get("shownosales")
+    public String shownosales(Invocation inv,@Param("shop_id") long shop_id){
+
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
+        }
+        List<Item> items = itemsDAO.showNoSaleItems(SUtils.generTableName(shop_id), shop_id);
+        JSONObject result = new JSONObject();
+        result.put("items", items);
+        return "@json:" + getDataResult(0, result);
     }
 }

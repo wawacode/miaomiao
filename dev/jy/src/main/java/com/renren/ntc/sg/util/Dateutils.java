@@ -40,6 +40,9 @@ public class Dateutils {
 			return "";
 		}
 		String[] dateStr = condition.split(":");
+		if(dateStr == null ||  dateStr.length != 2){
+			return "";
+		}
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
 		now.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateStr[0]));

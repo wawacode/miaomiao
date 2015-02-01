@@ -41,7 +41,7 @@
         <input type="text" name="score" class="form-control" placeholder="评分" required>
         </div>
         <div class="form-group">
-        <input type="text" name="price_new" class="form-control" placeholder="零售价" required>
+        <input type="text" name="price" class="form-control" placeholder="零售价" required>
         </div>
         <div class="form-group">
         <label for="inputfile">上次商品图片</label>
