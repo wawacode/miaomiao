@@ -14,20 +14,20 @@
         <div class="list">
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">商品名称:</span>
-                <input type="text" value="{{item.name}}" ng-model="item.name">
+                <input type="text" ng-value="item.updated_name" ng-model="item.updated_name" ng-init="item.updated_name = item.name">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">价格(元):</span>
-                <input type="text" value="{{item.price/100.0}}" ng-model="item.price">
+                <input type="text" ng-value="item.updated_price" ng-model="item.updated_price" ng-init="item.updated_price = item.price/100.0">
             </label>
 
             <label class="item item-input item-select">
                 <div class="input-label assertive">
                     销售状态:
                 </div>
-                <select ng-model="item.online">
-                    <option selected>在售</option>
-                    <option>下架</option>
+                <select ng-model="item.saleStatus" ng-options="o.status as o.title for o in [{title:'在售',status:1},{title:'下架',status:0}]" ng-init="item.saleStatus=1">
+                    <!--<option selected ng-value="item.online" ng-model="item.online" ng-init="item.online=true">在售</option>-->
+                    <!--<option ng-model="item.offline" ng-value="item.offline" ng-init="item.offline=false">下架</option>-->
                 </select>
             </label>
 

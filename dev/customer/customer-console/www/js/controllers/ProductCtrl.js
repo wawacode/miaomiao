@@ -152,21 +152,23 @@ angular.module('miaomiao.console.controllers')
 
             var index = $scope.info.currentDisplayItems.indexOf(item);
             if (index != -1) {
-                $timeout(function () {
-
-                    $scope.info.currentDisplayItems[index] = item;
-
-                })
+//                $timeout(function () {
+//                    // delete one and insert one
+//                    $scope.info.currentDisplayItems.splice(index, 1,item);
+//                })
             }
         }
 
-        $scope.addProducteForCurrentCategory = function (item) {
+        $scope.addProducteForCurrentCategory = function (cateId,item) {
 
-            var index = $scope.info.currentDisplayItems.indexOf(item);
-            if (index == -1) {
-                $timeout(function () {
-                    $scope.info.currentDisplayItems.push(item);
-                })
+            for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
+                if(cateId == $scope.info.categoryls[idx].category_id){
+                    //insert here
+                    $timeout(function () {
+                        $scope.info.categoryls[idx].itemls.push(item);
+                    })
+                    break;
+                }
             }
         }
 

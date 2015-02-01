@@ -36,7 +36,6 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
 
-
         $scope.EditItem = function(item) {
             $scope.openModal();
         }
@@ -68,16 +67,19 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
         }
 
         $scope.saveItem = function(item){
-            // TODO: compare and save
 
-           var options = {'itemName': item.name,
+            item.price = item.updated_price*100;
+            item.name = item.updated_name;
+
+            var options = {'itemName': item.name,
                 itemId: item.id,
                 serialNo: item.serialNo,
                 category_id: item.category_id,
                 count: item.count,
                 score: item.score,
                 price: item.price,
-                pic: item.pic_url
+                pic: item.pic_url,
+                saleStatus: item.saleStatus
             }
 
             httpClient.updateItem(options, $scope.info.shop.id, function (data, status) {
@@ -91,6 +93,8 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                     return;
                 }
                 $scope.closeModal();
+                // update some fileds
+
                 $scope.updateItemFromCurrentCategory(item);
 
             }, function (data, status) {

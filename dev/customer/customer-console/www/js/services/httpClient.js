@@ -101,7 +101,8 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
                     count: options.count,
                     score: options.score,
                     price_new: options.price_new,
-                    pic: options.pic
+                    pic: options.pic,
+                    shop_id:shopId
                 },
 
                 success, fail);
