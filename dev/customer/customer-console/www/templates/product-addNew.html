@@ -12,17 +12,26 @@
                  has-bouncing="true">
 
         <div class="list">
+
+            <label class="item item-input item-select">
+                <div class="input-label assertive">
+                    选择分类:
+                </div>
+                <select ng-model="newitem.currentCateId" ng-options="o.category_id as o.name for o in info.categoryls" ng-change="changeCategroy(newitem.currentCateId)">
+                </select>
+            </label>
+
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">商品名称:</span>
-                <input type="text" value="{{item.name}}">
+                <input type="text" ng-value="newitem.name" ng-model="newitem.name">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">条形码:</span>
-                <input type="text" value="{{item.serialNo}}">
+                <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">价格(元):</span>
-                <input type="text" value="{{item.price}}">
+                <input type="text" ng-value="newitem.price" ng-model="newitem.price">
             </label>
 
             <label class="item item-input item-stacked-label">
@@ -37,9 +46,7 @@
                 <div class="input-label assertive">
                     销售状态:
                 </div>
-                <select>
-                    <option selected>在售</option>
-                    <option>下架</option>
+                <select ng-model="newitem.saleStatus" ng-options="o.status as o.title for o in [{title:'在售',status:1},{title:'下架',status:0}]" ng-init="newitem.saleStatus=1">
                 </select>
             </label>
         </div>
@@ -53,7 +60,7 @@
                 取消
             </a>
 
-            <a class="tab-item positive" ng-click="saveItem(item)">
+            <a class="tab-item positive" ng-click="saveItem(newitem)">
                 <i class="icon ion-checkmark-circled"></i>
                 保存
             </a>

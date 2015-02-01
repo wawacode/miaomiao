@@ -1,3 +1,1 @@
-unzip -oq jy-1.war -d web
-cd web/WEB-INF/classes
-/home/q/java/default/bin/java -classpath ./:../lib/*  com.renren.ntc.sg.util.ShopOrderReportDaliy
+java -classpath `cat /root/new_et/dev/crontab/target/jy_b-1/ `  com.renren.ntc.sg.util.ShopOrderReportDaliy

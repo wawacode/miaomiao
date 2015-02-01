@@ -36,22 +36,50 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
 
-
         $scope.EditItem = function(item) {
             $scope.openModal();
         }
 
-        $scope.saveItem = function(item){
-            // TODO: compare and save
+        $scope.StickItem = function(item){
 
-           var options = {'itemName': item.name,
+            httpClient.stickItem(item.id, item.category_id, $scope.info.shop.id, function (data, status) {
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '置顶商品失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+                $scope.closeModal();
+
+                $scope.stickItemFromCurrentCategory(item);
+
+            }, function (data, status) {
+                $ionicPopup.alert({
+                    title: '置顶商品失败:',
+                    template: ''
+                });
+                return;
+                $scope.closeModal();
+            });
+        }
+
+        $scope.saveItem = function(item){
+
+            item.price = item.updated_price*100;
+            item.name = item.updated_name;
+
+            var options = {'itemName': item.name,
                 itemId: item.id,
                 serialNo: item.serialNo,
                 category_id: item.category_id,
                 count: item.count,
                 score: item.score,
                 price: item.price,
-                pic: item.pic_url
+                pic: item.pic_url,
+                saleStatus: item.saleStatus
             }
 
             httpClient.updateItem(options, $scope.info.shop.id, function (data, status) {
@@ -65,6 +93,8 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                     return;
                 }
                 $scope.closeModal();
+                // update some fileds
+
                 $scope.updateItemFromCurrentCategory(item);
 
             }, function (data, status) {

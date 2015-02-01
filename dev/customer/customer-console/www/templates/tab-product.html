@@ -2,7 +2,7 @@
     <ion-nav-bar class="bar-dark">
         <ion-nav-buttons side="right">
             <button class="button button-icon ion-ios7-plus-outline" ng-controller="AddProductCtrl"
-                    ng-click="AddItem(cateId)" ng-init="cateId=info.currentDisplayItems[0].category_id"></button>
+                    ng-click="AddItem()"></button>
         </ion-nav-buttons>
         <ion-nav-title ng-click="switchShop()">
             {{info.shop.name}} <i class="icon ion-chevron-down" style=" font-size: 15px !important"></i>

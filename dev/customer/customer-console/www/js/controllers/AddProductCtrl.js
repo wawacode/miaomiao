@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService',
+angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$timeout',
 
-    function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService) {
+    function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService,$timeout) {
 
         $ionicModal.fromTemplateUrl('templates/product-addNew.html', {
             scope: $scope,
@@ -33,22 +33,44 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         });
 
-        $scope.AddItem = function(cateId) {
-            $scope.currentCateId = cateId;
+        $scope.newitem = {};
+
+        $scope.changeCategroy = function(currentCateId){
+            $scope.newitem.currentCateId = currentCateId;
+            for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
+                if($scope.newitem.currentCateId == $scope.info.categoryls[idx].category_id){
+                    $scope.selectCategory($scope.info.categoryls[idx]);
+                    break;
+                }
+            }
+        }
+
+        $scope.AddItem = function() {
+
+            if($scope.info.categoryls && $scope.info.categoryls.length){
+                $timeout(function(){
+                    $scope.newitem.currentCateId = $scope.info.categoryls[0].category_id;
+                });
+            }else{
+                $timeout(function(){
+                    $scope.newitem.currentCateId = 0;
+                });
+            }
             $scope.openModal();
         }
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
 
-        $scope.saveItem = function(item){
+        $scope.saveItem = function(newitem){
 
-            var options ={'serialNo': item.serialNo,
-                name: item.name,
-                categoryId: $scope.currentCateId,
-                count: item.count,
-                score: item.score,
-                price_new: item.price * 100,
-                pic: item.pic
+            var options ={'serialNo': newitem.serialNo,
+                name: newitem.name,
+                categoryId: newitem.currentCateId,
+                count: newitem.count,
+                score: newitem.score,
+                price_new: newitem.price * 100,
+                pic: newitem.pic,
+                saleStatus: newitem.saleStatus
             };
 
             httpClient.addItem(options, $scope.info.shop.id, function (data, status) {
@@ -62,6 +84,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     return;
                 }
                 $scope.closeModal();
+                $scope.addProducteForCurrentCategory($scope.currentCateId,item);
 
             }, function (data, status) {
                 $ionicPopup.alert({

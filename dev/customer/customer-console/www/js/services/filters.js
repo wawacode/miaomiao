@@ -31,6 +31,10 @@ angular.module('miaomiao.console.services').filter('getTotolCount',function () {
         return function(input){
             return input ? input/100 : 20;
         }
+    }).filter('getDisplayShoppingPrice', function () {
+        return function(input){
+            return input ? input/100 : 0;
+        }
     });
 
 

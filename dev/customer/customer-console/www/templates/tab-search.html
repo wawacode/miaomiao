@@ -17,9 +17,9 @@
       <div class="item-input">
           <label class="item-input-wrapper">
               <i class="icon ion-ios7-search placeholder-icon assertive"></i>
-              <input type="search" placeholder="搜索">
+              <input type="search" placeholder="搜索" ng-model="info.key" ng-focus="startSearch()" ng-keyup="$event.keyCode == 13 && performSearch(info.key,$event)" >
           </label>
-          <button class="button button-clear">
+          <button class="button button-clear" ng-click="clearSearch()">
               取消
           </button>
       </div>
@@ -27,10 +27,14 @@
       <div class="shop-product-list">
           <ul class="shop-product-categray-list list">
 
-              <li ng-repeat="item in info.searchResults" class="product-item"
+              <li ng-repeat="item in info.searchResultsItems" class="product-item"
                   ng-include
                   src="'templates/product-detail.html'">
               </li>
+
+              <div class="no-result-display" style="text-align: center" ng-show="info.hasNoResults">
+                  没有结果
+              </div>
 
           </ul>
 

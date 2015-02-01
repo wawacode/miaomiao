@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('OrderCtrl', function ($scope, $ionicPopup, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService) {
+    .controller('OrderCtrl', function ($scope, $ionicPopup,$ionicLoading , $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
@@ -9,9 +9,6 @@ angular.module('miaomiao.console.controllers')
         $scope.info = {};
         $scope.info.orders = [];
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
-
-        cfpLoadingBar.start();
-        cfpLoadingBar.set(0.1);
 
         function transformOrderData(orders){
             if(!orders) return;
@@ -25,10 +22,10 @@ angular.module('miaomiao.console.controllers')
             }
         }
 
-        var canLoadMore = true;
-        $scope.moreOrderCanBeLoaded = function () {
+        var canLoadMore = false;
+        $scope.moreOrderCanBeLoaded = function(){
             return canLoadMore;
-        }
+        };
 
         $scope.getOrdersInfo = function( from, offset, success,fail){
 
@@ -41,8 +38,9 @@ angular.module('miaomiao.console.controllers')
                         template: ''
                     });
                     canLoadMore = false;
-                    return;
+                    return fail();
                 }
+                canLoadMore = true;
                 success(dataDetail);
 
             }, function (data, status) {
@@ -56,26 +54,26 @@ angular.module('miaomiao.console.controllers')
             });
         }
 
-        $timeout(function(){
+        var from = 0, offset = 20;
 
-            var from = 0, offset = 20;
+        $scope.LoadingMessage = '正在加载,请稍候...';
+        $ionicLoading.show({
+            templateUrl: 'templates/loadingIndicator.html',
+            scope: $scope
+        });
 
-            $scope.getOrdersInfo(from,offset,function(dataDetail){
+        $scope.getOrdersInfo(from,offset,function(dataDetail){
 
-                $scope.$broadcast('scroll.refreshComplete');
-                cfpLoadingBar.complete();
+            $ionicLoading.hide();
 
-                $scope.info.orders = dataDetail.orders;
-                transformOrderData($scope.info.orders);
+            $scope.info.orders = dataDetail.orderls;
+            transformOrderData($scope.info.orders);
 
-            },function(){
+        },function(){
 
-                $scope.$broadcast('scroll.refreshComplete');
-                cfpLoadingBar.complete();
+            $ionicLoading.hide();
 
-            })
-        })
-
+        });
 
 
         $scope.addOrders = function () {
@@ -85,7 +83,7 @@ angular.module('miaomiao.console.controllers')
 
             $scope.getOrdersInfo(from,offset,function(dataDetail){
 
-                $scope.info.orders.concat(dataDetail.orders);
+                $scope.info.orders = $scope.info.orders.concat(dataDetail.orderls);
                 transformOrderData( $scope.info.orders);
 
                 $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -97,14 +95,13 @@ angular.module('miaomiao.console.controllers')
 
         $scope.doRefresh = function(){
 
-            $scope.info.orders = $scope.info.orders || [];
             var from = 0, offset = 20;
 
             $scope.getOrdersInfo(from,offset,function(dataDetail){
 
                 $scope.$broadcast('scroll.refreshComplete');
 
-                $scope.info.orders = dataDetail.orders;
+                $scope.info.orders = dataDetail.orderls;
                 transformOrderData($scope.info.orders);
 
             },function(){
