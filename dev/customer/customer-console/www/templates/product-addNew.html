@@ -12,6 +12,15 @@
                  has-bouncing="true">
 
         <div class="list">
+            <a class="item item-icon-right">
+                条形码
+                <button class="button button-positive">
+                    查查
+                </button>
+            </a>
+        </div>
+
+        <div class="list">
 
             <label class="item item-input item-select">
                 <div class="input-label assertive">
@@ -20,15 +29,11 @@
                 <select ng-model="newitem.currentCateId" ng-options="o.category_id as o.name for o in info.categoryls" ng-change="changeCategroy(newitem.currentCateId)">
                 </select>
             </label>
-
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">商品名称:</span>
                 <input type="text" ng-value="newitem.name" ng-model="newitem.name">
             </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label assertive">条形码:</span>
-                <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo">
-            </label>
+
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">价格(元):</span>
                 <input type="text" ng-value="newitem.price" ng-model="newitem.price">

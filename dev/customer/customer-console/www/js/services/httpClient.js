@@ -83,6 +83,10 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
         },
 
 
+        getItemInfo: function (serialNo, shopId, success, fail) {
+            doGet('product/get', 'serialNo=' + serialNo, success, fail);
+        },
+
         deleteItem: function (itemId, shopId, success, fail) {
             doGet('shopItem/del', 'itemId=' + itemId + '&shop_id=' + shopId, success, fail);
         },
@@ -137,22 +141,7 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
 
         updateShopInfo: function (options, success, fail) {
 
-            doPost('shop/updateShopInfo',
-
-                {   shop_id:options.shop_id,
-                    name: options.name,
-                    shop_address: options.shop_address,
-                    shop_address: options.shop_address,
-                    audit: options.audit,
-                    owner_phone: options.owner_phone,
-                    create_time: options.create_time,
-                    lng: options.lng,
-                    lat: options.lat,
-                    open_time: options.open_time,
-                    close_time: options.close_time
-                },
-
-                success, fail);
+            doPost('shop/updateShopInfo', options, success, fail);
 
         },
 

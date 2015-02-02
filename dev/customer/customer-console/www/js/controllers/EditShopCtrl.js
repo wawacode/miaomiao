@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService','$ionicLoading',
+angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService','$ionicLoading','httpClient',
 
-    function ($scope, $ionicModal,localStorageService,$ionicLoading) {
+    function ($scope, $ionicModal,localStorageService,$ionicLoading,httpClient) {
 
         $ionicModal.fromTemplateUrl('templates/shop-list.html', {
             scope: $scope,
@@ -74,17 +74,18 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
                     $ionicPopup.alert({
-                        title: '修改商品失败:' + data.msg,
+                        title: '修改店铺失败:' + data.msg,
                         template: ''
                     });
                     return;
                 }
+                $scope.editingShop = null;
                 $scope.closeModal();
 
             }, function (data, status) {
                 $ionicLoading.hide();
                 $ionicPopup.alert({
-                    title: '修改商品失败:',
+                    title: '修改店铺信息失败:',
                     template: ''
                 });
                 $scope.closeModal();

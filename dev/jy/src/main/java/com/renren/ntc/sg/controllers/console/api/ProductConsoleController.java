@@ -54,23 +54,17 @@ public class ProductConsoleController extends BasicConsoleController{
     
     @Post("get")
     @Get("get")
-    public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("serialNo") String serialNo) {
+    public String order(Invocation inv, @Param("serialNo") String serialNo) {
 
-        Shop shop = isExistShop(shop_id);
-        if(shop == null){
-            return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
-        }
         if(StringUtils.isBlank(serialNo)){
             return "@json:" + getActionResult(1, "缺少必要参数");
         }
         Product product = productDAO.geProduct(serialNo);
         JSONObject   resultJson = new JSONObject();
-        resultJson.put("shop",shop);
         if (product == null){
             product = new Product();
             product.setSerialNo(serialNo);
         }
-        resultJson.put("shop",JSONObject.toJSON(shop));
         resultJson.put("product",JSONObject.toJSON(product));
         return "@json:"+getDataResult(0, resultJson);
     }

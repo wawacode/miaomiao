@@ -58,8 +58,16 @@
                 <input type="text" value="{{editingShop.name}}">
             </label>
             <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">地址:</span>
+                <input type="text" value="{{editingShop.shop_address}}">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">服务范围:</span>
+                <input type="text" value="{{editingShop.shop_serveArea}}">
+            </label>
+            <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">起送价格(元):</span>
-                <input type="text" value="{{editingShop.base_price}}">
+                <input type="text" value="{{editingShop.base_price/100.0}}">
             </label>
 
             <label class="item item-input-inset item-stacked-label">
