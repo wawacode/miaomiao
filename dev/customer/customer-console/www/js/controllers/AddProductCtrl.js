@@ -2,36 +2,43 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
     function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService,$timeout,$ionicLoading) {
 
-        $ionicModal.fromTemplateUrl('templates/product-addNew.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-                $scope.modal = modal;
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+        $scope.hasProductInfo = false;
+
+        $scope.findItem = function(serialNo){
+
+            $scope.LoadingMessage = '正在查找商品信息,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
             });
 
-        $scope.openModal = function() {
-            $scope.modal.show();
-        };
+            httpClient.getItemInfo(serialNo,  function (data, status) {
 
-        $scope.closeModal = function() {
-            $scope.modal.hide();
-        };
+                $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '查找商品失败,请手动添加:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+                $scope.hasProductInfo = true;
+                var item = dataDetail.product;
+                $timeout(function(){
+                    $scope.newitem = item;
+                })
 
-        //Cleanup the modal when we're done with it!
-        $scope.$on('$destroy', function() {
-            $scope.modal.remove();
-        });
-        // Execute action on hide modal
-        $scope.$on('modal.hide', function() {
-            // Execute action
-        });
-        // Execute action on remove modal
-        $scope.$on('modal.removed', function() {
-            // Execute action
-        });
-        $scope.$on('modal.shown', function() {
-
-        });
+            }, function (data, status) {
+                $ionicLoading.hide();
+                $scope.hasProductInfo = true;
+                $ionicPopup.alert({
+                    title: '查找商品失败,请手动添加',
+                    template: ''
+                });
+            });
+        }
 
         $scope.newitem = {};
 
@@ -44,6 +51,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 }
             }
         }
+
 
         $scope.AddItem = function() {
 
@@ -59,7 +67,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
             $scope.openModal();
         }
 
-        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+
 
         $scope.saveItem = function(newitem){
 
@@ -103,5 +111,38 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 $scope.closeModal();
             });
         }
+
+        $ionicModal.fromTemplateUrl('templates/product-addNew.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+                $scope.modal = modal;
+            });
+
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+        };
+
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hide', function() {
+            // Execute action
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
+        $scope.$on('modal.shown', function() {
+
+        });
+
+
     }
 ]);

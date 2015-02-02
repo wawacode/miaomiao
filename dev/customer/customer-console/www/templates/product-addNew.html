@@ -12,34 +12,33 @@
                  has-bouncing="true">
 
         <div class="list">
-            <a class="item item-icon-right">
-                条形码
-                <button class="button button-positive">
+
+            <div class="item item-input item-stacked-label item-button-right">
+                <span class="input-label assertive">条形码:</span>
+                <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo" placeholder="填写条形码,点击右侧查一查">
+                <button class="button button-positive" ng-click="findItem(newitem.serialNo)">
                     查查
                 </button>
-            </a>
-        </div>
+            </div>
 
-        <div class="list">
-
-            <label class="item item-input item-select">
+            <label class="item item-input item-select" ng-show="hasProductInfo">
                 <div class="input-label assertive">
                     选择分类:
                 </div>
                 <select ng-model="newitem.currentCateId" ng-options="o.category_id as o.name for o in info.categoryls" ng-change="changeCategroy(newitem.currentCateId)">
                 </select>
             </label>
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-stacked-label" ng-show="hasProductInfo">
                 <span class="input-label assertive">商品名称:</span>
                 <input type="text" ng-value="newitem.name" ng-model="newitem.name">
             </label>
 
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-stacked-label" ng-show="hasProductInfo">
                 <span class="input-label assertive">价格(元):</span>
                 <input type="text" ng-value="newitem.price" ng-model="newitem.price">
             </label>
 
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-stacked-label" ng-show="hasProductInfo">
                 <span class="input-label assertive">图片:</span>
                 <div class="positive">
                     <p>说明:请填写正确的条形码，</br>
@@ -47,7 +46,7 @@
                 </div>
             </label>
 
-            <label class="item item-input item-select">
+            <label class="item item-input item-select" ng-show="hasProductInfo">
                 <div class="input-label assertive">
                     销售状态:
                 </div>
