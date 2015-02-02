@@ -80,9 +80,9 @@ public class Dateutils {
 		if(timeArr == null || timeArr.length != 2){
 			return "";
 		}
-		if(! timeArr[1].equalsIgnoreCase("am") && timeArr[1].equals("pm")){
+		if(!timeArr[1].equalsIgnoreCase("am") && !timeArr[1].equalsIgnoreCase("pm")){
 			return "";
-		}else if (timeArr[1].equals("pm")) {
+		}else if (timeArr[1].equalsIgnoreCase("pm")) {
 			String hmTimeStr = timeArr[0];
 			String[] hmArr= hmTimeStr.split(":");
 			if(hmArr == null || hmArr.length !=2){
