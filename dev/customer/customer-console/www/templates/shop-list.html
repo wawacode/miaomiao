@@ -10,7 +10,7 @@
                  has-header="true"
                  scroll="true"
                  has-bouncing="true">
-        <div class="list card" ng-repeat="item in info.shoplist">
+        <div class="list card" ng-repeat="item in info.shoplist" delegate-handle="shoplist">
             <div class="item item-body" style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
                 <div>
                     <div style="font-size: 16px;display: inline-block;color: #191919">
@@ -52,14 +52,23 @@
             </div>
         </div>
 
-        <div class="list" ng-show="editingShop">
+        <div class="list" ng-show="startEditShop">
+
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">店名:</span>
-                <input type="text" value="{{editingShop.name}}">
+                <input type="text" ng-value="editingShop.name" ng-model="editingShop.name">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">地址:</span>
+                <input type="text" ng-value="editingShop.shop_address" ng-model="editingShop.shop_address">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">服务范围:</span>
+                <input type="text" ng-value="editingShop.shopInfo" ng-model="editingShop.shopInfo">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">起送价格(元):</span>
-                <input type="text" value="{{editingShop.base_price}}">
+                <input type="text" ng-value="editingShop.new_base_price" ng-model="editingShop.new_base_price">
             </label>
 
             <label class="item item-input-inset item-stacked-label">
@@ -67,11 +76,11 @@
                     <span class="input-label assertive">营业时间</span>
                     <label class="item item-input" style="border: none">
                         <span class="input-label">开店时间:</span>
-                        <input type="text" value="{{editingShop.open_time | date :'shortTime'}}" placeholder="8:00 AM" required>
+                        <input type="text" ng-model="editingShop.new_open_time" placeholder="8:00 AM" required>
                     </label>
                     <label class="item item-input" style="border: none">
                         <span class="input-label">打烊时间:</span>
-                        <input type="text" value="{{editingShop.close_time | date :'shortTime'}}" placeholder="10:00 PM" required>
+                        <input type="text" ng-model="editingShop.new_close_time" placeholder="10:00 PM" required>
                     </label>
                 </div>
             </label>
@@ -79,10 +88,10 @@
                 <div class="input-label assertive">
                     管理:
                 </div>
-                <select>
-                    <option selected>正在营业</option>
-                    <option>打烊</option>
+
+                <select ng-model="editingShop.status" ng-options="o.status as o.title for o in [{title:'正在营业',status:0},{title:'打烊',status:1}]" ng-init="item.status=0">
                 </select>
+
             </label>
 
             <div class="item tabs tabs-icon-left tabs-light">

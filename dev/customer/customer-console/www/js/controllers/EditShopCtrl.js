@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService',
+angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope','$filter', '$ionicPopup','$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate','$timeout',
 
-    function ($scope, $ionicModal,localStorageService) {
+    function ($scope,$filter, $ionicPopup, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate,$timeout) {
 
         $ionicModal.fromTemplateUrl('templates/shop-list.html', {
             scope: $scope,
@@ -44,16 +44,82 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
         $scope.cancelEditShop = function(item){
             // TODO: compare and save
-            $scope.editingShop = null;
+            $scope.startEditShop = false;
+            $timeout(function(){
+                $ionicScrollDelegate.resize();
+                $ionicScrollDelegate.scrollTop();
+            });
         }
 
         $scope.saveShop = function(item){
             // TODO: compare and save
-            $scope.editingShop = null;
+
+            var options = {
+                shop_id:$scope.editingShop.id,
+                name: $scope.editingShop.name,
+                tel:$scope.editingShop.tel,
+                lng:$scope.editingShop.lng,
+                lat:$scope.editingShop.lat,
+                shop_address: $scope.editingShop.shop_address,
+                open_time:$scope.editingShop.open_time,
+                close_time:$scope.editingShop.close_time,
+                audit: $scope.editingShop.audit,
+                owner_phone: $scope.editingShop.owner_phone,
+                base_price:$scope.editingShop.new_base_price * 100,
+                shopInfo:$scope.editingShop.shopInfo,
+                status:$scope.editingShop.status
+            }
+
+            if($scope.editingShop.new_open_time){
+                options.open_time = $scope.editingShop.new_open_time;
+            }
+            if($scope.editingShop.new_close_time){
+                options.close_time = $scope.editingShop.new_close_time;
+            }
+
+            $scope.LoadingMessage = '正在保存,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
+
+            httpClient.updateShopInfo(options, function (data, status) {
+                $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '修改店铺失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+
+                $scope.info.shop = dataDetail.shop;
+                localStorageService.set('MMCONSOLE_METADATA_SHOP',dataDetail.shop);
+                //success, just
+                $scope.startEditShop = false;
+
+            }, function (data, status) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: '修改店铺信息失败:',
+                    template: ''
+                });
+            });
         }
 
         $scope.editShop = function(item){
+
+            item.new_base_price = item.base_price/100.0;
+            item.new_open_time = $filter('date')(item.open_time, 'shortTime');
+            item.new_close_time = $filter('date')(item.close_time, 'shortTime');
+
             $scope.editingShop = item;
+            $scope.startEditShop = true;
+            $timeout(function(){
+
+                $ionicScrollDelegate.resize();
+            });
         }
     }
 ]);
