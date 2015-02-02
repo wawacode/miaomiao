@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService','$ionicLoading','httpClient',
+angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate',
 
-    function ($scope, $ionicModal,localStorageService,$ionicLoading,httpClient) {
+    function ($scope, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate) {
 
         $ionicModal.fromTemplateUrl('templates/shop-list.html', {
             scope: $scope,
@@ -44,7 +44,9 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
         $scope.cancelEditShop = function(item){
             // TODO: compare and save
-            $scope.editingShop = null;
+            $scope.startEditShop = false;
+            $ionicScrollDelegate.resize();
+            $ionicScrollDelegate.$getByHandle('shoplist').scrollTop();
         }
 
         $scope.saveShop = function(item){
@@ -79,8 +81,9 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                     });
                     return;
                 }
-                $scope.editingShop = null;
-                $scope.closeModal();
+
+                //success, just
+                $scope.startEditShop = false;
 
             }, function (data, status) {
                 $ionicLoading.hide();
@@ -88,12 +91,12 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                     title: '修改店铺信息失败:',
                     template: ''
                 });
-                $scope.closeModal();
             });
         }
 
         $scope.editShop = function(item){
             $scope.editingShop = item;
+            $scope.startEditShop = true;
         }
     }
 ]);
