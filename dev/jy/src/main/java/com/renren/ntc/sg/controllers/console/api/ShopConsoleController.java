@@ -132,7 +132,9 @@ public class ShopConsoleController extends BasicConsoleController{
     											 @Param("open_time") String openTime,//08:00
     											 @Param("close_time") String closeTime,//20:00
     											 @Param("shop_address") String shopAddress,
-    											 @Param("audit") int audit){
+    											 @Param("shopInfo") String shopInfo,//服务范围
+    											 @Param("base_price") int basePrice,//起送价
+    											 @Param("status") int status){
 		Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
@@ -151,7 +153,10 @@ public class ShopConsoleController extends BasicConsoleController{
             	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00");
             }
         }
-        int result = shopDAO.updateShopDetail(shop_id, name, tel, owner_phone, creteTime, lng, lat, openShopTime, closeShopTime, shopAddress, audit);
+        if(status !=1){
+        	status = 0;
+        }
+        int result = shopDAO.updateShopDetail(shop_id, name, tel, owner_phone, creteTime, lng, lat, openShopTime, closeShopTime, shopAddress, shopInfo,status,basePrice);
         if(result == 1){
         	return "@json:"+getActionResult(0, "修改店铺成功");
         }else {

@@ -33,6 +33,7 @@ public class Shop {
     private  Date  updatetime;
     private  String  owner_phone   = "";
     private  String  head_url   = "";
+    private String shopInfo = "";//服务范围
 
 
 
@@ -202,6 +203,14 @@ public class Shop {
     public void setHead_url(String head_url) {
         this.head_url = head_url;
     }
+
+	public String getShopInfo() {
+		return shopInfo;
+	}
+
+	public void setShopInfo(String shopInfo) {
+		this.shopInfo = shopInfo;
+	}
 
 
 }
