@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate',
+angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate','$timeout',
 
-    function ($scope, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate) {
+    function ($scope, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate,$timeout) {
 
         $ionicModal.fromTemplateUrl('templates/shop-list.html', {
             scope: $scope,
@@ -45,8 +45,10 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
         $scope.cancelEditShop = function(item){
             // TODO: compare and save
             $scope.startEditShop = false;
-            $ionicScrollDelegate.resize();
-            $ionicScrollDelegate.$getByHandle('shoplist').scrollTop();
+            $timeout(function(){
+                $ionicScrollDelegate.resize();
+                $ionicScrollDelegate.scrollTop();
+            });
         }
 
         $scope.saveShop = function(item){
@@ -97,6 +99,9 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
         $scope.editShop = function(item){
             $scope.editingShop = item;
             $scope.startEditShop = true;
+            $timeout(function(){
+                $ionicScrollDelegate.resize();
+            });
         }
     }
 ]);

@@ -28,6 +28,8 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 var item = dataDetail.product;
                 $timeout(function(){
                     $scope.newitem = item;
+                    $scope.newitem.currentCateId = item.category_id;
+                    $scope.newitem.saleStatus = 1;
                 })
 
             }, function (data, status) {
@@ -78,7 +80,9 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 score: newitem.score,
                 price: newitem.price * 100,
                 pic: newitem.pic,
-                saleStatus: newitem.saleStatus
+                pic_url: newitem.pic_url,
+                saleStatus: newitem.saleStatus,
+                shop_id:$scope.info.shop.id
             };
 
             $scope.LoadingMessage = '正在添加,请稍候...';
@@ -87,7 +91,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 scope: $scope
             });
 
-            httpClient.addItem(options, $scope.info.shop.id, function (data, status) {
+            httpClient.addItem(options,  function (data, status) {
 
                 $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
