@@ -113,7 +113,7 @@ public class IndexController {
 
 	@Get("del")
 	@Post("del")
-	protected String del(String key, long uuid) {
+	protected String del(@Param("shop_id") long shop_id ,String key, long uuid) {
 		String re = String.format(Constants.ERROR, 0, "do nothing");
 		return re;
 
