@@ -144,14 +144,18 @@ public class ShopConsoleController extends BasicConsoleController{
             if(StringUtils.isBlank(openShopTime)){
             	return "@json:" + getActionResult(1, "开店时间格式不正确,格式如08:00 AM");
             }
-        }
+        }else {
+			openShopTime = Dateutils.tranferDate2Str(shop.getOpen_time());
+		}
         if(StringUtils.isNotBlank(closeTime)){
         	closeTime = Dateutils.getHMDateBycondition(closeTime.trim());
         	closeShopTime = Dateutils.getDateStrByCondition(closeTime);
             if(StringUtils.isBlank(closeShopTime)){
             	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00 PM");
             }
-        }
+        }else {
+        	closeShopTime = Dateutils.tranferDate2Str(shop.getClose_time());
+		}
         if(status !=1){
         	status = 0;
         }
