@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService',
+angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService','$ionicLoading',
 
-    function ($scope, $ionicModal,localStorageService) {
+    function ($scope, $ionicModal,localStorageService,$ionicLoading) {
 
         $ionicModal.fromTemplateUrl('templates/shop-list.html', {
             scope: $scope,
@@ -49,7 +49,46 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
         $scope.saveShop = function(item){
             // TODO: compare and save
-            $scope.editingShop = null;
+
+            var options = {
+                shop_id:$scope.editingShop.shop_id,
+                name: $scope.editingShop.name,
+                shop_address: $scope.editingShop.shop_address,
+                audit: $scope.editingShop.audit,
+                owner_phone: $scope.editingShop.owner_phone,
+                create_time: $scope.editingShop.create_time,
+                lng: $scope.editingShop.lng,
+                lat: $scope.editingShop.lat,
+                open_time: $scope.editingShop.open_time,
+                close_time: $scope.editingShop.close_time
+            }
+
+            $scope.LoadingMessage = '正在保存,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
+
+            httpClient.updateShopInfo(options, function (data, status) {
+                $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '修改商品失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+                $scope.closeModal();
+
+            }, function (data, status) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: '修改商品失败:',
+                    template: ''
+                });
+                $scope.closeModal();
+            });
         }
 
         $scope.editShop = function(item){

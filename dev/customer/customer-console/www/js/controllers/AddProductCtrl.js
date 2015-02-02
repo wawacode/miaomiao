@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$timeout',
+angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$timeout','$ionicLoading',
 
-    function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService,$timeout) {
+    function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService,$timeout,$ionicLoading) {
 
         $ionicModal.fromTemplateUrl('templates/product-addNew.html', {
             scope: $scope,
@@ -73,8 +73,15 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 saleStatus: newitem.saleStatus
             };
 
+            $scope.LoadingMessage = '正在添加,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
+
             httpClient.addItem(options, $scope.info.shop.id, function (data, status) {
 
+                $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
                     $ionicPopup.alert({
@@ -88,11 +95,11 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 $scope.addProducteForCurrentCategory(newitem.currentCateId,item);
 
             }, function (data, status) {
+                $ionicLoading.hide();
                 $ionicPopup.alert({
                     title: '添加商品失败:',
                     template: ''
                 });
-                return;
                 $scope.closeModal();
             });
         }
