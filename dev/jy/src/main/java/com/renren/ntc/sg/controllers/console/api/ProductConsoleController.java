@@ -65,6 +65,7 @@ public class ProductConsoleController extends BasicConsoleController{
             product = new Product();
             product.setSerialNo(serialNo);
         }
+        System.out.println(product.getName() + " " +   product.getSerialNo());
         resultJson.put("product",JSONObject.toJSON(product));
         return "@json:"+getDataResult(0, resultJson);
     }
