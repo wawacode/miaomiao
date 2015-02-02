@@ -9,7 +9,7 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
        default-autowire="byName" default-lazy-init="false">
 
-	<context:component-scan base-package="com.qunar.quzilla.interceptors">
+<context:component-scan base-package="com.renren.ntc.sg.interceptors">
 		<context:include-filter type="regex"
 			expression=".*Interceptor" />
 	</context:component-scan>

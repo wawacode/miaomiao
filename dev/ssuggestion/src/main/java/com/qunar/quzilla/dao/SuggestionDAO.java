@@ -16,17 +16,18 @@ import com.qunar.quzilla.pojo.SDoc;
  */
 @DAO
 public interface SuggestionDAO {
-    @SQL("select id,`word` from s_suggestion where audit = 0  order by `score` desc ")
-    List<SDoc> getDoc();
+    static final  String   FIELDS = "id,`word`";
+    @SQL("select " + FIELDS + " from s_suggestion where shop_id=:1 and audit = 0  order by `score` desc ")
+    List<SDoc> getDoc(long shop_id);
     
-    @SQL("select id,`word` from s_suggestion where audit = 0  order by `score` desc limit :1,:2 ")
-    List<SDoc> getDoc(int offset , int count);
+    @SQL("select " +FIELDS + " from s_suggestion where shop_id=:3 and audit = 0  order by `score` desc limit :1,:2 ")
+    List<SDoc> getDoc(int offset , int count,long shop_id);
 
     @SQL("select count(id) as count from s_suggestion  where audit = 0 ")
 	Count getCount();
     
     @ReturnGeneratedKeys
-    @SQL("insert into s_suggestion  (word,score) values(:1,:2)")
-   	int add(String key, int o);
- 
+    @SQL("insert    into s_suggestion  (word,score) values(:1,:2)")
+    int add(String key, int o);
+
 }
