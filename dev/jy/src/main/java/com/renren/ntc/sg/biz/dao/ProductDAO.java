@@ -29,6 +29,9 @@ public interface ProductDAO {
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where name like :1 ")
     public List<Product> geProducts(String query );
 
+    @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where serialNo=:1 ")
+    public Product geProduct(String serialNo );
+
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  limit :1,:2 ")
     public List<Product> geProducts(int from ,int offset );
 
