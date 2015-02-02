@@ -140,7 +140,8 @@ public class ItemConsoleController extends BasicConsoleController{
                       				   @Param("price") int price,
                       				   @Param("serialNo") String serialNo,
                       				   @Param("pic") MultipartFile pic,
-                      				   @Param("shop_id") long shop_id){
+                      				   @Param("shop_id") long shop_id,
+                      				   @Param("saleStatus") String saleStatus){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
@@ -163,7 +164,21 @@ public class ItemConsoleController extends BasicConsoleController{
 			picUrl = FileUploadUtils.getPicViewUrl(shopId, picName);
 			updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId), serialNo, itemName, category_id, score, count, price, itemId,picUrl);
 		}else {
-			updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId), serialNo, itemName, category_id, score, count, price, itemId);
+			if(StringUtils.isBlank(saleStatus)){
+				updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId), serialNo, itemName, category_id, score, count, price, itemId);
+			}else {
+				int saleStatusInt = 1;
+				try {
+					saleStatusInt = Integer.parseInt(saleStatus);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+				if(saleStatusInt != Constants.ITEM_ON_SALE){
+					saleStatusInt = 0;
+				}
+				//todo 添加数据库字段
+			}
+			
 		}
 		if(updateDbFlag == 1){
 			resultJson.put("code", 0);
