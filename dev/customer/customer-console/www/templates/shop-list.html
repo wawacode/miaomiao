@@ -64,11 +64,11 @@
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">服务范围:</span>
-                <input type="text" ng-value="editingShop.shop_serveArea" ng-model="editingShop.shop_serveArea">
+                <input type="text" ng-value="editingShop.shopInfo" ng-model="editingShop.shopInfo">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">起送价格(元):</span>
-                <input type="text" ng-value="editingShop.base_price/100.0" ng-model="editingShop.base_price">
+                <input type="text" ng-value="editingShop.new_base_price" ng-model="editingShop.new_base_price">
             </label>
 
             <label class="item item-input-inset item-stacked-label">
@@ -76,11 +76,11 @@
                     <span class="input-label assertive">营业时间</span>
                     <label class="item item-input" style="border: none">
                         <span class="input-label">开店时间:</span>
-                        <input type="text" ng-value="editingShop.open_time | date :'shortTime'" ng-model="editingShop.open_time" placeholder="8:00 AM" required>
+                        <input type="text" ng-model="editingShop.new_open_time" placeholder="8:00 AM" required>
                     </label>
                     <label class="item item-input" style="border: none">
                         <span class="input-label">打烊时间:</span>
-                        <input type="text" ng-value="editingShop.close_time | date :'shortTime'" ng-model="editingShop.close_time" placeholder="10:00 PM" required>
+                        <input type="text" ng-model="editingShop.new_close_time" placeholder="10:00 PM" required>
                     </label>
                 </div>
             </label>

@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope', '$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate','$timeout',
+angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope','$filter', '$ionicPopup','$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate','$timeout',
 
-    function ($scope, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate,$timeout) {
+    function ($scope,$filter, $ionicPopup, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate,$timeout) {
 
         $ionicModal.fromTemplateUrl('templates/shop-list.html', {
             scope: $scope,
@@ -55,16 +55,26 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
             // TODO: compare and save
 
             var options = {
-                shop_id:$scope.editingShop.shop_id,
+                shop_id:$scope.editingShop.id,
                 name: $scope.editingShop.name,
+                tel:$scope.editingShop.tel,
+                lng:$scope.editingShop.lng,
+                lat:$scope.editingShop.lat,
                 shop_address: $scope.editingShop.shop_address,
+                open_time:$scope.editingShop.open_time,
+                close_time:$scope.editingShop.close_time,
                 audit: $scope.editingShop.audit,
                 owner_phone: $scope.editingShop.owner_phone,
-                create_time: $scope.editingShop.create_time,
-                lng: $scope.editingShop.lng,
-                lat: $scope.editingShop.lat,
-                open_time: $scope.editingShop.open_time,
-                close_time: $scope.editingShop.close_time
+                base_price:$scope.editingShop.new_base_price * 100,
+                shopInfo:$scope.editingShop.shopInfo,
+                status:$scope.editingShop.status
+            }
+
+            if($scope.editingShop.new_open_time){
+                options.open_time = $scope.editingShop.new_open_time;
+            }
+            if($scope.editingShop.new_close_time){
+                options.close_time = $scope.editingShop.new_close_time;
             }
 
             $scope.LoadingMessage = '正在保存,请稍候...';
@@ -84,6 +94,8 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                     return;
                 }
 
+                $scope.info.shop = dataDetail.shop;
+                localStorageService.set('MMCONSOLE_METADATA_SHOP',dataDetail.shop);
                 //success, just
                 $scope.startEditShop = false;
 
@@ -97,9 +109,15 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
         }
 
         $scope.editShop = function(item){
+
+            item.new_base_price = item.base_price/100.0;
+            item.new_open_time = $filter('date')(item.open_time, 'shortTime');
+            item.new_close_time = $filter('date')(item.close_time, 'shortTime');
+
             $scope.editingShop = item;
             $scope.startEditShop = true;
             $timeout(function(){
+
                 $ionicScrollDelegate.resize();
             });
         }
