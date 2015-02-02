@@ -2,7 +2,7 @@ angular.module('miaomiao.console.controllers')
 
     .controller('SearchCtrl', function($scope, $ionicLoading, $state, $timeout,httpClient,localStorageService) {
 
-        $scope.pageName = '搜索商品或者订单';
+        $scope.pageName = '搜索商品';
 
         $scope.focused= 'centered';
         $scope.searchTerm = '';

@@ -9,58 +9,68 @@ angular.module('miaomiao.console.controllers')
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
 
-        $scope.LoadingMessage = '正在加载,请稍候...';
-        $ionicLoading.show({
-            templateUrl: 'templates/loadingIndicator.html',
-            scope: $scope
-        });
 
-        httpClient.getProductList($scope.info.shop.id, function (data, status) {
 
-            $ionicLoading.hide();
+        function initData(){
 
-            var code = data.code, dataDetail = data.data;
-            if (!code == 0) {
+            $scope.LoadingMessage = '正在加载,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
+
+            httpClient.getProductList($scope.info.shop.id, function (data, status) {
+
+                $ionicLoading.hide();
+
+                var code = data.code, dataDetail = data.data;
+                if (!code == 0) {
+                    $ionicPopup.alert({
+                        title: '加载数据失败',
+                        template: ''
+                    });
+                    return;
+                }
+
+                $scope.info.categoryls = dataDetail.categoryls;
+
+                // extend for use
+                /*
+                 {"category_id":15,"category_sub_id":0,"id":0,
+                 "itemls":[{"category_id":15,"category_sub_id":0,"count":956,"create_time":1419821656000,"ext":0,"id":28062,"name":"哈哈镜鸭爪买一赠一",
+                 "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
+                 "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
+                 * */
+                if (!$scope.info.categoryls || !$scope.info.categoryls.length)return;
+
+                for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
+
+                    $scope.info.categoryls[idx].selected = 0;
+                    $scope.info.categoryls[idx].scrollIndex = $scope.info.categoryls[idx].itemls.length;
+                    $scope.info.categoryls[idx].canLoadMore = 1;
+                    if (idx == 0) {
+                        $scope.info.categoryls[idx].selected = 1;
+                    }
+                }
+
+                $scope.info.currentDisplayCategory = $scope.info.categoryls[0];
+                $scope.info.currentDisplayItems = $scope.info.currentDisplayCategory.itemls;
+
+            }, function (data, status) {
+                $ionicLoading.hide();
                 $ionicPopup.alert({
                     title: '加载数据失败',
                     template: ''
                 });
                 return;
-            }
-
-            $scope.info.categoryls = dataDetail.categoryls;
-
-            // extend for use
-            /*
-             {"category_id":15,"category_sub_id":0,"id":0,
-             "itemls":[{"category_id":15,"category_sub_id":0,"count":956,"create_time":1419821656000,"ext":0,"id":28062,"name":"哈哈镜鸭爪买一赠一",
-             "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
-             "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
-             * */
-            if (!$scope.info.categoryls || !$scope.info.categoryls.length)return;
-
-            for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
-
-                $scope.info.categoryls[idx].selected = 0;
-                $scope.info.categoryls[idx].scrollIndex = $scope.info.categoryls[idx].itemls.length;
-                $scope.info.categoryls[idx].canLoadMore = 1;
-                if (idx == 0) {
-                    $scope.info.categoryls[idx].selected = 1;
-                }
-            }
-
-            $scope.info.currentDisplayCategory = $scope.info.categoryls[0];
-            $scope.info.currentDisplayItems = $scope.info.currentDisplayCategory.itemls;
-
-        }, function (data, status) {
-            $ionicLoading.hide();
-            $ionicPopup.alert({
-                title: '加载数据失败',
-                template: ''
             });
-            return;
-        });
+        }
 
+        initData();
+
+        $scope.refreshAll = function(){
+            initData();
+        }
 
         $scope.selectCategory = function (category) {
 

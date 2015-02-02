@@ -58,12 +58,7 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 shop_id:$scope.editingShop.id,
                 name: $scope.editingShop.name,
                 tel:$scope.editingShop.tel,
-                lng:$scope.editingShop.lng,
-                lat:$scope.editingShop.lat,
                 shop_address: $scope.editingShop.shop_address,
-                open_time:$scope.editingShop.open_time,
-                close_time:$scope.editingShop.close_time,
-                audit: $scope.editingShop.audit,
                 owner_phone: $scope.editingShop.owner_phone,
                 base_price:$scope.editingShop.new_base_price * 100,
                 shopInfo:$scope.editingShop.shopInfo,
@@ -96,9 +91,17 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
                 $scope.info.shop = dataDetail.shop;
                 localStorageService.set('MMCONSOLE_METADATA_SHOP',dataDetail.shop);
+
+
                 //success, just
                 $scope.startEditShop = false;
+                $timeout(function(){
 
+                    $ionicScrollDelegate.resize();
+                    $ionicScrollDelegate.scrollTop();
+
+                    $scope.info.shoplist = [$scope.info.shop];
+                });
             }, function (data, status) {
                 $ionicLoading.hide();
                 $ionicPopup.alert({
