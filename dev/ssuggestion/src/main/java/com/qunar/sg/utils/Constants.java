@@ -8,7 +8,7 @@ public class Constants {
 	public static final String SUCCESS = "@{\"op\":\"done\"}";
 	public static final String ERROR = "@{\"error\":\"%d\",\"message\":\"%s\"}";
 
-	public static final int COUNT = 1000;
+	public static final int COUNT = 100;
 	
 	public static final int ONEDAY =  24*3600*1000;
 	

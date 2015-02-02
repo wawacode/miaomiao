@@ -55,7 +55,7 @@ public class IndexController {
 	
 	@Get("add")
 	@Post("add")
-	public String add(@Param("key")  String key, @Param("score") int score,int shop_id) {
+	public String add(@Param("key")  String key, @Param("score") int score,@Param("shop_id") long shop_id) {
 
 		if(score == 0){
 		   return "@" + MessageUtils.formErrorMessage(ErrorCode.ILLEGAL_PARAMTERS);

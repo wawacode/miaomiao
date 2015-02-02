@@ -32,9 +32,8 @@ import com.qunar.sg.utils.Constants;
 public class TrietreeService {
 
 	private static final Logger logger = Logger.getLogger(TrietreeService.class);
-	@Autowired
-	public SuggestionDAO suggest;
-	
+
+    private SuggestionDAO  suggest ;
 	public Map<Long, SDoc> result = new ConcurrentHashMap<Long, SDoc>();
 	
 	private Timer timer;
@@ -44,7 +43,8 @@ public class TrietreeService {
     private long shop_id;
 
     @PostConstruct
-	public void init(long shop_id) {
+	public void init(SuggestionDAO  suggest, long shop_id) {
+        this.suggest = suggest;
         this.shop_id = shop_id;
 		load(this.shop_id);
 		timer = new Timer();

@@ -14,7 +14,7 @@ import com.qunar.sg.bean.SDoc;
  * Date: 13-9-23
  * Time: 下午6:09
  */
-@DAO
+@DAO(catalog = "ABC")
 public interface SuggestionDAO {
     static final  String   FIELDS = "id,`word` ";
     @SQL("select " + FIELDS + " from s_suggestion where shop_id=:1 and audit = 0  order by `score` desc ")
@@ -23,7 +23,7 @@ public interface SuggestionDAO {
     @SQL("select " +FIELDS + " from s_suggestion where shop_id=:3 and audit = 0  order by `score` desc limit :1,:2 ")
     List<SDoc> getDoc(int offset , int count,long shop_id);
 
-    @SQL("select count(id) as count from s_suggestion  where audit = 0 and shop_id=:1")
+    @SQL("select count(*) as count from s_suggestion  where audit = 0 and shop_id=:1")
 	Count getCount(long shop_id);
     
     @ReturnGeneratedKeys
