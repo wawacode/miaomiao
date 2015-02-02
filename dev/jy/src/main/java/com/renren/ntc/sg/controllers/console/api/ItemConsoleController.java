@@ -49,7 +49,6 @@ public class ItemConsoleController extends BasicConsoleController{
     
     @Post("del")
     @Get("del")
-    @AuthorizeCheck
     public String del(Invocation inv, @Param("id") long id,@Param("shop_id") long shop_id){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
