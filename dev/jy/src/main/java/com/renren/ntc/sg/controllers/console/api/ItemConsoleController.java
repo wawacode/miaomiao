@@ -175,9 +175,8 @@ public class ItemConsoleController extends BasicConsoleController{
 				if(saleStatusInt != Constants.ITEM_ON_SALE){
 					saleStatusInt = 0;
 				}
-				//todo 添加数据库字段
+				updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId), serialNo, itemName, category_id, score, count, price, itemId,saleStatusInt);
 			}
-			
 		}
 		if(updateDbFlag == 1){
 			resultJson.put("code", 0);
@@ -217,7 +216,14 @@ public class ItemConsoleController extends BasicConsoleController{
         result.put("itemls", itemls);
         return "@json:"+ getDataResult(0, result);
     }
-    
+    /**
+     * 商品置顶
+     * @param inv
+     * @param itemId
+     * @param category_id
+     * @param shop_id
+     * @return
+     */
     @Post("sticky")
     @Get("sticky")
     public String sticky(Invocation inv, @Param("itemId") int itemId,
@@ -239,7 +245,14 @@ public class ItemConsoleController extends BasicConsoleController{
     		return "@json:"+ getActionResult(1, "置顶失败");
 		}
     }
-    
+    /**
+     * 商品上架或者下架
+     * @param inv
+     * @param itemId
+     * @param shop_id
+     * @param sale 1 表示上架  0 表示下架
+     * @return
+     */
     @Post("shelves")
     @Get("shelves")
     public String shelves(Invocation inv, @Param("itemId") int itemId,
@@ -253,11 +266,11 @@ public class ItemConsoleController extends BasicConsoleController{
         if(itemId == 0){
         	return "@json:" + Constants.PARATERERROR;
         }
-        int itemCount = 0;
-        if(sale == Constants.ITEM_ON_SALE){//上架设置库存为100
-        	itemCount = 100;
+        
+        if(sale != Constants.ITEM_ON_SALE){//上架设置库存为100
+        	sale = 0;
         }
-        int flag = itemsDAO.update(SUtils.generTableName(shop_id), itemId, "count", itemCount);
+        int flag = itemsDAO.update(SUtils.generTableName(shop_id), itemId, "onsell", sale);
     	if(sale == Constants.ITEM_ON_SALE){
     		if(flag == SgConstant.PROCESS_DB_SUC){
         		return "@json:"+ getActionResult(0, "商品上架成功");
@@ -272,7 +285,12 @@ public class ItemConsoleController extends BasicConsoleController{
     		}
 		}
     }
-    
+    /**
+     * 商品下架列表
+     * @param inv
+     * @param shop_id
+     * @return
+     */
     @Post("shownosales")
     @Get("shownosales")
     public String shownosales(Invocation inv,@Param("shop_id") long shop_id){

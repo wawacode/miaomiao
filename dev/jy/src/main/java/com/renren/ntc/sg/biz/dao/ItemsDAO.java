@@ -107,6 +107,9 @@ public interface ItemsDAO {
     @SQL("update ##(:tableName) set  score=:3 where id =:2")
     public int stickyItemByCondition(@SQLParam("tableName") String tableName,long itemId,int score);
     
-    @SQL("select "+ FIELDS +" from ##(:tableName) where shop_id =:2 and count = 0")
+    @SQL("select "+ FIELDS +" from ##(:tableName) where shop_id =:2 and onsell = 0")
     public List<Item> showNoSaleItems(@SQLParam("tableName") String tableName,long shopId);
+    
+    @SQL("update  ##(:tableName) set serialNo=:2,name=:3,category_id=:4,score=:5,count=:6,price=:7,update_time=now(),onsell = :9 where id =:8")
+    public  int updateItemById(@SQLParam("tableName") String tableName,String serialNo, String name,int category_id,int score,int count,int price,long id,int onsell);
 }
