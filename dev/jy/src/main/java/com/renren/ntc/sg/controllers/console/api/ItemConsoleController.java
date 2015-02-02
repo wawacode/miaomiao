@@ -90,7 +90,9 @@ public class ItemConsoleController extends BasicConsoleController{
 									  @Param("score") int score,
 									  @Param("price") int price,
 									  @Param("pic") MultipartFile pic,
-									  @Param("shop_id") long shop_id) {
+									  @Param("shop_id") long shop_id,
+									  @Param("pic_url") String itemPicUrl,
+									  @Param("saleStatus") String saleStatus) {
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
@@ -117,7 +119,21 @@ public class ItemConsoleController extends BasicConsoleController{
     		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
     		picUrl = imageUrl.concat(picName);
     	}
-		Item item = new Item(serialNo,shopId, name, categoryId, score, count, picUrl, price);
+    	if(!StringUtils.isBlank(itemPicUrl)){
+    		picUrl = itemPicUrl;
+    	}
+    	int onsell = Constants.ITEM_NOT_SALE;
+    	if(!StringUtils.isBlank(saleStatus)){
+    		try {
+				onsell = Integer.parseInt(saleStatus);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+    		if(onsell == Constants.ITEM_ON_SALE){
+    			onsell = Constants.ITEM_ON_SALE;
+    		}
+    	}
+		Item item = new Item(serialNo,shopId, name, categoryId, score, count, picUrl, price,onsell);
 		int itemId = itemsDAO.insert(SUtils.generTableName(shopId), item);
 		if (itemId == 0) {
 			return "@json:"+resultJson.toJSONString();

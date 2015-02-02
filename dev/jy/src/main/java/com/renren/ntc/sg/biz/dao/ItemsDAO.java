@@ -28,8 +28,8 @@ CREATE TABLE `items` (
 @DAO(catalog = "ABC")
 public interface ItemsDAO {
     static final String TABLE_NAME= "items";
-    static final String FIELDS = "id,serialNo, shop_id,name,category_id,category_sub_id,score ,price,price_new ,count,pic_url,create_time,update_time" ;
-    static final String INSERT_FIELDS = "serialNo,shop_id,name,category_id,category_sub_id,score, price,price_new,count,pic_url" ;
+    static final String FIELDS = "id,serialNo, shop_id,name,category_id,category_sub_id,score ,price,price_new ,count,pic_url,create_time,update_time,onsell" ;
+    static final String INSERT_FIELDS = "serialNo,shop_id,name,category_id,category_sub_id,score, price,price_new,count,pic_url,onsell" ;
 
     @SQL("select "+ FIELDS +" from  ##(:tableName)   where shop_id =:2  limit :3,:4")
     public List<Item> getItems(@SQLParam("tableName") String tableName,long shop_id,int from,int offset);
@@ -54,7 +54,7 @@ public interface ItemsDAO {
     public void decr(@SQLParam("tableName") String tableName, long s_id, long i_id, int count);
     @ReturnGeneratedKeys
     @SQL("insert into ##(:tableName) (" + INSERT_FIELDS + ")" +" value (:2.serialNo,:2.shop_id,:2.name," +
-            ":2.category_id,:2.category_sub_id,:2.score,:2.price,:2.price_new,:2.count,:2.pic_url)")
+            ":2.category_id,:2.category_sub_id,:2.score,:2.price,:2.price_new,:2.count,:2.pic_url,:2.onSell)")
     public  int insert(@SQLParam("tableName") String tableName, Item item);
 
     @SQL("select "+ FIELDS +" from ##(:tableName)  where  shop_id=:2  order by score  desc limit :3,:4")

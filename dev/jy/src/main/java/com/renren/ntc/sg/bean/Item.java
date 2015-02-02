@@ -53,6 +53,7 @@ public class Item {
     private  int  price_new;
     private  Date  create_time  ;
     private  Date  update_time  ;
+    private int onSell = 1;
 
     public long getStatus() {
         return status;
@@ -176,7 +177,15 @@ public class Item {
         this.count = count;
     }
     
-    public Item(){
+    public int getOnSell() {
+		return onSell;
+	}
+
+	public void setOnSell(int onSell) {
+		this.onSell = onSell;
+	}
+
+	public Item(){
     	
     }
 
@@ -191,6 +200,12 @@ public class Item {
 		this.count = count;
 		this.pic_url = pic_url;
 		this.price = price;
+	}
+    
+    public Item(String serialNo,long shop_id, String name, int category_id, int score,
+			int count, String pic_url, int price,int onsell) {
+		this(serialNo, shop_id, name, category_id, score, count, pic_url, price);
+		this.onSell = onsell;
 	}
 
 
