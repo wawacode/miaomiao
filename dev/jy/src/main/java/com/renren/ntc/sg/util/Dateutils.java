@@ -23,7 +23,7 @@ public class Dateutils {
 	
 	public static String tranferDate2Str(Date date){
 		if(date == null){
-			return "";
+			return null;
 		}
 		return SDF.format(date);
 	}
