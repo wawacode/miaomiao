@@ -125,12 +125,9 @@ public class ShopConsoleController extends BasicConsoleController{
     public String updateShopInfo (Invocation inv,@Param("shop_id") long shop_id,
     											 @Param("name") String name,
     											 @Param("tel") String tel,
-    											 @Param("owner_phone") String owner_phone,
-    											 @Param("create_time") String creteTime,//2015-01-13 21:30:25
-    											 @Param("lng") String lng,
-    											 @Param("lat") String lat,
-    											 @Param("open_time") String openTime,//08:00
-    											 @Param("close_time") String closeTime,//20:00
+    											 @Param("owner_phone") String ownerPhone,
+    											 @Param("open_time") String openTime,//08:00 AM
+    											 @Param("close_time") String closeTime,//08:00 PM
     											 @Param("shop_address") String shopAddress,
     											 @Param("shopInfo") String shopInfo,//服务范围
     											 @Param("base_price") int basePrice,//起送价
@@ -142,23 +139,28 @@ public class ShopConsoleController extends BasicConsoleController{
         String openShopTime = "";
         String closeShopTime = "";
         if(StringUtils.isNotBlank(openTime)){
+        	openTime = Dateutils.getHMDateBycondition(openTime);
         	openShopTime = Dateutils.getDateStrByCondition(openTime);
             if(StringUtils.isBlank(openShopTime)){
-            	return "@json:" + getActionResult(1, "开店时间格式不正确,格式如08:00");
+            	return "@json:" + getActionResult(1, "开店时间格式不正确,格式如08:00 AM");
             }
         }
         if(StringUtils.isNotBlank(closeTime)){
+        	closeTime = Dateutils.getHMDateBycondition(closeTime);
         	closeShopTime = Dateutils.getDateStrByCondition(closeTime);
             if(StringUtils.isBlank(closeShopTime)){
-            	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00");
+            	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00 PM");
             }
         }
         if(status !=1){
         	status = 0;
         }
-        int result = shopDAO.updateShopDetail(shop_id, name, tel, owner_phone, creteTime, lng, lat, openShopTime, closeShopTime, shopAddress, shopInfo,status,basePrice);
+        int result = shopDAO.updateShopDetail(shop_id, name, tel, openShopTime, closeShopTime, shopAddress, shopInfo,status,basePrice);
         if(result == 1){
-        	return "@json:"+getActionResult(0, "修改店铺成功");
+        	shop = shopDAO.getShop(shop_id);
+        	JSONObject resultJson = new JSONObject();
+        	resultJson.put("shop", shop);
+        	return "@json:" + getDataResult(0, resultJson);
         }else {
         	return "@json:"+getActionResult(1, "修改店铺失败");
 		}
