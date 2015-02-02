@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService',
+angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$ionicLoading',
 
-    function ($scope, $ionicPopup, $ionicModal,httpClient,localStorageService) {
+    function ($scope, $ionicPopup, $ionicModal,httpClient,localStorageService,$ionicLoading) {
 
         $ionicModal.fromTemplateUrl('templates/product-edit.html', {
             scope: $scope,
@@ -42,8 +42,14 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
 
         $scope.StickItem = function(item){
 
-            httpClient.stickItem(item.id, item.category_id, $scope.info.shop.id, function (data, status) {
+            $scope.LoadingMessage = '正在置顶,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
 
+            httpClient.stickItem(item.id, item.category_id, $scope.info.shop.id, function (data, status) {
+                $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
                     $ionicPopup.alert({
@@ -57,11 +63,11 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                 $scope.stickItemFromCurrentCategory(item);
 
             }, function (data, status) {
+                $ionicLoading.hide();
                 $ionicPopup.alert({
                     title: '置顶商品失败:',
                     template: ''
                 });
-                return;
                 $scope.closeModal();
             });
         }
@@ -82,8 +88,14 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                 saleStatus: item.saleStatus
             }
 
-            httpClient.updateItem(options, $scope.info.shop.id, function (data, status) {
+            $scope.LoadingMessage = '正在保存,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
 
+            httpClient.updateItem(options, $scope.info.shop.id, function (data, status) {
+                $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
                     $ionicPopup.alert({
@@ -98,19 +110,25 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                 $scope.updateItemFromCurrentCategory(item);
 
             }, function (data, status) {
+                $ionicLoading.hide();
                 $ionicPopup.alert({
                     title: '修改商品失败:',
                     template: ''
                 });
-                return;
                 $scope.closeModal();
             });
         }
 
         $scope.deleteItem = function(item){
 
-            httpClient.deleteItem(item.id, $scope.info.shop.id, function (data, status) {
+            $scope.LoadingMessage = '正在删除,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
 
+            httpClient.deleteItem(item.id, $scope.info.shop.id, function (data, status) {
+                $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
                     $ionicPopup.alert({
@@ -125,12 +143,12 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                 $scope.deleteItemFromCurrentCategory(item);
 
             }, function (data, status) {
+                $ionicLoading.hide();
                 $ionicPopup.alert({
                     title: '删除失败:',
                     template: ''
                 });
                 $scope.closeModal();
-                return;
             });
         }
     }

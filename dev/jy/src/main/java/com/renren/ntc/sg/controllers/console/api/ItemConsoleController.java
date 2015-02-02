@@ -201,7 +201,10 @@ public class ItemConsoleController extends BasicConsoleController{
 			resultJson.put("code", 500);
 			resultJson.put("msg", "服务器异常");
 		}
-		return "@json:"+resultJson.toJSONString();
+		Item item = itemsDAO.getItem(SUtils.generTableName(shopId), shop_id, itemId);
+		JSONObject result = new JSONObject();
+		result.put("item", item);
+		return "@json:"+ getDataResult(0, result);
     }
     
     @Post("query")

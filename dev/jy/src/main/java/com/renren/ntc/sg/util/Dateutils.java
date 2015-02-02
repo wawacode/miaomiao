@@ -67,4 +67,37 @@ public class Dateutils {
 		now.set(Calendar.MILLISECOND, Integer.parseInt(hMS[2]));
 		return now.getTime();
 	}
+	/**
+	 * 08:00 AM
+	 * 10:00 PM
+	 * @return
+	 */
+	public static String getHMDateBycondition(String timeStr){
+		if(StringUtils.isBlank(timeStr)){
+			return "";
+		}
+		String[] timeArr = timeStr.split(" ");
+		if(timeArr == null || timeArr.length != 2){
+			return "";
+		}
+		if(!timeArr[1].equalsIgnoreCase("am") && !timeArr[1].equalsIgnoreCase("pm")){
+			return "";
+		}else if (timeArr[1].equalsIgnoreCase("pm")) {
+			String hmTimeStr = timeArr[0];
+			String[] hmArr= hmTimeStr.split(":");
+			if(hmArr == null || hmArr.length !=2){
+				return "";
+			}
+			int hour = Integer.parseInt(hmArr[0]);
+			hour += 12;
+			String hmDate = String.valueOf(hour) + ":" + hmArr[1];
+			return hmDate;
+		}else {
+			String[] hmArr= timeArr[0].split(":");
+			if(hmArr == null || hmArr.length !=2){
+				return "";
+			}
+			return timeArr[0];
+		}
+	}
 }

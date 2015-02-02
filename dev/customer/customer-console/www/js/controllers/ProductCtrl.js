@@ -42,6 +42,7 @@ angular.module('miaomiao.console.controllers')
             for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
 
                 $scope.info.categoryls[idx].selected = 0;
+                $scope.info.categoryls[idx].scrollIndex = $scope.info.categoryls[idx].itemls.length;
                 $scope.info.categoryls[idx].canLoadMore = 1;
                 if (idx == 0) {
                     $scope.info.categoryls[idx].selected = 1;
@@ -87,7 +88,7 @@ angular.module('miaomiao.console.controllers')
         $scope.addItems = function () {
 
             var cateId = $scope.info.currentDisplayCategory.category_id,
-                from = $scope.info.currentDisplayItems.length,
+                from = $scope.info.currentDisplayCategory.scrollIndex,  //$scope.info.currentDisplayItems.length,
                 offset = 20;
 
             inLoadingMore = true;
@@ -111,7 +112,9 @@ angular.module('miaomiao.console.controllers')
 
                 $scope.info.currentDisplayItems = $scope.info.currentDisplayItems.concat(dataDetail.itemls);
 
+                $scope.info.currentDisplayCategory.scrollIndex += dataDetail.itemls.length;
                 $scope.info.currentDisplayCategory.itemls = $scope.info.currentDisplayItems;
+
                 $scope.info.currentDisplayCategory.totalCnt = 0;
 
                 $scope.$broadcast('scroll.infiniteScrollComplete');
