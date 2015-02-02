@@ -30,7 +30,6 @@ import com.qunar.quzilla.pojo.Count;
 import com.qunar.quzilla.pojo.SDoc;
 import com.qunar.quzilla.utils.Constants;
 
-@Service
 public class TrietreeService {
 
 	private static final Logger logger = Logger.getLogger(TrietreeService.class);
@@ -42,12 +41,14 @@ public class TrietreeService {
 	private Timer timer;
 
 	public Node root;
-	
-	@PostConstruct
+
+    private long shop_id;
+
+    @PostConstruct
 	public void init() {
-		load();
+		load(this.shop_id);
 		timer = new Timer();
-        timer.schedule(new ReLoadTask(),leftime() , Constants.ONEDAY);
+        timer.schedule(new ReLoadTask(this.shop_id),leftime() , Constants.ONEDAY);
 	}
 	
 	
@@ -62,15 +63,15 @@ public class TrietreeService {
 		return (delay-now);
 	}
 
-    public void reload(){
-    	load();
+    public void reload(long shop_id){
+    	load(shop_id);
     }
-	private void load() {
+	private void load(long shop_id) {
 		
-		Count co = suggest.getCount();
+		Count co = suggest.getCount(shop_id);
 		int  count = co.getCount();
 		for (int i = 0; i < count; i = i + Constants.COUNT) {
-			List<SDoc> ldoc = suggest.getDoc(i, Constants.COUNT);
+			List<SDoc> ldoc = suggest.getDoc(i, Constants.COUNT,shop_id);
 			for (SDoc doc : ldoc) {
 				try {
 					addKey(doc);
@@ -85,8 +86,13 @@ public class TrietreeService {
 	}
 
 	class ReLoadTask extends TimerTask {
+        private final long shop_id;
+
+        ReLoadTask(long shop_id){
+           this.shop_id = shop_id;
+        }
         public void run() {
-        	reload();
+        	reload(shop_id);
         }
     }
 	
