@@ -65,6 +65,7 @@ public class AllShopConsoleController {
         }
 
         List<Shop> shopls  =  shopDAO.getAllShops(from,offset);
+        
         if(from != 0){
         	int begin = from;
         	begin = begin - offset;
@@ -119,6 +120,11 @@ public class AllShopConsoleController {
         }
         if("close_time".equals(key)){
         	value = Dateutils.getDateStrByCondition(value);
+        }
+        if("open_time".equals(key) || "close_time".equals(key)){
+        	if(StringUtils.isBlank(value)){
+        		value = null;
+        	}
         }
         shopDAO.update(shop_id, key, value);
         return  "@"+Constants.DONE ;
