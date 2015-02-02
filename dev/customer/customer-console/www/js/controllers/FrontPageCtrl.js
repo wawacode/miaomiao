@@ -7,8 +7,6 @@ angular.module('miaomiao.console.controllers')
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
         $scope.info.shopName = $scope.info.shop.name || "首页";
 
-
-
         $scope.getSummaryInfo = function(success, fail){
 
             httpClient.getSummary($scope.info.shop.id, '', '', function (data, status) {
