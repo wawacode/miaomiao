@@ -30,7 +30,7 @@ public interface ShopDAO {
 	public int insert(Shop o);
 
 
-    @SQL("update " + TABLE_NAME + "set  audit =1 where id = :1")
+    @SQL("update " + TABLE_NAME + " set  audit=1 where id = :1")
     public int audit(long  shop_id);
 
     @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where audit = 1  limit :1,:2")
@@ -46,6 +46,6 @@ public interface ShopDAO {
     public int update(long id, @SQLParam("key") String key, String value);
 
 
-    @SQL("update " + TABLE_NAME + " set open_time =:1.open_time ,close_time=:1.close_time where id =:1")
+    @SQL("update " + TABLE_NAME + " set base_price=:1.base_price ,open_time =:1.open_time ,close_time=:1.close_time where id =:1.id")
     public int update(Shop shop );
 }
