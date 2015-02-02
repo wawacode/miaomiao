@@ -68,7 +68,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 categoryId: newitem.currentCateId,
                 count: newitem.count,
                 score: newitem.score,
-                price_new: newitem.price * 100,
+                price: newitem.price * 100,
                 pic: newitem.pic,
                 saleStatus: newitem.saleStatus
             };
@@ -83,8 +83,9 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     });
                     return;
                 }
+                var item = dataDetail.item;
                 $scope.closeModal();
-                $scope.addProducteForCurrentCategory($scope.currentCateId,item);
+                $scope.addProducteForCurrentCategory(newitem.currentCateId,item);
 
             }, function (data, status) {
                 $ionicPopup.alert({

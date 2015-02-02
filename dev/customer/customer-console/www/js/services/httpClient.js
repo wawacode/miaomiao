@@ -84,7 +84,7 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
 
 
         deleteItem: function (itemId, shopId, success, fail) {
-            doGet('shopItem/del', 'itemId=' + itemId + '&shop_id=' + shopId, success, fail);
+            doGet('shopItem/del', 'id=' + itemId + '&shop_id=' + shopId, success, fail);
         },
 
         stickItem: function (itemId,categoryId, shopId, success, fail) {
@@ -100,7 +100,7 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
                     categoryId: options.categoryId,
                     count: options.count,
                     score: options.score,
-                    price_new: options.price_new,
+                    price: options.price,
                     pic: options.pic,
                     shop_id:shopId
                 },
