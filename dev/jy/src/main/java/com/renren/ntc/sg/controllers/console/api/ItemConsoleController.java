@@ -49,7 +49,7 @@ public class ItemConsoleController extends BasicConsoleController{
     
     @Post("del")
     @Get("del")
-    public String del(Invocation inv, @Param("id") long id,@Param("shop_id") long shop_id){
+    public String del(Invocation inv, @Param("itemId") long id,@Param("shop_id") long shop_id){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
