@@ -156,8 +156,8 @@ public class ShopConsoleController extends BasicConsoleController{
         }else {
         	closeShopTime = Dateutils.tranferDate2Str(shop.getClose_time());
 		}
-        if(status !=1){
-        	status = 0;
+        if(status !=0){
+        	status = 1;
         }
         int result = shopDAO.updateShopDetail(shop_id, name, tel, openShopTime, closeShopTime, shopAddress, shopInfo,status,basePrice);
         if(result == 1){
