@@ -74,8 +74,8 @@ public class ShopController {
         }
         //获取 热门分类
         List<Shop> shops = shopDAO.getAuditedShops(from, offset);
-
-        SUtils.forV(shops) ;
+        long now = System.currentTimeMillis();
+        SUtils.forV(shops,now) ;
         inv.addModel("shops", shops);
 
         JSONObject jb =  new JSONObject() ;
@@ -119,8 +119,8 @@ public class ShopController {
 //        }
 //
 //        inv.addModel("categoryls",shopCategoryls);
-
-        SUtils.forV(shop);
+        long now = System.currentTimeMillis();
+        SUtils.forV(shop,now);
 
         JSONObject jb =  new JSONObject() ;
         JSONObject shopJson = (JSONObject) JSONObject.toJSON(shop);
