@@ -7,6 +7,13 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         $scope.findItem = function(serialNo){
 
+            if(!serialNo){
+                $ionicPopup.alert({
+                    title: '请输入条形码',
+                    template: ''
+                });
+                return;
+            }
             $scope.LoadingMessage = '正在查找商品信息,请稍候...';
             $ionicLoading.show({
                 templateUrl: 'templates/loadingIndicator.html',
@@ -22,7 +29,6 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                         title: '查找商品失败,请手动添加:' + data.msg,
                         template: ''
                     });
-                    return;
                 }
                 $scope.hasProductInfo = true;
                 var item = dataDetail.product;
@@ -57,6 +63,8 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         $scope.AddItem = function() {
 
+            $scope.newitem = {};
+            $scope.hasProductInfo = false;
             if($scope.info.categoryls && $scope.info.categoryls.length){
                 $timeout(function(){
                     $scope.newitem.currentCateId = $scope.info.categoryls[0].category_id;
