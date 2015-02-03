@@ -50,14 +50,16 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
             if (ionic.Platform.isAndroid()) {
                 config = {
-                    "senderID": "miaomiao-bconsole" // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/434205989073
+                    "senderID": "miaomiao-bconsole", // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/434205989073
+                    "ecb":"onNotification"
                 };
             }
             else if (ionic.Platform.isIOS()) {
                 config = {
                     "badge": "true",
                     "sound": "true",
-                    "alert": "true"
+                    "alert": "true",
+                    "ecb":"onNotificationAPN"
                 }
             }
 
