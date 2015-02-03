@@ -71,7 +71,6 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                 // ** NOTE: Android regid result comes back in the pushNotificationReceived, only iOS returned here
                 if (ionic.Platform.isIOS()) {
                     $scope.regId = result;
-                    storeDeviceToken("ios");
                 }
             }, function (err) {
                 console.log("Register error " + err)
@@ -99,7 +98,6 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             console.log("In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
             if (notification.event == "registered") {
                 $scope.regId = notification.regid;
-                storeDeviceToken("android");
             }
             else if (notification.event == "message") {
                 $cordovaDialogs.alert(notification.message, "Push Notification Received");
@@ -146,43 +144,6 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                 }
                 else $cordovaDialogs.alert(notification.alert, "(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received");
             }
-        }
-
-        // Stores the device token in a db using node-pushserver (running locally in this case)
-        //
-        // type:  Platform type (ios, android etc)
-        function storeDeviceToken(type) {
-            // Create a random userid to store with it
-            var user = { user: 'user' + Math.floor((Math.random() * 10000000) + 1), type: type, token: $scope.regId };
-            console.log("Post token for registered device with data " + JSON.stringify(user));
-
-            //TODO: change to use umeng api
-            $http.post('http://192.168.1.16:8000/subscribe', JSON.stringify(user))
-                .success(function (data, status) {
-                    console.log("Token stored, device is successfully subscribed to receive push notifications.");
-                })
-                .error(function (data, status) {
-                    console.log("Error storing device token." + data + " " + status)
-                }
-            );
-        }
-
-        // Removes the device token from the db via node-pushserver API unsubscribe (running locally in this case).
-        // If you registered the same device with different userids, *ALL* will be removed. (It's recommended to register each
-        // time the app opens which this currently does. However in many cases you will always receive the same device token as
-        // previously so multiple userids will be created with the same token unless you add code to check).
-        function removeDeviceToken() {
-            var tkn = {"token": $scope.regId};
-
-            //TODO: change to use umeng api
-            $http.post('http://192.168.1.16:8000/unsubscribe', JSON.stringify(tkn))
-                .success(function (data, status) {
-                    console.log("Token removed, device is successfully unsubscribed and will not receive push notifications.");
-                })
-                .error(function (data, status) {
-                    console.log("Error removing device token." + data + " " + status)
-                }
-            );
         }
 
         // Unregister - Unregister your device token from APNS or GCM
