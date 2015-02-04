@@ -44,13 +44,15 @@ public class BasicConsoleController {
 	            LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
 	            return null;
 	        }
-	        if(shop.getStatus() != Constants.SHOP_OPEN_STATUS){
+	        if(shop.getStatus() == Constants.SHOP_OPEN_STATUS){
 	        	if(SUtils.online(System.currentTimeMillis(), shop)){
 	        		shop.setStatus(0);
 	        	}else {
 					shop.setStatus(1);
 				}
-	        }
+	        }else {
+	        	shop.setStatus(1);
+			}
 	        return shop;
 	}
 }

@@ -1,13 +1,17 @@
 <ion-view>
     <ion-nav-bar class="bar-dark">
 
+        <ion-nav-buttons side="left">
+            <button class="button button-icon ion-ios7-refresh-empty"ng-click="refreshAll()"></button>
+        </ion-nav-buttons>
+
         <ion-nav-buttons side="right">
             <button class="button button-icon ion-ios7-plus-outline" ng-controller="AddProductCtrl"
                     ng-click="AddItem()"></button>
         </ion-nav-buttons>
 
         <ion-nav-title>
-            商品 &nbsp;<i class="icon ion-ios7-refresh-empty" style=" font-size: 22px !important" ng-click="refreshAll()"></i>
+            商品
         </ion-nav-title>
 
     </ion-nav-bar>

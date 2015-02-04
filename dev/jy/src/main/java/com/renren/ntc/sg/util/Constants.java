@@ -51,6 +51,6 @@ public class Constants {
     public static String USER_TID = "791";
     public static String SHOP_NO_EXIST = "店铺不存在";
     public static int ITEM_ON_SALE = 1;
-    public static int SHOP_OPEN_STATUS = 1;
+    public static int SHOP_OPEN_STATUS = 0;
     public static int ITEM_NOT_SALE = 0;
 }

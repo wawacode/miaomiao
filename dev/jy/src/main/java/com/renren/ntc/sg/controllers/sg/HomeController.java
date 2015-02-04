@@ -121,7 +121,6 @@ public class HomeController {
     public String near (Invocation inv ,@Param("lat") float lat, @Param("lng") float lng){
 
         JSONArray shops = new JSONArray();
-
         Shop shop = null;
         if (lat != 0 && lng != 0) {
             ShopLocation  loc =    new ShopLocation();
@@ -130,14 +129,14 @@ public class HomeController {
             // 20 公里
             List<GeoQueryResult>  resuls = geoService.queryNear(loc, 3000);
             if (resuls != null &&  resuls.size() > 0){
-
+            	long now = System.currentTimeMillis();
                 for (GeoQueryResult  res : resuls){
-                    long now = System.currentTimeMillis();
                     ShopLocation shopLoc =  res.getShopLocation();
                     LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
                     long shop_id  = shopLoc.getShop_id();
                     shop = shopDAO.getShop(shop_id);
-                    SUtils.forV(shop);
+                    
+                    SUtils.forV(shop,now);
                     shops.add(JSON.toJSON(shop));
                 }
             }else{

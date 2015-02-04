@@ -73,8 +73,8 @@
                         <td class="edit" id="e-${shop.id}-create_time">$shop.create_time</td>
                         <td class="edit" id="e-${shop.id}-lng">$shop.lng</td>
                         <td class="edit" id="e-${shop.id}-lat">$shop.lat</td>
-                        <td class="edit" id="e-${shop.id}-open_time">#if (! $shop.open_time) 无 #else $date.format('HH:mm',$shop.open_time) #end</td>
-                        <td class="edit" id="e-${shop.id}-close_time">#if (! $shop.close_time) 无 #else $date.format('HH:mm',$shop.close_time) #end</td>
+                        <td class="edit" id="e-${shop.id}-open_time">#if (! $shop.open_time) #else $date.format('HH:mm',$shop.open_time) #end</td>
+                        <td class="edit" id="e-${shop.id}-close_time">#if (! $shop.close_time) #else $date.format('HH:mm',$shop.close_time) #end</td>
                         <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
                         <td class="edit" id="e-${shop.id}-audit">$shop.audit</td>
                         <td><a href="/sg/shop?shop_id=${shop.id}">访问店铺 </a><br/>
