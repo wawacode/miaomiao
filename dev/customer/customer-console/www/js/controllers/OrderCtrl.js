@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('OrderCtrl', function ($scope, $ionicPopup,$ionicLoading , $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService) {
+    .controller('OrderCtrl', function ($scope, $rootScope, $ionicPopup,$ionicLoading , $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService,MMPushNotification) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
@@ -8,6 +8,7 @@ angular.module('miaomiao.console.controllers')
 
         $scope.info = {};
         $scope.info.orders = [];
+        $scope.info.notification_order_count = 1;
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
 
         function transformOrderData(orders){
@@ -104,9 +105,11 @@ angular.module('miaomiao.console.controllers')
                 $scope.info.orders = dataDetail.orderls;
                 transformOrderData($scope.info.orders);
 
+                $rootScope.$broadcast('orderScroll.refreshComplete');
+
             },function(){
                 $scope.$broadcast('scroll.refreshComplete');
-
+                $rootScope.$broadcast('orderScroll.refreshComplete');
             })
         }
 
@@ -115,5 +118,24 @@ angular.module('miaomiao.console.controllers')
 
         });
 
+    }).controller('orderTabCtrl', function($scope, $timeout , MMPushNotification) {
+
+        $scope.info = {};
+        $scope.info.notification_order_count = 0;
+
+        MMPushNotification.onNewOrderNotificationReceived($scope,function(message){
+            console.log(message);
+            var data = message.data;
+            $timeout(function(){
+                var count = data && data.count || 0;
+                $scope.info.notification_order_count += count;
+            });
+        });
+
+        $scope.$on('orderScroll.refreshComplete',function(){
+            // should see all the lastest, so clear all nofitcaiton number
+            console.log('after refresh we reset count');
+            $scope.info.notification_order_count = 0;
+        })
     })
 

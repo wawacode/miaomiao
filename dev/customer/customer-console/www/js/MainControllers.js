@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
-    .controller('MainCtrl', function ($scope, $ionicTrack, $state, cfpLoadingBar, $window, $cordovaPush, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http,httpClient,localStorageService, MMPushNotification) {
+    .controller('MainCtrl', function ($scope, $ionicTrack, $state, cfpLoadingBar, $window, $cordovaPush,$timeout, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http,httpClient,localStorageService, MMPushNotification) {
         $scope.open = function (url) {
             // Send event to analytics service
 //    $ionicTrack.track('open', {
@@ -59,11 +59,6 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             }
         }
 
-
-        function subscribeForCurrentDevice(){
-            httpClient.subscribeForCurrentDevice()
-        }
-
         // Register
         $scope.register = function () {
             var config = null;
@@ -94,11 +89,9 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
                 // ** NOTE: Android regid result comes back in the pushNotificationReceived, only iOS returned here
                 if (result != null) {
-                    //TODO:  make API call to server to make sure we store the token and shop_ower's identity
+
                     localStorageService.set('MMCONSOLE_META_PUSH_DEVICE_TOKEN',result);
-
                     MMPushNotification.subscribe();
-
                 }
 
             }, function (err) {
@@ -128,8 +121,13 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
                 $cordovaDialogs.alert(text, title).then(function() {
                     // callback success
-                    //TODO: make order ui more nice ,show badge
+
                     $state.go('tab.order',null,{reload: true});
+
+                    $timeout(function(){
+                        MMPushNotification.newOrderNotificationReceived({count: 1});
+                    },100);
+
                 });
 
                 $scope.$apply(function () {

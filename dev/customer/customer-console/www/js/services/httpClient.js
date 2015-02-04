@@ -155,7 +155,7 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
     };
 }]);
 
-miaomiao.factory('MMPushNotification', ['httpClient','localStorageService','$cordovaToast', function (httpClient,localStorageService,$cordovaToast) {
+miaomiao.factory('MMPushNotification', ['$rootScope','httpClient','localStorageService','$cordovaToast','$timeout', function ($rootScope,httpClient,localStorageService,$cordovaToast,$timeout) {
       return {
           subscribe: function(){
               var token = localStorageService.get('MMCONSOLE_META_PUSH_DEVICE_TOKEN');
@@ -173,7 +173,22 @@ miaomiao.factory('MMPushNotification', ['httpClient','localStorageService','$cor
 
                   });
               }
-         }
+         },
+          newOrderNotificationReceived: function (data) {
+                console.log('we see new orders and send broadcast');
+              $timeout(function(){
+                  $rootScope.$broadcast('MMEVENT_NewOrderNotificationReceived', {
+                      data: data
+                  });
+              });
+          },
+
+          onNewOrderNotificationReceived: function ($scope, handler) {
+              console.log('we see new orders and listened it');
+              $scope.$on('MMEVENT_NewOrderNotificationReceived', function (event, message) {
+                  handler(message);
+              });
+          }
       }
 }]);
 
