@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
+angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading,$ionicScrollDelegate, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
 
 
 
@@ -46,6 +46,8 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
             }
             $scope.searchResultsItems = dataDetail;
+
+            $ionicScrollDelegate.$getByHandle('searchResultScroll').scrollTop();
 
         }, function (data, status) {
             $ionicLoading.hide();
