@@ -83,12 +83,8 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
             },
 
             getSearchSuggestion:function( shopId, key, success, fail){
-                if(key == null || key == ''){
-                    return success({})
-                }
-                return success({"data":[{"id":17445,"key":"100克放牛娃笋尖"},{"id":17651,"key":"100克麻辣海带丝"}]});
 
-                doGet('http://www.mbianli.com/suggestion/query', 'shop_id=' + shopId + '&q=' + key, success, fail);
+                doGet('/suggestion/query', 'shop_id=' + shopId + '&q=' + key, success, fail);
 
             },
             getShopByGEOLocation: function (lat, lng, success, fail) {
