@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
-    .controller('MainCtrl', function ($scope, $ionicTrack, cfpLoadingBar, $window, $cordovaPush, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http) {
+    .controller('MainCtrl', function ($scope, $ionicTrack, $state, cfpLoadingBar, $window, $cordovaPush, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http) {
         $scope.open = function (url) {
             // Send event to analytics service
 //    $ionicTrack.track('open', {
@@ -44,6 +44,20 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             $scope.register();
         });
 
+        // Notification Received
+
+        var onNotification = $window.onNotification = window.onNotification = function onNotification(notification){
+            console.log(JSON.stringify(notification));
+            if (ionic.Platform.isAndroid()) {
+                handleAndroid(notification);
+            }
+            else if (ionic.Platform.isIOS()) {
+                handleIOS(notification);
+                $scope.$apply(function () {
+                    $scope.notifications.push(JSON.stringify(notification.alert));
+                })
+            }
+        }
 
         // Register
         $scope.register = function () {
@@ -84,46 +98,31 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             });
         }
 
-        // Notification Received
-
-        function onNotification(notification){
-            console.log(JSON.stringify([notification]));
-            if (ionic.Platform.isAndroid()) {
-                handleAndroid(notification);
-            }
-            else if (ionic.Platform.isIOS()) {
-                handleIOS(notification);
-                $scope.$apply(function () {
-                    $scope.notifications.push(JSON.stringify(notification.alert));
-                })
-            }
-        }
-
-
-        $scope.$on('$cordovaPush:notificationReceived', function (event, notification) {
-            console.log(JSON.stringify([notification]));
-            if (ionic.Platform.isAndroid()) {
-                handleAndroid(notification);
-            }
-            else if (ionic.Platform.isIOS()) {
-                handleIOS(notification);
-                $scope.$apply(function () {
-                    $scope.notifications.push(JSON.stringify(notification.alert));
-                })
-            }
-        });
-
         // Android Notification Received Handler
         function handleAndroid(notification) {
             // ** NOTE: ** You could add code for when app is in foreground or not, or coming from coldstart here too
             //             via the console fields as shown.
-            console.log("In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
+            console.log("handle Android : In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
             if (notification.event == "registered") {
                 $scope.regId = notification.regid;
                 //TODO:  make API call to server to make sure we store the token and shop_ower's identity
             }
             else if (notification.event == "message") {
-                $cordovaDialogs.alert(notification.message, "Push Notification Received");
+
+                var title = '喵喵商家推送',text='您有新的订单，请到我的订单下查看';
+                if(notification.payload &&
+                    notification.payload.body &&
+                    notification.payload.body.body){
+                    text = notification.payload.body.body.text
+                    title = notification.payload.body.body.title;
+                }
+
+                $cordovaDialogs.alert(text, title).then(function() {
+                    // callback success
+                    //TODO: make order ui more nice ,show badge
+                    $state.go('tab.order',null,{reload: true});
+                });
+
                 $scope.$apply(function () {
                     $scope.notifications.push(JSON.stringify(notification.message));
                 })
@@ -135,9 +134,12 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
         // IOS Notification Received Handler
         function handleIOS(notification) {
+
             // The app was already open but we'll still show the alert and sound the tone received this way. If you didn't check
             // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
             // the notification when this code runs (weird).
+            console.log("handle iOS : In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
+
             if (notification.event == "registered") {
                 $scope.regId = notification.regid;
                 //TODO:  make API call to server to make sure we store the token and shop_ower's identity
@@ -153,7 +155,7 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                 if (notification.body && notification.messageFrom) {
                     $cordovaDialogs.alert(notification.body, notification.messageFrom);
                 }
-                else $cordovaDialogs.alert(notification.alert, "Push Notification Received");
+                else $cordovaDialogs.alert(notification.alert, "您有新的订单");
 
                 if (notification.badge) {
                     $cordovaPush.setBadgeNumber(notification.badge).then(function (result) {
