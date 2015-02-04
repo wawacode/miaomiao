@@ -33,7 +33,7 @@ public class SubscribeController {
         pushtoken.setOwer_phone(ower_phone);
         pushtoken.setDevice_token(device_token);
         pushtokenDao.insertPushToken(pushtoken) ;
-        return Constants.DONE;
+        return "@json;" + Constants.DONE;
     }
 
 }
