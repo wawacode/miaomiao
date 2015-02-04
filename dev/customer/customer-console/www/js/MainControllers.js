@@ -146,6 +146,14 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
             // the notification when this code runs (weird).
             console.log("handle iOS : In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
+            console.log(notification);
+
+            var inappHanlder = function(){
+                $state.go('tab.order',null,{reload: true});
+                $timeout(function(){
+                    MMPushNotification.newOrderNotificationReceived({count: 1});
+                },100);
+            }
 
             if (notification.foreground == "1") {
                 // Play custom audio if a sound specified.
@@ -155,9 +163,9 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                 }
 
                 if (notification.body && notification.messageFrom) {
-                    $cordovaDialogs.alert(notification.body, notification.messageFrom);
+                    $cordovaDialogs.alert(notification.body,inappHanlder, notification.messageFrom);
                 }
-                else $cordovaDialogs.alert(notification.alert, "您有新的订单");
+                else $cordovaDialogs.alert(notification.alert,inappHanlder,"您有新的订单");
 
                 if (notification.badge) {
                     $cordovaPush.setBadgeNumber(notification.badge).then(function (result) {
@@ -171,10 +179,12 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             // in this case. You probably wouldn't be displaying anything at this point, this is here to show that you can process
             // the data in this situation.
             else {
+
                 if (notification.body && notification.messageFrom) {
-                    $cordovaDialogs.alert(notification.body, "(RECEIVED WHEN APP IN BACKGROUND) " + notification.messageFrom);
+                    $cordovaDialogs.alert(notification.body, inappHanlder,notification.messageFrom);
                 }
-                else $cordovaDialogs.alert(notification.alert, "(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received");
+
+                else $cordovaDialogs.alert(notification.alert,inappHanlder, '您有新的订单');
             }
         }
 
