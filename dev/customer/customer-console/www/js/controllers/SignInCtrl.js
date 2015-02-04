@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('SignInCtrl', function ($scope, $ionicLoading, $compile,$ionicPopup, cfpLoadingBar, $timeout, $ionicScrollDelegate , $http, $state, localStorageService, httpClient,MMUtils) {
+    .controller('SignInCtrl', function ($scope, $ionicLoading, $compile,$ionicPopup, cfpLoadingBar, $timeout, $ionicScrollDelegate , $http, $state, localStorageService, httpClient,MMUtils,MMPushNotification) {
 
         $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
 
@@ -46,7 +46,11 @@ angular.module('miaomiao.console.controllers')
                 localStorageService.set('MMCONSOLE_METADATA_USER',{'name':$scope.user.name , 'phone' : $scope.user.phone});
                 localStorageService.set('MMCONSOLE_METADATA_SHOP',dataDetail.shop);
 
+                MMPushNotification.subscribe();
+
                 $state.go('tab.front-page',null,{reload:true})
+
+                // subscribe current device
 
             }, function (data, status) {
                 $ionicLoading.hide();

@@ -144,8 +144,37 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
 
             doGet('near', 'lat=' + lat + '&lng=' + lng, success, fail);
 
+        },
+
+        subscribeForCurrentDevice: function (ower_phone, chn, device_token, success, fail) {
+
+            doGet('subscribe', 'ower_phone=' + ower_phone + '&chn=' + chn + '&device_token=' + device_token, success, fail);
+
         }
 
     };
 }]);
+
+miaomiao.factory('MMPushNotification', ['httpClient','localStorageService','$cordovaToast', function (httpClient,localStorageService,$cordovaToast) {
+      return {
+          subscribe: function(){
+              var token = localStorageService.get('MMCONSOLE_META_PUSH_DEVICE_TOKEN');
+              var user = localStorageService.get('MMCONSOLE_METADATA_USER');
+              if(token && user && user.phone){
+                  var chn = 'iOS';
+                  if (ionic.Platform.isAndroid()) {
+                      chn = 'adr'
+                  }
+                  httpClient.subscribeForCurrentDevice(user.phone, chn, token,function(){
+
+                      $cordovaToast.showShortCenter('注册通知成功，您将会在此应用中收到新订单通知~');
+
+                  },function(){
+
+                  });
+              }
+         }
+      }
+}]);
+
 

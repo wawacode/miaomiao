@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
-    .controller('MainCtrl', function ($scope, $ionicTrack, $state, cfpLoadingBar, $window, $cordovaPush, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http) {
+    .controller('MainCtrl', function ($scope, $ionicTrack, $state, cfpLoadingBar, $window, $cordovaPush, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http,httpClient,localStorageService, MMPushNotification) {
         $scope.open = function (url) {
             // Send event to analytics service
 //    $ionicTrack.track('open', {
@@ -59,6 +59,11 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             }
         }
 
+
+        function subscribeForCurrentDevice(){
+            httpClient.subscribeForCurrentDevice()
+        }
+
         // Register
         $scope.register = function () {
             var config = null;
@@ -83,7 +88,6 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                 // get device id
 
                 console.log("Register success " + result);
-                $cordovaToast.showShortCenter('Registered for push notifications success:' + result );
 
                 $scope.registerDisabled = true;
                 $scope.registerToken = result;
@@ -91,6 +95,10 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                 // ** NOTE: Android regid result comes back in the pushNotificationReceived, only iOS returned here
                 if (result != null) {
                     //TODO:  make API call to server to make sure we store the token and shop_ower's identity
+                    localStorageService.set('MMCONSOLE_META_PUSH_DEVICE_TOKEN',result);
+
+                    MMPushNotification.subscribe();
+
                 }
 
             }, function (err) {
@@ -105,7 +113,8 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             console.log("handle Android : In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
             if (notification.event == "registered") {
                 $scope.regId = notification.regid;
-                //TODO:  make API call to server to make sure we store the token and shop_ower's identity
+                localStorageService.set('MMCONSOLE_META_PUSH_DEVICE_TOKEN',notification.regid);
+                MMPushNotification.subscribe();
             }
             else if (notification.event == "message") {
 
@@ -139,11 +148,6 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
             // the notification when this code runs (weird).
             console.log("handle iOS : In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
-
-            if (notification.event == "registered") {
-                $scope.regId = notification.regid;
-                //TODO:  make API call to server to make sure we store the token and shop_ower's identity
-            }
 
             if (notification.foreground == "1") {
                 // Play custom audio if a sound specified.
