@@ -9,8 +9,8 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
        default-lazy-init="false">
 
-    <context:component-scan base-package="com.renren.ntc.sg.dao"></context:component-scan>
-    <context:component-scan base-package="com.renren.ntc.sg.bean"></context:component-scan>
-    <context:component-scan base-package="com.renren.ntc.sg.service"></context:component-scan>
+    <context:component-scan base-package="com.qunar.sg.dao"></context:component-scan>
+    <context:component-scan base-package="com.qunar.sg.bean"></context:component-scan>
+    <context:component-scan base-package="com.qunar.sg.services"></context:component-scan>
 
 </beans>

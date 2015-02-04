@@ -9,6 +9,7 @@ import com.renren.ntc.sg.dao.SWPOrderDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
 import com.renren.ntc.sg.service.PrinterService;
+import com.renren.ntc.sg.service.SMSService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
@@ -50,11 +51,9 @@ public class PrinterV2Controller {
     @Autowired
     public AddressDAO addressDAO;
 
+    @Autowired
+    public SMSService smsService;
 
-    public static String SMSURL = "http://v.juhe.cn/sms/send";
-    public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
-    public static String TID = "777";
-    public static String USER_TID = "791";
     public  boolean  nn = true;
     /**
      * 用于处理用户喜欢和不喜欢的ajax请求，成功返回1，失败返回0
@@ -138,29 +137,7 @@ public class PrinterV2Controller {
             }
 
             if (r == 1) {
-                try {
-                    if ( null != shop ){
-                    Order value = ordersDAO.getOrder(orderId,SUtils.generOrderTableName(dev.getShop_id()));
-                    String v = null;
-                    String url;
-                    String mobile = "";
-                    byte[] t = null;
-                    String vv = value.getOrder_id() ;
-                    vv = vv.replaceAll("=", "").replaceAll("&", "");
-                    String message = "#order_id#=" + vv + "&#shop_name#="+shop.getName() + "&#phone#="+ shop.getTel();
-                    message = URLEncoder.encode(message,"utf-8");
-                    long adr_id =  value.getAddress_id();
-                    Address adrs  = addressDAO.getAddress(adr_id);
-                    url = forURL(SMSURL, APPKEY, USER_TID, adrs.getPhone().trim(), message);
-                    System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-                    t = SHttpClient.getURLData(url, "");
-                    String  response = SUtils.toString(t);
-                    System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-                    }
-
-                 } catch (Throwable e) {
-                    e.printStackTrace();
-                }
+                smsService.sendSMS2User(orderId,shop);
             }
         }
 
@@ -170,48 +147,7 @@ public class PrinterV2Controller {
         }
 
         //发短信通知
-        try {
-
-            Order value = ordersDAO.getOrder(orderId,SUtils.generOrderTableName(dev.getShop_id()));
-            String v = null;
-            String url;
-            String mobile = "";
-            byte[] t = null;
-            String response = "打印完成";
-            long adr_id =  value.getAddress_id();
-            Address adrs  = addressDAO.getAddress(adr_id);
-            String vv = shop.getName() + " " +adrs.getAddress() + " " + adrs.getPhone() +  " " + value.getOrder_id() ;
-            vv = vv.replaceAll("=", "").replaceAll("&", "");
-            String ro = response.replace("=", "").replace("&", "");
-            float  p = (float)value.getPrice() /100 ;
-            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
-            message = SUtils.span(message);
-            message = URLEncoder.encode(message,"utf-8");
-            //短信通知 黄炜元  朱允铭
-
-            //短信通知 地推人员
-//            CatStaffCommit  catStaffCommit  = catStaffCommitDao.getbyShopid(dev.getShop_id());
-//            if (catStaffCommit != null ){
-//                String phone =catStaffCommit.getPhone();
-//                url = forURL(SMSURL, APPKEY, TID, phone, message);
-//                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-//                t = SHttpClient.getURLData(url, "");
-//                response = SUtils.toString(t);
-//                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-//            }
-
-            //短信通知 老板
-            if (shop != null ){
-                String phone = shop.getOwner_phone();
-                url = forURL(SMSURL, APPKEY, TID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                response = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        smsService.sendSMS2Boss(orderId,shop);
         return "@" + Constants.DONE;
     }
 

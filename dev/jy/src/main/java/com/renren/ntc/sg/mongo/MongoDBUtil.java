@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.renren.ntc.sg.util.Constants;
 
+import com.renren.ntc.sg.util.SUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -24,35 +25,34 @@ import com.mongodb.WriteResult;
 
 /**
  * @author allen
- *
  */
 //todo  mongo db 这些代码都需要优化
 public class MongoDBUtil {
 
-	private Mongo m;
-	private DB db;
+    private Mongo m;
+    private DB db;
 
-	static Log logger = LogFactory.getLog(MongoDBUtil.class);
+    static Log logger = LogFactory.getLog(MongoDBUtil.class);
 
-	private static MongoDBUtil instance = new MongoDBUtil();
+    private static MongoDBUtil instance = new MongoDBUtil();
 
-	private MongoDBUtil() {
-		try {
-			m = new Mongo(Constants.HOST, 27017);
-			db = m.getDB(Constants.DBNAME);
-            boolean  result = db.authenticate("sg","qwer$#@!".toCharArray());
-            System.out.println("re "  + result);
+    private MongoDBUtil() {
+        try {
+            m = new Mongo(Constants.HOST, 27017);
+            db = m.getDB(Constants.DBNAME);
+            boolean result = db.authenticate("sg", "qwer$#@!".toCharArray());
+            System.out.println("re " + result);
 
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (MongoException e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static MongoDBUtil getInstance() {
-		return instance;
-	}
+    public static MongoDBUtil getInstance() {
+        return instance;
+    }
 
     public DB getDB() {
         return db;
@@ -62,6 +62,9 @@ public class MongoDBUtil {
         return db.getCollection("sg_shop");
     }
 
+    public DBCollection getCollectionforSMScache() {
+        return db.getCollection("sms_cache");
+    }
 
     public DBCollection getCollectionforcache() {
         return db.getCollection("sg_cache");
@@ -69,6 +72,7 @@ public class MongoDBUtil {
 
 
     private static boolean reCheck(WriteResult re) {
+
 		if (null == re.getError()) {
 			return true;
 		}
@@ -90,11 +94,12 @@ public class MongoDBUtil {
 //
         query = new BasicDBObject();
         query.put("key", "1223");
-        DBCursor cur = coll.find(query);
-		BasicDBObject boj = null;
 
-		if (cur.hasNext()) {
-			boj = (BasicDBObject) cur.next();
+        DBCursor cur = coll.find(query);
+        BasicDBObject boj = null;
+
+        if (cur.hasNext()) {
+            boj = (BasicDBObject) cur.next();
             System.out.println(boj.toString());
 		}
         Date date =  new Date();
@@ -109,5 +114,29 @@ public class MongoDBUtil {
 
     }
 
+    public  boolean haveSend(String phone, String message) {
+        MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
+        DBCollection coll = mongoDBUtil.getCollectionforSMScache();
+        String key = SUtils.generSMSCacheKey(message,phone);
+        BasicDBObject query = new BasicDBObject();
+        query.put("key", key);
+        DBCursor cur = coll.find(query);
+        if (cur.hasNext()) {
+            return true;
+        }
+        return false;
+    }
+
+    public  void sendmark(String phone, String message) {
+        MongoDBUtil mongoDBUtil = MongoDBUtil.getInstance();
+        DBCollection coll = mongoDBUtil.getCollectionforSMScache();
+        BasicDBObject query = new BasicDBObject();
+        String key = SUtils.generSMSCacheKey(message,phone);
+        query.put("key", key);
+        BasicDBObject foj = new BasicDBObject("msg", message);
+        BasicDBObject jrespone = new BasicDBObject();
+        jrespone.put("$addToSet", foj);
+        coll.update(query, jrespone, true, false);
+    }
+
 }
-	

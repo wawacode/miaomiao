@@ -34,11 +34,11 @@ public class ShopOrderReportDaliy {
 	  List<ShopOrderReport> shopOrderReports = new ArrayList<ShopOrderReport>();
 	  for(Shop shop : shops){
 		  long shopId = shop.getId();
-		 List<Order> orders = orderDao.getOrder(Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 0, 0, 0)), Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 23, 59, 59)), SUtils.generOrderTableName(shopId));
+		 List<Order> orders = orderDao.getOrder(Dateutils.tranferDate2Str(Dateutils.getDateByCondition(0, 0, 0, 0)), Dateutils.tranferDate2Str(Dateutils.getDateByCondition(0, 23, 59, 59)), SUtils.generOrderTableName(shopId));
 		ShopOrderReport shopOrderReport = new ShopOrderReport();
 		shopOrderReport.setShopId(shopId);
 		shopOrderReport.setShopName(shop.getName());
-		shopOrderReport.setReportDate(Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(-1, 0, 0, 0)));
+		shopOrderReport.setReportDate(Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(0, 0, 0, 0)));
 		int orderCount=0;
 		int orderTotalPrice=0;
 		String createOrderTime = "";

@@ -1,0 +1,52 @@
+#set($q_title = "")
+#define($q_css)
+
+#end
+#define($q_body)
+#render_loginbar()
+<div class="qn_box">
+	<div class="flex1">
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+	</div>
+	<div class="flex1">
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+		<div class="qn_picitem">
+			<img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg">
+			文本	
+		</div>
+	</div>
+</div>
+#end
+#define($q_js)
+#end
+#render()

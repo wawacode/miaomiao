@@ -16,8 +16,8 @@ public class Order {
     private long   shop_id ;
     private long   user_id;
     private long address_id ;
-    private String remarks ;
-    private String snapshot ;
+    private String remarks ="";
+    private String snapshot="" ;
     private int status    ;
     private String info ;
 
@@ -25,6 +25,10 @@ public class Order {
     private String address  ;
     private String phone  ;
     private int  price  ;
+
+
+
+    private String  price4V  ;
     private Date create_time ;
     private Date update_time   ;
 
@@ -35,7 +39,13 @@ public class Order {
     public void setAddress(String address) {
         this.address = address;
     }
+    public String getPrice4V() {
+        return price4V;
+    }
 
+    public void setPrice4V(String price4V) {
+        this.price4V = price4V;
+    }
 
     public String getInfo() {
         return info;
