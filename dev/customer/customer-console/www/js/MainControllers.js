@@ -37,6 +37,7 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
         // for notifications
 
         $scope.notifications = [];
+        $scope.registerToken = undefined;
 
         // call to register automatically upon device ready
         ionPlatform.ready.then(function (device) {
@@ -59,26 +60,47 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                     "badge": "true",
                     "sound": "true",
                     "alert": "true",
-                    "ecb":"onNotificationAPN"
+                    "ecb":"onNotification"
                 }
             }
 
             $cordovaPush.register(config).then(function (result) {
-                console.log("Register success " + result);
 
-                $cordovaToast.showShortCenter('Registered for push notifications');
+                // get device id
+
+                console.log("Register success " + result);
+                $cordovaToast.showShortCenter('Registered for push notifications success:' + result );
+
                 $scope.registerDisabled = true;
+                $scope.registerToken = result;
+
                 // ** NOTE: Android regid result comes back in the pushNotificationReceived, only iOS returned here
-                if (ionic.Platform.isIOS()) {
-                    $scope.regId = result;
+                if (result != null) {
+                    //TODO:  make API call to server to make sure we store the token and shop_ower's identity
                 }
+
             }, function (err) {
-                console.log("Register error " + err)
+                console.log("Register error " + err);
             });
         }
 
         // Notification Received
-        $scope.$on('pushNotificationReceived', function (event, notification) {
+
+        function onNotification(notification){
+            console.log(JSON.stringify([notification]));
+            if (ionic.Platform.isAndroid()) {
+                handleAndroid(notification);
+            }
+            else if (ionic.Platform.isIOS()) {
+                handleIOS(notification);
+                $scope.$apply(function () {
+                    $scope.notifications.push(JSON.stringify(notification.alert));
+                })
+            }
+        }
+
+
+        $scope.$on('$cordovaPush:notificationReceived', function (event, notification) {
             console.log(JSON.stringify([notification]));
             if (ionic.Platform.isAndroid()) {
                 handleAndroid(notification);
@@ -98,6 +120,7 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             console.log("In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
             if (notification.event == "registered") {
                 $scope.regId = notification.regid;
+                //TODO:  make API call to server to make sure we store the token and shop_ower's identity
             }
             else if (notification.event == "message") {
                 $cordovaDialogs.alert(notification.message, "Push Notification Received");
@@ -115,6 +138,11 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             // The app was already open but we'll still show the alert and sound the tone received this way. If you didn't check
             // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
             // the notification when this code runs (weird).
+            if (notification.event == "registered") {
+                $scope.regId = notification.regid;
+                //TODO:  make API call to server to make sure we store the token and shop_ower's identity
+            }
+
             if (notification.foreground == "1") {
                 // Play custom audio if a sound specified.
                 if (notification.sound) {
@@ -153,14 +181,13 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
         // ** Instead, just remove the device token from your db and stop sending notifications **
         $scope.unregister = function () {
             console.log("Unregister called");
-            removeDeviceToken();
             $scope.registerDisabled = false;
             //need to define options here, not sure what that needs to be but this is not recommended anyway
-//        $cordovaPush.unregister(options).then(function(result) {
-//            console.log("Unregister success " + result);//
-//        }, function(err) {
-//            console.log("Unregister error " + err)
-//        });
+            $cordovaPush.unregister({}).then(function(result) {
+                console.log("Unregister success " + result);//
+            }, function(err) {
+                console.log("Unregister error " + err)
+            });
         }
 
     });
