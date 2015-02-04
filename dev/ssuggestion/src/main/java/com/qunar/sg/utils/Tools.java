@@ -15,7 +15,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Tools {
-    public static  final long shop_id = 1;
+    public static  final long shop_id = 10030;
 
     public static void main(String[] args) {
 

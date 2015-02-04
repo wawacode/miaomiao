@@ -14,7 +14,7 @@ public class mvShopItems {
 
     private static long shop_id = 1;
     private static long to_shop_id = 10032;
-    private static int category_id = 16;
+    private static int category_id = 15;
 
 
     public mvShopItems() throws IOException {
