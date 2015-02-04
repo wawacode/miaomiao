@@ -15,6 +15,15 @@ public class PushToken {
     private long   id  ;
     private String ower_phone ;
 
+    public String getChn() {
+        return chn;
+    }
+
+    public void setChn(String chn) {
+        this.chn = chn;
+    }
+
+    private String chn;
 
     private String device_token ;
     private Date create_time;

@@ -26,12 +26,13 @@ public class SubscribeController {
 
     @Post("")
     @Get("")
-    public String subscribe(Invocation inv,@Param("ower_phone") String  ower_phone,
+    public String subscribe(Invocation inv,@Param("ower_phone") String  ower_phone, @Param("chn") String chn,
                             @Param("device_token") String  device_token ){
 
         PushToken  pushtoken =  new PushToken();
         pushtoken.setOwer_phone(ower_phone);
         pushtoken.setDevice_token(device_token);
+        pushtoken.setChn(chn);
         pushtokenDao.insertPushToken(pushtoken) ;
         return "@json;" + Constants.DONE;
     }
