@@ -235,14 +235,14 @@ public class GeoService {
 	}
 
     public static void main (String [] args){
-        long shop_id = 10032;
+        long shop_id = 10031;
         RoseAppContext  rose = new RoseAppContext();
         ShopDAO shopDao = rose.getBean(ShopDAO.class);
         Shop shop = new Shop();
         Date date = new Date();
 //        Calendar c = Calendar.getInstance();
 //        c.setTime(date);
-//        c.set(Calendar.HOUR_OF_DAY,8);
+//        c.set(Calendar.HOUR_OF_DAY,10);
 //        c.set(Calendar.MINUTE,0);
 //        c.set(Calendar.SECOND,0);
 //        shop.setOpen_time(c.getTime());
@@ -254,18 +254,18 @@ public class GeoService {
 //        shop.setClose_time(c.getTime());
 //        shop.setId(shop_id);
 //        shop.setBase_price(3000);
-//        shopDao.update(shop) ;
+        shopDao.update(shop) ;
 
 
-      shop  = shopDao.getShop(shop_id);
-      GeoService  geoService =  new GeoService() ;
-        ShopLocation shop_location = new ShopLocation()  ;
-        shop_location = new ShopLocation()  ;
-        shop_location.setLatitude(shop.getLat());
-        shop_location.setLongitude(shop.getLng());
-        shop_location.setShop_id(shop.getId());
-        System.out.println(geoService.updateLocation(shop_location));
-        shopDao.audit(shop.getId());
+//      shop  = shopDao.getShop(shop_id);
+//      GeoService  geoService =  new GeoService() ;
+//        ShopLocation shop_location = new ShopLocation()  ;
+//        shop_location = new ShopLocation()  ;
+//        shop_location.setLatitude(shop.getLat());
+//        shop_location.setLongitude(shop.getLng());
+//        shop_location.setShop_id(shop.getId());
+//        System.out.println(geoService.updateLocation(shop_location));
+//        shopDao.audit(shop.getId());
 //
 //
 //        ShopLocation shopL = new ShopLocation () ;
