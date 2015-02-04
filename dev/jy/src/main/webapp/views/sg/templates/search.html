@@ -14,10 +14,11 @@
              style="width: 100%;padding: 5px">
             <div class="item-input-wrapper">
                 <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
-                <input type="search" placeholder="请输入商品名称"  ng-model="info.key" ng-focus="startSearch()" ng-keyup="$event.keyCode == 13 && performSearch(info.key,$event)" style="color: #7a7a7a">
+                <input type="search" placeholder="请输入商品名称"  ng-model="info.key" ng-focus="startSearch()" ng-change="getSearchSuggestions()" ng-keyup="$event.keyCode == 13 && performSearch(info.key,$event)" style="color: #7a7a7a">
                 <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"
                    ng-click="clearSearch()"></i>
             </div>
+            <button class="button-clear" ng-click="performSearch(info.key)">搜索</button>
         </div>
 
     </ion-header-bar>
@@ -26,7 +27,17 @@
                  has-tabs="false"
                  has-header="true"
                  style="text-align: left;top: 84">
-        <div class="shop-product-list">
+
+        <div class="list" ng-show="info.showSearchSuggestion">
+            <div class="item" ng-repeat="item in info.search_suggestions"
+                 ng-click="goToSearchItem(item)">
+                <div style="color: darkgray;font-size: 16px">
+                    {{item.key}}
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-product-list" ng-show="info.showSearchResult">
             <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list">
                 <li ng-repeat="item in searchResultsItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
                 </li>

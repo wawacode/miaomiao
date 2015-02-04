@@ -81,6 +81,10 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
             getSearchResults: function (shopId, key, success, fail) {
                 doGet('search/query', 'shop_id=' + shopId + '&key=' + key, success, fail);
             },
+
+            getSearchSuggestion:function( shopId, key, success, fail){
+                doGet('/suggestion/query', 'shop_id=' + shopId + '&q=' + key, success, fail);
+            },
             getShopByGEOLocation: function (lat, lng, success, fail) {
 
                 doGet('f', 'lat=' + lat + '&lng=' + lng, success, fail);

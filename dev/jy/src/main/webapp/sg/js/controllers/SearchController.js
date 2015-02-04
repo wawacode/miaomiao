@@ -19,6 +19,9 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
             scope: $scope
         });
 
+        $scope.info.showSearchSuggestion = false;
+        $scope.info.showSearchResult = true;
+
         httpClient.getSearchResults($scope.shop.id, KEY, function (data, status) {
 
             /*
@@ -51,6 +54,30 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
     }
 
 
+    $scope.getSearchSuggestions = function(){
+
+        httpClient.getSearchSuggestion($scope.shop.id, $scope.info.key, function (data, status) {
+
+            /*
+             * {"code":0,"data":[{"category_id":15,"count":956,"id":28062,"name":"哈哈镜鸭爪买一赠一","pic_url":
+             * "http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
+             * "score":99999,"shop_id":1},{"category_id":15,"count":921,"id":28063,"name":"哈哈镜鸭翅买一赠*/
+
+            var code = data.code, dataDetail = data.data;
+            $timeout(function(){
+                $scope.info.search_suggestions = dataDetail;
+            })
+
+        }, function (data, status) {
+        });
+
+    }
+
+    $scope.goToSearchItem = function(item){
+
+        $scope.performSearch(item.key);
+
+    }
     function updateShoppingCart(){
 
         $timeout(function(){
@@ -86,11 +113,14 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
     }
 
     $scope.startSearch = function(){
-
+        $scope.info.showSearchSuggestion = true;
+        $scope.info.showSearchResult = false;
     }
 
     $scope.clearSearch = function(){
         $scope.info.key = '';
+        $scope.info.showSearchSuggestion = true;
+        $scope.info.showSearchResult = false;
     }
 
     $scope.checkout = function () {
