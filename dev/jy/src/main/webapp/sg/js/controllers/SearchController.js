@@ -73,9 +73,14 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
 
     }
 
-    $scope.goToSearchItem = function(item){
+    $scope.goToSearchItem = function(item,$event){
 
-        $scope.performSearch(item.key);
+        $scope.info.showSearchSuggestion = false;
+        $scope.info.showSearchResult = true;
+
+        $event.stopPropagation();
+
+        $scope.performSearch(item.key,$event);
 
     }
     function updateShoppingCart(){

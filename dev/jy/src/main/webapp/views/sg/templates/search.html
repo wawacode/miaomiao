@@ -18,26 +18,27 @@
                 <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"
                    ng-click="clearSearch()"></i>
             </div>
-            <button class="button-clear" ng-click="performSearch(info.key)">搜索</button>
+            <button class="button-clear" ng-click="performSearch(info.key,$event)">搜索</button>
         </div>
 
     </ion-header-bar>
+
+    <div class="list" ng-show="info.showSearchSuggestion" ng-click="info.showSearchSuggestion = !info.showSearchSuggestion"
+         style="position: absolute;top: 85;bottom: 29; width: 100%;left: 0;right: 0; background-color: lightgray;z-index: 200;opacity: 0.9">
+        <div class="item" ng-repeat="item in info.search_suggestions"
+             ng-click="goToSearchItem(item,$event)" style="border-left: none;border-right: none;padding: 10">
+            <div style="color: #000000;font-size: 14px;">
+                {{item.key}}
+            </div>
+        </div>
+    </div>
 
     <ion-content padding="true"
                  has-tabs="false"
                  has-header="true"
                  style="text-align: left;top: 84">
 
-        <div class="list" ng-show="info.showSearchSuggestion">
-            <div class="item" ng-repeat="item in info.search_suggestions"
-                 ng-click="goToSearchItem(item)">
-                <div style="color: darkgray;font-size: 16px">
-                    {{item.key}}
-                </div>
-            </div>
-        </div>
-
-        <div class="shop-product-list" ng-show="info.showSearchResult">
+        <div class="shop-product-list">
             <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list">
                 <li ng-repeat="item in searchResultsItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
                 </li>
