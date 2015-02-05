@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:amazon="http://schemas.android.com/apk/lib/com.amazon.device.ads"
+    xmlns:rim="http://www.blackberry.com/ns/widgets"
+    id="com.phonegap.plugins.PushPlugin"
+    version="2.4.0">
+
+  <name>PushPlugin</name>
+	<author>Bob Easterday</author>
+
+	<description>
+		This plugin allows your application to receive push notifications on Android, iOS,
+    Android uses Umeng api.
+    iOS uses Apple APNS Notifications/umeng.
+
+	</description>
+
+	<license>MIT</license>
+
+	<js-module src="www/PushNotification.js" name="PushNotification">
+        <clobbers target="PushNotification" />
+	</js-module>
+
+	<engines>
+		<engine name="cordova" version=">=3.0.0" />
+	</engines>
+
+	<!-- android -->
+	<platform name="android">
+
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="PushPlugin" >
+				<param name="android-package" value="com.plugin.umeng.PushPlugin"/>
+			</feature>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <uses-permission android:name="android.permission.VIBRATE" />
+            <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+
+            <receiver
+                    android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
+                    android:exported="false" >
+            </receiver>
+            <receiver android:name="com.umeng.message.RegistrationReceiver" >
+                <intent-filter>
+                    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                    <data android:scheme="package" />
+                </intent-filter>
+
+            </receiver>
+            <receiver android:name="com.umeng.message.UmengBroadcastReceiver" >
+                <intent-filter>
+                    <action android:name="org.agoo.android.intent.action.RECEIVE" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="$PACKAGE_NAME.intent.action.COMMAND" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="org.agoo.android.intent.action.RE_ELECTION_V2" />
+                </intent-filter>
+            </receiver>
+            <service
+                    android:name="com.umeng.message.UmengService"
+                    android:exported="true"
+                    android:process=":umengService_v1" >
+                <intent-filter>
+                    <action android:name="$PACKAGE_NAME.intent.action.START" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="$PACKAGE_NAME.intent.action.COCKROACH" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="org.agoo.android.intent.action.PING" />
+                </intent-filter>
+            </service>
+            <service
+                    android:name="org.android.agoo.service.ElectionService"
+                    android:exported="true"
+                    android:process=":umengService_v1" >
+                <intent-filter>
+                    <action android:name="org.agoo.android.intent.action.ELECTION_V2" />
+                </intent-filter>
+            </service>
+            <!-- self made service , when get callback, commuacate to js-->
+            <service android:name="com.plugin.umeng.UMengIntentService" />
+            <!-- V1.3.0添加的service，负责下载通知的资源 -->
+            <service android:name="com.umeng.message.UmengDownloadResourceService" />
+
+            <!--添加 AppKey 和 Umeng Message Secret -->
+            <meta-data
+                    android:name="UMENG_APPKEY"
+                    android:value="54cb1485fd98c571bd000243" >
+            </meta-data>
+            <meta-data
+                    android:name="UMENG_MESSAGE_SECRET"
+                    android:value="9969a99944501ef28845c2758ff0ea3a" >
+            </meta-data>
+
+            <meta-data
+                    android:name="UMENG_CHANNEL"
+                    android:value="mm_bconsonle_v1">
+            </meta-data>
+
+		</config-file>
+
+		<source-file src="src/android/libs/com.umeng.message.lib.jar" target-dir="libs/" />
+		<source-file src="src/android/com/plugin/umeng/UMengIntentService.java" target-dir="src/com/plugin/umeng/" />
+		<source-file src="src/android/com/plugin/umeng/PushHandlerActivity.java" target-dir="src/com/plugin/umeng/" />
+		<source-file src="src/android/com/plugin/umeng/PushPlugin.java" target-dir="src/com/plugin/umeng/" />
+		<source-file src="src/android/com/plugin/android-support-v4.jar" target-dir="libs/" />
+
+	</platform>
+
+	<!-- ios -->
+	<platform name="ios">
+
+		<config-file target="config.xml" parent="/*">
+			<feature name="PushPlugin">
+				<param name="ios-package" value="PushPlugin"/>
+			</feature>
+		</config-file>
+
+		<source-file src="src/ios/AppDelegate+notification.m" />
+		<source-file src="src/ios/PushPlugin.m" />
+
+		<header-file src="src/ios/AppDelegate+notification.h" />
+		<header-file src="src/ios/PushPlugin.h" />
+
+	</platform>
+
+</plugin>

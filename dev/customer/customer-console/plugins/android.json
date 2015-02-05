@@ -1,0 +1,187 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Toast\"><param name=\"android-package\" value=\"nl.xservices.plugins.Toast\" /></feature>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<feature name=\"PushPlugin\"><param name=\"android-package\" value=\"com.plugin.umeng.PushPlugin\" /></feature>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<feature name=\"Media\"><param name=\"android-package\" value=\"org.apache.cordova.media.AudioHandler\" /></feature>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" value=\"com.ionic.keyboard.IonicKeyboard\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 6
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.RECORD_AUDIO\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
+                            "count": 3
+                        }
+                    ],
+                    "/manifest": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WAKE_LOCK\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.VIBRATE\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\" />",
+                            "count": 3
+                        }
+                    ],
+                    "/manifest/application": [
+                        {
+                            "xml": "<receiver android:exported=\"false\" android:name=\"com.umeng.message.NotificationProxyBroadcastReceiver\"></receiver>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<receiver android:name=\"com.umeng.message.RegistrationReceiver\"><intent-filter><action android:name=\"android.net.conn.CONNECTIVITY_CHANGE\" /></intent-filter><intent-filter><action android:name=\"android.intent.action.PACKAGE_REMOVED\" /><data android:scheme=\"package\" /></intent-filter></receiver>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<receiver android:name=\"com.umeng.message.UmengBroadcastReceiver\"><intent-filter><action android:name=\"org.agoo.android.intent.action.RECEIVE\" /></intent-filter><intent-filter><action android:name=\"com.miaomiao.bconsole.intent.action.COMMAND\" /></intent-filter><intent-filter><action android:name=\"org.agoo.android.intent.action.RE_ELECTION_V2\" /></intent-filter></receiver>",
+                            "count": 4
+                        },
+                        {
+                            "xml": "<service android:exported=\"true\" android:name=\"com.umeng.message.UmengService\" android:process=\":umengService_v1\"><intent-filter><action android:name=\"com.miaomiao.bconsole.intent.action.START\" /></intent-filter><intent-filter><action android:name=\"com.miaomiao.bconsole.intent.action.COCKROACH\" /></intent-filter><intent-filter><action android:name=\"org.agoo.android.intent.action.PING\" /></intent-filter></service>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<service android:exported=\"true\" android:name=\"org.android.agoo.service.ElectionService\" android:process=\":umengService_v1\"><intent-filter><action android:name=\"org.agoo.android.intent.action.ELECTION_V2\" /></intent-filter></service>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<service android:name=\"com.umeng.message.UmengIntentService\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<service android:name=\"com.umeng.message.UmengDownloadResourceService\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<meta-data android:name=\"UMENG_APPKEY\" android:value=\"54cb1485fd98c571bd000243\"></meta-data>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<meta-data android:name=\"UMENG_MESSAGE_SECRET\" android:value=\"9969a99944501ef28845c2758ff0ea3a\"></meta-data>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<meta-data android:name=\"UMENG_CHANNEL\" android:value=\"mm_bconsonle_v1\"></meta-data>",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<service android:name=\"com.plugin.umeng.UMengIntentService\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "nl.x-services.plugins.toast": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "org.apache.cordova.console": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "org.apache.cordova.file": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "org.apache.cordova.media": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "com.phonegap.plugins.PushPlugin": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "org.apache.cordova.splashscreen": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "org.apache.cordova.statusbar": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "com.ionic.keyboard": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        }
+    },
+    "dependent_plugins": {}
+}
