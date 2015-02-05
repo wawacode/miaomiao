@@ -78,15 +78,16 @@ angular.module('miaomiao.console.controllers')
             if (inLoadingMore)return;
 
             for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
-                $scope.info.categoryls[idx].selected = 0;
+                $scope.info.categoryls[idx].selected = $scope.info.categoryls[idx] == category ? 1: 0;
             }
-            category.selected = 1;
 
-            $scope.info.currentDisplayCategory = category;
-            $scope.info.currentDisplayItems = category.itemls;
+            $timeout(function(){
 
-            $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
+                $scope.info.currentDisplayCategory = category;
+                $scope.info.currentDisplayItems = category.itemls;
 
+                $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
+            })
         }
 
         $scope.moreDataCanBeLoaded = function () {
