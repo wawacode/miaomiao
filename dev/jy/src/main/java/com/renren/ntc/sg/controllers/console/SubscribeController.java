@@ -1,8 +1,7 @@
-package com.renren.ntc.sg.controllers.console.api;
+package com.renren.ntc.sg.controllers.console;
 
-import com.renren.ntc.sg.bean.PushToken;
-import com.renren.ntc.sg.biz.dao.PushTokenDAO;
-import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.bean.RegistUser;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -20,21 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Path("subscribe")
 public class SubscribeController {
 
-    @Autowired
-    public PushTokenDAO pushtokenDao ;
-
-
     @Post("")
     @Get("")
-    public String subscribe(Invocation inv,@Param("ower_phone") String  owner_phone, @Param("chn") String chn,
+    public String subscribe(Invocation inv, @Param("owner_id") long  ower_id,@Param("ower_phone") String  owner_phone,
                             @Param("device_token") String  device_token ){
 
-        PushToken  pushtoken =  new PushToken();
-        pushtoken.setOwner_phone(owner_phone);
-        pushtoken.setDevice_token(device_token);
-        pushtoken.setChn(chn);
-        pushtokenDao.insertPushToken(pushtoken) ;
-        return "@json;" + Constants.DONE;
+        return "regist";
     }
 
 }
