@@ -30,11 +30,11 @@
 
                     <div class="shop-categray-list" style="width: 100%;">
                         <ul style="margin: 0.0em;padding: 0px;">
-                            <li ng-repeat="category in info.categoryls" class="shop-categray" ng-class="{'shop-categray-selected': category.selected}"
-                                ng-click="selectCategory(category)">
+                            <li ng-repeat="category in info.categoryls track by category.category_id" class="shop-categray" ng-class="{'shop-categray-selected': $index == selectedIndex }"
+                                ng-click="selectCategory($index)">
 
-                                <div class="shop-categray-item-decorate" ng-hide="!category.selected"></div>
-                                <div class="shop-categray-item" style="" ng-class="{'shop-categray-item-selected': category.selected}">{{ category.name }}</div>
+                                <div class="shop-categray-item-decorate" ng-hide="$index != selectedIndex"></div>
+                                <div class="shop-categray-item" style="" ng-class="{'shop-categray-item-selected': $index == selectedIndex}">{{ category.name }}</div>
                             </li>
                         </ul>
                     </div>

@@ -72,19 +72,18 @@ angular.module('miaomiao.console.controllers')
             initData();
         }
 
-        $scope.selectCategory = function (category) {
+        $scope.selectedIndex = 0;
+        $scope.selectCategory = function ($index) {
 
             // if in loading more, can't select
             if (inLoadingMore)return;
 
-            for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
-                $scope.info.categoryls[idx].selected = $scope.info.categoryls[idx] == category ? 1: 0;
-            }
+            $scope.selectedIndex = $index;
 
             $timeout(function(){
 
-                $scope.info.currentDisplayCategory = category;
-                $scope.info.currentDisplayItems = category.itemls;
+                $scope.info.currentDisplayCategory = $scope.info.categoryls[$index];
+                $scope.info.currentDisplayItems = $scope.info.categoryls[$index].itemls;
 
                 $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
             })
