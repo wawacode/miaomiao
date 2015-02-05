@@ -13,7 +13,16 @@ public class PushToken {
 
 
     private long   id  ;
-    private String ower_phone ;
+
+    public String getOwner_phone() {
+        return owner_phone;
+    }
+
+    public void setOwner_phone(String owner_phone) {
+        this.owner_phone = owner_phone;
+    }
+
+    private String owner_phone ;
 
     public String getChn() {
         return chn;
@@ -37,13 +46,6 @@ public class PushToken {
         this.device_token = device_token;
     }
 
-    public String getOwer_phone() {
-        return ower_phone;
-    }
-
-    public void setOwer_phone(String ower_phone) {
-        this.ower_phone = ower_phone;
-    }
 
 
 

@@ -44,14 +44,14 @@ CREATE TABLE `catstaff_commit` (
 
 CREATE TABLE `push_token` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT ,
-  `ower_phone`varchar(24) NOT NULL DEFAULT '' ,
+  `owner_phone`varchar(24) NOT NULL DEFAULT '' ,
   `device_token` varchar(256) NOT NULL DEFAULT '',
   `chn` varchar(20) NOT NULL DEFAULT '',
   `ext` varchar(128) NOT NULL DEFAULT '',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL ,
    PRIMARY KEY (`id`),
-   KEY `ower_phone` (`ower_phone`)
+   UNIQUE KEY `owner_phone` (`owner_phone`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 

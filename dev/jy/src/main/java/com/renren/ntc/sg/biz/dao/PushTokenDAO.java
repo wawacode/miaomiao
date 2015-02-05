@@ -25,15 +25,15 @@ CREATE TABLE `items` (
 @DAO(catalog = "ABC")
 public interface PushTokenDAO {
     static final String TABLE_NAME= "push_token";
-    static final String FIELDS = "id, ower_phone ,device_token, chn, create_time" ;
-    static final String INSERT_FIELDS = "ower_phone ,device_token ,chn" ;
+    static final String FIELDS = "id, owner_phone ,device_token, chn, create_time" ;
+    static final String INSERT_FIELDS = "owner_phone ,device_token ,chn" ;
 
 	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " order by create_time desc limit 1")
     public PushToken getPushToken();
 
 
     @SQL("insert  into " +TABLE_NAME +" (" +  INSERT_FIELDS +") " +   " values" +
-            "(:1.ower_phone,:1.device_token,:1.chn) ON DUPLICATE KEY UPDATE device_token=:1.device_token")
+            "(:1.owner_phone,:1.device_token,:1.chn) ON DUPLICATE KEY UPDATE device_token=:1.device_token")
     public int  insertPushToken(PushToken pushtoken);
 
 
