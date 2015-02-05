@@ -26,7 +26,7 @@ public class SubscribeController {
 
     @Post("")
     @Get("")
-    public String subscribe(Invocation inv,@Param("owner_phone") String  owner_phone, @Param("chn") String chn,
+    public String subscribe(Invocation inv,@Param("ower_phone") String  owner_phone, @Param("chn") String chn,
                             @Param("device_token") String  device_token ){
 
         PushToken  pushtoken =  new PushToken();
