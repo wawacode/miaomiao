@@ -166,8 +166,8 @@ miaomiao.factory('MMPushNotification', ['$rootScope','httpClient','localStorageS
                       chn = 'adr'
                   }
                   httpClient.subscribeForCurrentDevice(user.phone, chn, token,function(){
-
-                      $cordovaToast.showShortCenter('注册通知成功，您将会在此应用中收到新订单通知~');
+//                      $cordovaToast.showShortCenter('注册通知成功，您将会在此应用中收到新订单通知~');
+                      console.log('注册通知成功，您将会在此应用中收到新订单通知~');
 
                   },function(){
 

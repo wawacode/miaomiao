@@ -157,19 +157,15 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
             if (notification.foreground == "1") {
                 // Play custom audio if a sound specified.
-                console.log('we are in foreground');
-
 
                 if (notification.body && notification.messageFrom) {
-                    console.log('we are in foreground body');
                     console.log("the notification body is:" + notification.body);
                     $cordovaDialogs.alert(notification.body, notification.messageFrom).then(function(){
                         inappHanlder();
                     });
                 }else {
-                    console.log('we are in foreground alert');
                     console.log("the notification body alert:" + notification.alert);
-                    $cordovaDialogs.alert(notification.alert,"您有新的订单","确定").then(function(){
+                    $cordovaDialogs.alert(notification.alert,"请在我的订单下查询新订单","确定").then(function(){
                         inappHanlder();
                     });
                 }
@@ -201,15 +197,12 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                     });
                 }else{
                     console.log('we are in background alert');
-                    $cordovaDialogs.alert(notification.alert, '您有新的订单').then(function(){
+                    $cordovaDialogs.alert(notification.alert, '请在我的订单下查询新订单').then(function(){
                         inappHanlder();
                     });
                 }
             }
         }
-
-
-        handleIOS({"alert":"aefawfeawef","sound":"default","badge":"1","d":"uu62595142310537596811","p":"0",foreground:"1"});
         // Unregister - Unregister your device token from APNS or GCM
         // Not recommended:  See http://developer.android.com/google/gcm/adv.html#unreg-why
         //                   and https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplication_Class/index.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications
