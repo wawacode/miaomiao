@@ -10,8 +10,7 @@
         </ion-refresher>
         <div class="order-list list" style="">
 
-            <div class="order-item" style="" ng-repeat="order in info.orders" ng-controller="OrderDetailCtrl"
-                 ng-click="showOrderDetail(order)">
+            <div class="order-item" style="" ng-repeat="order in info.orders" ng-controller="OrderDetailCtrl">
 
                 <div class="item item-divider">
                     订单{{$index + 1}}: {{order.create_time | date:'short'}}
@@ -28,8 +27,8 @@
                     <div>联系电话: {{order.phone}}</div>
                     <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
 
-                    <i class="balanced icon ion-ios7-information" ng-show="order.read"></i>
-                    <i class="assertive icon ion-ios7-information" ng-show="!order.read"></i>
+                    <i class="balanced icon ion-ios7-information" ng-show="order.read" ng-click="showOrderDetail(order)"></i>
+                    <i class="assertive icon ion-ios7-information" ng-show="!order.read" ng-click="showOrderDetail(order)"></i>
 
                 </div>
 
