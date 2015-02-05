@@ -48,6 +48,7 @@ public class Constants {
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";
+    public static String LOCTID = "778";
     public static String USER_TID = "791";
     public static String SHOP_NO_EXIST = "店铺不存在";
     public static int ITEM_ON_SALE = 1;

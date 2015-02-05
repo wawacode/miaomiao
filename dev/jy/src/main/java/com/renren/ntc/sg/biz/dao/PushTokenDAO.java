@@ -28,8 +28,8 @@ public interface PushTokenDAO {
     static final String FIELDS = "id, owner_phone ,device_token, chn, create_time" ;
     static final String INSERT_FIELDS = "owner_phone ,device_token ,chn" ;
 
-	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " order by create_time desc limit 1")
-    public PushToken getPushToken();
+	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " where owner_phone = :1")
+    public PushToken getPushToken(String owner_phone);
 
 
     @SQL("insert  into " +TABLE_NAME +" (" +  INSERT_FIELDS +") " +   " values" +

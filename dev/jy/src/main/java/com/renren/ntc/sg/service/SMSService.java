@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.service;
 
+import com.alibaba.fastjson.JSON;
 import com.renren.ntc.sg.bean.Address;
 import com.renren.ntc.sg.bean.CatStaffCommit;
 import com.renren.ntc.sg.bean.Order;
@@ -58,7 +59,7 @@ public class SMSService {
                     System.out.println(String.format("%s %s sms allready send ",phone,order_id));
                     return ;
                 }
-                String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.TID, phone, message);
+                String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.LOCTID, phone, message);
                 System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, order.getOrder_id(), url));
                 t = SHttpClient.getURLData(url, "");
                 String r = SUtils.toString(t);
@@ -112,11 +113,13 @@ public class SMSService {
             String response = "用户下单";
             long adr_id = value.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
-            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id();
+            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() ;
             vv = vv.replaceAll("=", "").replaceAll("&", "");
-            String ro = response.replace("=", "").replace("&", "");
+            String ro = response.replaceAll("=", "").replace("&", "");
             float p = (float) value.getPrice() / 100;
-            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
+            String detail = form(value.getSnapshot(),p);
+            detail = detail.replaceAll("=", "").replaceAll("&", "");
+            String message = "#address#=" + vv + "&#status#=" + ro  + "#detail#=" + detail;
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板
@@ -136,5 +139,26 @@ public class SMSService {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+    }
+
+    private String form(String snapshot,float sum) {
+        com.alibaba.fastjson.JSONArray jb = ( com.alibaba.fastjson.JSONArray)JSON.parse(snapshot);
+        StringBuffer sb = new StringBuffer() ;
+        for (int i = 0; i<jb.size() ;i++){
+            com.alibaba.fastjson.JSONObject o = (com.alibaba.fastjson.JSONObject)jb.get(i);
+            String name =  o.getString("name") ;
+            int  count =  o.getInteger("count") ;
+            int  price =  o.getInteger("price") ;
+            sb.append(name);
+            sb.append("单价 ");
+            sb.append((float) price /100);
+            sb.append("数量 ");
+            sb.append(count + "");
+            sb.append(",");
+        }
+        sb.append("总计 ：");
+        sb.append(sum);
+        sb.append(" 元");
+        return sb.toString();
     }
 }
