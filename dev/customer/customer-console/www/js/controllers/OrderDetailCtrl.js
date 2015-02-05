@@ -35,6 +35,7 @@ angular.module('miaomiao.console.controllers').controller('OrderDetailCtrl', ['$
 
         $scope.showOrderDetail = function(order) {
             $scope.order = order;
+            $scope.order.read = true;
             $scope.openModal();
         }
     }

@@ -76,11 +76,7 @@ angular.module('miaomiao.console', [
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             }
-            // hide the splash screen only after everything's ready (avoid flicker)
-            // requires keyboard plugin and confix.xml entry telling the splash screen to stay until explicitly told
-            if (navigator.splashscreen) {
-                navigator.splashscreen.hide();
-            }
+
 
             $ionicDeploy.initialize(ionic.Config.app_id);
             $ionicDeploy.check().then(function (response) {
@@ -118,7 +114,13 @@ angular.module('miaomiao.console', [
             }, function (error) {
                 console.log('error checking for update');
                 // Error checking for updates
-            })
+            });
+
+            // hide the splash screen only after everything's ready (avoid flicker)
+            // requires keyboard plugin and confix.xml entry telling the splash screen to stay until explicitly told
+            if (navigator.splashscreen) {
+                navigator.splashscreen.hide();
+            }
         });
     })
 

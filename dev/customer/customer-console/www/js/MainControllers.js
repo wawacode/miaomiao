@@ -201,6 +201,15 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                         inappHanlder();
                     });
                 }
+
+                if (notification.badge) {
+                    console.log('we are in background mode');
+                    $cordovaPush.setBadgeNumber(notification.badge).then(function (result) {
+                        console.log("Set badge success " + result)
+                    }, function (err) {
+                        console.log("Set badge error " + err)
+                    });
+                }
             }
         }
         // Unregister - Unregister your device token from APNS or GCM

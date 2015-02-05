@@ -15,6 +15,7 @@ angular.module('miaomiao.console.controllers')
             if(!orders) return;
             for(var i=0;i< orders.length;i++){
                 var order = orders[i];
+                order.read = false;
                 try{
                     order.items = JSON.parse(order.info);
                 }catch (e){
@@ -102,9 +103,17 @@ angular.module('miaomiao.console.controllers')
 
                 $scope.$broadcast('scroll.refreshComplete');
 
-                $scope.info.orders = dataDetail.orderls;
-                transformOrderData($scope.info.orders);
+                transformOrderData(dataDetail.orderls);
 
+                // flat which ones are read
+                for(var i=0;i< dataDetail.orderls.length;i++){
+                    for(var j =0; j< $scope.info.orders.length;j++){
+                            if(dataDetail.orderls[i].order_id == $scope.info.orders[j].order_id){
+                                dataDetail.orderls[i].read = $scope.info.orders[j].read;
+                            }
+                     }
+                }
+                $scope.info.orders = dataDetail.orderls;
                 $rootScope.$broadcast('orderScroll.refreshComplete');
 
             },function(){
@@ -118,7 +127,7 @@ angular.module('miaomiao.console.controllers')
 
         });
 
-    }).controller('orderTabCtrl', function($scope, $timeout , MMPushNotification) {
+    }).controller('orderTabCtrl', function($scope, $timeout , MMPushNotification,$cordovaPush) {
 
         $scope.info = {};
         $scope.info.notification_order_count = 0;
@@ -136,6 +145,13 @@ angular.module('miaomiao.console.controllers')
             // should see all the lastest, so clear all nofitcaiton number
             console.log('after refresh we reset count');
             $scope.info.notification_order_count = 0;
+
+            console.log('we are in setting badge');
+            $cordovaPush.setBadgeNumber(0).then(function (result) {
+                console.log("Set badge success " + result)
+            }, function (err) {
+                console.log("Set badge error " + err)
+            });
         })
     })
 
