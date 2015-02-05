@@ -65,7 +65,7 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
             if (ionic.Platform.isAndroid()) {
                 config = {
-                    "senderID": "miaomiao-bconsole", // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/434205989073
+                    "senderID": "miaomiao-bconsole",
                     "ecb":"onNotification"
                 };
             }
@@ -146,7 +146,7 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
             // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
             // the notification when this code runs (weird).
             console.log("handle iOS : In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
-            console.log(notification);
+            console.log("handle iOS: the notification is:" + JSON.stringify(notification));
 
             var inappHanlder = function(){
                 $state.go('tab.order',null,{reload: true});
@@ -157,37 +157,59 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
             if (notification.foreground == "1") {
                 // Play custom audio if a sound specified.
-                if (notification.sound) {
-                    var mediaSrc = $cordovaMedia.newMedia(notification.sound);
-                    mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
-                }
+                console.log('we are in foreground');
+
 
                 if (notification.body && notification.messageFrom) {
-                    $cordovaDialogs.alert(notification.body,inappHanlder, notification.messageFrom);
+                    console.log('we are in foreground body');
+                    console.log("the notification body is:" + notification.body);
+                    $cordovaDialogs.alert(notification.body, notification.messageFrom).then(function(){
+                        inappHanlder();
+                    });
+                }else {
+                    console.log('we are in foreground alert');
+                    console.log("the notification body alert:" + notification.alert);
+                    $cordovaDialogs.alert(notification.alert,"您有新的订单","确定").then(function(){
+                        inappHanlder();
+                    });
                 }
-                else $cordovaDialogs.alert(notification.alert,inappHanlder,"您有新的订单");
 
                 if (notification.badge) {
+                    console.log('we are in foreground badge');
                     $cordovaPush.setBadgeNumber(notification.badge).then(function (result) {
                         console.log("Set badge success " + result)
                     }, function (err) {
                         console.log("Set badge error " + err)
                     });
                 }
+
+                if (notification.sound) {
+                    console.log('we are in foreground and have sound');
+                    var mediaSrc = $cordovaMedia.newMedia(notification.sound);
+                    mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
+                }
             }
             // Otherwise it was received in the background and reopened from the push notification. Badge is automatically cleared
             // in this case. You probably wouldn't be displaying anything at this point, this is here to show that you can process
             // the data in this situation.
             else {
-
+                console.log('we are in background');
                 if (notification.body && notification.messageFrom) {
-                    $cordovaDialogs.alert(notification.body, inappHanlder,notification.messageFrom);
+                    console.log('we are in background body');
+                    $cordovaDialogs.alert(notification.body,notification.messageFrom).then(function(){
+                        inappHanlder();
+                    });
+                }else{
+                    console.log('we are in background alert');
+                    $cordovaDialogs.alert(notification.alert, '您有新的订单').then(function(){
+                        inappHanlder();
+                    });
                 }
-
-                else $cordovaDialogs.alert(notification.alert,inappHanlder, '您有新的订单');
             }
         }
 
+
+        handleIOS({"alert":"aefawfeawef","sound":"default","badge":"1","d":"uu62595142310537596811","p":"0",foreground:"1"});
         // Unregister - Unregister your device token from APNS or GCM
         // Not recommended:  See http://developer.android.com/google/gcm/adv.html#unreg-why
         //                   and https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplication_Class/index.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications
