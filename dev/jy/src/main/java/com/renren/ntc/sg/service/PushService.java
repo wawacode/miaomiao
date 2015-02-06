@@ -36,14 +36,12 @@ public class PushService {
     @Autowired
     public CatStaffCommitDAO catStaffCommitDao ;
 
-	private String appkey = "";
-	private String appMasterSecret = "";
+	private String appkey = "54cb1485fd98c571bd000243";
+	private String appMasterSecret = "uopev2ouz3kt9h0foca3nzn9yambvqgc";
 	private String timestamp = null;
 
-	public PushService(String key, String secret) {
+	public PushService() {
 		try {
-			appkey = key;
-			appMasterSecret = secret;
 			timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -316,7 +314,7 @@ public class PushService {
 	
 	public static void main(String[] args) {
 		// TODO set your appkey and master secret here
-		PushService demo = new PushService("54cb1485fd98c571bd000243", "uopev2ouz3kt9h0foca3nzn9yambvqgc");
+		PushService demo = new PushService();
 		try {
 //			demo.sendAndroidUnicast();
 			/* TODO these methods are all available, just fill in some fields and do the test
