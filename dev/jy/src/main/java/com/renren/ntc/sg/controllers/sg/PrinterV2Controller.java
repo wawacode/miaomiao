@@ -6,10 +6,7 @@ import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.dao.SWPOrderDAO;
-import com.renren.ntc.sg.service.LoggerUtils;
-import com.renren.ntc.sg.service.OrderService;
-import com.renren.ntc.sg.service.PrinterService;
-import com.renren.ntc.sg.service.SMSService;
+import com.renren.ntc.sg.service.*;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
@@ -53,6 +50,9 @@ public class PrinterV2Controller {
 
     @Autowired
     public SMSService smsService;
+
+    @Autowired
+    public PushService pushService;
 
     public  boolean  nn = true;
     /**
@@ -111,7 +111,7 @@ public class PrinterV2Controller {
 
     @Get("fb")
     @Post("fb")
-    public String fb(Invocation inv, @Param("pid") long pid, @Param("token") String token, @Param("orderId") String orderId, @Param("re") String re, @Param("msg") String msg) {
+    public String fb(Invocation inv, @Param("pid") long pid, @Param("token") String token, @Param("orderId") String order_id, @Param("re") String re, @Param("msg") String msg) {
         // 验证
         LoggerUtils.getInstance().log(String.format("fb request param  %d ,%s  ,re: %s , msg : %s ", pid, token, re, msg));
         if (0 > pid) {
@@ -131,23 +131,23 @@ public class PrinterV2Controller {
         int r = 0;
         if ("true".equals(re)) {
             // AB 测试
-            if (orderId.startsWith("C")){
-                System.out.println( String.format( "%d, %s %s" ,2, orderId,SUtils.generOrderTableName(dev.getShop_id())));
-                r = ordersDAO.update(2, orderId,SUtils.generOrderTableName(dev.getShop_id()));
+            if (order_id.startsWith("C")){
+                System.out.println( String.format( "%d, %s %s" ,2, order_id,SUtils.generOrderTableName(dev.getShop_id())));
+                r = ordersDAO.update(2, order_id,SUtils.generOrderTableName(dev.getShop_id()));
             }
-
             if (r == 1) {
-                smsService.sendSMS2User(orderId,shop);
+                smsService.sendSMS2User(order_id,shop);
             }
         }
 
         //发短信通知
         if (r != 1) {
-            LoggerUtils.getInstance().log(String.format("fail to update order %s  pid  %d  token %s", orderId, pid, token));
+            LoggerUtils.getInstance().log(String.format("fail to update order %s  pid  %d  token %s", order_id, pid, token));
         }
 
         //发短信通知
-        smsService.sendSMS2Boss(orderId,shop);
+        pushService.send2Boss(order_id, shop);
+        smsService.sendSMS2Boss(order_id,shop);
         return "@" + Constants.DONE;
     }
 

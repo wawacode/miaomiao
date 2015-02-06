@@ -9,6 +9,7 @@ import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.AddressService;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.PushService;
 import com.renren.ntc.sg.service.SMSService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
@@ -58,6 +59,9 @@ public class OrderController {
 
     @Autowired
     public SMSService smsService;
+
+    @Autowired
+    public PushService pushService;
 
 
 
@@ -185,7 +189,9 @@ public class OrderController {
         Device devcie = deviceDAO.getDevByShopId(shop_id);
         if (null == devcie || SUtils.isOffline(devcie)) {
             System.out.println("device is null or  printer offline ");
-            // 发送通知给 用户和 老板
+            // 发送通知给 用户和 老板     \
+            pushService.send2Boss(order_id, shop);
+
             smsService.sendSMS2Boss(order_id, shop);
             smsService.sendSMS2User(order_id, shop);
         }
