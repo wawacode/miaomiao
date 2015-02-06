@@ -1,5 +1,7 @@
 package com.renren.ntc.sg.controllers.console.api;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.annotations.DenyConsoleCommonAccess;
@@ -114,7 +116,10 @@ public class LoginController extends BasicConsoleController{
         }
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
         JSONObject resultJson = new JSONObject();
-        resultJson.put("shop", shop);
+        JSONArray shops = new JSONArray();
+        JSONObject s =(JSONObject) JSON.toJSON(shop);
+        shops.add(s);
+        resultJson.put("shop",shops );
         resultJson.put("token", SUtils.wrapper(u.getId()));
         return "@json:" + getDataResult(0, resultJson);
     }
