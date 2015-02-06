@@ -104,4 +104,8 @@ public class LoginController  {
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
         return "r:/console/shop?shop_id=" + shop.getId()     ;
     }
+
+
+
+
 }

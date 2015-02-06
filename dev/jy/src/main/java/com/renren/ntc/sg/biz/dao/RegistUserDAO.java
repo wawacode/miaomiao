@@ -31,4 +31,7 @@ public interface RegistUserDAO {
 
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where phone =:1 ")
     public  RegistUser getUser(String shop_tel);
+
+    @SQL("update " + TABLE_NAME + " set pwd=:2  where phone =:1")
+    public int updatePwd(String phone, String new_pwd);
 }
