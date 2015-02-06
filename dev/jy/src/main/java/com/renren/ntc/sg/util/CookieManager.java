@@ -78,13 +78,6 @@ public class CookieManager {
 	}	
 	public void clearCookie(HttpServletResponse response, String key,
 			int second,String path){
-		if(key.equals("xng")){
-			try{
-				throw new Exception() ;
-			}catch(Exception e){
-				e.printStackTrace(System.out) ;
-			}
-		}
 		Cookie cookie = new Cookie(key,null);
 		cookie.setPath(path);
 		cookie.setMaxAge(second);
