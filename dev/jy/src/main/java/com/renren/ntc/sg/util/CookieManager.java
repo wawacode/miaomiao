@@ -55,6 +55,7 @@ public class CookieManager {
         cookie.setMaxAge(second);
         cookie.setDomain(Constants.DOMAIN2);
         response.addCookie(cookie);
+
         cookie = new Cookie(key, value);
         cookie.setPath(path);
         cookie.setMaxAge(second);
