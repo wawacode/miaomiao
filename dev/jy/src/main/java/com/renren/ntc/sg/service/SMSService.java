@@ -125,6 +125,7 @@ public class SMSService {
             String detail = form(value.getSnapshot(),p);
             detail = detail.replaceAll("=", "").replaceAll("&", "");
             String message = "#address#=" + vv + "&#status#=" + ro  + "&#detail#=" + detail;
+            System.out.println( "message " + message );
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板
