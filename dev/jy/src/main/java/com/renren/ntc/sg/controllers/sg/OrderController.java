@@ -190,8 +190,9 @@ public class OrderController {
         if (null == devcie || SUtils.isOffline(devcie)) {
             System.out.println("device is null or  printer offline ");
             // 发送通知给 用户和 老板     \
+            System.out.println("send push to boss");
             pushService.send2Boss(order_id, shop);
-
+            System.out.println("send sms to boss");
             smsService.sendSMS2Boss(order_id, shop);
             smsService.sendSMS2User(order_id, shop);
         }
