@@ -12,6 +12,7 @@ import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -113,7 +114,11 @@ public class SMSService {
             String response = "用户下单";
             long adr_id = value.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
-            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() ;
+
+            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone()  ;
+            if (! StringUtils.isBlank( value.getRemarks())){
+                vv = vv + "买家留言：" + value.getRemarks();
+            }
             vv = vv.replaceAll("=", "").replaceAll("&", "");
             String ro = response.replaceAll("=", "").replace("&", "");
             float p = (float) value.getPrice() / 100;
