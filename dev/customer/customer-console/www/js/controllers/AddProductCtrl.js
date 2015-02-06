@@ -50,6 +50,22 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         $scope.newitem = {};
 
+        $scope.openQRScaner = function(){
+            cordova.plugins.barcodeScanner.scan(
+                function (result) {
+                    $timeout(function(){
+                        $scope.newitem.serialNo = result.text;
+                    })
+                },
+                function (error) {
+                    $ionicPopup.alert({
+                        title: '查找商品失败,请手动添加',
+                        template: ''
+                    });
+                }
+            );
+        }
+
         $scope.changeCategroy = function(currentCateId){
             $scope.newitem.currentCateId = currentCateId;
             for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
@@ -80,6 +96,31 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
 
         $scope.saveItem = function(newitem){
+
+
+            if(!newitem.currentCateId){
+                $ionicPopup.alert({
+                    title: '请选择商品分类',
+                    template: ''
+                });
+                return;
+            }
+
+            if(!newitem.name){
+                $ionicPopup.alert({
+                    title: '请填写商品名称',
+                    template: ''
+                });
+                return;
+            }
+
+            if(!newitem.price){
+                $ionicPopup.alert({
+                    title: '请填写商品价格',
+                    template: ''
+                });
+                return;
+            }
 
             var options ={'serialNo': newitem.serialNo,
                 name: newitem.name,

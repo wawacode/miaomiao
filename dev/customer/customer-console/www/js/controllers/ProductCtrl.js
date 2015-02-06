@@ -50,6 +50,9 @@ angular.module('miaomiao.console.controllers')
                     $scope.info.categoryls[idx].canLoadMore = 1;
                     if (idx == 0) {
                         $scope.info.categoryls[idx].selected = 1;
+                        $scope.info.categoryls[idx].select_a = 'shop-categray-selected';
+                        $scope.info.categoryls[idx].select_b = 'shop-categray-item-decorate-show';
+                        $scope.info.categoryls[idx].select_c = 'shop-categray-item-selected';
                     }
                 }
 
@@ -78,15 +81,26 @@ angular.module('miaomiao.console.controllers')
             // if in loading more, can't select
             if (inLoadingMore)return;
 
-            $scope.selectedIndex = $index;
+            $scope.info.currentDisplayCategory = $scope.info.categoryls[$index];
 
-            $timeout(function(){
+            if($scope.selectedIndex != $index){
 
-                $scope.info.currentDisplayCategory = $scope.info.categoryls[$index];
-                $scope.info.currentDisplayItems = $scope.info.categoryls[$index].itemls;
+                var current = $scope.info.currentDisplayCategory;
+                current.select_a = 'shop-categray-selected';
+                current.select_b = 'shop-categray-item-decorate-show';
+                current.select_c = 'shop-categray-item-selected';
 
-                $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
-            })
+                var last = $scope.info.categoryls[$scope.selectedIndex];
+                last.select_a = '';
+                last.select_b = '';
+                last.select_c = '';
+
+                $scope.selectedIndex = $index;
+            }
+
+            $scope.info.currentDisplayItems = $scope.info.categoryls[$index].itemls;
+
+            $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
         }
 
         $scope.moreDataCanBeLoaded = function () {
