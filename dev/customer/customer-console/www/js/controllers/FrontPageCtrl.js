@@ -87,6 +87,13 @@ angular.module('miaomiao.console.controllers')
                     return true;
                 },
                 destructiveButtonClicked: function () {
+
+                    $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER');
+
+                    httpClient.logOut( $scope.user.phone ,function (data, status) {
+
+                    }, function (data, status) {
+                    });
                     $state.go('signin',null,{reload: true});
                     return true;
                 }

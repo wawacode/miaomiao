@@ -40,6 +40,11 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
             doPost('login/valid', {'phone': phone, pwd: pwd}, success, fail);
         },
 
+        logOut: function (phone,success, fail) {
+
+            doGet('logout', 'phone=' + phone, success, fail);
+        },
+
         getSummary: function (shopId, beginDate, endDate, success, fail) {
 
 //            if (development)return success(testdata.summary);
