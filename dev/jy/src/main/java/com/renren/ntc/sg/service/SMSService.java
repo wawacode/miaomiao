@@ -155,9 +155,9 @@ public class SMSService {
             int  count =  o.getInteger("count") ;
             int  price =  o.getInteger("price") ;
             sb.append(name);
-            sb.append("单价 ");
+            sb.append(" 单价 ");
             sb.append((float) price /100);
-            sb.append("数量 ");
+            sb.append(" 数量 ");
             sb.append(count + "");
             sb.append(",");
         }

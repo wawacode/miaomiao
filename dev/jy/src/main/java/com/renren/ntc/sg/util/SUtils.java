@@ -82,6 +82,7 @@ public class SUtils {
         response = response.replaceAll("会所", "会_所");
         response = response.replaceAll("公寓", "公_寓");
         response = response.replaceAll("乡巴佬", "乡_巴_佬");
+        response = response.replaceAll("测试", "测_试");
         return response;
     }
 
