@@ -119,7 +119,7 @@ public class SMSService {
             float p = (float) value.getPrice() / 100;
             String detail = form(value.getSnapshot(),p);
             detail = detail.replaceAll("=", "").replaceAll("&", "");
-            String message = "#address#=" + vv + "&#status#=" + ro  + "#detail#=" + detail;
+            String message = "#address#=" + vv + "&#status#=" + ro  + "&#detail#=" + detail;
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板
