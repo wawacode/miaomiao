@@ -15,8 +15,14 @@
 
             <div class="item item-input item-stacked-label item-button-right">
                 <span class="input-label assertive">条形码:</span>
-                <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo" placeholder="填写条形码,点击右侧查一查">
-                <button class="button button-positive" ng-click="findItem(newitem.serialNo)">
+                <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo" placeholder="扫描或者填写条形码,点击查一查">
+                <button class="button button-assertive " ng-click="openQRScaner()">
+                    <i class="icon ion-qr-scanner"></i>扫码
+                </button>
+            </div>
+
+            <div class="padding">
+                <button class="item button-block button button-positive" ng-click="findItem(newitem.serialNo)">
                     查查
                 </button>
             </div>

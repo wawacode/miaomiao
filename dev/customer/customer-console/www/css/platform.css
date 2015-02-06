@@ -48,6 +48,15 @@
 
 .shop-categray-item-decorate {
 
+    width: 0px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+
+}
+
+.shop-categray-item-decorate-show {
+
     background-color: #F54447;
     width: 4px;
     height: 100%;
