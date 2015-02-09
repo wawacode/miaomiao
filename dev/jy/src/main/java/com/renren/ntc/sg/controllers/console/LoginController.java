@@ -101,7 +101,7 @@ public class LoginController  {
             inv.addModel("msg","没有关联店铺");
             return "login";
         }
-        CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
+        CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()+ ""));
         return "r:/console/shop?shop_id=" + shop.getId()     ;
     }
 

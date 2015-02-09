@@ -9,7 +9,7 @@ import java.util.Date;
  * Time: 下午6:35
  * To change this template use File | Settings | File Templates.
  */
-public class Catstaff {
+public class Catstaff extends RegistUser {
 
     private long  id;
     private String  name;

@@ -54,4 +54,6 @@ public class Constants {
     public static int ITEM_ON_SALE = 1;
     public static int SHOP_OPEN_STATUS = 0;
     public static int ITEM_NOT_SALE = 0;
+
+    public static final String  STAFFKEY= "staff-";
 }

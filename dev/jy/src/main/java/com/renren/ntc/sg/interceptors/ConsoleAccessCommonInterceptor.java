@@ -2,6 +2,7 @@ package com.renren.ntc.sg.interceptors;
 
 import java.lang.annotation.Annotation;
 
+import com.renren.ntc.sg.biz.dao.CatStaffDAO;
 import net.paoding.rose.web.ControllerInterceptorAdapter;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Interceptor;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.renren.ntc.sg.annotations.DenyConsoleCommonAccess;
 import com.renren.ntc.sg.bean.RegistUser;
-import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.RegistUserDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
@@ -32,6 +32,9 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
     
     @Autowired
     private ShopDAO shopDAO;
+
+    @Autowired
+    private CatStaffDAO catstaffDao;
 
 
     private static final Logger logger = LoggerFactory.getLogger(ConsoleAccessCommonInterceptor.class);
@@ -53,6 +56,11 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
         RegistUser u = null    ;
         String uuid  = CookieManager.getInstance().getCookie(inv.getRequest(), Constants.COOKIE_KEY_REGISTUSER);
         if(null  != uuid) {
+            if(SUtils.isStaffKey(uuid)){
+                long catstaff_id = SUtils.unwrapper(SUtils.unwrapperStaffKey(uuid));
+                u = catstaffDao.getCatStaffbyId(catstaff_id);
+                hostHolder.setUser(u);
+            }
             u = registUserDAO.getUser(SUtils.unwrapper(uuid));
             hostHolder.setUser(u);
         }else {

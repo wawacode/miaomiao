@@ -156,8 +156,4 @@ public class CatStaffCommit {
         this.update_time = update_time;
     }
 
-
-
-
-
 }

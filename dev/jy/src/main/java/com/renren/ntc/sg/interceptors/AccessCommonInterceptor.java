@@ -56,7 +56,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
         if( null == u ) {
             String userName = SUtils.generName();
             u  = userService.createUser(userName , 0,  "pwd", 1 );
-            CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()) ,year() , "/");
+            CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
         }
         hostHolder.setUser(u);
         return true;

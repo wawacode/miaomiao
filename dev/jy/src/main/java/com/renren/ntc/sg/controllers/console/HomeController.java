@@ -88,9 +88,7 @@ public class HomeController {
             List <Item> items = itemsDAO.getItems(SUtils.generTableName(shop_id),shop_id,cateId,0,20)  ;
             inv.addModel("items", items);
         }
-         inv.addModel("categoryls",category);
-         inv.addModel("shop",shop);
-          return "shop" ;
+          return "index.html" ;
         }
 
 

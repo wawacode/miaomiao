@@ -5,8 +5,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.annotations.DenyConsoleCommonAccess;
+import com.renren.ntc.sg.bean.CatStaffCommit;
+import com.renren.ntc.sg.bean.Catstaff;
 import com.renren.ntc.sg.bean.RegistUser;
 import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
+import com.renren.ntc.sg.biz.dao.CatStaffDAO;
 import com.renren.ntc.sg.biz.dao.RegistUserDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
@@ -26,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * yunming.zhu
@@ -43,6 +48,12 @@ public class LoginController extends BasicConsoleController {
 
     @Autowired
     private ShopDAO shopDAO;
+
+    @Autowired
+    private CatStaffDAO catstaffDao;
+
+    @Autowired
+    private CatStaffCommitDAO catstaffCommitDao;
 
     @Autowired
     private RegistUserService userService;
@@ -80,7 +91,6 @@ public class LoginController extends BasicConsoleController {
     @Get("valid")
     @Post("valid")
     public String Login(Invocation inv, @Param("phone") String phone, @Param("pwd") String pwd, @Param("origURL") String origURL) {
-        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
         result.put("code", -1);
         result.put("msg", "用户不存在");
@@ -104,25 +114,46 @@ public class LoginController extends BasicConsoleController {
         result.put("origURL", origURL);
         RegistUser u = userDAO.getUser(phone, pwd);
         if (null == u) {
+            Catstaff c = catstaffDao.getCatStaff(phone, pwd);
+            if( null != c) {
+                List<Long> shop_ids  = catstaffCommitDao.getShop_ids(c.getPhone());
+                List<Shop > shops  = shopDAO.getShops(shop_ids);
+                if (null == shops || shops.size() == 0){
+                    result.put("code", -3);
+                    result.put("msg", "没有可用店铺");
+                    return "@json:" + result.toJSONString();
+                }
+                CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER,
+                        SUtils.wrapper(SUtils.getStaffKey(c.getId())));
+                JSONObject resultJson = new JSONObject();
+                JSONArray s = (JSONArray) JSON.toJSON(shops);
+                resultJson.put("shop", shops);
+                resultJson.put("token", SUtils.wrapper(SUtils.getStaffKey(c.getId())));
+                return "@json:" + getDataResult(0, resultJson);
+            }
             result.put("code", -2);
             result.put("msg", "用户名字或密码不正确");
             return "@json:" + result.toJSONString();
+
         }
+
         Shop shop = shopDAO.getShopbyOwner_id(u.getId());
         if (null == shop) {
             result.put("code", -3);
-            result.put("msg", "没有店铺");
+            result.put("msg", "没有可用店铺");
             return "@json:" + result.toJSONString();
         }
-        CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()));
+
+        CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()+""));
         JSONObject resultJson = new JSONObject();
         JSONArray shops = new JSONArray();
         JSONObject s = (JSONObject) JSON.toJSON(shop);
         shops.add(s);
         resultJson.put("shop", shops);
-        resultJson.put("token", SUtils.wrapper(u.getId()));
+        resultJson.put("token", SUtils.wrapper(u.getId()+""));
         return "@json:" + getDataResult(0, resultJson);
     }
+
 
     @Get("change_pwd")
     @Post("change_pwd")
@@ -137,6 +168,22 @@ public class LoginController extends BasicConsoleController {
         }
 
         RegistUser user = hostHolder.getUser();
+        if(user instanceof Catstaff){
+            RegistUser u = catstaffDao.getCatStaff(phone, old_pwd);
+            if (null == u) {
+                result.put("code", -2);
+                result.put("msg", "用户名字或密码不正确");
+                return "@json:" + result.toJSONString();
+            }
+            if (StringUtils.isBlank(new_pwd) || new_pwd.length() < 6) {
+                result.put("code", -2);
+                result.put("msg", "新密码长度不够");
+                return "@json:" + result.toJSONString();
+            }
+            int r = catstaffDao.updatePwd(phone, new_pwd);
+            return "@json:" + Constants.DONE;
+        }
+
         RegistUser u = userDAO.getUser(phone, old_pwd);
 
         if (null == u) {

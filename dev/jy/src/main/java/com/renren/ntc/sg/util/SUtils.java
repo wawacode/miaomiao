@@ -208,7 +208,16 @@ public class SUtils {
         return id;
     }
 
-    public static String wrapper(long uid) {
+    public static boolean isStaffKey(String cookies) {
+       if(-1 == cookies.indexOf(Constants.STAFFKEY)) {
+                return false;
+       }
+        return true;
+    }
+
+
+
+    public static String wrapper(String uid) {
 
         StringBuffer sb = new StringBuffer();
         UUID uuid = UUID.randomUUID();
@@ -296,5 +305,14 @@ public class SUtils {
         return sb.toString();
     }
 
-
+    public static String getStaffKey(long id ) {
+        StringBuffer sb =   new StringBuffer();
+        sb.append(Constants.STAFFKEY) ;
+        sb.append(id) ;
+        return sb.toString();
+    }
+    public static String unwrapperStaffKey(String uuid) {
+        uuid = uuid.replace(Constants.STAFFKEY,"");
+        return uuid;
+    }
 }
