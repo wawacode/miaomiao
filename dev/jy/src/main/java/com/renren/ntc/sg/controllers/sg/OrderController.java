@@ -194,6 +194,7 @@ public class OrderController {
             pushService.send2Boss(order_id, shop);
             System.out.println("send sms to boss");
             smsService.sendSMS2Boss(order_id, shop);
+            System.out.println("send sms to user");
             smsService.sendSMS2User(order_id, shop);
         }
 

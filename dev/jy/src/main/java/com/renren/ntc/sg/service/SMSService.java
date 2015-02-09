@@ -9,6 +9,7 @@ import com.renren.ntc.sg.biz.dao.AddressDAO;
 import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
+import com.renren.ntc.sg.util.ConfigProperties;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
@@ -40,6 +41,9 @@ public class SMSService {
     public void sendSMS2LocPush(String order_id, Shop shop) {
         //短信通知 地推人员
         try {
+            if(SUtils.isDev()){
+                return  ;
+            }
             Order order =  ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
             String mobile = "";
             byte[] t = null;
@@ -75,6 +79,9 @@ public class SMSService {
     public void sendSMS2User(String order_id, Shop shop) {
         //通知用户
         try {
+            if(SUtils.isDev()){
+                return  ;
+            }
             if (null != shop) {
                 Order value = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
                 String v = null;
@@ -106,7 +113,9 @@ public class SMSService {
 
     public void sendSMS2Boss(String order_id, Shop shop) {
         try {
-
+            if(SUtils.isDev()){
+                  return  ;
+            }
             Order value = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
             String v = null;
             String url;

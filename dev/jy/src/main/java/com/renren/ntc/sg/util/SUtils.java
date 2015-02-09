@@ -315,4 +315,9 @@ public class SUtils {
         uuid = uuid.replace(Constants.STAFFKEY,"");
         return uuid;
     }
+
+    public static boolean isDev() {
+        String env = ConfigProperties.getInstance().getValue("env") ;
+        return "dev".equals(env);
+    }
 }
