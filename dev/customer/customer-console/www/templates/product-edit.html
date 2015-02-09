@@ -31,9 +31,12 @@
                 </select>
             </label>
 
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-stacked-label item-button-right">
                 <span class="input-label assertive">图片:</span>
-                <div class="" style="text-align: center">
+                <button class="button button-balanced " ng-click="getPhoto(item)">
+                    <i class="icon ion-camera"></i>拍照
+                </button>
+                <div class="padding-vertical" style="text-align: center">
                     <img class="full-image" ng-src="{{item.pic_url}}" ng-model="item.pic_url" style="width: 300px;height: auto">
                 </div>
             </label>

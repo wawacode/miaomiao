@@ -77,7 +77,6 @@ angular.module('miaomiao.console', [
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             }
 
-
             $ionicDeploy.initialize(ionic.Config.app_id);
             $ionicDeploy.check().then(function (response) {
                 console.log('got a response', response);
@@ -127,6 +126,9 @@ angular.module('miaomiao.console', [
     .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
 //    .constant('serverInfo', {host: 'http://127.0.0.1:8010', context: '/console/api/'})
 
+    .config(function($compileProvider){
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+    })
     .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;
     }])

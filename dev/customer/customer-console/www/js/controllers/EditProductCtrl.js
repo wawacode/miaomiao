@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$ionicLoading',
+angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$ionicLoading','Camera',
 
-    function ($scope, $ionicPopup, $ionicModal,httpClient,localStorageService,$ionicLoading) {
+    function ($scope, $ionicPopup, $ionicModal,httpClient,localStorageService,$ionicLoading,Camera) {
 
         $ionicModal.fromTemplateUrl('templates/product-edit.html', {
             scope: $scope,
@@ -36,7 +36,9 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
+        $scope.editingItem = {};
         $scope.EditItem = function(item) {
+            $scope.editingItem = item;
             $scope.openModal();
         }
 
@@ -149,6 +151,58 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                     template: ''
                 });
                 $scope.closeModal();
+            });
+        }
+
+        var retries = 0;
+        function clearCache() {
+            navigator.camera.cleanup();
+        }
+
+        function onCapturePhoto(fileURI) {
+            var win = function (r) {
+                clearCache();
+                retries = 0;
+                alert('Done!');
+            }
+
+            var fail = function (error) {
+                if (retries == 0) {
+                    retries ++;
+                    setTimeout(function() {
+                        onCapturePhoto(fileURI)
+                    }, 1000)
+                } else {
+                    retries = 0;
+                    clearCache();
+                    $ionicPopup.alert({
+                        title: '上传照片失败:',
+                        template: ''
+                    });
+                }
+            }
+
+            $scope.editingItem.pic_url = fileURI;
+
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
+            options.params = {}; // if we need to send parameters to the server request
+            var ft = new FileTransfer();
+            ft.upload(fileURI, encodeURI("http://host/upload"), win, fail, options);
+        }
+
+        $scope.getPhoto = function(item) {
+            console.log('Getting camera');
+            Camera.getPicture().then(onCapturePhoto, function(err) {
+                console.err(err);
+            }, {
+                quality: 75,
+                targetWidth: 320,
+                targetHeight: 320,
+                destinationType: navigator.camera.DestinationType.FILE_URI,
+                saveToPhotoAlbum: false
             });
         }
     }

@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$timeout','$ionicLoading',
+angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$timeout','$ionicLoading','Camera',
 
-    function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService,$timeout,$ionicLoading) {
+    function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService,$timeout,$ionicLoading,Camera) {
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || [];
         $scope.hasProductInfo = false;
@@ -97,7 +97,6 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         $scope.saveItem = function(newitem){
 
-
             if(!newitem.currentCateId){
                 $ionicPopup.alert({
                     title: '请选择商品分类',
@@ -152,6 +151,18 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     return;
                 }
                 var item = dataDetail.item;
+
+                //TODO: upload pic after we got item ID
+                var fileURI = newitem.pic_url;
+                var options = new FileUploadOptions();
+
+                options.fileKey = "file";
+                options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+                options.params = {}; // if we need to send parameters to the server request
+                var ft = new FileTransfer();
+                ft.upload(fileURI, encodeURI("http://host/upload"), win, fail, options);
+
                 $scope.closeModal();
                 $scope.addProducteForCurrentCategory(newitem.currentCateId,item);
 
@@ -196,6 +207,46 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         });
 
+        var retries = 0;
+        function clearCache() {
+            navigator.camera.cleanup();
+        }
 
+        function onCapturePhoto(fileURI) {
+            var win = function (r) {
+                clearCache();
+                retries = 0;
+                alert('Done!');
+            }
+
+            var fail = function (error) {
+                if (retries == 0) {
+                    retries ++;
+                    setTimeout(function() {
+                        onCapturePhoto(fileURI)
+                    }, 1000)
+                } else {
+                    retries = 0;
+                    clearCache();
+                    $ionicPopup.alert({
+                        title: '上传照片失败:',
+                        template: ''
+                    });
+                }
+            }
+            $scope.newitem.pic_url = fileURI;
+        }
+
+        $scope.getPhoto = function() {
+            console.log('Getting camera');
+            Camera.getPicture().then(onCapturePhoto, function(err) {
+                console.err(err);
+            }, {
+                quality: 75,
+                targetWidth: 320,
+                destinationType: navigator.camera.DestinationType.FILE_URI,
+                saveToPhotoAlbum: false
+            });
+        }
     }
 ]);

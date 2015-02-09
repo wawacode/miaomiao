@@ -16,7 +16,7 @@
             <div class="item item-input item-stacked-label item-button-right">
                 <span class="input-label assertive">条形码:</span>
                 <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo" placeholder="扫描或者填写条形码,点击查一查">
-                <button class="button button-assertive " ng-click="openQRScaner()">
+                <button class="button button-balanced " ng-click="openQRScaner()">
                     <i class="icon ion-qr-scanner"></i>扫码
                 </button>
             </div>
@@ -44,15 +44,19 @@
                 <input type="text" ng-value="newitem.price" ng-model="newitem.price">
             </label>
 
-            <label class="item item-input item-stacked-label" ng-show="hasProductInfo">
+            <label class="item item-input item-stacked-label item-button-right" ng-show="hasProductInfo">
                 <span class="input-label assertive">图片:</span>
-                <div class="positive" ng-show="!newitem.pic_url">
-                    <p>说明:请填写正确的条形码，</br>
-                        喵喵会为您添加高质量图片</p>
+                <button class="button button-balanced " ng-click="getPhoto(newitem)">
+                    <i class="icon ion-camera"></i>拍照
+                </button>
+                <div class="padding-vertical" ng-show="!newitem.pic_url">
+                    <div class="padding-vertical item-text-wrap">
+                        说明:您可以拍照上传,或者请填写正确的条形码，喵喵会为您添加高质量图片
+                    </div>
                 </div>
 
-                <div class="" style="text-align: center" ng-show="newitem.pic_url">
-                    <img class="full-image" ng-src="{{newitem.pic_url}}" ng-model="newitem.pic_url" style="width: 300px;height: auto">
+                <div class="padding-vertical" style="text-align: center" ng-show="newitem.pic_url">
+                    <img class="full-image" ng-src="{{newitem.pic_url}}" ng-model="newitem.pic_url" style="width: 80%;height: auto">
                 </div>
 
             </label>
