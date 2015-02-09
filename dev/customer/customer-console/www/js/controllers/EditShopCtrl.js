@@ -40,11 +40,13 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
         });
 
-        $scope.switchDefaultShop = function(shopInfo){
+        $scope.switchDefaultShop = function(shopInfo,$event){
 
-            $scope.info.shop = shopInfo;
+            $event.stopPropagation();
+
             localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',shopInfo);
 
+            $scope.closeModal();
             $scope.doShopInfoRefresh();
 
         }
@@ -109,8 +111,7 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
                     $ionicScrollDelegate.resize();
                     $ionicScrollDelegate.scrollTop();
-
-                    $scope.info.shoplist = [$scope.info.shop];
+                    
                 });
             }, function (data, status) {
                 $ionicLoading.hide();
@@ -121,7 +122,9 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
             });
         }
 
-        $scope.editShop = function(item){
+        $scope.editShop = function(item,$event){
+
+            $event.stopPropagation();
 
             item.new_base_price = item.base_price/100.0;
             item.new_open_time = $filter('date')(item.open_time, 'shortTime');

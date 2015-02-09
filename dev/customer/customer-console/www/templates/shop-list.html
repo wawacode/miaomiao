@@ -10,7 +10,7 @@
                  has-header="true"
                  scroll="true"
                  has-bouncing="true">
-        <div class="list card" ng-repeat="item in info.shoplist" delegate-handle="shoplist" ng-click="switchDefaultShop(item)">
+        <div class="list card" ng-repeat="item in info.shoplist" delegate-handle="shoplist" ng-click="switchDefaultShop(item,$event)">
             <div class="item item-body" style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
                 <div>
                     <div style="font-size: 16px;display: inline-block;color: #191919">
@@ -21,7 +21,7 @@
                         {{item.status | getShopStatusString }}
                     </div>
 
-                    <div style="display: inline-block;float: right" ng-click="editShop(item)">
+                    <div style="display: inline-block;float: right" ng-click="editShop(item,$event)">
                         <button class="positive button button-icon ion-settings">编辑</button>
                     </div>
 

@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService, httpClient) {
+    .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService, httpClient,MMShopService) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
@@ -200,6 +200,13 @@ angular.module('miaomiao.console.controllers')
 
         // just kicking the tires
         $scope.$on('$ionicView.afterEnter', function () {
+
+        });
+
+        MMShopService.onSwitchDefaultShopNotification($scope,function(){
+
+            $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
+            initData();
 
         });
 

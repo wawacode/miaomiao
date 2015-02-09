@@ -1,11 +1,11 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet,$ionicPopup, $state, cfpLoadingBar, $timeout,localStorageService, $ionicScrollDelegate,httpClient) {
+    .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet,$ionicPopup, $state, cfpLoadingBar, $timeout,localStorageService, $ionicScrollDelegate,httpClient,MMShopService) {
 
         $scope.info = {};
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
-        $scope.info.shopName = $scope.info.shop.name || "首页";
+        $scope.shopName = $scope.info.shop.name || "首页";
 
         $scope.getSummaryInfo = function(success, fail){
 
@@ -56,14 +56,21 @@ angular.module('miaomiao.console.controllers')
 
         $scope.doRefresh = function(){
 
-            $scope.getSummaryInfo(function(dataDetail){
+            $scope.LoadingMessage = '正在加载,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
 
+
+            $scope.getSummaryInfo(function(dataDetail){
+                $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
 
                 $scope.info.summary = dataDetail;
 
             },function(){
-
+                $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
 
             })
@@ -71,8 +78,14 @@ angular.module('miaomiao.console.controllers')
 
         $scope.doShopInfoRefresh = function(){
 
-            $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
-            $scope.info.shopName = $scope.info.shop.name || "首页";
+            $timeout(function(){
+
+                $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
+                $scope.shopName = $scope.info.shop.name || "首页";
+
+                MMShopService.switchDefaultShopNotification({});
+
+            })
         }
 
         $scope.showUserAction = function () {
@@ -106,4 +119,10 @@ angular.module('miaomiao.console.controllers')
             });
         }
 
+        MMShopService.onSwitchDefaultShopNotification($scope,function(){
+
+            $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
+            $scope.doRefresh();
+
+        });
     });

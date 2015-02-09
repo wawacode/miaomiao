@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('OrderCtrl', function ($scope, $rootScope, $ionicPopup,$ionicLoading , $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService,MMPushNotification) {
+    .controller('OrderCtrl', function ($scope, $rootScope, $ionicPopup,$ionicLoading , $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService,MMPushNotification,MMShopService) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
@@ -42,7 +42,12 @@ angular.module('miaomiao.console.controllers')
                     canLoadMore = false;
                     return fail();
                 }
-                canLoadMore = true;
+
+                canLoadMore = false;
+                if(dataDetail.orderls && dataDetail.orderls.length > 0 ){
+                    canLoadMore = true;
+                }
+
                 success(dataDetail);
 
             }, function (data, status) {
@@ -56,27 +61,33 @@ angular.module('miaomiao.console.controllers')
             });
         }
 
-        var from = 0, offset = 20;
 
-        $scope.LoadingMessage = '正在加载,请稍候...';
-        $ionicLoading.show({
-            templateUrl: 'templates/loadingIndicator.html',
-            scope: $scope
-        });
 
-        $scope.getOrdersInfo(from,offset,function(dataDetail){
+        function initData(){
+            var from = 0, offset = 20;
 
-            $ionicLoading.hide();
+            $scope.LoadingMessage = '正在加载,请稍候...';
+            $ionicLoading.show({
+                templateUrl: 'templates/loadingIndicator.html',
+                scope: $scope
+            });
 
-            $scope.info.orders = dataDetail.orderls;
-            transformOrderData($scope.info.orders);
+            $scope.getOrdersInfo(from,offset,function(dataDetail){
 
-        },function(){
+                $ionicLoading.hide();
 
-            $ionicLoading.hide();
+                $scope.info.orders = dataDetail.orderls;
+                transformOrderData($scope.info.orders);
 
-        });
 
+            },function(){
+
+                $ionicLoading.hide();
+
+            });
+        }
+
+        initData();
 
         $scope.addOrders = function () {
 
@@ -127,6 +138,14 @@ angular.module('miaomiao.console.controllers')
 
         });
 
+        MMShopService.onSwitchDefaultShopNotification($scope,function(){
+
+            $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
+            initData();
+
+        });
+
+
     }).controller('orderTabCtrl', function($scope, $timeout , MMPushNotification,$cordovaPush) {
 
         $scope.info = {};
@@ -153,5 +172,6 @@ angular.module('miaomiao.console.controllers')
                 console.log("Set badge error " + err)
             });
         })
+
     })
 
