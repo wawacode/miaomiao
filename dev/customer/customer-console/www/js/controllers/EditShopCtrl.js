@@ -11,8 +11,9 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
         $scope.info = {};
 
-        $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
-        $scope.info.shop = $scope.info.shoplist && $scope.info.shoplist[0];
+        $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP_LIST') || [];
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || ($scope.info.shoplist && $scope.info.shoplist[0]);
+
         $scope.info.shopName = $scope.info.shop.name || "首页";
 
         $scope.openModal = function() {
@@ -38,6 +39,15 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
         $scope.$on('modal.shown', function() {
 
         });
+
+        $scope.switchDefaultShop = function(shopInfo){
+
+            $scope.info.shop = shopInfo;
+            localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',shopInfo);
+
+            $scope.doShopInfoRefresh();
+
+        }
 
         $scope.ShowShopList = function() {
             $scope.openModal();
@@ -91,8 +101,7 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 }
 
                 $scope.info.shop = dataDetail.shop;
-                localStorageService.set('MMCONSOLE_METADATA_SHOP',dataDetail.shop);
-
+                localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop);
 
                 //success, just
                 $scope.startEditShop = false;

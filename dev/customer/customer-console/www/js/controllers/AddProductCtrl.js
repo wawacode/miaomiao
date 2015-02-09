@@ -2,8 +2,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
     function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService,$timeout,$ionicLoading) {
 
-        $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
-        $scope.info.shop = $scope.info.shoplist && $scope.info.shoplist[0];
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || [];
         $scope.hasProductInfo = false;
 
         $scope.findItem = function(serialNo){

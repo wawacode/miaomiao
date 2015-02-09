@@ -4,8 +4,7 @@ angular.module('miaomiao.console.controllers')
 
         $scope.info = {};
 
-        $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
-        $scope.info.shop = $scope.info.shoplist && $scope.info.shoplist[0];
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
         $scope.info.shopName = $scope.info.shop.name || "首页";
 
         $scope.getSummaryInfo = function(success, fail){
@@ -68,6 +67,12 @@ angular.module('miaomiao.console.controllers')
                 $scope.$broadcast('scroll.refreshComplete');
 
             })
+        }
+
+        $scope.doShopInfoRefresh = function(){
+
+            $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
+            $scope.info.shopName = $scope.info.shop.name || "首页";
         }
 
         $scope.showUserAction = function () {

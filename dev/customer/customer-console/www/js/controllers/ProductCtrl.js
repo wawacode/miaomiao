@@ -7,8 +7,7 @@ angular.module('miaomiao.console.controllers')
         $scope.info = {};
         $scope.pageName = '商品';
 
-        $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
-        $scope.info.shop = $scope.info.shoplist && $scope.info.shoplist[0];
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
 
         function initData(){

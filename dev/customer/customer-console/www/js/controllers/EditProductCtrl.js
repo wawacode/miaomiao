@@ -34,7 +34,7 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
         });
 
 
-        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
         $scope.EditItem = function(item) {
             $scope.openModal();

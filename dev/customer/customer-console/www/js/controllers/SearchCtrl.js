@@ -14,7 +14,7 @@ angular.module('miaomiao.console.controllers')
 
         $scope.info = {};
         $scope.info.hasNoResults = false;
-        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
         $scope.performSearch = function (key,$event) {
 
