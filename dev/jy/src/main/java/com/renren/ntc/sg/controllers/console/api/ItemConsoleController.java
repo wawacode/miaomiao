@@ -84,8 +84,7 @@ public class ItemConsoleController extends BasicConsoleController{
     @Get("ul_pic")
     public String ul_pic(Invocation inv, @Param("serialNo") String serialNo,
                      @Param("pic") MultipartFile pic,
-                     @Param("shop_id") long shop_id,
-                     @Param("pic_url") String itemPicUrl) {
+                     @Param("shop_id") long shop_id) {
         String url = "";
         if(pic != null){
             String picName = pic.getOriginalFilename();
