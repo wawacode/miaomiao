@@ -111,7 +111,7 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
                     $ionicScrollDelegate.resize();
                     $ionicScrollDelegate.scrollTop();
-                    
+
                 });
             }, function (data, status) {
                 $ionicLoading.hide();
