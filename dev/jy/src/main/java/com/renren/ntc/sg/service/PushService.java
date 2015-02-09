@@ -74,7 +74,7 @@ public class PushService {
 		// TODO Set your device token
 		unicast.setPredefinedKeyValue("device_tokens", device_token);
 		unicast.setPredefinedKeyValue("ticker", "Android unicast ticker");
-		unicast.setPredefinedKeyValue("title",  title);
+		unicast.setPredefinedKeyValue("title",  "喵喵生活");
 		unicast.setPredefinedKeyValue("text",   message);
 		unicast.setPredefinedKeyValue("after_open", "go_app");
 		unicast.setPredefinedKeyValue("display_type", "notification");
@@ -117,8 +117,8 @@ public class PushService {
             float p = (float) value.getPrice() / 100;
             String message = "[喵喵生活] 您有新订单了," + adrs.getAddress() + " " + adrs.getPhone()  +
                     " 总额：" +  p ;
-            message = SUtils.span(message);
-            message = URLEncoder.encode(message, "utf-8");
+//            message = SUtils.span(message);
+//            message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板
             if (shop != null) {
                 String phone = shop.getOwner_phone();
