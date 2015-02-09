@@ -2,6 +2,7 @@ package com.renren.ntc.sg.umeng.push.ios;
 
 
 import com.renren.ntc.sg.umeng.push.IOSNotification;
+import org.json.JSONException;
 
 public class IOSUnicast extends IOSNotification {
 	public IOSUnicast() {
@@ -14,7 +15,11 @@ public class IOSUnicast extends IOSNotification {
 	}
 
     public void print() {
-        System.out.println(rootJson.toString(1));
+        try {
+            System.out.println(rootJson.toString(1));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 }
