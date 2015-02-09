@@ -84,6 +84,7 @@ public class PushService {
 //	}
 	
 	public void sendAndroidUnicast(String title , String message ,String device_token) throws Exception {
+        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidUnicast unicast = new AndroidUnicast();
 		unicast.setAppMasterSecret(appMasterSecret);
 		unicast.setPredefinedKeyValue("appkey", this.appkey);
@@ -104,6 +105,7 @@ public class PushService {
 	}
 
     public void sendIOSUnicast(String title , String message ,String device_token) throws Exception {
+        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
         IOSUnicast unicast = new IOSUnicast();
         unicast.setAppMasterSecret(appMasterSecret);
         unicast.setPredefinedKeyValue("appkey", this.appkey);
