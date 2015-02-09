@@ -49,6 +49,6 @@ public interface ShopDAO {
     public int updateShopDetail(long id, String name, String tel,String open_time,String close_time,String shop_address,String shopInfo,int status,int basePrice);
 
 
-    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + "where id in (:shop_ids)")
+    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where id in (:shop_ids)")
     public List<Shop> getShops(@SQLParam("shop_ids") List<Long> shop_ids);
 }
