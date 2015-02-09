@@ -94,13 +94,14 @@ public class PushService {
         unicast.setPredefinedKeyValue("timestamp", this.timestamp);
         // TODO Set your device token
         unicast.setPredefinedKeyValue("device_tokens", device_token);
-        unicast.setPredefinedKeyValue("alert",title + message);
+        unicast.setPredefinedKeyValue("alert", message);
         unicast.setPredefinedKeyValue("badge", 1);
         unicast.setPredefinedKeyValue("sound", "chime");
         // TODO set 'production_mode' to 'true' if your app is under production mode
         unicast.setPredefinedKeyValue("production_mode", "false");
         // Set customized fields
         unicast.setCustomizedField("test", "helloworld");
+        unicast.print();
         unicast.send();
     }
 
@@ -115,7 +116,7 @@ public class PushService {
             long adr_id = value.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             float p = (float) value.getPrice() / 100;
-            String message = "[喵喵生活] 您有新订单了," + adrs.getAddress() + " " + adrs.getPhone()  +
+            String message = "您有新订单了 ," + adrs.getAddress() + " " + adrs.getPhone()  +
                     " 总额：" +  p ;
 //            message = SUtils.span(message);
 //            message = URLEncoder.encode(message, "utf-8");
