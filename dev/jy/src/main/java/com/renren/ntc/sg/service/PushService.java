@@ -39,7 +39,13 @@ public class PushService {
 
 	private String appkey = "54cb1485fd98c571bd000243";
 	private String appMasterSecret = "uopev2ouz3kt9h0foca3nzn9yambvqgc";
+
+    private String iOS_appkey =  "54cb1576fd98c52cbe0004a5" ;
+
+    private String iOS_appMasterSecret = "gfkrogdk6jp4uswlt53vi3rntziiinug";
+
 	private String timestamp = null;
+
 
 	public PushService() {
 	}
@@ -89,8 +95,8 @@ public class PushService {
     public void sendIOSUnicast(String title , String message ,String device_token) throws Exception {
         this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
         IOSUnicast unicast = new IOSUnicast();
-        unicast.setAppMasterSecret(appMasterSecret);
-        unicast.setPredefinedKeyValue("appkey", this.appkey);
+        unicast.setAppMasterSecret(iOS_appMasterSecret);
+        unicast.setPredefinedKeyValue("appkey", this.iOS_appkey);
         unicast.setPredefinedKeyValue("timestamp", this.timestamp);
         // TODO Set your device token
         unicast.setPredefinedKeyValue("device_tokens", device_token);
