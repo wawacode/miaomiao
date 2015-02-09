@@ -91,6 +91,8 @@ public class LoginController extends BasicConsoleController {
     @Get("valid")
     @Post("valid")
     public String Login(Invocation inv, @Param("phone") String phone, @Param("pwd") String pwd, @Param("origURL") String origURL) {
+
+        inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
         JSONObject result = new JSONObject();
         result.put("code", -1);
         result.put("msg", "用户不存在");
