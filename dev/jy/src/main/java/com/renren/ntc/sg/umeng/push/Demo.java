@@ -164,7 +164,7 @@ public class Demo {
 		unicast.setPredefinedKeyValue("appkey", this.appkey);
 		unicast.setPredefinedKeyValue("timestamp", this.timestamp);
 		// TODO Set your device token
-		unicast.setPredefinedKeyValue("device_tokens", "AnP1XXtLwUOzkkQy93i_AQc_nq9hitHHzjQ8jhDcmAEd");
+		unicast.setPredefinedKeyValue("device_tokens", "AmjNGDxRRVdwjEPtn1r0dJYVGvSLmy9GsBowB88cM2jv");
 		unicast.setPredefinedKeyValue("alert", "IOS 单播测试");
 		unicast.setPredefinedKeyValue("badge", 0);
 		unicast.setPredefinedKeyValue("sound", "chime");
@@ -249,14 +249,14 @@ public class Demo {
 		Demo demo = new Demo("54cb1485fd98c571bd000243", "uopev2ouz3kt9h0foca3nzn9yambvqgc");
 		try {
 			demo.sendAndroidUnicast();
+            demo.sendIOSUnicast();
 			/* TODO these methods are all available, just fill in some fields and do the test
 			 * demo.sendAndroidBroadcast();
 			 * demo.sendAndroidGroupcast();
-			 * demo.sendAndroidCustomizedcast();
 			 * demo.sendAndroidFilecast();
 			 * 
 			 * demo.sendIOSBroadcast();
-			 * demo.sendIOSUnicast();
+
 			 * demo.sendIOSGroupcast();
 			 * demo.sendIOSCustomizedcast();
 			 * demo.sendIOSFilecast();
