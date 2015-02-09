@@ -51,6 +51,7 @@ public class PushService {
 
 
     public  void send(String phone,String message){
+        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
          String device_token = null;
          PushToken pushToken = pushTokenDao.getPushToken(phone);
          if (null != pushToken){

@@ -16,7 +16,7 @@ public class Demo {
 		try {
 			appkey = key;
 			appMasterSecret = secret;
-			timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
+		;
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -24,6 +24,7 @@ public class Demo {
 	}
 	
 	public void sendAndroidBroadcast() throws Exception {
+        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidBroadcast broadcast = new AndroidBroadcast();
 		broadcast.setAppMasterSecret(appMasterSecret);
 		broadcast.setPredefinedKeyValue("appkey", this.appkey);
@@ -42,6 +43,7 @@ public class Demo {
 	}
 	
 	public void sendAndroidUnicast() throws Exception {
+        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidUnicast unicast = new AndroidUnicast();
 		unicast.setAppMasterSecret(appMasterSecret);
 		unicast.setPredefinedKeyValue("appkey", this.appkey);
@@ -62,6 +64,7 @@ public class Demo {
 	}
 	
 	public void sendAndroidGroupcast() throws Exception {
+        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidGroupcast groupcast = new AndroidGroupcast();
 		groupcast.setAppMasterSecret(appMasterSecret);
 		groupcast.setPredefinedKeyValue("appkey", this.appkey);
