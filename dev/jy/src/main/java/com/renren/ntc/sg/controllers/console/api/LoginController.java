@@ -143,14 +143,14 @@ public class LoginController extends BasicConsoleController {
             result.put("msg", "没有可用店铺");
             return "@json:" + result.toJSONString();
         }
-
-        CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, SUtils.wrapper(u.getId()+""));
+        String token = SUtils.wrapper(u.getId()+"");
+        CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER,token );
         JSONObject resultJson = new JSONObject();
         JSONArray shops = new JSONArray();
         JSONObject s = (JSONObject) JSON.toJSON(shop);
         shops.add(s);
         resultJson.put("shop", shops);
-        resultJson.put("token", SUtils.wrapper(u.getId()+""));
+        resultJson.put("token",token);
         return "@json:" + getDataResult(0, resultJson);
     }
 
