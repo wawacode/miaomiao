@@ -71,6 +71,10 @@
                         {
                             "xml": "<feature name=\"FileTransfer\"><param name=\"ios-package\" value=\"CDVFileTransfer\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"CallNumber\"><param name=\"ios-package\" value=\"CallNumber\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -189,6 +193,9 @@
             "PACKAGE_NAME": "com.miaomiao.bconsole"
         },
         "org.apache.cordova.file-transfer": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "com.monmouth.callnumber": {
             "PACKAGE_NAME": "com.miaomiao.bconsole"
         }
     },

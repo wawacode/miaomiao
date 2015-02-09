@@ -49,14 +49,14 @@
                 <button class="button button-balanced " ng-click="getPhoto(newitem)">
                     <i class="icon ion-camera"></i>拍照
                 </button>
-                <div class="padding-vertical" ng-show="!newitem.pic_url">
+                <div class="padding-vertical padding-right" ng-show="!newitem.pic_url">
                     <div class="padding-vertical item-text-wrap">
                         说明:您可以拍照上传,或者请填写正确的条形码，喵喵会为您添加高质量图片
                     </div>
                 </div>
 
-                <div class="padding-vertical" style="text-align: center" ng-show="newitem.pic_url">
-                    <img class="full-image" ng-src="{{newitem.pic_url}}" ng-model="newitem.pic_url" style="width: 80%;height: auto">
+                <div class="padding-vertical padding-right" style="text-align: center" ng-show="newitem.pic_url">
+                    <img class="full-image padding-top" ng-src="{{newitem.pic_url}}" ng-model="newitem.pic_url" style="width: 80%;height: auto">
                 </div>
 
             </label>

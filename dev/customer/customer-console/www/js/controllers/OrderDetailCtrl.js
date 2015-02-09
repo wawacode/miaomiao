@@ -33,6 +33,10 @@ angular.module('miaomiao.console.controllers').controller('OrderDetailCtrl', ['$
 
         });
 
+        $scope.callNumber = function(number){
+            window.plugins.CallNumber.callNumber(function(){}, function(){}, number);
+        }
+
         $scope.showOrderDetail = function(order) {
             $scope.order = order;
             $scope.order.read = true;
