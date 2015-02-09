@@ -197,4 +197,23 @@ miaomiao.factory('MMPushNotification', ['$rootScope','httpClient','localStorageS
       }
 }]);
 
+miaomiao.factory('MMShopService', ['$rootScope','httpClient','localStorageService','$timeout', function ($rootScope,httpClient,localStorageService,$timeout) {
+    return {
+
+        switchDefaultShopNotification: function (data) {
+            $timeout(function(){
+                $rootScope.$broadcast('MMEVENT_switchDefaultShopNotification', {
+                    data: data
+                });
+            });
+        },
+
+        onSwitchDefaultShopNotification: function ($scope, handler) {
+            $scope.$on('MMEVENT_switchDefaultShopNotification', function (event, message) {
+                handler(message);
+            });
+        }
+    }
+}]);
+
 

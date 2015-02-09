@@ -40,9 +40,10 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
         });
 
-        $scope.switchDefaultShop = function(shopInfo){
+        $scope.switchDefaultShop = function(shopInfo,$event){
 
-            $scope.info.shop = shopInfo;
+            $event.stopPropagation();
+
             localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',shopInfo);
 
             $scope.closeModal();
