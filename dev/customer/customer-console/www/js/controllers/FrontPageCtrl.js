@@ -71,8 +71,10 @@ angular.module('miaomiao.console.controllers')
 
         $scope.doShopInfoRefresh = function(){
 
-            $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
-            $scope.info.shopName = $scope.info.shop.name || "首页";
+            $timeout(function(){
+                $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
+                $scope.info.shopName = $scope.info.shop.name || "首页";
+            })
         }
 
         $scope.showUserAction = function () {

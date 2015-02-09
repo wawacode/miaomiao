@@ -45,6 +45,7 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
             $scope.info.shop = shopInfo;
             localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',shopInfo);
 
+            $scope.closeModal();
             $scope.doShopInfoRefresh();
 
         }
