@@ -10,9 +10,10 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
             });
 
         $scope.info = {};
-        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+
+        $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP') || {};
+        $scope.info.shop = $scope.info.shoplist && $scope.info.shoplist[0];
         $scope.info.shopName = $scope.info.shop.name || "首页";
-        $scope.info.shoplist = [$scope.info.shop];
 
         $scope.openModal = function() {
             $scope.modal.show();
