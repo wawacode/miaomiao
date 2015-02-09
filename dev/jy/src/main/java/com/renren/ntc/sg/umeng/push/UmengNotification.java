@@ -15,7 +15,8 @@ import org.json.JSONObject;
 
 public abstract class UmengNotification {
 	// This JSONObject is used for constructing the whole request string.
-	protected final JSONObject rootJson = new JSONObject();
+//	protected final JSONObject rootJson = new JSONObject();
+    protected  JSONObject rootJson = new JSONObject();
 	
 	// This object is used for sending the post request to Umeng
 	protected HttpClient client = new DefaultHttpClient();

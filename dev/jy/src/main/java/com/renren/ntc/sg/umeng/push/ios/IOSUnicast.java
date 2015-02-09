@@ -12,4 +12,9 @@ public class IOSUnicast extends IOSNotification {
 			System.exit(1);
 		}
 	}
+
+    public void print() {
+        System.out.println(rootJson.toString(1));
+
+    }
 }
