@@ -42,7 +42,7 @@ public class PushService {
 
     private String iOS_appkey =  "54cb1576fd98c52cbe0004a5" ;
 
-    private String iOS_appMasterSecret = "uopev2ouz3kt9h0foca3nzn9yambvqgc";
+    private String iOS_appMasterSecret = "gfkrogdk6jp4uswlt53vi3rntziiinug";
 
 	private String timestamp = null;
 
