@@ -32,9 +32,10 @@ public interface PushTokenDAO {
     public PushToken getPushToken(String owner_phone);
 
 
-    @SQL("insert  into " +TABLE_NAME +" (" +  INSERT_FIELDS +") " +   " values" +
-            "(:1.owner_phone,:1.device_token,:1.chn) ON DUPLICATE KEY UPDATE device_token=:1.device_token")
-    public int  insertPushToken(PushToken pushtoken);
+    @SQL("insert  into " + TABLE_NAME +" (" +  INSERT_FIELDS +") " +   " values" +
+            "(:1.owner_phone,:1.device_token,:1.chn) ON DUPLICATE KEY UPDATE " +
+            " device_token=:1.device_token ,chn=:1.chn")
+    public int  insertPushToken (PushToken pushtoken);
 
 
 }

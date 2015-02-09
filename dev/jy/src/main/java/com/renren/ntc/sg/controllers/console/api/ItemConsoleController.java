@@ -80,7 +80,40 @@ public class ItemConsoleController extends BasicConsoleController{
     	resultJson.put("categoryls", categoryls);
     	return "@json:"+ getDataResult(0, resultJson);
     }
-    
+    @Post("ul_pic")
+    @Get("ul_pic")
+    public String ul_pic(Invocation inv, @Param("serialNo") String serialNo,
+                     @Param("pic") MultipartFile pic,
+                     @Param("shop_id") long shop_id) {
+        String url = "";
+        if(pic != null){
+            String picName = pic.getOriginalFilename();
+            String[] picNameArr = pic.getOriginalFilename().split("\\.");
+            if(pic!=null && picNameArr.length ==2){
+                picName = serialNo+"."+picNameArr[1];
+            }else {
+                LoggerUtils.getInstance().log(String.format("upload pic format is wrong,serialNo=%s",serialNo));
+                JSONObject resultJson = new JSONObject();
+                resultJson.put("code", -1);
+                resultJson.put("msg", "服务器错误，请稍后重试");
+                return "@json:"+resultJson.toJSONString();
+            }
+            String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
+            boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
+            if(!isSuc){
+                JSONObject resultJson = new JSONObject();
+                resultJson.put("code", -1);
+                resultJson.put("msg", "服务器错误，请稍后重试");
+                return "@json:"+resultJson.toJSONString();
+            }
+            String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shop_id));
+            url = imageUrl.concat(picName);
+        }
+        JSONObject result = new JSONObject();
+        result.put("url",url );
+        return "@json:"+getDataResult(0, result);
+    }
+
     @Post("addItem")
     @Get("addItem")
 	public String add(Invocation inv, @Param("serialNo") String serialNo,

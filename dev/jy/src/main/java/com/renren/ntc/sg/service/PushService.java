@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Address;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.PushToken;
@@ -41,21 +42,17 @@ public class PushService {
 	private String timestamp = null;
 
 	public PushService() {
-		try {
-			timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
 	}
 
 
     public  void send(String phone,String message){
+        this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
          String device_token = null;
          PushToken pushToken = pushTokenDao.getPushToken(phone);
          if (null != pushToken){
              try {
                  if ("iOS".equals(pushToken.getChn())){
+                     LoggerUtils.getInstance().log("send ios");
                      sendIOSUnicast(phone, message, pushToken.getDevice_token());
                  } else{
                     sendAndroidUnicast(phone,message,pushToken.getDevice_token());
@@ -66,23 +63,10 @@ public class PushService {
          }
 
     }
-//	public void sendAndroidBroadcast() throws Exception {
-//		AndroidBroadcast broadcast = new AndroidBroadcast();
-//		broadcast.setAppMasterSecret(appMasterSecret);
-//		broadcast.setPredefinedKeyValue("appkey", this.appkey);
-//		broadcast.setPredefinedKeyValue("timestamp", this.timestamp);
-//		broadcast.setPredefinedKeyValue("ticker", "Android broadcast ticker");
-//		broadcast.setPredefinedKeyValue("title",  "中文的title");
-//		broadcast.setPredefinedKeyValue("text",   "Android broadcast text");
-//		broadcast.setPredefinedKeyValue("after_open", "go_app");
-//		broadcast.setPredefinedKeyValue("display_type", "notification");
-//		// TODO Set 'production_mode' to 'false' if it's a test device.
-//		broadcast.setPredefinedKeyValue("production_mode", "true");
-//		broadcast.setExtraField("test", "helloworld");
-//		broadcast.send();
-//	}
+
 	
 	public void sendAndroidUnicast(String title , String message ,String device_token) throws Exception {
+        this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidUnicast unicast = new AndroidUnicast();
 		unicast.setAppMasterSecret(appMasterSecret);
 		unicast.setPredefinedKeyValue("appkey", this.appkey);
@@ -90,7 +74,7 @@ public class PushService {
 		// TODO Set your device token
 		unicast.setPredefinedKeyValue("device_tokens", device_token);
 		unicast.setPredefinedKeyValue("ticker", "Android unicast ticker");
-		unicast.setPredefinedKeyValue("title",  title);
+		unicast.setPredefinedKeyValue("title",  "喵喵生活");
 		unicast.setPredefinedKeyValue("text",   message);
 		unicast.setPredefinedKeyValue("after_open", "go_app");
 		unicast.setPredefinedKeyValue("display_type", "notification");
@@ -103,6 +87,7 @@ public class PushService {
 	}
 
     public void sendIOSUnicast(String title , String message ,String device_token) throws Exception {
+        this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
         IOSUnicast unicast = new IOSUnicast();
         unicast.setAppMasterSecret(appMasterSecret);
         unicast.setPredefinedKeyValue("appkey", this.appkey);
@@ -132,8 +117,8 @@ public class PushService {
             float p = (float) value.getPrice() / 100;
             String message = "[喵喵生活] 您有新订单了," + adrs.getAddress() + " " + adrs.getPhone()  +
                     " 总额：" +  p ;
-            message = SUtils.span(message);
-            message = URLEncoder.encode(message, "utf-8");
+//            message = SUtils.span(message);
+//            message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板
             if (shop != null) {
                 String phone = shop.getOwner_phone();
