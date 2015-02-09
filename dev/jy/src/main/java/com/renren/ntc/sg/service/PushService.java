@@ -52,6 +52,7 @@ public class PushService {
          if (null != pushToken){
              try {
                  if ("iOS".equals(pushToken.getChn())){
+                     LoggerUtils.getInstance().log("send ios");
                      sendIOSUnicast(phone, message, pushToken.getDevice_token());
                  } else{
                     sendAndroidUnicast(phone,message,pushToken.getDevice_token());
@@ -96,9 +97,6 @@ public class PushService {
         unicast.setPredefinedKeyValue("alert",title + message);
         unicast.setPredefinedKeyValue("badge", 1);
         unicast.setPredefinedKeyValue("sound", "chime");
-        JSONObject body =  new JSONObject();
-        unicast.setPredefinedKeyValue("payload", body);
-
         // TODO set 'production_mode' to 'true' if your app is under production mode
         unicast.setPredefinedKeyValue("production_mode", "false");
         // Set customized fields
