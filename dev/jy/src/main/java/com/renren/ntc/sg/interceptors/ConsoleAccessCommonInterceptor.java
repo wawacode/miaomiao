@@ -75,7 +75,7 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
     
     protected Object after(Invocation inv, Object instruction) throws Exception {
         String path = inv.getRequest().getRequestURI() ;
-        if(!path.startsWith("/console/api")){
+        if(path.startsWith("/console/api")){
     	  inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
         }
         return instruction;
