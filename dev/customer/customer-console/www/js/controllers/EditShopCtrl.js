@@ -123,7 +123,9 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
             });
         }
 
-        $scope.editShop = function(item){
+        $scope.editShop = function(item,$event){
+
+            $event.stopPropagation();
 
             item.new_base_price = item.base_price/100.0;
             item.new_open_time = $filter('date')(item.open_time, 'shortTime');
