@@ -41,17 +41,11 @@ public class PushService {
 	private String timestamp = null;
 
 	public PushService() {
-		try {
-			timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
 	}
 
 
     public  void send(String phone,String message){
-        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
+        this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
          String device_token = null;
          PushToken pushToken = pushTokenDao.getPushToken(phone);
          if (null != pushToken){
@@ -67,24 +61,10 @@ public class PushService {
          }
 
     }
-//	public void sendAndroidBroadcast() throws Exception {
-//		AndroidBroadcast broadcast = new AndroidBroadcast();
-//		broadcast.setAppMasterSecret(appMasterSecret);
-//		broadcast.setPredefinedKeyValue("appkey", this.appkey);
-//		broadcast.setPredefinedKeyValue("timestamp", this.timestamp);
-//		broadcast.setPredefinedKeyValue("ticker", "Android broadcast ticker");
-//		broadcast.setPredefinedKeyValue("title",  "中文的title");
-//		broadcast.setPredefinedKeyValue("text",   "Android broadcast text");
-//		broadcast.setPredefinedKeyValue("after_open", "go_app");
-//		broadcast.setPredefinedKeyValue("display_type", "notification");
-//		// TODO Set 'production_mode' to 'false' if it's a test device.
-//		broadcast.setPredefinedKeyValue("production_mode", "true");
-//		broadcast.setExtraField("test", "helloworld");
-//		broadcast.send();
-//	}
+
 	
 	public void sendAndroidUnicast(String title , String message ,String device_token) throws Exception {
-        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
+        this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidUnicast unicast = new AndroidUnicast();
 		unicast.setAppMasterSecret(appMasterSecret);
 		unicast.setPredefinedKeyValue("appkey", this.appkey);
@@ -105,7 +85,7 @@ public class PushService {
 	}
 
     public void sendIOSUnicast(String title , String message ,String device_token) throws Exception {
-        timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
+        this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
         IOSUnicast unicast = new IOSUnicast();
         unicast.setAppMasterSecret(appMasterSecret);
         unicast.setPredefinedKeyValue("appkey", this.appkey);
