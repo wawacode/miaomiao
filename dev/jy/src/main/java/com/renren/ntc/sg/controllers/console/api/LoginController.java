@@ -92,7 +92,7 @@ public class LoginController extends BasicConsoleController {
     @Post("valid")
     public String Login(Invocation inv, @Param("phone") String phone, @Param("pwd") String pwd, @Param("origURL") String origURL) {
 
-        inv.getResponse().setHeader("Access-Control-Allow-Origin","*");
+        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
         result.put("code", -1);
         result.put("msg", "用户不存在");
@@ -117,10 +117,10 @@ public class LoginController extends BasicConsoleController {
         RegistUser u = userDAO.getUser(phone, pwd);
         if (null == u) {
             Catstaff c = catstaffDao.getCatStaff(phone, pwd);
-            if( null != c) {
-                List<Long> shop_ids  = catstaffCommitDao.getShop_ids(c.getPhone());
-                List<Shop > shops  = shopDAO.getShops(shop_ids);
-                if (null == shops || shops.size() == 0){
+            if (null != c) {
+                List<Long> shop_ids = catstaffCommitDao.getShop_ids(c.getPhone());
+                List<Shop> shops = shopDAO.getShops(shop_ids);
+                if (null == shops || shops.size() == 0) {
                     result.put("code", -3);
                     result.put("msg", "没有可用店铺");
                     return "@json:" + result.toJSONString();
@@ -145,15 +145,54 @@ public class LoginController extends BasicConsoleController {
             result.put("msg", "没有可用店铺");
             return "@json:" + result.toJSONString();
         }
-        String token = SUtils.wrapper(u.getId()+"");
-        CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER,token );
+        String token = SUtils.wrapper(u.getId() + "");
+        CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, token);
         JSONObject resultJson = new JSONObject();
         JSONArray shops = new JSONArray();
         JSONObject s = (JSONObject) JSON.toJSON(shop);
         shops.add(s);
         resultJson.put("shop", shops);
-        resultJson.put("token",token);
+        resultJson.put("token", token);
         return "@json:" + getDataResult(0, resultJson);
+    }
+
+    @Get("islogin")
+    @Post("islogin")
+    public String islogin(Invocation inv) {
+        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
+        RegistUser user = hostHolder.getUser();
+        JSONObject result = new JSONObject();
+        if (user != null) {
+            if (user instanceof Catstaff) {
+                List<Long> shop_ids = catstaffCommitDao.getShop_ids(user.getPhone());
+                List<Shop> shops = shopDAO.getShops(shop_ids);
+                if (null == shops || shops.size() == 0) {
+                    result.put("code", -3);
+                    result.put("msg", "没有可用店铺");
+                    return "@json:" + result.toJSONString();
+                }
+                JSONObject resultJson = new JSONObject();
+                JSONArray s = (JSONArray) JSON.toJSON(shops);
+                resultJson.put("shop", shops);
+                return "@json:" + getDataResult(0, resultJson);
+
+            }
+            Shop shop = shopDAO.getShopbyOwner_id(user.getId());
+            if (null == shop) {
+                result.put("code", -3);
+                result.put("msg", "没有可用店铺");
+                return "@json:" + result.toJSONString();
+            }
+            JSONObject resultJson = new JSONObject();
+            JSONArray shops = new JSONArray();
+            JSONObject s = (JSONObject) JSON.toJSON(shop);
+            shops.add(s);
+            resultJson.put("shop", shops);
+            return "@json:" + getDataResult(0, resultJson);
+        }
+        result.put("code", -5);
+        result.put("msg", "用户未登录");
+        return "@json:" + result.toJSONString();
     }
 
 
@@ -170,7 +209,7 @@ public class LoginController extends BasicConsoleController {
         }
 
         RegistUser user = hostHolder.getUser();
-        if(user instanceof Catstaff){
+        if (user instanceof Catstaff) {
             RegistUser u = catstaffDao.getCatStaff(phone, old_pwd);
             if (null == u) {
                 result.put("code", -2);

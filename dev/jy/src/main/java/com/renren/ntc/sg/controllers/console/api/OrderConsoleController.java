@@ -53,6 +53,19 @@ public class OrderConsoleController extends BasicConsoleController{
 	OrderConsoleController(){
        
     }
+
+    @Post("read")
+    @Get("read")
+    public String search(Invocation inv, @Param("order_id") String order_id){
+
+            ordersDAO.read(order_id);
+
+        return "@json:" + Constants.DONE;
+
+    }
+
+
+
 	@Post("summary")
     @Get("summary")
     public String search(Invocation inv, @Param("beginDate") String beginDate, 
