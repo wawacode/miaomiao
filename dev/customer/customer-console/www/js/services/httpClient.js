@@ -127,6 +127,19 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
 
         },
 
+        uploadPicForItem: function (serialNo,fileURI, shopId, success, fail) {
+
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
+            options.params = {serialNo:serialNo,pic:fileURI,shop_id:shopId}; // if we need to send parameters to the server request
+
+            var ft = new FileTransfer();
+            ft.upload(fileURI, encodeURI(serverInfo.host + serverInfo.context + "shopItem/ul_pic"), success, fail, options);
+
+        },
+
 
         getShopList: function (from, offset, success, fail) {
 

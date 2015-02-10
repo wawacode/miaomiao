@@ -133,47 +133,65 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 shop_id:$scope.info.shop.id
             };
 
-            $scope.LoadingMessage = '正在添加,请稍候...';
+            $scope.LoadingMessage = '正在上传图片,请稍候...';
             $ionicLoading.show({
                 templateUrl: 'templates/loadingIndicator.html',
                 scope: $scope
             });
 
-            httpClient.addItem(options,  function (data, status) {
-
+            httpClient.uploadPicForItem(newitem.serialNo,newitem.pic_url,$scope.info.shop.id, function (data, status) {
                 $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
                     $ionicPopup.alert({
-                        title: '添加商品失败:' + data.msg,
+                        title: '上传图片失败,请重试:' + data.msg,
                         template: ''
                     });
                     return;
                 }
-                var item = dataDetail.item;
-
-                //TODO: upload pic after we got item ID
-                var fileURI = newitem.pic_url;
-                var options = new FileUploadOptions();
-
-                options.fileKey = "file";
-                options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
-                options.mimeType = "image/jpeg";
-                options.params = {}; // if we need to send parameters to the server request
-                var ft = new FileTransfer();
-                ft.upload(fileURI, encodeURI("http://host/upload"), win, fail, options);
-
-                $scope.closeModal();
-                $scope.addProducteForCurrentCategory(newitem.currentCateId,item);
-
-            }, function (data, status) {
-                $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: '添加商品失败:',
-                    template: ''
+                $scope.LoadingMessage = '正在添加,请稍候...';
+                $ionicLoading.show({
+                    templateUrl: 'templates/loadingIndicator.html',
+                    scope: $scope
                 });
-                $scope.closeModal();
+
+                httpClient.addItem(options,  function (data, status) {
+
+                    $ionicLoading.hide();
+                    var code = data.code, dataDetail = data.data;
+                    if (code != 0) {
+                        $ionicPopup.alert({
+                            title: '添加商品失败:' + data.msg,
+                            template: ''
+                        });
+                        return;
+                    }
+                    var item = dataDetail.item;
+
+                    //TODO: upload pic after we got item ID
+                    var fileURI = newitem.pic_url;
+                    var options = new FileUploadOptions();
+
+                    options.fileKey = "file";
+                    options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+                    options.mimeType = "image/jpeg";
+                    options.params = {}; // if we need to send parameters to the server request
+                    var ft = new FileTransfer();
+                    ft.upload(fileURI, encodeURI("http://host/upload"), win, fail, options);
+
+                    $scope.closeModal();
+                    $scope.addProducteForCurrentCategory(newitem.currentCateId,item);
+
+                }, function (data, status) {
+                    $ionicLoading.hide();
+                    $ionicPopup.alert({
+                        title: '添加商品失败:',
+                        template: ''
+                    });
+                    $scope.closeModal();
+                });
             });
+
         }
 
         $ionicModal.fromTemplateUrl('templates/product-addNew.html', {
