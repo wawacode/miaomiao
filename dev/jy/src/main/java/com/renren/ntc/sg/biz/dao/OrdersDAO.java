@@ -59,6 +59,7 @@ public interface OrdersDAO {
     
     @SQL("select "+ FIELDS +" from ##(:tableName)  where create_time between :1 and :2")
     public List<Order> getOrder(String beginTime,String endTime,@SQLParam("tableName") String tableName);
+
     @SQL("update ##(:tableName)   set readed=1 where order_id=:2")
-    int  read(String orderId,@SQLParam("tableName") String tableName, String order_id);
+    public int  read(@SQLParam("tableName") String tableName, String order_id);
 }
