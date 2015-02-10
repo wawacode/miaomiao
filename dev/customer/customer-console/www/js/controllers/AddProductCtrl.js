@@ -154,17 +154,6 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     }
                     var item = dataDetail.item;
 
-                    //TODO: upload pic after we got item ID
-                    var fileURI = newitem.pic_url;
-                    var options = new FileUploadOptions();
-
-                    options.fileKey = "file";
-                    options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
-                    options.mimeType = "image/jpeg";
-                    options.params = {}; // if we need to send parameters to the server request
-                    var ft = new FileTransfer();
-                    ft.upload(fileURI, encodeURI("http://host/upload"), win, fail, options);
-
                     $scope.closeModal();
                     $scope.addProducteForCurrentCategory(newitem.currentCateId, item);
 
@@ -199,7 +188,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 },function(){
                     $ionicLoading.hide();
                     $ionicPopup.alert({
-                        title: '上传图片失败:',
+                        title: '上传图片失败,请重试:',
                         template: ''
                     });
                 });

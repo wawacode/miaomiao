@@ -130,7 +130,7 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
         uploadPicForItem: function (serialNo,fileURI, shopId, success, fail) {
 
             var options = new FileUploadOptions();
-            options.fileKey = "file";
+            options.fileKey = "pic";
             options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
             options.mimeType = "image/jpeg";
             options.params = {serialNo:serialNo,pic:fileURI,shop_id:shopId}; // if we need to send parameters to the server request
