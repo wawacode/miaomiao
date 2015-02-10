@@ -61,4 +61,20 @@ angular.module('miaomiao.console.controllers')
                 });
             });
         };
+
+        // validate user login
+        httpClient.islogin(function (data, status) {
+
+            var code = data.code, dataDetail = data.data;
+            if (code != 0 ) {
+                return;
+            }
+            //success
+            localStorageService.set('MMCONSOLE_METADATA_SHOP_LIST',dataDetail.shop);
+            localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop[0]);
+
+            $state.go('tab.front-page',null,{reload:true})
+
+        }, function (data, status) {
+        });
     });
