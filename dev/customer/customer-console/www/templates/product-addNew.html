@@ -44,9 +44,9 @@
                 <input type="text" ng-value="newitem.price" ng-model="newitem.price">
             </label>
 
-            <label class="item item-input item-stacked-label item-button-right" ng-show="hasProductInfo">
+            <div class="item item-input item-stacked-label item-button-right" ng-show="hasProductInfo">
                 <span class="input-label assertive">图片:</span>
-                <button class="button button-balanced " ng-click="getPhoto(newitem)">
+                <button class="button button-balanced" ng-click="getPhoto(newitem)">
                     <i class="icon ion-camera"></i>拍照
                 </button>
                 <div class="padding-vertical padding-right" ng-show="!newitem.pic_url">
@@ -59,7 +59,7 @@
                     <img class="full-image padding-top" ng-src="{{newitem.pic_url}}" ng-model="newitem.pic_url" style="width: 80%;height: auto">
                 </div>
 
-            </label>
+            </div>
 
             <label class="item item-input item-select" ng-show="hasProductInfo">
                 <div class="input-label assertive">

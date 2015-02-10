@@ -218,8 +218,11 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
             $scope.editingItem.hasNewPicture = true;
         }
 
-        $scope.getPhoto = function(item) {
+        $scope.getPhoto = function(item,$event) {
             console.log('Getting camera');
+
+            $event.stopPropagation();
+
             Camera.getPicture().then(onCapturePhoto, function(err) {
                 console.err(err);
             }, {
