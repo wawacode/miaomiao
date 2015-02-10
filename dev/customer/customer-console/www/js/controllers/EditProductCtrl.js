@@ -74,22 +74,9 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
             });
         }
 
-        $scope.saveItem = function(item){
+        function saveItemInfo(options,item){
 
-            item.price = item.updated_price*100;
-            item.name = item.updated_name;
-
-            var options = {'itemName': item.name,
-                itemId: item.id,
-                serialNo: item.serialNo,
-                category_id: item.category_id,
-                count: item.count,
-                score: item.score,
-                price: item.price,
-                pic: item.pic_url,
-                saleStatus: item.saleStatus
-            }
-
+            // update meta data
             $scope.LoadingMessage = '正在保存,请稍候...';
             $ionicLoading.show({
                 templateUrl: 'templates/loadingIndicator.html',
@@ -107,8 +94,8 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                     return;
                 }
                 $scope.closeModal();
-                // update some fileds
 
+                // update some fileds
                 $scope.updateItemFromCurrentCategory(item);
 
             }, function (data, status) {
@@ -117,8 +104,53 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                     title: '修改商品失败:',
                     template: ''
                 });
-                $scope.closeModal();
             });
+        }
+
+        $scope.saveItem = function(item){
+
+            item.price = item.updated_price * 100;
+            item.name = item.updated_name;
+
+            var options = {'itemName': item.name,
+                itemId: item.id,
+                serialNo: item.serialNo,
+                category_id: item.category_id,
+                count: item.count,
+                score: item.score,
+                price: item.price,
+                saleStatus: item.saleStatus
+            }
+
+            if(item.hasNewPicture){
+                $scope.LoadingMessage = '正在上传图片,请稍候...';
+                $ionicLoading.show({
+                    templateUrl: 'templates/loadingIndicator.html',
+                    scope: $scope
+                });
+
+                httpClient.uploadPicForItem(item.serialNo,item.pic_url,$scope.info.shop.id, function (data, status) {
+                    $ionicLoading.hide();
+                    var code = data.code, dataDetail = data.data;
+                    if (code != 0) {
+                        $ionicPopup.alert({
+                            title: '上传图片失败,请重试:' + data.msg,
+                            template: ''
+                        });
+                        return;
+                    }
+                    saveItemInfo(options,item);
+
+                }, function (data, status) {
+                    $ionicLoading.hide();
+                    $ionicPopup.alert({
+                        title: '上传图片失败:',
+                        template: ''
+                    });
+                });
+            }else{
+                saveItemInfo(options,item);
+            }
         }
 
         $scope.deleteItem = function(item){
@@ -183,18 +215,14 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
             }
 
             $scope.editingItem.pic_url = fileURI;
-
-            var options = new FileUploadOptions();
-            options.fileKey = "file";
-            options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
-            options.mimeType = "image/jpeg";
-            options.params = {}; // if we need to send parameters to the server request
-            var ft = new FileTransfer();
-            ft.upload(fileURI, encodeURI("http://host/upload"), win, fail, options);
+            $scope.editingItem.hasNewPicture = true;
         }
 
-        $scope.getPhoto = function(item) {
+        $scope.getPhoto = function(item,$event) {
             console.log('Getting camera');
+
+            $event.stopPropagation();
+
             Camera.getPicture().then(onCapturePhoto, function(err) {
                 console.err(err);
             }, {

@@ -1,13 +1,13 @@
-angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope','$ionicPopup', '$ionicModal','httpClient','localStorageService','$timeout','$ionicLoading','Camera',
+angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope', '$ionicPopup', '$ionicModal', 'httpClient', 'localStorageService', '$timeout', '$ionicLoading', 'Camera',
 
-    function ($scope, $ionicPopup ,$ionicModal,httpClient,localStorageService,$timeout,$ionicLoading,Camera) {
+    function ($scope, $ionicPopup, $ionicModal, httpClient, localStorageService, $timeout, $ionicLoading, Camera) {
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || [];
         $scope.hasProductInfo = false;
 
-        $scope.findItem = function(serialNo){
+        $scope.findItem = function (serialNo) {
 
-            if(!serialNo){
+            if (!serialNo) {
                 $ionicPopup.alert({
                     title: '请输入条形码',
                     template: ''
@@ -20,7 +20,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 scope: $scope
             });
 
-            httpClient.getItemInfo(serialNo,  function (data, status) {
+            httpClient.getItemInfo(serialNo, function (data, status) {
 
                 $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
@@ -32,7 +32,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 }
                 $scope.hasProductInfo = true;
                 var item = dataDetail.product;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.newitem = item;
                     $scope.newitem.currentCateId = item.category_id;
                     $scope.newitem.saleStatus = 1;
@@ -50,10 +50,10 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         $scope.newitem = {};
 
-        $scope.openQRScaner = function(){
+        $scope.openQRScaner = function () {
             cordova.plugins.barcodeScanner.scan(
                 function (result) {
-                    $timeout(function(){
+                    $timeout(function () {
                         $scope.newitem.serialNo = result.text;
                     })
                 },
@@ -66,10 +66,10 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
             );
         }
 
-        $scope.changeCategroy = function(currentCateId){
+        $scope.changeCategroy = function (currentCateId) {
             $scope.newitem.currentCateId = currentCateId;
             for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
-                if($scope.newitem.currentCateId == $scope.info.categoryls[idx].category_id){
+                if ($scope.newitem.currentCateId == $scope.info.categoryls[idx].category_id) {
                     $scope.selectCategory($scope.info.categoryls[idx]);
                     break;
                 }
@@ -77,16 +77,16 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
         }
 
 
-        $scope.AddItem = function() {
+        $scope.AddItem = function () {
 
             $scope.newitem = {};
             $scope.hasProductInfo = false;
-            if($scope.info.categoryls && $scope.info.categoryls.length){
-                $timeout(function(){
+            if ($scope.info.categoryls && $scope.info.categoryls.length) {
+                $timeout(function () {
                     $scope.newitem.currentCateId = $scope.info.categoryls[0].category_id;
                 });
-            }else{
-                $timeout(function(){
+            } else {
+                $timeout(function () {
                     $scope.newitem.currentCateId = 0;
                 });
             }
@@ -94,10 +94,9 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
         }
 
 
+        $scope.saveItem = function (newitem) {
 
-        $scope.saveItem = function(newitem){
-
-            if(!newitem.currentCateId){
+            if (!newitem.currentCateId) {
                 $ionicPopup.alert({
                     title: '请选择商品分类',
                     template: ''
@@ -105,7 +104,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 return;
             }
 
-            if(!newitem.name){
+            if (!newitem.name) {
                 $ionicPopup.alert({
                     title: '请填写商品名称',
                     template: ''
@@ -113,7 +112,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 return;
             }
 
-            if(!newitem.price){
+            if (!newitem.price) {
                 $ionicPopup.alert({
                     title: '请填写商品价格',
                     template: ''
@@ -121,7 +120,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 return;
             }
 
-            var options ={'serialNo': newitem.serialNo,
+            var options = {'serialNo': newitem.serialNo,
                 name: newitem.name,
                 categoryId: newitem.currentCateId,
                 count: newitem.count,
@@ -130,84 +129,118 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 pic: newitem.pic,
                 pic_url: newitem.pic_url,
                 saleStatus: newitem.saleStatus,
-                shop_id:$scope.info.shop.id
+                shop_id: $scope.info.shop.id
             };
 
-            $scope.LoadingMessage = '正在添加,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+            function addItemInfo(options, newitem) {
 
-            httpClient.addItem(options,  function (data, status) {
+                $scope.LoadingMessage = '正在添加,请稍候...';
+                $ionicLoading.show({
+                    templateUrl: 'templates/loadingIndicator.html',
+                    scope: $scope
+                });
 
-                $ionicLoading.hide();
-                var code = data.code, dataDetail = data.data;
-                if (code != 0) {
+
+                httpClient.addItem(options, function (data, status) {
+
+                    $ionicLoading.hide();
+                    var code = data.code, dataDetail = data.data;
+                    if (code != 0) {
+                        $ionicPopup.alert({
+                            title: '添加商品失败:' + data.msg,
+                            template: ''
+                        });
+                        return;
+                    }
+                    var item = dataDetail.item;
+
+                    //TODO: upload pic after we got item ID
+                    var fileURI = newitem.pic_url;
+                    var options = new FileUploadOptions();
+
+                    options.fileKey = "file";
+                    options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+                    options.mimeType = "image/jpeg";
+                    options.params = {}; // if we need to send parameters to the server request
+                    var ft = new FileTransfer();
+                    ft.upload(fileURI, encodeURI("http://host/upload"), win, fail, options);
+
+                    $scope.closeModal();
+                    $scope.addProducteForCurrentCategory(newitem.currentCateId, item);
+
+                }, function (data, status) {
+                    $ionicLoading.hide();
                     $ionicPopup.alert({
-                        title: '添加商品失败:' + data.msg,
+                        title: '添加商品失败:',
                         template: ''
                     });
-                    return;
-                }
-                var item = dataDetail.item;
-
-                //TODO: upload pic after we got item ID
-                var fileURI = newitem.pic_url;
-                var options = new FileUploadOptions();
-
-                options.fileKey = "file";
-                options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
-                options.mimeType = "image/jpeg";
-                options.params = {}; // if we need to send parameters to the server request
-                var ft = new FileTransfer();
-                ft.upload(fileURI, encodeURI("http://host/upload"), win, fail, options);
-
-                $scope.closeModal();
-                $scope.addProducteForCurrentCategory(newitem.currentCateId,item);
-
-            }, function (data, status) {
-                $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: '添加商品失败:',
-                    template: ''
+                    $scope.closeModal();
                 });
-                $scope.closeModal();
-            });
+            }
+
+            if(newitem.hasNewPicture){
+                $scope.LoadingMessage = '正在上传图片,请稍候...';
+                $ionicLoading.show({
+                    templateUrl: 'templates/loadingIndicator.html',
+                    scope: $scope
+                });
+
+                httpClient.uploadPicForItem(newitem.serialNo, newitem.pic_url, $scope.info.shop.id, function (data, status) {
+                    $ionicLoading.hide();
+                    var code = data.code, dataDetail = data.data;
+                    if (code != 0) {
+                        $ionicPopup.alert({
+                            title: '上传图片失败,请重试:' + data.msg,
+                            template: ''
+                        });
+                        return;
+                    }
+                    addItemInfo(options, newitem);
+                },function(){
+                    $ionicLoading.hide();
+                    $ionicPopup.alert({
+                        title: '上传图片失败:',
+                        template: ''
+                    });
+                });
+            }else{
+                addItemInfo(options, newitem);
+            }
         }
 
         $ionicModal.fromTemplateUrl('templates/product-addNew.html', {
             scope: $scope,
             animation: 'slide-in-up'
-        }).then(function(modal) {
+        }).then(function (modal) {
                 $scope.modal = modal;
             });
 
-        $scope.openModal = function() {
+        $scope.openModal = function () {
             $scope.modal.show();
         };
 
-        $scope.closeModal = function() {
+        $scope.closeModal = function () {
             $scope.modal.hide();
         };
 
         //Cleanup the modal when we're done with it!
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
             $scope.modal.remove();
         });
         // Execute action on hide modal
-        $scope.$on('modal.hide', function() {
+        $scope.$on('modal.hide', function () {
             // Execute action
         });
         // Execute action on remove modal
-        $scope.$on('modal.removed', function() {
+        $scope.$on('modal.removed', function () {
             // Execute action
         });
-        $scope.$on('modal.shown', function() {
+        $scope.$on('modal.shown', function () {
 
         });
 
         var retries = 0;
+
         function clearCache() {
             navigator.camera.cleanup();
         }
@@ -221,8 +254,8 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
             var fail = function (error) {
                 if (retries == 0) {
-                    retries ++;
-                    setTimeout(function() {
+                    retries++;
+                    setTimeout(function () {
                         onCapturePhoto(fileURI)
                     }, 1000)
                 } else {
@@ -235,11 +268,12 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 }
             }
             $scope.newitem.pic_url = fileURI;
+            $scope.newitem.hasNewPicture = true;
         }
 
-        $scope.getPhoto = function() {
+        $scope.getPhoto = function () {
             console.log('Getting camera');
-            Camera.getPicture().then(onCapturePhoto, function(err) {
+            Camera.getPicture().then(onCapturePhoto, function (err) {
                 console.err(err);
             }, {
                 quality: 75,
