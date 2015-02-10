@@ -37,7 +37,7 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
 
         islogin: function (success, fail) {
 
-            doGet('islogin','', success, fail);
+            doGet('login/islogin','', success, fail);
         },
 
         login: function (phone, pwd, success, fail) {
