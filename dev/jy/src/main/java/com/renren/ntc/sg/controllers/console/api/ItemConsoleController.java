@@ -83,7 +83,7 @@ public class ItemConsoleController extends BasicConsoleController{
     @Post("ul_pic")
     @Get("ul_pic")
     public String ul_pic(Invocation inv, @Param("serialNo") String serialNo,
-                     @Param("file") MultipartFile pic,
+                     @Param("pic") MultipartFile pic,
                      @Param("shop_id") long shop_id) {
         String url = "";
         if(pic != null){
