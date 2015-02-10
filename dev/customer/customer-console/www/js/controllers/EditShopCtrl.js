@@ -77,11 +77,12 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 status:$scope.editingShop.status
             }
 
+            // TODO: make server api to 24:00 time
             if($scope.editingShop.new_open_time){
-                options.open_time = $scope.editingShop.new_open_time;
+                options.open_time = $scope.editingShop.new_open_time.hours + ':' + $scope.editingShop.new_open_time.minutes;
             }
             if($scope.editingShop.new_close_time){
-                options.close_time = $scope.editingShop.new_close_time;
+                options.close_time = $scope.editingShop.new_close_time.hours + ':' + $scope.editingShop.new_close_time.minutes;
             }
 
             $scope.LoadingMessage = '正在保存,请稍候...';
@@ -134,15 +135,14 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
             item.new_base_price = item.base_price/100.0;
 
-            item.new_open_time = $filter('date')(item.open_time, 'shortTime');
+//            item.new_open_time = $filter('date')(item.open_time, 'shortTime');
+//            item.new_close_time = $filter('date')(item.close_time, 'shortTime');
 
-            item.new_open_time_hours = 11;
-            item.new_open_time_minutes = 10;
+            var date = new Date(item.open_time);
+            item.new_open_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
 
-            item.new_close_time_hours = 11;
-            item.new_close_time_minutes = 10;
-
-            item.new_close_time = $filter('date')(item.close_time, 'shortTime');
+            date = new Date(item.close_time);
+            item.new_close_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
 
             $scope.editingShop = item;
             $scope.startEditShop = true;
