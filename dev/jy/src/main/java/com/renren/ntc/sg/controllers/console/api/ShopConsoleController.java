@@ -159,7 +159,10 @@ public class ShopConsoleController extends BasicConsoleController{
         if(status !=0){
         	status = 1;
         }
-        int result = shopDAO.updateShopDetail(shop_id, name, tel, openShopTime, closeShopTime, shopAddress, shopInfo,status,basePrice);
+        LoggerUtils.getInstance().log( "" + name + " " +  tel + openShopTime + " " + closeShopTime +" " +
+                shopAddress +" " + shopInfo +" " + status);
+        int result = shopDAO.updateShopDetail(shop_id, name, tel, openShopTime, closeShopTime,
+                shopAddress, shopInfo,status,basePrice);
         if(result == 1){
         	shop = shopDAO.getShop(shop_id);
         	JSONObject resultJson = new JSONObject();

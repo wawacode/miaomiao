@@ -56,9 +56,9 @@ public class OrderConsoleController extends BasicConsoleController{
 
     @Post("read")
     @Get("read")
-    public String search(Invocation inv, @Param("order_id") String order_id){
+    public String read(Invocation inv,@Param("shop_id") long shop_id, @Param("order_id") String order_id){
 
-            ordersDAO.read(order_id);
+            ordersDAO.read(SUtils.generOrderTableName(shop_id),order_id);
 
         return "@json:" + Constants.DONE;
 
