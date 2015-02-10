@@ -35,6 +35,11 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
     var development = false;
     return {
 
+        islogin: function (success, fail) {
+
+            doGet('islogin','', success, fail);
+        },
+
         login: function (phone, pwd, success, fail) {
 
             doPost('login/valid', {'phone': phone, pwd: pwd}, success, fail);
