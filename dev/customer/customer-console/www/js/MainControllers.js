@@ -165,7 +165,7 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                     });
                 }else {
                     console.log("the notification body alert:" + notification.alert);
-                    $cordovaDialogs.alert(notification.alert,"请在我的订单下查询新订单","确定").then(function(){
+                    $cordovaDialogs.alert(notification.alert,"喵喵商家推送","确定").then(function(){
                         inappHanlder();
                     });
                 }
@@ -197,7 +197,7 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                     });
                 }else{
                     console.log('we are in background alert');
-                    $cordovaDialogs.alert(notification.alert, '请在我的订单下查询新订单').then(function(){
+                    $cordovaDialogs.alert(notification.alert, '喵喵商家推送').then(function(){
                         inappHanlder();
                     });
                 }

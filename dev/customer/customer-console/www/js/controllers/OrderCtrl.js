@@ -15,7 +15,6 @@ angular.module('miaomiao.console.controllers')
             if(!orders) return;
             for(var i=0;i< orders.length;i++){
                 var order = orders[i];
-                order.read = false;
                 try{
                     order.items = JSON.parse(order.info);
                 }catch (e){

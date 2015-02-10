@@ -1,6 +1,6 @@
-angular.module('miaomiao.console.controllers').controller('OrderDetailCtrl', ['$scope', '$ionicModal',
+angular.module('miaomiao.console.controllers').controller('OrderDetailCtrl',['$scope', '$ionicModal','httpClient',
 
-    function ($scope, $ionicModal) {
+    function ($scope, $ionicModal,httpClient) {
 
         $ionicModal.fromTemplateUrl('templates/order-detail.html', {
             scope: $scope,
@@ -39,7 +39,15 @@ angular.module('miaomiao.console.controllers').controller('OrderDetailCtrl', ['$
 
         $scope.showOrderDetail = function(order) {
             $scope.order = order;
-            $scope.order.read = true;
+
+            // make api call
+            if($scope.order.readed == false){
+                httpClient.orderHasbeenRead($scope.info.shop.id, order.order_id, function (data, status) {
+                    $scope.order.readed = true;
+                }, function (data, status) {
+                });
+            }
+
             $scope.openModal();
         }
     }

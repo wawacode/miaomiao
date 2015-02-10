@@ -12,9 +12,8 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
         $scope.info = {};
 
         $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP_LIST') || [];
-        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || ($scope.info.shoplist && $scope.info.shoplist[0]);
-
-        $scope.info.shopName = $scope.info.shop.name || "首页";
+        $scope.info.defaultShop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || ($scope.info.shoplist && $scope.info.shoplist[0]);
+        $scope.info.shopName = $scope.info.defaultShop.name || "首页";
 
         $scope.openModal = function() {
             $scope.modal.show();
@@ -102,7 +101,6 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                     return;
                 }
 
-                $scope.info.shop = dataDetail.shop;
                 localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop);
 
                 //success, just
@@ -111,6 +109,13 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
                     $ionicScrollDelegate.resize();
                     $ionicScrollDelegate.scrollTop();
+
+                    // update shop list
+                    for(var i=0; i< $scope.info.shoplist.length;i++){
+                        if($scope.info.shoplist[i].shop_id == dataDetail.shop.shop_id){
+                            $scope.info.shoplist[i] = dataDetail.shop;  // force update shop info
+                        }
+                    }
 
                 });
             }, function (data, status) {
@@ -126,8 +131,17 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
             $event.stopPropagation();
 
+
             item.new_base_price = item.base_price/100.0;
+
             item.new_open_time = $filter('date')(item.open_time, 'shortTime');
+
+            item.new_open_time_hours = 11;
+            item.new_open_time_minutes = 10;
+
+            item.new_close_time_hours = 11;
+            item.new_close_time_minutes = 10;
+
             item.new_close_time = $filter('date')(item.close_time, 'shortTime');
 
             $scope.editingShop = item;
