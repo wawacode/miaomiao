@@ -126,6 +126,7 @@ public class AllShopConsoleController {
         		value = null;
         	}
         }
+
         shopDAO.update(shop_id, key, value);
         return  "@"+Constants.DONE ;
     }
