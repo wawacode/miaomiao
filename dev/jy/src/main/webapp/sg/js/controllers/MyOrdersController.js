@@ -56,12 +56,12 @@ angular.module('miaomiao.shop')
                     $scope.shop = dataDetail.shop;
 
                     $scope.addressls = dataDetail.addressls;
-                    if($scope.addressls.length)$scope.info.hasAddress = true;
+                    $scope.info.hasAddress = $scope.addressls.length > 0? true: false;
 
                     $scope.orders = dataDetail.orders;
                     transformOrderData($scope.orders);
 
-                    if($scope.orders.length)$scope.info.hasOrder = true;
+                    $scope.info.hasOrder = $scope.orders.length > 0? true : false;
 
                     $sessionStorage.orderAddresses = $scope.addressls;
                     $sessionStorage.orderOrders = $scope.orders;
