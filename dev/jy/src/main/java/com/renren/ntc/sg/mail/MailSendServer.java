@@ -45,9 +45,14 @@ public class MailSendServer {
 
     private static Object lock = new Object();
 
+
+
+
+
     private MailSendServer(String host, int port, String userName, String password, String fromAddress) {
         this(host, port, userName, password, fromAddress, true);
     }
+
 
     private MailSendServer(String host, int port, String userName, String password, String fromAddress,
             boolean isValidate) {
