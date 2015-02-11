@@ -72,15 +72,21 @@
             </label>
 
             <div class="item item-input-inset item-stacked-label">
-                <div class="list">
-                    <span class="input-label assertive">营业时间(AM表示早上,PM表示晚上)</span>
-                    <div class="item item-input item-button-right" style="border: none;padding: 0">
-                        <span class="input-label">开店时间: {{editingShop.new_open_time.hours}}点{{editingShop.new_open_time.minutes}}分</span>
+                <div class="list" style="">
+                    <span class="input-label assertive">营业时间</span>
+                    <div class="item item-input" style="border: none;">
+                        <span class="input-label" style="max-width: 100px">24小时营业:</span>
+                        <label class="checkbox">
+                            <input type="checkbox" style="padding: 2px;" ng-model="editingShop.isFullTimeOpen" ng-click="updateShopFullTimeOpen()">
+                        </label>
+                    </div>
+                    <div class="item item-input item-button-right" style="border: none;" ng-show="!editingShop.isFullTimeOpen">
+                        <span class="input-label" style="max-width: 100px">开店时间:</span>
                         <!--<input type="text" ng-model="editingShop.new_open_time" placeholder="8:00 AM" required>-->
                         <ng-time-selector hours="editingShop.new_open_time.hours" minutes="editingShop.new_open_time.minutes"></ng-time-selector>
                     </div>
-                    <div class="item item-input" style="border: none;padding: 0">
-                        <span class="input-label">打烊时间: {{editingShop.new_close_time.hours}}点{{editingShop.new_close_time.minutes}}分</span>
+                    <div class="item item-input" style="border: none;" ng-show="!editingShop.isFullTimeOpen">
+                        <span class="input-label" style="max-width: 100px">打烊时间:</span>
                         <!--<input type="text" ng-model="editingShop.new_close_time" placeholder="10:00 PM" required>-->
                         <ng-time-selector hours="editingShop.new_close_time.hours" minutes="editingShop.new_close_time.minutes"></ng-time-selector>
                     </div>

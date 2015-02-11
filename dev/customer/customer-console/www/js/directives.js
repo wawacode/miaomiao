@@ -106,10 +106,7 @@ angular.module('miaomiao.console.directives', [])
     .directive("ngTimeSelector", function () {
         return {
             restrict: 'EA',
-            template: '<div class="timeSelectorDirective"> <div class="section hours"> <div class="increase" ng-click="increaseHours()"> <i class="icon ion-chevron-up"></i> </div> <div class="display"> {{displayHours()}} </div> ' +
-                '<div class="decrease" ng-click="decreaseHours()"> <i class="icon ion-chevron-down"></i> </div> </div> <div class="section minutes"> <div class="increase" ng-click="increaseMinutes()"> <i class="icon ion-chevron-up"></i> </div>' +
-                ' <div class="display"> {{displayMinutes()}} </div> <div class="decrease" ng-click="decreaseMinutes()"> <i class="icon ion-chevron-down"></i> </div> </div> <div class="section hours"> <div class="increase" ng-click="switchPeriod()"> <i class="icon ion-chevron-up"></i> </div> ' +
-                '<div ng-if="hours >= 12" class="display"> 下午 </div> <div ng-if="hours < 12" class="display"> 上午 </div> <div class="decrease" ng-click="switchPeriod()"> <i class="icon ion-chevron-down"></i> </div> </div> </div>',
+            templateUrl:'templates/timepicker.html',
             scope: {
                 hours: "=",
                 minutes: "="

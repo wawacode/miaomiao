@@ -77,12 +77,16 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 status:$scope.editingShop.status
             }
 
-            // TODO: make server api to 24:00 time
-            if($scope.editingShop.new_open_time){
-                options.open_time = $scope.editingShop.new_open_time.hours + ':' + $scope.editingShop.new_open_time.minutes;
-            }
-            if($scope.editingShop.new_close_time){
-                options.close_time = $scope.editingShop.new_close_time.hours + ':' + $scope.editingShop.new_close_time.minutes;
+            if(item.isFullTimeOpen){
+                options.open_time = "";
+                options.close_time = "";
+            }else{
+                if(item.new_open_time){
+                    options.open_time = item.new_open_time.hours + ':' + item.new_open_time.minutes;
+                }
+                if(item.new_close_time){
+                    options.close_time = item.new_close_time.hours + ':' + item.new_close_time.minutes;
+                }
             }
 
             $scope.LoadingMessage = '正在保存,请稍候...';
@@ -138,16 +142,25 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 //            item.new_open_time = $filter('date')(item.open_time, 'shortTime');
 //            item.new_close_time = $filter('date')(item.close_time, 'shortTime');
 
-            var date = new Date(item.open_time);
-            item.new_open_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
-
-            date = new Date(item.close_time);
-            item.new_close_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
+            if(!item.open_time && !item.close_time){
+                item.isFullTimeOpen = true;
+            }else{
+                var date = new Date(item.open_time);
+                item.new_open_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
+                date = new Date(item.close_time);
+                item.new_close_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
+            }
 
             $scope.editingShop = item;
             $scope.startEditShop = true;
             $timeout(function(){
 
+                $ionicScrollDelegate.resize();
+            });
+        }
+
+        $scope.updateShopFullTimeOpen = function(){
+            $timeout(function(){
                 $ionicScrollDelegate.resize();
             });
         }
