@@ -78,8 +78,8 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
             }
 
             if(item.isFullTimeOpen){
-                options.open_time = "";
-                options.close_time = "";
+                options.open_time = null;
+                options.close_time = null;
             }else{
                 if(item.new_open_time){
                     options.open_time = item.new_open_time.hours + ':' + item.new_open_time.minutes;
