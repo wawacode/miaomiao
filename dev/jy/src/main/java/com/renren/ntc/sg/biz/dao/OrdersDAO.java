@@ -38,7 +38,7 @@ public interface OrdersDAO {
     public List<Order> getOrderByShop(long shop_id, int start, int offset,@SQLParam("tableName") String tableName);
 
 
-    @SQL("insert into  ##(:tableName) (" + INSERT_FIELDS + ") values(:1.order_id,:1.read,:1.shop_id," +
+    @SQL("insert into  ##(:tableName) (" + INSERT_FIELDS + ") values(:1.order_id,:1.readed,:1.shop_id," +
             ":1.user_id,:1.address_id,:1.remarks,:1.info,:1.snapshot,:1.status,:1.price)  ")
     public int  insertUpdate(Order o,@SQLParam("tableName") String tableName);
 

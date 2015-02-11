@@ -127,7 +127,7 @@ public class HomeController {
             loc.setLongitude(lng);
             loc.setLatitude(lat);
             // 20 公里
-            List<GeoQueryResult>  resuls = geoService.queryNear(loc, 3000);
+            List<GeoQueryResult>  resuls = geoService.queryNear(loc, 2000);
             if (resuls != null &&  resuls.size() > 0){
             	long now = System.currentTimeMillis();
                 for (GeoQueryResult  res : resuls){

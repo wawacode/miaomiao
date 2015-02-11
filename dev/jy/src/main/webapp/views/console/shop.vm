@@ -29,11 +29,9 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/console/shop/order?shop_id=${shop_id}">我的订单</a></li>
                 <li><a href="/console/shop/addindex?shop_id=${shop_id}">+添加商品</a></li>
-                #if($shop.id != 1 && $shop.id!=10025)
                 <li><a href="/console/shop/cate?shop_id=${shop_id}">分类编辑</a></li>
                 <li><a href="/console/allshop">所有店铺</a></li>
                 <li><a href="/console/product">产品总表</a></li>
-                #end
             </ul>
             <form id="query_form" class="navbar-form navbar-right" action="/console/shop/query">
                 <input id="query_input" name="query" type="text" class="form-control"  placeholder="Search...">
