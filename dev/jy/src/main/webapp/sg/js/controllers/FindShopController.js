@@ -139,12 +139,14 @@ angular.module('miaomiao.shop').
                         $ionicLoading.hide();
                         var code = data.code, dataDetail = data.data;
 
-                        if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
+                        if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
                             $scope.shop_items = dataDetail.shops;
                             for (var i = 0; i < $scope.shop_items.length; i++) {
                                 $scope.shop_items[i].rate = 5;
                                 $scope.shop_items[i].maxRate = 5;
                             }
+                        }else{
+                            $scope.shop_items = [];
                         }
 
                         hideSearchSuggestions();
