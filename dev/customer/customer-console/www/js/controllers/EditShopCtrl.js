@@ -106,8 +106,6 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                     return;
                 }
 
-                localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop);
-
                 //success, just
                 $scope.startEditShop = false;
                 $timeout(function(){
@@ -116,11 +114,16 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                     $ionicScrollDelegate.scrollTop();
 
                     // update shop list
-                    for(var i=0; i< $scope.info.shoplist.length;i++){
-                        if($scope.info.shoplist[i].shop_id == dataDetail.shop.shop_id){
-                            $scope.info.shoplist[i] = dataDetail.shop;  // force update shop info
+                    localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop);
+
+                    var shopList = localStorageService.get('MMCONSOLE_METADATA_SHOP_LIST') || [];
+                    $scope.info.shoplist = shopList;
+                    for(var i=0;i< shopList.length;i++){
+                        if(shopList[i].shop_id == dataDetail.shop.shop_id){
+                            shopList[i] = dataDetail.shop;  // force update shop info
                         }
                     }
+                    localStorageService.set('MMCONSOLE_METADATA_SHOP_LIST',shopList);
 
                 });
             }, function (data, status) {
@@ -144,6 +147,8 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
 
             if(!item.open_time && !item.close_time){
                 item.isFullTimeOpen = true;
+                item.new_open_time = {'hours': 8,'minutes': 0};
+                item.new_close_time = {'hours':22,'minutes': 0};
             }else{
                 var date = new Date(item.open_time);
                 item.new_open_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
