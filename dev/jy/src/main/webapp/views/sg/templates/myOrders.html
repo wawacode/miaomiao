@@ -3,7 +3,7 @@
     <ion-nav-bar class="bar-dark">
 
         <ion-nav-buttons side="left" class="button-dark">
-            <button class="button button-icon ion-ios7-home" ui-sref="productList" ng-click=""></button>
+            <button class="button button-icon ion-ios7-home" ng-click="goToShopOrFindShop()"></button>
         </ion-nav-buttons>
 
         <ion-nav-title>
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="js-addAddress firstTimeAddAddress" style=";overflow: hidden"
-                     ng-show="!info.hasAddress">
+                     ng-show="!info.hasAddress && info.hasShop">
                     <div class="addNewAddressHint" style="text-shadow:none">
                         您还没有添加收货人信息,请添加
                     </div>

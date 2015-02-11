@@ -22,7 +22,68 @@ angular.module('miaomiao.shop')
                 }
             }
         }
+
+        $scope.info = {};
+        $scope.info.hasOrder = true;
+        $scope.info.hasAddress = true;
+        $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
+
         $scope.addr = {};
+        $scope.addressls = $sessionStorage.MMMETA_OrderAddresses || [];
+        $scope.orders = $sessionStorage.MMMETA_OrderOrders || [];
+        transformOrderData($scope.orders);
+
+        function reloadInfo(addr){
+
+            if(addr){
+
+                $scope.addressls = $scope.addressls || [];
+                $scope.addressls[0] = addr;
+                $scope.info.address = $scope.addressls[0];
+
+            }else{
+
+                $scope.LoadingMessage = '正在加载,请稍候...';
+                $ionicLoading.show({
+                    templateUrl: '/views/sg/templates/loadingIndicator.html',
+                    scope: $scope
+                });
+
+                $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
+
+                httpClient.getMyOrders($scope.shop.id ,function(data, status){
+
+                    $ionicLoading.hide();
+
+                    var code = data.code, dataDetail = data.data;
+
+                    $scope.shop = dataDetail.shop;
+
+                    $scope.addressls = dataDetail.addressls;
+                    $scope.info.hasAddress = $scope.addressls.length > 0? true: false;
+
+                    $scope.orders = dataDetail.orders;
+                    transformOrderData($scope.orders);
+
+                    $scope.info.hasOrder = $scope.orders.length > 0? true : false;
+
+                    $sessionStorage.orderAddresses = $scope.addressls;
+                    $sessionStorage.orderOrders = $scope.orders;
+
+                    $ionicScrollDelegate.resize();
+
+                },function(data, status){
+
+                    $scope.info.hasOrder = false;
+                    $scope.info.hasAddress = false;
+                    $ionicScrollDelegate.resize();
+
+                    $ionicLoading.hide();
+                });
+            }
+
+        }
+
         $scope.addNewAddressInOrderPage = function(){
 
             if(!$scope.addr.address || !$scope.addr.phone || !MMUtils.isValidTelNumber($scope.addr.phone)){
@@ -73,63 +134,6 @@ angular.module('miaomiao.shop')
 
                 $ionicScrollDelegate.resize();
             })
-        }
-
-        $scope.info = {};
-        $scope.info.hasOrder = true;
-        $scope.info.hasAddress = true;
-
-        $scope.addressls = $sessionStorage.MMMETA_OrderAddresses || [];
-        $scope.orders = $sessionStorage.MMMETA_OrderOrders || [];
-        transformOrderData($scope.orders);
-
-        function reloadInfo(addr){
-
-            if(addr){
-
-                $scope.addressls = $scope.addressls || [];
-                $scope.addressls[0] = addr;
-                $scope.info.address = $scope.addressls[0];
-
-            }else{
-
-                $scope.LoadingMessage = '正在加载,请稍候...';
-                $ionicLoading.show({
-                    templateUrl: '/views/sg/templates/loadingIndicator.html',
-                    scope: $scope
-                });
-
-                httpClient.getMyOrders($scope.shop.id ,function(data, status){
-
-                    $ionicLoading.hide();
-
-                    var code = data.code, dataDetail = data.data;
-
-                    $scope.shop = dataDetail.shop;
-
-                    $scope.addressls = dataDetail.addressls;
-                    $scope.info.hasAddress = $scope.addressls.length > 0? true: false;
-
-                    $scope.orders = dataDetail.orders;
-                    transformOrderData($scope.orders);
-
-                    $scope.info.hasOrder = $scope.orders.length > 0? true : false;
-
-                    $sessionStorage.orderAddresses = $scope.addressls;
-                    $sessionStorage.orderOrders = $scope.orders;
-
-                    $ionicScrollDelegate.resize();
-
-                },function(data, status){
-
-                    $scope.info.hasOrder = false;
-                    $scope.info.hasAddress = false;
-                    $ionicScrollDelegate.resize();
-
-                    $ionicLoading.hide();
-                });
-            }
-
         }
 
         $scope.goToShopOrFindShop = function(){
