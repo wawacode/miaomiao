@@ -11,6 +11,8 @@ public class Dateutils {
 	private static SimpleDateFormat SDF = new SimpleDateFormat(FORMAT_ALL);
 	public static final String FORMAT_DEFAULT = "yyyy-MM-dd";
 	private static SimpleDateFormat DSDF = new SimpleDateFormat(FORMAT_DEFAULT);
+	public static final String FORMAT_HM = "HH:mm";
+	private static SimpleDateFormat HMSDF = new SimpleDateFormat(FORMAT_HM);
 	public static Date getDateByCondition(int date,int hour,int minute,int seconds){
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.DAY_OF_MONTH, date);
@@ -26,6 +28,13 @@ public class Dateutils {
 			return null;
 		}
 		return SDF.format(date);
+	}
+	
+	public static String tranferHMDate2Str(Date date){
+		if(date == null){
+			return "";
+		}
+		return HMSDF.format(date);
 	}
 	
 	public static String tranferDefaultDate2Str(Date date){
@@ -99,5 +108,21 @@ public class Dateutils {
 			}
 			return timeArr[0];
 		}
+	}
+	public static String addHMFormatDateByCondition(String timeStr,int hour,int minute){
+		if(StringUtils.isBlank(timeStr)){
+			return "";
+		}
+		String[] timeArr = timeStr.split(":");
+		if(timeArr == null || timeArr.length != 2){
+			return "";
+		}
+		Calendar now = Calendar.getInstance();
+		now.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArr[0]) + hour);
+		now.set(Calendar.MINUTE, Integer.parseInt(timeArr[1]) + minute);
+		now.set(Calendar.SECOND, 0);
+		now.set(Calendar.MILLISECOND, 0);
+		return tranferDate2Str(now.getTime());
+		
 	}
 }

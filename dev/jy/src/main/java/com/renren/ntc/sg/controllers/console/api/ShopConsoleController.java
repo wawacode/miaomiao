@@ -126,8 +126,8 @@ public class ShopConsoleController extends BasicConsoleController{
     											 @Param("name") String name,
     											 @Param("tel") String tel,
     											 @Param("owner_phone") String ownerPhone,
-    											 @Param("open_time") String openTime,//08:00 AM
-    											 @Param("close_time") String closeTime,//08:00 PM
+    											 @Param("open_time") String openTime,//08:00
+    											 @Param("close_time") String closeTime,//08:00
     											 @Param("shop_address") String shopAddress,
     											 @Param("shopInfo") String shopInfo,//服务范围
     											 @Param("base_price") int basePrice,//起送价
@@ -139,19 +139,17 @@ public class ShopConsoleController extends BasicConsoleController{
         String openShopTime = "";
         String closeShopTime = "";
         if(StringUtils.isNotBlank(openTime)){
-        	openTime = Dateutils.getHMDateBycondition(openTime.trim());
         	openShopTime = Dateutils.getDateStrByCondition(openTime);
             if(StringUtils.isBlank(openShopTime)){
-            	return "@json:" + getActionResult(1, "开店时间格式不正确,格式如08:00 AM");
+            	return "@json:" + getActionResult(1, "开店时间格式不正确,格式如08:00");
             }
         }else {
 			openShopTime =  null;
 		}
         if(StringUtils.isNotBlank(closeTime)){
-        	closeTime = Dateutils.getHMDateBycondition(closeTime.trim());
-        	closeShopTime = Dateutils.getDateStrByCondition(closeTime);
+        	closeShopTime = Dateutils.addHMFormatDateByCondition(closeTime,12,0);//下午添加12个小时
             if(StringUtils.isBlank(closeShopTime)){
-            	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00 PM");
+            	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00");
             }
         }else {
         	closeShopTime = null;
