@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.Item;
+import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.DeviceDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.dao.SWPOrderDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.CookieManager;
@@ -24,7 +26,11 @@ public class HomeController {
 
     @Autowired
     public DeviceDAO deviceDAO;
-	/**
+
+    @Autowired
+    public ShopDAO shopDao;
+
+    /**
 	 * 用于处理用户喜欢和不喜欢的ajax请求，成功返回1，失败返回0
 	 * @return
 	 */
@@ -42,10 +48,14 @@ public class HomeController {
         List<Device>  ls = deviceDAO.getDevs();
         for (Device d :ls ){
             JSONObject jb =   new JSONObject();
-            jb.put(d.getId()+ "" ,d.getStatus() + "_" + d.getUpdate_time());
+            Shop shop = shopDao.getShop(d.getShop_id());
+            if(null == shop ){
+                continue;
+            }
+            jb.put(shop.getName()  ,d.getStatus() + "_" + d.getUpdate_time());
             jarr.add(jb);
         }
         }
-        return "@" + jarr.toJSONString();
+        return "@" + jarr.toJSONString(1);
     }
 }
