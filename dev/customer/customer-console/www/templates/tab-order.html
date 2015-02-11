@@ -28,8 +28,7 @@
 
                     <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
 
-                    <i class="balanced icon ion-ios7-information" ng-show="order.read" ng-click="showOrderDetail(order)"></i>
-                    <i class="assertive icon ion-ios7-information" ng-show="!order.read" ng-click="showOrderDetail(order)"></i>
+                    <i class="icon ion-ios7-information" ng-class="{'balanced':order.readed , 'assertive': !order.readed}" ng-click="showOrderDetail(order)"></i>
 
                 </div>
 

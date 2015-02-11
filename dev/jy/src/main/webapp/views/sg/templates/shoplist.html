@@ -91,8 +91,11 @@
                     <i class="icon ion-ios7-pricetags" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> {{ item.base_price | getShopMinPrice }}元起送
                 </div>
             </div>
-            <div style="font-size: 12px;" ng-show="item.shop_address">
-                <i class="icon ion-ios7-location" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>{{item.shop_address}}
+            <div class="item-text-wrap" style="font-size: 12px;" ng-show="item.shop_address">
+                <i class="icon ion-ios7-location" style="font-size: 15px;margin-right: 12px;color: lightgray"></i>地址: {{item.shop_address}}
+            </div>
+            <div class="item-text-wrap" style="font-size: 12px;color: #ef5356" ng-show="item.shopInfo">
+                <i class="icon ion-ios7-navigate" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>服务区域: {{item.shopInfo}}
             </div>
         </div>
     </div>

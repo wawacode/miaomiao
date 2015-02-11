@@ -81,6 +81,13 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
             doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);
         },
 
+        orderHasbeenRead: function (shopId, order_id, success, fail) {
+
+//            if (development)return success(testdata.orderInfo);
+
+            doGet('order/read', 'shop_id=' + shopId + '&order_id=' + order_id, success, fail);
+        },
+
         getMoreMyOrders: function (shopId, from, offset, success, fail) {
 
 //            if (development)return success(testdata.moreOrderInfo);

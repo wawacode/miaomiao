@@ -12,6 +12,7 @@ angular.module('miaomiao.console', [
     'LocalStorageModule',
     'ngStorage',
     'ngDropdowns',
+    'angular-datepicker',
     'miaomiao.console.controllers',
     'miaomiao.console.services',
     'miaomiao.console.directives',
