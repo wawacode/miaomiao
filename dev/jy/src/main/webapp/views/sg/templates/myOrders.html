@@ -78,7 +78,7 @@
                     <div class="order-item" style="" ng-repeat=" order in orders">
 
                         <div style="display: inline-block;background-color: #EFF0F4;width: 100%;">
-                            <div class="orderDate">{{order.create_time | date:'short'}}</div>
+                            <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd hh:mm'}}</div>
                             <div class="orderStatus">
                                 {{order.status4V}}
                             </div>

@@ -107,7 +107,6 @@ public class PushService {
         unicast.setPredefinedKeyValue("production_mode", "false");
         // Set customized fields
         unicast.setCustomizedField("test", "helloworld");
-        unicast.print();
         unicast.send();
     }
 
