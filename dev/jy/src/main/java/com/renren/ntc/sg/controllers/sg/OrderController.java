@@ -34,6 +34,11 @@ public class OrderController {
 
     @Autowired
     public OrdersDAO ordersDAO;
+
+
+    @Autowired
+    public UserOrdersDAO userOrdersDAO;
+
     @Autowired
     public OrdersDAO cDAO;
 
@@ -181,7 +186,8 @@ public class OrderController {
         order.setStatus(1);         //已经确认的状态
         order.setUser_id(user_id);
         int re = ordersDAO.insertUpdate(order, SUtils.generOrderTableName(shop_id));
-        if (re != 1) {
+        int o = userOrdersDAO.insertUpdate(order, SUtils.generUserOrderTableName(user_id));
+        if (re != 1 || o != 1) {
             return "@" + Constants.UKERROR;
         }
         smsService.sendSMS2LocPush(order_id, shop);

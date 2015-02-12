@@ -136,7 +136,22 @@ public class WXHttpClient {
         button2.put("url","http://www.mbianli.com/sg/about" );
         buttons.add(button2);
 
-
+//v2
+//        JSONObject  ob = new JSONObject();
+//        JSONArray buttons   = new JSONArray();
+//        JSONObject button  = new JSONObject();
+//        button.put("type","view");
+//        button.put("name","我要下单");
+//        button.put("url","http://www.mbianli.com/sg/loading" );
+//        buttons.add(button);
+//
+//
+//        JSONObject button2  = new JSONObject();
+//        button2.put("type","view");
+//        button2.put("name","个人中心");
+//        button2.put("url","http://www.mbianli.com/sg/loading#/myorders" );
+//        buttons.add(button2);
+ //
         ob.put("button",buttons);
 
         byte [] t = WXHttpClient.sendPostRequest(url,ob.toJSONString());
@@ -196,35 +211,36 @@ public class WXHttpClient {
             return ;
         }
         JSONObject ob =(JSONObject) JSONObject.parse(e);
-//        createMenu(ob.getString("access_token"));
-         //scene
-        for (int i =1 ; i <10000 ; i++) {
-        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
-        String access_token = ob.getString("access_token");
-        url = url.replace("{token}",access_token);
-        JSONObject jb = new JSONObject() ;
-        jb.put("action_name","QR_LIMIT_SCENE") ;
-        JSONObject action_info = new JSONObject() ;
-        JSONObject scene_str = new JSONObject() ;
-        scene_str.put("scene_id",i) ;
-        action_info.put("scene",scene_str);
-        jb.put("action_info",action_info) ;
-        System.out.println(jb.toJSONString());
-        t = WXHttpClient.sendPostRequest(url,jb.toJSONString() ) ;
+        createMenu(ob.getString("access_token"));
 
-        if(null == t){
-            continue;
-        }
-        e = new String(t);
-            System.out.println(e);
-           JSONObject  ticket =(JSONObject) JSONObject.parse(e);
-           String tkt =    ticket.getString("ticket");
-           String u =    ticket.getString("url");
-           u = u.replaceAll(":","#");
-            u = u.replaceAll("/","#");
-           String TICKET = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={ticket}";
-           String  tkturl =  TICKET.replace("{ticket}",tkt);
-           writeFile(tkturl,i+"_"+ u +".jpg");
-        }
+         //scene
+//        for (int i =1 ; i <10000 ; i++) {
+//        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
+//        String access_token = ob.getString("access_token");
+//        url = url.replace("{token}",access_token);
+//        JSONObject jb = new JSONObject() ;
+//        jb.put("action_name","QR_LIMIT_SCENE") ;
+//        JSONObject action_info = new JSONObject() ;
+//        JSONObject scene_str = new JSONObject() ;
+//        scene_str.put("scene_id",i) ;
+//        action_info.put("scene",scene_str);
+//        jb.put("action_info",action_info) ;
+//        System.out.println(jb.toJSONString());
+//        t = WXHttpClient.sendPostRequest(url,jb.toJSONString() ) ;
+//
+//        if(null == t){
+//            continue;
+//        }
+//        e = new String(t);
+//            System.out.println(e);
+//           JSONObject  ticket =(JSONObject) JSONObject.parse(e);
+//           String tkt =    ticket.getString("ticket");
+//           String u =    ticket.getString("url");
+//           u = u.replaceAll(":","#");
+//            u = u.replaceAll("/","#");
+//           String TICKET = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={ticket}";
+//           String  tkturl =  TICKET.replace("{ticket}",tkt);
+//           writeFile(tkturl,i+"_"+ u +".jpg");
+//        }
     }
 }
