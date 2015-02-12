@@ -19,18 +19,28 @@ public class ShopService {
 			Shop dbShop = shopDAO.getShop(shop.getId());
 			if (StringUtils.isBlank(name)) {
 				shop.setName(dbShop.getName());
+			}else {
+				shop.setName(name);
 			}
 			if (StringUtils.isBlank(tel)) {
 				shop.setTel(dbShop.getTel());
+			}else {
+				shop.setTel(tel);
 			}
 			if (StringUtils.isBlank(ownerPhone)) {
+				shop.setOwner_phone(dbShop.getOwner_phone());
+			}else {
 				shop.setOwner_phone(ownerPhone);
 			}
 			if (StringUtils.isBlank(shopAddress)) {
 				shop.setShop_address(dbShop.getShop_address());
+			}else {
+				shop.setShop_address(shopAddress);
 			}
 			if (StringUtils.isBlank(shopInfo)) {
 				shop.setShop_info(dbShop.getShop_info());
+			}else {
+				shop.setShop_info(shopInfo);
 			}
 		}
 		return shop;
