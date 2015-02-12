@@ -66,7 +66,7 @@ public class UserController {
 
         Shop shop = shopDAO.getShop(shop_id);
         List<Address>  addressls = addressDAO.getAddresses(user_id,0,1);
-        List<Order>  orders  = userOrdersDAO.getOrder(user_id, 0 , 20 , SUtils.generOrderTableName(user_id));
+        List<Order>  orders  = userOrdersDAO.getOrder(user_id, 0 , 20 , SUtils.generUserOrderTableName(user_id));
         inv.addModel( "addressls",addressls);
         orders = orderService.forV(orders)  ;
 
