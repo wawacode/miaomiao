@@ -1,10 +1,7 @@
 package com.renren.ntc.sg.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.renren.ntc.sg.bean.Address;
-import com.renren.ntc.sg.bean.Order;
-import com.renren.ntc.sg.bean.PushToken;
-import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
 import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
@@ -38,6 +35,7 @@ public class PushService {
     public CatStaffCommitDAO catStaffCommitDao ;
 
 	private String appkey = "54cb1485fd98c571bd000243";
+
 	private String appMasterSecret = "uopev2ouz3kt9h0foca3nzn9yambvqgc";
 
     private String iOS_appkey =  "54cb1576fd98c52cbe0004a5" ;
@@ -123,15 +121,40 @@ public class PushService {
             float p = (float) value.getPrice() / 100;
             String message = "您有新订单了 ," + adrs.getAddress() + " " + adrs.getPhone()  +
                     " 总额：" +  p ;
-//            message = SUtils.span(message);
-//            message = URLEncoder.encode(message, "utf-8");
-            //短信通知 老板
             if (shop != null) {
                 String phone = shop.getOwner_phone();
                 PushToken pushToken = pushTokenDao.getPushToken(phone);
                 if(pushToken ==  null){
                        LoggerUtils.getInstance().log(String.format("miss push token  %s ", phone));
                        return ;
+                }
+                send(pushToken.getOwner_phone(), message);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void send2locPush(String order_id, Shop shop) {
+        try {
+
+            Order value = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
+            String v = null;
+            String url;
+            byte[] t = null;
+            String response = "用户下单";
+            long adr_id = value.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            float p = (float) value.getPrice() / 100;
+            String message = "您有新订单了 ," + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
+                    " 总额：" +  p ;
+            if (shop != null) {
+                CatStaffCommit catcommit = catStaffCommitDao.getbyShopid(shop.getId());
+                PushToken pushToken = pushTokenDao.getPushToken(catcommit.getPhone());
+                if(pushToken ==  null){
+                    LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
+                    return ;
                 }
                 send(pushToken.getOwner_phone(), message);
             }

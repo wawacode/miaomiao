@@ -148,6 +148,7 @@ public class PrinterV2Controller {
         //发短信通知
         pushService.send2Boss(order_id, shop);
         smsService.sendSMS2Boss(order_id,shop);
+
         return "@" + Constants.DONE;
     }
 

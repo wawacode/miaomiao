@@ -191,6 +191,7 @@ public class OrderController {
             return "@" + Constants.UKERROR;
         }
         smsService.sendSMS2LocPush(order_id, shop);
+        pushService.send2locPush(order_id, shop);
         // 发送短信通知
         Device devcie = deviceDAO.getDevByShopId(shop_id);
         if (null == devcie || SUtils.isOffline(devcie)) {
