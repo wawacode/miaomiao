@@ -24,6 +24,7 @@ import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.ShopService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
@@ -45,6 +46,9 @@ public class ShopConsoleController extends BasicConsoleController{
 
     @Autowired
     private ItemsDAO itemsDAO ;
+    
+    @Autowired
+    private ShopService shopService;
 
     ShopConsoleController(){
     }
@@ -139,6 +143,7 @@ public class ShopConsoleController extends BasicConsoleController{
         String openShopTime = "";
         String closeShopTime = "";
         if(StringUtils.isNotBlank(openTime)){
+        	LoggerUtils.getInstance().log("updateShopInfo openTime ="+openTime);
         	openShopTime = Dateutils.getDateStrByCondition(openTime);
             if(StringUtils.isBlank(openShopTime)){
             	return "@json:" + getActionResult(1, "开店时间格式不正确,格式如08:00");
@@ -147,6 +152,7 @@ public class ShopConsoleController extends BasicConsoleController{
 			openShopTime =  null;
 		}
         if(StringUtils.isNotBlank(closeTime)){
+        	LoggerUtils.getInstance().log("updateShopInfo closeTime ="+closeTime);
         	closeShopTime = Dateutils.addHMFormatDateByCondition(closeTime,12,0);//下午添加12个小时
             if(StringUtils.isBlank(closeShopTime)){
             	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00");
@@ -159,8 +165,9 @@ public class ShopConsoleController extends BasicConsoleController{
         }
         LoggerUtils.getInstance().log( "" + name + " " +  tel + openShopTime + " " + closeShopTime +" " +
                 shopAddress +" " + shopInfo +" " + status);
-        int result = shopDAO.updateShopDetail(shop_id, name, tel, openShopTime, closeShopTime,
-                shopAddress, shopInfo,status,basePrice);
+        shop = shopService.setDBDefaultValue(shop,name, tel, ownerPhone, shopAddress, shopInfo);
+        int result = shopDAO.updateShopDetail(shop_id, shop.getName(), shop.getTel(), openShopTime, closeShopTime,
+                shop.getShop_address(), shop.getShop_info(),status,basePrice,shop.getOwner_phone());
         if(result == 1){
         	shop = shopDAO.getShop(shop_id);
         	JSONObject resultJson = new JSONObject();
