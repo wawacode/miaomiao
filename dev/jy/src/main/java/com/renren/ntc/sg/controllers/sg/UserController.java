@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
-import com.renren.ntc.sg.biz.dao.AddressDAO;
-import com.renren.ntc.sg.biz.dao.DeviceDAO;
-import com.renren.ntc.sg.biz.dao.OrdersDAO;
-import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.dao.*;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.AddressService;
@@ -33,7 +30,8 @@ public class UserController {
     @Autowired
     public ShopDAO shopDAO;
 
-
+    @Autowired
+    public UserOrdersDAO userOrdersDAO;
     @Autowired
     OrderService orderService ;
 
@@ -68,12 +66,9 @@ public class UserController {
 
         Shop shop = shopDAO.getShop(shop_id);
         List<Address>  addressls = addressDAO.getAddresses(user_id,0,1);
-        List<Order>  orders = orderDAO.getOrder(user_id,0,20,SUtils.generOrderTableName(shop_id));
-
+        List<Order>  orders  = userOrdersDAO.getOrder(user_id, 0 , 20 , SUtils.generUserOrderTableName(user_id));
         inv.addModel( "addressls",addressls);
         orders = orderService.forV(orders)  ;
-        inv.addModel("shop",shop);
-        inv.addModel( "orders",orders);
 
         JSONObject response =  new JSONObject();
         JSONObject data =  new JSONObject();
@@ -82,9 +77,7 @@ public class UserController {
         data.put("addressls", JSON.toJSON(addressls));
         response.put("data", data);
         response.put("code", 0);
-
         return "@" + response.toJSONString();
-//        return "user";
     }
 }
 

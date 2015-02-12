@@ -1,6 +1,7 @@
 angular.module('miaomiao.shop')
     .controller('ShoppingCartCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,ShoppingCart) {
 
+        $scope.info = $scope.info || {};
         $scope.info.shoppingCartItems = ShoppingCart.getAllItems();
 
         $scope.selectItem = function (item) {

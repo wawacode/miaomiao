@@ -1,7 +1,7 @@
 angular.module('miaomiao.shop')
-    .controller('UserAddressListCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,httpClient,AddressService) {
+    .controller('UserAddressListCtrl', function ($scope, $ionicLoading, $http,$ionicScrollDelegate, $state, localStorageService,httpClient,AddressService) {
 
-        $scope.shop = localStorageService.get('MMMETA_shop');
+        $scope.shop = localStorageService.get('MMMETA_shop') || {};
 
         function updateAddress(){
             $scope.LoadingMessage = '正在加载地址列表...';

@@ -241,6 +241,13 @@ public class SUtils {
         return sb.append(mod).toString();
     }
 
+    public static String generUserOrderTableName(long shop_id) {
+        StringBuffer sb = new StringBuffer("user_orders_");
+        long mod = shop_id % 1000;
+        return sb.append(mod).toString();
+    }
+
+
 
     public static JSONObject parse(Item item) {
         JSONObject jb = new JSONObject();
