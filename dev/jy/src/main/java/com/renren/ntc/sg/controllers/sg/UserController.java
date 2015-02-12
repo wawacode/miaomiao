@@ -69,8 +69,6 @@ public class UserController {
         List<Order>  orders  = userOrdersDAO.getOrder(user_id, 0 , 20 , SUtils.generOrderTableName(user_id));
         inv.addModel( "addressls",addressls);
         orders = orderService.forV(orders)  ;
-        inv.addModel("shop",shop);
-        inv.addModel( "orders",orders);
 
         JSONObject response =  new JSONObject();
         JSONObject data =  new JSONObject();
@@ -79,9 +77,7 @@ public class UserController {
         data.put("addressls", JSON.toJSON(addressls));
         response.put("data", data);
         response.put("code", 0);
-
         return "@" + response.toJSONString();
-//        return "user";
     }
 }
 
