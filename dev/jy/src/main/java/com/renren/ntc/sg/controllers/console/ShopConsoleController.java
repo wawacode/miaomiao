@@ -1,5 +1,7 @@
 package com.renren.ntc.sg.controllers.console;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.AuthorizeCheck;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
@@ -240,8 +242,27 @@ public class ShopConsoleController {
         }
         orderls = orderService.forV(orderls);
         inv.addModel("shop",shop);
+        f(orderls);
         inv.addModel("orderls",orderls);
         return "orders";
+    }
+
+    private void f(List<Order> orderls) {
+        for ( Order o : orderls){
+        JSONArray j  = (JSONArray) JSON.parse(o.getSnapshot());
+        StringBuffer sb = new StringBuffer();
+        for (int k=0 ; k<j.size() ; k++){
+            JSONObject jb = (JSONObject) j.get(k);
+            sb.append(jb.getString("name"));
+            sb.append(jb.getString(" "));
+            sb.append(jb.getString("count"));
+            sb.append(jb.getString(" "));
+            sb.append(jb.getFloat("price")/100);
+            sb.append(jb.getString(";"));
+
+        }
+         o.setSnapshot(sb.toString());
+        }
     }
 
     @Post("query")

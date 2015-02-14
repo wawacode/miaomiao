@@ -38,29 +38,13 @@ public class OrderService {
             o.setAddress(adr.getAddress());
             o.setStatus4V(toStr(o.getStatus(), first));
             o.setPrice4V(((float) o.getPrice() / 100) + "");
-            o.setSnapshot(f(o.getSnapshot()));
             oo.add(o);
             first ++;
         }
         return oo;
     }
 
-    private String f(String snapshot) {
-        JSONArray j  = (JSONArray) JSON.parse(snapshot);
-        StringBuffer sb = new StringBuffer();
-        for (int k=0 ; k<j.size() ; k++){
-           JSONObject jb = (JSONObject) j.get(k);
-           sb.append(jb.getString("name"));
-            sb.append(jb.getString(" "));
-            sb.append(jb.getString("count"));
-            sb.append(jb.getString(" "));
-            sb.append(jb.getFloat("price")/100);
-            sb.append(jb.getString(";"));
 
-        }
-            return sb.toString();
-
-    }
 
     private String toStr(int status,int first) {
         if (first ==0 ){
