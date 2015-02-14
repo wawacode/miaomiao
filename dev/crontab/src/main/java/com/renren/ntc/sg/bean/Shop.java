@@ -34,6 +34,16 @@ public class Shop {
     private  String  owner_phone   = "";
     private  String  head_url   = "";
 
+    public String getShop_info() {
+        return shop_info;
+    }
+
+    public void setShop_info(String shop_info) {
+        this.shop_info = shop_info;
+    }
+
+    private String shop_info = "";//服务范围
+
 
 
     public int getStatus() {
@@ -202,6 +212,7 @@ public class Shop {
     public void setHead_url(String head_url) {
         this.head_url = head_url;
     }
+
 
 
 }
