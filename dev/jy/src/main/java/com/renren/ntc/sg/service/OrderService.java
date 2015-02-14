@@ -1,5 +1,8 @@
 package com.renren.ntc.sg.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Address;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
@@ -33,12 +36,30 @@ public class OrderService {
             }
             o.setPhone(adr.getPhone());
             o.setAddress(adr.getAddress());
-            o.setStatus4V(toStr(o.getStatus(),first));
-            o.setPrice4V(((float )o.getPrice()/100) +"");
+            o.setStatus4V(toStr(o.getStatus(), first));
+            o.setPrice4V(((float) o.getPrice() / 100) + "");
+            o.setSnapshot(f(o.getSnapshot()));
             oo.add(o);
             first ++;
         }
         return oo;
+    }
+
+    private String f(String snapshot) {
+        JSONArray j  = (JSONArray) JSON.parse(snapshot);
+        StringBuffer sb = new StringBuffer();
+        for (int k=0 ; k<j.size() ; k++){
+           JSONObject jb = (JSONObject) j.get(k);
+           sb.append(jb.getString("name"));
+            sb.append(jb.getString(" "));
+            sb.append(jb.getString("count"));
+            sb.append(jb.getString(" "));
+            sb.append(jb.getFloat("price")/100);
+            sb.append(jb.getString(";"));
+
+        }
+            return sb.toString();
+
     }
 
     private String toStr(int status,int first) {
