@@ -258,7 +258,7 @@ public class ShopConsoleController {
             sb.append(jb.getString("count"));
             sb.append("单价");
             sb.append(jb.getFloat("price")/100);
-            sb.append(";");
+            sb.append(";<br/>");
         }
          o.setInfo(sb.toString());
         }
