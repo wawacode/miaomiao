@@ -249,7 +249,7 @@ public class ShopConsoleController {
 
     private void f(List<Order> orderls) {
         for ( Order o : orderls){
-        JSONArray j  = (JSONArray) JSON.parse(o.getSnapshot());
+        JSONArray j  = (JSONArray) JSON.parse(o.getInfo());
         StringBuffer sb = new StringBuffer();
         for (int k=0 ; k<j.size() ; k++){
             JSONObject jb = (JSONObject) j.get(k);
@@ -261,7 +261,7 @@ public class ShopConsoleController {
             sb.append(jb.getString(";"));
 
         }
-         o.setSnapshot(sb.toString());
+         o.setInfo(sb.toString());
         }
     }
 
