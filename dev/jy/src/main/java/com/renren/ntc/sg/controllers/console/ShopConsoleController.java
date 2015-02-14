@@ -254,12 +254,11 @@ public class ShopConsoleController {
         for (int k=0 ; k<j.size() ; k++){
             JSONObject jb = (JSONObject) j.get(k);
             sb.append(jb.getString("name"));
-            sb.append(jb.getString(" "));
+            sb.append(jb.getString("数量"));
             sb.append(jb.getString("count"));
-            sb.append(jb.getString(" "));
+            sb.append(jb.getString("单价"));
             sb.append(jb.getFloat("price")/100);
             sb.append(jb.getString(";"));
-
         }
          o.setInfo(sb.toString());
         }
