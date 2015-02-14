@@ -147,7 +147,7 @@ public class ShopConsoleController extends BasicConsoleController{
 			openShopTime =  null;
 		}
         if(StringUtils.isNotBlank(closeTime)){
-        	closeShopTime = Dateutils.addHMFormatDateByCondition(closeTime,12,0);//下午添加12个小时
+        	closeShopTime = Dateutils.addHMFormatDateByCondition(closeTime,0,0);//下午添加12个小时
             if(StringUtils.isBlank(closeShopTime)){
             	return "@json:" + getActionResult(1, "关店时间格式不正确,格式如08:00");
             }
