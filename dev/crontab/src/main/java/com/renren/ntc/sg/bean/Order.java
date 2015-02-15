@@ -22,6 +22,10 @@ public class Order {
     private String info ;
 
 
+
+    private  int readed = 0;
+
+
     private String address  ;
     private String phone  ;
     private int  price  ;
@@ -32,6 +36,13 @@ public class Order {
     private Date create_time ;
     private Date update_time   ;
 
+    public int getReaded() {
+        return readed;
+    }
+
+    public void setReaded(int read) {
+        this.readed = read;
+    }
     public String getAddress() {
         return address;
     }

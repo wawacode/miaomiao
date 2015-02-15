@@ -1,5 +1,8 @@
 package com.renren.ntc.sg.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Address;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
@@ -33,13 +36,15 @@ public class OrderService {
             }
             o.setPhone(adr.getPhone());
             o.setAddress(adr.getAddress());
-            o.setStatus4V(toStr(o.getStatus(),first));
-            o.setPrice4V(((float )o.getPrice()/100) +"");
+            o.setStatus4V(toStr(o.getStatus(), first));
+            o.setPrice4V(((float) o.getPrice() / 100) + "");
             oo.add(o);
             first ++;
         }
         return oo;
     }
+
+
 
     private String toStr(int status,int first) {
         if (first ==0 ){
