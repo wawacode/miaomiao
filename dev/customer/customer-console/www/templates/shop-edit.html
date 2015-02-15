@@ -1,0 +1,101 @@
+<ion-view title="编辑店铺信息">
+    <ion-nav-bar class="bar-dark">
+        <ion-nav-buttons side="left">
+            <button class="button button-clear" ui-sref="tab.front-page">
+                <i class="icon ion-ios7-arrow-back">返回</i>
+            </button>
+        </ion-nav-buttons>
+
+        <ion-nav-title>
+            编辑店铺信息
+        </ion-nav-title>
+
+    </ion-nav-bar>
+    <ion-content padding="false"
+                 has-tabs="true"
+                 has-header="true"
+                 scroll="true"
+                 has-bouncing="true">
+
+        <div class="list">
+
+            <div class="item item-input item-stacked-label">
+                <span class="input-label assertive">店名:</span>
+                <input type="text" ng-value="editingShop.name" ng-model="editingShop.name" placeholder="便利店">
+            </div>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">地址:</span>
+                <input type="text" ng-value="editingShop.shop_address" ng-model="editingShop.shop_address" placeholder="北京市海淀区中关村">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">服务范围:</span>
+                <input type="text" ng-value="editingShop.shopInfo" ng-model="editingShop.shopInfo" placeholder="北京市海淀区中关村">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">起送价格(元):</span>
+                <input type="text" ng-value="editingShop.new_base_price" ng-model="editingShop.new_base_price" placeholder="20">
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label assertive">
+                    管理:
+                </div>
+                <select ng-model="editingShop.status"
+                        ng-options="o.status as o.title for o in [{title:'正在营业',status:0},{title:'打烊',status:1}]"
+                        ng-init="item.status=0">
+                </select>
+            </label>
+            <div class="item item-stacked-label">
+                <span class="input-label assertive">营业时间</span>
+
+                <div class="list" style="">
+                    <div class="item item-input" style="border: none;">
+                        <span class="input-label" style="max-width: 100px">24小时营业:</span>
+                        <label class="checkbox">
+                            <input type="checkbox" style="padding: 2px;" ng-model="editingShop.isFullTimeOpen"
+                                   ng-click="updateShopFullTimeOpen()">
+                        </label>
+                    </div>
+                    <div class="item item-input item-button-right" style="border: none;"
+                         ng-show="!editingShop.isFullTimeOpen">
+                        <span class="input-label" style="max-width: 100px">开店时间:</span>
+
+                        <div ng-if="!hasTimePickerPlugin()">
+                            <select ng-model="editingShop.new_open_time.hours" ng-options="o for o in allHours">
+                            </select>
+                            <select ng-model="editingShop.new_open_time.minutes" ng-options="o for o in allMinutes">
+                            </select>
+                        </div>
+                        <div ng-if="hasTimePickerPlugin()">
+                            <span class="input-label" style="max-width: 100px"
+                                  ng-click="showTimePicker(editingShop,'open')">
+                                {{editingShop.new_open_time.hours}}:{{editingShop.new_open_time.minutes}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="item item-input" style="border: none;" ng-show="!editingShop.isFullTimeOpen">
+                        <span class="input-label" style="max-width: 100px">打烊时间:</span>
+
+                        <div ng-if="!hasTimePickerPlugin()">
+                            <select ng-model="editingShop.new_close_time.hours" ng-options="o for o in allHours">
+                            </select>
+                            <select ng-model="editingShop.new_close_time.minutes" ng-options="o for o in allMinutes">
+                            </select>
+                        </div>
+                        <div ng-if="hasTimePickerPlugin()">
+                            <span class="input-label" style="max-width: 100px"
+                                  ng-click="showTimePicker(editingShop,'close')">
+                                {{editingShop.new_close_time.hours}}:{{editingShop.new_close_time.minutes}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <label class="item item-input-inset" style="text-align: center">
+                <button class="button button-full button-balanced" ng-click="saveShop(editingShop)">保存</button>
+            </label>
+
+        </div>
+    </ion-content>
+    </ion-view>

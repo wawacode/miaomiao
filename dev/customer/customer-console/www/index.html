@@ -8,6 +8,8 @@
     <!--<link href="css/ionic.app.css" rel="stylesheet">-->
     <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
     <link href="lib/angular-dropdowns/angular-dropdowns.css" rel="stylesheet">
+    <link href="lib/angular-native-picker/build/themes/default.css" rel="stylesheet">
+    <link href="lib/angular-native-picker/build/themes/default.time.css" rel="stylesheet">
     <link href="css/platform.css" rel="stylesheet">
 
     <!-- ionic/angularjs js -->
@@ -22,7 +24,10 @@
     <script src="lib/angular-local-storage.min.js"></script>
     <script src="lib/ngstorage/ngStorage.min.js"></script>
     <script src="lib/angular-dropdowns/angular-dropdowns.js"></script>
-    <script src="lib/angular-native-picker/build/angular-datepicker.js"></script>
+    <!--<script src="lib/angular-native-picker/build/angular-datepicker.js"></script>-->
+    <script src="lib/angular-native-picker/src/picker.js"></script>
+    <script src="lib/angular-native-picker/src/picker.time.js"></script>
+    <script src="lib/angular-native-picker/src/directives.js"></script>
 
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
 
@@ -48,6 +53,7 @@
     <script src="js/controllers/OrderDetailCtrl.js"></script>
     <script src="js/controllers/ProductCtrl.js"></script>
     <script src="js/controllers/EditProductCtrl.js"></script>
+    <script src="js/controllers/ShopListCtrl.js"></script>
     <script src="js/controllers/EditShopCtrl.js"></script>
     <script src="js/controllers/AddProductCtrl.js"></script>
     <script src="js/controllers/SearchCtrl.js"></script>
@@ -56,17 +62,15 @@
     <script src="js/services/testData.js"></script>
     <!-- 3rd party lib -->
     <script src="lib/angular-loading-bar/build/loading-bar.js"></script>
-    <script src="lib/firebase/firebase.js"></script>
-    <script src="lib/angularfire/dist/angularfire.min.js"></script>
-    <script src="lib/moment/min/moment.min.js"></script>
 
 </head>
 
 <!--<body ng-app="miaomiao.console" ion-track-auto ng-controller="MainCtrl">-->
 <body ng-app="miaomiao.console" ng-controller="MainCtrl">
 
-<ion-nav-bar class="bar-dark">
-    <ion-nav-back-button></ion-nav-back-button>
+<ion-nav-bar class="bar-dark" animation="nav-title-slide-ios7" back-button-type="button-icon"
+             back-button-icon="ion-arrow-left-c">
+    <!--<ion-nav-back-button></ion-nav-back-button>-->
 </ion-nav-bar>
 
 <!--
@@ -74,6 +78,6 @@
   Templates are in the /templates folder (but you could also
   have templates inline in this html file if you'd like).
 -->
-<ion-nav-view></ion-nav-view>
+<ion-nav-view animation="slide-left-right"></ion-nav-view>
 </body>
 </html>

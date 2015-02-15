@@ -66,7 +66,6 @@ angular.module('miaomiao.console', [
     }];
 })
     .run(function ($ionicPlatform, $http, $ionicTrack, $ionicDeploy) {
-//.run(function($ionicPlatform, $templateCache, $http) {
         $ionicPlatform.ready(function () {
             // for ios7 style header bars
             if (window.StatusBar) {
@@ -188,6 +187,16 @@ angular.module('miaomiao.console', [
                 }
             })
 
+            .state('tab.shop-edit', {
+                url: '/shop-edit',
+                views: {
+                    'tab-front-page': {
+                        templateUrl: 'templates/shop-edit.html',
+                        controller: 'EditShopCtrl'
+                    }
+                }
+            })
+
             .state('tab.product', {
                 url: '/product',
                 views: {
@@ -220,7 +229,8 @@ angular.module('miaomiao.console', [
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/sign-in');
 
-    }).factory(("ionPlatform"), function( $q ){
+    })
+    .factory(("ionPlatform"), function( $q ){
         var ready = $q.defer();
 
         ionic.Platform.ready(function( device ){

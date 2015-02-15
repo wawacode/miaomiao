@@ -1,7 +1,7 @@
 <ion-modal-view>
 
     <ion-header-bar class="bar bar-header bar-dark">
-        <h1 class="title">管理店铺</h1>
+        <h1 class="title">切换店铺</h1>
         <button class="button button-clear button-primary" ng-click="closeModal()">取消</button>
     </ion-header-bar>
 
@@ -10,9 +10,11 @@
                  has-header="true"
                  scroll="true"
                  has-bouncing="true">
+
         <div class="list card" ng-repeat="item in info.shoplist" delegate-handle="shoplist" ng-click="switchDefaultShop(item,$event)">
-            <div class="item item-body" style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
-                <div>
+            <div class="item item-body  " style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
+
+                <div class="item-icon-right">
                     <div style="font-size: 16px;display: inline-block;color: #191919">
                         {{item.name}}
                     </div>
@@ -20,14 +22,10 @@
                     <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
                         {{item.status | getShopStatusString }}
                     </div>
-
-                    <div style="display: inline-block;float: right" ng-click="editShop(item,$event)">
-                        <button class="positive button button-icon ion-settings">编辑</button>
-                    </div>
-
+                    <i class="icon ion-ios7-checkmark positive" ng-show="item.id == info.defaultShop.id"></i>
                 </div>
 
-                <div style="margin-top: 12px;color: #6a6a6a">
+                <div style="margin-top: 12px;color: #6a6a6a" class="list">
                     <div style="font-size: 12px;">
                         <div style=" display: inline-block" ng-show="item.open_time || item.close_time">
                             <i class="icon ion-ios7-clock"
@@ -52,68 +50,6 @@
             </div>
         </div>
 
-        <div class="list" ng-show="startEditShop">
-
-            <label class="item item-input item-stacked-label">
-                <span class="input-label assertive">店名:</span>
-                <input type="text" ng-value="editingShop.name" ng-model="editingShop.name">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label assertive">地址:</span>
-                <input type="text" ng-value="editingShop.shop_address" ng-model="editingShop.shop_address">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label assertive">服务范围:</span>
-                <input type="text" ng-value="editingShop.shopInfo" ng-model="editingShop.shopInfo">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label assertive">起送价格(元):</span>
-                <input type="text" ng-value="editingShop.new_base_price" ng-model="editingShop.new_base_price">
-            </label>
-
-            <div class="item item-input-inset item-stacked-label">
-                <div class="list" style="">
-                    <span class="input-label assertive">营业时间</span>
-                    <div class="item item-input" style="border: none;">
-                        <span class="input-label" style="max-width: 100px">24小时营业:</span>
-                        <label class="checkbox">
-                            <input type="checkbox" style="padding: 2px;" ng-model="editingShop.isFullTimeOpen" ng-click="updateShopFullTimeOpen()">
-                        </label>
-                    </div>
-                    <div class="item item-input item-button-right" style="border: none;" ng-show="!editingShop.isFullTimeOpen">
-                        <span class="input-label" style="max-width: 100px">开店时间:</span>
-                        <!--<input type="text" ng-model="editingShop.new_open_time" placeholder="8:00 AM" required>-->
-                        <ng-time-selector hours="editingShop.new_open_time.hours" minutes="editingShop.new_open_time.minutes"></ng-time-selector>
-                    </div>
-                    <div class="item item-input" style="border: none;" ng-show="!editingShop.isFullTimeOpen">
-                        <span class="input-label" style="max-width: 100px">打烊时间:</span>
-                        <!--<input type="text" ng-model="editingShop.new_close_time" placeholder="10:00 PM" required>-->
-                        <ng-time-selector hours="editingShop.new_close_time.hours" minutes="editingShop.new_close_time.minutes"></ng-time-selector>
-                    </div>
-                </div>
-            </div>
-            <label class="item item-input item-select">
-                <div class="input-label assertive">
-                    管理:
-                </div>
-
-                <select ng-model="editingShop.status" ng-options="o.status as o.title for o in [{title:'正在营业',status:0},{title:'打烊',status:1}]" ng-init="item.status=0">
-                </select>
-
-            </label>
-
-            <div class="item tabs tabs-icon-left tabs-light">
-                <a class="tab-item positive" ng-click="cancelEditShop()">
-                    <i class="icon ion-close-circled"></i>
-                    取消
-                </a>
-
-                <a class="tab-item positive" ng-click="saveShop(editingShop)">
-                    <i class="icon ion-checkmark-circled"></i>
-                    保存
-                </a>
-            </div>
-        </div>
     </ion-content>
 
 </ion-modal-view>

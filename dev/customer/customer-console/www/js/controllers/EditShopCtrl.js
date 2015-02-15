@@ -1,70 +1,49 @@
-angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope','$filter', '$ionicPopup','$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate','$timeout',
+angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope','$state','$filter', '$ionicPopup','$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate','$timeout','MMShopService',
 
-    function ($scope,$filter, $ionicPopup, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate,$timeout) {
+    function ($scope,$state,$filter, $ionicPopup, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate,$timeout,MMShopService) {
 
-        $ionicModal.fromTemplateUrl('templates/shop-list.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-                $scope.modal = modal;
-            });
 
-        $scope.info = {};
+        $scope.editingShop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP');
 
-        $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP_LIST') || [];
-        $scope.info.defaultShop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || ($scope.info.shoplist && $scope.info.shoplist[0]);
-        $scope.info.shopName = $scope.info.defaultShop.name || "首页";
-
-        $scope.openModal = function() {
-            $scope.modal.show();
-        };
-
-        $scope.closeModal = function() {
-            $scope.modal.hide();
-        };
-
-        //Cleanup the modal when we're done with it!
-        $scope.$on('$destroy', function() {
-            $scope.modal.remove();
-        });
-        // Execute action on hide modal
-        $scope.$on('modal.hide', function() {
-            // Execute action
-        });
-        // Execute action on remove modal
-        $scope.$on('modal.removed', function() {
-            // Execute action
-        });
-        $scope.$on('modal.shown', function() {
-
-        });
-
-        $scope.switchDefaultShop = function(shopInfo,$event){
-
-            $event.stopPropagation();
-
-            localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',shopInfo);
-
-            $scope.closeModal();
-            $scope.doShopInfoRefresh();
-
+        function _reformatHourMinutes(number){
+            return (parseInt(number) < 10 ? '0':'') + number;
         }
 
-        $scope.ShowShopList = function() {
-            $scope.openModal();
+        // prepare data
+        function initData(){
+
+            $scope.editingShop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP');
+
+            $scope.allHours = [];
+            for(var i = 1; i<= 24;i++){
+                $scope.allHours.push(i);
+            }
+            $scope.allMinutes = [];
+            for(var i = 0; i < 60;i++){
+                $scope.allMinutes.push(_reformatHourMinutes(i));
+            }
+
+            $scope.editingShop.new_base_price = $scope.editingShop.base_price/100.0;
+
+            if(!$scope.editingShop.open_time && !$scope.editingShop.close_time){
+                $scope.editingShop.isFullTimeOpen = true;
+                $scope.editingShop.new_open_time = {'hours': 8,'minutes': _reformatHourMinutes(0)}; // place holder value
+                $scope.editingShop.new_close_time = {'hours':22,'minutes': _reformatHourMinutes(0)};
+            }else{
+                // for default display value
+                var date = new Date($scope.editingShop.open_time);
+                $scope.editingShop.new_open_time = {'hours': date.getHours(),'minutes': _reformatHourMinutes(date.getMinutes())};
+
+                date = new Date($scope.editingShop.close_time);
+                $scope.editingShop.new_close_time = {'hours': date.getHours(),'minutes': _reformatHourMinutes(date.getMinutes())};
+            }
         }
 
         $scope.cancelEditShop = function(item){
-            // TODO: compare and save
-            $scope.startEditShop = false;
-            $timeout(function(){
-                $ionicScrollDelegate.resize();
-                $ionicScrollDelegate.scrollTop();
-            });
+           $state.go('tab.front-page',null,{reload:false});
         }
 
         $scope.saveShop = function(item){
-            // TODO: compare and save
 
             var options = {
                 shop_id:$scope.editingShop.id,
@@ -107,7 +86,6 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 }
 
                 //success, just
-                $scope.startEditShop = false;
                 $timeout(function(){
 
                     $ionicScrollDelegate.resize();
@@ -117,13 +95,16 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                     localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop);
 
                     var shopList = localStorageService.get('MMCONSOLE_METADATA_SHOP_LIST') || [];
-                    $scope.info.shoplist = shopList;
                     for(var i=0;i< shopList.length;i++){
-                        if(shopList[i].shop_id == dataDetail.shop.shop_id){
+                        if(shopList[i].id == dataDetail.shop.id){
                             shopList[i] = dataDetail.shop;  // force update shop info
                         }
                     }
                     localStorageService.set('MMCONSOLE_METADATA_SHOP_LIST',shopList);
+
+                    $state.go('tab.front-page',null,{reload:true});
+
+                    MMShopService.switchDefaultShopNotification({});
 
                 });
             }, function (data, status) {
@@ -135,33 +116,41 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
             });
         }
 
-        $scope.editShop = function(item,$event){
+        $scope.hasTimePickerPlugin = function(){
+            return typeof(datePicker) == 'undefined' ? false: true ;
+        }
 
-            $event.stopPropagation();
+        $scope.showTimePicker = function(item,action){
 
+            if(action == 'open'){
+                var options = {
+                    date: item.open_time ? new Date(item.open_time):new Date(),
+                    mode: 'time'
+                };
 
-            item.new_base_price = item.base_price/100.0;
+                datePicker.show(options, function(date){
+                    if(!date)return;
+                    var res = new Date(date);
+                    $timeout(function(){
+                        item.new_open_time = {'hours': res.getHours(),'minutes': _reformatHourMinutes(res.getMinutes())};
+                        console.log('get new open time:' + item.new_open_time.hours + ':' + item.new_open_time.minutes);
+                    });
+                });
+            }else if(action == 'close'){
+                var options = {
+                    date: item.close_time ? new Date(item.close_time):new Date(),
+                    mode: 'time'
+                };
 
-//            item.new_open_time = $filter('date')(item.open_time, 'shortTime');
-//            item.new_close_time = $filter('date')(item.close_time, 'shortTime');
-
-            if(!item.open_time && !item.close_time){
-                item.isFullTimeOpen = true;
-                item.new_open_time = {'hours': 8,'minutes': 0};
-                item.new_close_time = {'hours':22,'minutes': 0};
-            }else{
-                var date = new Date(item.open_time);
-                item.new_open_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
-                date = new Date(item.close_time);
-                item.new_close_time = {'hours': date.getHours(),'minutes': date.getMinutes()};
+                datePicker.show(options, function(date){
+                    if(!date)return;
+                    var res = new Date(date);
+                    $timeout(function(){
+                        item.new_close_time = {'hours': res.getHours(),'minutes': _reformatHourMinutes(res.getMinutes())};
+                        console.log('get new close time:' + item.new_close_time.hours + ':' + item.new_close_time.minutes);
+                    });
+                });
             }
-
-            $scope.editingShop = item;
-            $scope.startEditShop = true;
-            $timeout(function(){
-
-                $ionicScrollDelegate.resize();
-            });
         }
 
         $scope.updateShopFullTimeOpen = function(){
@@ -169,5 +158,12 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 $ionicScrollDelegate.resize();
             });
         }
+
+        // just kicking the tires
+        $scope.$on('$ionicView.afterEnter', function () {
+            $timeout(function(){
+                initData();
+            })
+        });
     }
 ]);

@@ -56,6 +56,8 @@ angular.module('miaomiao.console.controllers')
 
         $scope.doRefresh = function(){
 
+            $scope.shopName = $scope.info.shop.name || "首页";
+
             $scope.LoadingMessage = '正在加载,请稍候...';
             $ionicLoading.show({
                 templateUrl: 'templates/loadingIndicator.html',
@@ -121,8 +123,9 @@ angular.module('miaomiao.console.controllers')
 
         MMShopService.onSwitchDefaultShopNotification($scope,function(){
 
-            $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
-            $scope.doRefresh();
-
+            $timeout(function () {
+                $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
+                $scope.doRefresh();
+            });
         });
     });

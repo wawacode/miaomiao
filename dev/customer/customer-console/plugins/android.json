@@ -59,6 +59,10 @@
                         {
                             "xml": "<feature name=\"CallNumber\"><param name=\"android-package\" value=\"com.monmouth.callnumber.CallNumber\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"DatePickerPlugin\"><param name=\"android-package\" value=\"com.plugin.datepicker.DatePickerPlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -718,6 +722,9 @@
             "PACKAGE_NAME": "com.miaomiao.bconsole"
         },
         "com.monmouth.callnumber": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "com.plugin.datepicker": {
             "PACKAGE_NAME": "com.miaomiao.bconsole"
         }
     },

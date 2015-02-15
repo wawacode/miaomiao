@@ -55,6 +55,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 function (result) {
                     $timeout(function () {
                         $scope.newitem.serialNo = result.text;
+                        $scope.findItem($scope.newitem.serialNo);
                     })
                 },
                 function (error) {
