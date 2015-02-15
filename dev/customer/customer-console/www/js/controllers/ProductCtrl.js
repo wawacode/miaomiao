@@ -48,6 +48,7 @@ angular.module('miaomiao.console.controllers')
                     $scope.info.categoryls[idx].scrollIndex = $scope.info.categoryls[idx].itemls.length;
                     $scope.info.categoryls[idx].canLoadMore = 1;
                     if (idx == 0) {
+                        $scope.selectedIndex = 0;
                         $scope.info.categoryls[idx].selected = 1;
                         $scope.info.categoryls[idx].select_a = 'shop-categray-selected';
                         $scope.info.categoryls[idx].select_b = 'shop-categray-item-decorate-show';
@@ -74,7 +75,6 @@ angular.module('miaomiao.console.controllers')
             initData();
         }
 
-        $scope.selectedIndex = 0;
         $scope.selectCategory = function ($index) {
 
             // if in loading more, can't select

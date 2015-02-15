@@ -17,6 +17,14 @@
     overflow: hidden;
 }
 
+.productlist-ion-content{
+
+}
+
+.productlist-ion-content.has-header{
+    top: 45;
+}
+
 
 .shop-categray {
 

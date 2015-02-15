@@ -113,9 +113,12 @@ angular.module('miaomiao.console.controllers')
 
                     httpClient.logOut( $scope.user.phone ,function (data, status) {
 
+                        localStorageService.set('MMCONSOLE_METADATA_USER',null);
+                        $state.go('signin',null,{reload: true});
                     }, function (data, status) {
+                        $state.go('signin',null,{reload: true});
                     });
-                    $state.go('signin',null,{reload: true});
+                    
                     return true;
                 }
             });
