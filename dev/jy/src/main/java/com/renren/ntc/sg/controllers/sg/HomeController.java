@@ -177,7 +177,7 @@ public class HomeController {
                lat>shoparea.getMin_lat()
                     && lng < shoparea.getMax_lng() &&
                     lng > shoparea.getMin_lng()){
-                LoggerUtils.getInstance().log(String.format("find match area %s ,for %f ,%f",shoparea.getName(),lat,lng));
+                LoggerUtils.getInstance().log(String.format("find match area %s ,for %f ,%f",shoparea.getArea_name(),lat,lng));
                 return true;
             }
         }

@@ -15,7 +15,6 @@ public class ShopArea {
     private  long id ;
     private  String area_name = "";
     private long shop_id = 0;
-    private  String name = "";
 
     private  double max_lat ;
     private  double min_lat ;
@@ -23,8 +22,19 @@ public class ShopArea {
 
     private  double max_lng ;
     private  double min_lng ;
-    private Date updatetime ;
+    private Date update_time ;
     private Date create_time ;
+
+
+    public Date getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(Date update_time) {
+        this.update_time = update_time;
+    }
+
+
 
     public long getId() {
         return id;
@@ -50,13 +60,6 @@ public class ShopArea {
         this.shop_id = shop_id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public double getMax_lat() {
         return max_lat;
@@ -88,16 +91,6 @@ public class ShopArea {
 
     public void setMin_lng(double min_lng) {
         this.min_lng = min_lng;
-    }
-
-
-
-    public Date getUpdatetime() {
-        return updatetime;
-    }
-
-    public void setUpdatetime(Date updatetime) {
-        this.updatetime = updatetime;
     }
 
     public Date getCreate_time() {
