@@ -13,7 +13,7 @@ import java.util.List;
 public class mvShopItems {
 
     private static long shop_id = 1;
-    private static long to_shop_id = 10032;
+    private static long to_shop_id = 10037;
     private static int category_id = 15;
 
 
@@ -43,7 +43,7 @@ public class mvShopItems {
                            System.out.println("insert " + item.getSerialNo());
                            itemDao.insert(SUtils.generTableName(to_shop_id), item);
                     }else{
-//                        System.out.println("update" + item.getSerialNo() + " " + item.getId() );*/
+                          System.out.println("update" + item.getSerialNo() + " " + item.getId() );
                           itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
                     }
             }
