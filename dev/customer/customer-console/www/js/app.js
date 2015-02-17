@@ -12,6 +12,7 @@ angular.module('miaomiao.console', [
     'LocalStorageModule',
     'ngStorage',
     'ngDropdowns',
+    'QuickList',
     'angular-datepicker',
     'miaomiao.console.controllers',
     'miaomiao.console.services',
@@ -65,7 +66,7 @@ angular.module('miaomiao.console', [
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
 })
-    .run(function ($ionicPlatform, $http, $ionicTrack, $ionicDeploy) {
+    .run(function ($ionicPlatform, $http, $ionicTrack, $ionicDeploy,localStorageService,httpClient,$state) {
         $ionicPlatform.ready(function () {
             // for ios7 style header bars
             if (window.StatusBar) {
@@ -120,11 +121,41 @@ angular.module('miaomiao.console', [
             if (navigator.splashscreen) {
                 navigator.splashscreen.hide();
             }
+
+            // check login status
+            var user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
+            if(!user.identity && !user.token)return;
+            // validate user login
+            httpClient.islogin(user.token,function (data, status) {
+                // hide the splash screen only after everything's ready (avoid flicker)
+                // requires keyboard plugin and confix.xml entry telling the splash screen to stay until explicitly told
+                if (navigator.splashscreen) {
+                    navigator.splashscreen.hide();
+                }
+                var code = data.code, dataDetail = data.data;
+                if (code != 0 ) {
+                    console.log('check login status failed:'+ code);
+                    $state.go('signin',null,{reload:true});
+                    return;
+                }
+                //success
+                localStorageService.set('MMCONSOLE_METADATA_SHOP_LIST',dataDetail.shop);
+                localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop[0]);
+
+                $state.go('tab.front-page',null,{reload:true})
+
+            }, function (data, status) {
+                if (navigator.splashscreen) {
+                    navigator.splashscreen.hide();
+                }
+                console.log('check login status failed');
+                $state.go('signin',null,{reload:true});
+            });
         });
     })
 
-//    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
-    .constant('serverInfo', {host: 'http://192.168.1.113:8010', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
+//    .constant('serverInfo', {host: 'http://192.168.1.113:8010', context: '/console/api/'})
 
     .config(function($compileProvider){
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
@@ -132,7 +163,7 @@ angular.module('miaomiao.console', [
     .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;
     }])
-    .config(function ($stateProvider, $urlRouterProvider, $ionicAppProvider, $compileProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $ionicAppProvider, $compileProvider,$ionicConfigProvider) {
         try {
             $ionicAppProvider.identify({
                 "app_id": ionic.Config.app_id
@@ -142,6 +173,8 @@ angular.module('miaomiao.console', [
         }
 
         $compileProvider.debugInfoEnabled(false);
+        $ionicConfigProvider.tabs.position("bottom"); //Places them at the bottom for all OS
+        $ionicConfigProvider.tabs.style("standard"); //Makes them all look the same across all OS
 
         // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router

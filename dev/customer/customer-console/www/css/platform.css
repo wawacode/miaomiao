@@ -43,13 +43,13 @@
 .shop-categray-selected {
     background-color: #ffffff;
     border-right: none;
+    color: #F54447;
 }
 
 .shop-categray-item {
 
     text-align: left;
     font-size: 14px;
-    color: #000000;
     padding: 10px 1em 10px 1em;
 
 }

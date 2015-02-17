@@ -31,7 +31,7 @@ angular.module('miaomiao.console.controllers')
                     return;
                 }
 
-                $scope.info.categoryls = dataDetail.categoryls;
+                var retCategoryls = dataDetail.categoryls;
 
                 // extend for use
                 /*
@@ -40,24 +40,28 @@ angular.module('miaomiao.console.controllers')
                  "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
                  "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
                  * */
-                if (!$scope.info.categoryls || !$scope.info.categoryls.length)return;
+                if (!retCategoryls || !retCategoryls.length)return;
+                var retCategorylNames = [];
+                for (var idx = 0; idx < retCategoryls.length; idx++) {
 
-                for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
+                    var curCategory = retCategoryls[idx];
+                    retCategorylNames.push(curCategory.name);
 
-                    $scope.info.categoryls[idx].selected = 0;
-                    $scope.info.categoryls[idx].scrollIndex = $scope.info.categoryls[idx].itemls.length;
-                    $scope.info.categoryls[idx].canLoadMore = 1;
+                    curCategory.selected = 0;
+                    curCategory.scrollIndex = curCategory.itemls.length;
+                    curCategory.canLoadMore = 1;
+
                     if (idx == 0) {
                         $scope.selectedIndex = 0;
-                        $scope.info.categoryls[idx].selected = 1;
-                        $scope.info.categoryls[idx].select_a = 'shop-categray-selected';
-                        $scope.info.categoryls[idx].select_b = 'shop-categray-item-decorate-show';
-                        $scope.info.categoryls[idx].select_c = 'shop-categray-item-selected';
+                        $scope.info.selectedCategory = curCategory;
+                        curCategory.selected = 1;
                     }
                 }
 
-                $scope.info.currentDisplayCategory = $scope.info.categoryls[0];
-                $scope.info.currentDisplayItems = $scope.info.currentDisplayCategory.itemls;
+                $timeout(function(){
+                    $scope.info.category_names = retCategorylNames;
+                    $scope.info.categoryls = retCategoryls;
+                })
 
             }, function (data, status) {
                 $ionicLoading.hide();
@@ -71,6 +75,10 @@ angular.module('miaomiao.console.controllers')
 
         initData();
 
+        $scope.getItemHeight = function(){
+            return 100;
+        }
+
         $scope.refreshAll = function(){
             initData();
         }
@@ -80,38 +88,33 @@ angular.module('miaomiao.console.controllers')
             // if in loading more, can't select
             if (inLoadingMore)return;
 
-            $scope.info.currentDisplayCategory = $scope.info.categoryls[$index];
-
             if($scope.selectedIndex != $index){
-
-                var current = $scope.info.currentDisplayCategory;
-                current.select_a = 'shop-categray-selected';
-                current.select_b = 'shop-categray-item-decorate-show';
-                current.select_c = 'shop-categray-item-selected';
-
-                var last = $scope.info.categoryls[$scope.selectedIndex];
-                last.select_a = '';
-                last.select_b = '';
-                last.select_c = '';
-
                 $scope.selectedIndex = $index;
+
+                $timeout(function(){
+
+                    $scope.info.selectedCategory = $scope.info.categoryls[$scope.selectedIndex];
+                    $ionicScrollDelegate.resize();
+                    $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
+
+                },100);
             }
-
-            $scope.info.currentDisplayItems = $scope.info.categoryls[$index].itemls;
-
-            $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
         }
 
         $scope.moreDataCanBeLoaded = function () {
-            return $scope.info.currentDisplayCategory && $scope.info.currentDisplayCategory.canLoadMore;
+            return $scope.info.categoryls &&
+                $scope.info.categoryls[$scope.selectedIndex] &&
+                $scope.info.categoryls[$scope.selectedIndex].canLoadMore;
         }
 
         var inLoadingMore = false;
 
-        $scope.addItems = function () {
+        $scope.addItems = function (idx) {
 
-            var cateId = $scope.info.currentDisplayCategory.category_id,
-                from = $scope.info.currentDisplayCategory.scrollIndex,  //$scope.info.currentDisplayItems.length,
+            var idx = $scope.selectedIndex,
+                currentCategory = $scope.info.categoryls[idx],
+                cateId = currentCategory.category_id,
+                from = currentCategory.scrollIndex,  //$scope.info.currentDisplayCategory.itemls.length,
                 offset = 20;
 
             inLoadingMore = true;
@@ -125,7 +128,7 @@ angular.module('miaomiao.console.controllers')
                 var code = data.code, dataDetail = data.data;
                 if (!code == 0 || dataDetail.itemls.length == 0) {
                     inLoadingMore = false;
-                    $scope.info.currentDisplayCategory.canLoadMore = false;
+                    currentCategory.canLoadMore = false;
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                     return;
 
@@ -133,18 +136,19 @@ angular.module('miaomiao.console.controllers')
 
                 inLoadingMore = false;
 
-                $scope.info.currentDisplayItems = $scope.info.currentDisplayItems.concat(dataDetail.itemls);
+                $timeout(function(){
 
-                $scope.info.currentDisplayCategory.scrollIndex += dataDetail.itemls.length;
-                $scope.info.currentDisplayCategory.itemls = $scope.info.currentDisplayItems;
+                    currentCategory.itemls = currentCategory.itemls.concat(dataDetail.itemls);
+                    currentCategory.scrollIndex += dataDetail.itemls.length;
+                    currentCategory.totalCnt = 0;
 
-                $scope.info.currentDisplayCategory.totalCnt = 0;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
 
-                $scope.$broadcast('scroll.infiniteScrollComplete');
 
             }, function (data, status) {
                 inLoadingMore = false;
-                $scope.info.currentDisplayCategory.canLoadMore = false;
+                currentCategory.canLoadMore = false;
                 $scope.$broadcast('scroll.infiniteScrollComplete');
 
             });
@@ -156,32 +160,35 @@ angular.module('miaomiao.console.controllers')
 
         $scope.deleteItemFromCurrentCategory = function (item) {
 
-            var index = $scope.info.currentDisplayItems.indexOf(item);
+            var currentCategory = $scope.info.selectedCategory;
+
+            var index = currentCategory.itemls.indexOf(item);
             if (index > -1) {
-                $scope.info.currentDisplayItems.splice(index, 1);
+                currentCategory.itemls.splice(index, 1);
             }
         }
 
         $scope.stickItemFromCurrentCategory = function (item) {
 
-            var index = $scope.info.currentDisplayItems.indexOf(item);
+            var currentCategory = $scope.info.selectedCategory;
+            var index = currentCategory.itemls.indexOf(item);
             if (index != -1) {
                 $timeout(function () {
-                    $scope.info.currentDisplayItems.splice(index, 1);
-                    $scope.info.currentDisplayItems.unshift(item);
+                    currentCategory.itemls.splice(index, 1);
+                    currentCategory.itemls.unshift(item);
                 })
             }
-
         }
 
         $scope.updateItemFromCurrentCategory = function (item) {
 
-            var index = $scope.info.currentDisplayItems.indexOf(item);
+            var currentCategory = $scope.info.selectedCategory;
+            var index = currentCategory.itemls.indexOf(item);
             if (index != -1) {
-//                $timeout(function () {
-//                    // delete one and insert one
-//                    $scope.info.currentDisplayItems.splice(index, 1,item);
-//                })
+                // do more update
+                $timeout(function () {
+                    currentCategory.itemls.splice(index, 1,item);
+                });
             }
         }
 

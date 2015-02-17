@@ -61,30 +61,4 @@ angular.module('miaomiao.console.controllers')
                 });
             });
         };
-
-        function checkLoginStatus(){
-
-            $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
-            if(!$scope.user.identity)return;
-            // validate user login
-            httpClient.islogin(function (data, status) {
-
-                var code = data.code, dataDetail = data.data;
-                if (code != 0 ) {
-                    console.log('check login status failed:'+ code);
-                    return;
-                }
-                //success
-                localStorageService.set('MMCONSOLE_METADATA_SHOP_LIST',dataDetail.shop);
-                localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop[0]);
-
-                $state.go('tab.front-page',null,{reload:true})
-
-            }, function (data, status) {
-            });
-        }
-        // just kicking the tires
-        $scope.$on('$ionicView.afterEnter', function () {
-            checkLoginStatus();
-        });
     });
