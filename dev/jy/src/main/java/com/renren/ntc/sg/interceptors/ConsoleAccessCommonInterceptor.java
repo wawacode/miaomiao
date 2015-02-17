@@ -67,7 +67,7 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
         }else {
 			String cookie = inv.getRequest().getParameter("token");
 			if(StringUtils.isNotBlank(cookie)){
-                if(SUtils.isStaffKey(uuid)){
+                if(SUtils.isStaffKey(cookie)){
                     long catstaff_id = SUtils.unwrapper(SUtils.unwrapperStaffKey(uuid));
                     u = catstaffDao.getCatStaffbyId(catstaff_id);
                     hostHolder.setUser(u);
