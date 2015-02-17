@@ -52,7 +52,7 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 shop_address: $scope.editingShop.shop_address,
                 owner_phone: $scope.editingShop.owner_phone,
                 base_price:$scope.editingShop.new_base_price * 100,
-                shopInfo:$scope.editingShop.shopInfo,
+                shopInfo:$scope.editingShop.shop_info,
                 status:$scope.editingShop.status
             }
 
