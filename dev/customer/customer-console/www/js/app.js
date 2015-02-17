@@ -123,8 +123,8 @@ angular.module('miaomiao.console', [
         });
     })
 
-    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
-//    .constant('serverInfo', {host: 'http://10.82.133.174:8010', context: '/console/api/'})
+//    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://192.168.1.113:8010', context: '/console/api/'})
 
     .config(function($compileProvider){
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
@@ -159,6 +159,13 @@ angular.module('miaomiao.console', [
                 url: '/forgot-password',
                 templateUrl: 'templates/forgot-password.html'
             })
+
+            .state('changepassword', {
+                url: '/change-password',
+                templateUrl: 'templates/change-password.html',
+                controller:'ChangePwdCtrl'
+            })
+
 
             // setup an abstract state for the tabs directive
             // the tab state isn't an actual page we navigate to, but a necessary state for ionic tabs

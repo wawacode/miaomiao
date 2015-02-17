@@ -43,7 +43,7 @@ angular.module('miaomiao.console.controllers')
                 }
 
                 //success
-                localStorageService.set('MMCONSOLE_METADATA_USER',{'name':$scope.user.name , 'phone' : $scope.user.phone});
+                localStorageService.set('MMCONSOLE_METADATA_USER',{'name':$scope.user.name , 'phone' : $scope.user.phone,'identity':$scope.user.phone});
                 localStorageService.set('MMCONSOLE_METADATA_SHOP_LIST',dataDetail.shop);
                 localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop[0]);
 
@@ -65,13 +65,13 @@ angular.module('miaomiao.console.controllers')
         function checkLoginStatus(){
 
             $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
-
-            if(!$scope.user)return;
+            if(!$scope.user.identity)return;
             // validate user login
             httpClient.islogin(function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0 ) {
+                    console.log('check login status failed:'+ code);
                     return;
                 }
                 //success

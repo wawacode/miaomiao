@@ -50,6 +50,11 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
             doGet('logout', 'phone=' + phone, success, fail);
         },
 
+        changePwd: function (phone, old_pwd,new_pwd, success, fail) {
+
+            doPost('login/change_pwd', {'phone': phone, old_pwd: old_pwd,new_pwd:new_pwd}, success, fail);
+        },
+
         getSummary: function (shopId, beginDate, endDate, success, fail) {
 
 //            if (development)return success(testdata.summary);

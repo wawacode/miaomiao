@@ -103,7 +103,7 @@ angular.module('miaomiao.console.controllers')
                 buttonClicked: function (index) {
                     if (index == 0) {
                         //TODO goto change pass page
-
+                        $state.go('changepassword',null,{reload: true});
                     }
                     return true;
                 },
@@ -113,7 +113,9 @@ angular.module('miaomiao.console.controllers')
 
                     httpClient.logOut( $scope.user.phone ,function (data, status) {
 
-                        localStorageService.set('MMCONSOLE_METADATA_USER',null);
+                        // remove identity feild
+                        localStorageService.set('MMCONSOLE_METADATA_USER',{'name':$scope.user.name , 'phone' : $scope.user.phone});
+
                         $state.go('signin',null,{reload: true});
                     }, function (data, status) {
                         $state.go('signin',null,{reload: true});
