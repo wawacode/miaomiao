@@ -60,12 +60,19 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
                 long catstaff_id = SUtils.unwrapper(SUtils.unwrapperStaffKey(uuid));
                 u = catstaffDao.getCatStaffbyId(catstaff_id);
                 hostHolder.setUser(u);
+                return true;
             }
             u = registUserDAO.getUser(SUtils.unwrapper(uuid));
             hostHolder.setUser(u);
         }else {
 			String cookie = inv.getRequest().getParameter("token");
 			if(StringUtils.isNotBlank(cookie)){
+                if(SUtils.isStaffKey(uuid)){
+                    long catstaff_id = SUtils.unwrapper(SUtils.unwrapperStaffKey(uuid));
+                    u = catstaffDao.getCatStaffbyId(catstaff_id);
+                    hostHolder.setUser(u);
+                    return true;
+                }
 				 u = registUserDAO.getUser(SUtils.unwrapper(uuid));
 		         hostHolder.setUser(u);
 			}

@@ -36,7 +36,7 @@ import java.util.List;
  * yunming.zhu
  */
 @DenyCommonAccess
-@DenyConsoleCommonAccess
+//@DenyConsoleCommonAccess
 @Path("login")
 public class LoginController extends BasicConsoleController {
 
@@ -97,10 +97,6 @@ public class LoginController extends BasicConsoleController {
         result.put("code", -1);
         result.put("msg", "用户不存在");
         result.put("origURL", origURL);
-//    	RegistUser user = hostHolder.getUser();
-//        if (user != null) {
-//            return "@json:" + result.toJSONString();
-//        }
         if (origURL == null || origURL.equals("")) {
             origURL = Constants.DOMAIN;
         }
