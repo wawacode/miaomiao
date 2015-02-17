@@ -73,7 +73,7 @@ public class ConsoleAccessCommonInterceptor extends ControllerInterceptorAdapter
                     hostHolder.setUser(u);
                     return true;
                 }
-				 u = registUserDAO.getUser(SUtils.unwrapper(uuid));
+				 u = registUserDAO.getUser(SUtils.unwrapper(cookie));
 		         hostHolder.setUser(u);
 			}
 		}
