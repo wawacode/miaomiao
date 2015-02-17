@@ -6,7 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.OrderInfo;
 import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.bean.ShopArea;
 import com.renren.ntc.sg.biz.dao.DeviceDAO;
+import com.renren.ntc.sg.biz.dao.ShopAreaDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.dao.SWPOrderDAO;
 import com.renren.ntc.sg.geo.GeoQueryResult;
@@ -34,6 +36,10 @@ public class HomeController {
 
     @Autowired
     public ShopDAO shopDAO;
+
+    @Autowired
+    public ShopAreaDAO shopAreaDAO;
+
     @Autowired
     public SWPOrderDAO  orderDAO;
 
@@ -134,6 +140,10 @@ public class HomeController {
                     ShopLocation shopLoc =  res.getShopLocation();
                     LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
                     long shop_id  = shopLoc.getShop_id();
+                    if (!isshopArea(shop_id,lat,lng)) {
+                        LoggerUtils.getInstance().log(String.format("shop %d , can't service %f ,%f",shop_id,lat,lng));
+                        continue;
+                    }
                     shop = shopDAO.getShop(shop_id);
                     if (null == shop){
                         continue;
@@ -156,6 +166,24 @@ public class HomeController {
         return "@" + response.toJSONString();
     }
 
+    private boolean isshopArea(long shop_id, float lat, float lng) {
+
+        List <ShopArea>  shopAreas = shopAreaDAO.getShopArea(shop_id) ;
+        if (shopAreas == null || shopAreas.size() ==0 ){
+            return true;
+        }
+        for(ShopArea shoparea : shopAreas) {
+            if(lat< shoparea.getMax_lat() &&
+               lat>shoparea.getMin_lat()
+                    && lng < shoparea.getMax_lng() &&
+                    lng > shoparea.getMin_lng()){
+                LoggerUtils.getInstance().log(String.format("find match area %s ,for %f ,%f",shoparea.getArea_name(),lat,lng));
+                return true;
+            }
+        }
+        LoggerUtils.getInstance().log(String.format("miss match area,for %f ,%f",lat,lng));
+        return false;
+    }
 
     @Post("feedback")
     @Get("feedback")
