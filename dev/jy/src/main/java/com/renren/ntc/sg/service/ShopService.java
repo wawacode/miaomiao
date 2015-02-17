@@ -24,6 +24,9 @@ public class ShopService {
 			if (!StringUtils.isBlank(shopAddress)) {
 				shop.setShop_address(shopAddress);
 			}
+            if (!StringUtils.isBlank(shopInfo)) {
+            shop.setShop_info(shopInfo);
+            }
 		    shop.setStatus(status);
             shop.setBase_price(basePrice);
 	}
