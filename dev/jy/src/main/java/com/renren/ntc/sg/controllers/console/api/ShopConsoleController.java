@@ -166,7 +166,7 @@ public class ShopConsoleController extends BasicConsoleController{
         	status = 1;
         }
 
-        shop = shopService.setDBDefaultValue(shop,name, tel, ownerPhone, shopAddress, shopInfo);
+        shopService.setDBDefaultValue(shop,name, tel, ownerPhone, shopAddress, shopInfo);
         int result = shopDAO.updateShopDetail(shop_id, shop.getName(), shop.getTel(), openShopTime, closeShopTime,
                 shop.getShop_address(), shop.getShop_info(),status,basePrice,shop.getOwner_phone());
         if(result == 1){
