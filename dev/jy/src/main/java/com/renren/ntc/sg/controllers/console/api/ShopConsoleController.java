@@ -162,7 +162,7 @@ public class ShopConsoleController extends BasicConsoleController{
         if(status !=0){
         	status = 1;
         }
-        LoggerUtils.getInstance().log( "" + name + " " +  tel + openShopTime + " " + closeShopTime +" " +
+        LoggerUtils.getInstance().log( "update shopInfo" + name + " " +  tel + openShopTime + " " + closeShopTime +" " +
                 shopAddress +" " + shopInfo +" " + status);
         shop = shopService.setDBDefaultValue(shop,name, tel, ownerPhone, shopAddress, shopInfo);
         int result = shopDAO.updateShopDetail(shop_id, shop.getName(), shop.getTel(), openShopTime, closeShopTime,
