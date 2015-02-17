@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.console.api;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +100,10 @@ public class ItemConsoleController extends BasicConsoleController{
                 return "@json:"+resultJson.toJSONString();
             }
             String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
+            File f = new File(savePicPath);
+            if (!f.exists()){
+                f.mkdir();
+            }
             boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
             if(!isSuc){
                 JSONObject resultJson = new JSONObject();

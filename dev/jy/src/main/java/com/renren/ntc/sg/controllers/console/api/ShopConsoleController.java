@@ -136,7 +136,10 @@ public class ShopConsoleController extends BasicConsoleController{
     											 @Param("shopInfo") String shopInfo,//服务范围
     											 @Param("base_price") int basePrice,//起送价
     											 @Param("status") int status){
-		Shop shop = isExistShop(shop_id);
+        LoggerUtils.getInstance().log( "update shopInfo" + name + " " +  tel + openTime + " " + closeTime +" " +
+                shopAddress +" " + shopInfo +" " + status);
+
+        Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
@@ -159,14 +162,10 @@ public class ShopConsoleController extends BasicConsoleController{
         }else {
         	closeShopTime = null;
 		}
-        if(status !=0){
-        	status = 1;
-        }
-        LoggerUtils.getInstance().log( "" + name + " " +  tel + openShopTime + " " + closeShopTime +" " +
-                shopAddress +" " + shopInfo +" " + status);
-        shop = shopService.setDBDefaultValue(shop,name, tel, ownerPhone, shopAddress, shopInfo);
+
+        shopService.setDBDefaultValue(shop,name, tel, ownerPhone, shopAddress, shopInfo,status,basePrice);
         int result = shopDAO.updateShopDetail(shop_id, shop.getName(), shop.getTel(), openShopTime, closeShopTime,
-                shop.getShop_address(), shop.getShop_info(),status,basePrice,shop.getOwner_phone());
+                shop.getShop_address(), shop.getShop_info(),shop.getStatus(),shop.getBase_price(),shop.getOwner_phone());
         if(result == 1){
         	shop = shopDAO.getShop(shop_id);
         	JSONObject resultJson = new JSONObject();

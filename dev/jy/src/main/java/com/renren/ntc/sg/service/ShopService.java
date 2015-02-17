@@ -11,38 +11,23 @@ public class ShopService {
 	@Autowired
 	private ShopDAO shopDAO;
 	
-	public Shop setDBDefaultValue(Shop shop,String name,String tel,String ownerPhone,String shopAddress,String shopInfo) {
-		if (StringUtils.isBlank(name) || StringUtils.isBlank(tel)
-				|| StringUtils.isBlank(ownerPhone)
-				|| StringUtils.isBlank(shopAddress)
-				|| StringUtils.isBlank(shopInfo)) {
-			Shop dbShop = shopDAO.getShop(shop.getId());
-			if (StringUtils.isBlank(name)) {
-				shop.setName(dbShop.getName());
-			}else {
+	public void setDBDefaultValue(Shop shop,String name,String tel,String ownerPhone,String shopAddress,String shopInfo,int status, int basePrice) {
+			if (!StringUtils.isBlank(name)) {
 				shop.setName(name);
 			}
-			if (StringUtils.isBlank(tel)) {
-				shop.setTel(dbShop.getTel());
-			}else {
+			if (!StringUtils.isBlank(tel)) {
 				shop.setTel(tel);
 			}
-			if (StringUtils.isBlank(ownerPhone)) {
-				shop.setOwner_phone(dbShop.getOwner_phone());
-			}else {
+			if (!StringUtils.isBlank(ownerPhone)) {
 				shop.setOwner_phone(ownerPhone);
 			}
-			if (StringUtils.isBlank(shopAddress)) {
-				shop.setShop_address(dbShop.getShop_address());
-			}else {
+			if (!StringUtils.isBlank(shopAddress)) {
 				shop.setShop_address(shopAddress);
 			}
-			if (StringUtils.isBlank(shopInfo)) {
-				shop.setShop_info(dbShop.getShop_info());
-			}else {
-				shop.setShop_info(shopInfo);
-			}
-		}
-		return shop;
+            if (!StringUtils.isBlank(shopInfo)) {
+            shop.setShop_info(shopInfo);
+            }
+		    shop.setStatus(status);
+            shop.setBase_price(basePrice);
 	}
 }
