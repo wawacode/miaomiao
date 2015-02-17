@@ -57,8 +57,8 @@ angular.module('miaomiao.console.controllers').controller('ShopListCtrl', ['$sco
 
         $scope.ShowShopList = function() {
             // get data
-            $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP_LIST') || [];
             $scope.openModal();
+            $scope.info.shoplist = localStorageService.get('MMCONSOLE_METADATA_SHOP_LIST') || [];
         }
     }
 ]);

@@ -157,7 +157,7 @@
 
     position: absolute;
     bottom: 0;
-    font-size: 13;
+    font-size: 13px;
     color: #343434;
     font-weight: normal;
     display: inline-block;
@@ -170,9 +170,7 @@
     position: absolute;
     right: 0;
     bottom:0;
-    text-align: center;
-    display: inline-block;
-    margin-right: 6px;
+    min-width: 80px;
 }
 
 .product_action .button-icon .icon:before, .button-icon.icon:before {

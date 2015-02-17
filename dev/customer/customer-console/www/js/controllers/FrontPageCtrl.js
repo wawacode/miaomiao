@@ -58,13 +58,6 @@ angular.module('miaomiao.console.controllers')
 
             $scope.shopName = $scope.info.shop.name || "首页";
 
-            $scope.LoadingMessage = '正在加载,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
-
-
             $scope.getSummaryInfo(function(dataDetail){
                 $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
