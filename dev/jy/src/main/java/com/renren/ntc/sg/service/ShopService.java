@@ -11,7 +11,7 @@ public class ShopService {
 	@Autowired
 	private ShopDAO shopDAO;
 	
-	public void setDBDefaultValue(Shop shop,String name,String tel,String ownerPhone,String shopAddress,String shopInfo) {
+	public void setDBDefaultValue(Shop shop,String name,String tel,String ownerPhone,String shopAddress,String shopInfo,int status, int basePrice) {
 			if (!StringUtils.isBlank(name)) {
 				shop.setName(name);
 			}
@@ -24,8 +24,7 @@ public class ShopService {
 			if (!StringUtils.isBlank(shopAddress)) {
 				shop.setShop_address(shopAddress);
 			}
-			if (!StringUtils.isBlank(shopInfo)) {
-				shop.setShop_info(shopInfo);
-			}
+		    shop.setStatus(status);
+            shop.setBase_price(basePrice);
 	}
 }

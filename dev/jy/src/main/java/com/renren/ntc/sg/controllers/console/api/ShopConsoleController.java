@@ -162,13 +162,10 @@ public class ShopConsoleController extends BasicConsoleController{
         }else {
         	closeShopTime = null;
 		}
-        if(status !=0){
-        	status = 1;
-        }
 
-        shopService.setDBDefaultValue(shop,name, tel, ownerPhone, shopAddress, shopInfo);
+        shopService.setDBDefaultValue(shop,name, tel, ownerPhone, shopAddress, shopInfo,status,basePrice);
         int result = shopDAO.updateShopDetail(shop_id, shop.getName(), shop.getTel(), openShopTime, closeShopTime,
-                shop.getShop_address(), shop.getShop_info(),status,basePrice,shop.getOwner_phone());
+                shop.getShop_address(), shop.getShop_info(),shop.getStatus(),shop.getBase_price(),shop.getOwner_phone());
         if(result == 1){
         	shop = shopDAO.getShop(shop_id);
         	JSONObject resultJson = new JSONObject();
