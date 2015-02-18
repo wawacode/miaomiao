@@ -1,10 +1,7 @@
-<div class="prod_icon"> <!-- back-img="{{item.pic_url}}"> -->
-    <img style="width: 70px;height: 70px;border: none"
-         ng-src="{{item.old_pic_url}}" ng-init="item.old_pic_url=item.pic_url">
+<div class="prod_icon" back-img="{{item.old_pic_url}}" ng-init="item.old_pic_url=item.pic_url">
 </div>
 <div>
     <span class="product-title oneline ">{{item.name}}</span>
-
     <div class="prod_info">
         <div class="product-price" data-value="$item.price">
             <span style="font-weight: normal">¥ {{item.price/100.0}}</span>

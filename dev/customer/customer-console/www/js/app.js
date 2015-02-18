@@ -154,8 +154,8 @@ angular.module('miaomiao.console', [
         });
     })
 
-//    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
-    .constant('serverInfo', {host: 'http://192.168.1.113:8010', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
+//    .constant('serverInfo', {host: 'http://192.168.1.113:8010', context: '/console/api/'})
 
     .config(function($compileProvider){
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
