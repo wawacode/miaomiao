@@ -39,7 +39,7 @@
                                 <!--<div class="shop-categray-item" ng-class="category.select_c">{{ category.name }}</div>-->
                             <!--</li>-->
 
-                            <li ng-repeat="category_name in info.category_names" class="shop-categray" ng-class="{'shop-categray-selected': $index == selectedIndex }"
+                            <li ng-repeat="category_name in info.category_names track by category_name" class="shop-categray" ng-class="{'shop-categray-selected': $index == selectedIndex }"
                                 ng-click="selectCategory($index)">
 
                                 <div class="shop-categray-item-decorate" ng-class="{'shop-categray-item-decorate-show': $index == selectedIndex }"></div>

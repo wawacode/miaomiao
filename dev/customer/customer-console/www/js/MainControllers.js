@@ -1,11 +1,11 @@
-angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
+angular.module('miaomiao.console.controllers', [])
 
-    .controller('MainCtrl', function ($scope, $ionicTrack, $state, cfpLoadingBar, $window, $cordovaPush,$timeout, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http,httpClient,localStorageService, MMPushNotification) {
+    .controller('MainCtrl', function ($scope, $state, cfpLoadingBar, $window, $cordovaPush,$timeout, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http,httpClient,localStorageService, MMPushNotification) {
         $scope.open = function (url) {
             // Send event to analytics service
-//    $ionicTrack.track('open', {
-//      url: url
-//    });
+            //    $ionicTrack.track('open', {
+            //      url: url
+            //    });
 
             // open the page in the inAppBrowser plugin. Falls back to a blank page if the plugin isn't installed
             var params = 'location=no,' +
@@ -61,7 +61,8 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
 
         // Register
         $scope.register = function () {
-            var config = null;
+
+            var config = {};
 
             if (ionic.Platform.isAndroid()) {
                 config = {
@@ -76,6 +77,8 @@ angular.module('miaomiao.console.controllers', ['ionic.services.analytics'])
                     "alert": "true",
                     "ecb":"onNotification"
                 }
+            }else{
+                return;
             }
 
             $cordovaPush.register(config).then(function (result) {

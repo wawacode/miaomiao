@@ -17,7 +17,6 @@ angular.module('miaomiao.console', [
     'miaomiao.console.controllers',
     'miaomiao.console.services',
     'miaomiao.console.directives',
-    'ionic.services.analytics',
     'ionic.services.deploy',
     'cfp.loadingBar'
 ], function ($httpProvider, $provide) {
@@ -66,7 +65,7 @@ angular.module('miaomiao.console', [
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
 })
-    .run(function ($ionicPlatform, $http, $ionicTrack, $ionicDeploy,localStorageService,httpClient,$state) {
+    .run(function ($ionicPlatform, $http, $ionicDeploy,localStorageService,httpClient,$state) {
         $ionicPlatform.ready(function () {
             // for ios7 style header bars
             if (window.StatusBar) {
@@ -112,7 +111,7 @@ angular.module('miaomiao.console', [
                     $ionicDeploy.load();
                 }
             }, function (error) {
-                console.log('error checking for update');
+                console.log('[check for update] error: checking for update');
                 // Error checking for updates
             });
 
@@ -127,6 +126,7 @@ angular.module('miaomiao.console', [
             if(!user || !user.token)return;
             // validate user login
             httpClient.islogin(user.token,function (data, status) {
+
                 // hide the splash screen only after everything's ready (avoid flicker)
                 // requires keyboard plugin and confix.xml entry telling the splash screen to stay until explicitly told
                 if (navigator.splashscreen) {
@@ -134,7 +134,7 @@ angular.module('miaomiao.console', [
                 }
                 var code = data.code, dataDetail = data.data;
                 if (code != 0 ) {
-                    console.log('check login status failed:'+ code);
+                    console.log('[check for login]check login status failed:'+ code);
                     $state.go('signin',null,{reload:true});
                     return;
                 }
@@ -148,7 +148,7 @@ angular.module('miaomiao.console', [
                 if (navigator.splashscreen) {
                     navigator.splashscreen.hide();
                 }
-                console.log('check login status failed');
+                console.log('[check for login]check login status failed');
                 $state.go('signin',null,{reload:true});
             });
         });

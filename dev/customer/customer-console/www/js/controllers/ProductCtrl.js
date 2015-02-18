@@ -88,17 +88,15 @@ angular.module('miaomiao.console.controllers')
             // if in loading more, can't select
             if (inLoadingMore)return;
 
-            if($scope.selectedIndex != $index){
-                $scope.selectedIndex = $index;
+            $scope.selectedIndex = $index;
 
-                $timeout(function(){
+            $timeout(function(){
 
-                    $scope.info.selectedCategory = $scope.info.categoryls[$scope.selectedIndex];
-                    $ionicScrollDelegate.resize();
-                    $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
+                $scope.info.selectedCategory = $scope.info.categoryls[$scope.selectedIndex];
+                $ionicScrollDelegate.resize();
+                $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
 
-                },100);
-            }
+            },100);
         }
 
         $scope.moreDataCanBeLoaded = function () {
@@ -164,7 +162,9 @@ angular.module('miaomiao.console.controllers')
 
             var index = currentCategory.itemls.indexOf(item);
             if (index > -1) {
-                currentCategory.itemls.splice(index, 1);
+                $timeout(function(){
+                    currentCategory.itemls.splice(index, 1);
+                });
             }
         }
 
@@ -176,7 +176,7 @@ angular.module('miaomiao.console.controllers')
                 $timeout(function () {
                     currentCategory.itemls.splice(index, 1);
                     currentCategory.itemls.unshift(item);
-                })
+                });
             }
         }
 
