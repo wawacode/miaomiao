@@ -187,6 +187,11 @@ angular.module('miaomiao.console.controllers')
             if (index != -1) {
                 // do more update
                 $timeout(function () {
+
+                    if(item.pic_url && item.old_pic_url != item.pic_url){
+                        item.old_pic_url = item.pic_url;
+                    }
+
                     currentCategory.itemls.splice(index, 1,item);
                 });
             }

@@ -192,27 +192,6 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
         }
 
         function onCapturePhoto(fileURI) {
-            var win = function (r) {
-                clearCache();
-                retries = 0;
-                alert('Done!');
-            }
-
-            var fail = function (error) {
-                if (retries == 0) {
-                    retries ++;
-                    setTimeout(function() {
-                        onCapturePhoto(fileURI)
-                    }, 1000)
-                } else {
-                    retries = 0;
-                    clearCache();
-                    $ionicPopup.alert({
-                        title: '上传照片失败:',
-                        template: ''
-                    });
-                }
-            }
 
             $scope.editingItem.pic_url = fileURI;
             $scope.editingItem.hasNewPicture = true;
@@ -226,7 +205,7 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
             Camera.getPicture().then(onCapturePhoto, function(err) {
                 console.err(err);
             }, {
-                quality: 75,
+                quality: 25,
                 targetWidth: 320,
                 targetHeight: 320,
                 destinationType: navigator.camera.DestinationType.FILE_URI,

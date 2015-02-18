@@ -266,7 +266,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
             Camera.getPicture().then(onCapturePhoto, function (err) {
                 console.err(err);
             }, {
-                quality: 75,
+                quality: 25,
                 targetWidth: 320,
                 destinationType: navigator.camera.DestinationType.FILE_URI,
                 saveToPhotoAlbum: false

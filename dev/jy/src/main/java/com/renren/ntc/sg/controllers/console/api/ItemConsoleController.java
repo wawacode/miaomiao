@@ -102,7 +102,10 @@ public class ItemConsoleController extends BasicConsoleController{
             String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
             File f = new File(savePicPath);
             if (!f.exists()){
-                f.mkdir();
+                boolean mkdirsRet = f.mkdirs();
+                if (!mkdirsRet){
+                    LoggerUtils.getInstance().log("mkdir failed, may can't upload pic");
+                }
             }
             boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
             if(!isSuc){
