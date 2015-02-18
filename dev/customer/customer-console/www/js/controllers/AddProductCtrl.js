@@ -174,7 +174,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     scope: $scope
                 });
 
-                httpClient.uploadPicForItem(newitem.serialNo, newitem.pic_url, $scope.info.shop.id, function (data, status) {
+                httpClient.uploadPicForItem(newitem.serialNo, newitem.new_pic_url, $scope.info.shop.id, function (data, status) {
                     $ionicLoading.hide();
                     var code = data.code, dataDetail = data.data;
                     if (code != 0) {
@@ -256,7 +256,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     });
                 }
             }
-            $scope.newitem.pic_url = fileURI;
+            $scope.newitem.new_pic_url = fileURI;
             $scope.newitem.hasNewPicture = true;
         }
 

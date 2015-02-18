@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="padding-vertical padding-right" style="text-align: center" ng-show="newitem.pic_url">
-                    <img class="full-image padding-top" ng-src="{{newitem.pic_url}}" ng-model="newitem.pic_url" style="width: 80%;height: auto">
+                    <img class="full-image padding-top" ng-src="{{item.new_pic_url}}" ng-model="item.new_pic_url" ng-init="item.new_pic_url=item.pic_url" style="width: 80%;height: auto">
                 </div>
 
             </div>

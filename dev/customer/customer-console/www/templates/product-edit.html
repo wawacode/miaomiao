@@ -35,7 +35,7 @@
                 <span class="input-label assertive">图片:</span>
 
                 <div class="padding-vertical padding-right" style="text-align: center">
-                    <img class="full-image padding-top" ng-src="{{item.pic_url}}" ng-model="item.pic_url" style="width: 80%;height: auto">
+                    <img class="full-image padding-top" ng-src="{{item.new_pic_url}}" ng-model="item.new_pic_url" ng-init="item.new_pic_url=item.pic_url" style="width: 80%;height: auto">
                 </div>
 
                 <button class="button button-balanced" ng-click="getPhoto(item,$event)">

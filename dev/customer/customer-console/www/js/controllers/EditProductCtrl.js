@@ -129,7 +129,7 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
                     scope: $scope
                 });
 
-                httpClient.uploadPicForItem(item.serialNo,item.pic_url,$scope.info.shop.id, function (data, status) {
+                httpClient.uploadPicForItem(item.serialNo,item.new_pic_url,$scope.info.shop.id, function (data, status) {
                     $ionicLoading.hide();
                     var code = data.code, dataDetail = data.data;
                     if (code != 0) {
@@ -193,7 +193,7 @@ angular.module('miaomiao.console.controllers').controller('EditProductCtrl', ['$
 
         function onCapturePhoto(fileURI) {
 
-            $scope.editingItem.pic_url = fileURI;
+            $scope.editingItem.new_pic_url = fileURI;
             $scope.editingItem.hasNewPicture = true;
         }
 

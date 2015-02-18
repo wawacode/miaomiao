@@ -188,8 +188,9 @@ angular.module('miaomiao.console.controllers')
                 // do more update
                 $timeout(function () {
 
-                    if(item.pic_url && item.old_pic_url != item.pic_url){
-                        item.old_pic_url = item.pic_url;
+                    // update pic if success, which means item has new pic
+                    if(item.new_pic_url && item.new_pic_url != item.pic_url){
+                        item.pic_url = item.new_pic_url;
                     }
 
                     currentCategory.itemls.splice(index, 1,item);
