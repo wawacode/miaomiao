@@ -154,7 +154,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     var item = dataDetail.item;
 
                     $scope.closeModal();
-                    
+
                     $scope.addProducteForCurrentCategory(newitem.currentCateId, item);
 
                 }, function (data, status) {

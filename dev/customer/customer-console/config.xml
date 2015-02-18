@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.miaomiao.bconsole" version="1.0.4" xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Miaomiao-B-Console</name>
+    <name>喵喵商家</name>
     <description>
-        Miaomoai customers console app
+        喵喵商家客户端
     </description>
-    <author email="liangji101@yahoo.com" href="http://www.mbianli.com/">
+    <author email="dev@lizi-inc.com" href="http://www.mbianli.com/">
         Miaomiao team
     </author>
     <content src="index.html"/>
