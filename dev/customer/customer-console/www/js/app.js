@@ -124,7 +124,7 @@ angular.module('miaomiao.console', [
 
             // check login status
             var user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
-            if(!user.identity && !user.token)return;
+            if(!user || !user.token)return;
             // validate user login
             httpClient.islogin(user.token,function (data, status) {
                 // hide the splash screen only after everything's ready (avoid flicker)
@@ -154,8 +154,8 @@ angular.module('miaomiao.console', [
         });
     })
 
-    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
-//    .constant('serverInfo', {host: 'http://192.168.1.113:8010', context: '/console/api/'})
+//    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://192.168.1.113:8010', context: '/console/api/'})
 
     .config(function($compileProvider){
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);

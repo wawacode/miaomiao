@@ -43,7 +43,8 @@ angular.module('miaomiao.console.controllers')
                 }
 
                 //success
-                localStorageService.set('MMCONSOLE_METADATA_USER',{'name':$scope.user.name , 'phone' : $scope.user.phone,'identity':$scope.user.phone});
+                localStorageService.set('MMCONSOLE_METADATA_USER',{'name':$scope.user.name ,
+                    'phone' : $scope.user.phone,'identity':$scope.user.phone,'token':dataDetail.token});
                 localStorageService.set('MMCONSOLE_METADATA_SHOP_LIST',dataDetail.shop);
                 localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP',dataDetail.shop[0]);
 
