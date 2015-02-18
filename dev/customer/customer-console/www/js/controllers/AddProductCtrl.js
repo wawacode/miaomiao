@@ -127,8 +127,6 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 count: newitem.count,
                 score: newitem.score,
                 price: newitem.price * 100,
-                pic: newitem.pic,
-                pic_url: newitem.pic_url,
                 saleStatus: newitem.saleStatus,
                 shop_id: $scope.info.shop.id
             };
@@ -156,6 +154,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     var item = dataDetail.item;
 
                     $scope.closeModal();
+                    
                     $scope.addProducteForCurrentCategory(newitem.currentCateId, item);
 
                 }, function (data, status) {
