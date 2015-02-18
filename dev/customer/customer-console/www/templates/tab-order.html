@@ -30,10 +30,10 @@
 
                 <div class="item item-icon-right">
 
-                   <div>收货地址: {{order.address}}</div>
-                    <div>联系电话: {{order.phone}}</div>
+                    <div style="font-size: 14px"><i class="ion-ios7-navigate balanced"></i> 收货地址: <span style="color: #808080;">{{order.address}}</span></div>
+                    <div style="font-size: 14px"><i class="ion-ios7-telephone balanced"></i> 联系电话: <span style="color: #808080;">{{order.phone}}</span></div>
 
-                    <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
+                    <div style="margin-top: 10px;color: #808080;font-size: 14px">买家留言: {{order.remarks}}</div>
 
                     <i class="icon ion-ios7-information" ng-class="{'balanced':order.readed , 'assertive': !order.readed}" ng-click="showOrderDetail(order)"></i>
 
