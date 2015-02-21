@@ -68,13 +68,9 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
         }
 
         $scope.changeCategroy = function (currentCateId) {
+
             $scope.newitem.currentCateId = currentCateId;
-            for (var idx = 0; idx < $scope.info.categoryls.length; idx++) {
-                if ($scope.newitem.currentCateId == $scope.info.categoryls[idx].category_id) {
-                    $scope.selectCategory($scope.info.categoryls[idx]);
-                    break;
-                }
-            }
+
         }
 
 
@@ -155,7 +151,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
                     $scope.closeModal();
 
-                    $scope.addProducteForCurrentCategory(newitem.currentCateId, item);
+                    $scope.addProductForCategory(newitem.currentCateId, item);
 
                 }, function (data, status) {
                     $ionicLoading.hide();

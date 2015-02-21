@@ -71,7 +71,7 @@ angular.module('miaomiao.console.services', [])
         }
     }]).factory('MMProductService', ['$rootScope','$timeout', function ($rootScope, $timeout) {
 
-        var categorys,category_names,inLoadingMoreProcess=false;
+        var categorys,category_summary,inLoadingMoreProcess=false;
 
         return {
 
@@ -91,17 +91,30 @@ angular.module('miaomiao.console.services', [])
                 for (var idx = 0; idx < retCategoryls.length; idx++) {
 
                     var curCategory = retCategoryls[idx];
-                    retCategorylNames.push(curCategory.name);
+                    retCategorylNames.push({name:curCategory.name,category_id:curCategory.category_id});
 
                     curCategory.selected = 0;
                     curCategory.scrollIndex = curCategory.itemls.length;
                     curCategory.canLoadMore = true;
 
+                    curCategory.itemls = this.removeDuplicateItems(curCategory.itemls);
+
                 }
                 categorys = retCategoryls;
-                category_names = retCategorylNames;
+                category_summary = retCategorylNames;
             },
 
+            removeDuplicateItems:function(source){
+                var arr = {};
+                for ( var i=0; i < source.length; i++ )
+                    arr[source[i]['id']] = source[i];
+
+                var result = new Array();
+                for ( var key in arr )
+                    result.push(arr[key]);
+
+                return result;
+            },
 
             setCanLoadMoreFlagForIndex:function(index,canLoadMore){
                 categorys[index].canLoadMore = canLoadMore;
@@ -119,8 +132,8 @@ angular.module('miaomiao.console.services', [])
                 return inLoadingMoreProcess;
             },
 
-            getCategoryNames:function(){
-                return category_names;
+            getCategorySummary:function(){
+                return category_summary;
             },
 
             getCategoryForIndex:function(index){
@@ -133,11 +146,22 @@ angular.module('miaomiao.console.services', [])
                 categorys[index] = category;
             },
 
+            addMoreItemsForCategoryId:function(cateId,items){
+                for (var idx = 0; idx < categorys.length; idx++) {
+                    if(cateId == categorys[idx].category_id){
+                        var currentCategory = categorys[idx];
+                        currentCategory.itemls = this.removeDuplicateItems(currentCategory.itemls.concat(items));
+                        currentCategory.scrollIndex += items.length;
+                        currentCategory.totalCnt = 0;
+                        break;
+                    }
+                }
+            },
+
             addProductItemToCategory:function(cateId,item){
                 for (var idx = 0; idx < categorys.length; idx++) {
-                    if(cateId == categorys.category_id){
-                        categorys.itemls.push(item);
-                        this.addProductToCategoryNotification(cateId,item);
+                    if(cateId == categorys[idx].category_id){
+                        categorys[idx].itemls.push(item);
                         break;
                     }
                 }

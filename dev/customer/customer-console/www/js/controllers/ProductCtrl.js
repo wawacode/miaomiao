@@ -1,15 +1,10 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state, cfpLoadingBar, $timeout,
+    .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state, $timeout,
                                          $ionicScrollDelegate, localStorageService, httpClient,MMShopService, Camera,MMProductService) {
-        // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
-        // but the purpose of this app is to be an example to people getting started with angular and ionic.
-        // Therefore we err on repeating logic and being verbose
         $scope.info = {};
         $scope.pageName = '商品';
-
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
-
 
         function initData(){
 
@@ -32,13 +27,16 @@ angular.module('miaomiao.console.controllers')
                     return;
                 }
 
+                // init data
                 MMProductService.initCategorysWithData(dataDetail.categoryls);
-                $scope.info.category_names = MMProductService.getCategoryNames();
 
+                // prepare category names
+                $scope.info.categorySummary = MMProductService.getCategorySummary();
+
+                // set default category
                 var initIndex = 0;
-
                 $scope.selectedIndex = initIndex;
-                $scope.selectCategory(initIndex);
+                $scope.selectCategory(initIndex,0);
 
             }, function (data, status) {
                 $ionicLoading.hide();
@@ -52,35 +50,34 @@ angular.module('miaomiao.console.controllers')
 
         initData();
 
-        $scope.getItemHeight = function(){
-            return 100;
-        }
-
+        // listeners
         $scope.refreshAll = function(){
             initData();
         }
 
-        $scope.selectCategory = function ($index) {
+        $scope.selectCategory = function ($index, timeout) {
 
             // if in loading more, can't select
-            if (MMProductService.getInLoadingMoreFlag())return;
+            if (MMProductService.getInLoadingMoreFlag() == true)return;
 
             $scope.selectedIndex = $index;
 
-            // wait for category name class to change
+            // wait for category name class to change then send notification
             $timeout(function(){
-                MMProductService.switchCategoryNotification( {index:$scope.selectedIndex});
-
-            },10);
+                MMProductService.switchCategoryNotification({index:$scope.selectedIndex});
+            }, timeout || 100);
         }
 
-        $scope.$on('modal.hidden', function () {
-
-        });
-
-        $scope.addProducteForCurrentCategory = function (cateId,item) {
-
-            MMProductService.addProducteForCurrentCategory(cateId.item);
+        $scope.addProductForCategory = function (cateId,item) {
+            MMProductService.addProductItemToCategory(cateId,item);
+            $timeout(function(){
+                for (var idx = 0; idx < $scope.info.categorySummary.length; idx++) {
+                    if (cateId == $scope.info.categorySummary[idx].category_id) {
+                        $scope.selectCategory(idx);
+                        break;
+                    }
+                }
+            })
         }
 
         // just kicking the tires
@@ -88,11 +85,10 @@ angular.module('miaomiao.console.controllers')
 
         });
 
+        // listeners for switch shop
         MMShopService.onSwitchDefaultShopNotification($scope,function(){
-
             $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
             initData();
-
         });
 
     })

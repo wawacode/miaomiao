@@ -12,25 +12,22 @@ angular.module('miaomiao.console.controllers')
 
             var data = message.data;
             $scope.selectedIndex = data.index;
+            $scope.category = MMProductService.getCategoryForIndex($scope.selectedIndex);
+
+            hasData = true;
 
             $timeout(function(){
 
-                $scope.category = MMProductService.getCategoryForIndex($scope.selectedIndex);
                 $scope.items = $scope.category.itemls;
-
-                hasData = true;
-
                 $ionicScrollDelegate.resize();
                 $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
 
-            })
+            });
 
         });
 
         $scope.moreDataCanBeLoaded = function () {
-
             if(!hasData)return false;
-
             return $scope.category && $scope.category.canLoadMore;
         }
 
@@ -46,34 +43,23 @@ angular.module('miaomiao.console.controllers')
 
             httpClient.getMoreProductList($scope.info.shop.id, cateId, from, offset, function (data, status) {
 
-                /*
-                 * {"code":0,"data":[{"category_id":15,"count":956,"id":28062,"name":"哈哈镜鸭爪买一赠一","pic_url":
-                 * "http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
-                 * "score":99999,"shop_id":1},{"category_id":15,"count":921,"id":28063,"name":"哈哈镜鸭翅买一赠*/
-
                 var code = data.code, dataDetail = data.data;
                 if (!code == 0 || dataDetail.itemls.length == 0) {
-
+                    // set flags
                     MMProductService.setInLoadingMoreFlag(false);
                     MMProductService.setCanLoadMoreFlagForIndex(idx,false);
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                     return;
-
                 }
 
                 MMProductService.setInLoadingMoreFlag(false);
 
-                var currentCategory = $scope.category;
+                MMProductService.addMoreItemsForCategoryId(cateId,dataDetail.itemls);
 
-                currentCategory.itemls = currentCategory.itemls.concat(dataDetail.itemls);
-                currentCategory.scrollIndex += dataDetail.itemls.length;
-                currentCategory.totalCnt = 0;
-
-                MMProductService.setCategoryForIndex(idx,currentCategory);
+                $scope.category = MMProductService.getCategoryForIndex(idx);
 
                 $timeout(function(){
 
-                    $scope.category = currentCategory;
                     $scope.items = $scope.category.itemls;
 
                     $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -139,12 +125,12 @@ angular.module('miaomiao.console.controllers')
             }
         }
 
-        MMProductService.onAddProductToCategoryNotification($scope,function(message){
-
-            var item = message.item;
-            var cateId = message.cateId;
-            if($scope.category.category_id == cateId){
-                $scope.items.push(item);
-            }
-        })
+//        MMProductService.onAddProductToCategoryNotification($scope,function(message){
+//
+//            var item = message.item;
+//            var cateId = message.cateId;
+//            if($scope.category.category_id == cateId){
+//                $scope.items.push(item);
+//            }
+//        })
     })
