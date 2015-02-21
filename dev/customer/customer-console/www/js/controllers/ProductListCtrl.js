@@ -19,6 +19,7 @@ angular.module('miaomiao.console.controllers')
             $timeout(function(){
 
                 $scope.items = $scope.category.itemls;
+
                 $ionicScrollDelegate.resize();
                 $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
 
