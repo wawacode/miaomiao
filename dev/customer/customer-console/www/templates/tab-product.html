@@ -42,8 +42,10 @@
                             <li ng-repeat="category_name in info.category_names track by category_name" class="shop-categray" ng-class="{'shop-categray-selected': $index == selectedIndex }"
                                 ng-click="selectCategory($index)">
 
-                                <div class="shop-categray-item-decorate" ng-class="{'shop-categray-item-decorate-show': $index == selectedIndex }"></div>
+                                <!--<div class="shop-categray-item-decorate " ng-class="{'shop-categray-item-decorate-show': $index == selectedIndex }"></div>-->
+                                <div class="shop-categray-item-decorate shop-categray-item-decorate-show" ng-if="$index == selectedIndex"></div>
                                 <div class="shop-categray-item">{{ category_name }}</div>
+
                             </li>
 
                         </ul>
@@ -57,35 +59,35 @@
                              overflow-scroll="false"
                              delegate-handle="productScroll">
 
-                    <div class="shop-product-list">
-                        <ul class="shop-product-categray-list list">
-                            <li ng-repeat="item in info.selectedCategory.itemls track by item.id"
-                                class="product-item">
-                                <!--ng-include-->
-                                <!--src="'templates/product-detail.html'">-->
-                                <div class="prod_icon" back-img="{{item.pic_url}}">
-                                </div>
-                                <div>
-                                    <span class="product-title oneline ">{{item.name}}</span>
-                                    <div class="prod_info">
-                                        <div class="product-price">
-                                            ¥ {{item.price/100.0}}
-                                        </div>
-                                        <div class="product_action" ng-controller="EditProductCtrl">
-                                            <a class="mgray button button-small button-icon icon ion-arrow-up-a" ng-click="StickItem(item)"></a>
-                                            <a class="mgray button button-small button-icon icon ion-settings"  ng-click="EditItem(item)"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                    <div class="shop-product-list"
+                            ng-controller="ProductListCtrl"
+                            ng-include
+                            src="'templates/product-list.html'">
+                        <!--<ul class="shop-product-categray-list list">-->
+                            <!--<li ng-repeat="item in info.selectedCategory.itemls track by item.id"-->
+                                <!--class="product-item">-->
+                                <!--&lt;!&ndash;ng-include&ndash;&gt;-->
+                                <!--&lt;!&ndash;src="'templates/product-detail.html'">&ndash;&gt;-->
+                                <!--<div class="prod_icon" back-img="{{item.pic_url}}"></div>-->
+                                <!--<div>-->
+                                    <!--<span class="product-title oneline ">{{item.name}}</span>-->
+                                    <!--<div class="prod_info">-->
+                                        <!--<div class="product-price">¥ {{item.price/100.0}}</div>-->
+                                        <!--<div class="product_action" ng-controller="EditProductCtrl">-->
+                                            <!--<a class="mgray button button-small button-icon icon ion-arrow-up-a" ng-click="StickItem(item)"></a>-->
+                                            <!--<a class="mgray button button-small button-icon icon ion-settings"  ng-click="EditItem(item)"></a>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</li>-->
 
-                            <ion-infinite-scroll
-                                    ng-if="moreDataCanBeLoaded()"
-                                    icon="ion-loading-c"
-                                    on-infinite="addItems()">
-                            </ion-infinite-scroll>
+                            <!--<ion-infinite-scroll-->
+                                    <!--ng-if="moreDataCanBeLoaded()"-->
+                                    <!--icon="ion-loading-c"-->
+                                    <!--on-infinite="addItems()">-->
+                            <!--</ion-infinite-scroll>-->
 
-                        </ul>
+                        <!--</ul>-->
 
                     </div>
 

@@ -69,4 +69,107 @@ angular.module('miaomiao.console.services', [])
                 });
             }
         }
+    }]).factory('MMProductService', ['$rootScope','$timeout', function ($rootScope, $timeout) {
+
+        var categorys,category_names,inLoadingMoreProcess=false;
+
+        return {
+
+            initCategorysWithData:function(cates){
+
+                var retCategoryls = cates;
+
+                // extend for use
+                /*
+                 {"category_id":15,"category_sub_id":0,"id":0,
+                 "itemls":[{"category_id":15,"category_sub_id":0,"count":956,"create_time":1419821656000,"ext":0,"id":28062,"name":"哈哈镜鸭爪买一赠一",
+                 "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
+                 "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
+                 * */
+                if (!retCategoryls || !retCategoryls.length)return;
+                var retCategorylNames = [];
+                for (var idx = 0; idx < retCategoryls.length; idx++) {
+
+                    var curCategory = retCategoryls[idx];
+                    retCategorylNames.push(curCategory.name);
+
+                    curCategory.selected = 0;
+                    curCategory.scrollIndex = curCategory.itemls.length;
+                    curCategory.canLoadMore = true;
+
+                }
+                categorys = retCategoryls;
+                category_names = retCategorylNames;
+            },
+
+
+            setCanLoadMoreFlagForIndex:function(index,canLoadMore){
+                categorys[index].canLoadMore = canLoadMore;
+            },
+
+            getCanLoadMoreFlagForIndex:function(index){
+                return categorys[index].canLoadMore;
+            },
+
+            setInLoadingMoreFlag:function(inLoading){
+                inLoadingMoreProcess = inLoading;
+            },
+
+            getInLoadingMoreFlag:function(inLoading){
+                return inLoadingMoreProcess;
+            },
+
+            getCategoryNames:function(){
+                return category_names;
+            },
+
+            getCategoryForIndex:function(index){
+                if(index < 0 || index > categorys.length - 1)return null;
+                return categorys[index];
+            },
+
+            setCategoryForIndex:function(index,category){
+                if(index < 0 || index > categorys.length - 1)return;
+                categorys[index] = category;
+            },
+
+            addProductItemToCategory:function(cateId,item){
+                for (var idx = 0; idx < categorys.length; idx++) {
+                    if(cateId == categorys.category_id){
+                        categorys.itemls.push(item);
+                        this.addProductToCategoryNotification(cateId,item);
+                        break;
+                    }
+                }
+            },
+
+            addProductToCategoryNotification: function (cateId,item) {
+                $timeout(function () {
+                    $rootScope.$broadcast('MMEVENT_addProductToCategoryNotification', {
+                        cateId:cateId,
+                        item:item
+                    });
+                });
+            },
+
+            onAddProductToCategoryNotification: function ($scope, handler) {
+                $scope.$on('MMEVENT_addProductToCategoryNotification', function (event, message) {
+                    handler(message);
+                });
+            },
+
+            switchCategoryNotification: function (data) {
+                $timeout(function () {
+                    $rootScope.$broadcast('MMEVENT_switchCategoryNotification', {
+                        data: data
+                    });
+                });
+            },
+
+            onSwitchCategoryNotification: function ($scope, handler) {
+                $scope.$on('MMEVENT_switchCategoryNotification', function (event, message) {
+                    handler(message);
+                });
+            }
+        }
     }]);
