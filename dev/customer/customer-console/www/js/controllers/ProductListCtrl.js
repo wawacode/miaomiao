@@ -127,15 +127,25 @@ angular.module('miaomiao.console.controllers')
             }
         }
 
+        $scope.cancelEdit =function($event){
+            $scope.closeModal();
+        }
 
-        // for product edit
+        $scope.inputReadyKeyup = function($event){
+            if($event.keyCode == 13)
+            {
+                $event.target.blur();
+            }
+        }
+
+        $scope.info.editingItem = {};
 
         $ionicModal.fromTemplateUrl('templates/product-edit.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
-                $scope.modal = modal;
-            });
+            $scope.modal = modal;
+        });
 
         $scope.openModal = function() {
             $scope.modal.show();
@@ -154,30 +164,17 @@ angular.module('miaomiao.console.controllers')
             // Execute action
             $scope.refreshCurrentCategory();
         });
-        // Execute action on remove modal
-        $scope.$on('modal.removed', function() {
-            // Execute action
-        });
-        $scope.$on('modal.shown', function() {
 
-        });
-
-        $scope.cancelEdit =function($event){
-            $scope.closeModal();
-        }
-
-        $scope.inputReadyKeyup = function($event){
-            if($event.keyCode == 13)
-            {
-                $event.target.blur();
-            }
-        }
-
-
-        $scope.editingItem = {};
         $scope.EditItem = function(item) {
+            // for product edit
             $scope.editingItem = item;
-            $scope.openModal();
+            $ionicModal.fromTemplateUrl('templates/product-edit.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                    $scope.modal = modal;
+                    $scope.openModal();
+            });
         }
 
         $scope.StickItem = function(item){

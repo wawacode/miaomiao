@@ -86,7 +86,10 @@ angular.module('miaomiao.console.services', [])
                  "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
                  "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
                  * */
-                if (!retCategoryls || !retCategoryls.length)return;
+                if (!retCategoryls || !retCategoryls.length){
+                    categorys.itemls = [];
+                    return;
+                }
                 var retCategorylNames = [];
                 for (var idx = 0; idx < retCategoryls.length; idx++) {
 

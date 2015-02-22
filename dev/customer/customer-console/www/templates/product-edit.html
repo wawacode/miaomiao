@@ -14,22 +14,22 @@
         <div class="list">
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">商品名称:</span>
-                <input type="text" ng-value="item.updated_name" ng-model="item.updated_name"
-                       ng-init="item.updated_name = item.name" ng-keyup="inputReadyKeyup($event)">
+                <input type="text" ng-value="editingItem.updated_name" ng-model="editingItem.updated_name"
+                       ng-init="editingItem.updated_name = editingItem.name" ng-keyup="inputReadyKeyup($event)">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">价格(元):</span>
-                <input type="number" ng-value="item.updated_price" ng-model="item.updated_price"
-                       ng-init="item.updated_price = item.price/100.0" ng-keyup="inputReadyKeyup($event)">
+                <input type="number" ng-value="editingItem.updated_price" ng-model="editingItem.updated_price"
+                       ng-init="editingItem.updated_price = editingItem.price/100.0" ng-keyup="inputReadyKeyup($event)">
             </label>
 
             <label class="item item-input item-select">
                 <div class="input-label assertive">
                     销售状态:
                 </div>
-                <select ng-model="item.saleStatus" ng-options="o.status as o.title for o in [{title:'在售',status:1},{title:'下架',status:0}]" ng-init="item.saleStatus=1">
-                    <!--<option selected ng-value="item.online" ng-model="item.online" ng-init="item.online=true">在售</option>-->
-                    <!--<option ng-model="item.offline" ng-value="item.offline" ng-init="item.offline=false">下架</option>-->
+                <select ng-model="editingItem.saleStatus" ng-options="o.status as o.title for o in [{title:'在售',status:1},{title:'下架',status:0}]"
+                        ng-init="editingItem.saleStatus=1">
+
                 </select>
             </label>
 
@@ -37,17 +37,18 @@
                 <span class="input-label assertive">图片:</span>
 
                 <div class="padding-vertical padding-right" style="text-align: center">
-                    <img class="full-image padding-top" ng-src="{{item.new_pic_url}}" ng-model="item.new_pic_url" ng-init="item.new_pic_url=item.pic_url" style="width: 80%;height: auto">
+                    <img class="full-image padding-top" ng-src="{{editingItem.new_pic_url}}" ng-model="editingItem.new_pic_url"
+                         ng-init="editingItem.new_pic_url=editingItem.pic_url" style="width: 80%;height: auto">
                 </div>
 
-                <button class="button button-balanced" ng-click="getPhoto(item,$event)">
+                <button class="button button-balanced" ng-click="getPhoto(editingItem,$event)">
                     <i class="icon ion-camera"></i>拍照
                 </button>
 
             </div>
 
             <label class="item item-input-inset" style="text-align: center">
-               <button class="button button-full button-assertive" ng-click="deleteItem(item)">删除此商品</button>
+               <button class="button button-full button-assertive" ng-click="deleteItem(editingItem)">删除此商品</button>
             </label>
         </div>
 
@@ -60,7 +61,7 @@
                 取消
             </a>
 
-            <a class="tab-item balanced" ng-click="saveItem(item,$event)">
+            <a class="tab-item balanced" ng-click="saveItem(editingItem,$event)">
                 <i class="icon ion-checkmark-circled"></i>
                 保存
             </a>
