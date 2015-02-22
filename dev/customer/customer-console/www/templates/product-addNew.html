@@ -70,26 +70,24 @@
                 <select ng-model="newitem.saleStatus" ng-options="o.status as o.title for o in [{title:'在售',status:1},{title:'下架',status:0}]" ng-init="newitem.saleStatus=1">
                 </select>
             </label>
-
-            <div class="item tabs tabs-icon-left tabs-light">
-                <a class="tab-item balanced" ng-click="closeModal()">
-                    <i class="icon ion-close-circled"></i>
-                    取消
-                </a>
-
-                <a class="tab-item balanced" ng-click="saveItem(newitem)">
-                    <i class="icon ion-checkmark-circled"></i>
-                    保存
-                </a>
-
-            </div>
         </div>
 
     </ion-content>
 
-    <!--<ion-footer-bar class="bar-light">-->
-        <!---->
-    <!--</ion-footer-bar>-->
+    <ion-footer-bar class="bar-light">
+        <div class="tabs tabs-icon-left tabs-light">
+            <a class="tab-item balanced" ng-click="closeModal()">
+                <i class="icon ion-close-circled"></i>
+                取消
+            </a>
+
+            <a class="tab-item balanced" ng-click="saveItem(newitem)">
+                <i class="icon ion-checkmark-circled"></i>
+                保存
+            </a>
+
+        </div>
+    </ion-footer-bar>
 
 </ion-modal-view>>
 
