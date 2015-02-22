@@ -25,6 +25,7 @@
     </feature>
     <platform name="android">
 
+        <icon src="resource/android/drawable/icon.png"/>
         <icon src="resource/android/drawable/icon.png" density="ldpi" />
         <icon src="resource/android/drawable-mdpi/icon.png" density="mdpi" />
         <icon src="resource/android/drawable-hdpi/icon.png" density="hdpi" />

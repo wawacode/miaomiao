@@ -140,14 +140,14 @@ angular.module('miaomiao.console.controllers')
 
                     MMProductService.setCategoryForIndex($scope.selectedIndex,currentCategory);
 
-                    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-                        cordova.plugins.Keyboard.close();
-                    }
                 });
             }
         }
 
         $scope.cancelEdit =function($event){
+            if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.close();
+            }
             $scope.closeModal();
         }
 
@@ -235,8 +235,12 @@ angular.module('miaomiao.console.controllers')
                     MMUtils.showAlert('修改商品失败:' + data.msg);
                     return;
                 }
-                $scope.closeModal();
 
+                // in case some input has focus
+                if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+                    cordova.plugins.Keyboard.close();
+                }
+                $scope.closeModal();
                 // update some fileds
                 $scope.updateItemFromCurrentCategory(item);
 
@@ -247,8 +251,6 @@ angular.module('miaomiao.console.controllers')
         }
 
         $scope.saveItem = function(item,$event){
-
-            // in case some input has focus
 
             item.price = item.updated_price * 100;
             item.name = item.updated_name;
