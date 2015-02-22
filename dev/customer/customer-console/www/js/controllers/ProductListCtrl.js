@@ -260,6 +260,10 @@ angular.module('miaomiao.console.controllers')
 
         $scope.saveItem = function(item,$event){
 
+            if($event){
+                $event.target.parentElement.focus()
+            }
+
             item.price = item.updated_price * 100;
             item.name = item.updated_name;
 

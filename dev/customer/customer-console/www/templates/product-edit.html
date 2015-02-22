@@ -49,24 +49,28 @@
             <label class="item item-input-inset" style="text-align: center">
                <button class="button button-full button-assertive" ng-click="deleteItem(editingItem)">删除此商品</button>
             </label>
+
+
+            <div class="item tabs tabs-icon-left tabs-light">
+                <a class="tab-item balanced" ng-click="cancelEdit($event)">
+                    <i class="icon ion-close-circled"></i>
+                    取消
+                </a>
+
+                <a class="tab-item balanced" ng-click="saveItem(editingItem,$event)">
+                    <i class="icon ion-checkmark-circled"></i>
+                    保存
+                </a>
+
+            </div>
+
         </div>
 
     </ion-content>
 
-    <ion-footer-bar class="bar-light">
-        <div class="tabs tabs-icon-left tabs-light">
-            <a class="tab-item balanced" ng-click="cancelEdit($event)">
-                <i class="icon ion-close-circled"></i>
-                取消
-            </a>
-
-            <a class="tab-item balanced" ng-click="saveItem(editingItem,$event)">
-                <i class="icon ion-checkmark-circled"></i>
-                保存
-            </a>
-
-        </div>
-    </ion-footer-bar>
+    <!--<ion-footer-bar class="bar-light">-->
+        <!---->
+    <!--</ion-footer-bar>-->
 
 </ion-modal-view>>
 
