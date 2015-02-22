@@ -64,6 +64,7 @@ angular.module('miaomiao.console.controllers')
                     MMProductService.setInLoadingMoreFlag(false);
                     MMProductService.setCanLoadMoreFlagForIndex(idx,false);
                     $scope.$broadcast('scroll.infiniteScrollComplete');
+                    $ionicScrollDelegate.$getByHandle('productScroll').resize();
                     return;
                 }
 
@@ -80,7 +81,6 @@ angular.module('miaomiao.console.controllers')
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                     $ionicScrollDelegate.resize();
                 });
-
 
             }, function (data, status) {
 
@@ -139,6 +139,10 @@ angular.module('miaomiao.console.controllers')
                     currentCategory.itemls.splice(index, 1,item);
 
                     MMProductService.setCategoryForIndex($scope.selectedIndex,currentCategory);
+
+                    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+                        cordova.plugins.Keyboard.close();
+                    }
                 });
             }
         }
