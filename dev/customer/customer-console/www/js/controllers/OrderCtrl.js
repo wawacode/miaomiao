@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('OrderCtrl', function ($scope, $rootScope, $ionicPopup,$ionicLoading , $state
+    .controller('OrderCtrl', function ($scope, $rootScope,$ionicModal, $ionicPopup,$ionicLoading , $state
         , $timeout, $ionicScrollDelegate, httpClient,localStorageService,MMPushNotification,MMShopService, MMUtils) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
@@ -121,6 +121,61 @@ angular.module('miaomiao.console.controllers')
                 $scope.$broadcast('scroll.refreshComplete');
                 $rootScope.$broadcast('orderScroll.refreshComplete');
             })
+        }
+
+        $ionicModal.fromTemplateUrl('templates/order-detail.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+                $scope.modal = modal;
+            });
+
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+
+        $scope.closeModal = function() {
+            $scope.modal.remove();
+        };
+
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hide', function() {
+            // Execute action
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
+        $scope.$on('modal.shown', function() {
+
+        });
+
+        $scope.callNumber = function(number){
+            window.plugins.CallNumber.callNumber(function(){}, function(){}, number);
+        }
+
+        $scope.showOrderDetail = function(order) {
+
+            $scope.order = order;
+            $ionicModal.fromTemplateUrl('templates/order-detail.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                    $scope.modal = modal;
+                    $scope.openModal();
+                });
+
+            // make api call
+            if($scope.order.readed == false){
+                httpClient.orderHasbeenRead($scope.info.shop.id, order.order_id, function (data, status) {
+                    $scope.order.readed = true;
+                }, function (data, status) {
+                });
+            }
         }
 
         // just kicking the tires

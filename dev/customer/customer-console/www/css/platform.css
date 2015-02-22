@@ -181,7 +181,7 @@
     position: absolute;
     right: 0;
     bottom:0;
-    min-width: 60px;
+    min-width: 80px;
 }
 
 .product_action .button-icon .icon:before, .button-icon.icon:before {
@@ -358,7 +358,7 @@
 }
 
 .no-detail-scan-padding{
-    margin-top: 40%;
+    margin-top: 30%;
 }
 
 .has-detail-scan-padding{

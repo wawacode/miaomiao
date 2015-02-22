@@ -223,7 +223,9 @@ angular.module('miaomiao.console.controllers')
             MMUtils.showLoadingIndicator('正在保存,请稍候...',$scope);
 
             httpClient.updateItem(options, $scope.info.shop.id, function (data, status) {
+
                 $ionicLoading.hide();
+
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
                     MMUtils.showAlert('修改商品失败:' + data.msg);

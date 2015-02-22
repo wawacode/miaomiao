@@ -18,7 +18,7 @@
         <div class="order-list list" style="">
 
             <div bindonce class="order-item" style=""
-                 quick-ng-repeat="order in info.orders track by order.order_id" ng-controller="OrderDetailCtrl">
+                 quick-ng-repeat="order in info.orders track by order.order_id">
 
                 <div class="item item-divider">
                     {{order.create_time | date:'yyyy-M-d,h:mm a'}}

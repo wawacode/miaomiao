@@ -6,7 +6,11 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || [];
         $scope.hasProductInfo = false;
 
-        $scope.findItem = function (serialNo) {
+        $scope.findItem = function (serialNo,$event) {
+
+            if($event){
+                $event.target.blur();
+            }
 
             if (!serialNo) {
                 MMUtils.showAlert('请输入条形码');
@@ -54,10 +58,11 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
             );
         }
 
-        $scope.changeCategroy = function (currentCateId) {
-
-            $scope.newitem.currentCateId = currentCateId;
-
+        $scope.inputReadyKeyup = function($event){
+            if($event.keyCode == 13)
+            {
+                $event.target.blur();
+            }
         }
 
 
@@ -65,15 +70,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
             $scope.newitem = {};
             $scope.hasProductInfo = false;
-            if ($scope.info.categoryls && $scope.info.categoryls.length) {
-                $timeout(function () {
-                    $scope.newitem.currentCateId = $scope.info.categoryls[0].category_id;
-                });
-            } else {
-                $timeout(function () {
-                    $scope.newitem.currentCateId = 0;
-                });
-            }
+
             $scope.openModal();
         }
 
