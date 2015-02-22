@@ -152,6 +152,7 @@ angular.module('miaomiao.console.controllers')
         }
 
         $scope.inputReadyKeyup = function($event){
+//            console.log('keycode is:' + $event.keyCode);
             if($event.keyCode == 13)
             {
                 $event.target.blur();
