@@ -173,6 +173,10 @@ angular.module('miaomiao.console.controllers')
 
         $scope.closeModal = function($event) {
             $scope.modal.remove();
+
+            $timeout(function(){
+                closeKeyboard();
+            })
         };
 
         //Cleanup the modal when we're done with it!
@@ -222,6 +226,13 @@ angular.module('miaomiao.console.controllers')
             });
         }
 
+        function closeKeyboard(){
+            // in case some input has focus
+            if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.close();
+            }
+        }
+
         function _saveItemInfo(options,item){
 
             MMUtils.showLoadingIndicator('正在保存,请稍候...',$scope);
@@ -236,10 +247,6 @@ angular.module('miaomiao.console.controllers')
                     return;
                 }
 
-                // in case some input has focus
-                if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-                    cordova.plugins.Keyboard.close();
-                }
                 $scope.closeModal();
                 // update some fileds
                 $scope.updateItemFromCurrentCategory(item);
