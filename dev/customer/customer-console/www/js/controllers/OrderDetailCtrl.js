@@ -14,7 +14,7 @@ angular.module('miaomiao.console.controllers').controller('OrderDetailCtrl',['$s
         };
 
         $scope.closeModal = function() {
-            $scope.modal.hide();
+            $scope.modal.remove();
         };
 
         //Cleanup the modal when we're done with it!
@@ -38,7 +38,15 @@ angular.module('miaomiao.console.controllers').controller('OrderDetailCtrl',['$s
         }
 
         $scope.showOrderDetail = function(order) {
+
             $scope.order = order;
+            $ionicModal.fromTemplateUrl('templates/order-detail.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                    $scope.modal = modal;
+                    $scope.openModal();
+            });
 
             // make api call
             if($scope.order.readed == false){
@@ -47,8 +55,6 @@ angular.module('miaomiao.console.controllers').controller('OrderDetailCtrl',['$s
                 }, function (data, status) {
                 });
             }
-
-            $scope.openModal();
         }
     }
 ]);

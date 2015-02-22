@@ -152,7 +152,7 @@ angular.module('miaomiao.console.controllers')
         };
 
         $scope.closeModal = function($event) {
-            $scope.modal.hide();
+            $scope.modal.remove();
         };
 
         //Cleanup the modal when we're done with it!

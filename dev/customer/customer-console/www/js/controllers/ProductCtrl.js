@@ -30,7 +30,7 @@ angular.module('miaomiao.console.controllers')
                 var initIndex = 0;
                 $scope.selectedIndex = initIndex;
 
-                MMProductService.switchCategoryNotification({index:initIndex});
+                $scope.selectCategory(initIndex);
 
             }, function (data, status) {
                 $ionicLoading.hide();
