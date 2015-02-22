@@ -31,19 +31,16 @@
       </div>
 
       <div class="shop-product-list">
-          <ul class="shop-product-categray-list list">
-
-              <li bindone ng-repeat="item in info.searchResultsItems" class="product-item"
+          <ul class="shop-product-categray-list list" ng-controller="ProductListCtrl">
+              <li bindonce ng-repeat="item in items track by item.id"
+                  class="product-item"
                   ng-include
                   src="'templates/product-detail.html'">
               </li>
-
-              <div class="no-result-display" style="text-align: center" ng-if="info.hasNoResults">
-                  没有结果
-              </div>
-
           </ul>
-
+          <div class="no-result-display" style="text-align: center" ng-if="info.hasNoResults">
+              没有结果
+          </div>
       </div>
 
   </ion-content>

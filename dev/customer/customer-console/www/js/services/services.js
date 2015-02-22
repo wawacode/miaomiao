@@ -197,6 +197,20 @@ angular.module('miaomiao.console.services', [])
                 $scope.$on('MMEVENT_switchCategoryNotification', function (event, message) {
                     handler(message);
                 });
+            },
+
+            renderDataNotification:function(data){
+                $timeout(function () {
+                    $rootScope.$broadcast('MMEVENT_renderDataNotification', {
+                        data: data
+                    });
+                });
+            },
+
+            onRenderDataNotification: function ($scope, handler) {
+                $scope.$on('MMEVENT_renderDataNotification', function (event, message) {
+                    handler(message);
+                });
             }
         }
     }]);

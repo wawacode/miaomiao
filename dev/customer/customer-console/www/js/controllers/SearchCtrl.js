@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('SearchCtrl', function($scope, $ionicLoading, $state, $timeout,httpClient,localStorageService,MMUtils) {
+    .controller('SearchCtrl', function($scope, $ionicLoading, $state, $timeout,httpClient,localStorageService,MMUtils,MMProductService) {
 
         $scope.pageName = '搜索商品';
 
@@ -42,6 +42,8 @@ angular.module('miaomiao.console.controllers')
 
                 $scope.info.hasNoResults = false;
                 $scope.info.searchResultsItems = dataDetail.itemls;
+
+                MMProductService.renderDataNotification($scope.info.searchResultsItems);
 
             }, function (data, status) {
                 $ionicLoading.hide();

@@ -28,6 +28,16 @@ angular.module('miaomiao.console.controllers')
 
         });
 
+        // handler change category notification
+        MMProductService.onRenderDataNotification($scope,function(message){
+
+            var data = message.data;
+            $timeout(function(){
+                $scope.items = data;
+                $ionicScrollDelegate.resize();
+            });
+        });
+
         $scope.moreDataCanBeLoaded = function () {
             if(!hasData)return false;
             return $scope.category && $scope.category.canLoadMore;
@@ -82,6 +92,7 @@ angular.module('miaomiao.console.controllers')
         $scope.deleteItemFromCurrentCategory = function (item) {
 
             var currentCategory = $scope.category;
+            if(!currentCategory)return;
 
             var index = currentCategory.itemls.indexOf(item);
             if (index > -1) {
@@ -95,6 +106,7 @@ angular.module('miaomiao.console.controllers')
         $scope.stickItemFromCurrentCategory = function (item) {
 
             var currentCategory = $scope.category;
+            if(!currentCategory)return;
 
             var index = currentCategory.itemls.indexOf(item);
             if (index != -1) {
@@ -109,6 +121,7 @@ angular.module('miaomiao.console.controllers')
         $scope.updateItemFromCurrentCategory = function (item) {
 
             var currentCategory = $scope.category;
+            if(!currentCategory)return;
 
             var index = currentCategory.itemls.indexOf(item);
             if (index != -1) {
