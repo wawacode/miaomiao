@@ -1,6 +1,6 @@
 var miaomiao = angular.module('miaomiao.console.services');
 
-miaomiao.factory('MMUtils', ['$timeout', function ($timeout) {
+miaomiao.factory('MMUtils', ['$timeout','$ionicLoading','$ionicPopup', function ($timeout,$ionicLoading,$ionicPopup) {
 
     return {
 
@@ -29,6 +29,22 @@ miaomiao.factory('MMUtils', ['$timeout', function ($timeout) {
             var regPhone = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
             var regMobile = /^1[3|4|5|6|7|8|9][0-9]{1}[0-9]{8}$/;
             return regPhone.test(number) || regMobile.test(number);
+        },
+
+        showLoadingIndicator:function(message,scope,tmpUrl){
+
+            scope.LoadingMessage = message;
+            $ionicLoading.show({
+                templateUrl: tmpUrl || 'templates/loadingIndicator.html',
+                scope: scope
+            });
+        },
+        showAlert:function(message,tmpUrl){
+            $ionicPopup.alert({
+                title: message,
+                template: tmpUrl || ''
+            });
         }
+
     }
 }])

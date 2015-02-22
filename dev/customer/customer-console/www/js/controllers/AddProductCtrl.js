@@ -1,6 +1,7 @@
-angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope', '$ionicPopup', '$ionicModal', 'httpClient', 'localStorageService', '$timeout', '$ionicLoading', 'Camera',
+angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$scope', '$ionicPopup', '$ionicModal',
+    'httpClient', 'localStorageService', '$timeout', '$ionicLoading', 'Camera','MMUtils',
 
-    function ($scope, $ionicPopup, $ionicModal, httpClient, localStorageService, $timeout, $ionicLoading, Camera) {
+    function ($scope, $ionicPopup, $ionicModal, httpClient, localStorageService, $timeout, $ionicLoading, Camera,MMUtils) {
 
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || [];
         $scope.hasProductInfo = false;
@@ -8,27 +9,18 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
         $scope.findItem = function (serialNo) {
 
             if (!serialNo) {
-                $ionicPopup.alert({
-                    title: '请输入条形码',
-                    template: ''
-                });
+                MMUtils.showAlert('请输入条形码');
                 return;
             }
-            $scope.LoadingMessage = '正在查找商品信息,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+
+            MMUtils.showLoadingIndicator('正在查找商品信息,请稍候...',$scope);
 
             httpClient.getItemInfo(serialNo, function (data, status) {
 
                 $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    $ionicPopup.alert({
-                        title: '查找商品失败,请手动添加:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('查找商品失败,请手动添加:' + data.msg);
                 }
                 $scope.hasProductInfo = true;
                 var item = dataDetail.product;
@@ -41,10 +33,8 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
             }, function (data, status) {
                 $ionicLoading.hide();
                 $scope.hasProductInfo = true;
-                $ionicPopup.alert({
-                    title: '查找商品失败,请手动添加',
-                    template: ''
-                });
+                MMUtils.showAlert('查找商品失败,请手动添加');
+
             });
         }
 
@@ -59,10 +49,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                     })
                 },
                 function (error) {
-                    $ionicPopup.alert({
-                        title: '查找商品失败,请手动添加',
-                        template: ''
-                    });
+                    MMUtils.showAlert('查找商品失败,请手动添加');
                 }
             );
         }
@@ -94,26 +81,17 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
         $scope.saveItem = function (newitem) {
 
             if (!newitem.currentCateId) {
-                $ionicPopup.alert({
-                    title: '请选择商品分类',
-                    template: ''
-                });
+                MMUtils.showAlert('请选择商品分类');
                 return;
             }
 
             if (!newitem.name) {
-                $ionicPopup.alert({
-                    title: '请填写商品名称',
-                    template: ''
-                });
+                MMUtils.showAlert('请填写商品名称');
                 return;
             }
 
             if (!newitem.price) {
-                $ionicPopup.alert({
-                    title: '请填写商品价格',
-                    template: ''
-                });
+                MMUtils.showAlert('请填写商品价格');
                 return;
             }
 
@@ -129,22 +107,14 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
             function addItemInfo(options, newitem) {
 
-                $scope.LoadingMessage = '正在添加,请稍候...';
-                $ionicLoading.show({
-                    templateUrl: 'templates/loadingIndicator.html',
-                    scope: $scope
-                });
-
+                MMUtils.showLoadingIndicator('正在添加,请稍候...',$scope);
 
                 httpClient.addItem(options, function (data, status) {
 
                     $ionicLoading.hide();
                     var code = data.code, dataDetail = data.data;
                     if (code != 0) {
-                        $ionicPopup.alert({
-                            title: '添加商品失败:' + data.msg,
-                            template: ''
-                        });
+                        MMUtils.showAlert('添加商品失败:' + data.msg);
                         return;
                     }
                     var item = dataDetail.item;
@@ -155,38 +125,25 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
                 }, function (data, status) {
                     $ionicLoading.hide();
-                    $ionicPopup.alert({
-                        title: '添加商品失败:',
-                        template: ''
-                    });
+                    MMUtils.showAlert('添加商品失败');
                     $scope.closeModal();
                 });
             }
 
             if(newitem.hasNewPicture){
-                $scope.LoadingMessage = '正在上传图片,请稍候...';
-                $ionicLoading.show({
-                    templateUrl: 'templates/loadingIndicator.html',
-                    scope: $scope
-                });
 
+                MMUtils.showLoadingIndicator('正在上传图片,请稍候...',$scope);
                 httpClient.uploadPicForItem(newitem.serialNo, newitem.new_pic_url, $scope.info.shop.id, function (data, status) {
                     $ionicLoading.hide();
                     var code = data.code, dataDetail = data.data;
                     if (code != 0) {
-                        $ionicPopup.alert({
-                            title: '上传图片失败,请重试:' + data.msg,
-                            template: ''
-                        });
+                        MMUtils.showAlert('上传图片失败,请重试:' + data.msg);
                         return;
                     }
                     addItemInfo(options, newitem);
                 },function(){
                     $ionicLoading.hide();
-                    $ionicPopup.alert({
-                        title: '上传图片失败,请重试:',
-                        template: ''
-                    });
+                    MMUtils.showAlert('上传图片失败,请重试');
                 });
             }else{
                 addItemInfo(options, newitem);
@@ -224,40 +181,18 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
 
         });
 
-        var retries = 0;
-
         function clearCache() {
             navigator.camera.cleanup();
         }
 
         function onCapturePhoto(fileURI) {
-            var win = function (r) {
-                clearCache();
-                retries = 0;
-                alert('Done!');
-            }
 
-            var fail = function (error) {
-                if (retries == 0) {
-                    retries++;
-                    setTimeout(function () {
-                        onCapturePhoto(fileURI)
-                    }, 1000)
-                } else {
-                    retries = 0;
-                    clearCache();
-                    $ionicPopup.alert({
-                        title: '上传照片失败:',
-                        template: ''
-                    });
-                }
-            }
             $scope.newitem.new_pic_url = fileURI;
             $scope.newitem.hasNewPicture = true;
         }
 
         $scope.getPhoto = function () {
-            console.log('Getting camera');
+
             Camera.getPicture().then(onCapturePhoto, function (err) {
                 console.err(err);
             }, {

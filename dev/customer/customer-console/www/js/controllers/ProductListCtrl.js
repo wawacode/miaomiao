@@ -2,10 +2,11 @@ angular.module('miaomiao.console.controllers')
 
     .controller('ProductListCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state,
                                              cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService,
-                                             httpClient,MMShopService, Camera,MMProductService) {
-        // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
-        // but the purpose of this app is to be an example to people getting started with angular and ionic.
-        // Therefore we err on repeating logic and being verbose
+                                             httpClient,MMShopService, Camera,MMProductService,MMUtils) {
+
+        $scope.info = $scope.info || {};
+        $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
+
         var hasData = false;
         // handler change category notification
         MMProductService.onSwitchCategoryNotification($scope,function(message){
@@ -126,12 +127,188 @@ angular.module('miaomiao.console.controllers')
             }
         }
 
-//        MMProductService.onAddProductToCategoryNotification($scope,function(message){
-//
-//            var item = message.item;
-//            var cateId = message.cateId;
-//            if($scope.category.category_id == cateId){
-//                $scope.items.push(item);
-//            }
-//        })
+
+        // for product edit
+
+        $ionicModal.fromTemplateUrl('templates/product-edit.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+                $scope.modal = modal;
+            });
+
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+
+        $scope.closeModal = function($event) {
+            $scope.modal.hide();
+        };
+
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hide', function() {
+            // Execute action
+            $scope.refreshCurrentCategory();
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
+        $scope.$on('modal.shown', function() {
+
+        });
+
+        $scope.cancelEdit =function($event){
+            $scope.closeModal();
+        }
+
+        $scope.inputReadyKeyup = function($event){
+            if($event.keyCode == 13)
+            {
+                $event.target.blur();
+            }
+        }
+
+
+        $scope.editingItem = {};
+        $scope.EditItem = function(item) {
+            $scope.editingItem = item;
+            $scope.openModal();
+        }
+
+        $scope.StickItem = function(item){
+
+            MMUtils.showLoadingIndicator('正在置顶,请稍候...',$scope);
+
+            httpClient.stickItem(item.id, item.category_id, $scope.info.shop.id, function (data, status) {
+                $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    MMUtils.showAlert('置顶商品失败:' + data.msg);
+                    return;
+                }
+                $scope.closeModal();
+
+                $scope.stickItemFromCurrentCategory(item);
+
+            }, function (data, status) {
+                $ionicLoading.hide();
+                MMUtils.showAlert('置顶商品失败');
+                $scope.closeModal();
+            });
+        }
+
+        function _saveItemInfo(options,item){
+
+            MMUtils.showLoadingIndicator('正在保存,请稍候...',$scope);
+
+            httpClient.updateItem(options, $scope.info.shop.id, function (data, status) {
+                $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    MMUtils.showAlert('修改商品失败:' + data.msg);
+                    return;
+                }
+                $scope.closeModal();
+
+                // update some fileds
+                $scope.updateItemFromCurrentCategory(item);
+
+            }, function (data, status) {
+                $ionicLoading.hide();
+                MMUtils.showAlert('修改商品失败');
+            });
+        }
+
+        $scope.saveItem = function(item,$event){
+
+            // in case some input has focus
+
+            item.price = item.updated_price * 100;
+            item.name = item.updated_name;
+
+            var options = {'itemName': item.name,
+                itemId: item.id,
+                serialNo: item.serialNo,
+                category_id: item.category_id,
+                count: item.count,
+                score: item.score,
+                price: item.price,
+                saleStatus: item.saleStatus
+            }
+
+            if(item.hasNewPicture){
+
+                MMUtils.showLoadingIndicator('正在上传图片,请稍候...',$scope);
+
+                httpClient.uploadPicForItem(item.serialNo,item.new_pic_url,$scope.info.shop.id, function (data, status) {
+                    $ionicLoading.hide();
+                    var code = data.code, dataDetail = data.data;
+                    if (code != 0) {
+                        MMUtils.showAlert('上传图片失败,请重试:' + data.msg);
+                        return;
+                    }
+                    _saveItemInfo(options,item);
+
+                }, function (data, status) {
+                    $ionicLoading.hide();
+                    MMUtils.showAlert('上传图片失败,请重试');
+                });
+            }else{
+                _saveItemInfo(options,item);
+            }
+        }
+
+        $scope.deleteItem = function(item){
+
+            MMUtils.showLoadingIndicator('正在删除,请稍候...',$scope);
+
+            httpClient.deleteItem(item.id, $scope.info.shop.id, function (data, status) {
+                $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    MMUtils.showAlert('删除失败:' + data.msg);
+                    return;
+                }
+
+                $scope.closeModal();
+
+                $scope.deleteItemFromCurrentCategory(item);
+
+            }, function (data, status) {
+                $ionicLoading.hide();
+                MMUtils.showAlert('删除失败');
+                $scope.closeModal();
+            });
+        }
+
+        // for photo taking
+        function clearCache() {
+            navigator.camera.cleanup();
+        }
+
+        function onCapturePhoto(fileURI) {
+
+            $scope.editingItem.new_pic_url = fileURI;
+            $scope.editingItem.hasNewPicture = true;
+        }
+
+        $scope.getPhoto = function(item,$event) {
+
+            $event.stopPropagation();
+
+            Camera.getPicture().then(onCapturePhoto, function(err) {
+                console.err(err);
+            }, {
+                quality: 25,
+                targetWidth: 320,
+                targetHeight: 320,
+                destinationType: navigator.camera.DestinationType.FILE_URI,
+                saveToPhotoAlbum: false
+            });
+        }
     })

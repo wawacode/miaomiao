@@ -1,18 +1,14 @@
 angular.module('miaomiao.console.controllers')
 
     .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state, $timeout,
-                                         $ionicScrollDelegate, localStorageService, httpClient,MMShopService, Camera,MMProductService) {
+                                         $ionicScrollDelegate, localStorageService, httpClient,MMShopService, Camera,MMProductService,MMUtils) {
         $scope.info = {};
         $scope.pageName = '商品';
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
         function initData(){
 
-            $scope.LoadingMessage = '正在加载,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在加载,请稍候...',$scope);
 
             httpClient.getProductList($scope.info.shop.id, function (data, status) {
 
@@ -20,10 +16,7 @@ angular.module('miaomiao.console.controllers')
 
                 var code = data.code, dataDetail = data.data;
                 if (!code == 0) {
-                    $ionicPopup.alert({
-                        title: '加载数据失败',
-                        template: ''
-                    });
+                    MMUtils.showAlert('加载数据失败');
                     return;
                 }
 
@@ -41,10 +34,7 @@ angular.module('miaomiao.console.controllers')
 
             }, function (data, status) {
                 $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: '加载数据失败',
-                    template: ''
-                });
+                MMUtils.showAlert('加载数据失败');
                 return;
             });
         }
@@ -67,6 +57,10 @@ angular.module('miaomiao.console.controllers')
             $timeout(function(){
                 MMProductService.switchCategoryNotification({index:$scope.selectedIndex});
             }, timeout || 100);
+        }
+
+        $scope.refreshCurrentCategory = function(){
+            $scope.selectCategory($scope.selectedIndex);
         }
 
         $scope.addProductForCategory = function (cateId,item) {

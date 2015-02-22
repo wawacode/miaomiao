@@ -14,11 +14,13 @@
         <div class="list">
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">商品名称:</span>
-                <input type="text" ng-value="item.updated_name" ng-model="item.updated_name" ng-init="item.updated_name = item.name">
+                <input type="text" ng-value="item.updated_name" ng-model="item.updated_name"
+                       ng-init="item.updated_name = item.name" ng-keyup="inputReadyKeyup($event)">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">价格(元):</span>
-                <input type="number" ng-value="item.updated_price" ng-model="item.updated_price" ng-init="item.updated_price = item.price/100.0">
+                <input type="number" ng-value="item.updated_price" ng-model="item.updated_price"
+                       ng-init="item.updated_price = item.price/100.0" ng-keyup="inputReadyKeyup($event)">
             </label>
 
             <label class="item item-input item-select">
@@ -53,12 +55,12 @@
 
     <ion-footer-bar class="bar-light">
         <div class="tabs tabs-icon-left tabs-light">
-            <a class="tab-item balanced" ng-click="closeModal()">
+            <a class="tab-item balanced" ng-click="cancelEdit($event)">
                 <i class="icon ion-close-circled"></i>
                 取消
             </a>
 
-            <a class="tab-item balanced" ng-click="saveItem(item)">
+            <a class="tab-item balanced" ng-click="saveItem(item,$event)">
                 <i class="icon ion-checkmark-circled"></i>
                 保存
             </a>

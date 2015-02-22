@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('SearchCtrl', function($scope, $ionicLoading, $state, $timeout,httpClient,localStorageService) {
+    .controller('SearchCtrl', function($scope, $ionicLoading, $state, $timeout,httpClient,localStorageService,MMUtils) {
 
         $scope.pageName = '搜索商品';
 
@@ -22,11 +22,7 @@ angular.module('miaomiao.console.controllers')
 
             var KEY = key || $scope.info.key;
 
-            $scope.LoadingMessage = '正在搜索...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在搜索...',$scope);
 
             httpClient.getSearchResults($scope.info.shop.id, KEY, function (data, status) {
 

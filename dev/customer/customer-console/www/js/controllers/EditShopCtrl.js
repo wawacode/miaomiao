@@ -1,6 +1,9 @@
-angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$scope','$state','$filter', '$ionicPopup','$ionicModal','localStorageService','$ionicLoading','httpClient','$ionicScrollDelegate','$timeout','MMShopService',
+angular.module('miaomiao.console.controllers').controller('EditShopCtrl',
+    ['$scope','$state','$filter', '$ionicPopup','$ionicModal','localStorageService',
+        '$ionicLoading','httpClient','$ionicScrollDelegate','$timeout','MMShopService','MMUtils',
 
-    function ($scope,$state,$filter, $ionicPopup, $ionicModal,localStorageService,$ionicLoading,httpClient,$ionicScrollDelegate,$timeout,MMShopService) {
+    function ($scope,$state,$filter, $ionicPopup, $ionicModal,localStorageService,
+              $ionicLoading,httpClient,$ionicScrollDelegate,$timeout,MMShopService,MMUtils) {
 
 
         $scope.editingShop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP');
@@ -68,20 +71,13 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 }
             }
 
-            $scope.LoadingMessage = '正在保存,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在保存,请稍候...',$scope);
 
             httpClient.updateShopInfo(options, function (data, status) {
                 $ionicLoading.hide();
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    $ionicPopup.alert({
-                        title: '修改店铺失败:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('修改店铺失败:' + data.msg);
                     return;
                 }
 
@@ -109,10 +105,7 @@ angular.module('miaomiao.console.controllers').controller('EditShopCtrl', ['$sco
                 });
             }, function (data, status) {
                 $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: '修改店铺信息失败:',
-                    template: ''
-                });
+                MMUtils.showAlert('修改店铺失败');
             });
         }
 
