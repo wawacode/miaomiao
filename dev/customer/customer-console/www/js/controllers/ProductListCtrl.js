@@ -182,8 +182,11 @@ angular.module('miaomiao.console.controllers')
         });
 
         $scope.EditItem = function(item) {
+
             // for product edit
             $scope.editingItem = item;
+            $scope.editingItem.hasNewPicture = false; // reset to default
+
             $ionicModal.fromTemplateUrl('templates/product-edit.html', {
                 scope: $scope,
                 animation: 'slide-in-up'

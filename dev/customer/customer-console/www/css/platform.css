@@ -181,7 +181,7 @@
     position: absolute;
     right: 0;
     bottom:0;
-    min-width: 80px;
+    min-width: 60px;
 }
 
 .product_action .button-icon .icon:before, .button-icon.icon:before {
@@ -277,7 +277,6 @@
 
 .orderSnapshotItem {
     float: left;
-    padding-left:8px
 }
 
 .orderSnapshotCount {
