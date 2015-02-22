@@ -27,9 +27,8 @@
                 <div class="input-label assertive">
                     销售状态:
                 </div>
-                <select ng-model="editingItem.saleStatus" ng-options="o.status as o.title for o in [{title:'在售',status:1},{title:'下架',status:0}]"
-                        ng-init="editingItem.saleStatus=1">
-
+                <select ng-model="editingItem.status" ng-options="o.status as o.title for o in [{title:'在售',status:0},{title:'下架',status:1}]"
+                        ng-init="editingItem.status == undefined? 0: editingItem.status">
                 </select>
             </label>
 

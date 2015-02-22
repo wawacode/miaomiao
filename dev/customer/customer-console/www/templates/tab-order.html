@@ -21,21 +21,22 @@
                  quick-ng-repeat="order in info.orders track by order.order_id" ng-controller="OrderDetailCtrl">
 
                 <div class="item item-divider">
-                    订单{{$index + 1}}: {{order.create_time | date:'yyyy-M-d,h:mm a'}}
+                    {{order.create_time | date:'yyyy-M-d,h:mm a'}}
                     <span class="item-note">
                         共计:{{order.items | getTotolCount }} 件<span
                             class="assertive">￥ {{order.items | getTotolPrice }}</span>
                     </span>
                 </div>
 
-                <div class="item item-icon-right">
+                <div class="item item-icon-right" ng-click="showOrderDetail(order)">
 
                     <div style="font-size: 14px"><i class="ion-ios7-navigate balanced"></i> 收货地址: <span style="color: #808080;" bo-text="order.address"></span></div>
                     <div style="font-size: 14px"><i class="ion-ios7-telephone balanced"></i> 联系电话: <span style="color: #808080;" bo-text="order.phone"></span></div>
 
                     <div style="margin-top: 10px;color: #808080;font-size: 14px" bo-text="'买家留言: '+ order.remarks"></div>
 
-                    <i class="icon ion-ios7-information" ng-class="{'balanced':order.readed , 'assertive': !order.readed}" ng-click="showOrderDetail(order)"></i>
+                    <span class="badge badge-assertive" ng-if="!order.readed">未读</span>
+                    <span class="badge badge-balanced" ng-if="order.readed">已读</span>
 
                 </div>
 

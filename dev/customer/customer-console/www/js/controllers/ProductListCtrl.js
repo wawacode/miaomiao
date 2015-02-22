@@ -21,8 +21,11 @@ angular.module('miaomiao.console.controllers')
 
                 $scope.items = $scope.category.itemls;
 
-                $ionicScrollDelegate.resize();
-                $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
+                // wait for items to render
+                $timeout(function(){
+                    $ionicScrollDelegate.resize();
+                    $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
+                },500);
 
             });
 
@@ -248,7 +251,7 @@ angular.module('miaomiao.console.controllers')
                 count: item.count,
                 score: item.score,
                 price: item.price,
-                saleStatus: item.saleStatus
+                saleStatus: item.status
             }
 
             if(item.hasNewPicture){
