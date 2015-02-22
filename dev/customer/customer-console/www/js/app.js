@@ -11,6 +11,7 @@ angular.module('miaomiao.console', [
     'ngCordova',
     'LocalStorageModule',
     'ngStorage',
+    'pasvaz.bindonce',
     'ngDropdowns',
     'QuickList',
     'angular-datepicker',

@@ -1,10 +1,10 @@
-<div class="prod_icon" back-img="{{item.pic_url}}">
+<div bindonce="item" class="prod_icon" back-img="{{item.pic_url}}">
 </div>
 <div>
-    <span class="product-title oneline ">{{item.name}}</span>
+    <span bindonce="item" class="product-title oneline ">{{item.name}}</span>
     <div class="prod_info">
-        <div class="product-price" data-value="$item.price">
-            <span style="font-weight: normal">¥ {{item.price/100.0}}</span>
+        <div class="product-price">
+            <span bindonce="item" style="font-weight: normal">¥ {{item.price/100.0}}</span>
         </div>
         <div class="product_action" ng-controller="EditProductCtrl">
             <a class="mgray button button-small button-icon icon ion-arrow-up-a" ng-click="StickItem(item)"></a>

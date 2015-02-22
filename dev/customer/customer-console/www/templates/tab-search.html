@@ -9,7 +9,7 @@
     <!--</ion-nav-bar>-->
     <ion-nav-bar class="bar-mmiao" align-title="center">
         <ion-nav-title>
-            {{pageName}}
+            搜索
         </ion-nav-title>
 
     </ion-nav-bar>
@@ -33,12 +33,12 @@
       <div class="shop-product-list">
           <ul class="shop-product-categray-list list">
 
-              <li ng-repeat="item in info.searchResultsItems" class="product-item"
+              <li bindone ng-repeat="item in info.searchResultsItems" class="product-item"
                   ng-include
                   src="'templates/product-detail.html'">
               </li>
 
-              <div class="no-result-display" style="text-align: center" ng-show="info.hasNoResults">
+              <div class="no-result-display" style="text-align: center" ng-if="info.hasNoResults">
                   没有结果
               </div>
 

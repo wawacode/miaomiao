@@ -71,7 +71,7 @@ angular.module('miaomiao.console.services', [])
         }
     }]).factory('MMProductService', ['$rootScope','$timeout', function ($rootScope, $timeout) {
 
-        var categorys,category_summary,inLoadingMoreProcess=false;
+        var categorys = [],category_summary = [],inLoadingMoreProcess=false;
 
         return {
 

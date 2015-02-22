@@ -9,7 +9,8 @@
                  has-tabs="false"
                  has-header="true"
                  scroll="true"
-                 has-bouncing="true">
+                 has-bouncing="true"
+                 bindonce="order">
 
         <div class="item item-divider">
             订单时间: {{order.create_time |  date:'short'}}
@@ -24,7 +25,7 @@
         </div>
 
         <div style="padding: 15px 9px 15px;" class="order-snapshots">
-            <div class="orderSnapshot" ng-repeat="orderItem in order.items">
+            <div bindonce class="orderSnapshot" quick-ng-repeat="orderItem in order.items">
                 <div class="orderSnapshotItem">
                     {{orderItem.name}}
                 </div>
