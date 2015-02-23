@@ -292,13 +292,23 @@ angular.module('miaomiao.console.controllers')
                      "bytesSent":4941747,"headers":{"Access-Control-Allow-Origin":"*","Server":"nginx/1.0.15",
                      "Content-Length":"86","Content-Type":"application/json;charset=UTF-8","Connection":"keep-alive",
                      "Date":"Mon, 23 Feb 2015 01:48:00 GMT"}}
-                     * */
+                     */
                     if (!data || !data.response) {
                         MMUtils.showAlert('上传图片失败:' + JSON.stringify(data));
                         return;
                     }
+
+                    console.log("upload pic success :" + JSON.stringify(data.response));
+
+                    if(typeof(data.response) == 'string'){
+                        data.response = eval("(" + data.response + ")");
+                    }
+
                     var code = data.response.code, dataDetail = data.response.data;
-                    if (code != 0) {
+
+                    console.log('upload pic success code is:'+ code + " ,data :" + JSON.stringify(dataDetail));
+
+                    if (parseInt(code) != 0) {
                         MMUtils.showAlert('上传图片失败:' + data.response.msg);
                         return;
                     }

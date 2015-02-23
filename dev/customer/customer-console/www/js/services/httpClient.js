@@ -126,7 +126,7 @@ miaomiao.factory('httpClient', ['$http', 'serverInfo', function ($http, serverIn
         },
 
         updateItem: function (options, shopId, success, fail) {
-
+            options.shop_id = shopId;
             doPost('shopItem/update',options,success, fail);
 
         },

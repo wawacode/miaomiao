@@ -143,11 +143,20 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                         MMUtils.showAlert('上传图片失败:' + JSON.stringify(data));
                         return;
                     }
+
+                    if(typeof(data.response) == 'string'){
+                        data.response = eval("(" + data.response + ")");
+                    }
+
                     var code = data.response.code, dataDetail = data.response.data;
-                    if (code != 0) {
+
+                    console.log('upload pic success code is:'+ code + " ,data :" + JSON.stringify(dataDetail));
+
+                    if (parseInt(code) != 0) {
                         MMUtils.showAlert('上传图片失败:' + data.response.msg);
                         return;
                     }
+
                     options.pic_url= dataDetail.url;
 
                      addItemInfo(options, newitem);
