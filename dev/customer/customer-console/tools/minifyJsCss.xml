@@ -1,0 +1,50 @@
+<project name="mmconsole" default="js.concatenate" basedir=".">
+
+    <description>
+        minify js/css and concatenate into one
+    </description>
+
+    <property name="src" location="../www"/>
+
+    <target name="css.minify" >
+        <apply executable="java" parallel="false">
+            <fileset dir="${src}/css" includes="app.css"/>
+            <arg line="-jar"/>
+            <arg path="yuicompressor-2.4.8.jar"/>
+            <arg line="--line-break 0"/>
+            <srcfile/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.css" to="*-min.css"/>
+            <targetfile/>
+        </apply>
+    </target>
+
+    <target name="js.minify" depends="css.minify">
+        <apply executable="java" parallel="false">
+            <fileset dir="${src}/js" includes="*.js"/>
+            <arg line="-jar"/>
+            <arg path="yuicompressor-2.4.8.jar"/>
+            <srcfile/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.js" to="*-min.js"/>
+            <targetfile/>
+        </apply>
+    </target>
+
+    <target name="js.concatenate" depends="js.minify">
+        <concat destfile="${src}/js/mmconsole-min.js">
+
+            <filelist dir="${src}/js"
+                      files="config.js, app.js"/>
+
+            <filelist dir="${src}/js/services"
+                      files="CommonServices.js, HttpClient.js,CommonFilters.js,Utils.js,directives.js"/>
+
+            <filelist dir="${src}/js/controllers"
+                      files="MainControllers.js, SignInCtrl.js,ChangePwdCtrl.js,FrontPageCtrl.js,OrderCtrl.js,
+                      ProductListCtrl.js,ProductCtrl.js,ShopListCtrl.js,EditShopCtrl.js,AddProductCtrl.js,SearchCtrl.js"/>
+
+        </concat>
+    </target>
+
+</project>
