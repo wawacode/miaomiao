@@ -1,6 +1,7 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet,$ionicPopup, $state, cfpLoadingBar, $timeout,localStorageService, $ionicScrollDelegate,httpClient,MMShopService) {
+    .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet,$ionicPopup, $state
+        , $timeout,localStorageService, $ionicScrollDelegate,httpClient,MMShopService,MMUtils) {
 
         $scope.info = {};
 
@@ -13,10 +14,7 @@ angular.module('miaomiao.console.controllers')
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    $ionicPopup.alert({
-                        title: '加载数据失败:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('加载数据失败:' + data.msg);
                     return fail();
                 }
                 success(dataDetail);
@@ -32,11 +30,7 @@ angular.module('miaomiao.console.controllers')
             $scope.info.summary = {};
             $ionicScrollDelegate.resize();
 
-            $scope.LoadingMessage = '正在加载,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在加载,请稍候...',$scope);
 
             $scope.getSummaryInfo(function(dataDetail){
 
@@ -95,7 +89,6 @@ angular.module('miaomiao.console.controllers')
                 },
                 buttonClicked: function (index) {
                     if (index == 0) {
-                        //TODO goto change pass page
                         $state.go('changepassword',null,{reload: true});
                     }
                     return true;

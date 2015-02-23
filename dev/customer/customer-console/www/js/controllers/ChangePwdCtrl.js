@@ -1,6 +1,7 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('ChangePwdCtrl', function ($scope, $ionicLoading, $compile,$ionicPopup, cfpLoadingBar, $timeout, $ionicScrollDelegate , $http, $state, localStorageService, httpClient,MMUtils,MMPushNotification) {
+    .controller('ChangePwdCtrl', function ($scope, $ionicLoading, $compile,$ionicPopup
+        , $timeout, $ionicScrollDelegate , $http, $state, localStorageService, httpClient,MMUtils,MMPushNotification,MMUtils) {
 
         $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
 
@@ -9,34 +10,21 @@ angular.module('miaomiao.console.controllers')
             if(!$scope.user.old_password ||
                 !$scope.user.new_password ||
                 !$scope.user.new_password_confirm){
-                $ionicPopup.alert({
-                    title: '密码输入不能为空',
-                    template: ''
-                });
+                MMUtils.showAlert('密码输入不能为空');
                 return;
             }
 
             if($scope.user.old_password == $scope.user.new_password){
-                $ionicPopup.alert({
-                    title: '新密码不能与旧密码相同',
-                    template: ''
-                });
+                MMUtils.showAlert('新密码不能与旧密码相同');
                 return;
             }
 
             if($scope.user.new_password != $scope.user.new_password_confirm){
-                $ionicPopup.alert({
-                    title: '新密码两次输入不一致',
-                    template: ''
-                });
+                MMUtils.showAlert('新密码两次输入不一致');
                 return;
             }
 
-            $scope.LoadingMessage = '正在修改密码,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator( '正在修改密码,请稍候...',$scope);
 
             httpClient.changePwd($scope.user.phone, $scope.user.old_password, $scope.user.new_password, function (data, status) {
 
@@ -44,10 +32,7 @@ angular.module('miaomiao.console.controllers')
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    $ionicPopup.alert({
-                        title: '修改密码失败:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('修改密码失败:' + data.msg);
                     return;
                 }
 
@@ -57,10 +42,7 @@ angular.module('miaomiao.console.controllers')
 
             }, function (data, status) {
                 $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: '修改密码失败',
-                    template: ''
-                });
+                MMUtils.showAlert('修改密码失败');
             });
         };
 

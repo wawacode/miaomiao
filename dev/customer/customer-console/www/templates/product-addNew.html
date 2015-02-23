@@ -15,7 +15,8 @@
 
             <div class="item item-input item-stacked-label item-button-right">
                 <span class="input-label assertive">条形码:</span>
-                <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo" placeholder="扫描或者填写条形码,点击查一查">
+                <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo"
+                       placeholder="扫描或者填写条形码,点击查一查" ng-keyup="$event.keyCode == 13 && findItem(newitem.serialNo,$event)">
                 <button class="button button-balanced " ng-click="openQRScaner()">
                     <i class="icon ion-qr-scanner"></i>扫码
                 </button>
@@ -31,17 +32,17 @@
                 <div class="input-label assertive">
                     选择分类:
                 </div>
-                <select ng-model="newitem.currentCateId" ng-options="o.category_id as o.name for o in info.categoryls" ng-change="changeCategroy(newitem.currentCateId)">
+                <select ng-model="newitem.currentCateId" ng-options="o.category_id as o.name for o in info.categorySummary">
                 </select>
             </label>
             <label class="item item-input item-stacked-label" ng-show="hasProductInfo">
                 <span class="input-label assertive">商品名称:</span>
-                <input type="text" ng-value="newitem.name" ng-model="newitem.name">
+                <input type="text" ng-value="newitem.name" ng-model="newitem.name" ng-keyup="inputReadyKeyup($event)">
             </label>
 
             <label class="item item-input item-stacked-label" ng-show="hasProductInfo">
                 <span class="input-label assertive">价格(元):</span>
-                <input type="text" ng-value="newitem.price" ng-model="newitem.price">
+                <input type="number" ng-value="newitem.price" ng-model="newitem.price" ng-keyup="inputReadyKeyup($event)">
             </label>
 
             <div class="item item-input item-stacked-label item-button-right" ng-show="hasProductInfo">
@@ -55,8 +56,9 @@
                     </div>
                 </div>
 
-                <div class="padding-vertical padding-right" style="text-align: center" ng-show="newitem.pic_url">
-                    <img class="full-image padding-top" ng-src="{{item.new_pic_url}}" ng-model="item.new_pic_url" ng-init="item.new_pic_url=item.pic_url" style="width: 80%;height: auto">
+                <div class="padding-vertical padding-right" style="text-align: center" ng-show="newitem.pic_url || newitem.new_pic_url">
+                    <img class="full-image padding-top" ng-src="{{newitem.new_pic_url}}" ng-model="newitem.new_pic_url"
+                         ng-init="newitem.new_pic_url=newitem.pic_url" style="width: 80%;height: auto">
                 </div>
 
             </div>

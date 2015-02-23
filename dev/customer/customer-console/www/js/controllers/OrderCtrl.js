@@ -1,10 +1,10 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('OrderCtrl', function ($scope, $rootScope, $ionicPopup,$ionicLoading , $state, cfpLoadingBar, $timeout, $ionicScrollDelegate, httpClient,localStorageService,MMPushNotification,MMShopService) {
+    .controller('OrderCtrl', function ($scope, $rootScope,$ionicModal, $ionicPopup,$ionicLoading , $state
+        , $timeout, $ionicScrollDelegate, httpClient,localStorageService,MMPushNotification,MMShopService, MMUtils) {
         // This is nearly identical to FrontPageCtrl and should be refactored so the pages share a controller,
         // but the purpose of this app is to be an example to people getting started with angular and ionic.
         // Therefore we err on repeating logic and being verbose
-        $scope.pageName = '订单';
 
         $scope.info = {};
         $scope.info.orders = [];
@@ -34,10 +34,7 @@ angular.module('miaomiao.console.controllers')
 
                var code = data.code, dataDetail = data.data;
                 if (!code == 0) {
-                    $ionicPopup.alert({
-                        title: '加载数据失败',
-                        template: ''
-                    });
+                    MMUtils.showAlert('加载数据失败');
                     canLoadMore = false;
                     return fail();
                 }
@@ -51,10 +48,8 @@ angular.module('miaomiao.console.controllers')
 
             }, function (data, status) {
 
-                $ionicPopup.alert({
-                    title: '加载数据失败',
-                    template: ''
-                });
+                MMUtils.showAlert('加载数据失败');
+
                 canLoadMore = false;
                 return fail();
             });
@@ -65,11 +60,7 @@ angular.module('miaomiao.console.controllers')
         function initData(){
             var from = 0, offset = 20;
 
-            $scope.LoadingMessage = '正在加载,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在加载,请稍候...',$scope);
 
             $scope.getOrdersInfo(from,offset,function(dataDetail){
 
@@ -132,6 +123,61 @@ angular.module('miaomiao.console.controllers')
             })
         }
 
+        $ionicModal.fromTemplateUrl('templates/order-detail.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+                $scope.modal = modal;
+            });
+
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+
+        $scope.closeModal = function() {
+            $scope.modal.remove();
+        };
+
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hide', function() {
+            // Execute action
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
+        $scope.$on('modal.shown', function() {
+
+        });
+
+        $scope.callNumber = function(number){
+            window.plugins.CallNumber.callNumber(function(){}, function(){}, number);
+        }
+
+        $scope.showOrderDetail = function(order) {
+
+            $scope.order = order;
+            $ionicModal.fromTemplateUrl('templates/order-detail.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                    $scope.modal = modal;
+                    $scope.openModal();
+                });
+
+            // make api call
+            if($scope.order.readed == false){
+                httpClient.orderHasbeenRead($scope.info.shop.id, order.order_id, function (data, status) {
+                    $scope.order.readed = true;
+                }, function (data, status) {
+                });
+            }
+        }
+
         // just kicking the tires
         $scope.$on('$ionicView.afterEnter', function () {
 
@@ -161,10 +207,8 @@ angular.module('miaomiao.console.controllers')
 
         $scope.$on('orderScroll.refreshComplete',function(){
             // should see all the lastest, so clear all nofitcaiton number
-            console.log('after refresh we reset count');
             $scope.info.notification_order_count = 0;
 
-            console.log('we are in setting badge');
             $cordovaPush.setBadgeNumber(0).then(function (result) {
                 console.log("Set badge success " + result)
             }, function (err) {

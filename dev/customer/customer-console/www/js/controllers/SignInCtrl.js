@@ -1,44 +1,31 @@
 angular.module('miaomiao.console.controllers')
 
-    .controller('SignInCtrl', function ($scope, $ionicLoading, $compile,$ionicPopup, cfpLoadingBar, $timeout, $ionicScrollDelegate , $http, $state, localStorageService, httpClient,MMUtils,MMPushNotification) {
+    .controller('SignInCtrl', function ($scope, $ionicLoading, $compile,$ionicPopup
+        , $timeout, $ionicScrollDelegate , $http, $state, localStorageService, httpClient,MMUtils,MMPushNotification,MMUtils) {
 
         $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
 
         $scope.signIn = function (user) {
 
             if(!$scope.user.password || !$scope.user.name){
-                $ionicPopup.alert({
-                    title: '请输入用户名和密码',
-                    template: ''
-                });
+                MMUtils.showAlert('请输入用户名和密码');
                 return;
             }
 
             if(!MMUtils.isValidTelNumber($scope.user.phone)){
-                $ionicPopup.alert({
-                    title: '电话号码格式不正确',
-                    template: ''
-                });
+                MMUtils.showAlert('电话号码格式不正确');
                 return;
             }
 
-            $scope.LoadingMessage = '正在登陆,请稍候...';
-            $ionicLoading.show({
-                templateUrl: 'templates/loadingIndicator.html',
-                scope: $scope
-            });
-
+            MMUtils.showLoadingIndicator('正在登陆,请稍候...',$scope);
 
             httpClient.login($scope.user.phone, $scope.user.password, function (data, status) {
 
                 $ionicLoading.hide();
 
                 var code = data.code, dataDetail = data.data;
-                if (code == -1 || code == -2 ||code == -3 || code == 500 ) {
-                    $ionicPopup.alert({
-                        title: '登陆失败:' + data.msg,
-                        template: ''
-                    });
+                if (code != 0 ) {
+                    MMUtils.showAlert('登陆失败:' + data.msg);
                     return;
                 }
 
@@ -56,10 +43,7 @@ angular.module('miaomiao.console.controllers')
 
             }, function (data, status) {
                 $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: '登陆失败',
-                    template: ''
-                });
+                MMUtils.showAlert('登陆失败');
             });
         };
     });

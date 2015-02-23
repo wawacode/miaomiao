@@ -11,6 +11,7 @@ angular.module('miaomiao.console', [
     'ngCordova',
     'LocalStorageModule',
     'ngStorage',
+    'pasvaz.bindonce',
     'ngDropdowns',
     'QuickList',
     'angular-datepicker',
@@ -74,7 +75,8 @@ angular.module('miaomiao.console', [
             }
             // hide the prev/next buttons on the keyboard input
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+                cordova.plugins.Keyboard.disableScroll(true);
             }
 
             $ionicDeploy.initialize(ionic.Config.app_id);

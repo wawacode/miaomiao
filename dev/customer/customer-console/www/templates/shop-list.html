@@ -11,7 +11,11 @@
                  scroll="true"
                  has-bouncing="true">
 
-        <div class="list card" ng-repeat="item in info.shoplist" delegate-handle="shoplist" ng-click="switchDefaultShop(item,$event)">
+        <div class="list card"
+             bindonce
+             quick-ng-repeat="item in info.shoplist"
+             delegate-handle="shoplist"
+             ng-click="switchDefaultShop(item,$event)">
             <div class="item item-body  " style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
 
                 <div class="item-icon-right">
@@ -19,29 +23,29 @@
                         {{item.name}}
                     </div>
 
-                    <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
+                    <div bo-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
                         {{item.status | getShopStatusString }}
                     </div>
-                    <i class="icon ion-ios7-checkmark-outline positive" ng-show="item.id == info.defaultShop.id"></i>
+                    <i class="icon ion-ios7-checkmark-outline positive" ng-if="item.id == info.defaultShop.id"></i>
                 </div>
 
                 <div style="margin-top: 12px;color: #6a6a6a" class="list">
                     <div style="font-size: 12px;">
-                        <div style=" display: inline-block" ng-show="item.open_time || item.close_time">
+                        <div bindonce style=" display: inline-block" ng-if="item.open_time || item.close_time">
                             <i class="icon ion-ios7-clock"
                                style="font-size: 15px;color: lightgray"></i> 早{{item.open_time|
                             date:'shortTime' | removeAMPM}} - 晚{{item.close_time| date:'shortTime' | removeAMPM}}
                         </div>
-                        <div style=" display: inline-block;" ng-show="!item.open_time && !item.close_time">
+                        <div bindonce style=" display: inline-block;" ng-if="!item.open_time && !item.close_time">
                             <i class="icon ion-ios7-clock"
                                style="font-size: 15px;color: lightgray"></i> 全天营业
                         </div>
-                        <div style=" display: inline-block;">
+                        <div bindonce style=" display: inline-block;">
                             <i class="icon ion-ios7-pricetags"
                                style="font-size: 15px;padding-left: 10px;color: lightgray"></i> {{item.base_price |
                             getShopMinPrice }}元起送
                         </div>
-                        <div style="font-size: 12px;" ng-show="item.shop_address">
+                        <div bindonce style="font-size: 12px;" ng-show="item.shop_address">
                             <i class="icon ion-ios7-location"
                                style="font-size: 15px;color: lightgray"></i>   {{item.shop_address}}
                         </div>
