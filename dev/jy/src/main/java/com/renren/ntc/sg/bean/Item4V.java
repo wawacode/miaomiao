@@ -46,6 +46,10 @@ public class Item4V {
     private int  score;
 
 
+
+    private int onsell = 1;
+
+
     private int   count  = 0;
 
     private  int  ext  = 0;   //Json
@@ -63,6 +67,14 @@ public class Item4V {
 
     public void setStatus(long status) {
         this.status = status;
+    }
+
+    public int getOnsell() {
+        return onsell;
+    }
+
+    public void setOnsell(int onsell) {
+        this.onsell = onsell;
     }
     public String getPic_url() {
         return pic_url;
