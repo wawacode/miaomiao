@@ -274,7 +274,7 @@ angular.module('miaomiao.console.controllers')
                 count: item.count,
                 score: item.score,
                 price: item.price,
-                saleStatus: item.onsell
+                saleStatus: item.onSell
             }
 
             if(item.hasNewPicture){

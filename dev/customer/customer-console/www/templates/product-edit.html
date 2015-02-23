@@ -27,8 +27,8 @@
                 <div class="input-label assertive">
                     销售状态:
                 </div>
-                <select ng-model="editingItem.onsell" ng-options="o.onsell as o.title for o in [{title:'在售',onsell:1},{title:'下架',onsell:0}]"
-                        ng-init="editingItem.onsell == undefined? 1: editingItem.onsell">
+                <select ng-model="editingItem.onSell" ng-options="o.onSell as o.title for o in [{title:'在售',onSell:1},{title:'下架',onSell:0}]"
+                        ng-init="editingItem.onSell== undefined? 1:editingItem.onSell">
                 </select>
             </label>
 
