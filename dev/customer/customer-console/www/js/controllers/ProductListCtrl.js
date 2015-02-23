@@ -1,7 +1,6 @@
-angular.module('miaomiao.console.controllers')
-
+;angular.module('miaomiao.console.controllers')
     .controller('ProductListCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state,
-                                             cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService,
+                                             $timeout, $ionicScrollDelegate, localStorageService,
                                              httpClient,MMShopService, Camera,MMProductService,MMUtils) {
 
         $scope.info = $scope.info || {};
@@ -44,7 +43,7 @@ angular.module('miaomiao.console.controllers')
         $scope.moreDataCanBeLoaded = function () {
             if(!hasData)return false;
             return $scope.category && $scope.category.canLoadMore;
-        }
+        };
 
 
         $scope.addItems = function (idx) {
@@ -90,7 +89,7 @@ angular.module('miaomiao.console.controllers')
                 $scope.$broadcast('scroll.infiniteScrollComplete');
 
             });
-        }
+        };
 
         $scope.deleteItemFromCurrentCategory = function (item) {
 
@@ -104,7 +103,7 @@ angular.module('miaomiao.console.controllers')
                     MMProductService.setCategoryForIndex($scope.selectedIndex,currentCategory);
                 });
             }
-        }
+        };
 
         $scope.stickItemFromCurrentCategory = function (item) {
 
@@ -119,7 +118,7 @@ angular.module('miaomiao.console.controllers')
                     MMProductService.setCategoryForIndex($scope.selectedIndex,currentCategory);
                 });
             }
-        }
+        };
 
         $scope.updateItemFromCurrentCategory = function (item) {
 
@@ -142,22 +141,21 @@ angular.module('miaomiao.console.controllers')
 
                 });
             }
-        }
+        };
 
         $scope.cancelEdit =function($event){
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.close();
             }
             $scope.closeModal();
-        }
+        };
 
         $scope.inputReadyKeyup = function($event){
-//            console.log('keycode is:' + $event.keyCode);
             if($event.keyCode == 13)
             {
                 $event.target.blur();
             }
-        }
+        };
 
         $scope.info.editingItem = {};
 
@@ -203,7 +201,7 @@ angular.module('miaomiao.console.controllers')
                     $scope.modal = modal;
                     $scope.openModal();
             });
-        }
+        };
 
         $scope.StickItem = function(item){
 
@@ -225,7 +223,7 @@ angular.module('miaomiao.console.controllers')
                 MMUtils.showAlert('置顶商品失败');
                 $scope.closeModal();
             });
-        }
+        };
 
         function closeKeyboard(){
             // in case some input has focus
@@ -275,7 +273,7 @@ angular.module('miaomiao.console.controllers')
                 score: item.score,
                 price: item.price,
                 saleStatus: item.onsell
-            }
+            };
 
             if(item.hasNewPicture){
 
@@ -323,7 +321,7 @@ angular.module('miaomiao.console.controllers')
             }else{
                 _saveItemInfo(options,item);
             }
-        }
+        };
 
         $scope.deleteItem = function(item){
 
@@ -355,7 +353,7 @@ angular.module('miaomiao.console.controllers')
                     });
                 }
             });
-        }
+        };
 
         // for photo taking
         function clearCache() {
@@ -381,5 +379,5 @@ angular.module('miaomiao.console.controllers')
                 destinationType: navigator.camera.DestinationType.FILE_URI,
                 saveToPhotoAlbum: false
             });
-        }
-    })
+        };
+    });

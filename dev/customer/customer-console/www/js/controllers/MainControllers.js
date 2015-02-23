@@ -1,11 +1,8 @@
-angular.module('miaomiao.console.controllers', [])
-
-    .controller('MainCtrl', function ($scope, $state, cfpLoadingBar, $window, $cordovaPush,$timeout, $cordovaDialogs, $cordovaMedia, $cordovaToast, ionPlatform, $http,httpClient,localStorageService, MMPushNotification) {
+;angular.module('miaomiao.console.controllers', [])
+    .controller('MainCtrl', function ($scope, $state, $window, $cordovaPush, $timeout, $cordovaDialogs,
+                                      $cordovaMedia, $cordovaToast, ionPlatform, $http, httpClient, localStorageService,
+                                      MMPushNotification) {
         $scope.open = function (url) {
-            // Send event to analytics service
-            //    $ionicTrack.track('open', {
-            //      url: url
-            //    });
 
             // open the page in the inAppBrowser plugin. Falls back to a blank page if the plugin isn't installed
             var params = 'location=no,' +
@@ -20,10 +17,6 @@ angular.module('miaomiao.console.controllers', [])
                 iab = null;
             });
         };
-        //make sure we always clear any existing loading bars before navigation
-        $scope.$on('$ionicView.beforeLeave', function () {
-            cfpLoadingBar.complete();
-        });
 
         var halfHeight = null
         $scope.getHalfHeight = function () {
@@ -35,7 +28,6 @@ angular.module('miaomiao.console.controllers', [])
         }
 
         // for notifications
-
         $scope.notifications = [];
         $scope.registerToken = undefined;
 
@@ -45,8 +37,7 @@ angular.module('miaomiao.console.controllers', [])
         });
 
         // Notification Received
-
-        var onNotification = $window.onNotification = window.onNotification = function onNotification(notification){
+        var onNotification = $window.onNotification = window.onNotification = function onNotification(notification) {
             console.log(JSON.stringify(notification));
             if (ionic.Platform.isAndroid()) {
                 handleAndroid(notification);
@@ -57,17 +48,15 @@ angular.module('miaomiao.console.controllers', [])
                     $scope.notifications.push(JSON.stringify(notification.alert));
                 })
             }
-        }
+        };
 
         // Register
         $scope.register = function () {
-
             var config = {};
-
             if (ionic.Platform.isAndroid()) {
                 config = {
                     "senderID": "miaomiao-bconsole",
-                    "ecb":"onNotification"
+                    "ecb": "onNotification"
                 };
             }
             else if (ionic.Platform.isIOS()) {
@@ -75,32 +64,25 @@ angular.module('miaomiao.console.controllers', [])
                     "badge": "true",
                     "sound": "true",
                     "alert": "true",
-                    "ecb":"onNotification"
+                    "ecb": "onNotification"
                 }
-            }else{
+            } else {
                 return;
             }
 
             $cordovaPush.register(config).then(function (result) {
-
                 // get device id
-
                 console.log("Register success " + result);
-
                 $scope.registerDisabled = true;
                 $scope.registerToken = result;
-
-                // ** NOTE: Android regid result comes back in the pushNotificationReceived, only iOS returned here
                 if (result != null) {
-
-                    localStorageService.set('MMCONSOLE_META_PUSH_DEVICE_TOKEN',result);
+                    localStorageService.set('MMCONSOLE_META_PUSH_DEVICE_TOKEN', result);
                     MMPushNotification.subscribe();
                 }
-
             }, function (err) {
                 console.log("Register error " + err);
             });
-        }
+        };
 
         // Android Notification Received Handler
         function handleAndroid(notification) {
@@ -109,28 +91,25 @@ angular.module('miaomiao.console.controllers', [])
             console.log("handle Android : In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
             if (notification.event == "registered") {
                 $scope.regId = notification.regid;
-                localStorageService.set('MMCONSOLE_META_PUSH_DEVICE_TOKEN',notification.regid);
+                localStorageService.set('MMCONSOLE_META_PUSH_DEVICE_TOKEN', notification.regid);
                 MMPushNotification.subscribe();
             }
             else if (notification.event == "message") {
 
-                var title = '喵喵商家推送',text='您有新的订单，请到我的订单下查看';
-                if(notification.payload &&
+                var title = '喵喵商家推送', text = '您有新的订单，请到我的订单下查看';
+                if (notification.payload &&
                     notification.payload.body &&
-                    notification.payload.body.body){
+                    notification.payload.body.body) {
                     text = notification.payload.body.body.text
                     title = notification.payload.body.body.title;
                 }
 
-                $cordovaDialogs.alert(text, title).then(function() {
+                $cordovaDialogs.alert(text, title).then(function () {
                     // callback success
-
-                    $state.go('tab.order',null,{reload: true});
-
-                    $timeout(function(){
+                    $state.go('tab.order', null, {reload: true});
+                    $timeout(function () {
                         MMPushNotification.newOrderNotificationReceived({count: 1});
-                    },100);
-
+                    }, 100);
                 });
 
                 $scope.$apply(function () {
@@ -151,11 +130,11 @@ angular.module('miaomiao.console.controllers', [])
             console.log("handle iOS : In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
             console.log("handle iOS: the notification is:" + JSON.stringify(notification));
 
-            var inappHanlder = function(){
-                $state.go('tab.order',null,{reload: true});
-                $timeout(function(){
+            var inappHanlder = function () {
+                $state.go('tab.order', null, {reload: true});
+                $timeout(function () {
                     MMPushNotification.newOrderNotificationReceived({count: 1});
-                },100);
+                }, 100);
             }
 
             if (notification.foreground == "1") {
@@ -163,12 +142,12 @@ angular.module('miaomiao.console.controllers', [])
 
                 if (notification.body && notification.messageFrom) {
                     console.log("the notification body is:" + notification.body);
-                    $cordovaDialogs.alert(notification.body, notification.messageFrom).then(function(){
+                    $cordovaDialogs.alert(notification.body, notification.messageFrom).then(function () {
                         inappHanlder();
                     });
-                }else {
+                } else {
                     console.log("the notification body alert:" + notification.alert);
-                    $cordovaDialogs.alert(notification.alert,"喵喵商家推送","确定").then(function(){
+                    $cordovaDialogs.alert(notification.alert, "喵喵商家推送", "确定").then(function () {
                         inappHanlder();
                     });
                 }
@@ -195,12 +174,12 @@ angular.module('miaomiao.console.controllers', [])
                 console.log('we are in background');
                 if (notification.body && notification.messageFrom) {
                     console.log('we are in background body');
-                    $cordovaDialogs.alert(notification.body,notification.messageFrom).then(function(){
+                    $cordovaDialogs.alert(notification.body, notification.messageFrom).then(function () {
                         inappHanlder();
                     });
-                }else{
+                } else {
                     console.log('we are in background alert');
-                    $cordovaDialogs.alert(notification.alert, '喵喵商家推送').then(function(){
+                    $cordovaDialogs.alert(notification.alert, '喵喵商家推送').then(function () {
                         inappHanlder();
                     });
                 }
@@ -215,18 +194,15 @@ angular.module('miaomiao.console.controllers', [])
                 }
             }
         }
-        // Unregister - Unregister your device token from APNS or GCM
-        // Not recommended:  See http://developer.android.com/google/gcm/adv.html#unreg-why
-        //                   and https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplication_Class/index.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications
-        //
+
         // ** Instead, just remove the device token from your db and stop sending notifications **
         $scope.unregister = function () {
             console.log("Unregister called");
             $scope.registerDisabled = false;
             //need to define options here, not sure what that needs to be but this is not recommended anyway
-            $cordovaPush.unregister({}).then(function(result) {
+            $cordovaPush.unregister({}).then(function (result) {
                 console.log("Unregister success " + result);//
-            }, function(err) {
+            }, function (err) {
                 console.log("Unregister error " + err)
             });
         }
