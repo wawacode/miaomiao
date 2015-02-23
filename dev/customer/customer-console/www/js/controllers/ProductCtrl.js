@@ -67,14 +67,14 @@ angular.module('miaomiao.console.controllers')
 
             $timeout(function(){
 
+                MMProductService.addProductItemToCategory(cateId,item);
+
                 for (var idx = 0; idx < $scope.info.categorySummary.length; idx++) {
                     if (cateId == $scope.info.categorySummary[idx].category_id) {
                         $scope.selectCategory(idx);
                         break;
                     }
                 }
-
-                MMProductService.addProductItemToCategory(cateId,item);
 
             })
         }
