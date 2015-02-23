@@ -195,10 +195,11 @@ public class ItemConsoleController extends BasicConsoleController{
                       				   @Param("count") int count,
                       				   @Param("price") int price,
                       				   @Param("serialNo") String serialNo,
-                      				   @Param("pic") MultipartFile pic,
+                      				   @Param("pic_url") String pic_url,
                       				   @Param("shop_id") long shop_id,
                       				   @Param("saleStatus") String saleStatus){
-    	Shop shop = isExistShop(shop_id);
+        //todo  这段更新代码写的很垃圾呀
+        Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
@@ -212,20 +213,11 @@ public class ItemConsoleController extends BasicConsoleController{
 		}
 		String picUrl = "";
 		int updateDbFlag = 0;
-		if(pic != null){
-			boolean isUpLoadSuc = FileUploadUtils.uploadFileToRemote(serialNo, shopId, pic);
-			if(!isUpLoadSuc){
-                JSONObject resultJson = new JSONObject();
-                resultJson.put("code", 500);
-                resultJson.put("msg", "服务器异常");
-				return "@json:"+resultJson.toJSONString();
-			}
-			String picName = pic.getOriginalFilename();
-			picUrl = FileUploadUtils.getPicViewUrl(shopId, picName);
-			updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId), serialNo, itemName, category_id, score, count, price, itemId,picUrl);
+		if(pic_url != null){
+			updateDbFlag = itemsDAO.updateItemPriceById(SUtils.generTableName(shopId),itemId,picUrl);
 		}
 
-        //todo  这段更新代码写的很垃圾呀
+
 	    if(!StringUtils.isBlank(saleStatus)){
 
 				int saleStatusInt = 1;

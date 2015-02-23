@@ -115,4 +115,8 @@ public interface ItemsDAO {
 
     @SQL("update ##(:tableName) set  onsell=:3 where id =:2")
     public int updateSaleStatus(@SQLParam("tableName") String tableName,long itemId,int onsell);
+
+    @SQL("update ##(:tableName) set  pic_url=:3 where id =:2")
+    public int updateItemPriceById(@SQLParam("tableName") String tableName,long itemId,String pic_url);
+
 }
