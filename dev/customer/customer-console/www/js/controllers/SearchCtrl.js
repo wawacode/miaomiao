@@ -1,28 +1,22 @@
 angular.module('miaomiao.console.controllers')
-
-    .controller('SearchCtrl', function($scope, $ionicLoading, $state, $timeout,httpClient,localStorageService,MMUtils,MMProductService) {
+    .controller('SearchCtrl', function ($scope, $ionicLoading, $state, $timeout, httpClient, localStorageService,
+                                        MMUtils, MMProductService) {
 
         $scope.pageName = '搜索商品';
-
-        $scope.focused= 'centered';
+        $scope.focused = 'centered';
         $scope.searchTerm = '';
-
-        $scope.$on('$ionicView.beforeEnter', function(){
-
-        });
-
 
         $scope.info = {};
         $scope.info.hasNoResults = false;
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
-        $scope.performSearch = function (key,$event) {
+        $scope.performSearch = function (key, $event) {
 
             $event.target.blur();
 
             var KEY = key || $scope.info.key;
 
-            MMUtils.showLoadingIndicator('正在搜索...',$scope);
+            MMUtils.showLoadingIndicator('正在搜索...', $scope);
 
             httpClient.getSearchResults($scope.info.shop.id, KEY, function (data, status) {
 
@@ -49,9 +43,9 @@ angular.module('miaomiao.console.controllers')
                 $ionicLoading.hide();
                 $scope.info.hasNoResults = true;
             });
-        }
+        };
 
-        $scope.clearSearch = function(){
+        $scope.clearSearch = function () {
             $scope.info.key = '';
         }
     });

@@ -1,14 +1,14 @@
 angular.module('miaomiao.console.controllers')
-
     .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state, $timeout,
-                                         $ionicScrollDelegate, localStorageService, httpClient,MMShopService, Camera,MMProductService,MMUtils) {
+                                         $ionicScrollDelegate, localStorageService, httpClient, MMShopService,
+                                         Camera, MMProductService, MMUtils) {
         $scope.info = {};
         $scope.pageName = '商品';
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
-        function initData(){
+        function initData() {
 
-            MMUtils.showLoadingIndicator('正在加载,请稍候...',$scope);
+            MMUtils.showLoadingIndicator('正在加载,请稍候...', $scope);
 
             httpClient.getProductList($scope.info.shop.id, function (data, status) {
 
@@ -35,16 +35,15 @@ angular.module('miaomiao.console.controllers')
             }, function (data, status) {
                 $ionicLoading.hide();
                 MMUtils.showAlert('加载数据失败');
-                return;
             });
         }
 
         initData();
 
         // listeners
-        $scope.refreshAll = function(){
+        $scope.refreshAll = function () {
             initData();
-        }
+        };
 
         $scope.selectCategory = function ($index, timeout) {
 
@@ -54,20 +53,20 @@ angular.module('miaomiao.console.controllers')
             $scope.selectedIndex = $index;
 
             // wait for category name class to change then send notification
-            $timeout(function(){
-                MMProductService.switchCategoryNotification({index:$scope.selectedIndex});
+            $timeout(function () {
+                MMProductService.switchCategoryNotification({index: $scope.selectedIndex});
             }, timeout || 100);
-        }
+        };
 
-        $scope.refreshCurrentCategory = function(){
+        $scope.refreshCurrentCategory = function () {
             $scope.selectCategory($scope.selectedIndex);
-        }
+        };
 
-        $scope.addProductForCategory = function (cateId,item) {
+        $scope.addProductForCategory = function (cateId, item) {
 
-            $timeout(function(){
+            $timeout(function () {
 
-                MMProductService.addProductItemToCategory(cateId,item);
+                MMProductService.addProductItemToCategory(cateId, item);
 
                 for (var idx = 0; idx < $scope.info.categorySummary.length; idx++) {
                     if (cateId == $scope.info.categorySummary[idx].category_id) {
@@ -77,17 +76,12 @@ angular.module('miaomiao.console.controllers')
                 }
 
             })
-        }
-
-        // just kicking the tires
-        $scope.$on('$ionicView.afterEnter', function () {
-
-        });
+        };
 
         // listeners for switch shop
-        MMShopService.onSwitchDefaultShopNotification($scope,function(){
+        MMShopService.onSwitchDefaultShopNotification($scope, function () {
             $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
             initData();
         });
 
-    })
+    });

@@ -1,14 +1,12 @@
 angular.module('miaomiao.console.controllers')
-
-    .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet,$ionicPopup, $state
-        , $timeout,localStorageService, $ionicScrollDelegate,httpClient,MMShopService,MMUtils) {
+    .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet, $ionicPopup, $state, $timeout,
+                                           localStorageService, $ionicScrollDelegate, httpClient, MMShopService, MMUtils) {
 
         $scope.info = {};
-
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
         $scope.shopName = $scope.info.shop.name || "首页";
 
-        $scope.getSummaryInfo = function(success, fail){
+        $scope.getSummaryInfo = function (success, fail) {
 
             httpClient.getSummary($scope.info.shop.id, '', '', function (data, status) {
 
@@ -23,21 +21,21 @@ angular.module('miaomiao.console.controllers')
 
                 fail();
             });
-        }
+        };
 
         $timeout(function () {
 
             $scope.info.summary = {};
             $ionicScrollDelegate.resize();
 
-            MMUtils.showLoadingIndicator('正在加载,请稍候...',$scope);
+            MMUtils.showLoadingIndicator('正在加载,请稍候...', $scope);
 
-            $scope.getSummaryInfo(function(dataDetail){
+            $scope.getSummaryInfo(function (dataDetail) {
 
                 $ionicLoading.hide();
                 $scope.info.summary = dataDetail;
 
-            },function(){
+            }, function () {
                 $ionicLoading.hide();
             })
 
@@ -48,26 +46,26 @@ angular.module('miaomiao.console.controllers')
 
         });
 
-        $scope.doRefresh = function(){
+        $scope.doRefresh = function () {
 
             $scope.shopName = $scope.info.shop.name || "首页";
 
-            $scope.getSummaryInfo(function(dataDetail){
+            $scope.getSummaryInfo(function (dataDetail) {
                 $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
 
                 $scope.info.summary = dataDetail;
 
-            },function(){
+            }, function () {
                 $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
 
             })
-        }
+        };
 
-        $scope.doShopInfoRefresh = function(){
+        $scope.doShopInfoRefresh = function () {
 
-            $timeout(function(){
+            $timeout(function () {
 
                 $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
                 $scope.shopName = $scope.info.shop.name || "首页";
@@ -75,7 +73,7 @@ angular.module('miaomiao.console.controllers')
                 MMShopService.switchDefaultShopNotification({});
 
             })
-        }
+        };
 
         $scope.showUserAction = function () {
             $ionicActionSheet.show({
@@ -89,7 +87,7 @@ angular.module('miaomiao.console.controllers')
                 },
                 buttonClicked: function (index) {
                     if (index == 0) {
-                        $state.go('changepassword',null,{reload: true});
+                        $state.go('changepassword', null, {reload: true});
                     }
                     return true;
                 },
@@ -97,22 +95,22 @@ angular.module('miaomiao.console.controllers')
 
                     $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER');
 
-                    httpClient.logOut( $scope.user.phone ,function (data, status) {
+                    httpClient.logOut($scope.user.phone, function (data, status) {
 
                         // remove identity feild
-                        localStorageService.set('MMCONSOLE_METADATA_USER',{'name':$scope.user.name , 'phone' : $scope.user.phone});
+                        localStorageService.set('MMCONSOLE_METADATA_USER', {'name': $scope.user.name, 'phone': $scope.user.phone});
 
-                        $state.go('signin',null,{reload: true});
+                        $state.go('signin', null, {reload: true});
                     }, function (data, status) {
-                        $state.go('signin',null,{reload: true});
+                        $state.go('signin', null, {reload: true});
                     });
-                    
+
                     return true;
                 }
             });
-        }
+        };
 
-        MMShopService.onSwitchDefaultShopNotification($scope,function(){
+        MMShopService.onSwitchDefaultShopNotification($scope, function () {
 
             $timeout(function () {
                 $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};

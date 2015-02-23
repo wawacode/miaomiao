@@ -1,22 +1,6 @@
 angular.module('miaomiao.console.services', [])
-    .factory('Camera', ['$q', function ($q) {
-
-        return {
-            getPicture: function (options) {
-                var q = $q.defer();
-
-                navigator.camera.getPicture(function (result) {
-                    // Do any magic you need
-                    q.resolve(result);
-                }, function (err) {
-                    q.reject(err);
-                }, options);
-
-                return q.promise;
-            }
-        }
-    }])
-    .factory('MMPushNotification', ['$rootScope', 'httpClient', 'localStorageService', '$cordovaToast', '$timeout', function ($rootScope, httpClient, localStorageService, $cordovaToast, $timeout) {
+    .factory('MMPushNotification', ['$rootScope', 'httpClient', 'localStorageService', '$cordovaToast', '$timeout',
+        function ($rootScope, httpClient, localStorageService, $cordovaToast, $timeout) {
         return {
             subscribe: function () {
 
@@ -52,7 +36,8 @@ angular.module('miaomiao.console.services', [])
                 });
             }
         }
-    }]).factory('MMShopService', ['$rootScope', 'httpClient', 'localStorageService', '$timeout', function ($rootScope, httpClient, localStorageService, $timeout) {
+    }]).factory('MMShopService', ['$rootScope', 'httpClient', 'localStorageService', '$timeout',
+        function ($rootScope, httpClient, localStorageService, $timeout) {
         return {
 
             switchDefaultShopNotification: function (data) {
@@ -69,24 +54,17 @@ angular.module('miaomiao.console.services', [])
                 });
             }
         }
-    }]).factory('MMProductService', ['$rootScope','$timeout', function ($rootScope, $timeout) {
+    }]).factory('MMProductService', ['$rootScope', '$timeout', function ($rootScope, $timeout) {
 
-        var categorys = [],category_summary = [],inLoadingMoreProcess=false;
+        var categorys = [], category_summary = [], inLoadingMoreProcess = false;
 
         return {
 
-            initCategorysWithData:function(cates){
+            initCategorysWithData: function (cates) {
 
                 var retCategoryls = cates;
 
-                // extend for use
-                /*
-                 {"category_id":15,"category_sub_id":0,"id":0,
-                 "itemls":[{"category_id":15,"category_sub_id":0,"count":956,"create_time":1419821656000,"ext":0,"id":28062,"name":"哈哈镜鸭爪买一赠一",
-                 "pic_url":"http://www.mbianli.com/cat/images/lelin/HHJ001.jpg","price":1600,"price_new":0,
-                 "score":99999,"serialNo":"HHJ001","shop_id":1,"status":0}
-                 * */
-                if (!retCategoryls || !retCategoryls.length){
+                if (!retCategoryls || !retCategoryls.length) {
                     categorys.itemls = [];
                     return;
                 }
@@ -94,7 +72,7 @@ angular.module('miaomiao.console.services', [])
                 for (var idx = 0; idx < retCategoryls.length; idx++) {
 
                     var curCategory = retCategoryls[idx];
-                    retCategorylNames.push({name:curCategory.name,category_id:curCategory.category_id});
+                    retCategorylNames.push({name: curCategory.name, category_id: curCategory.category_id});
 
                     curCategory.selected = 0;
                     curCategory.scrollIndex = curCategory.itemls.length;
@@ -107,51 +85,51 @@ angular.module('miaomiao.console.services', [])
                 category_summary = retCategorylNames;
             },
 
-            removeDuplicateItems:function(source){
+            removeDuplicateItems: function (source) {
                 var arr = {};
-                for ( var i=0; i < source.length; i++ )
+                for (var i = 0; i < source.length; i++)
                     arr[source[i]['id']] = source[i];
 
                 var result = new Array();
-                for ( var key in arr )
+                for (var key in arr)
                     result.push(arr[key]);
 
                 return result;
             },
 
-            setCanLoadMoreFlagForIndex:function(index,canLoadMore){
+            setCanLoadMoreFlagForIndex: function (index, canLoadMore) {
                 categorys[index].canLoadMore = canLoadMore;
             },
 
-            getCanLoadMoreFlagForIndex:function(index){
+            getCanLoadMoreFlagForIndex: function (index) {
                 return categorys[index].canLoadMore;
             },
 
-            setInLoadingMoreFlag:function(inLoading){
+            setInLoadingMoreFlag: function (inLoading) {
                 inLoadingMoreProcess = inLoading;
             },
 
-            getInLoadingMoreFlag:function(inLoading){
+            getInLoadingMoreFlag: function (inLoading) {
                 return inLoadingMoreProcess;
             },
 
-            getCategorySummary:function(){
+            getCategorySummary: function () {
                 return category_summary;
             },
 
-            getCategoryForIndex:function(index){
-                if(index < 0 || index > categorys.length - 1)return null;
+            getCategoryForIndex: function (index) {
+                if (index < 0 || index > categorys.length - 1)return null;
                 return categorys[index];
             },
 
-            setCategoryForIndex:function(index,category){
-                if(index < 0 || index > categorys.length - 1)return;
+            setCategoryForIndex: function (index, category) {
+                if (index < 0 || index > categorys.length - 1)return;
                 categorys[index] = category;
             },
 
-            addMoreItemsForCategoryId:function(cateId,items){
+            addMoreItemsForCategoryId: function (cateId, items) {
                 for (var idx = 0; idx < categorys.length; idx++) {
-                    if(cateId == categorys[idx].category_id){
+                    if (cateId == categorys[idx].category_id) {
                         var currentCategory = categorys[idx];
                         currentCategory.itemls = this.removeDuplicateItems(currentCategory.itemls.concat(items));
                         currentCategory.scrollIndex += items.length;
@@ -161,20 +139,20 @@ angular.module('miaomiao.console.services', [])
                 }
             },
 
-            addProductItemToCategory:function(cateId,item){
+            addProductItemToCategory: function (cateId, item) {
                 for (var idx = 0; idx < categorys.length; idx++) {
-                    if(cateId == categorys[idx].category_id){
+                    if (cateId == categorys[idx].category_id) {
                         categorys[idx].itemls.push(item);
                         break;
                     }
                 }
             },
 
-            addProductToCategoryNotification: function (cateId,item) {
+            addProductToCategoryNotification: function (cateId, item) {
                 $timeout(function () {
                     $rootScope.$broadcast('MMEVENT_addProductToCategoryNotification', {
-                        cateId:cateId,
-                        item:item
+                        cateId: cateId,
+                        item: item
                     });
                 });
             },
@@ -199,7 +177,7 @@ angular.module('miaomiao.console.services', [])
                 });
             },
 
-            renderDataNotification:function(data){
+            renderDataNotification: function (data) {
                 $timeout(function () {
                     $rootScope.$broadcast('MMEVENT_renderDataNotification', {
                         data: data
@@ -213,4 +191,31 @@ angular.module('miaomiao.console.services', [])
                 });
             }
         }
-    }]);
+    }])
+    .factory('Camera', ['$q', function ($q) {
+        return {
+            getPicture: function (options) {
+                var q = $q.defer();
+
+                navigator.camera.getPicture(function (result) {
+                    // Do any magic you need
+                    q.resolve(result);
+                }, function (err) {
+                    q.reject(err);
+                }, options);
+
+                return q.promise;
+            }
+        }
+    }])
+    .factory(("ionPlatform"), function ($q) {
+        var ready = $q.defer();
+
+        ionic.Platform.ready(function (device) {
+            ready.resolve(device);
+        });
+
+        return {
+            ready: ready.promise
+        }
+    });
