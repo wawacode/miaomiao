@@ -281,13 +281,39 @@ angular.module('miaomiao.console.controllers')
 
                 MMUtils.showLoadingIndicator('正在上传图片,请稍候...',$scope);
 
+                // file transfer success
                 httpClient.uploadPicForItem(item.serialNo,item.new_pic_url,$scope.info.shop.id, function (data, status) {
                     $ionicLoading.hide();
-                    var code = data.code, dataDetail = data.data;
-                    if (code != 0) {
-                        MMUtils.showAlert('上传图片失败,请重试:' + data.msg);
+
+                    console.log('upload pic success:'+ JSON.stringify(data));
+
+                    /*
+                     {"responseCode":200,"response":"{\"code\":0,\"data\":{\"url\":\"http://www.mbianli.com/cat/images/shop_1/6921355231922.jpg\"}}",
+                     "bytesSent":4941747,"headers":{"Access-Control-Allow-Origin":"*","Server":"nginx/1.0.15",
+                     "Content-Length":"86","Content-Type":"application/json;charset=UTF-8","Connection":"keep-alive",
+                     "Date":"Mon, 23 Feb 2015 01:48:00 GMT"}}
+                     */
+                    if (!data || !data.response) {
+                        MMUtils.showAlert('上传图片失败:' + JSON.stringify(data));
                         return;
                     }
+
+                    console.log("upload pic success :" + JSON.stringify(data.response));
+
+                    if(typeof(data.response) == 'string'){
+                        data.response = eval("(" + data.response + ")");
+                    }
+
+                    var code = data.response.code, dataDetail = data.response.data;
+
+                    console.log('upload pic success code is:'+ code + " ,data :" + JSON.stringify(dataDetail));
+
+                    if (parseInt(code) != 0) {
+                        MMUtils.showAlert('上传图片失败:' + data.response.msg);
+                        return;
+                    }
+                    options.pic_url= dataDetail.url;
+
                     _saveItemInfo(options,item);
 
                 }, function (data, status) {
@@ -301,24 +327,33 @@ angular.module('miaomiao.console.controllers')
 
         $scope.deleteItem = function(item){
 
-            MMUtils.showLoadingIndicator('正在删除,请稍候...',$scope);
+            // A confirm dialog
+            var confirmPopup = $ionicPopup.confirm({
+                title: '删除商品',
+                template: '确定要删除此商品？'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    MMUtils.showLoadingIndicator('正在删除,请稍候...',$scope);
 
-            httpClient.deleteItem(item.id, $scope.info.shop.id, function (data, status) {
-                $ionicLoading.hide();
-                var code = data.code, dataDetail = data.data;
-                if (code != 0) {
-                    MMUtils.showAlert('删除失败:' + data.msg);
-                    return;
+                    httpClient.deleteItem(item.id, $scope.info.shop.id, function (data, status) {
+                        $ionicLoading.hide();
+                        var code = data.code, dataDetail = data.data;
+                        if (code != 0) {
+                            MMUtils.showAlert('删除失败:' + data.msg);
+                            return;
+                        }
+
+                        $scope.closeModal();
+
+                        $scope.deleteItemFromCurrentCategory(item);
+
+                    }, function (data, status) {
+                        $ionicLoading.hide();
+                        MMUtils.showAlert('删除失败');
+                        $scope.closeModal();
+                    });
                 }
-
-                $scope.closeModal();
-
-                $scope.deleteItemFromCurrentCategory(item);
-
-            }, function (data, status) {
-                $ionicLoading.hide();
-                MMUtils.showAlert('删除失败');
-                $scope.closeModal();
             });
         }
 

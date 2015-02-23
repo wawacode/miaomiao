@@ -132,12 +132,34 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 MMUtils.showLoadingIndicator('正在上传图片,请稍候...',$scope);
                 httpClient.uploadPicForItem(newitem.serialNo, newitem.new_pic_url, $scope.info.shop.id, function (data, status) {
                     $ionicLoading.hide();
-                    var code = data.code, dataDetail = data.data;
-                    if (code != 0) {
-                        MMUtils.showAlert('上传图片失败,请重试:' + data.msg);
+                    console.log('upload pic success:'+ JSON.stringify(data));
+                   /*
+                    {"responseCode":200,"response":"{\"code\":0,\"data\":{\"url\":\"http://www.mbianli.com/cat/images/shop_1/6921355231922.jpg\"}}",
+                    "bytesSent":4941747,"headers":{"Access-Control-Allow-Origin":"*","Server":"nginx/1.0.15",
+                    "Content-Length":"86","Content-Type":"application/json;charset=UTF-8","Connection":"keep-alive",
+                    "Date":"Mon, 23 Feb 2015 01:48:00 GMT"}}
+                   * */
+                    if (!data || !data.response) {
+                        MMUtils.showAlert('上传图片失败:' + JSON.stringify(data));
                         return;
                     }
-                    addItemInfo(options, newitem);
+
+                    if(typeof(data.response) == 'string'){
+                        data.response = eval("(" + data.response + ")");
+                    }
+
+                    var code = data.response.code, dataDetail = data.response.data;
+
+                    console.log('upload pic success code is:'+ code + " ,data :" + JSON.stringify(dataDetail));
+
+                    if (parseInt(code) != 0) {
+                        MMUtils.showAlert('上传图片失败:' + data.response.msg);
+                        return;
+                    }
+
+                    options.pic_url= dataDetail.url;
+
+                     addItemInfo(options, newitem);
                 },function(){
                     $ionicLoading.hide();
                     MMUtils.showAlert('上传图片失败,请重试');
