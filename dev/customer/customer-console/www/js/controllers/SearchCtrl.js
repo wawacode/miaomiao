@@ -31,6 +31,7 @@
                 if (!code == 0 || dataDetail.itemls.length == 0) {
                     $scope.info.searchResultsItems = [];
                     $scope.info.hasNoResults = true;
+                    MMProductService.renderDataNotification($scope.info.searchResultsItems);
                     return;
                 }
 
