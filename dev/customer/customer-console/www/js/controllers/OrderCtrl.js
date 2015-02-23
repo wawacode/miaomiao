@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.controllers')
+;angular.module('miaomiao.console.controllers')
     .controller('OrderCtrl',function ($scope, $rootScope, $ionicModal, $ionicPopup, $ionicLoading, $state, $timeout, $ionicScrollDelegate, httpClient, localStorageService, MMPushNotification, MMShopService, MMUtils) {
 
         $scope.info = {};

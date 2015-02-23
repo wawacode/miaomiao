@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.services')
+;angular.module('miaomiao.console.services')
     .filter('getTotolCount',function () {
         return function (input) {
             input = input || [];

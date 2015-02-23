@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.services')
+;angular.module('miaomiao.console.services')
     .factory('httpClient', ['$http', 'serverInfo', function ($http, serverInfo) {
 
         var doGet = function (path, params, success, fail) {

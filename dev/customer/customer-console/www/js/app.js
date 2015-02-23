@@ -1,5 +1,5 @@
 // miaomiao console main app
-angular.module('miaomiao.console', [
+;angular.module('miaomiao.console', [
         'ngAnimate',
         'ionic',
         'ngCordova',

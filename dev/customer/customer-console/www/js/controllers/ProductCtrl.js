@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.controllers')
+;angular.module('miaomiao.console.controllers')
     .controller('ProductCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state, $timeout,
                                          $ionicScrollDelegate, localStorageService, httpClient, MMShopService,
                                          Camera, MMProductService, MMUtils) {

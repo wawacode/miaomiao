@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.services', [])
+;angular.module('miaomiao.console.services', [])
     .factory('MMPushNotification', ['$rootScope', 'httpClient', 'localStorageService', '$cordovaToast', '$timeout',
         function ($rootScope, httpClient, localStorageService, $cordovaToast, $timeout) {
         return {

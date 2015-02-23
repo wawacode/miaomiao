@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.controllers')
+;angular.module('miaomiao.console.controllers')
     .controller('SearchCtrl', function ($scope, $ionicLoading, $state, $timeout, httpClient, localStorageService,
                                         MMUtils, MMProductService) {
 

@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.services')
+;angular.module('miaomiao.console.services')
     .factory('MMUtils', ['$timeout', '$ionicLoading', '$ionicPopup', function ($timeout, $ionicLoading, $ionicPopup) {
 
         return {

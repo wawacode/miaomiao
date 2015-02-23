@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.controllers')
+;angular.module('miaomiao.console.controllers')
     .controller('EditShopCtrl', ['$scope', '$state', '$filter', '$ionicPopup', '$ionicModal', 'localStorageService',
         '$ionicLoading', 'httpClient', '$ionicScrollDelegate', '$timeout', 'MMShopService', 'MMUtils',
 

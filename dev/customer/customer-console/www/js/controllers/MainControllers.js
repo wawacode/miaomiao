@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.controllers', [])
+;angular.module('miaomiao.console.controllers', [])
     .controller('MainCtrl', function ($scope, $state, $window, $cordovaPush, $timeout, $cordovaDialogs,
                                       $cordovaMedia, $cordovaToast, ionPlatform, $http, httpClient, localStorageService,
                                       MMPushNotification) {

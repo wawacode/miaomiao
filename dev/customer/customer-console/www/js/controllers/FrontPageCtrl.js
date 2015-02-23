@@ -1,4 +1,4 @@
-angular.module('miaomiao.console.controllers')
+;angular.module('miaomiao.console.controllers')
     .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet, $ionicPopup, $state, $timeout,
                                            localStorageService, $ionicScrollDelegate, httpClient, MMShopService, MMUtils) {
 
