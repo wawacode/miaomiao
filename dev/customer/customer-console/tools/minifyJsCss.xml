@@ -14,7 +14,7 @@
             <arg line="--line-break 0"/>
             <srcfile/>
             <arg line="-o"/>
-            <mapper type="glob" from="*.css" to="*-min.css"/>
+            <mapper type="glob" from="*.css" to="${src}/css/*-min.css"/>
             <targetfile/>
         </apply>
     </target>
@@ -26,7 +26,7 @@
             <arg path="yuicompressor-2.4.8.jar"/>
             <srcfile/>
             <arg line="-o"/>
-            <mapper type="glob" from="*.js" to="*-min.js"/>
+            <mapper type="glob" from="*.js" to="${src}/js/compress/*-min.js"/>
             <targetfile/>
         </apply>
     </target>
