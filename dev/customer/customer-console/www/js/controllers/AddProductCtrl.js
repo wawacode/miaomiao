@@ -132,11 +132,7 @@ angular.module('miaomiao.console.controllers').controller('AddProductCtrl', ['$s
                 MMUtils.showLoadingIndicator('正在上传图片,请稍候...',$scope);
                 httpClient.uploadPicForItem(newitem.serialNo, newitem.new_pic_url, $scope.info.shop.id, function (data, status) {
                     $ionicLoading.hide();
-                    var code = data.code, dataDetail = data.data;
-                    if (code != 0) {
-                        MMUtils.showAlert('上传图片失败,请重试:' + data.msg);
-                        return;
-                    }
+                    console.log('upload pic success:'+ data);
                     addItemInfo(options, newitem);
                 },function(){
                     $ionicLoading.hide();

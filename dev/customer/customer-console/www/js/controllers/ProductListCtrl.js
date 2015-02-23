@@ -281,13 +281,11 @@ angular.module('miaomiao.console.controllers')
 
                 MMUtils.showLoadingIndicator('正在上传图片,请稍候...',$scope);
 
+                // file transfer success
                 httpClient.uploadPicForItem(item.serialNo,item.new_pic_url,$scope.info.shop.id, function (data, status) {
                     $ionicLoading.hide();
-                    var code = data.code, dataDetail = data.data;
-                    if (code != 0) {
-                        MMUtils.showAlert('上传图片失败,请重试:' + data.msg);
-                        return;
-                    }
+                    console.log('upload pic success:'+ data);
+
                     _saveItemInfo(options,item);
 
                 }, function (data, status) {
