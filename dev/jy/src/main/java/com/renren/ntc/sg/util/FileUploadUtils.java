@@ -10,7 +10,7 @@ import com.renren.ntc.sg.service.LoggerUtils;
 
 public class FileUploadUtils {
 
-	public static boolean uploadFile(MultipartFile multipartFile,String savePath,String fileName) {
+	public static boolean  uploadFile(MultipartFile multipartFile,String savePath,String fileName) {
 		 File file = new File(savePath, fileName);
 		try {  
 

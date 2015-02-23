@@ -204,19 +204,20 @@ public class ItemConsoleController extends BasicConsoleController{
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
-        String picUrl = "";
         int updateDbFlag = 0;
-        if(count != 0 && score !=0 && price !=0 && category_id !=0){
-            updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId),serialNo, itemName, category_id, score, count, price, itemId);
-        }
-		if(StringUtils.isBlank(itemName) || StringUtils.isBlank(serialNo)){
+        if(StringUtils.isBlank(itemName) || StringUtils.isBlank(serialNo)){
             JSONObject resultJson = new JSONObject();
             resultJson.put("code", 500);
             resultJson.put("msg", "服务器异常");
-			 return "@json:"+resultJson.toJSONString();
-		}
+            return "@json:"+resultJson.toJSONString();
+        }
+
+        if(count != 0 && score !=0 && price !=0 && category_id !=0){
+            updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId),serialNo, itemName, category_id, score, count, price, itemId);
+        }
+
 		if(pic_url != null){
-			updateDbFlag = itemsDAO.updateItemPriceById(SUtils.generTableName(shopId),itemId,picUrl);
+			updateDbFlag = itemsDAO.updateItemPriceById(SUtils.generTableName(shopId),itemId,pic_url);
 		}
 
 	    if(!StringUtils.isBlank(saleStatus)){
