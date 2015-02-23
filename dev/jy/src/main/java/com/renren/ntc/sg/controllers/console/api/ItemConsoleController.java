@@ -204,7 +204,6 @@ public class ItemConsoleController extends BasicConsoleController{
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
-        String picUrl = "";
         int updateDbFlag = 0;
         if(StringUtils.isBlank(itemName) || StringUtils.isBlank(serialNo)){
             JSONObject resultJson = new JSONObject();
@@ -218,7 +217,7 @@ public class ItemConsoleController extends BasicConsoleController{
         }
 
 		if(pic_url != null){
-			updateDbFlag = itemsDAO.updateItemPriceById(SUtils.generTableName(shopId),itemId,picUrl);
+			updateDbFlag = itemsDAO.updateItemPriceById(SUtils.generTableName(shopId),itemId,pic_url);
 		}
 
 	    if(!StringUtils.isBlank(saleStatus)){
