@@ -6,7 +6,6 @@ angular.module('miaomiao.console', [
         'LocalStorageModule',
         'ngStorage',
         'pasvaz.bindonce',
-        'ngDropdowns',
         'QuickList',
         'angular-datepicker',
         'miaomiao.console.controllers',
