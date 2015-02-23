@@ -112,4 +112,7 @@ public interface ItemsDAO {
     
     @SQL("update  ##(:tableName) set serialNo=:2,name=:3,category_id=:4,score=:5,count=:6,price=:7,update_time=now(),onsell = :9 where id =:8")
     public  int updateItemById(@SQLParam("tableName") String tableName,String serialNo, String name,int category_id,int score,int count,int price,long id,int onsell);
+
+    @SQL("update ##(:tableName) set  onsell=:3 where id =:2")
+    public int updateSaleStatus(@SQLParam("tableName") String tableName,long itemId,int onsell);
 }

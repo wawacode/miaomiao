@@ -203,10 +203,11 @@ public class ItemConsoleController extends BasicConsoleController{
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
     	long shopId = shop.getId();
-    	JSONObject resultJson = new JSONObject();
-    	resultJson.put("code", 500);
-		resultJson.put("msg", "服务器异常");
+
 		if(StringUtils.isBlank(itemName) || StringUtils.isBlank(serialNo)){
+            JSONObject resultJson = new JSONObject();
+            resultJson.put("code", 500);
+            resultJson.put("msg", "服务器异常");
 			 return "@json:"+resultJson.toJSONString();
 		}
 		String picUrl = "";
@@ -214,15 +215,19 @@ public class ItemConsoleController extends BasicConsoleController{
 		if(pic != null){
 			boolean isUpLoadSuc = FileUploadUtils.uploadFileToRemote(serialNo, shopId, pic);
 			if(!isUpLoadSuc){
+                JSONObject resultJson = new JSONObject();
+                resultJson.put("code", 500);
+                resultJson.put("msg", "服务器异常");
 				return "@json:"+resultJson.toJSONString();
 			}
 			String picName = pic.getOriginalFilename();
 			picUrl = FileUploadUtils.getPicViewUrl(shopId, picName);
 			updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId), serialNo, itemName, category_id, score, count, price, itemId,picUrl);
-		}else {
-			if(StringUtils.isBlank(saleStatus)){
-				updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId), serialNo, itemName, category_id, score, count, price, itemId);
-			}else {
+		}
+
+        //todo  这段更新代码写的很垃圾呀
+	    if(!StringUtils.isBlank(saleStatus)){
+
 				int saleStatusInt = 1;
 				try {
 					saleStatusInt = Integer.parseInt(saleStatus);
@@ -232,13 +237,15 @@ public class ItemConsoleController extends BasicConsoleController{
 				if(saleStatusInt != Constants.ITEM_ON_SALE){
 					saleStatusInt = 0;
 				}
-				updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId), serialNo, itemName, category_id, score, count, price, itemId,saleStatusInt);
-			}
-		}
+				updateDbFlag = itemsDAO.updateSaleStatus(SUtils.generTableName(shopId),itemId,saleStatusInt);
+	   }
+
 		if(updateDbFlag == 1){
+            JSONObject resultJson = new JSONObject();
 			resultJson.put("code", 0);
 			resultJson.put("msg", "修改商品成功");
 		}else {
+            JSONObject resultJson = new JSONObject();
 			resultJson.put("code", 500);
 			resultJson.put("msg", "服务器异常");
 		}
