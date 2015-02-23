@@ -1,6 +1,6 @@
 angular.module('miaomiao.console.controllers')
     .controller('ProductListCtrl', function ($scope, $ionicPopup, $ionicLoading, $ionicModal, $state,
-                                             cfpLoadingBar, $timeout, $ionicScrollDelegate, localStorageService,
+                                             $timeout, $ionicScrollDelegate, localStorageService,
                                              httpClient,MMShopService, Camera,MMProductService,MMUtils) {
 
         $scope.info = $scope.info || {};
