@@ -55,14 +55,14 @@ public class Item {
     private  Date  update_time  ;
 
     public int getOnsell() {
-        return onsell;
+        return onSell;
     }
 
     public void setOnsell(int onsell) {
-        this.onsell = onsell;
+        this.onSell = onsell;
     }
 
-    private int onsell = 1;
+    private int onSell = 1;
 
     public long getStatus() {
         return status;
@@ -207,7 +207,7 @@ public class Item {
     public Item(String serialNo,long shop_id, String name, int category_id, int score,
 			int count, String pic_url, int price,int onsell) {
 		this(serialNo, shop_id, name, category_id, score, count, pic_url, price);
-		this.onsell = onsell;
+		this.onSell = onsell;
 	}
 
 
