@@ -1,0 +1,16 @@
+<ion-tabs class="tabs-icon-top tabs-light semi-transparent">
+    <ion-tab title="首页" icon="ion-ios7-home-outline" icon-on="balanced ion-ios7-home" href="#/tab/front-page">
+        <ion-nav-view name="tab-front-page"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="商品" icon="ion-ios7-cart-outline" icon-on="balanced ion-ios7-cart" href="#/tab/product">
+        <ion-nav-view name="tab-product"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="订单" icon="ion-ios7-pricetags-outline" icon-on="balanced ion-ios7-pricetags" href="#/tab/order"
+             badge="info.notification_order_count" badge-style="badge-assertive" ng-controller='orderTabCtrl'>
+        <ion-nav-view name="tab-order"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="搜索" icon="ion-ios7-search" icon-on="balanced ion-ios7-search-strong" href="#/tab/search">
+        <ion-nav-view name="tab-search"></ion-nav-view>
+    </ion-tab>
+
+</ion-tabs>

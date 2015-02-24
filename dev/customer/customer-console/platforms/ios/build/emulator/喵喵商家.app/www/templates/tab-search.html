@@ -1,0 +1,50 @@
+<ion-view>
+
+    <!--<ion-nav-bar class="bar-light" style="background-color: lightgray">-->
+        <!--<ion-nav-title>-->
+            <!--&lt;!&ndash; this view supplied its own ion-header-bar to be used instead of the app's default ion-nav-bar &ndash;&gt;-->
+            <!--<fp-search-bar search-model="searchTerm" focused="focused" submit="search(searchTerm)"></fp-search-bar>-->
+        <!--</ion-nav-title>-->
+
+    <!--</ion-nav-bar>-->
+    <ion-nav-bar class="bar-mmiao" align-title="center">
+        <ion-nav-title>
+            {{pageName}}
+        </ion-nav-title>
+
+    </ion-nav-bar>
+
+  <ion-content  padding="false"
+                has-tabs="false"
+                has-header="true"
+                scroll="true"
+                has-bouncing="true">
+
+      <div class="item-input" style="padding: 5px 0 5px 5px">
+          <label class="item-input-wrapper">
+              <i class="icon ion-ios7-search placeholder-icon assertive"></i>
+              <input type="search" placeholder="搜索" ng-model="info.key" ng-focus="startSearch()" ng-keyup="$event.keyCode == 13 && performSearch(info.key,$event)" >
+          </label>
+          <button class="button button-clear" ng-click="clearSearch()">
+              取消
+          </button>
+      </div>
+
+      <div class="shop-product-list">
+          <ul class="shop-product-categray-list list">
+
+              <li ng-repeat="item in info.searchResultsItems" class="product-item"
+                  ng-include
+                  src="'templates/product-detail.html'">
+              </li>
+
+              <div class="no-result-display" style="text-align: center" ng-show="info.hasNoResults">
+                  没有结果
+              </div>
+
+          </ul>
+
+      </div>
+
+  </ion-content>
+</ion-view>
