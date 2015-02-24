@@ -23,11 +23,11 @@
                     </span>
                 </div>
                 <div class="item item-icon-right" ng-click="showOrderDetail(order)">
-                    <div style="font-size: 14px"><i class="ion-ios7-navigate balanced"></i> 收货地址: <span style="color: #808080;" bo-text="order.address"></span></div>
-                    <div style="font-size: 14px"><i class="ion-ios7-telephone balanced"></i> 联系电话: <span style="color: #808080;" bo-text="order.phone"></span></div>
-                    <div style="margin-top: 10px;color: #808080;font-size: 14px" bo-text="'买家留言: '+ order.remarks"></div>
-                    <span class="badge badge-assertive" ng-if="!order.readed">未读</span>
-                    <span class="badge badge-balanced" ng-if="order.readed">已读</span>
+                    <div style="font-size: 14px;" class="item-text-wrap"><i class="ion-ios7-navigate balanced"></i> 收货地址: <span style="color: #808080;" bo-text="order.address"></span></div>
+                    <div style="font-size: 14px;" class="item-text-wrap"><i class="ion-ios7-telephone balanced"></i> 联系电话: <span style="color: #808080;" bo-text="order.phone"></span></div>
+                    <div style="margin-top: 10px;color: #808080;font-size: 14px" class="item-text-wrap" bo-text="'买家留言: '+ order.remarks"></div>
+                    <span class="badge badge-assertive" style="right: 12px" ng-if="!order.readed">未读</span>
+                    <span class="badge badge-balanced" style="right: 12px" ng-if="order.readed">已读</span>
                 </div>
             </div>
             <ion-infinite-scroll

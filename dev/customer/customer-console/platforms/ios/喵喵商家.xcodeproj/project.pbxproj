@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0A55CC85CED1436CB0A5FF9F /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = FA01896D68E341AD921A6E1F /* CDVSplashScreen.m */; };
 		0D99DC652C664F498E08B0AA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44F8E3D5F88345FBB1231F3D /* ImageIO.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -575,8 +574,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iOS Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iOS Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -601,7 +600,7 @@
 				);
 				PRODUCT_NAME = "喵喵商家";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -610,8 +609,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iOS Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iOS Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "喵喵商家/喵喵商家-Prefix.pch";
@@ -634,7 +633,8 @@
 				);
 				PRODUCT_NAME = "喵喵商家";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				"PROVISIONING_PROFILE[sdk=*]" = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
