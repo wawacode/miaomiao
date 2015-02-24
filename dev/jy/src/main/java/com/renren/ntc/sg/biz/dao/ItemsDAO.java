@@ -54,7 +54,7 @@ public interface ItemsDAO {
     public void decr(@SQLParam("tableName") String tableName, long s_id, long i_id, int count);
     @ReturnGeneratedKeys
     @SQL("insert into ##(:tableName) (" + INSERT_FIELDS + ")" +" value (:2.serialNo,:2.shop_id,:2.name," +
-            ":2.category_id,:2.category_sub_id,:2.score,:2.price,:2.price_new,:2.count,:2.pic_url,:2.onSell)")
+            ":2.category_id,:2.category_sub_id,:2.score,:2.price,:2.price_new,:2.count,:2.pic_url,:2.onsell)")
     public  int insert(@SQLParam("tableName") String tableName, Item item);
 
     @SQL("select "+ FIELDS +" from ##(:tableName)  where  shop_id=:2  order by score  desc limit :3,:4")

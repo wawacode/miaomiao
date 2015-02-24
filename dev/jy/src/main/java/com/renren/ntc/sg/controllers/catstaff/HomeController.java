@@ -104,7 +104,7 @@ public class HomeController {
         System.out.println("create shop " + re.toJSONString());
         JSONObject jb = new JSONObject();
         jb.put("code", 0);
-        System.out.println("re shop " + re.getLong("shop_id"));
+        System.out.println("re shop " + re.getLong("shop_id "));
         jb.put("url", "/sg/loading#/shop?shop_id=" + re.getLong("shop_id"));
         return "@" + jb.toJSONString();
     }
