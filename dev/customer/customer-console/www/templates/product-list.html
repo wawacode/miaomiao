@@ -1,8 +1,6 @@
 <ul class="shop-product-categray-list list">
     <li bindonce ng-repeat="item in items track by item.id"
         class="product-item">
-        <!--ng-include-->
-        <!--src="'templates/product-detail.html'">-->
         <div class="prod_icon" back-img="{{item.pic_url}}"></div>
         <div>
             <span class="product-title oneline">{{item.name}}</span>
@@ -10,16 +8,14 @@
                 <div class="product-price">¥ {{item.price/100.0}}</div>
                 <div class="product_action">
                     <a class="mgray button button-small button-icon icon ion-arrow-up-a" ng-click="StickItem(item)"></a>
-                    <a class="mgray button button-small button-icon icon ion-settings"  ng-click="EditItem(item)"></a>
+                    <a class="mgray button button-small button-icon icon ion-settings" ng-click="EditItem(item)"></a>
                 </div>
             </div>
         </div>
     </li>
-
     <ion-infinite-scroll
             ng-if="moreDataCanBeLoaded()"
             icon="ion-loading-c"
             on-infinite="addItems()">
     </ion-infinite-scroll>
-
 </ul>

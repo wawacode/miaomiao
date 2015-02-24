@@ -1,11 +1,12 @@
 // miaomiao console main app
-;angular.module('miaomiao.console', [
+angular.module('miaomiao.console', [
         'ngAnimate',
         'ionic',
         'ngCordova',
         'LocalStorageModule',
         'ngStorage',
         'pasvaz.bindonce',
+
         'QuickList',
         'angular-datepicker',
         'miaomiao.console.controllers',
@@ -106,7 +107,7 @@
 
             .state('tab', {
                 url: "/tab",
-                abstract: true,
+                'abstract': true,
                 templateUrl: function () {
                     if (ionic.Platform.isAndroid()) {
                         return "templates/tabs-android.html";

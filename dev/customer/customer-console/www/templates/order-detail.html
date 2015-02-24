@@ -1,55 +1,43 @@
 <ion-modal-view>
-
     <ion-header-bar class="bar bar-header bar-mmiao">
         <h1 class="title">订单详情</h1>
         <button class="button button-clear button-primary" ng-click="closeModal()">取消</button>
     </ion-header-bar>
-
     <ion-content padding="true"
                  has-tabs="false"
                  has-header="true"
                  scroll="true"
                  has-bouncing="true"
                  bindonce="order">
-
         <div class="item item-divider">
-            订单时间: {{order.create_time |  date:'yyyy-M-d,h:mm:ss a'}}
+            订单时间: {{order.create_time | date:'yyyy-M-d,h:mm:ss a'}}
         </div>
-
         <div class="item ">
-
             <div>收货地址: {{order.address}}</div>
             <div>联系电话: {{order.phone}}</div>
             <div style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
-
         </div>
-
         <div style="padding: 15px 9px 15px;" class="order-snapshots">
             <div bindonce class="orderSnapshot" quick-ng-repeat="orderItem in order.items">
                 <div class="orderSnapshotItem">
                     {{orderItem.name}}
                 </div>
-
                 <div class="orderSnapshotCount">
                     <span>￥</span> {{(orderItem.price || 0)/100.0}}<span
                         class="orderSnapshotCountNumber"> X {{orderItem.count}} </span>
                 </div>
-
             </div>
             <div class="orderSnapshotTotal">
                 <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
                         <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
                         </span>
             </div>
-
             <label class="item-input-inset" style="text-align: center">
                 <button class="button button-balanced button-full"
-                        ng-click="callNumber(order.phone)">打电话</button>
+                        ng-click="callNumber(order.phone)">打电话
+                </button>
             </label>
-
         </div>
-
-
     </ion-content>
 </ion-modal-view>>
 

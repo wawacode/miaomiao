@@ -1,12 +1,9 @@
 <ion-view>
-
     <ion-nav-bar class="bar-mmiao" align-title="center">
         <ion-nav-title>
             订单
         </ion-nav-title>
-
     </ion-nav-bar>
-
     <ion-content padding="false"
                  has-tabs="true"
                  has-header="true"
@@ -16,10 +13,8 @@
                 on-refresh="doRefresh()">
         </ion-refresher>
         <div class="order-list list" style="">
-
             <div bindonce class="order-item" style=""
                  quick-ng-repeat="order in info.orders track by order.order_id">
-
                 <div class="item item-divider">
                     {{order.create_time | date:'yyyy-M-d,h:mm a'}}
                     <span class="item-note">
@@ -27,28 +22,19 @@
                             class="assertive">￥ {{order.items | getTotolPrice }}</span>
                     </span>
                 </div>
-
                 <div class="item item-icon-right" ng-click="showOrderDetail(order)">
-
                     <div style="font-size: 14px"><i class="ion-ios7-navigate balanced"></i> 收货地址: <span style="color: #808080;" bo-text="order.address"></span></div>
                     <div style="font-size: 14px"><i class="ion-ios7-telephone balanced"></i> 联系电话: <span style="color: #808080;" bo-text="order.phone"></span></div>
-
                     <div style="margin-top: 10px;color: #808080;font-size: 14px" bo-text="'买家留言: '+ order.remarks"></div>
-
                     <span class="badge badge-assertive" ng-if="!order.readed">未读</span>
                     <span class="badge badge-balanced" ng-if="order.readed">已读</span>
-
                 </div>
-
             </div>
-
             <ion-infinite-scroll
                     ng-if="moreOrderCanBeLoaded()"
                     icon="ion-loading-c"
                     on-infinite="addOrders()">
             </ion-infinite-scroll>
-
         </div>
-
     </ion-content>
 </ion-view>

@@ -1,19 +1,15 @@
 <ion-view>
     <ion-nav-bar class="bar-mmiao" align-title="center">
-
         <ion-nav-buttons side="left">
             <button class="button button-icon ion-ios7-refresh-empty" ng-click="refreshAll()"></button>
         </ion-nav-buttons>
-
         <ion-nav-buttons side="right">
             <button class="button button-icon ion-ios7-plus-outline" ng-controller="AddProductCtrl"
                     ng-click="AddItem()"></button>
         </ion-nav-buttons>
-
         <ion-nav-title>
             商品
         </ion-nav-title>
-
     </ion-nav-bar>
     <ion-content padding="false"
                  has-tabs="true"
@@ -41,31 +37,25 @@
                     </div>
                 </ion-content>
             </div>
-            <div class="rightContainer" >
+            <div class="rightContainer">
                 <ion-content padding="false"
                              scroll="true"
                              has-bouncing="true"
                              overflow-scroll="false"
                              delegate-handle="productScroll">
-
                     <div class="shop-product-list" ng-controller="ProductListCtrl">
-
                         <ul class="shop-product-categray-list list">
-
                             <li bindonce ng-repeat="item in items track by item.id"
                                 class="product-item"
                                 ng-include
                                 src="'templates/product-detail.html'">
                             </li>
-
                             <ion-infinite-scroll
                                     ng-if="moreDataCanBeLoaded()"
                                     icon="ion-loading-c"
                                     on-infinite="addItems()">
                             </ion-infinite-scroll>
-
                         </ul>
-
                     </div>
                 </ion-content>
             </div>
