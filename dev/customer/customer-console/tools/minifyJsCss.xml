@@ -45,11 +45,12 @@
         </concat>
     </target>
 
+    <!-- the js has order, so we have to give orders here-->
     <target name="js.concatenate" depends="js.minify">
         <concat destfile="${src}/js/compress/mmconsole-min.js">
 
             <filelist dir="${src}/lib/ionic/js/"
-                      files="ionic.bundle.js"/>
+                      files="ionic.bundle.min.js"/>
             <filelist dir="${src}/lib/ionic-service-core/"
                       files="ionic-core.js"/>
             <filelist dir="${src}/lib/ionic-service-deploy/"
