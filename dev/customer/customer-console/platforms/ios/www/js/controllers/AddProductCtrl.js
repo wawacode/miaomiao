@@ -33,6 +33,7 @@
                         $scope.newitem = item;
                         $scope.newitem.currentCateId = item.category_id;
                         $scope.newitem.saleStatus = 1;
+                        $scope.newitem.new_pic_url = $scope.newitem.pic_url;
                     })
 
                 }, function (data, status) {

@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0A55CC85CED1436CB0A5FF9F /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = FA01896D68E341AD921A6E1F /* CDVSplashScreen.m */; };
 		0D99DC652C664F498E08B0AA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44F8E3D5F88345FBB1231F3D /* ImageIO.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
