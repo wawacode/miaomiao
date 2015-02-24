@@ -36,10 +36,8 @@
     <target name="css.concatenate" depends="css.minify">
         <concat destfile="${src}/js/compress/mmconsole-min.css">
 
-            <filelist dir="${src}/lib/ionic/css/"
-                      files="ionic.min.css"/>
             <filelist dir="${src}/lib/angular-native-picker/build/themes/"
-                      files="default.css,default.time.css"/>
+                      files="default.time.css"/>
             <filelist dir="${src}/css/"
                       files="app-min.css"/>
         </concat>
@@ -49,8 +47,6 @@
     <target name="js.concatenate" depends="js.minify">
         <concat destfile="${src}/js/compress/mmconsole-min.js">
 
-            <filelist dir="${src}/lib/ionic/js/"
-                      files="ionic.bundle.min.js"/>
             <filelist dir="${src}/lib/ionic-service-core/"
                       files="ionic-core.js"/>
             <filelist dir="${src}/lib/ionic-service-deploy/"
