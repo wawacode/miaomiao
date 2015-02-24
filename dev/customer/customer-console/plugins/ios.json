@@ -18,7 +18,7 @@
                         },
                         {
                             "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
-                            "count": 3
+                            "count": 2
                         },
                         {
                             "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
@@ -179,9 +179,6 @@
             "PACKAGE_NAME": "com.miaomiao.bconsole"
         },
         "org.apache.cordova.camera": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.console": {
             "PACKAGE_NAME": "com.miaomiao.bconsole"
         },
         "org.apache.cordova.device": {
