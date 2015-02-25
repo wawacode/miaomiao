@@ -1,17 +1,21 @@
 <div class="prod_icon">
-    <!--back-img="{{item.pic_url}}">-->
     <img ng-src="{{item.pic_url}}" style="width: 70px;height: 70px;border: none">
 </div>
 <div>
     <span class="product-title oneline ">{{item.name}}</span>
     <span class="product-status oneline" ng-if="item.onsell == 0">下架了</span>
+
     <div class="prod_info">
         <div class="product-price">
             <span style="font-weight: normal">¥{{item.price/100.0}}</span>
         </div>
         <div class="product_action">
-            <a class=" button button-small button-icon icon ion-arrow-up-a" ng-class="{'balanced':item.sticked,'mgray':!item.sticked}" ng-click="item.sticked = true ; StickItem(item)"></a>
-            <a class=" button button-small button-icon icon ion-settings" ng-class="{'balanced':item.edited,'mgray':!item.edited}" ng-click="item.edited = true ; EditItem(item)"></a>
+            <a class=" button button-small button-icon icon ion-arrow-up-a"
+               ng-class="{'balanced':item.sticked,'mgray':!item.sticked}"
+               ng-click="item.sticked = true ; StickItem(item)"></a>
+            <a class=" button button-small button-icon icon ion-settings"
+               ng-class="{'balanced':item.edited,'mgray':!item.edited}"
+               ng-click="item.edited = true ; EditItem(item)"></a>
         </div>
     </div>
 </div>

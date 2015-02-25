@@ -1,5 +1,5 @@
 ;angular.module('miaomiao.console.controllers')
-    .controller('ChangePwdCtrl', function ($scope, $ionicLoading, $compile, $ionicPopup, $timeout, $ionicScrollDelegate, $http, $state, localStorageService, httpClient, MMUtils, MMPushNotification, MMUtils) {
+    .controller('ChangePwdCtrl', function ($scope, $ionicLoading, $compile, $ionicPopup, $timeout, $ionicScrollDelegate, $http, $state, localStorageService, httpClient, MMUtils, MMPushNotification) {
 
         $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
 

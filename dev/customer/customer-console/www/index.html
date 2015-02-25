@@ -4,41 +4,30 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>喵喵-商家工具</title>
-
-    <!--<link href="css/ionic.app.css" rel="stylesheet">-->
     <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
-    <link href="lib/angular-native-picker/build/themes/default.css" rel="stylesheet">
     <link href="lib/angular-native-picker/build/themes/default.time.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
-
-    <!-- ionic services -->
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
     <script src="lib/ionic-service-core/ionic-core.js"></script>
     <script src="lib/ionic-service-deploy/ionic-deploy.js"></script>
-
     <script src="lib/angular-bindonce/bindonce.min.js"></script>
     <script src="lib/angular-local-storage.min.js"></script>
     <script src="lib/ngstorage/ngStorage.min.js"></script>
     <script src="lib/angular-native-picker/build/angular-datepicker.js"></script>
     <script src="lib/quick-ng-repeat/quick-ng-repeat.js"></script>
-
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
-    <!-- your app's js -->
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
-
     <script src="js/services/CommonServices.js"></script>
     <script src="js/services/HttpClient.js"></script>
     <script src="js/services/CommonFilters.js"></script>
     <script src="js/services/Utils.js"></script>
-    <script src="js/directives.js"></script>
-
+    <script src="js/services/directives.js"></script>
     <script src="js/controllers/MainControllers.js"></script>
     <script src="js/controllers/SignInCtrl.js"></script>
     <script src="js/controllers/ChangePwdCtrl.js"></script>
@@ -50,15 +39,12 @@
     <script src="js/controllers/EditShopCtrl.js"></script>
     <script src="js/controllers/AddProductCtrl.js"></script>
     <script src="js/controllers/SearchCtrl.js"></script>
-
 </head>
 
 <body ng-app="miaomiao.console" ng-controller="MainCtrl">
-
 <ion-nav-bar class="bar-mmiao nav-title-slide-ios7" back-button-type="button-icon"
              back-button-icon="ion-arrow-left-c">
 </ion-nav-bar>
-
 <ion-nav-view animation="slide-left-right"></ion-nav-view>
 </body>
 </html>

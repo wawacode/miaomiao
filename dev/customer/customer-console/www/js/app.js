@@ -1,11 +1,12 @@
 // miaomiao console main app
-;angular.module('miaomiao.console', [
+angular.module('miaomiao.console', [
         'ngAnimate',
         'ionic',
         'ngCordova',
         'LocalStorageModule',
         'ngStorage',
         'pasvaz.bindonce',
+
         'QuickList',
         'angular-datepicker',
         'miaomiao.console.controllers',
@@ -15,7 +16,7 @@
     ])
 
     // for server config
-    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://www.mbianli.com', context: '/console/api/'})
 
     // for http post requests
     .config(function ($httpProvider, $provide) {
@@ -106,7 +107,7 @@
 
             .state('tab', {
                 url: "/tab",
-                abstract: true,
+                'abstract': true,
                 templateUrl: function () {
                     if (ionic.Platform.isAndroid()) {
                         return "templates/tabs-android.html";

@@ -1,34 +1,28 @@
 <ion-modal-view>
-
     <ion-header-bar class="bar bar-header bar-mmiao">
         <h1 class="title">切换店铺</h1>
         <button class="button button-clear button-primary" ng-click="closeModal()">取消</button>
     </ion-header-bar>
-
     <ion-content padding="true"
                  has-tabs="false"
                  has-header="true"
                  scroll="true"
                  has-bouncing="true">
-
         <div class="list card"
              bindonce
              quick-ng-repeat="item in info.shoplist"
              delegate-handle="shoplist"
              ng-click="switchDefaultShop(item,$event)">
             <div class="item item-body  " style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
-
                 <div class="item-icon-right">
                     <div style="font-size: 16px;display: inline-block;color: #191919">
                         {{item.name}}
                     </div>
-
                     <div bo-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
                         {{item.status | getShopStatusString }}
                     </div>
                     <i class="icon ion-ios7-checkmark-outline positive" ng-if="item.id == info.defaultShop.id"></i>
                 </div>
-
                 <div style="margin-top: 12px;color: #6a6a6a" class="list">
                     <div style="font-size: 12px;">
                         <div bindonce style=" display: inline-block" ng-if="item.open_time || item.close_time">
@@ -50,11 +44,8 @@
                                style="font-size: 15px;color: lightgray"></i>   {{item.shop_address}}
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </ion-content>
-
 </ion-modal-view>

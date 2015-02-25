@@ -5,35 +5,34 @@
                 <i class="icon ion-ios7-arrow-back">返回</i>
             </button>
         </ion-nav-buttons>
-
         <ion-nav-title>
             编辑店铺信息
         </ion-nav-title>
-
     </ion-nav-bar>
     <ion-content padding="false"
                  has-tabs="true"
                  has-header="true"
                  scroll="true"
                  has-bouncing="true">
-
         <div class="list">
-
             <div class="item item-input item-stacked-label">
                 <span class="input-label assertive">店名:</span>
                 <input type="text" ng-value="editingShop.name" ng-model="editingShop.name" placeholder="便利店">
             </div>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">地址:</span>
-                <input type="text" ng-value="editingShop.shop_address" ng-model="editingShop.shop_address" placeholder="北京市海淀区中关村">
+                <input type="text" ng-value="editingShop.shop_address" ng-model="editingShop.shop_address"
+                       placeholder="北京市海淀区中关村">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">服务范围:</span>
-                <input type="text" ng-value="editingShop.shop_info" ng-model="editingShop.shop_info" placeholder="北京市海淀区中关村">
+                <input type="text" ng-value="editingShop.shop_info" ng-model="editingShop.shop_info"
+                       placeholder="北京市海淀区中关村">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">起送价格(元):</span>
-                <input type="text" ng-value="editingShop.new_base_price" ng-model="editingShop.new_base_price" placeholder="20">
+                <input type="text" ng-value="editingShop.new_base_price" ng-model="editingShop.new_base_price"
+                       placeholder="20">
             </label>
             <label class="item item-input item-select">
                 <div class="input-label assertive">
@@ -44,12 +43,14 @@
                         ng-init="item.status=0">
                 </select>
             </label>
+
             <div class="item item-stacked-label">
                 <span class="input-label assertive">营业时间</span>
 
                 <div class="list" style="">
                     <div class="item item-input" style="border: none;">
                         <span class="input-label" style="max-width: 100px">24小时营业:</span>
+
                         <div class="checkbox">
                             <input type="checkbox" style="padding: 2px;" ng-model="editingShop.isFullTimeOpen"
                                    ng-click="updateShopFullTimeOpen()">
@@ -90,12 +91,9 @@
                     </div>
                 </div>
             </div>
-
-
             <label class="item item-input-inset" style="text-align: center">
                 <button class="button button-full button-balanced" ng-click="saveShop(editingShop)">保存</button>
             </label>
-
         </div>
     </ion-content>
-    </ion-view>
+</ion-view>
