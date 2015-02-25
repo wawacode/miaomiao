@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.miaomiao.bconsole" version="1.0.4" xmlns="http://www.w3.org/ns/widgets"
+<widget id="com.miaomiao.bconsole" version="1.0.0" xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>喵喵商家</name>
     <description>
-        喵喵商家客户端
+        喵喵商家客户端为喵喵科技为合作商家提供的查询，编辑店铺和商品信息的工具应用，并能够提供新订单的推送通知。
     </description>
     <author email="dev@lizi-inc.com" href="http://www.mbianli.com/">
-        Miaomiao team
+        喵喵科技 Miaomiao team
     </author>
     <content src="index.min.html"/>
     <access origin="*"/>
