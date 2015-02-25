@@ -1,7 +1,7 @@
 .DS_Store
 .idea
 /node_modules/
-/platforms/
+/platforms/ios
 ionic.project
 www/js/config.js
 engine
