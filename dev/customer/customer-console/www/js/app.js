@@ -16,7 +16,7 @@ angular.module('miaomiao.console', [
     ])
 
     // for server config
-    .constant('serverInfo', {host: 'http://www.mbianli.com:8088', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://www.mbianli.com', context: '/console/api/'})
 
     // for http post requests
     .config(function ($httpProvider, $provide) {
