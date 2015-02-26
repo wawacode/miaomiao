@@ -1,49 +1,508 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb"><head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>喵喵</title>
-    <link rel="stylesheet" href="http://s.xnimg.cn/a50178/raydv/css/reset.css" type="text/css">
-    <link rel="stylesheet" href="http://s.xnimg.cn/a44416/raydv/css/index.css" type="text/css">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <title>喵喵科技</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/homepage.css" rel="stylesheet">
+    <link href="/css/fontawome.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/bootstrap/dist/js/html5shiv.js"></script>
+    <script src="/js/bootstrap/dist/js/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
-<!--<div id="header">
-</div> -->
-<div id="container">
-    <img class="index_cam" src="images/1024.png">
-    <div class="index_text">
-        <p class="index_text_slogan"></p>
-        <p class="zz">&gt;极速便利网购</p>
-        <p class="zz">&gt;最接地气的社区购物服务商</p>
+
+<body data-spy="scroll" data-target="#topnav">
+
+<div class="navbar navbar-inverse navbar-fixed-top" id="topnav">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img src="images/1024.png" alt="Expose" height="17px"/> </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#home">首页</a></li>
+                <li><a href="#services">服务特点</a></li>
+                <li><a href="#features">功能介绍</a></li>
+                <li><a href="#products">App下载</a></li>
+                <!--<li><a href="#clients">合作商家</a></li>-->
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </div>
+        <!--/.navbar-collapse -->
     </div>
-    <img class="index_2d" src="images/2dimcode.png">
 </div>
-<div class="index_bg_black"></div>
-<div id="footer">
-    <div class="footer_line"></div>
-    <p class="color_gray"><a href="http://www.miibeian.gov.cn/" >苏ICP备14060146号</a></p>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron" id="home">
+    <div class="container">
+        <div class="media row">
+            <div class="col-lg-6 text-center">
+                <a href="#" class="pull-left" style="width: 100%;height: auto;">
+                    <img class="media-object" style="max-width: 400px" src="/images/loadingpage-full.png"/>
+                </a>
+            </div>
+
+            <div class="col-lg-6 text-left">
+                <div class="media-body">
+                    <div class="col-md-12 col-md-push-4">
+                        <h1 class="title">喵喵生活</h1>
+
+                        <p>&gt; 极速便利网购 </br>
+                            &gt; 最接地气的社区购物服务商
+                        </p>
+
+                        <p><a class="btn btn-success btn-lg" href="#products">体验一下 <i class="icon icon-angle-right"></i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
-<style>
-    .index_cam{
 
-    }
-    .zz{
-     color:#000000;
-     font-weight: bold;
+<div class="container" id="services">
+    <!-- Example row of columns -->
+    <div class="row features">
+        <div class="col-lg-4 text-center">
+            <div class="single-fet">
+                <div>
+                 <span class="icon-stack icon-4x">
+  <i class="icon-circle icon-stack-base"></i>
+  <i class="icon-bolt icon-light"></i>
+</span>
+                </div>
+                <h2>线上线下,</br>一键结合</h2>
 
-    }
-    #container{
-    width:700px;
-    height:600px;
-    min-height:0px;
-    }
-    .index_2d{
-       margin-top:100px;
-       margin-right:50px;
-       float:right;
+                <p> 提供简单易用开店工具实现快速开店，导入库存系统实现快速上线，提供方便快捷流畅的线上购物体验 </p>
 
-    }
-    .index_bg_black{
-    background: #EFE0E0;
-    top:0px;
-    }
-</style>
-</body></html>
+            </div>
+        </div>
+        <div class="col-lg-4 text-center">
+            <div class="single-fet">
+                <div>
+                <span class="icon-stack icon-4x">
+  <i class="icon-circle icon-stack-base"></i>
+  <i class="icon-bell icon-light"></i>
+</span>
+                </div>
+                <h2>流畅购物体验,</br>快捷订单提醒</h2>
+
+                <p> 提供多种提供方案，为商家配备打印机实时打印订单，并提供短信，商家端app(iOS , Android) 订单推送</p>
+
+            </div>
+        </div>
+        <div class="col-lg-4 text-center">
+            <div class="single-fet">
+                <div>
+                <span class="icon-stack icon-4x">
+  <i class="icon-circle icon-stack-base"></i>
+  <i class="icon-gears icon-light"></i>
+</span>
+                </div>
+                <h2>轻松线上开店,</br>
+                    <span style="color:#248822">App</span>后台管理</h2>
+
+                <p>商家端app提供商品编辑、添加功能，并提供店铺营业、打烊，修改配送范围，订单推送等功能</p>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<section class="slider" id="features">
+    <div class="container">
+        <div class="inner-page">
+            <h2 class="page-headline large text-center">产品功能特点</h2>
+
+            <p class="text-center">我们提供O2O平台所具有的线上开店，销售，管理和线下的推广、宣传等所有功能</p>
+        </div>
+        <div class="row inner-page">
+            <div class="col-md-10 col-md-pull-1 col-md-push-1 lazy-container loaded">
+                <!--<img data-original="images/mockup.png" src="images/mockup.png" alt="Looks great on every device"-->
+                <!--class="lazy">-->
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="feature-box">
+                            <div class="feature-box-icon">
+                                <i class="icon-bolt"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="shorter">快速开店</h4>
+
+                                <p class="tall">自动化开店工具，库存系统接入，实现快速开店</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-box">
+                            <div class="feature-box-icon">
+                                <i class="icon-shopping-cart"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="shorter">线上商城</h4>
+
+                                <p class="tall">为提供商家线上商店，微信公众号，iOS应用，Android应用，精准定位商家并提供优质的购买体验</p>
+                            </div>
+                        </div>
+                        <div class="feature-box">
+                            <div class="feature-box-icon">
+                                <i class="icon-print"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="shorter">打印机实时订单通知</h4>
+
+                                <p class="tall">为商家配备打印机实时跟踪订单</p>
+                            </div>
+                        </div>
+                        <div class="feature-box">
+                            <div class="feature-box-icon">
+                                <i class="icon-bell"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="shorter">短信、app通知</h4>
+
+                                <p class="tall">为商家提供订单的短信和app推送通知</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-box">
+                            <div class="feature-box-icon">
+                                <i class="icon-gears"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="shorter">商家后台管理</h4>
+
+                                <p class="tall">为商家提供商品、店铺的信息管理App(iOS & Android)</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-box">
+                            <div class="feature-box-icon">
+                                <i class="icon-laptop"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="shorter">强大的商品数据库</h4>
+
+                                <p class="tall">后台强大数据库提供数万种商品的信息、图片等</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-box">
+                            <div class="feature-box-icon">
+                                <i class="icon-user"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="shorter">用户推广</h4>
+
+                                <p class="tall">喵喵提供强大的用户推广团队和各种资源，精准定位客户，帮助商家快速积累用户</p>
+                            </div>
+                        </div>
+                        <div class="feature-box">
+                            <div class="feature-box-icon">
+                                <i class="icon-comments"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="shorter">客户服务</h4>
+
+                                <p class="tall">24小时客户服务，及时解决您的难题.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pricing" id="products">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 pricing-intro">
+                <h2 class="page-headline large text-center">App下载</h2>
+
+                <p class="text-center">我们提供微信公众号，和商家端iOS，android APP下载</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <div class="row pricing-table">
+            <div class="col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading"><h3 class="text-center">用户端(喵喵生活)</h3></div>
+
+                    <div class="panel-body text-center">
+                        <h4 class="text-center">微信公众号</h4>
+                        <img class="media-object" style="max-width: 200px" src="/images/miaomiao-qr-code.png"/>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-info">
+
+                    <div class="panel-heading"><h3 class="text-center">商家端(喵喵商家)</h3></div>
+
+                    <div class="panel-body text-center">
+                        <h4 class="text-center">喵喵商家版Android下载</h4>
+                        <img class="media-object" style="max-width: 200px" src="/images/miaomiao-console-android.png"/>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</section>
+<!--<section class="about" id="clients">-->
+    <!--<div class="dmask">-->
+
+        <!--<div class="our-clients">-->
+            <!--<div class="container">-->
+                <!--<div class="row">-->
+
+                    <!--<div class="col-md-12">-->
+                        <!--<h3 class="text-center">合作商家展示</h3>-->
+                    <!--</div>-->
+
+                    <!--<div class="client" style="background-position: 50% 27px;">-->
+                        <!--<div class="client-logo">-->
+                            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                                <!--&lt;!&ndash; Testimonials Widget Start &ndash;&gt;-->
+                                <!--<div class="row ">-->
+                                    <!--<div class="testimonials widget">-->
+                                        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                                            <!--<div class="testimonials-title">-->
+
+                                                <!--<div class="carousel-controls pull-right">-->
+                                                    <!--<a data-slide="prev" href="#testimonials-carousel"-->
+                                                       <!--class="prev btn-mini"><i class="icon-angle-left"></i></a>-->
+                                                    <!--<a data-slide="next" href="#testimonials-carousel"-->
+                                                       <!--class="next btn-mini"><i class="icon-angle-right"></i></a>-->
+
+                                                    <!--<div class="clearfix"></div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="clearfix"></div>-->
+                                        <!--<div class="testimonials-carousel slide animate_afr d5 animate_start"-->
+                                             <!--id="testimonials-carousel">-->
+                                            <!--<div class="carousel-inner">-->
+                                                <!--<div class="item">-->
+                                                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                                                        <!--<div class="testimonial item">-->
+
+                                                            <!--<div class="author">-->
+
+                                                                <!--<div class="">-->
+                                                                    <!--<span class="icon-stack icon-4x">-->
+                                                                        <!--<i class="icon-circle icon-stack-base"></i>-->
+                                                                        <!--<i class="icon-home icon-light"></i>-->
+                                                                    <!--</span>-->
+                                                                    <!--乐邻便利店-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+
+                                                            <!--<p style="color: #ffffff;font-size: 18px">-->
+                                                                <!--地址: 晨光家园西门 </br>-->
+                                                                <!--服务区域：晨光家园，公园1872周边2公里-->
+                                                            <!--</p>-->
+
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="item active">-->
+                                                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                                                        <!--<div class="testimonial item">-->
+                                                            <!--<div class="author">-->
+
+                                                                <!--<div class="">-->
+                                                                    <!--<span class="icon-stack icon-2x">-->
+                                                                        <!--<i class="icon-circle icon-stack-base"></i>-->
+                                                                        <!--<i class="icon-home icon-light"></i>-->
+                                                                        <!--</span>-->
+                                                                    <!--J玛特便民超市-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+
+                                                            <!--<p style="color: #ffffff;font-size: 18px">-->
+                                                                <!--地址: 宝星园小区 </br>-->
+                                                                <!--服务区域：宝星园小区-->
+                                                            <!--</p>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="item">-->
+                                                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                                                        <!--<div class="testimonial item">-->
+                                                            <!--<div class="author">-->
+
+                                                                <!--<div class="">-->
+                                                                    <!--<span class="icon-stack icon-2x">-->
+                                                                        <!--<i class="icon-circle icon-stack-base"></i>-->
+                                                                        <!--<i class="icon-home icon-light"></i>-->
+                                                                        <!--</span>-->
+                                                                    <!--利泰便利-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+
+                                                            <!--<p style="color: #ffffff;font-size: 18px">-->
+                                                                <!--地址: 湖中园312号楼105 </br>-->
+                                                                <!--服务区域：湖中园312号楼105-->
+                                                            <!--</p>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+<!--</section>-->
+
+<section class="contact" id="contact">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="alert alert-success hidden" id="contactSuccess">
+                    <strong>Success!</strong> Your message has been sent to us.
+                </div>
+
+                <div class="alert alert-error hidden" id="contactError">
+                    <strong>Error!</strong> There was an error sending your message.
+                </div>
+
+                <h2 class="short">联系我们</h2>
+
+                <form class="clearfix" accept-charset="utf-8" method="post" action="/sg/feedback">
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            <label for="name">姓名</label>
+                            <input type="text" placeholder="" value="" name="name" id="name"
+                                   class="form-control input-lg">
+                        </div>
+
+                        <div class="col-sm-6 form-group">
+                            <label for="contact">电子邮件/电话</label>
+                            <input type="email" placeholder="" value="" name="contact" id="contact-feedback"
+                                   class="form-control input-lg">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <label for="feedback">想对我们说...</label>
+                            <textarea rows="4" name="feedback" id="feedback" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success btn-xlg" type="submit">发送</button>
+                </form>
+            </div>
+            <div class="col-md-offset-1 col-md-5">
+                <br/>
+                <h4 class="pull-top">我们的目标</h4>
+
+                <p>喵喵科技，真诚为您服务.</p>
+
+                <hr>
+
+                <h4>联系地址</h4>
+                <ul class="unstyled">
+                    <li><i class="icon-map-marker"></i> 北京市海淀区上地三街
+                    </li>
+                    <li><i class="icon-phone"></i> <strong>电话:</strong>400-881-6807</li>
+                    <li><i class="icon-envelope"></i> <strong>Email:</strong> <a href="mailto:dev@lizi-inc.com">dev@lizi-inc.com</a>
+                    </li>
+                </ul>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-ribbon" style="right: 0">
+                <h3 class="title" style="margin: 0;padding: 5px 10px">Thank You</h3>
+            </div>
+
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <a class="logo" href="index.html">喵喵科技
+
+                    </a>
+                </div>
+                <div class="col-md-5">
+                    <p><a href="http://www.miibeian.gov.cn/">苏ICP备14060146号</a></p>
+                </div>
+                <div class="col-md-5">
+                    <nav id="footer-menu">
+                        <ul>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery/dist/jquery.min.js"></script>
+<script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
