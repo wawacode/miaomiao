@@ -54,7 +54,7 @@
     <div class="container">
         <div class="media row">
             <div class="col-lg-6 text-center">
-                <a href="#" class="pull-left" style="width: 100%;height: auto;max-width: 400px;overflow: scroll">
+                <a href="#" class="pull-left" style="width: 100%;height: auto;max-width: 400px;overflow: hidden">
                     <img class="media-object" src="/images/loadingpage-full.png"/>
                 </a>
             </div>
