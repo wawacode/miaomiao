@@ -101,12 +101,14 @@ public class HomeController {
             String message = Constants.PRERROR.replace("{msg}","店铺电话已经注册过");
             return "@" + message  ;
         }
-//        Device device = deviceDAO.getDev(shop_print) ;
-//        if(null == device ){
-//            LoggerUtils.getInstance().log(String.format(" input %s; ",shop_print));
-//            String message = Constants.PRERROR.replace("{msg}","提交打印机码错误");
-//            return "@" + message ;
-//        }
+        if(!"none".equals(shop_print)){
+        Device device = deviceDAO.getDev(shop_print) ;
+        if(null == device ){
+            LoggerUtils.getInstance().log(String.format(" input %s; ",shop_print));
+            String message = Constants.PRERROR.replace("{msg}","提交打印机码错误");
+            return "@" + message ;
+        }
+        }
 
         CatStaffCommit catStaffCommit = new CatStaffCommit();
         catStaffCommit.setName(staff_name);
