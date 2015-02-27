@@ -66,10 +66,10 @@
 	        <version>5.1.6</version>
         </dependency>
         <dependency>
-              <groupId>jmagick</groupId>
-              <artifactId>jmagick</artifactId>
-              <version>6.2.4</version>
-          </dependency>
+              <groupId>org.imgscalr</groupId>
+              <artifactId>imgscalr-lib</artifactId>
+              <version>4.2</version>
+        </dependency>
         <dependency>
             <groupId>com.54chen</groupId>
             <artifactId>paoding-rose-jade</artifactId>

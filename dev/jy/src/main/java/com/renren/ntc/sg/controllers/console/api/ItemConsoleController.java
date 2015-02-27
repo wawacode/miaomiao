@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.controllers.console.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,16 +126,18 @@ public class ItemConsoleController extends BasicConsoleController{
                     return "@json:"+resultJson.toJSONString();
                 }
             }
-            boolean isSuc = new FileUploadUtils().uploadFile(pic, tmpsavePicPath,picName);
-            if(!isSuc){
-                JSONObject resultJson = new JSONObject();
-                resultJson.put("code", -1);
-                resultJson.put("msg", "服务器错误，请稍后重试");
-                return "@json:"+resultJson.toJSONString();
+//            boolean isSuc = new FileUploadUtils().uploadFile(pic, tmpsavePicPath,picName);
+            try {
+                boolean isSuc = ImagesUtils.convertImage(pic.getInputStream(), savePicPath + picName);
+                if(!isSuc){
+                    JSONObject resultJson = new JSONObject();
+                    resultJson.put("code", -1);
+                    resultJson.put("msg", "服务器错误，请稍后重试");
+                    return "@json:"+resultJson.toJSONString();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            File ifile = new File (tmpsavePicPath+File.separator + picName);
-            File ofile = new File (savePicPath+File.separator + picName);
-            ImagesUtils.zipImageFile(ifile, ofile, 400, 0, 1);
             // 压缩
             String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shop_id));
             url = imageUrl.concat(picName);
