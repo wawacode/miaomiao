@@ -79,8 +79,6 @@ public class StaffConsoleController {
 	@Post("")
     @Get("")
 	public String index(Invocation inv){
-       System.setProperty("jmagick.systemclassloader","no");
-
        ImagesUtils.resetsize("/data/images/cat/images/shop_2/20150227103232.jpg", "/data/images/cat/images/shop_2/new.jpg");
         return "@shop";
 	}
