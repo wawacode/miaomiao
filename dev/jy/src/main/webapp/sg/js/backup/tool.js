@@ -177,10 +177,10 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                 'shop_owner_phone': $scope.info.shop_owner_phone,
                 'shop_name': $scope.info.shop_name,
                 'shop_address': $scope.info.shop_address,
+                'shop_serveArea':$scope.info.shop_serveArea,
                 'shop_print': $scope.info.shop_print,
                 'shop_lat': $scope.info.shop_lat,
                 'shop_lng': $scope.info.shop_lng,
-
                 'shop_basePrice': $scope.info.shop_basePrice
             };
 

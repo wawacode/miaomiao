@@ -110,11 +110,11 @@
                 <div class="item item-body">
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店铺名称:</span>
-                        <input type="text" ng-model="info.shop_name" required>
+                        <input type="text" ng-model="info.shop_name" required placeholder="超市/便利店名称">
                     </label>
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店铺电话:</span>
-                        <input type="text" ng-model="info.shop_tel" required>
+                        <input type="text" ng-model="info.shop_tel" required placeholder="座机/手机">
                     </label>
                     <label class="item">
                         <div class="list">
@@ -161,15 +161,19 @@
                     </label>
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店长电话:</span>
-                        <input type="text" ng-model="info.shop_owner_phone" required>
+                        <input type="text" ng-model="info.shop_owner_phone" required placeholder="老板电话，一般为手机">
                     </label>
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>店铺地址:</span>
-                        <input type="text" ng-model="info.shop_address">
+                        <input type="text" ng-model="info.shop_address" placeholder="北京市海淀区某某地址">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>服务范围:</span>
+                        <input type="text" ng-model="info.shop_serveArea" placeholder="服务的周边小区名称">
                     </label>
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>打印机ID:</span>
-                        <input type="text" ng-model="info.shop_print" required>
+                        <input type="text" ng-model="info.shop_print" required placeholder="例如,CATDTE_a96edcfb">
                     </label>
 
                 </div>
@@ -187,7 +191,7 @@
                     </label>
 
                     <div>
-                        <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"> 重新定位 </a>
+                        <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"> (点我)重新定位 </a>
                     </div>
                 </div>
 
