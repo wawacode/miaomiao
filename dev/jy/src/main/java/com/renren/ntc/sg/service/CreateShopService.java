@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.*;
@@ -7,8 +8,11 @@ import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.util.calendar.BaseCalendar;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,6 +51,11 @@ public class CreateShopService {
         String shop_address = catStaffCommit.getShop_address();
         String shop_name =   catStaffCommit.getShop_name();
         String shop_print = catStaffCommit.getShop_print();
+        String shop_ext = catStaffCommit.getShop_serveArea();
+        JSONObject  area = (JSONObject)JSON.parse(shop_ext) ;
+        String shop_serveArea = area.getString("shop_serveArea")  ;
+        Date open_time = area.getDate("open_time")  ;
+        Date close_time = area.getDate("close_time")  ;
         double lat =  catStaffCommit.getShop_lat();
         double lng =  catStaffCommit.getShop_lng();
 
@@ -65,24 +74,28 @@ public class CreateShopService {
         // 初始化店铺
         Shop shop =  new Shop();
         shop.setName(shop_name);
+        shop.setOpen_time(open_time);
+        shop.setClose_time(close_time);
         shop.setLat(lat);
         shop.setLng(lng);
         shop.setOwner_phone(onwer_phone);
         shop.setTel(admin_tel);
         shop.setShop_address(shop_address);
         shop.setOwner_user_id(admin_id);
+        shop.setShop_info(shop_serveArea);
         long shop_id = shopDao.insert(shop) ;
         LoggerUtils.getInstance().log(String.format("create new shop  %d, shop_name %s ",shop_id, shop_name));
         jb.put("shop_id",shop_id);
         jb.put("shop_name",shop_name);
 
         // 初始化 打印机配置
-        Device dev =  new Device();
-        dev.setShop_id(shop_id);
-        long device_id = deviceDao.updateShop_id(shop_id,shop_print);
-        LoggerUtils.getInstance().log(String.format("create new printer  %d",device_id));
-        jb.put("device_id",device_id);
-
+        if (!"none".equals(shop_print)){  //打印机不是必填项目
+          Device dev =  new Device();
+          dev.setShop_id(shop_id);
+          long device_id = deviceDao.updateShop_id(shop_id,shop_print);
+          LoggerUtils.getInstance().log(String.format("create new printer  %d",device_id));
+          jb.put("device_id",device_id);
+        }
         //初始化商品库
         List<ShopCategory> ls = shopCategoryDao.getCategory(BASE_SHOP);
         for (ShopCategory s : ls ){
