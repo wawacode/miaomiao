@@ -6,14 +6,30 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class ImagesUtils {
+
+   static  class MyImageWriteParam extends JPEGImageWriteParam {
+
+        public MyImageWriteParam() {
+            super(Locale.getDefault());
+        }
+
+        public void setCompressionQuality(float quality) {
+            if (quality < 0.0F || quality > 1.0F) {
+                throw new IllegalArgumentException("Quality out-of-bounds!");
+            }
+            this.compressionQuality = 256 - (quality * 256);
+        }
+
+    }
 
     public static void main (String []  args ){
         File ifile = new File("F:/20150227103232.jpg");
@@ -57,19 +73,17 @@ public class ImagesUtils {
             BufferedImage tag = new BufferedImage(width, height,
                     BufferedImage.TYPE_INT_RGB);
             tag.getGraphics().drawImage(srcFile, 0, 0, width, height, null);
-            //String filePrex = oldFile.getName().substring(0, oldFile.getName().indexOf('.'));    
-            /** 压缩后的文件名 */
-            //newImage = filePrex + smallIcon+  oldFile.getName().substring(filePrex.length());    
 
             /** 压缩之后临时存放位置 */
             FileOutputStream out = new FileOutputStream(newFile);
+            // 设置压缩比
+//            ImageWriteParam iwparam = new MyImageWriteParam();
+//            iwparam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+//            iwparam.setCompressionQuality(iwparam);
+//
+//            // 写图片
+//            writer.write(null, new IIOImage(rendImage, null, null), iwparam);
 
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-            JPEGEncodeParam jep = JPEGCodec.getDefaultJPEGEncodeParam(tag);
-            /** 压缩质量 */
-            jep.setQuality(quality, true);
-            encoder.encode(tag, jep);
-            out.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -79,51 +93,5 @@ public class ImagesUtils {
         return newFile.getAbsolutePath();
     }
 
-    /**
-     * 按宽度高度压缩图片文件<br> 先保存原文件，再压缩、上传  
-     * @param oldFile  要进行压缩的文件全路径  
-     * @param newFile  新文件  
-     * @param width  宽度  
-     * @param height 高度  
-     * @param quality 质量  
-     * @return 返回压缩后的文件的全路径
-     */
-    public static String zipWidthHeightImageFile(File oldFile,File newFile, int width, int height,
-                                                 float quality) {
-        if (oldFile == null) {
-            return null;
-        }
-        String newImage = null;
-        try {
-            /** 对服务器上的临时文件进行处理 */
-            Image srcFile = ImageIO.read(oldFile);
-            int w = srcFile.getWidth(null);
-            //  System.out.println(w);
-            int h = srcFile.getHeight(null);
-            //  System.out.println(h);
-
-            /** 宽,高设定 */
-            BufferedImage tag = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
-            tag.getGraphics().drawImage(srcFile, 0, 0, width, height, null);
-            //String filePrex = oldFile.substring(0, oldFile.indexOf('.'));    
-            /** 压缩后的文件名 */
-            //newImage = filePrex + smallIcon+ oldFile.substring(filePrex.length());    
-
-            /** 压缩之后临时存放位置 */
-            FileOutputStream out = new FileOutputStream(newFile);
-
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-            JPEGEncodeParam jep = JPEGCodec.getDefaultJPEGEncodeParam(tag);
-            /** 压缩质量 */
-            jep.setQuality(quality, true);
-            encoder.encode(tag, jep);
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return newImage;
-    }
 
 }
