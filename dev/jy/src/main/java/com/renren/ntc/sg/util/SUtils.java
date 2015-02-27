@@ -327,4 +327,11 @@ public class SUtils {
         String env = ConfigProperties.getInstance().getValue("env") ;
         return "dev".equals(env);
     }
+
+    public static String getActionResult(int code,String message) {
+        JSONObject result = new JSONObject();
+        result.put("code", code);
+        result.put("msg", message);
+        return result.toJSONString();
+    }
 }

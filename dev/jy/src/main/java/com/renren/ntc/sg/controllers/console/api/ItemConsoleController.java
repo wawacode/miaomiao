@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.renren.ntc.sg.util.ImagesUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -99,21 +100,42 @@ public class ItemConsoleController extends BasicConsoleController{
                 resultJson.put("msg", "服务器错误，请稍后重试");
                 return "@json:"+resultJson.toJSONString();
             }
-            String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
-            File f = new File(savePicPath);
+            String tmpsavePicPath = SgConstant.SAVE_TMP_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
+            String savePicPath = SgConstant.SAVE_TMP_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
+            File f = new File(tmpsavePicPath);
+
             if (!f.exists()){
                 boolean mkdirsRet = f.mkdirs();
                 if (!mkdirsRet){
                     LoggerUtils.getInstance().log("mkdir failed, may can't upload pic");
+                    JSONObject resultJson = new JSONObject();
+                    resultJson.put("code", -1);
+                    resultJson.put("msg", "服务器错误，请稍后重试");
+                    return "@json:"+resultJson.toJSONString();
                 }
             }
-            boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
+            f = new File(savePicPath);
+            if (!f.exists()){
+                boolean mkdirsRet = f.mkdirs();
+                if (!mkdirsRet){
+                    LoggerUtils.getInstance().log("mkdir failed, may can't upload pic");
+                    JSONObject resultJson = new JSONObject();
+                    resultJson.put("code", -1);
+                    resultJson.put("msg", "服务器错误，请稍后重试");
+                    return "@json:"+resultJson.toJSONString();
+                }
+            }
+            boolean isSuc = new FileUploadUtils().uploadFile(pic, tmpsavePicPath,picName);
             if(!isSuc){
                 JSONObject resultJson = new JSONObject();
                 resultJson.put("code", -1);
                 resultJson.put("msg", "服务器错误，请稍后重试");
                 return "@json:"+resultJson.toJSONString();
             }
+            File ifile = new File (tmpsavePicPath+File.separator + picName);
+            File ofile = new File (savePicPath+File.separator + picName);
+            ImagesUtils.zipImageFile(ifile, ofile, 400, 0, 1);
+            // 压缩
             String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shop_id));
             url = imageUrl.concat(picName);
         }

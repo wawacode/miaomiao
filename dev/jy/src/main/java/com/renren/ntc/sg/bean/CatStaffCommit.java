@@ -17,6 +17,9 @@ public class CatStaffCommit {
     private String pwd;
     private String shop_name;
 
+
+
+    private String shop_serveArea ;
     private String shop_owner_phone;
     private String shop_tel;
 
@@ -35,7 +38,13 @@ public class CatStaffCommit {
     private Date create_time ;
     private Date update_time ;
 
+    public String getShop_serveArea() {
+        return shop_serveArea;
+    }
 
+    public void setShop_serveArea(String shop_serveArea) {
+        this.shop_serveArea = shop_serveArea;
+    }
     public long getShop_id() {
         return shop_id;
     }
