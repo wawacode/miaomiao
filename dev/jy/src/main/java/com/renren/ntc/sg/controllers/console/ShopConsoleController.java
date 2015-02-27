@@ -19,6 +19,7 @@ import com.renren.ntc.sg.service.OrderService;
 import com.renren.ntc.sg.service.RegistUserService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.FileUploadUtils;
+import com.renren.ntc.sg.util.ImagesUtils;
 import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
@@ -31,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -174,10 +176,16 @@ public class ShopConsoleController {
 			return "@error";
 		}
     	String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shopId));
-    	boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
-		if(!isSuc){
-			return "@error" ;
-		}
+//    	boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
+        try {
+            boolean isSuc = ImagesUtils.convertImage(pic.getInputStream(), savePicPath + picName);
+            if(!isSuc){
+                return "@error" ;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
 		String picUrl = imageUrl.concat(picName);
 		Item item = new Item(serialNo,shopId, name, categoryId, score, count, picUrl, price);
