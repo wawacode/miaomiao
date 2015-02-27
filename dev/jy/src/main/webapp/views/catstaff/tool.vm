@@ -116,7 +116,7 @@
                         <span class="input-label"><span class="necessary">*</span>店铺电话:</span>
                         <input type="text" ng-model="info.shop_tel" required placeholder="座机/手机">
                     </label>
-                    <label class="item">
+                    <div class="item">
                         <div class="list">
                             <span class="input-label"><span class="necessary">*</span>营业时间</span>
 
@@ -154,7 +154,7 @@
                             </div>
                         </div>
 
-                    </label>
+                    </div>
                     <label class="item item-input">
                         <span class="input-label"><span class="necessary">*</span>起送价格:</span>
                         <input type="text" ng-model="info.shop_basePrice" placeholder="30" required>
@@ -172,7 +172,7 @@
                         <input type="text" ng-model="info.shop_serveArea" placeholder="服务的周边小区名称">
                     </label>
                     <label class="item item-input">
-                        <span class="input-label"><span class="necessary">*</span>打印机ID:</span>
+                        <span class="input-label">打印机ID:</span>
                         <input type="text" ng-model="info.shop_print" required placeholder="例如,CATDTE_a96edcfb">
                     </label>
 
