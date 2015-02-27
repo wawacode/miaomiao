@@ -99,6 +99,23 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
         $scope.info.shop_lat = undefined;
         $scope.info.shop_lng = undefined;
 
+        $scope.allHours = [];
+        for (var i = 1; i <= 24; i++) {
+            $scope.allHours.push(i);
+        }
+        $scope.allMinutes = [];
+        for (var i = 0; i < 60; i++) {
+            $scope.allMinutes.push(_reformatHourMinutes(i));
+        }
+
+        function _reformatHourMinutes(number) {
+            return (parseInt(number) < 10 ? '0' : '') + number;
+        }
+
+        $scope.info.isFullTimeOpen = false;
+        $scope.info.new_open_time = {'hours': 8, 'minutes': _reformatHourMinutes(0)}; // place holder value
+        $scope.info.new_close_time = {'hours': 22, 'minutes': _reformatHourMinutes(0)};
+
         function initialize() {
 
             var map = new BMap.Map(document.getElementById("map"));
@@ -164,15 +181,25 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                 'shop_lat': $scope.info.shop_lat,
                 'shop_lng': $scope.info.shop_lng,
 
-                'shop_openTime': $scope.info.shop_openTime,
-                'shop_closeTime': $scope.info.shop_closeTime,
                 'shop_basePrice': $scope.info.shop_basePrice
             };
+
+            if ($scope.info.isFullTimeOpen) {
+                _info.shop_openTime = null;
+                _info.shop_closeTime = null;
+            } else {
+                if ($scope.info.new_open_time) {
+                    _info.shop_openTime = $scope.info.new_open_time.hours + ':' + $scope.info.new_open_time.minutes;
+                }
+                if ($scope.info.new_close_time) {
+                    _info.shop_closeTime = $scope.info.new_close_time.hours + ':' + $scope.info.new_close_time.minutes;
+                }
+            }
 
             $scope.submitHasError = false;
             // check empty
             for (var key in _info) {
-                if (!_info[key]) {  // some value is empty
+                if (_info[key] == undefined) {  // some value is empty
                     $scope.submitHasError = true;
                     $scope.error_message = '请查看确认信息是否填写完整(红色*必填)!';
                     return;
