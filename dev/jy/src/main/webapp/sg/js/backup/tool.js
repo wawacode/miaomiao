@@ -170,6 +170,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
 
         $scope.submit = function (info) {
 
+            // all necessary info
             var _info = {'staff_phone': $scope.user.phone,
                 'staff_name': $scope.user.name,
                 'staff_pwd': $scope.user.password,
@@ -178,7 +179,6 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                 'shop_name': $scope.info.shop_name,
                 'shop_address': $scope.info.shop_address,
                 'shop_serveArea':$scope.info.shop_serveArea,
-                'shop_print': $scope.info.shop_print,
                 'shop_lat': $scope.info.shop_lat,
                 'shop_lng': $scope.info.shop_lng,
                 'shop_basePrice': $scope.info.shop_basePrice
@@ -205,8 +205,11 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                     return;
                 }
             }
-            // check speical not empty
 
+            // optional keys
+            _info.shop_print =  $scope.info.shop_print || null;
+
+            // check special keys not empty
             function isValidTelNumber(number) {
                 var regPhone = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
                 var regMobile = /^1[3|4|5|6|7|8|9][0-9]{1}[0-9]{8}$/;
