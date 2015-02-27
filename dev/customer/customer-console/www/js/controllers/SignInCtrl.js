@@ -1,5 +1,6 @@
 ;angular.module('miaomiao.console.controllers')
-    .controller('SignInCtrl', function ($scope, $ionicLoading, $compile, $ionicPopup, $timeout, $ionicScrollDelegate, $http, $state, localStorageService, httpClient, MMUtils, MMPushNotification) {
+    .controller('SignInCtrl', function ($scope, $ionicLoading, $compile, $ionicPopup, $timeout, $ionicScrollDelegate, $http, $state,
+                                        localStorageService, httpClient, MMUtils, MMPushNotification,MMShopService) {
 
         $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER') || {};
 
@@ -34,9 +35,9 @@
                 localStorageService.set('MMCONSOLE_METADATA_DEFAULT_SHOP', dataDetail.shop[0]);
 
                 MMPushNotification.subscribe();
+                MMShopService.switchDefaultShopNotification();
 
                 $state.go('tab.front-page', null, {reload: true})
-
 
             }, function (data, status) {
                 $ionicLoading.hide();
