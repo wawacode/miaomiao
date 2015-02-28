@@ -103,13 +103,13 @@ public class WXController {
         String content = getContent(body);
         LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
         if("1001011".equals(content)){
-            String response = CONTENT2.replace("{content}", content);
+            String response = CONTENT2;
             response = response.replace("{toUser}",fromUser);
             response = response.replace("{fromUser}",toUser);
             response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
             return  response;
         }
-        String response = CONTENT.replace("{content}", content);
+        String response = CONTENT.replace("{content}", MESSAGE);
         response = response.replace("{toUser}",fromUser);
         response = response.replace("{fromUser}",toUser);
         response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
