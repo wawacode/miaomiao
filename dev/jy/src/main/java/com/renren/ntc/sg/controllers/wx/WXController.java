@@ -30,23 +30,23 @@ public class WXController {
             "<Content><![CDATA[{content}]]></Content>\n" +
             "</xml>";
 
-    static final String CONTENT2 ="\t<xml>\n" +
-            "\t<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
-            "\t<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
-            "\t<CreateTime>{time}</CreateTime>\n" +
-            "\t<MsgType><![CDATA[news]]></MsgType>\n" +
-            "\t<ArticleCount>1</ArticleCount>\n" +
-            "\t<Articles>\n" +
-            "\t<item>\n" +
-            "\t<Title><![CDATA[喵喵生活]]></Title> \n" +
-            "\t<Description><![CDATA[喵喵生活]]></Description>\n" +
-            "\t<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-            "\t<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx24526189c97e6be3&redirect_uri=http%3A%2F%2Fwww.mbianli%2Fcom%2Fwx%2Frd&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
-            "\t</item>\n" +
-            "\t</Articles>\n" +
-            "\t</xml> ";
+    static final String CONTENT2 ="<xml>\n" +
+            "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
+            "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
+            "<CreateTime>{time}</CreateTime>\n" +
+            "<MsgType><![CDATA[news]]></MsgType>\n" +
+            "<ArticleCount>1</ArticleCount>\n" +
+            "<Articles>\n" +
+            "<item>\n" +
+            "<Title><![CDATA[喵喵生活]]></Title> \n" +
+            "<Description><![CDATA[喵喵生活]]></Description>\n" +
+            "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
+            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx24526189c97e6be3&redirect_uri=http%3A%2F%2Fwww.mbianli%2Fcom%2Fwx%2Frd&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
+            "</item>\n" +
+            "</Articles>\n" +
+            "</xml> ";
 
-    static final String content = "喵喵生活为您连接身边便利，在家动动手指，便利百货为您送货上门。\n" +
+    static final String MESSAGE = "喵喵生活为您连接身边便利，在家动动手指，便利百货为您送货上门。\n" +
             "\n" +
             "配送商品: 便利百货，在便利店能买到的我们都能送；\n" +
             "配送方式: 20元起送, 货到付款, 免运费；\n" +
@@ -93,7 +93,7 @@ public class WXController {
             String event = getEvent(body);
             String eventKey = getEventKey(body);
             LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
-            String response = CONTENT.replace("{content}", content);
+            String response = CONTENT.replace("{content}", MESSAGE);
             response = response.replace("{toUser}",fromUser);
             response = response.replace("{fromUser}",toUser);
             response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
@@ -101,6 +101,7 @@ public class WXController {
         }
         // 用户给发消息
         String content = getContent(body);
+        LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
         if("1001011".equals(content)){
             String response = CONTENT2.replace("{content}", content);
             response = response.replace("{toUser}",fromUser);
