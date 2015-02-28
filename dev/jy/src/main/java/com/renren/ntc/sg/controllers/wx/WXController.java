@@ -30,7 +30,21 @@ public class WXController {
             "<Content><![CDATA[{content}]]></Content>\n" +
             "</xml>";
 
-
+    static final String CONTENT2 ="\t<xml>\n" +
+            "\t<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
+            "\t<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
+            "\t<CreateTime>{time}</CreateTime>\n" +
+            "\t<MsgType><![CDATA[news]]></MsgType>\n" +
+            "\t<ArticleCount>1</ArticleCount>\n" +
+            "\t<Articles>\n" +
+            "\t<item>\n" +
+            "\t<Title><![CDATA[喵喵生活]]></Title> \n" +
+            "\t<Description><![CDATA[喵喵生活]]></Description>\n" +
+            "\t<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
+            "\t<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx24526189c97e6be3&redirect_uri=http%3A%2F%2Fwww.mbianli%2Fcom%2Fwx%2Frd&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
+            "\t</item>\n" +
+            "\t</Articles>\n" +
+            "\t</xml> ";
 
     static final String content = "喵喵生活为您连接身边便利，在家动动手指，便利百货为您送货上门。\n" +
             "\n" +
@@ -59,7 +73,16 @@ public class WXController {
         }
         return "@" + echostr;
     }
+    @Get("rd")
+    @Post("rd")
+    public String rd( Invocation inv) {
 
+        String code =  inv.getParameter("code");
+        String state =  inv.getParameter("state");
+        LoggerUtils.getInstance().log(String.format("code %s, state %s",code ,state ));
+
+        return "@done" ;
+    }
 
 
     private  String parse(String body) {
@@ -76,11 +99,31 @@ public class WXController {
             response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
             return  response;
         }
+        // 用户给发消息
+        String content = getContent(body);
+        if("1001011".equals(content)){
+            String response = CONTENT2.replace("{content}", content);
+            response = response.replace("{toUser}",fromUser);
+            response = response.replace("{fromUser}",toUser);
+            response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+            return  response;
+        }
         String response = CONTENT.replace("{content}", content);
         response = response.replace("{toUser}",fromUser);
         response = response.replace("{fromUser}",toUser);
         response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
         return  response;
+    }
+
+    private String getContent(String body) {
+        String s = "<Content><![CDATA[";
+        String e = "]]></Content>";
+        int start =body.indexOf(s);
+        int end =body.indexOf(e);
+        if (-1 == start || -1 == end){
+            return "" ;
+        }
+        return body.substring( s.length() + start ,end);
     }
 
     private static String getEventKey(String body) {

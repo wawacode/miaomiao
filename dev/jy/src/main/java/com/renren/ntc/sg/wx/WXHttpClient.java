@@ -160,6 +160,14 @@ public class WXHttpClient {
 
     }
 
+    public static void addkf(String access_token){
+        String url = "https://api.weixin.qq.com/customservice/kfaccount/add?access_token={token}";
+        url = url.replace("{token}",access_token);
+        JSONObject  ob = new JSONObject();
+//        ob.put()
+
+    }
+
     public static void writeFile(String strUrl, String fileName) {
         String dir = "d:\\tick\\";
         if(new File(dir + fileName).exists()){
