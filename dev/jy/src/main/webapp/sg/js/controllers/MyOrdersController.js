@@ -24,10 +24,8 @@ angular.module('miaomiao.shop')
         }
 
         $scope.info = {};
-        $scope.info.hasOrder = true;
-        $scope.info.hasAddress = true;
-        $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
 
+        $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
         $scope.addr = {};
         $scope.addressls = $sessionStorage.MMMETA_OrderAddresses || [];
         $scope.orders = $sessionStorage.MMMETA_OrderOrders || [];

@@ -5,7 +5,6 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
     $scope.shop = localStorageService.get('MMMETA_shop') || {};
 
     $scope.info = {};
-    $scope.info.hasNoResults = false;
 
     $scope.performSearch = function (key,$event) {
 

@@ -1,5 +1,4 @@
 <ion-view>
-
     <ion-nav-bar class="bar-dark">
         <ion-nav-back-button class="button-dark button-clear">
             <i class="ion-chevron-left light">&nbsp;返回</i>
@@ -8,7 +7,6 @@
             搜索商品
         </ion-nav-title>
     </ion-nav-bar>
-
     <ion-header-bar class="bar-light" style="text-align: left;top: 44;padding: 0">
         <div id="search-box" class="item-input-inset"
              style="width: 100%;padding: 5px">
@@ -20,19 +18,15 @@
             </div>
             <button class="button-clear" ng-click="performSearch(info.key,$event)">搜索</button>
         </div>
-
     </ion-header-bar>
-
-    <div class="list" ng-show="info.showSearchSuggestion" ng-click="info.showSearchSuggestion = !info.showSearchSuggestion"
+    <div class="list" ng-if="info.showSearchSuggestion" ng-click="info.showSearchSuggestion = !info.showSearchSuggestion"
          style="position: absolute;top: 86;bottom: 29; width: 100%;left: 0;right: 0; background-color: lightgray;z-index: 200;opacity: 0.9">
-        <div class="item" ng-repeat="item in info.search_suggestions"
+        <div class="item" bindonce quick-ng-repeat="item in info.search_suggestions track by item.key"
              ng-click="goToSearchItem(item,$event)" style="border-left: none;border-right: none;padding: 10">
-            <div style="color: #000000;font-size: 14px;">
-                {{item.key}}
+            <div style="color: #000000;font-size: 14px;" bo-text="item.key">
             </div>
         </div>
     </div>
-
     <ion-content padding="true"
                  has-tabs="false"
                  has-header="true"
@@ -40,28 +34,23 @@
                  style="text-align: left;top: 84">
 
         <div class="shop-product-list">
-            <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list">
-                <li ng-repeat="item in searchResultsItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
+            <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list" ng-if="info.hasNoResults == false">
+                <li bindonce quick-ng-repeat="item in searchResultsItems" class="product-item js-product-item"
+                    ng-include src="'/views/sg/templates/productDetail.html'">
                 </li>
-
-                <div class="no-result-display" style="text-align: center" ng-show="info.hasNoResults">
-                    没有结果
-                </div>
-
             </ul>
+            <div class="no-result-display" style="text-align: center" ng-if="info.hasNoResults == true">
+                没有结果
+            </div>
         </div>
-
         </ion-content>
-
     <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
     </div>
-
     <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
         <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
              src="'/views/sg/templates/shoppingCart.html'">
         </div>
     </div>
-
     <ion-footer-bar class="bar-light" style="padding-top: 0;padding-bottom: 0;overflow: hidden;height: 49">
         <div class="footer-container-left base-sidebar-shopping-cart js-shopping-cart" ng-click="showShoppingCart()">
             <span><img src="/images/cart-64.png" class="base-icon-shopping-cart"></span>

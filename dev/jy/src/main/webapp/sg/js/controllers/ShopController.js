@@ -250,6 +250,34 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         }
     });
 
+
+    // for image preview
+    $ionicModal.fromTemplateUrl('/views/sg/templates/productPreview.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+            $scope.previewModal = modal;
+        });
+
+    $scope.openPreviewModal = function() {
+        $scope.previewModal.show();
+    };
+
+    $scope.closePreviewModal = function() {
+        $scope.previewModal.remove();
+    };
+
+    $scope.showImage = function(item) {
+        $scope.imageSrc = item.pic_url;
+        $ionicModal.fromTemplateUrl('/views/sg/templates/productPreview.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+                $scope.previewModal = modal;
+                $scope.openPreviewModal();
+        });
+    }
+
     function fullyUpdateForProductList() {
 
         if (!$scope.categoryls)return;
