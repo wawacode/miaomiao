@@ -35,7 +35,7 @@
 
         <div class="shop-product-list">
             <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list" ng-if="info.hasNoResults == false">
-                <li bindonce quick-ng-repeat="item in searchResultsItems" class="product-item js-product-item"
+                <li bindonce ng-repeat="item in searchResultsItems" class="product-item js-product-item"
                     ng-include src="'/views/sg/templates/productDetail.html'">
                 </li>
             </ul>

@@ -8,7 +8,7 @@
             </div>
         </ul>
         <ul style="margin: 0.0em; padding:0px 9px" class="js-shop-cart-list">
-            <li ng-repeat="item in info.shoppingCartItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
+            <li bindonce ng-repeat="item in info.shoppingCartItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
             </li>
         </ul>
     </div>

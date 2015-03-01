@@ -8,7 +8,6 @@ angular.module('miaomiao.shop')
         $scope.info.address = {};
         $scope.info.newOrderAddress = '';
         $scope.info.newOrderPhone = '';
-        $scope.info.showAddNewAddress = false;
 
         function checkOrders() {
 

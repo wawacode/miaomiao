@@ -31,8 +31,9 @@
                                 ng-class="{'shop-categray-selected': category.selected}">
                                 <div class="shop-categray-item-decorate" ng-if="category.selected"
                                      ng-animate="{show:'animate-show', hide:'animate-hide'}"></div>
-                                <div class="shop-categray-item" style=""
-                                     ng-class="{'shop-categray-item-selected': category.selected}" bo-text="category.name">
+                                <div bo-text="category.name" class="shop-categray-item"
+                                     ng-class="{'shop-categray-item-selected': category.selected}">
+                                    <!--{{category.name}}-->
                                 </div>
                                 <div class="shop-categray-item-edge" ng-if="category.totalCnt">
                                     {{category.totalCnt}}
@@ -51,8 +52,30 @@
                     <div class="shop-product-list" ng-if="currentDisplayItems && currentDisplayItems.length">
                         <ul class="shop-product-categray-list js-shop-product-categray-list list">
                             <li bindonce quick-ng-repeat="item in currentDisplayItems track by item.id" class="product-item js-product-item"
-                                ng-include
-                                src="'/views/sg/templates/productDetail.html'">
+                                <!--ng-include-->
+                                <!--src="'/views/sg/templates/productDetail.html'">-->
+                            <!-- add all src here for performance issue -->
+                            <div class="prod_icon_clickable" ng-click="showImage(item)"></div>
+                            <div class="prod_icon" back-img="{{item.pic_url}}"></div>
+                            <div>
+                                <span class="product-title oneline js-product-item-name" bo-text="item.name"></span>
+                                <div class="prod_info">
+                                    <div class="product-price js-product-item-price">
+                                        <span style="font-weight: normal" bo-text="'¥ '+ item.price/100.0"></span>
+                                    </div>
+                                    <div class="product_stepper">
+                                        <div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)" ng-show="item.count">
+                                            -
+                                        </div>
+                                        <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity" ng-show="item.count">
+                                            {{item.count}}
+                                        </div>
+                                        <div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             </li>
                             <ion-infinite-scroll
                                     ng-if="moreDataCanBeLoaded()"

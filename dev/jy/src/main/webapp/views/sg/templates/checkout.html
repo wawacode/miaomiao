@@ -27,7 +27,7 @@
 
         <div class="mainContainer" style="overflow: scroll">
 
-            <div class="" style="overflow: hidden" ng-show="!info.showAddNewAddress" ng-animate="{show:'animate-show', hide:'animate-hide'}">
+            <div class="" style="overflow: hidden" ng-if="info.showAddNewAddress == false" ng-animate="{show:'animate-show', hide:'animate-hide'}">
                 <div class="addressItem addressDefault addressSelected" ng-click="goToAddressList()">
                     <div class="addressAndBadge" style="">
                         <div class="addressItem-address addressDefault-address"><span
@@ -47,7 +47,7 @@
             </div>
 
             <div class="js-addAddress firstTimeAddAddress"
-                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-show="info.showAddNewAddress" ng-animate="{show:'animate-show', hide:'animate-hide'}">
+                 style="border-bottom: solid 1px lightgray;overflow: hidden" ng-if="info.showAddNewAddress == true" ng-animate="{show:'animate-show', hide:'animate-hide'}">
                 <div class="addNewAddressHint" style="text-shadow:none">
                     您还没有添加收货人信息,请添加
                 </div>
@@ -61,13 +61,12 @@
 
             <div id="shop-product-list" style="padding-bottom: 10px">
                 <ul style="margin: 0.0em; padding:0px 9px">
-                    <li class="product-item js-product-item" ng-repeat="item in shoppingCartItems">
+                    <li class="product-item js-product-item" quick-ng-repeat="item in shoppingCartItems">
                         <div class="prod_icon" back-img="{{item.pic_url}}"></div>
                         <div>
                             <span class="product-title oneline js-product-item-name">{{item.name}}</span>
                                 <span class="product-title oneline" style="color: red"
                                       ng-if="item.message">商品库存不足</span>
-
                             <div class="prod_info">
                                 <div class="product-price js-product-item-price" data-value="$item.price">
                                     <span style="font-weight: normal">¥ {{item.price/100.0}}</span>
