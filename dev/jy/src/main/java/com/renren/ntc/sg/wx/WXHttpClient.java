@@ -2,6 +2,7 @@ package com.renren.ntc.sg.wx;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.util.MD5Utils;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
@@ -169,8 +170,13 @@ public class WXHttpClient {
         String url = "https://api.weixin.qq.com/customservice/kfaccount/add?access_token={token}";
         url = url.replace("{token}",access_token);
         JSONObject  ob = new JSONObject();
-//        ob.put()
-
+        ob.put("kf_account","dev@lizi-inc.com") ;
+        ob.put("nickname","喵喵客服10010") ;
+        ob.put("password", MD5Utils.MD5("pwd2015")) ;
+        System.out.println(ob.toJSONString());
+        byte [] t = WXHttpClient.sendPostRequest(url,ob.toJSONString());
+        String e = new String(t);
+        System.out.println("rec data " + e );
     }
 
     public static void writeFile(String strUrl, String fileName) {
@@ -224,7 +230,8 @@ public class WXHttpClient {
             return ;
         }
         JSONObject ob =(JSONObject) JSONObject.parse(e);
-        createMenu(ob.getString("access_token"));
+        addkf(ob.getString("access_token"));
+//        createMenu(ob.getString("access_token"));
 
          //scene
 //        for (int i =1 ; i <10000 ; i++) {

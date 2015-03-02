@@ -108,14 +108,14 @@ public class WXController {
             return  response;
             }
         }
-        // 用户给发消息
-        String content = getContent(body);
-        LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
-        String response = CONTENT.replace("{message}", MESSAGE);
-        response = response.replace("{toUser}",fromUser);
-        response = response.replace("{fromUser}",toUser);
-        response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
-        return  response;
+//        // 用户给发消息
+//        String content = getContent(body);
+//        LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
+//        String response = CONTENT.replace("{message}", MESSAGE);
+//        response = response.replace("{toUser}",fromUser);
+//        response = response.replace("{fromUser}",toUser);
+//        response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+        return  "@done";
     }
 
     private String getContent(String body) {
