@@ -130,10 +130,15 @@ public class WXHttpClient {
         buttons.add(button);
 
 
+//        JSONObject button2  = new JSONObject();
+//        button2.put("type","view");
+//        button2.put("name","关于喵喵");
+//        button2.put("url","http://www.mbianli.com/sg/about" );
+
         JSONObject button2  = new JSONObject();
-        button2.put("type","view");
+        button2.put("type","click");
         button2.put("name","关于喵喵");
-        button2.put("url","http://www.mbianli.com/sg/about" );
+        button2.put("key","about_miaomiao" );
         buttons.add(button2);
 
 //v2

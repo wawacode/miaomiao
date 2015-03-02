@@ -41,7 +41,7 @@ public class WXController {
 //            "<Title><![CDATA[喵喵生活]]></Title> \n" +
 //            "<Description><![CDATA[喵喵生活]]></Description>\n" +
 //            "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-//            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
+//            "<Url><![CDATA[]]></Url>\n" +
 //            "</item>\n" +
 //            "</Articles>\n" +
 //            "</xml> ";
@@ -55,9 +55,9 @@ public class WXController {
             "<Articles>\n" +
             "<item>\n" +
             "<Title><![CDATA[喵喵生活]]></Title> \n" +
-            "<Description><![CDATA[喵喵生活]]></Description>\n" +
+            "<Description><![CDATA[关于喵喵]]></Description>\n" +
             "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-            "<Url><![CDATA[{message}]]></Url>\n" +
+            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2about&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
             "</item>\n" +
             "</Articles>\n" +
             "</xml> ";
@@ -100,7 +100,7 @@ public class WXController {
             String event = getEvent(body);
             String eventKey = getEventKey(body);
             LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
-            String response = CONTENT.replace("{message}", MESSAGE);
+            String response = CONTENT2.replace("{message}", MESSAGE);
             response = response.replace("{toUser}",fromUser);
             response = response.replace("{fromUser}",toUser);
             response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
