@@ -64,6 +64,11 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                     $scope.categoryls[idx].selected = 1;
                 }
 
+                if($scope.categoryls[idx].name.length == 2){
+                    $scope.categoryls[idx].name = $scope.categoryls[idx].name.charAt(0)
+                            + "  " + $scope.categoryls[idx].name.charAt(1);
+                }
+
                 for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
                     var item = $scope.categoryls[idx].itemls[item_idx];
                     item.count = ShoppingCart.getCountForItem(item);

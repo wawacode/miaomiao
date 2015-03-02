@@ -709,7 +709,6 @@ body {
 .shop-categray {
 
     background-color: rgba(236,236,236,1.0);
-    /*border-right: solid 1px #efefef;*/
     overflow: hidden;
     position: relative;
     width: 100%;
@@ -725,7 +724,7 @@ body {
     text-align: left;
     font-size: 15px;
     color: #6a6a6a;
-    padding: 9px 25px 9px 25px;
+    padding: 9px 10px 9px 20px;
 
 }
 

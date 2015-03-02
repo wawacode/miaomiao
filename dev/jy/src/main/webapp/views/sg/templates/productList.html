@@ -33,7 +33,7 @@
                                 ng-class="{'shop-categray-selected': category.selected}">
                                 <div class="shop-categray-item-decorate" ng-if="category.selected"
                                      ng-animate="{show:'animate-show', hide:'animate-hide'}"></div>
-                                <div bo-text="category.name | insertSpaceForShortName" class="shop-categray-item"
+                                <div bo-text="category.name" class="shop-categray-item"
                                      ng-class="{'shop-categray-item-selected': category.selected}">
                                 </div>
                                 <div class="shop-categray-item-edge" ng-if="category.totalCnt">
@@ -109,25 +109,26 @@
         <div class="row nonPadding">
             <div class="col nonPadding">
                 <div class="row nonPadding" >
-                    <div class="col nonPadding text-center" style="padding-top: 8px;position: relative" ng-click="showShoppingCart()">
-                        <span class="assertive-bg assertive-border light shoppingCartBadge"
-                               ng-if="info.shoppingCartItems && info.shoppingCartItems.length">
+                    <div class="col text-center nonPadding" style="padding-top: 13px;" ng-click="showShoppingCart()">
+
+                        <span style="position: relative">
+                            <span class="assertive-bg assertive-border light shoppingCartBadge"
+                                  ng-if="info.shoppingCartItems && info.shoppingCartItems.length">
                                 {{info.shoppingCartItems | getTotolCount}}
                             </span>
-                        <span style="">
                             <!--<img src="/images/cart-64.png" class="base-icon-shopping-cart">-->
                             <button class="button button-clear button-assertive button-icon"
                                     ng-class="{'ion-ios7-cart': info.cartReadyToShip, 'ion-ios7-cart-outline':!info.cartReadyToShip}">
                             </button>
                         </span>
                     </div>
-                    <div class="col nonPadding text-left" style="padding-top: 4px">
-                        <span class="base-font text-left" style="font-size: 11px">总计:</span> </br>
-                        <span class="base-font text-left assertive" style="font-size: 17px">￥{{info.shoppingCartItems | getTotolPrice}}</span>
+                    <div class="col nonPadding" style="padding-top: 4px;margin-left: 25px">
+                        <p class="text-left" style="font-size: 11px;margin: 0">总计:</p>
+                        <p class="text-left assertive" style="font-size: 17px;margin: 0">￥{{info.shoppingCartItems | getTotolPrice}}</p>
                     </div>
                 </div>
             </div>
-            <div class="col text-center nonPadding" style="padding-right: 14px;padding-left: 14px">
+            <div class="col text-center nonPadding">
                 <button class="button button-assertive button-block shoppingCartHintMessage"
                         ng-class="{'button-outline': !info.cartReadyToShip }"
                         ng-click="checkout()">{{info.checkoutHintMessage}}

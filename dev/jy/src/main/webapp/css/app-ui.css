@@ -27,7 +27,7 @@
 .shoppingCartBadge {
     position: absolute;
     top: 5;
-    right: 15;
+    right: -14;
     border-radius: 9px;
     min-width: 18px;
     font-size: 12px;
@@ -40,7 +40,12 @@
 }
 
 .shoppingCartHintMessage {
-
+    margin-top: 7px !important;
+    margin-right: 14px !important;
+    margin-left: auto !important;
+    margin-bottom: auto !important;
     border-radius: 2px !important;
     font-size: 17px !important;
+    width: 139px !important;
+    height: 37px !important;
 }
