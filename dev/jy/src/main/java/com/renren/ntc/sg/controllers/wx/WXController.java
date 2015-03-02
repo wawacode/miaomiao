@@ -30,21 +30,15 @@ public class WXController {
             "<Content><![CDATA[{message}]]></Content>\n" +
             "</xml>";
 
-//    static final String CONTENT2 ="<xml>\n" +
-//            "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
-//            "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
-//            "<CreateTime>{time}</CreateTime>\n" +
-//            "<MsgType><![CDATA[news]]></MsgType>\n" +
-//            "<ArticleCount>1</ArticleCount>\n" +
-//            "<Articles>\n" +
-//            "<item>\n" +
-//            "<Title><![CDATA[喵喵生活]]></Title> \n" +
-//            "<Description><![CDATA[喵喵生活]]></Description>\n" +
-//            "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-//            "<Url><![CDATA[]]></Url>\n" +
-//            "</item>\n" +
-//            "</Articles>\n" +
-//            "</xml> ";
+
+    static final String DUOKEFU = "<xml>\n" +
+            "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
+            "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
+            "<CreateTime>{time}</CreateTime>\n" +
+            "<MsgType><![CDATA[transfer_customer_service]]></MsgType>\n" +
+            "</xml>" ;
+
+
 
     static final String CONTENT2 ="<xml>\n" +
             "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
@@ -109,13 +103,13 @@ public class WXController {
             }
         }
 //        // 用户给发消息
-//        String content = getContent(body);
-//        LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
-//        String response = CONTENT.replace("{message}", MESSAGE);
-//        response = response.replace("{toUser}",fromUser);
-//        response = response.replace("{fromUser}",toUser);
-//        response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
-        return  "@done";
+        String content = getContent(body);
+        LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
+        String response = DUOKEFU.replace("{message}", MESSAGE);  // 这个其实没用
+        response = response.replace("{toUser}",fromUser);
+        response = response.replace("{fromUser}",toUser);
+        response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+        return  response;
     }
 
     private String getContent(String body) {
