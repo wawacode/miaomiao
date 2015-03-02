@@ -230,10 +230,6 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         $scope.modal.show();
     }
 
-    //Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-//        $scope.modal.remove();
-    });
     // Execute action on hide modal
     $scope.$on('modal.hidden', function() {
 

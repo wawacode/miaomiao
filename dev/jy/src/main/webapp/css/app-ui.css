@@ -22,6 +22,7 @@
     padding: 0;
     overflow: hidden;
     height: 49px;
+    z-index: 500;
 }
 
 .shoppingCartBadge {
@@ -46,6 +47,18 @@
     margin-bottom: auto !important;
     border-radius: 2px !important;
     font-size: 17px !important;
-    width: 139px !important;
+    width: 80% !important;
     height: 37px !important;
+}
+
+.homepageContent.scroll-content{
+    bottom: 0 !important;
+}
+
+.homepageContent.has-footer{
+    padding-bottom:44px !important;
+}
+
+.bar-light.homepageFooterBar{
+    background: rgba(255, 255, 255,0.9) !important;
 }

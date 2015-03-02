@@ -13,20 +13,21 @@
         </ion-nav-title>
     </ion-nav-bar>
 
-    <ion-content padding="false"
-                 has-tabs="false"
+    <ion-content class="homepageContent"
+                 padding="true"
+                 has-tabs="true"
                  has-header="true"
                  scroll="false"
-                 has-bouncing="false" style="bottom: 49; top: 45">
-        <div class="commonProductList" style="overflow: auto">
+                 has-bouncing="false">
+        <div class="commonProductList" ng-if="categoryls && categoryls.length">
             <div class="leftContainer">
                 <ion-content padding="false"
                              scroll="true"
                              has-bouncing="true"
                              scrollbar-y="false"
                              overflow-scroll="false">
-                    <div class="shop-categray-list" style="width: 100%;font-size: 15px" ng-if="categoryls && categoryls.length">
-                        <ul style="margin: 0.0em;padding: 0px;">
+                    <div class="shop-categray-list" style="width: 100%;font-size: 15px">
+                        <ul style="margin: 0;padding-top: 0px; padding-bottom: 50px">
                             <li bindonce quick-ng-repeat="category in categoryls track by category.category_id"
                                 class="shop-categray "
                                 ng-click="selectCategory(category)"
@@ -51,7 +52,7 @@
                              overflow-scroll="false"
                              delegate-handle="productScroll">
                     <div class="shop-product-list" ng-if="currentDisplayItems && currentDisplayItems.length">
-                        <ul class="shop-product-categray-list list">
+                        <ul class="shop-product-categray-list list" style="padding-bottom: 50px">
                             <li bindonce quick-ng-repeat="item in currentDisplayItems track by item.id"
                                 class="product-item js-product-item">
                             <!--ng-include-->
@@ -118,7 +119,7 @@
                             </button>
                         </span>
                     </div>
-                    <div class="col nonPadding" style="padding-top: 4px;margin-left: 25px">
+                    <div class="col nonPadding" style="padding-top: 4px;margin-left: 10px">
                         <p class="text-left" style="font-size: 11px;margin: 0">总计:</p>
                         <p class="text-left assertive" style="font-size: 17px;margin: 0">￥{{info.shoppingCartItems | getTotolPrice}}</p>
                     </div>
