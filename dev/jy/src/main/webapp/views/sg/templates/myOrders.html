@@ -8,11 +8,11 @@
         </ion-nav-title>
     </ion-nav-bar>
     <ion-content padding="false"
-                 has-tabs="true"
+                 has-tabs="false"
                  has-header="true"
                  scroll="false">
-        <div class="mainContainer" style="overflow: scroll">
-            <div class="shop-container" style="overflow: scroll">
+        <div class="mainContainer" style="overflow: auto">
+            <div class="shop-container">
                 <div class="" style="overflow: hidden" ng-if="info.hasAddress == true">
                     <div class="addressItem addressDefault addressSelected" ng-click="goToAddressList()">
                         <div class="addressAndBadge" style="">
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="order-list" style="" ng-show="info.hasOrder == true">
+                <div class="order-list" style="" ng-if="info.hasOrder == true">
                     <div class="order-item" style="" bindonce quick-ng-repeat="order in orders track by order.order_id">
                         <div style="display: inline-block;background-color: #EFF0F4;width: 100%;">
                             <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd hh:mm'}}</div>

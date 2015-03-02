@@ -27,7 +27,7 @@
 
         <div class="mainContainer" style="overflow: scroll">
 
-            <div class="" style="overflow: hidden" ng-if="info.showAddNewAddress == false" ng-animate="{show:'animate-show', hide:'animate-hide'}">
+            <div class="" style="overflow: hidden" ng-if="addressls && addressls.length" ng-animate="{show:'animate-show', hide:'animate-hide'}">
                 <div class="addressItem addressDefault addressSelected" ng-click="goToAddressList()">
                     <div class="addressAndBadge" style="">
                         <div class="addressItem-address addressDefault-address"><span
