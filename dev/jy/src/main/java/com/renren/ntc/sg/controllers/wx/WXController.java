@@ -99,17 +99,18 @@ public class WXController {
         if ("event".equals(mtype)) {
             String event = getEvent(body);
             String eventKey = getEventKey(body);
+            if ("about_miaomiao".equals(eventKey)){
             LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
             String response = CONTENT2.replace("{message}", MESSAGE);
             response = response.replace("{toUser}",fromUser);
             response = response.replace("{fromUser}",toUser);
             response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
             return  response;
+            }
         }
         // 用户给发消息
         String content = getContent(body);
         LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
-
         String response = CONTENT.replace("{message}", MESSAGE);
         response = response.replace("{toUser}",fromUser);
         response = response.replace("{fromUser}",toUser);
