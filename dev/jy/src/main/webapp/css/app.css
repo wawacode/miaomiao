@@ -322,23 +322,9 @@ body {
     position: relative;
 }
 
-.countContainer {
-    display: inline-block;
-}
-
-.countContainer-minus {
-
-}
-
-.countContainer-input {
-}
-
-.countContainer-add {
-
-}
-
-.countChangeActionSet {
-
+.prod_detail_info{
+    position: relative;
+    min-height: 70px
 }
 
 /*colors*/
@@ -586,32 +572,34 @@ body {
 
 
 .product-title {
-
-    font-size: 13;
-    color: #343434;
+    font-size: 12px;
+    color: #6a6a6a;
     font-weight: normal;
 }
 
 .prod_info {
-    position: relative;
+    position: absolute;
+    bottom: 10;
+    right: 0;
+    width: 100%;
     min-height: 40px;
 }
 
 .product-price {
     position: absolute;
     bottom: 0;
-    font-size: 17px;
+    font-size: 14px;
     color: #ef5356;
-    font-weight: bold;
+    font-weight: normal;
     display: inline-block;
     text-align: left;
     float: left;
-    padding-top: 5px;
+    padding-left: 75px;
 }
 
 .product_stepper {
     position: absolute;
-    bottom: 0;
+    bottom: -4;
     right: 0;
     text-align: center;
     display: inline-block;
