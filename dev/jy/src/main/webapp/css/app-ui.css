@@ -1,0 +1,46 @@
+/*commmon css*/
+.nonPadding {
+    padding: 0;
+}
+
+.justify {
+    overflow: hidden;
+    text-align: justify;
+    text-justify: distribute-all-lines;
+}
+
+/* home page - product list*/
+.homepageHeaderBar .buttons-right {
+    right: 14px !important;
+}
+
+.homepageHeaderBar .buttons-left {
+    margin-left: 9px !important;
+}
+
+.homepageFooterBar {
+    padding: 0;
+    overflow: hidden;
+    height: 49px;
+}
+
+.shoppingCartBadge {
+    position: absolute;
+    top: 5;
+    right: 15;
+    border-radius: 9px;
+    min-width: 18px;
+    font-size: 12px;
+    height: 18px;
+    padding: 0;
+    z-index: 100;
+    font-weight: lighter;
+    text-align: center;
+    font-family:sans-serif;
+}
+
+.shoppingCartHintMessage {
+
+    border-radius: 2px !important;
+    font-size: 17px !important;
+}

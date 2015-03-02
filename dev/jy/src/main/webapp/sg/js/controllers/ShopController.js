@@ -63,6 +63,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                 if (idx == 0) {
                     $scope.categoryls[idx].selected = 1;
                 }
+
                 for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
                     var item = $scope.categoryls[idx].itemls[item_idx];
                     item.count = ShoppingCart.getCountForItem(item);

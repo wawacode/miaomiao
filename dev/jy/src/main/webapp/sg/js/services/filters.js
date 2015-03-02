@@ -31,7 +31,9 @@ angular.module('miaomiao.shop').filter('getTotolCount',function () {
         return function(input){
             return input ? input/100 : 20;
         }
+    }).filter('insertSpaceForShortName', function () {
+        return function(input){
+            return input.length == 2 ? input.charAt(0) + "    " + input.charAt(1) : input;
+        }
     });
-
-
 
