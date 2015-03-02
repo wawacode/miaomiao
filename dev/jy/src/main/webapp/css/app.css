@@ -598,11 +598,10 @@ body {
 }
 
 .product-price {
-
     position: absolute;
     bottom: 0;
-    font-size: 13;
-    color: #343434;
+    font-size: 17px;
+    color: #ef5356;
     font-weight: bold;
     display: inline-block;
     text-align: left;
@@ -623,10 +622,9 @@ body {
 .product_stepper_add {
     display: inline-block;
     width: 28px;
-    height: 25px;
+    height: 28px;
     float: left;
-    font-size: 20px;
-    border: solid 1px lightgray;
+    font-size: 25px;
     cursor: pointer;
 }
 
@@ -634,9 +632,8 @@ body {
     display: inline-block;
     width: 28px;
     float: left;
-    height: 25px;
-    font-size: 20px;
-    border: solid 1px lightgray;
+    height: 28px;
+    font-size: 25px;
     border-right: none;
     cursor: pointer;
     vertical-align: middle;
@@ -645,14 +642,13 @@ body {
 .product_stepper_count {
     display: inline-block;
     width: 25px;
-    height: 25px;
+    height: 28px;
     float: left;
-    border: solid 1px lightgray;
     border-right: none;
     vertical-align: middle;
     padding-top: 2px;
-    color: #F54447;
-    font-weight: bold;
+    margin-left: -5px;
+    margin-right: -5px;
 }
 
 .product_stepper_count_input {
@@ -681,7 +677,7 @@ body {
 }
 
 .sidebar-cart-checkout-ready {
-    background-color: #F54447;
+    background-color: #ef5356;
     width: 100%;
     margin: 0em;
     color: white;
@@ -871,8 +867,8 @@ body {
 
 .addressButton {
     color: #ffffff;
-    background-color: #F54447;
-    border: solid 1px #F54447;
+    background-color: #ef5356;
+    border: solid 1px #ef5356;
     border-radius: 2px;
 }
 
@@ -899,12 +895,12 @@ body {
 
 .newAddressButton {
     color: #ffffff;
-    background-color: #F54447;
+    background-color: #ef5356;
     text-shadow: none;
     font-size: 18px;
     display: inline-block;
     padding: 10px 20px;
-    border: solid 1px #F54447;
+    border: solid 1px #ef5356;
     border-radius: 2px;
 }
 
@@ -952,7 +948,7 @@ body {
     overflow: scroll;
     z-index: 200;
     display: none;
-    border-top: solid 2px #F54447;
+    border-top: solid 2px #ef5356;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -1058,7 +1054,7 @@ body {
 
     float: right;
     color: #ffffff;
-    background-color: #F54447;
+    background-color: #ef5356;
     text-shadow: none;
     padding: 2px 10px 2px 10px;
     font-size: 18px;
@@ -1181,7 +1177,7 @@ body {
     position: absolute;
     right: -7px;
     top: -7px;
-    background-color: #F54447;
+    background-color: #ef5356;
     color: #fff;
     cursor: pointer;
     display: inline-block;
