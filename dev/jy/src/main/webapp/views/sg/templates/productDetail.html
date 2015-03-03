@@ -8,13 +8,13 @@
             <span bo-text="'¥'+ item.price/100.0"></span>
         </div>
         <div class="product_stepper">
-            <div class="product_stepper_minus icon assertive ion-ios7-minus-outline"
+            <div class="product_stepper_minus icon baseRedColor ion-ios7-minus-outline"
                  ng-click="removeItem(item)" ng-show="item.count">
             </div>
             <div class="product_stepper_count" ng-show="item.count">
                 {{item.count}}
             </div>
-            <div class="product_stepper_add icon assertive ion-ios7-plus" ng-click="selectItem(item)">
+            <div class="product_stepper_add icon baseRedColor ion-ios7-plus" ng-click="selectItem(item)">
             </div>
         </div>
     </div>

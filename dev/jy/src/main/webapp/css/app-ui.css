@@ -9,7 +9,19 @@
     text-justify: distribute-all-lines;
 }
 
+.baseRedColor{
+    color: #ef5356;
+}
+
 /* home page - product list*/
+
+.homepageContent{
+    position: absolute;
+    bottom: 49;
+    top: 49;
+    z-index: 9;
+}
+
 .homepageHeaderBar .buttons-right {
     right: 14px !important;
 }
@@ -18,11 +30,27 @@
     margin-left: 9px !important;
 }
 
+.homepageHeaderBar:after {
+    content: "";
+    position: absolute;
+    left: -1;
+    right: -1;
+    bottom: -5px;
+    width: 100%;
+    height: 5px;
+
+    background:-moz-linear-gradient(top,rgba(236,236,236,0.3),rgba(255,255,255,0.7));/*Mozilla*/
+    background:-webkit-gradient(linear,center top,center bottom,from(rgba(236,236,236,0.3)),to(rgba(255,255,255,0.7)));/*Old gradient for webkit*/
+    background:-webkit-linear-gradient(top,rgba(236,236,236,0.3),rgba(255,255,255,0.7));/*new gradient for Webkit*/
+    background:-o-linear-gradient(top,rgba(236,236,236,0.3),rgba(255,255,255,0.7)); /*Opera11*/
+}
+
 .homepageFooterBar {
     padding: 0;
     overflow: hidden;
     height: 49px;
     z-index: 500;
+    border-top: solid 1px lightgray;
 }
 
 .shoppingCartBadge {
@@ -62,3 +90,16 @@
 .bar-light.homepageFooterBar{
     background: rgba(255, 255, 255,0.9) !important;
 }
+
+.homepageHeaderBarGradient{
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    top: 40;
+    z-index: 100;
+    background:-moz-linear-gradient(top,#ECECEC,#F6F6F6);/*Mozilla*/
+    background:-webkit-gradient(linear,center top,center bottom,from(#ECECEC),to(#F6F6F6));/*Old gradient for webkit*/
+    background:-webkit-linear-gradient(top,#ECECEC,#F6F6F6);/*new gradient for Webkit*/
+    background:-o-linear-gradient(top,#ECECEC,#F6F6F6); /*Opera11*/
+}
+

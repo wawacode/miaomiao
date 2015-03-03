@@ -1,7 +1,7 @@
 
 @font-face {
     font-family: 'w3';
-    src: url('/fonts/Hiragino-Sans.ttf');
+    src: url('/fonts/Hiragino-Sans.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -75,9 +75,7 @@ body {
     bottom: 49px;
 }
 
-.homepageContent{
-    bottom: 49; top: 45;
-}
+
 
 .commonProductList{
     overflow: auto;
@@ -91,7 +89,7 @@ body {
     height: 100%;
     font-size: 21px;
     overflow: hidden;
-    background-color: rgba(236,236,236,1.0);
+    background-color: rgba(236,236,236,0.3);
 }
 
 .leftContent {
@@ -325,7 +323,7 @@ body {
 
 .product-item {
     display: list-item;
-    border-bottom: 1px solid #E0E3EF;
+    border-bottom: 1px solid #eaeaea;
     padding: 9px 0px 9px 0px;
     overflow: hidden;
     position: relative;

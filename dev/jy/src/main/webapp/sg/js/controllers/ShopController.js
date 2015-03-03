@@ -364,8 +364,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         checkShopStatus();
 
         updateShoppingCart();
-        if ($scope.categoryls) {
-        }
+
         fullyUpdateForProductList();
 
         if(!$scope.currentDisplayItems || !$scope.currentDisplayItems.length){
