@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.renren.ntc.sg.service.LoggerUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -72,12 +73,13 @@ public class OrderConsoleController extends BasicConsoleController{
     									 @Param("endDate") String endDate,
     									 @Param("shop_id") long shop_id){
 		Shop shop = isExistShop(shop_id);
+
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
         List<Order> orders = new ArrayList<Order>();
 		if(StringUtils.isBlank(beginDate) && StringUtils.isBlank(endDate)){
-			orders = ordersDAO.getOrder2Print(shop_id, SUtils.generOrderTableName(shop.getId()));
+			orders = ordersDAO.getFinalOrder(shop_id, SUtils.generOrderTableName(shop.getId()));
 		}else {
 			if(StringUtils.isBlank(beginDate) || StringUtils.isBlank(endDate)){
 				return "@json:"+Constants.PRERROR.replace("{msg}", "搜索订单开始或者结束日期为空");
@@ -91,6 +93,7 @@ public class OrderConsoleController extends BasicConsoleController{
 			}
 			orders = ordersDAO.getOrder(beginDate, endDate, SUtils.generOrderTableName(shop.getId()));
 		}
+        LoggerUtils.getInstance().log(String.format("get items from table  %s  shop_id %d  " ,SUtils.generTableName(shop.getId()), shop.getId()));
 		int itemCount = itemsDAO.getCountOfItemByShopId(SUtils.generTableName(shop.getId()), shop.getId());
 		List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
 		int catCount = categoryls.size();
