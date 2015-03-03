@@ -14,6 +14,7 @@ import com.renren.ntc.sg.biz.dao.CatStaffDAO;
 import com.renren.ntc.sg.biz.dao.RegistUserDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.RegistUserService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
@@ -111,6 +112,7 @@ public class LoginController extends BasicConsoleController {
             Catstaff c = catstaffDao.getCatStaff(phone, pwd);
             if (null != c) {
                 if(ifkf(c)){
+                    LoggerUtils.getInstance().log( String.format("kf  %s logining " ,c.getPhone()));
                     List<Shop> shops = shopDAO.getAllShopsByAudit(1);
                     CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER,
                             SUtils.wrapper(SUtils.getStaffKey(c.getId())));
