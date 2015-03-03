@@ -134,6 +134,14 @@ angular.module('miaomiao.shop')
             })
         }
 
+        $scope.switchToAddressList = function($event){
+
+            $event.target.blur();
+            $event.stopPropagation();
+
+            $state.go('userAddressList',null,{reload:true});
+        }
+
         $scope.goToShopOrFindShop = function(){
 
             var lastShop = localStorageService.get('MMMETA_shop');

@@ -9,16 +9,17 @@
     text-justify: distribute-all-lines;
 }
 
-.baseRedColor{
+.baseRedColor {
     color: #ef5356;
 }
 
-.noBorderBottonLi{
+.noBorderBottonLi {
     border-bottom: none;
 }
+
 /* home page - product list*/
 
-.homepageContent{
+.homepageContent {
     position: absolute;
     bottom: 49;
     top: 49;
@@ -33,7 +34,7 @@
     margin-left: 9px !important;
 }
 
-.headerBarWithShadow:after{
+.headerBarWithShadow:after {
     content: "";
     position: absolute;
     left: -1;
@@ -42,13 +43,13 @@
     width: 100%;
     height: 5px;
 
-    background:-moz-linear-gradient(top,rgba(236,236,236,0.3),rgba(255,255,255,0.7));/*Mozilla*/
-    background:-webkit-gradient(linear,center top,center bottom,from(rgba(236,236,236,0.3)),to(rgba(255,255,255,0.7)));/*Old gradient for webkit*/
-    background:-webkit-linear-gradient(top,rgba(236,236,236,0.3),rgba(255,255,255,0.7));/*new gradient for Webkit*/
-    background:-o-linear-gradient(top,rgba(236,236,236,0.3),rgba(255,255,255,0.7)); /*Opera11*/
+    background: -moz-linear-gradient(top, rgba(236, 236, 236, 0.3), rgba(255, 255, 255, 0.7)); /*Mozilla*/
+    background: -webkit-gradient(linear, center top, center bottom, from(rgba(236, 236, 236, 0.3)), to(rgba(255, 255, 255, 0.7))); /*Old gradient for webkit*/
+    background: -webkit-linear-gradient(top, rgba(236, 236, 236, 0.3), rgba(255, 255, 255, 0.7)); /*new gradient for Webkit*/
+    background: -o-linear-gradient(top, rgba(236, 236, 236, 0.3), rgba(255, 255, 255, 0.7)); /*Opera11*/
 }
 
-.addressListBar:after{
+.addressListBar:after, .orderHeaderbar:after {
     content: "";
     position: absolute;
     left: -1;
@@ -57,13 +58,13 @@
     width: 100%;
     height: 5px;
 
-    background:-moz-linear-gradient(top,rgba(236,236,236,1.0),rgba(236,236,236,0.3));/*Mozilla*/
-    background:-webkit-gradient(linear,center top,center bottom,from(rgba(236,236,236,1.0)),to(rgba(236,236,236,0.3)));/*Old gradient for webkit*/
-    background:-webkit-linear-gradient(top,rgba(226,226,226,1.0),rgba(236,236,236,0.3));/*new gradient for Webkit*/
-    background:-o-linear-gradient(top,rgba(236,236,236,1.0),rgba(236,236,236,0.3)); /*Opera11*/
+    background: -moz-linear-gradient(top, rgba(236, 236, 236, 1.0), rgba(236, 236, 236, 0.3)); /*Mozilla*/
+    background: -webkit-gradient(linear, center top, center bottom, from(rgba(236, 236, 236, 1.0)), to(rgba(236, 236, 236, 0.3))); /*Old gradient for webkit*/
+    background: -webkit-linear-gradient(top, rgba(226, 226, 226, 1.0), rgba(236, 236, 236, 0.3)); /*new gradient for Webkit*/
+    background: -o-linear-gradient(top, rgba(236, 236, 236, 1.0), rgba(236, 236, 236, 0.3)); /*Opera11*/
 }
 
-.contentWithHeaderBarShadow{
+.contentWithHeaderBarShadow {
     top: 49;
 }
 
@@ -87,7 +88,7 @@
     z-index: 100;
     font-weight: lighter;
     text-align: center;
-    font-family:sans-serif;
+    font-family: sans-serif;
 }
 
 .shoppingCartHintMessage {
@@ -101,35 +102,71 @@
     height: 37px !important;
 }
 
-.homepageContent.scroll-content{
+.homepageContent.scroll-content {
     bottom: 0 !important;
 }
 
-.homepageContent.has-footer{
-    padding-bottom:44px !important;
+.homepageContent.has-footer {
+    padding-bottom: 44px !important;
 }
 
-.bar-light.homepageFooterBar{
-    background: rgba(255, 255, 255,0.9) !important;
+.bar-light.homepageFooterBar {
+    background: rgba(255, 255, 255, 0.9) !important;
 }
 
 /* checkout page*/
-.checkoutFooterBar{
-    padding:0;overflow: hidden;height: 49
+.checkoutFooterBar {
+    padding: 0;
+    overflow: hidden;
+    height: 49
 }
 
-.checkoutBasePadding{
+.checkoutBasePadding {
     padding: 10px 10px 10px 20px;
 }
 
-
 /* address list*/
-.addressList{
+.addressList {
     background-color: #ededed;
 }
 
-.addressListHeader{
+.addressListHeader {
 
     background-color: #EAEAEA;
     padding: 5px 5px 5px 20px;
+}
+
+/* order list*/
+.noOrderHint {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: 35%;
+    width: 100%;
+    height: 65%;
+    display: inline-block;
+    text-align: center;
+    font-family: "Hiragino Sans GB", "w3", "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;;
+}
+
+.noOrderImageHint {
+    padding-top: 20px;
+    display: inline-block;
+    width: 175px;
+    height: 175px;
+    background-image: url('/images/cat_grey.png');
+    background-size: contain
+}
+
+.noOrderGotoShop {
+    display: inline-block;
+    width: 134px;
+    height: auto;
+    font-size: 17px;
+    text-align: center;
+    padding: 10px 10px 10px 10px;
+    margin-top: 10px;
+    background-color: #ef5356;
+    color: #ffffff;
+    border-radius: 2px;
 }

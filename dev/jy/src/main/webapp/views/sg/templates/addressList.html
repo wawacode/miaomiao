@@ -19,7 +19,7 @@
                  class="addressList">
 
         <div class="list" ng-if="addressls != undefined">
-            <div class="addressListHeader">
+            <div class="addressListHeader" ng-if="addressls && addressls.length">
                 常用地址
             </div>
             <div class="addressItem addressCandidate item item-icon-right"
