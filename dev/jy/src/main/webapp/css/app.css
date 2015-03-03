@@ -789,16 +789,16 @@ body {
     padding-left: 20px;
 }
 
-.addressSelected:before {
-    content: "";
-    position: absolute;
-    width: 5px;
-    height: 100%;
-    left: 0;
-    top: 0;
-    color: #ef5356;
-    background-color: #ef5356;
-}
+/*.addressSelected:before {*/
+    /*content: "";*/
+    /*position: absolute;*/
+    /*width: 5px;*/
+    /*height: 100%;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*color: #ef5356;*/
+    /*background-color: #ef5356;*/
+/*}*/
 
 .addressUnselected {
     background-color: #ffffff;

@@ -14,36 +14,44 @@
 
     <ion-content padding="false"
                  has-tabs="false"
+                 scroll="true"
                  has-header="false">
 
-        <div class="" style="overflow: hidden;">
-            <div class="">
-                <div class="addressListSelection">
-                    <div class="addressItem addressCandidate" ng-class="{'addressSelected': addr.isDefault ,'addressUnselected':  !addr.isDefault}"
-                         ng-repeat="addr in addressls"
-                            ng-click="setDefaultAddress(addr)">
+        <div class="list">
+            <div class="item-divider">
+                常用地址
+            </div>
+            <div class="addressItem addressCandidate item item-icon-right" ng-class="{'addressSelected': addr.isDefault ,'addressUnselected':  !addr.isDefault}"
+                 bindonce
+                 quick-ng-repeat="addr in addressls"
+                 ng-click="setDefaultAddress(addr)">
 
-                        <div class="addressAndBadge" style="">
-                            <div class="addressItem-address"><span
-                                    class="addressTitle">收货地址:</span><span
-                                    class="addressAddrValue">{{addr.address}}</span>
-                            </div>
-                            <div class="addressItem-phone"><span
-                                    class="addressTitle">联系电话:</span><span
-                                    class="addressPhoneValue">{{addr.phone}}</span>
-                            </div>
-                        </div>
-                        <div class="addressItem-bage">
-                            <div class="swithDefaultAddress">
-                                <span><img src="/images/check-64.png" class="base-icon-checked"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center;padding-top: 30px;display: inline-block;width: 100%;" ng-show="addressls">
-                        <div class="addressButton useNewAddress" ng-click="goToAddNewAddress()">使用其他地址</div>
-                    </div>
+                <div class="addressItem-address"><span
+                        class="addressTitle">收货地址:</span><span
+                        class="addressAddrValue">{{addr.address}}</span>
                 </div>
+                <div class="addressItem-phone"><span
+                        class="addressTitle">联系电话:</span><span
+                        class="addressPhoneValue">{{addr.phone}}</span>
+                </div>
+
+                <a class="icon balanced " ng-class="{'ion-ios7-checkmark':addr.isDefault,'ion-ios7-circle':!addr.isDefault}" style="right: 20px"></a>
+            </div>
+            <div class="item-divider">
+                使用其他地址
+            </div>
+
+            <div class="" style="padding-left: ">
+                <input class="addressInput"  style="border-bottom: solid 1px #eaeaea;"
+                       type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress"
+                       required>
+                <input class="addressInput"
+                       type="number" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"
+                       required style="margin-top: 10px">
+            </div>
+
+            <div style="text-align: center;padding-top: 30px;display: inline-block;width: 100%;" ng-show="addressls">
+                <div class="addressButton useNewAddress" ng-click="goToAddNewAddress()">使用其他地址</div>
             </div>
         </div>
 
