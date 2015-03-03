@@ -58,6 +58,17 @@
 
         var categorys = [], category_summary = [], inLoadingMoreProcess = false;
 
+        //TODO: performance is not good
+        Array.prototype.unique = function (){
+            var r = new Array();
+            o:for(var i = 0, n = this.length; i < n; i++){
+                for(var x = 0, y = r.length; x < y; x++){
+                    if(r[x]==this[i]) continue o;}
+                r[r.length] = this[i];
+            }
+            return r;
+        };
+
         return {
 
             initCategorysWithData: function (cates) {
@@ -86,15 +97,7 @@
             },
 
             removeDuplicateItems: function (source) {
-                var arr = {};
-                for (var i = 0; i < source.length; i++)
-                    arr[source[i]['id']] = source[i];
-
-                var result = new Array();
-                for (var key in arr)
-                    result.push(arr[key]);
-
-                return result;
+                return source.unique();
             },
 
             setCanLoadMoreFlagForIndex: function (index, canLoadMore) {
