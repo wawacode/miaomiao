@@ -48,6 +48,21 @@
     background:-o-linear-gradient(top,rgba(236,236,236,0.3),rgba(255,255,255,0.7)); /*Opera11*/
 }
 
+.addressListBar:after{
+    content: "";
+    position: absolute;
+    left: -1;
+    right: -1;
+    bottom: -5px;
+    width: 100%;
+    height: 5px;
+
+    background:-moz-linear-gradient(top,rgba(236,236,236,1.0),rgba(236,236,236,0.3));/*Mozilla*/
+    background:-webkit-gradient(linear,center top,center bottom,from(rgba(236,236,236,1.0)),to(rgba(236,236,236,0.3)));/*Old gradient for webkit*/
+    background:-webkit-linear-gradient(top,rgba(226,226,226,1.0),rgba(236,236,236,0.3));/*new gradient for Webkit*/
+    background:-o-linear-gradient(top,rgba(236,236,236,1.0),rgba(236,236,236,0.3)); /*Opera11*/
+}
+
 .contentWithHeaderBarShadow{
     top: 49;
 }
@@ -110,5 +125,11 @@
 
 /* address list*/
 .addressList{
-    background-color: #eaeaea;
+    background-color: #ededed;
+}
+
+.addressListHeader{
+
+    background-color: #EAEAEA;
+    padding: 5px 5px 5px 20px;
 }

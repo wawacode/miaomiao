@@ -40,12 +40,10 @@
     <script src="/sg/js/controllers/SearchController.js"></script>
     <script src="/sg/js/controllers/CheckoutController.js"></script>
     <script src="/sg/js/controllers/AddressListController.js"></script>
-    <script src="/sg/js/controllers/AddAddressController.js"></script>
     <script src="/sg/js/controllers/ShowProductDetailController.js"></script>
     <script src="/sg/js/controllers/MyOrdersController.js"></script>
     <script src="/sg/js/controllers/ShoppingCartController.js"></script>
     <script src="/sg/js/controllers/OrderSuccessCtroller.js"></script>
-    <script src="/sg/js/controllers/UserAddAddressController.js"></script>
     <script src="/sg/js/controllers/UserAddressListController.js"></script>
 
 </head>

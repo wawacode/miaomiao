@@ -1,6 +1,6 @@
 <ion-view>
 
-    <ion-nav-bar class="bar-light headerBarWithShadow">
+    <ion-nav-bar class="bar-light addressListBar">
 
         <ion-nav-back-button class="button-dark button-clear">
             <i class="ion-chevron-left dark"></i>
@@ -18,11 +18,12 @@
                  has-header="false"
                  class="addressList">
 
-        <div class="list">
-            <div class="item-divider">
+        <div class="list" ng-if="addressls != undefined">
+            <div class="addressListHeader">
                 常用地址
             </div>
-            <div class="addressItem addressCandidate item item-icon-right" ng-class="{'addressSelected': addr.isDefault ,'addressUnselected':  !addr.isDefault}"
+            <div class="addressItem addressCandidate item item-icon-right"
+                 ng-class="{'addressSelected': addr.isDefault ,'addressUnselected':  !addr.isDefault}"
                  bindonce
                  quick-ng-repeat="addr in addressls"
                  ng-click="setDefaultAddress(addr)">
@@ -36,26 +37,26 @@
                         class="addressPhoneValue">{{addr.phone}}</span>
                 </div>
 
-                <a class="icon balanced " ng-class="{'ion-ios7-checkmark':addr.isDefault,'ion-ios7-circle':!addr.isDefault}" style="right: 20px"></a>
+                <a class="icon balanced" ng-class="{'ion-ios7-checkmark':addr.isDefault,'ion-ios7-circle-outline':!addr.isDefault}"
+                   style="right: 20px"></a>
             </div>
-            <div class="item-divider">
+            <div class="addressListHeader">
                 使用其他地址
             </div>
 
             <div class="item" style="padding-left: 20px">
                 <input class="addressInput"  style="border-bottom: solid 1px #eaeaea;"
-                       type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress"
+                       type="text" placeholder="收货地址:" value="" ng-model="newAddress.address"
                        required>
                 <input class="addressInput"
-                       type="number" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"
+                       type="number" placeholder="联系电话:" value="" ng-model="newAddress.phone"
                        required style="margin-top: 10px">
             </div>
 
-
         </div>
 
-        <div style="text-align: center;padding-top: 30px;display: inline-block;width: 100%;" ng-show="addressls">
-            <div class="addressButton useNewAddress" ng-click="goToAddNewAddress()">使用其他地址</div>
+        <div style="position: absolute; bottom: 25px;left: 20;right: 20" ng-if="addressls != undefined">
+            <button class="button button-block button-assertive"  style="height: 40px" ng-click="addNewAddressConfirm()">确定</button>
         </div>
 
     </ion-content>
