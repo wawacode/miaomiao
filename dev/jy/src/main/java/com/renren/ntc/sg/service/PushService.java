@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
+import java.util.List;
 
 
 @Service
@@ -83,10 +84,7 @@ public class PushService {
 		unicast.setPredefinedKeyValue("after_open", "go_app");
 		unicast.setPredefinedKeyValue("display_type", "notification");
 		// TODO Set 'production_mode' to 'false' if it's a test device. 
-		// For how to register a test device, please see the developer doc.
 		unicast.setPredefinedKeyValue("production_mode", "true");
-		// Set customized fields
-//		unicast.setExtraField("test", "helloworld");
 		unicast.send();
 	}
 
@@ -150,13 +148,15 @@ public class PushService {
             String message = "您有新订单了 ," + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
                     " 总额：" +  p ;
             if (shop != null) {
-                CatStaffCommit catcommit = catStaffCommitDao.getbyShopid(shop.getId());
-                PushToken pushToken = pushTokenDao.getPushToken(catcommit.getPhone());
-                if(pushToken ==  null){
+                List<CatStaffCommit> catcommitls = catStaffCommitDao.getbyShopid(shop.getId());
+                for (CatStaffCommit catcommit : catcommitls ){
+                  PushToken pushToken = pushTokenDao.getPushToken(catcommit.getPhone());
+                  if(pushToken ==  null){
                     LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
                     return ;
+                  }
+                  send(pushToken.getOwner_phone(), message);
                 }
-                send(pushToken.getOwner_phone(), message);
             }
         } catch (Throwable e) {
             e.printStackTrace();
@@ -340,7 +340,7 @@ public class PushService {
 			 * demo.sendAndroidGroupcast();
 			 * demo.sendAndroidCustomizedcast();
 			 * demo.sendAndroidFilecast();
-			 * 
+			 *
 			 * demo.sendIOSBroadcast();
 			 * demo.sendIOSUnicast();
 			 * demo.sendIOSGroupcast();
@@ -351,7 +351,5 @@ public class PushService {
 			ex.printStackTrace();
 		}
 	}
-
-
 
 }

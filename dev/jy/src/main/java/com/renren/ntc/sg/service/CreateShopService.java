@@ -8,7 +8,6 @@ import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.util.calendar.BaseCalendar;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
