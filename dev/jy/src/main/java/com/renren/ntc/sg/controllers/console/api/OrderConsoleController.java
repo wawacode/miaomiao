@@ -91,7 +91,7 @@ public class OrderConsoleController extends BasicConsoleController{
 			}
 			orders = ordersDAO.getOrder(beginDate, endDate, SUtils.generOrderTableName(shop.getId()));
 		}
-		int itemCount = itemsDAO.getCountOfItemByShopId(SUtils.generOrderTableName(shop.getId()), shop.getId());
+		int itemCount = itemsDAO.getCountOfItemByShopId(SUtils.generTableName(shop.getId()), shop.getId());
 		List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
 		int catCount = categoryls.size();
 		int orderTotalPrice=0;
