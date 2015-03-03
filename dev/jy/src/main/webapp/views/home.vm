@@ -280,8 +280,12 @@
 
                     <div class="panel-body text-center">
                         <h4 class="text-center"> <i class="icon-android"></i> 喵喵商家版Android下载 </h4>
-                        <div> <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.miaomiao.bconsole">点此下载</a>  或者扫描下方二维码</div>
-                        <img class="media-object" style="max-width: 200px;margin-top: 10px" src="/images/miaomiao-console-android.png"/>
+                        <p>
+                            <a id="copy-button" data-clipboard-text="http://www.mbianli.com/www/build/mmconsole.apk"
+                               title="点此查看链接" style="word-wrap: break-word;">点此查看链接</a>
+                            或者微信扫描下方二维码,选择在浏览器中打开
+                        </p>
+                        <img class="media-object" style="max-width: 200px;margin-top: 10px" src="/images/mm-console-android-apk.png"/>
                     </div>
 
                 </div>
@@ -293,116 +297,116 @@
 
 </section>
 <!--<section class="about" id="clients">-->
-    <!--<div class="dmask">-->
+<!--<div class="dmask">-->
 
-        <!--<div class="our-clients">-->
-            <!--<div class="container">-->
-                <!--<div class="row">-->
+<!--<div class="our-clients">-->
+<!--<div class="container">-->
+<!--<div class="row">-->
 
-                    <!--<div class="col-md-12">-->
-                        <!--<h3 class="text-center">合作商家展示</h3>-->
-                    <!--</div>-->
+<!--<div class="col-md-12">-->
+<!--<h3 class="text-center">合作商家展示</h3>-->
+<!--</div>-->
 
-                    <!--<div class="client" style="background-position: 50% 27px;">-->
-                        <!--<div class="client-logo">-->
-                            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                                <!--&lt;!&ndash; Testimonials Widget Start &ndash;&gt;-->
-                                <!--<div class="row ">-->
-                                    <!--<div class="testimonials widget">-->
-                                        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                                            <!--<div class="testimonials-title">-->
+<!--<div class="client" style="background-position: 50% 27px;">-->
+<!--<div class="client-logo">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+<!--&lt;!&ndash; Testimonials Widget Start &ndash;&gt;-->
+<!--<div class="row ">-->
+<!--<div class="testimonials widget">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+<!--<div class="testimonials-title">-->
 
-                                                <!--<div class="carousel-controls pull-right">-->
-                                                    <!--<a data-slide="prev" href="#testimonials-carousel"-->
-                                                       <!--class="prev btn-mini"><i class="icon-angle-left"></i></a>-->
-                                                    <!--<a data-slide="next" href="#testimonials-carousel"-->
-                                                       <!--class="next btn-mini"><i class="icon-angle-right"></i></a>-->
+<!--<div class="carousel-controls pull-right">-->
+<!--<a data-slide="prev" href="#testimonials-carousel"-->
+<!--class="prev btn-mini"><i class="icon-angle-left"></i></a>-->
+<!--<a data-slide="next" href="#testimonials-carousel"-->
+<!--class="next btn-mini"><i class="icon-angle-right"></i></a>-->
 
-                                                    <!--<div class="clearfix"></div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--<div class="clearfix"></div>-->
-                                        <!--<div class="testimonials-carousel slide animate_afr d5 animate_start"-->
-                                             <!--id="testimonials-carousel">-->
-                                            <!--<div class="carousel-inner">-->
-                                                <!--<div class="item">-->
-                                                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                                                        <!--<div class="testimonial item">-->
+<!--<div class="clearfix"></div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="clearfix"></div>-->
+<!--<div class="testimonials-carousel slide animate_afr d5 animate_start"-->
+<!--id="testimonials-carousel">-->
+<!--<div class="carousel-inner">-->
+<!--<div class="item">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+<!--<div class="testimonial item">-->
 
-                                                            <!--<div class="author">-->
+<!--<div class="author">-->
 
-                                                                <!--<div class="">-->
-                                                                    <!--<span class="icon-stack icon-4x">-->
-                                                                        <!--<i class="icon-circle icon-stack-base"></i>-->
-                                                                        <!--<i class="icon-home icon-light"></i>-->
-                                                                    <!--</span>-->
-                                                                    <!--乐邻便利店-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
+<!--<div class="">-->
+<!--<span class="icon-stack icon-4x">-->
+<!--<i class="icon-circle icon-stack-base"></i>-->
+<!--<i class="icon-home icon-light"></i>-->
+<!--</span>-->
+<!--乐邻便利店-->
+<!--</div>-->
+<!--</div>-->
 
-                                                            <!--<p style="color: #ffffff;font-size: 18px">-->
-                                                                <!--地址: 晨光家园西门 </br>-->
-                                                                <!--服务区域：晨光家园，公园1872周边2公里-->
-                                                            <!--</p>-->
+<!--<p style="color: #ffffff;font-size: 18px">-->
+<!--地址: 晨光家园西门 </br>-->
+<!--服务区域：晨光家园，公园1872周边2公里-->
+<!--</p>-->
 
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div class="item active">-->
-                                                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                                                        <!--<div class="testimonial item">-->
-                                                            <!--<div class="author">-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="item active">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+<!--<div class="testimonial item">-->
+<!--<div class="author">-->
 
-                                                                <!--<div class="">-->
-                                                                    <!--<span class="icon-stack icon-2x">-->
-                                                                        <!--<i class="icon-circle icon-stack-base"></i>-->
-                                                                        <!--<i class="icon-home icon-light"></i>-->
-                                                                        <!--</span>-->
-                                                                    <!--J玛特便民超市-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
+<!--<div class="">-->
+<!--<span class="icon-stack icon-2x">-->
+<!--<i class="icon-circle icon-stack-base"></i>-->
+<!--<i class="icon-home icon-light"></i>-->
+<!--</span>-->
+<!--J玛特便民超市-->
+<!--</div>-->
+<!--</div>-->
 
-                                                            <!--<p style="color: #ffffff;font-size: 18px">-->
-                                                                <!--地址: 宝星园小区 </br>-->
-                                                                <!--服务区域：宝星园小区-->
-                                                            <!--</p>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div class="item">-->
-                                                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                                                        <!--<div class="testimonial item">-->
-                                                            <!--<div class="author">-->
+<!--<p style="color: #ffffff;font-size: 18px">-->
+<!--地址: 宝星园小区 </br>-->
+<!--服务区域：宝星园小区-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="item">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+<!--<div class="testimonial item">-->
+<!--<div class="author">-->
 
-                                                                <!--<div class="">-->
-                                                                    <!--<span class="icon-stack icon-2x">-->
-                                                                        <!--<i class="icon-circle icon-stack-base"></i>-->
-                                                                        <!--<i class="icon-home icon-light"></i>-->
-                                                                        <!--</span>-->
-                                                                    <!--利泰便利-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
+<!--<div class="">-->
+<!--<span class="icon-stack icon-2x">-->
+<!--<i class="icon-circle icon-stack-base"></i>-->
+<!--<i class="icon-home icon-light"></i>-->
+<!--</span>-->
+<!--利泰便利-->
+<!--</div>-->
+<!--</div>-->
 
-                                                            <!--<p style="color: #ffffff;font-size: 18px">-->
-                                                                <!--地址: 湖中园312号楼105 </br>-->
-                                                                <!--服务区域：湖中园312号楼105-->
-                                                            <!--</p>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+<!--<p style="color: #ffffff;font-size: 18px">-->
+<!--地址: 湖中园312号楼105 </br>-->
+<!--服务区域：湖中园312号楼105-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
-    <!--</div>-->
+<!--</div>-->
 <!--</section>-->
 
 <section class="contact" id="contact">
@@ -510,5 +514,12 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="/js/jquery/dist/jquery.min.js"></script>
 <script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+
+    $("#copy-button").click(function(){
+        $("#copy-button").text($("#copy-button").data('clipboard-text'));
+    })
+
+</script>
 </body>
 </html>
