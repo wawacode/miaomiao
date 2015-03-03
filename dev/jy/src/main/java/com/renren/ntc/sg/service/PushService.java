@@ -2,10 +2,7 @@ package com.renren.ntc.sg.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
-import com.renren.ntc.sg.biz.dao.AddressDAO;
-import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
-import com.renren.ntc.sg.biz.dao.OrdersDAO;
-import com.renren.ntc.sg.biz.dao.PushTokenDAO;
+import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.umeng.push.android.*;
 import com.renren.ntc.sg.umeng.push.ios.IOSUnicast;
@@ -31,6 +28,9 @@ public class PushService {
 
     @Autowired
     public AddressDAO addressDAO;
+
+    @Autowired
+    public CatStaffDAO catStaffDao;
 
     @Autowired
     public CatStaffCommitDAO catStaffCommitDao ;
@@ -162,6 +162,34 @@ public class PushService {
             e.printStackTrace();
         }
     }
+    public void send2kf(String order_id, Shop shop) {
+        try {
+            Order value = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
+            String v = null;
+            String url;
+            String response = "用户下单";
+            long adr_id = value.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            float p = (float) value.getPrice() / 100;
+            String message = "您有新订单了 ," + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
+                    " 总额：" +  p ;
+            if (shop != null) {
+                List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
+                for (Catstaff  catstaff : catstaffls ){
+                    PushToken pushToken = pushTokenDao.getPushToken(catstaff.getPhone());
+                    if(pushToken ==  null){
+                        LoggerUtils.getInstance().log(String.format("miss push token  %s ", catstaff.getPhone()));
+                        return ;
+                    }
+                    send(pushToken.getOwner_phone(), message);
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 //    public void sendAndroidFilecast(String title , String message ,String device_token) throws Exception {
 //        AndroidFilecast filecast = new AndroidFilecast();

@@ -6,6 +6,8 @@ import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 
+import java.util.List;
+
 /*
 CREATE TABLE `items` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -26,12 +28,15 @@ CREATE TABLE `items` (
 @DAO(catalog = "ABC")
 public interface CatStaffDAO {
     static final String TABLE_NAME= "catstaff";
-    static final String FIELDS = "id,name ,phone,pwd ,create_time,update_time " ;
-    static final String INSERT_FIELDS = "name ,phone,pwd " ;
+    static final String FIELDS = "id,name ,phone,pwd ,type,create_time,update_time " ;
+    static final String INSERT_FIELDS = "name ,phone,pwd,type" ;
 
     @ReturnGeneratedKeys
-    @SQL("insert into " +  TABLE_NAME+ " (" +  INSERT_FIELDS +" ) values (:1.name ,:1.phone,:1.pwd) ")
+    @SQL("insert into " +  TABLE_NAME+ " (" +  INSERT_FIELDS +" ) values (:1.name ,:1.phone,:1.pwd,:1.type) ")
     public long insert(Catstaff o);
+
+    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  type=:1")
+    public List<Catstaff> getCatStaffbyType(long type);
 
     @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  id=:1")
     public Catstaff getCatStaffbyId(long id);

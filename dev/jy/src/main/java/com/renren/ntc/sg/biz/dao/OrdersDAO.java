@@ -45,6 +45,9 @@ public interface OrdersDAO {
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and status = 1 ")
     public List<Order> getOrder2Print(long shop_id,@SQLParam("tableName") String tableName);
 
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and status = 2 ")
+    public List<Order> getFinalOrder(long shop_id,@SQLParam("tableName") String tableName);
+
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 order by create_time desc limit :2,:3 ")
     List<Order> get10Orders(long shop_id,int from, int offset,@SQLParam("tableName") String tableName);
 
