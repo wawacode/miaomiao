@@ -113,7 +113,7 @@ public class LoginController extends BasicConsoleController {
             if (null != c) {
                 if(ifkf(c)){
                     LoggerUtils.getInstance().log( String.format("kf  %s logining " ,c.getPhone()));
-                    List<Shop> shops = shopDAO.getAllShopsByAudit(1);
+                    List<Shop> shops = shopDAO.getAllShopsAllFieldsByAudit(1);
                     CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER,
                             SUtils.wrapper(SUtils.getStaffKey(c.getId())));
                     JSONObject resultJson = new JSONObject();

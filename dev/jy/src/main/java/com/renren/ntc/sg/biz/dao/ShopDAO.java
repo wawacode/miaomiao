@@ -39,8 +39,11 @@ public interface ShopDAO {
     @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " limit :1,:2")
     public List<Shop> getAllShops(int from, int offset);
     
-    @SQL("select " +SHOP_NAME_FIELDS  + "  from "  + TABLE_NAME + " where audit = :1")
+    @SQL("select " + SHOP_NAME_FIELDS   + "  from "  + TABLE_NAME + " where audit = :1")
     public List<Shop> getAllShopsByAudit(int audit);
+
+    @SQL("select " + FIELDS   + "  from "  + TABLE_NAME + " where audit = :1")
+    public List<Shop> getAllShopsAllFieldsByAudit(int audit);
     
     @SQL("update " + TABLE_NAME + " set ##(:key) = :3  where id =:1")
     public int update(long id, @SQLParam("key") String key, String value);
