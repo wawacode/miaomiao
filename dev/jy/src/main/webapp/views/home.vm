@@ -280,8 +280,12 @@
 
                     <div class="panel-body text-center">
                         <h4 class="text-center"> <i class="icon-android"></i> 喵喵商家版Android下载 </h4>
-                        <div> <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.miaomiao.bconsole">点此下载</a>  或者扫描下方二维码</div>
-                        <img class="media-object" style="max-width: 200px;margin-top: 10px" src="/images/miaomiao-console-android.png"/>
+                        <p>
+                            <a id="copy-button" data-clipboard-text="http://www.mbianli.com/www/build/mmconsole.apk"
+                               title="点此查看链接" style="word-wrap: break-word;">点此查看链接</a>
+                            或者微信扫描下方二维码,选择在浏览器中打开
+                        </p>
+                        <img class="media-object" style="max-width: 200px;margin-top: 10px" src="/images/mm-console-android-apk.png"/>
                     </div>
 
                 </div>
@@ -510,5 +514,12 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="/js/jquery/dist/jquery.min.js"></script>
 <script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+
+    $("#copy-button").click(function(){
+        $("#copy-button").text($("#copy-button").data('clipboard-text'));
+    })
+
+</script>
 </body>
 </html>
