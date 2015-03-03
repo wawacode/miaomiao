@@ -261,7 +261,7 @@
                     <div class="panel-heading"><h3 class="text-center">用户端(喵喵生活)</h3></div>
 
                     <div class="panel-body text-center">
-                        <h4 class="text-center">微信公众号</h4>
+                        <h4 class="text-center"> <i class="icon-comments"></i> 微信公众号</h4>
                         <img class="media-object" style="max-width: 200px" src="/images/miaomiao-qr-code.png"/>
                     </div>
 
@@ -274,8 +274,14 @@
                     <div class="panel-heading"><h3 class="text-center">商家端(喵喵商家)</h3></div>
 
                     <div class="panel-body text-center">
-                        <h4 class="text-center">喵喵商家版Android下载</h4>
-                        <img class="media-object" style="max-width: 200px" src="/images/miaomiao-console-android.png"/>
+                        <h4 class="text-center"> <i class="icon-apple"></i> 喵喵商家版 iOS 下载</h4>
+                        <div>App Store 搜索下载 <span style="font-weight: bold;color: red"> <a href="https://appsto.re/cn/szB15.i">  喵喵商家</a></span></div>
+                    </div>
+
+                    <div class="panel-body text-center">
+                        <h4 class="text-center"> <i class="icon-android"></i> 喵喵商家版Android下载 </h4>
+                        <div> <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.miaomiao.bconsole">点此下载</a>  或者扫描下方二维码</div>
+                        <img class="media-object" style="max-width: 200px;margin-top: 10px" src="/images/miaomiao-console-android.png"/>
                     </div>
 
                 </div>
