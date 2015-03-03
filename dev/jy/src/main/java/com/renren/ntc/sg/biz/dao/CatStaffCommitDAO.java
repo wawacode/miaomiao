@@ -47,7 +47,7 @@ public interface CatStaffCommitDAO {
     public int  update(long id,long shop_id,String shop_info);
 
     @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  shop_id =:1 ")
-    public CatStaffCommit getbyShopid(long shop_id);
+    public List<CatStaffCommit> getbyShopid(long shop_id);
 
 
     @SQL("select shop_id from " + TABLE_NAME + " where  phone =:1 ")

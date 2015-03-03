@@ -16,7 +16,6 @@ import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.FileUploadUtils;
 import com.renren.ntc.sg.util.ImagesUtils;
 import com.renren.ntc.sg.util.SUtils;
-import com.sun.imageio.plugins.common.ImageUtil;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;

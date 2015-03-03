@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,7 +60,8 @@ public class SMSService {
             String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            CatStaffCommit catStaffCommit = catStaffCommitDao.getbyShopid(shop.getId());
+            List<CatStaffCommit> catStaffCommitls = catStaffCommitDao.getbyShopid(shop.getId());
+            for ( CatStaffCommit catStaffCommit : catStaffCommitls)   {
             if (catStaffCommit != null) {
                 String phone = catStaffCommit.getPhone();
                 if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
@@ -72,6 +74,7 @@ public class SMSService {
                 String r = SUtils.toString(t);
                 System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, mobile, url));
                 MongoDBUtil.getInstance().sendmark(phone, order_id);
+                }
             }
         } catch (Throwable t) {
             t.printStackTrace();
