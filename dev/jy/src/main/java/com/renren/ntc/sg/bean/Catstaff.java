@@ -14,6 +14,10 @@ public class Catstaff extends RegistUser {
     private long  id;
     private String  name;
     private String  phone;
+
+
+
+    private int type;
     private String pwd;
     private Date create_time ;
     private Date update_time ;
@@ -21,6 +25,14 @@ public class Catstaff extends RegistUser {
 
     public long getId() {
         return id;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public void setId(long id) {

@@ -14,6 +14,7 @@ import com.renren.ntc.sg.biz.dao.CatStaffDAO;
 import com.renren.ntc.sg.biz.dao.RegistUserDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.RegistUserService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
@@ -69,10 +70,6 @@ public class LoginController extends BasicConsoleController {
         result.put("code", -1);
         result.put("msg", "用户不存在");
         result.put("origURL", origURL);
-//        RegistUser user = hostHolder.getUser();
-//		if (user != null) {
-//			 return "@json:" + result.toJSONString();
-//		}
         if (origURL == null || origURL.equals("")) {
             origURL = Constants.DOMAIN;
         }
@@ -114,8 +111,20 @@ public class LoginController extends BasicConsoleController {
         if (null == u) {
             Catstaff c = catstaffDao.getCatStaff(phone, pwd);
             if (null != c) {
+                if(ifkf(c)){
+                    LoggerUtils.getInstance().log( String.format("kf  %s logining " ,c.getPhone()));
+                    List<Shop> shops = shopDAO.getAllShopsAllFieldsByAudit(1);
+                    CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER,
+                            SUtils.wrapper(SUtils.getStaffKey(c.getId())));
+                    JSONObject resultJson = new JSONObject();
+                    JSONArray s = (JSONArray) JSON.toJSON(shops);
+                    resultJson.put("shop", shops);
+                    resultJson.put("token", SUtils.wrapper(SUtils.getStaffKey(c.getId())));
+                    return "@json:" + getDataResult(0, resultJson);
+                }
                 List<Long> shop_ids = catstaffCommitDao.getShop_ids(c.getPhone());
                 List<Shop> shops = shopDAO.getShops(shop_ids);
+
                 if (null == shops || shops.size() == 0) {
                     result.put("code", -3);
                     result.put("msg", "没有可用店铺");
@@ -150,6 +159,10 @@ public class LoginController extends BasicConsoleController {
         resultJson.put("shop", shops);
         resultJson.put("token", token);
         return "@json:" + getDataResult(0, resultJson);
+    }
+
+    private boolean ifkf(Catstaff c) {
+        return c.getType() == 2 ;
     }
 
     @Get("islogin")

@@ -192,6 +192,7 @@ public class OrderController {
         }
         smsService.sendSMS2LocPush(order_id, shop);
         pushService.send2locPush(order_id, shop);
+        pushService.send2kf(order_id, shop);
         // 发送短信通知
         Device devcie = deviceDAO.getDevByShopId(shop_id);
         if (null == devcie || SUtils.isOffline(devcie)) {
