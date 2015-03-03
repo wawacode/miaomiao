@@ -101,21 +101,8 @@ public class ItemConsoleController extends BasicConsoleController{
                 resultJson.put("msg", "服务器错误，请稍后重试");
                 return "@json:"+resultJson.toJSONString();
             }
-            String tmpsavePicPath = SgConstant.SAVE_TMP_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
-            String savePicPath = SgConstant.SAVE_TMP_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
-            File f = new File(tmpsavePicPath);
-
-            if (!f.exists()){
-                boolean mkdirsRet = f.mkdirs();
-                if (!mkdirsRet){
-                    LoggerUtils.getInstance().log("mkdir failed, may can't upload pic");
-                    JSONObject resultJson = new JSONObject();
-                    resultJson.put("code", -1);
-                    resultJson.put("msg", "服务器错误，请稍后重试");
-                    return "@json:"+resultJson.toJSONString();
-                }
-            }
-            f = new File(savePicPath);
+            String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shop_id));
+            File f = new File(savePicPath);
             if (!f.exists()){
                 boolean mkdirsRet = f.mkdirs();
                 if (!mkdirsRet){
