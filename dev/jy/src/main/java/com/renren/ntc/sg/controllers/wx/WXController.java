@@ -30,21 +30,15 @@ public class WXController {
             "<Content><![CDATA[{message}]]></Content>\n" +
             "</xml>";
 
-//    static final String CONTENT2 ="<xml>\n" +
-//            "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
-//            "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
-//            "<CreateTime>{time}</CreateTime>\n" +
-//            "<MsgType><![CDATA[news]]></MsgType>\n" +
-//            "<ArticleCount>1</ArticleCount>\n" +
-//            "<Articles>\n" +
-//            "<item>\n" +
-//            "<Title><![CDATA[喵喵生活]]></Title> \n" +
-//            "<Description><![CDATA[喵喵生活]]></Description>\n" +
-//            "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-//            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
-//            "</item>\n" +
-//            "</Articles>\n" +
-//            "</xml> ";
+
+    static final String DUOKEFU = "<xml>\n" +
+            "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
+            "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
+            "<CreateTime>{time}</CreateTime>\n" +
+            "<MsgType><![CDATA[transfer_customer_service]]></MsgType>\n" +
+            "</xml>" ;
+
+
 
     static final String CONTENT2 ="<xml>\n" +
             "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
@@ -55,9 +49,9 @@ public class WXController {
             "<Articles>\n" +
             "<item>\n" +
             "<Title><![CDATA[喵喵生活]]></Title> \n" +
-            "<Description><![CDATA[喵喵生活]]></Description>\n" +
+            "<Description><![CDATA[关于喵喵]]></Description>\n" +
             "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-            "<Url><![CDATA[{message}]]></Url>\n" +
+            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Fabout&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
             "</item>\n" +
             "</Articles>\n" +
             "</xml> ";
@@ -99,18 +93,19 @@ public class WXController {
         if ("event".equals(mtype)) {
             String event = getEvent(body);
             String eventKey = getEventKey(body);
+            if ("about_miaomiao".equals(eventKey)){
             LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
-            String response = CONTENT.replace("{message}", MESSAGE);
+            String response = CONTENT2.replace("{message}", MESSAGE);
             response = response.replace("{toUser}",fromUser);
             response = response.replace("{fromUser}",toUser);
             response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
             return  response;
+            }
         }
-        // 用户给发消息
+//        // 用户给发消息
         String content = getContent(body);
         LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
-
-        String response = CONTENT.replace("{message}", MESSAGE);
+        String response = DUOKEFU.replace("{message}", MESSAGE);  // 这个其实没用
         response = response.replace("{toUser}",fromUser);
         response = response.replace("{fromUser}",toUser);
         response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
