@@ -7,7 +7,8 @@
 
     <link href="/css/ionic.min.css" rel="stylesheet">
     <link href="/js/ionic-rating/ionic-rating.css" rel="stylesheet">
-    <link href="/css/app-ui-min.css" rel="stylesheet">
+    <!--<link href="/css/app.css" rel="stylesheet">-->
+    <link href="/css/app-ui.css" rel="stylesheet">
 
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
     <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
@@ -24,7 +25,24 @@
 
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
 
-    <script src="/sg/js/compress/app-ui-min.js" type="text/javascript"></script>
+    <script src="/sg/js/services/app.js"></script>
+    <script src="/sg/js/services/directives.js"></script>
+    <script src="/sg/js/services/filters.js"></script>
+    <script src="/sg/js/services/services.js"></script>
+    <script src="/sg/js/services/shoppingCart.js"></script>
+
+    <script src="/sg/js/controllers/GetLocationController.js"></script>
+    <script src="/sg/js/controllers/FindShopController.js"></script>
+    <script src="/sg/js/controllers/ShopController.js"></script>
+    <script src="/sg/js/controllers/GoToShopController.js"></script>
+    <script src="/sg/js/controllers/SearchController.js"></script>
+    <script src="/sg/js/controllers/CheckoutController.js"></script>
+    <script src="/sg/js/controllers/AddressListController.js"></script>
+    <script src="/sg/js/controllers/ShowProductDetailController.js"></script>
+    <script src="/sg/js/controllers/MyOrdersController.js"></script>
+    <script src="/sg/js/controllers/ShoppingCartController.js"></script>
+    <script src="/sg/js/controllers/OrderSuccessCtroller.js"></script>
+    <script src="/sg/js/controllers/UserAddressListController.js"></script>
 
 </head>
 <body>

@@ -25,6 +25,7 @@
             <arg line="-jar"/>
             <arg path="yuicompressor-2.4.8.jar"/>
             <srcfile/>
+            <arg line="--nomunge"/>
             <arg line="--preserve-semi"/>
             <arg line="-o"/>
             <mapper type="glob" from="*.js" to="${src}/sg/js/compress/*-min.js"/>
@@ -34,7 +35,7 @@
 
     <!-- the js has order, so we have to give orders here-->
     <target name="js.concatenate" depends="js.minify">
-        <concat destfile="${src}/sg/js/compress/app-min.js">
+        <concat destfile="${src}/sg/js/compress/app-ui-min.js">
 
             <filelist dir="${src}/sg/js/compress/services"
                       files="app-min.js, directives-min.js,filters-min.js,services-min.js,shoppingCart-min.js"/>
@@ -46,7 +47,7 @@
         </concat>
     </target>
 
-    <target name="default" depends="js.concatenate">
+    <target name="default" depends="js.concatenate,css.minify">
     </target>
 
 </project>
