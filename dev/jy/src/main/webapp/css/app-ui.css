@@ -17,6 +17,13 @@
     border-bottom: none;
 }
 
+.search-box {
+    width: 100%;
+    padding: 5px;
+    background: #eaeaea;
+    font-family: "Hiragino Sans GB", "w3", "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;
+}
+
 /* home page - product list*/
 
 .homepageContent {
@@ -171,7 +178,20 @@
     border-radius: 2px;
 }
 
-.orderListHeader{
+.orderListHeader {
     background-color: #EAEAEA;
     padding: 5px 5px 5px 20px;
+}
+
+/* search list*/
+.searchSuggestionResultList {
+    position: absolute;
+    top: 86;
+    bottom: 29;
+    width: 100%;
+    left: 0;
+    right: 0;
+    background-color: rgba(236,236,236,0.7);
+    z-index: 200;
+    opacity: 0.9
 }

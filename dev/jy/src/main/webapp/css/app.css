@@ -1006,8 +1006,20 @@ body {
     padding: 0 0 20px 0;
 }
 
-.order-item {
-    border-bottom: solid 1px lightgray;
+.order-items {
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.order-items:after {
+    content: "";
+    position: absolute;
+    left: -20;
+    right: -20;
+    bottom: 0;
+    width: 110%;
+    height: 1px;
+    background-color: #eaeaea;
 }
 
 .orderSnapshotHeader {

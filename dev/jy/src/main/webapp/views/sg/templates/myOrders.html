@@ -50,8 +50,8 @@
                 最新订单
             </div>
 
-            <div style="padding: 0px 20px 20px 20px;" ng-if="orders && orders.length >= 1">
-                <div class="order-item" style="" bindonce ng-repeat="order in orders"
+            <div style="padding: 0px 20px 0px 20px;" ng-if="orders && orders.length >= 1" ng-init="latestOrder=orders.slice(0,1)">
+                <div class="order-items" style="" bindonce ng-repeat="order in latestOrder"
                      ng-include="'templates/snapshotOrder.html'">
                 </div>
             </div>
@@ -60,8 +60,8 @@
                 历史订单
             </div>
 
-            <div style="padding: 0px 20px 20px 20px" ng-if="orders && orders.length >= 1">
-                <div class="order-item" style="" bindonce ng-repeat="order in orders track by order.order_id"
+            <div style="padding: 0px 20px 0px 20px;" ng-if="orders && orders.length > 1" ng-init="historyOrder=orders.slice(1)">
+                <div class="order-items" style="" bindonce ng-repeat="order in historyOrder"
                         ng-include="'templates/snapshotOrder.html'">
                 </div>
             </div>
@@ -74,15 +74,15 @@
 <script id="templates/snapshotOrder.html" type="text/ng-template">
 
     <div class="orderSnapshotHeader">
-        <div class="orderId"> 订单号: {{order.order_id}}</div>
-        <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd'}}</div>
+        <div class="orderId" bo-text="'订单号: ' + order.order_id"></div>
+        <div class="orderDate" bo-text="order.create_time | date:'yyyy-MM-dd'"></div>
     </div>
     <div class="orderSnapshot" bindonce quick-ng-repeat="orderItem in order.items">
         <div class="prod_icon" back-img="{{orderItem.pic_url}}"></div>
         <div><span class="orderSnapshotItemName oneline" bo-text="orderItem.name"></span></div>
         <div class="orderSnapshotItemPrice">
             <span bo-text="'¥'+ orderItem.price/100.0"></span>
-            <span class="orderSnapshotCountNumber"> X {{orderItem.count}} </span>
+            <span class="orderSnapshotCountNumber" bo-text="' X ' + orderItem.count"></span>
         </div>
     </div>
 
