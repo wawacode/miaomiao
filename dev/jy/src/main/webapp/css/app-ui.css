@@ -140,6 +140,18 @@
     height: 49
 }
 
+.smallHeaderButton {
+    z-index: 1;
+    padding: 0 5px !important;
+    min-width: initial;
+    min-height: 25px !important;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 10px !important;
+    margin-top: 5px !important;
+    margin-left: 5px !important;
+}
+
 .checkoutBasePadding {
     padding: 10px 20px 5px 20px;
 }
