@@ -1,4 +1,3 @@
-
 @font-face {
     font-family: 'w3';
     src: url('/fonts/Hiragino-Sans.ttf') format('truetype');
@@ -20,7 +19,7 @@ body {
     padding: 0px;
     margin: 0px;
     border: 0px;
-    font-family: "Hiragino Sans GB","w3","黑体" , "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    font-family: "Hiragino Sans GB", "w3", "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;
     background-color: #fff;
 }
 
@@ -63,7 +62,8 @@ body {
     left: 0;
     right: 0;
     overflow: auto;
-    overflow-x: hidden;overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
     background: #fff;
     -webkit-overflow-scrolling: touch;
 }
@@ -76,9 +76,7 @@ body {
     bottom: 49px;
 }
 
-
-
-.commonProductList{
+.commonProductList {
     overflow: auto;
 }
 
@@ -90,7 +88,7 @@ body {
     height: 100%;
     font-size: 21px;
     overflow: hidden;
-    background-color: rgba(236,236,236,0.3);
+    background-color: rgba(236, 236, 236, 0.3);
 }
 
 .leftContent {
@@ -330,7 +328,7 @@ body {
     position: relative;
 }
 
-.prod_detail_info{
+.prod_detail_info {
     position: relative;
     min-height: 70px
 }
@@ -577,8 +575,6 @@ body {
     font-size: 14px;
 }
 
-
-
 .product-title {
     font-size: 12px;
     color: #6a6a6a;
@@ -695,12 +691,12 @@ body {
 }
 
 .shop-categray-list {
-    background-color: rgba(236,236,236,1.0);
+    background-color: rgba(236, 236, 236, 1.0);
 }
 
 .shop-categray {
 
-    background-color: rgba(236,236,236,1.0);
+    background-color: rgba(236, 236, 236, 1.0);
     overflow: hidden;
     position: relative;
     width: 100%;
@@ -745,7 +741,7 @@ body {
     font-size: 12px;
     padding: 0px;
     font-weight: lighter;
-    font-family:sans-serif;
+    font-family: sans-serif;
 }
 
 .shop-categray-item-selected {
@@ -790,14 +786,14 @@ body {
 }
 
 /*.addressSelected:before {*/
-    /*content: "";*/
-    /*position: absolute;*/
-    /*width: 5px;*/
-    /*height: 100%;*/
-    /*left: 0;*/
-    /*top: 0;*/
-    /*color: #ef5356;*/
-    /*background-color: #ef5356;*/
+/*content: "";*/
+/*position: absolute;*/
+/*width: 5px;*/
+/*height: 100%;*/
+/*left: 0;*/
+/*top: 0;*/
+/*color: #ef5356;*/
+/*background-color: #ef5356;*/
 /*}*/
 
 .addressUnselected {
@@ -816,8 +812,9 @@ body {
     font-size: 15px;
 }
 
-.addNewAddressContainer{
-    border-bottom: solid 1px #eaeaea;overflow: hidden
+.addNewAddressContainer {
+    border-bottom: solid 1px #eaeaea;
+    overflow: hidden
 }
 
 .addNewAddressHint {
@@ -921,13 +918,12 @@ body {
 
 .addressInput {
 
-    font-family:"Hiragino Sans GB","w3","黑体" , "Microsoft YaHei", Arial, Helvetica, sans-serif; ;
+    font-family: "Hiragino Sans GB", "w3", "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;;
     font-size: 15px;
     border: none;
     padding: 5px;
 
 }
-
 
 .shoppingCartDisplayBackground {
     height: 100%;
@@ -1007,24 +1003,44 @@ body {
 }
 
 .order-list {
-    padding-left: 0em;
-    padding-right: 0em;
-    margin-top: 0em
+    padding: 0 0 20px 0;
 }
 
 .order-item {
-    margin: 9px;
-    border: solid 1px lightgray;
-    border-radius: 2px
+    border-bottom: solid 1px lightgray;
+}
+
+.orderSnapshotHeader {
+    display: inline-block;
+    border-bottom: solid 1px #eaeaea;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .orderSnapshot {
+    position: relative;
     display: inline-block;
-    width: 100%
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: solid 1px #eaeaea;
 }
 
-.orderSnapshotItem {
-    float: left
+.orderSnapshotItemName {
+    float: left;
+    padding-left: 10px;
+    font-size: 14px;
+    color: #6a6a6a;
+}
+
+.orderSnapshotItemPrice{
+    position: absolute;
+    bottom: 20;
+    left: 85;
+
+    font-size: 14px;
+    color: #ef5356;
 }
 
 .orderSnapshotCount {
@@ -1035,23 +1051,32 @@ body {
 
 .orderSnapshotTotal {
 
-    display: block;
+    display: inline-block;
     width: 100%;
     text-align: right;
-    margin-top: 20px;
-    padding-right: 6px;
+}
+
+.orderSnapshotRemark{
+    display: inline-block;
+    width: 100%;
+    padding: 15px 0px 15px;
+    color: #808080
 }
 
 .orderSnapshotCountNumber {
     font-size: 14px;
-    margin-left: 2px;
     font-weight: 100;
-    color: #808080;
+    color: #6a6a6a;
+}
+
+.orderId {
+    float: left;
+    font-size: 12px;
 }
 
 .orderDate {
-    float: left;
-    padding: 0.8em;
+    float: right;
+    font-size: 12px;
 }
 
 .orderStatus {
@@ -1071,7 +1096,7 @@ body {
     font-size: 14px;
     padding-left: 10px;
     border-radius: 3px;
-    font-family: "Hiragino Sans GB","w3","黑体" , "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    font-family: "Hiragino Sans GB", "w3", "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;
 }
 
 .js-checkout-hit {
@@ -1314,13 +1339,14 @@ body {
 
 ul.rating li {
     display: inline;
-    border: solid 1px rgba(252,109,38,1);
+    border: solid 1px rgba(252, 109, 38, 1);
     border-radius: 5px;
-    background: rgba(252,109,38,1);
+    background: rgba(252, 109, 38, 1);
     padding: 0px 1px 0px 1px;
     margin-right: 1px;
 
 }
+
 ul.rating li i {
     font-size: 12px;
 }

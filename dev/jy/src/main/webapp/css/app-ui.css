@@ -122,7 +122,7 @@
 }
 
 .checkoutBasePadding {
-    padding: 10px 10px 10px 20px;
+    padding: 10px 10px 5px 20px;
 }
 
 /* address list*/
@@ -169,4 +169,9 @@
     background-color: #ef5356;
     color: #ffffff;
     border-radius: 2px;
+}
+
+.orderListHeader{
+    background-color: #EAEAEA;
+    padding: 5px 5px 5px 20px;
 }
