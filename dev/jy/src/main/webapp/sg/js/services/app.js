@@ -99,11 +99,11 @@ miaomiao.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: '/views/sg/templates/addressList.html',
                 controller: 'UserAddressListCtrl'
             })
-            .state('orderSuccess', {
-                url: '/ordersuccess',
-                templateUrl: '/views/sg/templates/orderSuccess.html',
-                controller: 'OrderSuccessCtrl'
-            })
+//            .state('orderSuccess', {
+//                url: '/ordersuccess',
+//                templateUrl: '/views/sg/templates/orderSuccess.html',
+//                controller: 'OrderSuccessCtrl'
+//            })
             .state('myOrders', {
                 url: '/myorders',
                 templateUrl: '/views/sg/templates/myOrders.html',

@@ -7,13 +7,11 @@
             订单确认
         </ion-nav-title>
     </ion-nav-bar>
-
     <ion-content padding="false"
                  has-tabs="false"
                  has-header="true"
                  scroll="true"
                  style="bottom: 49px;top: 49px;z-index: 9;">
-
             <div ng-if="addressls && addressls.length">
                 <div class="addressItem addressDefault addressSelected item-icon-right" ng-click="goToAddressList()">
                     <div class="addressItem-address">
@@ -27,7 +25,6 @@
                     <a class="icon balanced ion-ios7-checkmark" style="right: 20px"></a>
                 </div>
             </div>
-
             <div class="addNewAddressContainer" ng-if="info.showAddNewAddress == true" ng-animate="{show:'animate-show', hide:'animate-hide'}">
                 <div class="addNewAddressHint">
                     您还没有添加收货人信息,请添加
@@ -41,7 +38,6 @@
                            required style="border-bottom: none;margin-top: 10px">
                 </div>
             </div>
-
             <div class="checkoutBasePadding" style="padding-top: 10px">
                 <ul>
                     <li class="product-item"
@@ -70,7 +66,6 @@
                         </div>
                     </li>
                 </ul>
-
                 <ul class="no-item-hint" style="padding:0px 9px;text-align: center;"
                     ng-if="!shoppingCartItems || shoppingCartItems.length == 0">
                     <div style="font-size: 14px;padding-top: 50px;padding-bottom: 50px;">
@@ -84,7 +79,6 @@
                     </div>
                 </div>
             </div>
-
             <div style="margin-top:10px;" ng-if="shoppingCartItems && shoppingCartItems.length != 0">
                 <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
                     付款方式
@@ -98,9 +92,7 @@
                     </div>
                 </div>
             </div>
-
     </ion-content>
-
     <ion-footer-bar class="bar-light checkoutFooterBar">
         <div class="row nonPadding">
             <div class="col nonPadding">
@@ -121,5 +113,4 @@
             </div>
         </div>
     </ion-footer-bar>
-
 </ion-view>

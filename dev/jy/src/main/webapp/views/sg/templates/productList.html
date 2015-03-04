@@ -1,6 +1,4 @@
 <ion-view>
-    <!--<div class="homepageHeaderBarGradient">-->
-    <!--</div>-->
     <ion-nav-bar class="bar-light homepageHeaderBar headerBarWithShadow">
         <ion-nav-buttons side="left">
             <button class="button button-clear button-outline button-icon ion-ios7-person-outline"
@@ -14,7 +12,6 @@
             {{shop.name}} <i class="icon ion-chevron-down" style=" font-size: 15px !important"></i>
         </ion-nav-title>
     </ion-nav-bar>
-
     <ion-content class="homepageContent"
                  padding="false"
                  has-tabs="true"
@@ -93,16 +90,13 @@
             </div>
         </div>
     </ion-content>
-
     <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
     </div>
-
     <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
         <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
              src="'/views/sg/templates/shoppingCart.html'">
         </div>
     </div>
-
     <ion-footer-bar class="bar-light homepageFooterBar" ng-if="categoryls && categoryls.length">
         <div class="row nonPadding">
             <div class="col nonPadding">

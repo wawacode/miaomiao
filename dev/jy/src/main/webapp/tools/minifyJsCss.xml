@@ -1,0 +1,83 @@
+<project name="miaomiao-client" default="default" basedir=".">
+
+    <description>
+        minify js/css and concatenate into one
+    </description>
+
+    <property name="src" location=".."/>
+
+    <target name="css.minify" >
+        <apply executable="java" parallel="false">
+            <fileset dir="${src}/css" includes="app.css"/>
+            <arg line="-jar"/>
+            <arg path="yuicompressor-2.4.8.jar"/>
+            <arg line="--line-break 0"/>
+            <srcfile/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.css" to="${src}/css/*-min.css"/>
+            <targetfile/>
+        </apply>
+    </target>
+
+    <target name="js.minify">
+        <apply executable="java" parallel="false">
+            <fileset dir="${src}/js" includes="**/*.js" excludes="compress/**/*.js"/>
+            <arg line="-jar"/>
+            <arg path="yuicompressor-2.4.8.jar"/>
+            <srcfile/>
+            <arg line="--nomunge"/>
+            <arg line="--preserve-semi"/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.js" to="${src}/js/compress/*-min.js"/>
+            <targetfile/>
+        </apply>
+    </target>
+
+    <target name="css.concatenate" depends="css.minify">
+        <concat destfile="${src}/js/compress/mmconsole-min.css">
+
+            <filelist dir="${src}/lib/angular-native-picker/build/themes/"
+                      files="default.time.css"/>
+            <filelist dir="${src}/css/"
+                      files="app-min.css"/>
+        </concat>
+    </target>
+
+    <!-- the js has order, so we have to give orders here-->
+    <target name="js.concatenate" depends="js.minify">
+        <concat destfile="${src}/js/compress/mmconsole-min.js">
+
+            <filelist dir="${src}/lib/ionic-service-core/"
+                      files="ionic-core.js"/>
+            <filelist dir="${src}/lib/ionic-service-deploy/"
+                      files="ionic-deploy.js"/>
+            <filelist dir="${src}/lib/angular-bindonce/"
+                      files="bindonce.min.js"/>
+            <filelist dir="${src}/lib/"
+                      files="angular-local-storage.min.js"/>
+            <filelist dir="${src}/lib/ngstorage/"
+                      files="ngStorage.min.js"/>
+            <filelist dir="${src}/lib/angular-native-picker/build/"
+                      files="angular-datepicker.js"/>
+            <filelist dir="${src}/lib/quick-ng-repeat/"
+                      files="quick-ng-repeat.js"/>
+            <filelist dir="${src}/lib/ngCordova/dist/"
+                      files="ng-cordova.js"/>
+
+            <filelist dir="${src}/js/compress"
+                      files="config-min.js, app-min.js"/>
+
+            <filelist dir="${src}/js/compress/services"
+                      files="CommonServices-min.js, HttpClient-min.js,CommonFilters-min.js,Utils-min.js,directives-min.js"/>
+
+            <filelist dir="${src}/js/compress/controllers"
+                      files="MainControllers-min.js, SignInCtrl-min.js,ChangePwdCtrl-min.js,FrontPageCtrl-min.js,OrderCtrl-min.js,
+                      ProductListCtrl-min.js,ProductCtrl-min.js,ShopListCtrl-min.js,EditShopCtrl-min.js,AddProductCtrl-min.js,SearchCtrl-min.js"/>
+
+        </concat>
+    </target>
+
+    <target name="default" depends="css.concatenate,js.concatenate">
+    </target>
+
+</project>

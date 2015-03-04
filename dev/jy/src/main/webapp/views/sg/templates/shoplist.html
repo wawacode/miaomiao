@@ -10,19 +10,15 @@
         </div>
     </div>
 </div>
-
 <div style="padding-top:3px;padding-bottom:3px;margin-bottom:10px;  background-color: #ededed;color: #999999;" ng-click="relocation()"
         ng-hide="shop_info.showAddressSuggestion">
-
     <div style="display: inline-block;padding-left: 10px">
         {{shop_info.locationMessage}}
     </div>
     <div style="display: inline-block;float: right;padding-right: 15px;">
         重新定位 <i class="icon ion-ios7-location-outline" style="font-size: 18px"></i>
     </div>
-
 </div>
-
 <div class="list" ng-show="shop_info.showAddressSuggestion">
     <div class="item-hint">
         地址列表
@@ -35,10 +31,8 @@
         <div style="color: darkgray;font-size: 12px">
             {{item.address}}
         </div>
-
     </div>
 </div>
-
 <div class="list" ng-hide="shop_info.showAddressSuggestion">
     <div class="item-hint">
         附近的便利店
@@ -48,12 +42,9 @@
     </div>
     <div class="item" ng-repeat="item in shop_items"
          ng-click="goToShop(item)" ng-include = "'shop-item.html'">
-
     </div>
 </div>
-
 <div class="list" ng-if="shop_info.showShopHistory" style="margin-bottom: 5px" ng-hide="shop_info.showAddressSuggestion">
-
     <div class="item-hint" ng-show="shop_history.length">
         历史店铺
     </div>
@@ -61,24 +52,19 @@
         {{item.name}}
     </div>
 </div>
-
 <script id="shop-item.html" type="text/ng-template">
-
     <div style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
         <div>
             <div style="font-size: 16px;display: inline-block;color: #191919">
                 {{item.name}}
             </div>
-
             <div style="display: inline-block;margin-left: 2px">
                 <rating ng-model="item.rate" max="item.maxRate" readonly></rating>
             </div>
-
             <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
                 {{item.status | getShopStatusString }}
             </div>
         </div>
-
         <div style="margin-top: 12px;color: #6a6a6a">
             <div style="font-size: 12px;">
                 <div style=" display: inline-block" ng-show="item.open_time || item.close_time">
@@ -99,5 +85,4 @@
             </div>
         </div>
     </div>
-
 </script>

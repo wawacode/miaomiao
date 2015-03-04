@@ -1,5 +1,5 @@
 angular.module('miaomiao.shop')
-    .controller('UserAddressListCtrl', function ($scope, $ionicLoading, $http,$ionicScrollDelegate, $state,
+    .controller('UserAddressListCtrl', function ($scope, $ionicLoading,$ionicPopup, $http,$ionicScrollDelegate, $state,
                                                  localStorageService,httpClient,AddressService, MMUtils) {
 
         $scope.shop = localStorageService.get('MMMETA_shop') || {};

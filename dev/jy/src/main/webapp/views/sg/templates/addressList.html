@@ -1,23 +1,17 @@
 <ion-view>
-
     <ion-nav-bar class="bar-light addressListBar">
-
         <ion-nav-back-button class="button-dark button-clear">
             <i class="ion-chevron-left dark"></i> 返回
         </ion-nav-back-button>
-
         <ion-nav-title>
             选择送货地址
         </ion-nav-title>
-
     </ion-nav-bar>
-
     <ion-content padding="false"
                  has-tabs="false"
                  scroll="true"
                  has-header="false"
                  class="addressList">
-
         <div class="list" ng-if="addressls != undefined">
             <div class="addressListHeader" ng-if="addressls && addressls.length">
                 常用地址
@@ -27,7 +21,6 @@
                  bindonce
                  quick-ng-repeat="addr in addressls"
                  ng-click="setDefaultAddress(addr)">
-
                 <div class="addressItem-address"><span
                         class="addressTitle">收货地址:</span><span
                         class="addressAddrValue">{{addr.address}}</span>
@@ -36,14 +29,12 @@
                         class="addressTitle">联系电话:</span><span
                         class="addressPhoneValue">{{addr.phone}}</span>
                 </div>
-
                 <a class="icon balanced" ng-class="{'ion-ios7-checkmark':addr.isDefault,'ion-ios7-circle-outline':!addr.isDefault}"
                    style="right: 20px"></a>
             </div>
             <div class="addressListHeader">
                 使用其他地址
             </div>
-
             <div class="item" style="padding-left: 20px">
                 <input class="addressInput"  style="border-bottom: solid 1px #eaeaea;"
                        type="text" placeholder="收货地址:" value="" ng-model="newAddress.address"
@@ -52,12 +43,9 @@
                        type="number" placeholder="联系电话:" value="" ng-model="newAddress.phone"
                        required style="margin-top: 10px">
             </div>
-
             <div style="position: absolute; left: 10;right: 10;padding-top: 40px" ng-if="addressls != undefined">
                 <button class="button button-block button-assertive"  style="height: 40px" ng-click="addNewAddressConfirm()">确定</button>
             </div>
-
         </div>
-
     </ion-content>
 </ion-view>

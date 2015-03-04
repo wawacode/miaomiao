@@ -1,18 +1,13 @@
 <ion-modal-view ng-controller="FindShopCtrl">
-
     <ion-header-bar class="bar bar-header bar-light headerBarWithShadow">
         <!--<button class="button button-clear button-icon ion-ios7-location-outline" ng-click="relocation()" ></button>-->
         <h2 class="title" style="font-size: 16px">切换店铺</h2>
         <button class="button button-clear button-assertive button-icon ion-ios7-close-outline" ng-click="modal.hide()"></button>
     </ion-header-bar>
-
     <ion-content padding="false"
                  has-tabs="false"
                  has-header="true" >
     <div ng-include src="'/views/sg/templates/shoplist.html'">
-
     </div>
-
     </ion-content>
-
 </ion-modal-view>
