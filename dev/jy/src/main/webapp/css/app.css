@@ -1034,8 +1034,8 @@ body {
     position: relative;
     display: inline-block;
     width: 100%;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-bottom: solid 1px #eaeaea;
 }
 
@@ -1066,6 +1066,7 @@ body {
     display: inline-block;
     width: 100%;
     text-align: right;
+    margin-top: 10px;
 }
 
 .orderSnapshotRemark{
@@ -1084,10 +1085,11 @@ body {
 .orderId {
     float: left;
     font-size: 12px;
+    max-width: 80%;
 }
 
 .orderDate {
-    float: right;
+    float: left;
     font-size: 12px;
 }
 

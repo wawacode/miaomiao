@@ -1,7 +1,7 @@
 <ion-view>
-    <ion-nav-bar class="bar-light orderHeaderbar">
-        <ion-nav-buttons side="left" class="button-dark">
-            <button class="button button-outline dark" ng-click="goToShopOrFindShop()">首页</button>
+    <ion-nav-bar class="bar-light orderHeaderbar headerBarWithShadow">
+        <ion-nav-buttons side="left" class="">
+            <button class="button button-outline dark button-dark" ng-click="goToShopOrFindShop()">首页</button>
         </ion-nav-buttons>
         <ion-nav-title>
             我的订单
@@ -28,9 +28,9 @@
 
         <div class="addNewAddressContainer" ng-if="info.hasAddress == false && info.hasShop"
              ng-animate="{show:'animate-show', hide:'animate-hide'}">
-            <div class="addNewAddressHint">
-                您还没有添加收货人信息,请添加
-            </div>
+            <!--<div class="addNewAddressHint">-->
+                <!--您还没有添加收货人信息,请添加-->
+            <!--</div>-->
             <div class="checkoutBasePadding text-center">
                 <a class="icon icon-2x ion-ios7-plus-outline" style="font-size: 14px" ng-click="switchToAddressList($event)"> 添加新地址</a>
             </div>
@@ -74,8 +74,8 @@
 <script id="templates/snapshotOrder.html" type="text/ng-template">
 
     <div class="orderSnapshotHeader">
-        <div class="orderId" bo-text="'订单号: ' + order.order_id"></div>
-        <div class="orderDate" bo-text="order.create_time | date:'yyyy-MM-dd'"></div>
+        <!--<div class="orderId" bo-text="'订单号: ' + order.order_id"></div>-->
+        <div class="orderDate" bo-text=" ($index + 1) + '. 订单时间: ' +(order.create_time | date:'yyyy-MM-dd H:mm')"></div>
     </div>
     <div class="orderSnapshot" bindonce quick-ng-repeat="orderItem in order.items">
         <div class="prod_icon" back-img="{{orderItem.pic_url}}"></div>
@@ -84,10 +84,9 @@
             <span bo-text="'¥'+ orderItem.price/100.0"></span>
             <span class="orderSnapshotCountNumber" bo-text="' X ' + orderItem.count"></span>
         </div>
+
     </div>
-
-    <div class="orderSnapshotRemark" bo-text="'买家留言:' + orderItem.remarks"></div>
-
+    <div class="orderSnapshotRemark" bo-text="'买家留言: ' + order.remarks" ng-if="order.remarks"></div>
     <div class="orderSnapshotTotal">
         <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
                         <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
