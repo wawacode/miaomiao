@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop')
+;angular.module('miaomiao.shop')
     .controller('OrderSuccessCtrl', function ($scope, $rootScope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage,ShoppingCart,OrderService) {
 
         // go to orders page

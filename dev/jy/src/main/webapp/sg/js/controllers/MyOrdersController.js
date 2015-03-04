@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop')
+;angular.module('miaomiao.shop')
     .controller('MyOrdersCtrl',function ($scope, $ionicLoading,$ionicPopup, $http, $state,$ionicScrollDelegate,localStorageService,$sessionStorage,httpClient,AddressService,OrderService,MMUtils) {
 
         $scope.shop = localStorageService.get('MMMETA_shop') || {};

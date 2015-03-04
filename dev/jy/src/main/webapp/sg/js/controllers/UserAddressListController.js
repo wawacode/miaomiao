@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop')
+;angular.module('miaomiao.shop')
     .controller('UserAddressListCtrl', function ($scope, $ionicLoading,$ionicPopup, $http,$ionicScrollDelegate, $state,
                                                  localStorageService,httpClient,AddressService, MMUtils) {
 

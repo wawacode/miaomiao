@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').
+;angular.module('miaomiao.shop').
     controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout, httpClient, MMUtils) {
 
         $scope.info = {};

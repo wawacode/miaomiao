@@ -1,16 +1,17 @@
+;
 angular.module('miaomiao.shop')
-    .controller('AddressListCtrl', function ($scope, $ionicLoading, $http, $state,$ionicPopup, localStorageService,httpClient,AddressService,MMUtils) {
+    .controller('AddressListCtrl', function ($scope, $ionicLoading, $http, $state, $ionicPopup, localStorageService, httpClient, AddressService, MMUtils) {
 
         $scope.shop = localStorageService.get('MMMETA_shop');
 
-        function updateAddress(){
+        function updateAddress() {
             $scope.LoadingMessage = '正在加载地址列表...';
             $ionicLoading.show({
                 templateUrl: '/views/sg/templates/loadingIndicator.html',
                 scope: $scope
             });
 
-            httpClient.getAddressList($scope.shop.id ,function(data, status){
+            httpClient.getAddressList($scope.shop.id, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
@@ -26,11 +27,11 @@ angular.module('miaomiao.shop')
                 $scope.shop = dataDetail.shop;
                 $scope.addressls = dataDetail.addressls || [];
 
-                if($scope.addressls && $scope.addressls.length){
+                if ($scope.addressls && $scope.addressls.length) {
                     $scope.addressls[0].isDefault = true;
                 }
 
-            },function(data, status){
+            }, function (data, status) {
                 $scope.addressls = [];
                 $ionicPopup.alert({
                     title: '加载数据失败,请刷新',
@@ -39,13 +40,13 @@ angular.module('miaomiao.shop')
             })
         }
 
-        $scope.goToAddNewAddress = function(){
+        $scope.goToAddNewAddress = function () {
             $state.go('addAddress');
         }
 
-        $scope.setDefaultAddress = function(addr){
+        $scope.setDefaultAddress = function (addr) {
 
-            for(var i=0;i< $scope.addressls.length;i++){
+            for (var i = 0; i < $scope.addressls.length; i++) {
                 $scope.addressls[i].isDefault = false;
             }
             addr.isDefault = true;
@@ -56,7 +57,7 @@ angular.module('miaomiao.shop')
                 scope: $scope
             });
 
-            httpClient.setDefaultAddress($scope.shop.id, addr, function(data, status){
+            httpClient.setDefaultAddress($scope.shop.id, addr, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
@@ -69,12 +70,12 @@ angular.module('miaomiao.shop')
 
                 $ionicLoading.hide();
 
-                $state.go('checkout',null, { reload: true });
+                $state.go('checkout', null, { reload: true });
 
                 AddressService.addressChangeEventSwitchDefault(addr);
 
 
-            },function(data, status){
+            }, function (data, status) {
 
                 $ionicLoading.hide();
 
@@ -85,9 +86,9 @@ angular.module('miaomiao.shop')
             })
         }
 
-        $scope.addNewAddressConfirm = function(){
+        $scope.addNewAddressConfirm = function () {
 
-            if(!$scope.newAddress.address || !$scope.newAddress.phone || !MMUtils.isValidTelNumber($scope.newAddress.phone)){
+            if (!$scope.newAddress.address || !$scope.newAddress.phone || !MMUtils.isValidTelNumber($scope.newAddress.phone)) {
 
                 $ionicPopup.alert({
                     title: '请填写正确的地址电话',
@@ -103,7 +104,7 @@ angular.module('miaomiao.shop')
                 scope: $scope
             });
 
-            httpClient.addAddress($scope.shop.id, $scope.newAddress, function(data, status){
+            httpClient.addAddress($scope.shop.id, $scope.newAddress, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
@@ -116,12 +117,12 @@ angular.module('miaomiao.shop')
 
                 $ionicLoading.hide();
 
-                $state.go('checkout',null, { reload: true });
+                $state.go('checkout', null, { reload: true });
 
                 AddressService.addressChangeEventAddNew($scope.newAddress);
 
 
-            },function(data, status){
+            }, function (data, status) {
 
                 $ionicLoading.hide();
 

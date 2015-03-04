@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop')
+;angular.module('miaomiao.shop')
     .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService, MMUtils) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();

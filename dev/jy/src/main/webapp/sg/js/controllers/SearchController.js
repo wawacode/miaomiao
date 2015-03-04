@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading,$ionicScrollDelegate, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
+;angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading,$ionicScrollDelegate, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
 
 
 

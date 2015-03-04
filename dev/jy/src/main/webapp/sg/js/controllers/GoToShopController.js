@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('GoToShopCtrl', function ($scope, $stateParams, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
+;angular.module('miaomiao.shop').controller('GoToShopCtrl', function ($scope, $stateParams, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
                                                                     $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService) {
 
     // get shop info from local storage cause in locate page we have got one
