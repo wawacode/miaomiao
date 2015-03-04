@@ -927,7 +927,7 @@ body {
 
 .shoppingCartDisplayBackground {
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.6);
     position: absolute;
     bottom: 44;
     left: 0;
@@ -939,7 +939,7 @@ body {
 
 .shoppingCartDisplay {
 
-    height: 50%;
+    height: 60%;
     background-color: #ffffff;
     position: absolute;
     bottom: 44;
@@ -954,7 +954,7 @@ body {
 
 .shop-cart-list {
     background-color: #ffffff;
-    padding-bottom: 30px;
+    padding-bottom: 0px;
 }
 
 .shoppingCartList {
@@ -973,7 +973,7 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 20px;
 }
 
@@ -998,7 +998,7 @@ body {
 
 .clearShoppingCart {
     padding-left: 0px;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     display: inline-block;
 }
 
