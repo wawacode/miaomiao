@@ -1017,11 +1017,10 @@ ul.rating li i {
 .orderId {
     float: left;
     font-size: 12px;
-    max-width: 80%;
 }
 
 .orderDate {
-    float: left;
+    float: right;
     font-size: 12px;
 }
 

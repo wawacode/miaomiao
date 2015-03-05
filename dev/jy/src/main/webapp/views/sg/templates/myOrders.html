@@ -69,8 +69,8 @@
 
 <script id="templates/snapshotOrder.html" type="text/ng-template">
     <div class="orderSnapshotHeader">
-        <!--<div class="orderId" bo-text="'订单号: ' + order.order_id"></div>-->
-        <div class="orderDate" bo-text=" ($index + 1) + '. 订单时间: ' +(order.create_time | date:'yyyy-MM-dd H:mm')"></div>
+        <div class="orderId" bo-text="($index + 1) + '. ' + order.shop_name4V "></div>
+        <div class="orderDate" bo-text="(order.create_time | date:'yyyy-MM-dd H:mm')"></div>
     </div>
     <div class="orderSnapshot" bindonce quick-ng-repeat="orderItem in order.items">
         <div class="prod_icon" back-img="{{orderItem.pic_url}}"></div>
