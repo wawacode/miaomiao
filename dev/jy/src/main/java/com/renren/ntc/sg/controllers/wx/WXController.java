@@ -90,17 +90,30 @@ public class WXController {
         String mtype =  getMtype(body);
         String toUser = getToUser(body);
         String fromUser = getFromUser(body);
+        String eventKey = getEventKey(body);
+        String event = getEvent(body);
+
         if ("event".equals(mtype)) {
-            String event = getEvent(body);
-            String eventKey = getEventKey(body);
+
             if ("about_miaomiao".equals(eventKey)){
-            LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
-            String response = CONTENT2.replace("{message}", MESSAGE);
-            response = response.replace("{toUser}",fromUser);
-            response = response.replace("{fromUser}",toUser);
-            response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
-            return  response;
+              LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
+              String response = CONTENT2.replace("{message}", MESSAGE);
+              response = response.replace("{toUser}",fromUser);
+              response = response.replace("{fromUser}",toUser);
+              response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+              return  response;
             }
+            if ("subscribe".equals(event)){
+                String content = getContent(body);
+                LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
+                String response = CONTENT.replace("{message}", MESSAGE);  // 这个其实没用
+                response = response.replace("{toUser}",fromUser);
+                response = response.replace("{fromUser}",toUser);
+                response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                return  response;
+
+            }
+
         }
 //        // 用户给发消息
         String content = getContent(body);
@@ -135,13 +148,6 @@ public class WXController {
 
     }
 
-    private static String getEventType(String body) {
-        String s = "<Event><![CDATA[";
-        String e = "]]></Event>";
-        int start =body.indexOf(s);
-        int end =body.indexOf(e);
-        return body.substring( s.length() + start ,end);
-    }
 
     private static  String getEvent(String body) {
         String s = "<Event><![CDATA[";
