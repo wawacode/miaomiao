@@ -53,7 +53,9 @@ public class PushService {
     public  void send(String phone,String message){
         this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
          String device_token = null;
-         PushToken pushToken = pushTokenDao.getPushToken(phone);
+         List<PushToken>  pushTokens = pushTokenDao.getPushToken(phone);
+         for (PushToken pushToken  : pushTokens)
+         {
          if (null != pushToken){
              try {
                  if ("iOS".equals(pushToken.getChn())){
@@ -68,6 +70,7 @@ public class PushService {
              }
          }
 
+         }
     }
 
 	
@@ -153,12 +156,14 @@ public class PushService {
             if (shop != null) {
                 List<CatStaffCommit> catcommitls = catStaffCommitDao.getbyShopid(shop.getId());
                 for (CatStaffCommit catcommit : catcommitls ){
-                  PushToken pushToken = pushTokenDao.getPushToken(catcommit.getPhone());
+                  List<PushToken> pushTokens = pushTokenDao.getPushToken(catcommit.getPhone());
+                  for (PushToken pushToken  : pushTokens)  {
                   if(pushToken ==  null){
                     LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
                     return ;
                   }
                   send(pushToken.getOwner_phone(), message);
+                  }
                 }
             }
         } catch (Throwable e) {
@@ -179,13 +184,14 @@ public class PushService {
             if (shop != null) {
                 List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
                 for (Catstaff  catstaff : catstaffls ){
-                    PushToken pushToken = pushTokenDao.getPushToken(catstaff.getPhone());
+                    List<PushToken> pushTokens = pushTokenDao.getPushToken(catstaff.getPhone());
+                    for (PushToken pushToken  : pushTokens){
                     if(pushToken ==  null){
                         LoggerUtils.getInstance().log(String.format("miss push token  %s ", catstaff.getPhone()));
                         return ;
                     }
                     send(pushToken.getOwner_phone(), message);
-
+                    }
                 }
             }
         } catch (Throwable e) {
