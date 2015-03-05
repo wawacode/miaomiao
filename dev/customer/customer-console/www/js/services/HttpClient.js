@@ -42,9 +42,9 @@
                 doPost('login/valid', {'phone': phone, pwd: pwd}, success, fail);
             },
 
-            logOut: function (phone, success, fail) {
+            logOut: function (phone,device_token,loginToken, success, fail) {
 
-                doGet('logout', 'phone=' + phone, success, fail);
+                doGet('logout', 'phone=' + phone + "&device_token=" + device_token + "&token=" + loginToken, success, fail);
             },
 
             changePwd: function (phone, old_pwd, new_pwd, success, fail) {

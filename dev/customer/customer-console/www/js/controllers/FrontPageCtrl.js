@@ -1,6 +1,7 @@
 ;angular.module('miaomiao.console.controllers')
     .controller('FrontPageCtrl', function ($scope, $ionicLoading, $ionicActionSheet, $ionicPopup, $state, $timeout,
-                                           localStorageService, $ionicScrollDelegate, httpClient, MMShopService, MMUtils) {
+                                           localStorageService, $ionicScrollDelegate, httpClient, MMPushNotification,
+                                           MMShopService, MMUtils) {
 
         $scope.info = {};
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
@@ -95,7 +96,11 @@
 
                     $scope.user = localStorageService.get('MMCONSOLE_METADATA_USER');
 
-                    httpClient.logOut($scope.user.phone, function (data, status) {
+                    var userPhone = $scope.user.phone,
+                        deviceToken = MMPushNotification.getDeviceToken(),
+                        loginToken = $scope.user.token;
+
+                    httpClient.logOut(userPhone,deviceToken,loginToken, function (data, status) {
 
                         // remove identity feild
                         localStorageService.set('MMCONSOLE_METADATA_USER', {'name': $scope.user.name, 'phone': $scope.user.phone});
