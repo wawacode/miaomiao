@@ -39,7 +39,7 @@ body {
 }
 
 .noBorderBottonLi {
-    border-bottom: none;
+    border-bottom: none !important;
 }
 
 .no-result-display {
