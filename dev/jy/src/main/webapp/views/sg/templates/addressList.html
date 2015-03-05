@@ -16,18 +16,18 @@
             <div class="addressListHeader" ng-if="addressls && addressls.length">
                 常用地址
             </div>
-            <div class="addressItem addressCandidate item item-icon-right"
+            <div class="addressItem addressdefault addressSelected item-icon-right"
                  ng-class="{'addressSelected': addr.isDefault ,'addressUnselected':  !addr.isDefault}"
                  bindonce
                  quick-ng-repeat="addr in addressls"
                  ng-click="setDefaultAddress(addr)">
                 <div class="addressItem-address"><span
-                        class="addressTitle">收货地址:</span><span
-                        class="addressAddrValue">{{addr.address}}</span>
+                        class="addressTitle">收货地址:</span>
+                    {{addr.address}}
                 </div>
                 <div class="addressItem-phone"><span
-                        class="addressTitle">联系电话:</span><span
-                        class="addressPhoneValue">{{addr.phone}}</span>
+                        class="addressTitle">联系电话:</span>
+                    {{addr.phone}}
                 </div>
                 <a class="icon balanced" ng-class="{'ion-ios7-checkmark':addr.isDefault,'ion-ios7-circle-outline':!addr.isDefault}"
                    style="right: 20px"></a>
