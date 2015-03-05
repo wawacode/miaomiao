@@ -57,9 +57,10 @@ public class PushService {
          if (null != pushToken){
              try {
                  if ("iOS".equals(pushToken.getChn())){
-                     LoggerUtils.getInstance().log("send ios");
+                     LoggerUtils.getInstance().log( phone +  " " + pushToken.getDevice_token() +  " send ios");
                      sendIOSUnicast(phone, message, pushToken.getDevice_token());
                  } else{
+                     LoggerUtils.getInstance().log(phone + " " + pushToken.getDevice_token() + " send adr ");
                     sendAndroidUnicast(phone,message,pushToken.getDevice_token());
                  }
              } catch (Exception e) {
@@ -100,7 +101,7 @@ public class PushService {
         unicast.setPredefinedKeyValue("badge", 1);
         unicast.setPredefinedKeyValue("sound", "chime");
         // TODO set 'production_mode' to 'true' if your app is under production mode
-        unicast.setPredefinedKeyValue("production_mode", "false");
+        unicast.setPredefinedKeyValue("production_mode", "true");
         // Set customized fields
         unicast.setCustomizedField("test", "helloworld");
         unicast.send();
@@ -182,6 +183,7 @@ public class PushService {
                         return ;
                     }
                     send(pushToken.getOwner_phone(), message);
+
                 }
             }
         } catch (Throwable e) {

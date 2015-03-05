@@ -173,6 +173,15 @@ public class LoginController extends BasicConsoleController {
         JSONObject result = new JSONObject();
         if (user != null) {
             if (user instanceof Catstaff) {
+                if(ifkf((Catstaff)user)){
+                    LoggerUtils.getInstance().log( String.format("kf  %s logining " ,user.getPhone()));
+                    List<Shop> shops = shopDAO.getAllShopsAllFieldsByAudit(1);
+                    JSONObject resultJson = new JSONObject();
+                    JSONArray s = (JSONArray) JSON.toJSON(shops);
+                    resultJson.put("shop", shops);
+                    return "@json:" + getDataResult(0, resultJson);
+                }
+
                 List<Long> shop_ids = catstaffCommitDao.getShop_ids(user.getPhone());
                 List<Shop> shops = shopDAO.getShops(shop_ids);
                 if (null == shops || shops.size() == 0) {
