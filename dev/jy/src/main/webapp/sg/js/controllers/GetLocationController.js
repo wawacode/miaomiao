@@ -85,7 +85,7 @@
             }
         }
 
-        $scope.$on("$ionicView.enter", function () {
+        $scope.$on("$ionicView.afterEnter", function () {
 
             if ($scope.info.lastShop && $scope.info.lastShop.id) {
                 $state.go('productList');

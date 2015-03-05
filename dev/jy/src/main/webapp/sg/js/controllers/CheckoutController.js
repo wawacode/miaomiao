@@ -8,6 +8,7 @@
         $scope.info.address = {};
         $scope.info.newOrderAddress = '';
         $scope.info.newOrderPhone = '';
+        $scope.info.dataReady = false;
 
         function checkOrders() {
 
@@ -21,6 +22,7 @@
             httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function (data, status) {
 
                 $ionicLoading.hide();
+                $scope.info.dataReady = true;
 
                 var code = data.code, dataDetail = data.data;
                 if (code == 500) {
@@ -59,6 +61,7 @@
 
             }, function (data, status) {
                 $ionicLoading.hide();
+                $scope.info.dataReady = true;
             });
         }
 

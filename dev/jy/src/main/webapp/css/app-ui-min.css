@@ -1,6 +1,6 @@
 @font-face{font-family:'w3';src:url('/fonts/Hiragino-Sans.ttf') format('truetype');font-weight:normal;font-style:normal}
 html{height:100%;-ms-touch-action:manipulation;touch-action:manipulation;background-color:#fff}
-body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;font-family:"Hiragino Sans GB","w3","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif;background-color:#fff}
+body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;font-family:"Hiragino Sans GB","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif;background-color:#fff}
 .nonPadding{padding:0}
 .justify{overflow:hidden;text-align:justify;text-justify:distribute-all-lines}
 .baseRedColor{color:#ef5356}
@@ -13,8 +13,8 @@ body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;fon
 .headerBarWithShadow:after{content:"";position:absolute;left:-1;right:-1;bottom:-5px;width:100%;height:5px;background:-moz-linear-gradient(top,rgba(206,206,206,0.3),rgba(255,255,255,0.7));background:-webkit-gradient(linear,center top,center bottom,from(rgba(206,206,206,0.3)),to(rgba(255,255,255,0.7)));background:-webkit-linear-gradient(top,rgba(206,206,206,0.3),rgba(255,255,255,0.7));background:-o-linear-gradient(top,rgba(206,206,206,0.3),rgba(255,255,255,0.7))}
 .contentWithHeaderBarShadow{top:49}
 .smallHeaderButton{z-index:1;padding:0 5px !important;min-width:initial;min-height:25px !important;font-weight:400;font-size:13px;line-height:10px !important;margin-top:5px !important;margin-left:5px !important}
-.loadingBackground{position:absolute;width:100%;height:100%}
-.getGeolocation{z-index:10;position:absolute;left:0;right:0;bottom:22%;text-align:center}
+.loadingBackground{position:relative;width:100%;height:100%}
+.getGeolocation{z-index:10;position:absolute;left:0;right:0;bottom:25%;text-align:center}
 .getGeolocation-img{width:80px;height:auto}
 .getGeolocation-title{font-size:12;color:#fff;padding-top:10px}
 .getGeolocation-title.getGeolocation-title-success{color:#fff}
@@ -41,9 +41,9 @@ body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;fon
 .rating{color:#fff;margin:0;padding:0;font-size:12px}
 ul.rating li{display:inline;border:solid 1px rgba(252,109,38,1);border-radius:5px;background:rgba(252,109,38,1);padding:0 1px 0 1px;margin-right:1px}
 ul.rating li i{font-size:12px}
-.search-box{width:100%;padding:5px;z-index:100;background:#eaeaea;font-family:"Hiragino Sans GB","w3","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif}
+.search-box{width:100%;padding:5px;z-index:100;background:#eaeaea;font-family:"Hiragino Sans GB","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif}
 .searchSuggestionResultList{position:absolute;top:86;bottom:29;width:100%;left:0;right:0;background-color:rgba(236,236,236,0.7);z-index:200;opacity:.9}
-.chooseShopHeader{background-color:#7a7a7a;width:100%;height:29px;color:#fff;font-size:11px;padding:5px 10px 0 10px;font-family:"Hiragino Sans GB","w3","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif}
+.chooseShopHeader{background-color:#7a7a7a;width:100%;height:29px;color:#fff;font-size:11px;padding:5px 10px 0 10px;font-family:"Hiragino Sans GB","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif}
 .homepageContent{position:absolute;bottom:49;top:49;z-index:9}
 .homepageHeaderBar .buttons-right{right:14px !important}
 .homepageHeaderBar.buttons-left{margin-left:9px !important}
@@ -71,8 +71,9 @@ ul.rating li i{font-size:12px}
 .shop-product-categray-list{margin:0;padding:0 9px 9px 12px;padding-left:5px}
 .shop-categray-list{background-color:rgba(236,236,236,1.0)}
 .shop-categray{background-color:rgba(236,236,236,1.0);overflow:hidden;position:relative;width:100%}
-.shop-categray-selected{background-color:#fff;border-right:0}
-.shop-categray-item{text-align:left;font-size:15px;color:#6a6a6a;padding:9px 10px 9px 20px}
+.shop-categray-selected{background-color:#fff;border-right:0;position:relative;color:#ef5356}
+.shop-categray-selected:before{content:"";position:absolute;left:0;top:0;width:5px;height:100%;background-color:#ef5356;color:#ef5356}
+.shop-categray-item{text-align:left;font-size:15px;padding:9px 10px 9px 20px}
 .shop-categray-item-decorate{background-color:#ef5356;width:5px;height:100%;position:absolute;left:0}
 .shop-categray-item-edge{background-color:#ef5356;color:#fff;width:auto;min-width:18px;text-shadow:none;height:18px;border-radius:9px;position:absolute;top:6%;right:2;text-align:center;font-size:12px;padding:0;font-weight:lighter;font-family:sans-serif}
 .shop-categray-item-selected{color:#ef5356}
@@ -90,7 +91,7 @@ ul.rating li i{font-size:12px}
 .addressTitle{margin-right:10px;color:#7a7a7a}
 .addressItem-address{word-wrap:break-word}
 .addressItem-phone{word-wrap:break-word;margin-top:10px}
-.addressInput{font-family:"Hiragino Sans GB","w3","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif;font-size:15px;border:0;padding:5px}
+.addressInput{font-family:"Hiragino Sans GB","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif;font-size:15px;border:0;padding:5px}
 .shoppingCartDisplayBackground{height:100%;background-color:rgba(0,0,0,0.6);position:absolute;bottom:44;left:0;width:100%;display:none;overflow:hidden;z-index:100}
 .shoppingCartDisplay{height:60%;background-color:#fff;position:absolute;bottom:44;left:0;width:100%;overflow:scroll;z-index:200;display:none;border-top:solid 2px #ef5356;-webkit-overflow-scrolling:touch}
 .shop-cart-list{background-color:#fff;padding-bottom:0}
@@ -115,7 +116,7 @@ ul.rating li i{font-size:12px}
 .checkoutFooterBar{padding:0;overflow:hidden;height:49}
 .checkoutBasePadding{padding:10px 20px 5px 20px}
 .bar-light.checkoutHeaderbar{background:rgba(255,255,255,1.0) !important;z-index:500 !important}
-.noOrderHint{position:relative;padding-top:50px;width:100%;display:inline-block;text-align:center;font-family:"Hiragino Sans GB","w3","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif}
+.noOrderHint{position:relative;padding-top:50px;width:100%;display:inline-block;text-align:center;font-family:"Hiragino Sans GB","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif}
 .noOrderImageHint{padding-top:20px;display:inline-block;width:175px;height:175px;background-image:url('/images/cat_grey.png');background-size:contain}
 .noOrderGotoShop{display:inline-block;width:134px;height:auto;font-size:17px;text-align:center;padding:10px 10px 10px 10px;margin-top:10px;background-color:#ef5356;color:#fff;border-radius:2px}
 .orderListHeader{background-color:#eaeaea;padding:5px 5px 5px 20px}
@@ -133,4 +134,4 @@ ul.rating li i{font-size:12px}
 .orderId{float:left;font-size:12px;max-width:80%}
 .orderDate{float:left;font-size:12px}
 .orderStatus{float:right;color:#fff;background-color:#ef5356;text-shadow:none;padding:2px 10px 2px 10px;font-size:18px;margin-top:9px}
-.orderRemarks{background-color:#fff;border:solid 1px #eaeaea !important;font-size:14px;padding-left:10px !important;border-radius:3px;font-family:"Hiragino Sans GB","w3","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif}
+.orderRemarks{background-color:#fff;border:solid 1px #eaeaea !important;font-size:14px;padding-left:10px !important;border-radius:3px;font-family:"Hiragino Sans GB","黑体","Microsoft YaHei",Arial,Helvetica,sans-serif}

@@ -38,7 +38,7 @@
                            required style="border-bottom: none;margin-top: 10px">
                 </div>
             </div>
-            <div class="checkoutBasePadding" style="padding-top: 10px">
+            <div class="checkoutBasePadding" style="padding-top: 10px" ng-if="info.dataReady == true">
                 <ul>
                     <li class="product-item"
                         bindonce
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div style="margin-top:10px;" ng-if="shoppingCartItems && shoppingCartItems.length != 0">
+            <div style="margin-top:10px;" ng-if="info.dataReady == true">
                 <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
                     付款方式
                 </div>
@@ -93,7 +93,7 @@
                 </div>
             </div>
     </ion-content>
-    <ion-footer-bar class="bar-light checkoutFooterBar">
+    <ion-footer-bar class="bar-light checkoutFooterBar" ng-if="info.dataReady == true">
         <div class="row nonPadding">
             <div class="col nonPadding">
                 <div class="row nonPadding">

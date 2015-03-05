@@ -31,10 +31,7 @@
                                 class="shop-categray "
                                 ng-click="selectCategory(category)"
                                 ng-class="{'shop-categray-selected': category.selected}">
-                                <div class="shop-categray-item-decorate" ng-if="category.selected"
-                                     ng-animate="{show:'animate-show', hide:'animate-hide'}"></div>
-                                <div bo-text="category.name" class="shop-categray-item"
-                                     ng-class="{'shop-categray-item-selected': category.selected}">
+                                <div bo-text="category.name" class="shop-categray-item">
                                 </div>
                                 <div class="shop-categray-item-edge" ng-if="category.totalCnt">
                                     {{category.totalCnt}}
