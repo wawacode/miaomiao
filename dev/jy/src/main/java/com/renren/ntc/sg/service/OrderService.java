@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Address;
 import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,11 @@ import java.util.List;
  */
 @Service
 public class OrderService {
+
+
+    @Autowired
+    public ShopDAO shopDAO;
+
 
     @Autowired
     public AddressService addressService;
@@ -38,6 +45,8 @@ public class OrderService {
             o.setAddress(adr.getAddress());
             o.setStatus4V(toStr(o.getStatus(), first));
             o.setPrice4V(((float) o.getPrice() / 100) + "");
+            Shop shop = shopDAO.getShop(o.getShop_id());
+            o.setShop_name4V(shop.getName());
             oo.add(o);
             first ++;
         }

@@ -36,6 +36,16 @@ public class Order {
     private Date create_time ;
     private Date update_time   ;
 
+    public String getShop_name4V() {
+        return shop_name4V;
+    }
+
+    public void setShop_name4V(String shop_name4V) {
+        this.shop_name4V = shop_name4V;
+    }
+
+    private String shop_name4V = "" ;
+
     public int getReaded() {
         return readed;
     }
