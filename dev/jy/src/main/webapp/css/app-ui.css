@@ -1,10 +1,10 @@
 /*commmon css*/
-@font-face {
-    font-family: 'w3';
-    src: url('/fonts/Hiragino-Sans.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
+/*@font-face {*/
+    /*font-family: 'w3';*/
+    /*src: url('/fonts/Hiragino-Sans.ttf') format('truetype');*/
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+/*}*/
 
 html {
     height: 100%;
