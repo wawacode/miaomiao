@@ -20,7 +20,7 @@ body {
     padding: 0px;
     margin: 0px;
     border: 0px;
-    font-family: "Hiragino Sans GB",  "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    font-family: Hiragino Sans GB, SimHei, Microsoft YaHei, Arial, Helvetica, sans-serif;
     background-color: #fff;
 }
 
@@ -302,7 +302,6 @@ ul.rating li i {
     padding: 5px;
     z-index: 100;
     background: #eaeaea;
-    font-family: "Hiragino Sans GB",  "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;
 }
 
 .searchSuggestionResultList {
@@ -325,7 +324,6 @@ ul.rating li i {
     color: #ffffff;
     font-size: 11px;
     padding: 5px 10px 0px 10px;
-    font-family: "Hiragino Sans GB",  "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;
 }
 
 /* home page - product list*/
@@ -710,7 +708,6 @@ ul.rating li i {
 
 .addressInput {
 
-    font-family: "Hiragino Sans GB",  "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;;
     font-size: 15px;
     border: none;
     padding: 5px;
@@ -908,7 +905,6 @@ ul.rating li i {
     width: 100%;
     display: inline-block;
     text-align: center;
-    font-family: "Hiragino Sans GB",  "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;;
 }
 
 .noOrderImageHint {
@@ -1046,5 +1042,4 @@ ul.rating li i {
     font-size: 14px;
     padding-left: 10px !important;
     border-radius: 3px;
-    font-family: "Hiragino Sans GB",  "黑体", "Microsoft YaHei", Arial, Helvetica, sans-serif;
 }
