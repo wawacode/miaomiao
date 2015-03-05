@@ -20,6 +20,10 @@
                     });
                 }
             },
+            getDeviceToken:function(){
+                return localStorageService.get('MMCONSOLE_META_PUSH_DEVICE_TOKEN');
+            },
+
             newOrderNotificationReceived: function (data) {
                 console.log('we have see new orders and sent broadcast');
                 $timeout(function () {
