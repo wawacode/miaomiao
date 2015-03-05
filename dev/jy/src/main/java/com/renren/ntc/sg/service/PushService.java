@@ -122,12 +122,14 @@ public class PushService {
                     " 总额：" +  p ;
             if (shop != null) {
                 String phone = shop.getOwner_phone();
-                PushToken pushToken = pushTokenDao.getPushToken(phone);
+                List <PushToken> pushTokens = pushTokenDao.getPushToken(phone);
+                for (PushToken pushToken   : pushTokens )   {
                 if(pushToken ==  null){
                        LoggerUtils.getInstance().log(String.format("miss push token  %s ", phone));
                        return ;
                 }
                 send(pushToken.getOwner_phone(), message);
+                }
             }
         } catch (Throwable e) {
             e.printStackTrace();
