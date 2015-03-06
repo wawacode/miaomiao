@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.renren.ntc.sg.bean.Product;
+import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.util.ImagesUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
@@ -22,10 +24,6 @@ import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.ShopCategory;
-import com.renren.ntc.sg.biz.dao.ItemsDAO;
-import com.renren.ntc.sg.biz.dao.OrdersDAO;
-import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
-import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.constant.SgConstant;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
@@ -42,6 +40,9 @@ public class ItemConsoleController extends BasicConsoleController{
 
     @Autowired
     private OrdersDAO ordersDAO ;
+
+    @Autowired
+    private ProductDAO productDao ;
 
     @Autowired
     private ItemsDAO itemsDAO ;
@@ -142,9 +143,8 @@ public class ItemConsoleController extends BasicConsoleController{
 									  @Param("count") int count,
 									  @Param("score") int score,
 									  @Param("price") int price,
-									  @Param("pic") MultipartFile pic,
 									  @Param("shop_id") long shop_id,
-									  @Param("pic_url") String itemPicUrl,
+									  @Param("pic_url") String pic_url,
 									  @Param("saleStatus") String saleStatus) {
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
@@ -155,25 +155,9 @@ public class ItemConsoleController extends BasicConsoleController{
     	resultJson.put("code", -1);
 		resultJson.put("msg", "服务器错误，请稍后重试");
 		String picUrl = "";
-    	if(pic != null){
-    		String picName = pic.getOriginalFilename();
-        	String[] picNameArr = pic.getOriginalFilename().split("\\.");
-        	if(pic!=null && picNameArr.length ==2){
-        		picName = serialNo+"."+picNameArr[1];
-        	}else {
-        		LoggerUtils.getInstance().log(String.format("upload pic format is wrong,serialNo=%s",serialNo));
-        		return "@json:"+resultJson.toJSONString();
-    		}
-        	String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shopId));
-        	boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
-    		if(!isSuc){
-    			return "@json:"+resultJson.toJSONString();
-    		}
-    		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
-    		picUrl = imageUrl.concat(picName);
-    	}
-    	if(!StringUtils.isBlank(itemPicUrl)){
-    		picUrl = itemPicUrl;
+    	if(!StringUtils.isBlank(pic_url)){
+            Product p = productDao.geProduct(serialNo);
+    		picUrl = p.getPic_url();
     	}
     	int onsell = Constants.ITEM_NOT_SALE;
     	if(!StringUtils.isBlank(saleStatus)){
