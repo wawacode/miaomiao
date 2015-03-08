@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.SMSService;
 import com.renren.ntc.sg.util.CookieManager;
@@ -28,9 +29,9 @@ public class WXController {
 
     @Autowired
     public SMSService smsService;
-    public Map <String,String>  map = new ConcurrentHashMap<String,String>() ;
+//    public Map <String,String>  map = new ConcurrentHashMap<String,String>() ;
     public  WXController (){
-        map.put("qrscene_3","18600326217") ;
+//        map.put("qrscene_3","18600326217") ;
     }
     static final String CONTENT ="<xml>\n" +
             "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
@@ -121,7 +122,7 @@ public class WXController {
                 response = response.replace("{toUser}",fromUser);
                 response = response.replace("{fromUser}",toUser);
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
-                String phone = (String) map.get(eventKey);
+                String phone = JRedisUtil.getInstance().get(eventKey);
                 if(!StringUtils.isBlank(phone)) {
                    smsService.sendSMS2tguang(fromUser,phone);
                 }
