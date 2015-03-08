@@ -10,6 +10,7 @@ import redis.clients.jedis.Jedis;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -35,12 +36,26 @@ public class JRedisUtil {
         return jds.set(key,value);
     }
 
+
+    public long  sadd( String key, String value){
+        return jds.sadd(key,value);
+    }
+
+    public long  scard ( String key){
+        return jds.scard(key);
+    }
+
     public String  get(String key){
         return jds.get(key);
     }
 
+    public Set<String> keys(String prefix){
+        return jds.keys(prefix);
+    }
+
     public static void main(String[] args) {
-        JRedisUtil.getInstance().set("qrscene_3","18911125901");
+//        JRedisUtil.getInstance().set("qrscene_3","18911125901");
+        JRedisUtil.getInstance().set("qrscene_3","18600326217");
         System.out.println(JRedisUtil.getInstance().get("qrscene_3"));
     }
 }

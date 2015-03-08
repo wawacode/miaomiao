@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Path("")
@@ -30,6 +31,8 @@ public class WXController {
     @Autowired
     public SMSService smsService;
 //    public Map <String,String>  map = new ConcurrentHashMap<String,String>() ;
+
+    private  final String PREFIX = "qrscene_";
     public  WXController (){
 //        map.put("qrscene_3","18600326217") ;
     }
@@ -122,9 +125,12 @@ public class WXController {
                 response = response.replace("{toUser}",fromUser);
                 response = response.replace("{fromUser}",toUser);
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                if(eventKey.startsWith(PREFIX)) {
+                long act =   JRedisUtil.getInstance().sadd(eventKey,fromUser) ;
                 String phone = JRedisUtil.getInstance().get(eventKey);
-                if(!StringUtils.isBlank(phone)) {
-                   smsService.sendSMS2tguang(fromUser,phone);
+                if(!StringUtils.isBlank(phone)&& act == 1) {
+                    smsService.sendSMS2tguang(fromUser,phone);
+                   }
                 }
                 return  response;
 
@@ -218,6 +224,23 @@ public class WXController {
         }
         return "r:http://weixin.qq.com/r/l3UsNBHEW0wkrVVX9yCF";
     }
+
+    @Get("stats")
+    @Post("stats")
+    public String stats( Invocation inv) {
+        Set<String> keys = JRedisUtil.getInstance().keys(PREFIX+"*");
+
+        Map<String,Long>  map = new HashMap<String,Long>() ;
+        JSONObject jb =  new JSONObject();
+        for (String key  :keys){
+            long count = JRedisUtil.getInstance().scard(key) ;
+            map.put(key,count) ;
+            jb.put(key,count) ;
+        }
+        inv.addModel("stats",map);
+        return "@" + jb.toJSONString();
+    }
+
 
     public static void main(String[] args) {
         System.out.println(System.currentTimeMillis());
