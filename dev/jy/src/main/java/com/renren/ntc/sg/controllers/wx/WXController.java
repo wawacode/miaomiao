@@ -126,7 +126,7 @@ public class WXController {
                 response = response.replace("{fromUser}",toUser);
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
                 if(eventKey.startsWith(PREFIX)) {
-                long act =   JRedisUtil.getInstance().sadd(eventKey,fromUser) ;
+                long act =   JRedisUtil.getInstance().sadd("set_" + eventKey ,fromUser) ;
                 String phone = JRedisUtil.getInstance().get(eventKey);
                 if(!StringUtils.isBlank(phone)&& act == 1) {
                     smsService.sendSMS2tguang(fromUser,phone);
@@ -228,7 +228,7 @@ public class WXController {
     @Get("stats")
     @Post("stats")
     public String stats( Invocation inv) {
-        Set<String> keys = JRedisUtil.getInstance().keys(PREFIX+"*");
+        Set<String> keys = JRedisUtil.getInstance().keys("set_" + PREFIX+"*");
 
         Map<String,Long>  map = new HashMap<String,Long>() ;
         JSONObject jb =  new JSONObject();
