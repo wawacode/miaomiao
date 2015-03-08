@@ -7,6 +7,7 @@ import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.SMSService;
+import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
@@ -240,7 +241,11 @@ public class WXController {
         inv.addModel("stats",map);
         return "@" + jb.toJSONString();
     }
-
+    @Post("add_phone")
+    public String add_phone( Invocation inv,@Param("phone") String phone,@Param("qrscene") String qrscene) {
+        JRedisUtil.getInstance().set(qrscene,phone) ;
+        return "@" + Constants.DONE;
+    }
 
     public static void main(String[] args) {
           Set<java.lang.String>  ss =  JRedisUtil.getInstance().keys(PREFIX+"*");
