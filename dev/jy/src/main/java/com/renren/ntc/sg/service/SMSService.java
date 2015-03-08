@@ -89,8 +89,9 @@ public class SMSService {
                 byte[] t = null;
                 String message = "#user#=" + user + "&#msg#=_" ;
                 message = URLEncoder.encode(message, "utf-8");
-               String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.TMP_TID, phone, message);
+                String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.TMP_TID, phone, message);
                 System.out.println(String.format("Send  SMS mobile %s , %s ", phone,message));
+                t = SHttpClient.getURLData(url, "");
                 String response = SUtils.toString(t);
                 System.out.println(String.format("Post Shop SMS message No. %s : %s  ", response, phone));
         } catch (Throwable e) {

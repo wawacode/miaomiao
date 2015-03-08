@@ -40,7 +40,7 @@ public class JRedisUtil {
     }
 
     public static void main(String[] args) {
-        JRedisUtil.getInstance().set("aaa","bbb");
-        System.out.println(JRedisUtil.getInstance().get("aaa"));
+        JRedisUtil.getInstance().set("qrscene_3","18911125901");
+        System.out.println(JRedisUtil.getInstance().get("qrscene_3"));
     }
 }
