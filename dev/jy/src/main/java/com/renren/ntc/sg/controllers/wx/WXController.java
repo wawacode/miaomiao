@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.SMSService;
 import com.renren.ntc.sg.util.CookieManager;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
@@ -17,11 +18,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Path("")
 public class WXController {
+
+    @Autowired
+    public SMSService smsService;
+    public Map <String,String>  map = new ConcurrentHashMap<String,String>() ;
+    public  WXController (){
+        map.put("qrscene_3","18600326217") ;
+    }
     static final String CONTENT ="<xml>\n" +
             "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
             "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
@@ -65,6 +75,7 @@ public class WXController {
             "\n" +
             "微信预定请点击下方“我要下单”";
 
+
     @Get("")
     @Post("")
     public String index( Invocation inv,@Param("echostr") String echostr) {
@@ -106,10 +117,14 @@ public class WXController {
             if ("subscribe".equals(event)){
                 String content = getContent(body);
                 LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
-                String response = CONTENT.replace("{message}", MESSAGE);  // 这个其实没用
+                String response = CONTENT.replace("{message}", MESSAGE);
                 response = response.replace("{toUser}",fromUser);
                 response = response.replace("{fromUser}",toUser);
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                String phone = (String) map.get(eventKey);
+                if(!StringUtils.isBlank(phone)) {
+                   smsService.sendSMS2tguang(fromUser,phone);
+                }
                 return  response;
 
             }
