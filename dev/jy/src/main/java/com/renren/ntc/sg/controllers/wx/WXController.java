@@ -106,11 +106,10 @@ public class WXController {
         String mtype =  getMtype(body);
         String toUser = getToUser(body);
         String fromUser = getFromUser(body);
-        String eventKey = getEventKey(body);
         String event = getEvent(body);
 
         if ("event".equals(mtype)) {
-
+            String eventKey = getEventKey(body);
             if ("about_miaomiao".equals(eventKey)){
               LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
               String response = CONTENT2.replace("{message}", MESSAGE);
@@ -177,24 +176,36 @@ public class WXController {
         String e = "]]></Event>";
         int start =body.indexOf(s);
         int end =body.indexOf(e);
+        if(start == -1 || end == -1){
+            return "";
+        }
         return body.substring( s.length() + start ,end);
     }
 
     private static  String getMtype(String body) {
         int start =body.indexOf("<MsgType><![CDATA[");
         int end =body.indexOf("]]></MsgType>");
+        if(start == -1 || end == -1){
+            return "";
+        }
         return body.substring( 18 + start ,end);
     }
 
     private static String getFromUser(String body) {
         int start =body.indexOf("<FromUserName><![CDATA[");
         int end =body.indexOf("]]></FromUserName>");
+        if(start == -1 || end == -1){
+            return "";
+        }
         return body.substring( 23 + start ,end);
     }
 
     private static String getToUser(String body) {
         int start =body.indexOf("<ToUserName><![CDATA[");
         int end =body.indexOf("]]></ToUserName>");
+        if(start == -1 || end == -1){
+            return "";
+        }
         return body.substring( 21 + start ,end);
     }
 
