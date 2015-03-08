@@ -32,7 +32,7 @@ public class WXController {
     public SMSService smsService;
 //    public Map <String,String>  map = new ConcurrentHashMap<String,String>() ;
 
-    private  final String PREFIX = "qrscene_";
+    private  static final String PREFIX = "qrscene_";
     public  WXController (){
 //        map.put("qrscene_3","18600326217") ;
     }
@@ -243,11 +243,15 @@ public class WXController {
 
 
     public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis());
-        String s = "<xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421837689</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[A地方法规和]]></Content><MsgId>6106746374681307894</MsgId></xml> ";
-        System.out.println(getToUser(s));
-        System.out.println(getFromUser(s));
-        System.out.println(getMtype(s));
-        System.out.println(getEvent(s));
+          Set<java.lang.String>  ss =  JRedisUtil.getInstance().keys(PREFIX+"*");
+          for (String s :ss ){
+              System.out.println(s);
+          }
+//        System.out.println(System.currentTimeMillis());
+//        String s = "<xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421837689</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[A地方法规和]]></Content><MsgId>6106746374681307894</MsgId></xml> ";
+//        System.out.println(getToUser(s));
+//        System.out.println(getFromUser(s));
+//        System.out.println(getMtype(s));
+//        System.out.println(getEvent(s));
     }
 }
