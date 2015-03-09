@@ -10,10 +10,7 @@ import redis.clients.jedis.Jedis;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-<<<<<<< HEAD
 import java.util.Set;
-=======
->>>>>>> bdcc6a9235d5a60467896977687cfa9b0b1bc75b
 
 
 /**
@@ -28,12 +25,7 @@ public class JRedisUtil {
     private static JRedisUtil instance = new JRedisUtil();
 
     private JRedisUtil() {
-<<<<<<< HEAD
-        jds = new Jedis("10.251.6.245") ;
-//        jds = new Jedis("123.56.102.224") ;
-=======
         jds = new Jedis("123.56.102.224") ;
->>>>>>> bdcc6a9235d5a60467896977687cfa9b0b1bc75b
     }
 
     public static JRedisUtil getInstance() {
@@ -44,7 +36,6 @@ public class JRedisUtil {
         return jds.set(key,value);
     }
 
-<<<<<<< HEAD
 
     public long  sadd( String key, String value){
         return jds.sadd(key,value);
@@ -54,13 +45,10 @@ public class JRedisUtil {
         return jds.scard(key);
     }
 
-=======
->>>>>>> bdcc6a9235d5a60467896977687cfa9b0b1bc75b
     public String  get(String key){
         return jds.get(key);
     }
 
-<<<<<<< HEAD
     public Set<String> keys(String prefix){
         return jds.keys(prefix);
     }
@@ -75,10 +63,5 @@ public class JRedisUtil {
             System.out.println("1");
             JRedisUtil.getInstance().sadd("set_" + ss[0], ss[1]);
         }
-=======
-    public static void main(String[] args) {
-        JRedisUtil.getInstance().set("aaa","bbb");
-        System.out.println(JRedisUtil.getInstance().get("aaa"));
->>>>>>> bdcc6a9235d5a60467896977687cfa9b0b1bc75b
     }
 }
