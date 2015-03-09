@@ -100,6 +100,7 @@
                     score: newitem.score,
                     price: newitem.price * 100,
                     saleStatus: newitem.saleStatus,
+                    pic_url: newitem.pic_url || null,
                     shop_id: $scope.info.shop.id
                 };
 
