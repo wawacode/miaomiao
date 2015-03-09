@@ -40,11 +40,14 @@
                        type="text" placeholder="收货地址:" value="" ng-model="newAddress.address"
                        required>
                 <input class="addressInput"
-                       type="number" placeholder="联系电话:" value="" ng-model="newAddress.phone"
+                       type="tel" placeholder="联系电话:" value="" ng-model="newAddress.phone"
                        required style="margin-top: 10px">
             </div>
-            <div style="position: absolute; left: 10;right: 10;padding-top: 40px" ng-if="addressls != undefined">
-                <button class="button button-block button-assertive"  style="height: 40px" ng-click="addNewAddressConfirm()">确定</button>
+            <div style="position: absolute; left: 10;right: 10;padding-top: 40px">
+                <button class="button button-block button-assertive baseRedColor"
+                        style="height: 40px"
+                        ng-disabled = "!newAddress.address || !newAddress.phone"
+                        ng-click="addNewAddressConfirm()">确定</button>
             </div>
         </div>
     </ion-content>

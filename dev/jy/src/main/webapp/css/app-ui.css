@@ -127,7 +127,7 @@ body {
 
 .loading-container{
     margin-top: 44px; /*loading should stay under the header*/
-    background-color: rgba(255,255,255,1.0) !important;
+    background-color: rgba(255,255,255,0.4) !important;
 }
 
 .loading-container .loading {

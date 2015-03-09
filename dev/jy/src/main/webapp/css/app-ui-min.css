@@ -14,7 +14,7 @@ body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;fon
 .smallHeaderButton{z-index:1;padding:0 5px !important;min-width:initial;min-height:25px !important;font-weight:400;font-size:13px;line-height:10px !important;margin-top:5px !important;margin-left:5px !important}
 .loading-backdrop{margin-top:44px;background-color:#fff}
 .backdrop{background-color:rgba(255,255,255,.4) !important}
-.loading-container{margin-top:44px;background-color:rgba(255,255,255,1.0) !important}
+.loading-container{margin-top:44px;background-color:rgba(255,255,255,0.4) !important}
 .loading-container .loading{background-color:rgba(255,255,255,1.0) !important;color:#000;font-size:15px}
 .popup-container .popup{border:solid 1px #eaeaea}
 .bar.bar-light.bar-footer{height:49px !important}
