@@ -896,6 +896,11 @@ ul.rating li i {
     z-index: 500 !important;
 }
 
+.commonSelected:before{
+    font-size: 25px !important;
+    width: 28px;
+    height: 28px;
+}
 
 /* order list*/
 
