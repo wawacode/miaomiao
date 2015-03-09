@@ -36,15 +36,15 @@
                 使用其他地址
             </div>
             <div class="item" style="padding-left: 20px">
-                <input class="addressInput"  style="border-bottom: solid 1px #eaeaea;"
+                <input class="addressInput"  style="border: none !important;border-bottom: solid 1px #eaeaea;"
                        type="text" placeholder="收货地址:" value="" ng-model="newAddress.address"
                        required>
                 <input class="addressInput"
                        type="tel" placeholder="联系电话:" value="" ng-model="newAddress.phone"
-                       required style="margin-top: 10px">
+                       required style="border: none !important; margin-top: 10px">
             </div>
             <div style="position: absolute; left: 10;right: 10;padding-top: 40px">
-                <button class="button button-block button-assertive baseRedColor"
+                <button class="button button-block button-assertive"
                         style="height: 40px"
                         ng-disabled = "!newAddress.address || !newAddress.phone"
                         ng-click="addNewAddressConfirm()">确定</button>

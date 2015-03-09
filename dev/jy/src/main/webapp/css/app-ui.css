@@ -916,7 +916,8 @@ ul.rating li i {
 .checkoutFooterBar {
     padding: 0;
     overflow: hidden;
-    height: 49
+    height: 49;
+    border-top: solid 1px lightgray;
 }
 
 .checkoutBasePadding {
