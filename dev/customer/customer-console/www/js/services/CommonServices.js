@@ -149,7 +149,7 @@
             addProductItemToCategory: function (cateId, item) {
                 for (var idx = 0; idx < categorys.length; idx++) {
                     if (cateId == categorys[idx].category_id) {
-                        categorys[idx].itemls.push(item);
+                        categorys[idx].itemls = this.removeDuplicateItems(categorys[idx].itemls.push(item));
                         break;
                     }
                 }
