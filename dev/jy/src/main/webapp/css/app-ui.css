@@ -117,7 +117,7 @@ body {
 
 
 .loading-backdrop{
-    margin-top: 44px; /*loading should stay under the header*/
+    margin-top: 44px;
     background-color: #ffffff;
 }
 
@@ -127,6 +127,7 @@ body {
 
 .loading-container{
     margin-top: 44px; /*loading should stay under the header*/
+    background-color: rgba(255,255,255,1.0) !important;
 }
 
 .loading-container .loading {
@@ -134,6 +135,10 @@ body {
     background-color: rgba(255,255,255,1.0) !important;
     color: #000000;
     font-size: 15px;
+}
+
+.popup-container .popup{
+    border: solid 1px #eaeaea;
 }
 
 .bar.bar-light.bar-footer{

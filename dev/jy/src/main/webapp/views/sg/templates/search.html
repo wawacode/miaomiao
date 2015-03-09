@@ -83,8 +83,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col text-center nonPadding">
-                <button class="button button-assertive button-block shoppingCartHintMessage"
+
+            <div class="col text-center nonPadding" style="position: relative">
+                <button style="position: absolute;left: 0;right: 0;top: 0;bottom: 0"
+                        class="button button-assertive button-block shoppingCartHintMessage"
                         ng-class="{'button-outline': !info.cartReadyToShip }"
                         ng-click="checkout()">{{info.checkoutHintMessage}}
                 </button>
