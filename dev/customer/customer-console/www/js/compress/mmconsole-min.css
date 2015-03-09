@@ -35,7 +35,7 @@
 .mgray-bg{background-color:darkgrey}
 .mgray-border{border-color:darkgrey}
 .order-item{margin:9px;border:solid 1px lightgray;border-radius:2px}
-.orderSnapshot{display:inline-block;width:100%}
+.orderSnapshot{display:inline-block;width:100%;padding:10px;border-bottom:solid 1px lightgray}
 .orderSnapshotItem{float:left}
 .orderSnapshotCount{float:right;padding-right:6px;font-weight:bold}
 .orderSnapshotTotal{display:block;width:100%;text-align:right;margin-top:20px;padding-right:6px}

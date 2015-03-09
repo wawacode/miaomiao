@@ -19,6 +19,9 @@
         </div>
         <div style="padding: 15px 9px 15px;" class="order-snapshots">
             <div bindonce class="orderSnapshot" quick-ng-repeat="orderItem in order.items">
+                <div class="prod_icon">
+                    <img ng-src="{{orderItem.pic_url}}" style="width: 70px;height: 70px;border: none">
+                </div>
                 <div class="orderSnapshotItem">
                     {{orderItem.name}}
                 </div>
