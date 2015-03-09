@@ -11,55 +11,59 @@
                  has-tabs="false"
                  has-header="true"
                  scroll="true">
-        <div ng-if="addressls && addressls.length">
-            <div class="addressItem addressDefault addressSelected item-icon-right" ng-click="goToAddressList()">
-                <div class="addressItem-address">
-                    <span class="addressTitle">收货地址:</span>
-                    {{addressls[0].address}}
-                </div>
-                <div class="addressItem-phone">
-                    <span class="addressTitle">联系电话:</span>
-                    {{addressls[0].phone}}
-                </div>
-                <a class="icon baseRedColor ion-ios7-arrow-right" style="right: 20px"></a>
-            </div>
-        </div>
-        <div class="addNewAddressContainer" ng-if="info.hasAddress == false && info.hasShop"
-             ng-animate="{show:'animate-show', hide:'animate-hide'}">
-            <!--<div class="addNewAddressHint">-->
-            <!--您还没有添加收货人信息,请添加-->
-            <!--</div>-->
-            <div class="checkoutBasePadding text-center">
-                <a class="icon icon-2x ion-ios7-plus-outline" style="font-size: 14px"
-                   ng-click="switchToAddressList($event)"> 添加新地址</a>
-            </div>
-        </div>
-        <div class="noOrderHint" ng-if="info.hasOrder == false">
-            <div class="noOrderImageHint"></div>
-            <div style="padding-top: 30px;color: #7a7a7a;font-size: 14px">还没有订单</div>
-            <div class="noOrderGotoShop" ng-click="goToShopOrFindShop()">
-                去逛逛?
-            </div>
-        </div>
-        <div class="order-list" style="" ng-if="info.hasOrder == true">
-            <div class="orderListHeader" ng-if="latestOrder && latestOrder.length">
-                最新订单
-            </div>
-            <div style="padding: 0px 20px 0px 20px;" ng-if="latestOrder && latestOrder.length">
-                <div class="order-items" style="" bindonce ng-repeat="order in latestOrder"
-                     ng-include="'templates/snapshotOrder.html'">
+
+        <div style="background-color: #eaeaea;width: 100%;height: 100%" ng-if="info.hasOrder != undefined">
+            <div ng-if="addressls && addressls.length">
+                <div class="addressItem addressDefault addressSelected item-icon-right" ng-click="goToAddressList()">
+                    <div class="addressItem-address">
+                        <span class="addressTitle">收货地址:</span>
+                        {{addressls[0].address}}
+                    </div>
+                    <div class="addressItem-phone">
+                        <span class="addressTitle">联系电话:</span>
+                        {{addressls[0].phone}}
+                    </div>
+                    <a class="icon baseRedColor ion-ios7-arrow-right" style="right: 12px"></a>
                 </div>
             </div>
-            <div class="orderListHeader" ng-if="historyOrder && historyOrder.length">
-                历史订单
+            <div class="addNewAddressContainer" ng-if="info.hasAddress == false && info.hasShop"
+                 ng-animate="{show:'animate-show', hide:'animate-hide'}">
+                <!--<div class="addNewAddressHint">-->
+                <!--您还没有添加收货人信息,请添加-->
+                <!--</div>-->
+                <div class="addAddrHint text-center">
+                    <a class="icon icon-2x ion-ios7-plus-outline" style="font-size: 15px"
+                       ng-click="switchToAddressList($event)"> 添加新地址</a>
+                </div>
             </div>
-            <div style="padding: 0px 20px 0px 20px;" ng-if="historyOrder && historyOrder.length">
-                <div class="order-items" style="" bindonce ng-repeat="order in historyOrder"
-                     ng-include="'templates/snapshotOrder.html'">
+            <div class="noOrderHint" ng-if="info.hasOrder == false">
+                <div class="noOrderImageHint"></div>
+                <div style="padding-top: 30px;color: #7a7a7a;font-size: 14px">还没有订单</div>
+                <div class="noOrderGotoShop" ng-click="goToShopOrFindShop()">
+                    去逛逛?
+                </div>
+            </div>
+            <div class="order-list" style="" ng-if="info.hasOrder == true">
+                <div class="orderListHeader" ng-if="latestOrder && latestOrder.length">
+                    最新订单
+                </div>
+                <div style="padding: 0px 20px 0px 20px;" ng-if="latestOrder && latestOrder.length">
+                    <div class="order-items" style="" bindonce ng-repeat="order in latestOrder"
+                         ng-include="'templates/snapshotOrder.html'">
+                    </div>
+                </div>
+                <div class="orderListHeader" ng-if="historyOrder && historyOrder.length">
+                    历史订单
+                </div>
+                <div style="padding: 0px 20px 0px 20px;" ng-if="historyOrder && historyOrder.length">
+                    <div class="order-items" style="" bindonce ng-repeat="order in historyOrder"
+                         ng-include="'templates/snapshotOrder.html'">
+                    </div>
                 </div>
             </div>
         </div>
         </div>
+
     </ion-content>
 </ion-view>
 

@@ -115,6 +115,26 @@ body {
     margin-left: 5px !important;
 }
 
+
+.loading-backdrop{
+    margin-top: 44px; /*loading should stay under the header*/
+    background-color: #ffffff;
+}
+
+.backdrop {
+    background-color: rgba(255,255,255,.4) !important;
+}
+
+.loading-container{
+    margin-top: 44px; /*loading should stay under the header*/
+}
+
+.loading-container .loading {
+
+    background-color: rgba(255,255,255,1.0) !important;
+    color: #000000;
+    font-size: 15px;
+}
 /**********************************
     css per page
 **********************************/
@@ -623,7 +643,7 @@ ul.rating li i {
 }
 
 .addressList {
-    background-color: #ededed;
+
 }
 
 .addressListHeader {
@@ -670,6 +690,7 @@ ul.rating li i {
 }
 
 .addNewAddressContainer {
+    background-color: #ffffff;
     border-bottom: solid 1px #eaeaea;
     overflow: hidden
 }
@@ -712,6 +733,10 @@ ul.rating li i {
     border: none;
     padding: 5px;
 
+}
+
+.addAddrHint{
+    padding: 15px 20px 10px 20px;
 }
 
 
@@ -873,7 +898,8 @@ ul.rating li i {
 
 .loadingIndicatorIcon {
     font-size: 35px !important;
-    padding: 0;
+    padding: 10px;
+    color: rgba(68,68,68,1.0);
 }
 
 
@@ -885,7 +911,7 @@ ul.rating li i {
 }
 
 .checkoutBasePadding {
-    padding: 10px 20px 5px 20px;
+    padding: 10px 20px 10px 20px;
 }
 
 .checkoutHeaderbar {
@@ -908,8 +934,10 @@ ul.rating li i {
     position: relative;
     padding-top: 50px;
     width: 100%;
+    height: 100%;
     display: inline-block;
     text-align: center;
+    background-color: #ffffff;
 }
 
 .noOrderImageHint {
@@ -936,11 +964,12 @@ ul.rating li i {
 
 .orderListHeader {
     background-color: #EAEAEA;
-    padding: 5px 5px 5px 20px;
+    padding: 0px 5px 5px 20px;
 }
 
 .order-list {
-    padding: 0 0 20px 0;
+    padding: 0;
+    background-color: #ffffff;
 }
 
 .order-items {
@@ -955,7 +984,7 @@ ul.rating li i {
     right: -20;
     bottom: 0;
     width: 110%;
-    height: 1px;
+    height: 5px;
     background-color: #eaeaea;
 }
 
