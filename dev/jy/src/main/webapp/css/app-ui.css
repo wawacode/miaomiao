@@ -135,6 +135,10 @@ body {
     color: #000000;
     font-size: 15px;
 }
+
+.bar.bar-light.bar-footer{
+    height: 49px !important;
+}
 /**********************************
     css per page
 **********************************/

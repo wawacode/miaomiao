@@ -29,7 +29,7 @@
                         <ul style="margin: 0;padding-top: 0px; padding-bottom: 50px">
                             <li bindonce quick-ng-repeat="category in categoryls track by category.category_id"
                                 class="shop-categray "
-                                ng-click="selectCategory(category)"
+                                ng-click="selectCategory($index)"
                                 ng-class="{'shop-categray-selected': category.selected}">
                                 <div bo-text="category.name" class="shop-categray-item">
                                 </div>

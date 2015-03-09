@@ -95,11 +95,12 @@
 
     var canLoadMore = true, inLoadingMore = false;
 
-    $scope.selectCategory = function (category) {
+    $scope.selectCategory = function (index) {
 
         // if in loading more, can't select
         if(inLoadingMore)return;
 
+        var category = $scope.categoryls[index];
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
             $scope.categoryls[idx].selected = 0;
         }
@@ -146,6 +147,9 @@
 
             }
             $scope.currentDisplayItems = $scope.currentDisplayItems.concat(dataDetail.items);
+
+            // update category data
+            $scope.currentDisplayCategory.itemls = $scope.currentDisplayItems;
             $scope.currentDisplayCategory.totalCnt = ShoppingCart.getCountForCategroy($scope.currentDisplayCategory.category_id);
 
             inLoadingMore = false;
