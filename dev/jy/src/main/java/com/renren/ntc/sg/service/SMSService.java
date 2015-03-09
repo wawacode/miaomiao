@@ -81,6 +81,24 @@ public class SMSService {
         }
     }
 
+    public void sendSMS2tguang(String user, String phone) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+                byte[] t = null;
+                String message = "#user#=" + user + "&#msg#=_" ;
+                message = URLEncoder.encode(message, "utf-8");
+                String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.TMP_TID, phone, message);
+                System.out.println(String.format("Send  SMS mobile %s , %s ", phone,message));
+                t = SHttpClient.getURLData(url, "");
+                String response = SUtils.toString(t);
+                System.out.println(String.format("Post Shop SMS message No. %s : %s  ", response, phone));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendSMS2User(String order_id, Shop shop) {
         //通知用户
         try {

@@ -2,6 +2,7 @@ package com.renren.ntc.sg.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 
 /**
  * 取得汉字拼音码.
@@ -15,7 +16,7 @@ public class Test {
     public static void main (String [] args ){
 
         try {
-            System.out.println(URLEncoder.encode("http://www.mbianli/com/wx/rd"));
+            System.out.println(new Date(1425745954604L));
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
