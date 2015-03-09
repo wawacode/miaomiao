@@ -42,6 +42,9 @@ public class ItemConsoleController extends BasicConsoleController{
     private OrdersDAO ordersDAO ;
 
     @Autowired
+    private ProductDAO productDao ;
+
+    @Autowired
     private ItemsDAO itemsDAO ;
 
     @Autowired
@@ -155,8 +158,13 @@ public class ItemConsoleController extends BasicConsoleController{
 		resultJson.put("msg", "服务器错误，请稍后重试");
 		String picUrl = "";
     	if(!StringUtils.isBlank(pic_url)){
+<<<<<<< HEAD
             Product product =  productDao.geProduct(serialNo);
     		picUrl = product.getPic_url();
+=======
+            Product p = productDao.geProduct(serialNo);
+    		picUrl = p.getPic_url();
+>>>>>>> bdcc6a9235d5a60467896977687cfa9b0b1bc75b
     	}
     	int onsell = Constants.ITEM_NOT_SALE;
     	if(!StringUtils.isBlank(saleStatus)){
