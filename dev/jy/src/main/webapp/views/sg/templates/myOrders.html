@@ -1,9 +1,7 @@
 <ion-view>
     <ion-nav-bar class="bar-light orderHeaderbar headerBarWithShadow">
         <ion-nav-buttons side="left" class="">
-            <button class="button button-outline dark button-dark smallHeaderButton" ng-click="goToShopOrFindShop()">
-                首页
-            </button>
+            <button class="button button-clear" ng-click="goToShopOrFindShop()"><i class="ion-chevron-left dark">&nbsp;首页</i></button>
         </ion-nav-buttons>
         <ion-nav-title>
             我的订单
@@ -44,20 +42,18 @@
             </div>
         </div>
         <div class="order-list" style="" ng-if="info.hasOrder == true">
-            <div class="orderListHeader" ng-if="orders && orders.length >= 1">
+            <div class="orderListHeader" ng-if="latestOrder && latestOrder.length">
                 最新订单
             </div>
-            <div style="padding: 0px 20px 0px 20px;" ng-if="orders && orders.length >= 1"
-                 ng-init="latestOrder=orders.slice(0,1)">
+            <div style="padding: 0px 20px 0px 20px;" ng-if="latestOrder && latestOrder.length">
                 <div class="order-items" style="" bindonce ng-repeat="order in latestOrder"
                      ng-include="'templates/snapshotOrder.html'">
                 </div>
             </div>
-            <div class="orderListHeader" ng-if="orders && orders.length > 1 ">
+            <div class="orderListHeader" ng-if="historyOrder && historyOrder.length">
                 历史订单
             </div>
-            <div style="padding: 0px 20px 0px 20px;" ng-if="orders && orders.length > 1"
-                 ng-init="historyOrder=orders.slice(1)">
+            <div style="padding: 0px 20px 0px 20px;" ng-if="historyOrder && historyOrder.length">
                 <div class="order-items" style="" bindonce ng-repeat="order in historyOrder"
                      ng-include="'templates/snapshotOrder.html'">
                 </div>

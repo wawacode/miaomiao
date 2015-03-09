@@ -131,6 +131,8 @@
 
     $scope.checkout = function () {
 
+        if (!$scope.info.cartReadyToShip)return;
+
         $state.go('checkout',null, { reload: true });
 
     }

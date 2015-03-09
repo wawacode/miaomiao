@@ -1,5 +1,6 @@
 ;angular.module('miaomiao.shop')
-    .controller('MyOrdersCtrl',function ($scope, $ionicLoading,$ionicPopup, $http, $state,$ionicScrollDelegate,localStorageService,$sessionStorage,httpClient,AddressService,OrderService,MMUtils) {
+    .controller('MyOrdersCtrl',function ($scope, $ionicLoading,$ionicPopup, $timeout, $http, $state,$ionicScrollDelegate,
+                                         localStorageService,$sessionStorage,httpClient,AddressService,OrderService,MMUtils) {
 
         $scope.shop = localStorageService.get('MMMETA_shop') || {};
 
@@ -64,6 +65,15 @@
                     transformOrderData($scope.orders);
 
                     $scope.info.hasOrder = $scope.orders.length > 0? true : false;
+
+                    $timeout(function(){
+                        if($scope.orders.length >= 1){
+                            $scope.latestOrder = $scope.orders.slice(0,1);
+                        }
+                        if($scope.orders.length > 1){
+                            $scope.historyOrder = $scope.orders.slice(1);
+                        }
+                    });
 
                     $sessionStorage.orderAddresses = $scope.addressls;
                     $sessionStorage.orderOrders = $scope.orders;

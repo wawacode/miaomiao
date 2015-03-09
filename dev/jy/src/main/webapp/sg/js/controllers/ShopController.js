@@ -218,16 +218,14 @@
         $scope.info.showCart = !$scope.info.showCart;
     }
 
-    $ionicModal.fromTemplateUrl('/views/sg/templates/switchShop.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function (modal) {
-        $scope.modal = modal;
-    });
-
     $scope.switchShop = function () {
-
-        $scope.modal.show();
+        $ionicModal.fromTemplateUrl('/views/sg/templates/switchShop.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+                $scope.modal = modal;
+                $scope.modal.show();
+            });
     }
 
     // Execute action on hide modal
