@@ -11,6 +11,6 @@ android: prepare
 minify: 
 	cd tools && ant -f minifyJsCss.xml && cd .. ;
 
-pack-android : minify android
+pack-android : minify prepare
 	sh buildAndroidAPK.sh;
 
