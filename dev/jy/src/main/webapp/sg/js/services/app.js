@@ -82,13 +82,13 @@ angular.module('miaomiao.shop', ['ionic',
             })
             .state('search', {
                 url: '/search',
-                templateUrl: '/views/sg/templates/search.html',
+                templateUrl: '/views/sg/templates/searchProduct.html',
                 controller: 'SearchCtrl'
 
             })
             .state('checkout', {
                 url: '/checkout',
-                templateUrl: '/views/sg/templates/checkout.html',
+                templateUrl: '/views/sg/templates/checkoutOrder.html',
                 controller: 'CheckoutCtrl'
             })
             .state('addressList', {
