@@ -93,6 +93,11 @@
                     return;
                 }
 
+                if (!newitem.new_pic_url || !newitem.pic_url) {
+                    MMUtils.showAlert('请添加图片');
+                    return;
+                }
+
                 var options = {'serialNo': newitem.serialNo,
                     name: newitem.name,
                     categoryId: newitem.currentCateId,
@@ -100,6 +105,7 @@
                     score: newitem.score,
                     price: newitem.price * 100,
                     saleStatus: newitem.saleStatus,
+                    pic_url: newitem.pic_url,
                     shop_id: $scope.info.shop.id
                 };
 

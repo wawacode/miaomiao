@@ -272,7 +272,9 @@
 
 .orderSnapshot {
     display: inline-block;
-    width: 100%
+    width: 100%;
+    padding:10px;
+    border-bottom: solid 1px lightgray;
 }
 
 .orderSnapshotItem {
