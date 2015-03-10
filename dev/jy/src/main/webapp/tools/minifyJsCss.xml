@@ -1,0 +1,53 @@
+<project name="miaomiao-client" default="default" basedir=".">
+
+    <description>
+        minify js/css and concatenate into one
+    </description>
+
+    <property name="src" location=".."/>
+
+    <target name="css.minify" >
+        <apply executable="java" parallel="false">
+            <fileset dir="${src}/css" includes="app-ui.css"/>
+            <arg line="-jar"/>
+            <arg path="yuicompressor-2.4.8.jar"/>
+            <arg line="--line-break 0"/>
+            <srcfile/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.css" to="${src}/css/*-min.css"/>
+            <targetfile/>
+        </apply>
+    </target>
+
+    <target name="js.minify">
+        <apply executable="java" parallel="false">
+            <fileset dir="${src}/sg/js" includes="controllers/*.js,services/*.js" excludes="compress/**/*.js"/>
+            <arg line="-jar"/>
+            <arg path="yuicompressor-2.4.8.jar"/>
+            <srcfile/>
+            <arg line="--nomunge"/>
+            <arg line="--preserve-semi"/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.js" to="${src}/sg/js/compress/*-min.js"/>
+            <targetfile/>
+        </apply>
+    </target>
+
+    <!-- the js has order, so we have to give orders here-->
+    <target name="js.concatenate" depends="js.minify">
+        <concat destfile="${src}/sg/js/compress/app-ui-min.js">
+
+            <filelist dir="${src}/sg/js/compress/services"
+                      files="app-min.js, directives-min.js,filters-min.js,services-min.js,shoppingCart-min.js"/>
+
+            <filelist dir="${src}/sg/js/compress/controllers"
+                      files="GetLocationController-min.js, FindShopController-min.js,ShopController-min.js,GoToShopController-min.js,SearchController-min.js,
+                      CheckoutController-min.js,AddressListController-min.js,ShowProductDetailController-min.js,MyOrdersController-min.js,ShoppingCartController-min.js,UserAddressListController-min.js"/>
+
+        </concat>
+    </target>
+
+    <target name="default" depends="js.concatenate,css.minify">
+    </target>
+
+</project>

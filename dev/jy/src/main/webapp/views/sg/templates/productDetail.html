@@ -1,21 +1,19 @@
-<div class="prod_icon_clickable" ng-controller="ProductDetailCtrl" ng-click="showImage(item)"></div>
+<div class="prod_icon_clickable" ng-click="showImage(item)"></div>
 <div class="prod_icon" back-img="{{item.pic_url}}"></div>
 <div>
-    <span class="product-title oneline js-product-item-name">{{item.name}}</span>
-
+    <span class="product-title oneline" bo-text="item.name"></span>
     <div class="prod_info">
-        <div class="product-price js-product-item-price" data-value="$item.price">
-            <span style="font-weight: normal">¥ {{item.price/100.0}}</span>
+        <div class="product-price">
+            <span bo-text="'¥'+ item.price/100.0"></span>
         </div>
         <div class="product_stepper">
-            <div class="product_stepper_minus countChangeAction countChangeActionMinus" ng-click="removeItem(item)" ng-show="item.count">
-                -
+            <div class="product_stepper_minus icon baseRedColor ion-ios7-minus-outline"
+                 ng-click="removeItem(item)" ng-show="item.count">
             </div>
-            <div class="product_stepper_count countChangeAction countChangeActionSet js-product-item-quantity" ng-show="item.count">
+            <div class="product_stepper_count" ng-show="item.count">
                 {{item.count}}
             </div>
-            <div class="product_stepper_add countChangeAction countChangeActionAdd" ng-click="selectItem(item)">
-                +
+            <div class="product_stepper_add icon baseRedColor ion-ios7-plus" ng-click="selectItem(item)">
             </div>
         </div>
     </div>

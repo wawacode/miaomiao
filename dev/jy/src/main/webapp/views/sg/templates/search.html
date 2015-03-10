@@ -1,81 +1,96 @@
 <ion-view>
-
-    <ion-nav-bar class="bar-dark">
-        <ion-nav-back-button class="button-dark button-clear">
-            <i class="ion-chevron-left light">&nbsp;返回</i>
-        </ion-nav-back-button>
+    <ion-nav-bar class="bar-light" align-title="center">
+        <ion-nav-buttons side="left">
+            <button class="button button-outline button-clear" ui-sref="productList"><i class="ion-chevron-left dark">
+                首页</i></button>
+        </ion-nav-buttons>
         <ion-nav-title>
             搜索商品
         </ion-nav-title>
     </ion-nav-bar>
-
     <ion-header-bar class="bar-light" style="text-align: left;top: 44;padding: 0">
-        <div id="search-box" class="item-input-inset"
-             style="width: 100%;padding: 5px">
-            <div class="item-input-wrapper">
+        <div id="search-box" class="item-input-inset search-box"
+             style="">
+            <div class="item-input-wrapper" style="background-color: #ffffff">
                 <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
-                <input type="search" placeholder="请输入商品名称"  ng-model="info.key" ng-focus="startSearch()" ng-change="getSearchSuggestions()" ng-keyup="$event.keyCode == 13 && performSearch(info.key,$event)" style="color: #7a7a7a">
-                <i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"
-                   ng-click="clearSearch()"></i>
+                <input type="search" placeholder="请输入商品名称" ng-model="info.key" ng-focus="startSearch()"
+                       ng-change="getSearchSuggestions()"
+                       ng-keyup="$event.keyCode == 13 && performSearch(info.key,$event)"
+                       style="color: #7a7a7a;font-size: 14px">
+                <!--<i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"-->
+                   <!--ng-click="clearSearch()"></i>-->
             </div>
-            <button class="button-clear" ng-click="performSearch(info.key,$event)">搜索</button>
+            <button class="button-clear" style="color: #000000;font-size: 15px;min-width: 50px" ng-click="performSearch(info.key,$event)"> 搜索 </button>
         </div>
-
     </ion-header-bar>
-
-    <div class="list" ng-show="info.showSearchSuggestion" ng-click="info.showSearchSuggestion = !info.showSearchSuggestion"
-         style="position: absolute;top: 86;bottom: 29; width: 100%;left: 0;right: 0; background-color: lightgray;z-index: 200;opacity: 0.9">
-        <div class="item" ng-repeat="item in info.search_suggestions"
+    <div class="list searchSuggestionResultList" ng-if="info.showSearchSuggestion"
+         ng-click="info.showSearchSuggestion = !info.showSearchSuggestion"
+         style="">
+        <div class="item" bindonce quick-ng-repeat="item in info.search_suggestions track by item.key"
              ng-click="goToSearchItem(item,$event)" style="border-left: none;border-right: none;padding: 10">
-            <div style="color: #000000;font-size: 14px;">
-                {{item.key}}
+            <div style="color: #000000;font-size: 14px;" bo-text="item.key">
             </div>
         </div>
     </div>
-
-    <ion-content padding="true"
-                 has-tabs="false"
+    <ion-content class="homepageContent"
+                 padding="false"
+                 has-tabs="true"
                  has-header="true"
+                 scroll="true"
                  delegate-handle="searchResultScroll"
-                 style="text-align: left;top: 84">
+                 style="text-align: left;top: 84;z-index: 1">
 
-        <div class="shop-product-list">
-            <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list">
-                <li ng-repeat="item in searchResultsItems" class="product-item js-product-item" ng-include src="'/views/sg/templates/productDetail.html'">
+        <div class="shop-product-list" style="padding-bottom: 50px">
+            <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list" ng-if="info.hasNoResults == false">
+                <li bindonce ng-repeat="item in searchResultsItems" class="product-item js-product-item"
+                    ng-include src="'/views/sg/templates/productDetail.html'">
                 </li>
-
-                <div class="no-result-display" style="text-align: center" ng-show="info.hasNoResults">
-                    没有结果
-                </div>
-
             </ul>
+            <div class="no-result-display" style="text-align: center;color: #7a7a7a" ng-if="info.hasNoResults == true">
+                没有结果
+            </div>
         </div>
-
-        </ion-content>
-
+    </ion-content>
     <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
     </div>
-
     <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
         <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
              src="'/views/sg/templates/shoppingCart.html'">
         </div>
     </div>
+    <ion-footer-bar class="bar-light homepageFooterBar">
+        <div class="row nonPadding">
+            <div class="col nonPadding">
+                <div class="row nonPadding">
+                    <div class="col text-center nonPadding" style="padding-top: 13px;" ng-click="showShoppingCart()">
 
-    <ion-footer-bar class="bar-light" style="padding-top: 0;padding-bottom: 0;overflow: hidden;height: 49">
-        <div class="footer-container-left base-sidebar-shopping-cart js-shopping-cart" ng-click="showShoppingCart()">
-            <span><img src="/images/cart-64.png" class="base-icon-shopping-cart"></span>
-        </div>
-        <div class="footer-container-right base-cart-prepare js-cart-checkout" style="">
-            <button class="sidebar-cart-checkout js-cart-checkout"
-                    ng-class="{'sidebar-cart-checkout-ready': info.cartReadyToShip }" ng-click="checkout()">
-                <span class=" base-font js-checkout-hit">{{info.checkoutHintMessage}}</span>
-                        <span class="base-font"><br>
-                            总计: <span id="js-shop-total-count" class="js-shop-total-count base-font ">{{info.shoppingCartItems | getTotolCount}}</span> 件</span>
-                <span class="base-font rmbSpan">￥</span><span id="js-shop-total-price"
-                                                              class="js-shop-total-price base-font">{{info.shoppingCartItems | getTotolPrice}}</span>
-            </button>
+                        <span style="position: relative">
+                            <span class="assertive-bg assertive-border light shoppingCartBadge"
+                                  ng-if="info.shoppingCartItems && info.shoppingCartItems.length">
+                                {{info.shoppingCartItems | getTotolCount}}
+                            </span>
+                            <!--<img src="/images/cart-64.png" class="base-icon-shopping-cart">-->
+                            <button class="button button-clear button-assertive button-icon"
+                                    ng-class="{'ion-ios7-cart': info.cartReadyToShip, 'ion-ios7-cart-outline':!info.cartReadyToShip}">
+                            </button>
+                        </span>
+                    </div>
+                    <div class="col nonPadding" style="padding-top: 4px;margin-left: 10px">
+                        <p class="text-left" style="font-size: 11px;margin: 0">总计:</p>
+
+                        <p class="text-left assertive" style="font-size: 17px;margin: 0">￥{{info.shoppingCartItems |
+                            getTotolPrice}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col text-center nonPadding" style="position: relative">
+                <button style="position: absolute;left: 0;right: 0;top: 0;bottom: 0"
+                        class="button button-assertive button-block shoppingCartHintMessage"
+                        ng-class="{'button-outline': !info.cartReadyToShip }"
+                        ng-click="checkout()">{{info.checkoutHintMessage}}
+                </button>
+            </div>
         </div>
     </ion-footer-bar>
-
 </ion-view>

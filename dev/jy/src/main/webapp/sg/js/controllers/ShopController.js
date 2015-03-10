@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
+;angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
                                                                     $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService) {
 
     // get shop info from local storage cause in locate page we have got one
@@ -63,6 +63,12 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
                 if (idx == 0) {
                     $scope.categoryls[idx].selected = 1;
                 }
+
+                if($scope.categoryls[idx].name.length == 2){
+                    $scope.categoryls[idx].name = $scope.categoryls[idx].name.charAt(0)
+                            + "  " + $scope.categoryls[idx].name.charAt(1);
+                }
+
                 for (var item_idx = 0; item_idx < $scope.categoryls[idx].itemls.length; item_idx++) {
                     var item = $scope.categoryls[idx].itemls[item_idx];
                     item.count = ShoppingCart.getCountForItem(item);
@@ -89,11 +95,12 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
     var canLoadMore = true, inLoadingMore = false;
 
-    $scope.selectCategory = function (category) {
+    $scope.selectCategory = function (index) {
 
         // if in loading more, can't select
         if(inLoadingMore)return;
 
+        var category = $scope.categoryls[index];
         for (var idx = 0; idx < $scope.categoryls.length; idx++) {
             $scope.categoryls[idx].selected = 0;
         }
@@ -140,6 +147,9 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
 
             }
             $scope.currentDisplayItems = $scope.currentDisplayItems.concat(dataDetail.items);
+
+            // update category data
+            $scope.currentDisplayCategory.itemls = $scope.currentDisplayItems;
             $scope.currentDisplayCategory.totalCnt = ShoppingCart.getCountForCategroy($scope.currentDisplayCategory.category_id);
 
             inLoadingMore = false;
@@ -212,22 +222,16 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         $scope.info.showCart = !$scope.info.showCart;
     }
 
-    $ionicModal.fromTemplateUrl('/views/sg/templates/switchShop.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function (modal) {
-        $scope.modal = modal;
-    });
-
     $scope.switchShop = function () {
-
-        $scope.modal.show();
+        $ionicModal.fromTemplateUrl('/views/sg/templates/switchShop.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+                $scope.modal = modal;
+                $scope.modal.show();
+            });
     }
 
-    //Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-//        $scope.modal.remove();
-    });
     // Execute action on hide modal
     $scope.$on('modal.hidden', function() {
 
@@ -249,6 +253,34 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
             });
         }
     });
+
+
+    // for image preview
+    $ionicModal.fromTemplateUrl('/views/sg/templates/productPreview.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+            $scope.previewModal = modal;
+        });
+
+    $scope.openPreviewModal = function() {
+        $scope.previewModal.show();
+    };
+
+    $scope.closePreviewModal = function() {
+        $scope.previewModal.remove();
+    };
+
+    $scope.showImage = function(item) {
+        $scope.imageSrc = item.pic_url;
+        $ionicModal.fromTemplateUrl('/views/sg/templates/productPreview.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+                $scope.previewModal = modal;
+                $scope.openPreviewModal();
+        });
+    }
 
     function fullyUpdateForProductList() {
 
@@ -334,8 +366,7 @@ angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $roo
         checkShopStatus();
 
         updateShoppingCart();
-        if ($scope.categoryls) {
-        }
+
         fullyUpdateForProductList();
 
         if(!$scope.currentDisplayItems || !$scope.currentDisplayItems.length){

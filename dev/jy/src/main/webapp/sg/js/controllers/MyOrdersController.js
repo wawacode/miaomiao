@@ -1,5 +1,6 @@
-angular.module('miaomiao.shop')
-    .controller('MyOrdersCtrl',function ($scope, $ionicLoading,$ionicPopup, $http, $state,$ionicScrollDelegate,localStorageService,$sessionStorage,httpClient,AddressService,OrderService,MMUtils) {
+;angular.module('miaomiao.shop')
+    .controller('MyOrdersCtrl',function ($scope, $ionicLoading,$ionicPopup, $timeout, $http, $state,$ionicScrollDelegate,
+                                         localStorageService,$sessionStorage,httpClient,AddressService,OrderService,MMUtils) {
 
         $scope.shop = localStorageService.get('MMMETA_shop') || {};
 
@@ -24,10 +25,8 @@ angular.module('miaomiao.shop')
         }
 
         $scope.info = {};
-        $scope.info.hasOrder = true;
-        $scope.info.hasAddress = true;
-        $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
 
+        $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
         $scope.addr = {};
         $scope.addressls = $sessionStorage.MMMETA_OrderAddresses || [];
         $scope.orders = $sessionStorage.MMMETA_OrderOrders || [];
@@ -66,6 +65,15 @@ angular.module('miaomiao.shop')
                     transformOrderData($scope.orders);
 
                     $scope.info.hasOrder = $scope.orders.length > 0? true : false;
+
+                    $timeout(function(){
+                        if($scope.orders.length >= 1){
+                            $scope.latestOrder = $scope.orders.slice(0,1);
+                        }
+                        if($scope.orders.length > 1){
+                            $scope.historyOrder = $scope.orders.slice(1);
+                        }
+                    });
 
                     $sessionStorage.orderAddresses = $scope.addressls;
                     $sessionStorage.orderOrders = $scope.orders;
@@ -134,6 +142,14 @@ angular.module('miaomiao.shop')
 
                 $ionicScrollDelegate.resize();
             })
+        }
+
+        $scope.switchToAddressList = function($event){
+
+            $event.target.blur();
+            $event.stopPropagation();
+
+            $state.go('userAddressList',null,{reload:true});
         }
 
         $scope.goToShopOrFindShop = function(){

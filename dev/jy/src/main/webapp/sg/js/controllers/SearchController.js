@@ -1,11 +1,10 @@
-angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading,$ionicScrollDelegate, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
+;angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading,$ionicScrollDelegate, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart) {
 
 
 
     $scope.shop = localStorageService.get('MMMETA_shop') || {};
 
     $scope.info = {};
-    $scope.info.hasNoResults = false;
 
     $scope.performSearch = function (key,$event) {
 
@@ -131,6 +130,8 @@ angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $root
     }
 
     $scope.checkout = function () {
+
+        if (!$scope.info.cartReadyToShip)return;
 
         $state.go('checkout',null, { reload: true });
 

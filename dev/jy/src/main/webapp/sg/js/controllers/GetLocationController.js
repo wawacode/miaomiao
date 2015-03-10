@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').
+;angular.module('miaomiao.shop').
     controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout, httpClient, MMUtils) {
 
         $scope.info = {};
@@ -85,7 +85,7 @@ angular.module('miaomiao.shop').
             }
         }
 
-        $scope.$on("$ionicView.enter", function () {
+        $scope.$on("$ionicView.afterEnter", function () {
 
             if ($scope.info.lastShop && $scope.info.lastShop.id) {
                 $state.go('productList');

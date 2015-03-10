@@ -1,20 +1,15 @@
 <ion-view view-title="喵喵">
     <ion-content>
-
-        <div class="loadingBackground">
-
-            <img class="background-img"
-                 style="width: 100%;height: 100%; position: absolute;top: 0;bottom: 0;left: 0;right: 0;"
-                 src="/images/loadingpage-short.jpg">
+        <div class="loadingBackground" style="background-image: url('/images/loadingpage-short.jpg');
+            background-size: cover;background-repeat: no-repeat">
+            <!--<img class="background-img"-->
+                 <!--style="width: 100%;height: auto; position: absolute;top: 0;bottom: 0;left: 0;right: 0;"-->
+                 <!--src="/images/loadingpage-short.jpg">-->
         </div>
-
         <div class="getGeolocation">
-
             <div class="getGeolocation-title" ng-class="info.getGeolocationTitleClass">
                 {{info.getGeolocationTitle}}
             </div>
         </div>
-
     </ion-content>
-
 </ion-view>

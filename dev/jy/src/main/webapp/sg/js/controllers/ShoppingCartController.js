@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop')
+;angular.module('miaomiao.shop')
     .controller('ShoppingCartCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService,ShoppingCart) {
 
         $scope.info = $scope.info || {};

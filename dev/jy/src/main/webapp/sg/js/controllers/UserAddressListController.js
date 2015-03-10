@@ -1,5 +1,6 @@
-angular.module('miaomiao.shop')
-    .controller('UserAddressListCtrl', function ($scope, $ionicLoading, $http,$ionicScrollDelegate, $state, localStorageService,httpClient,AddressService) {
+;angular.module('miaomiao.shop')
+    .controller('UserAddressListCtrl', function ($scope, $ionicLoading,$ionicPopup, $http,$ionicScrollDelegate, $state,
+                                                 localStorageService,httpClient,AddressService, MMUtils) {
 
         $scope.shop = localStorageService.get('MMMETA_shop') || {};
 
@@ -87,7 +88,55 @@ angular.module('miaomiao.shop')
         }
 
 
+        $scope.addNewAddressConfirm = function(){
+
+            if(!$scope.newAddress.address || !$scope.newAddress.phone || !MMUtils.isValidTelNumber($scope.newAddress.phone)){
+
+                $ionicPopup.alert({
+                    title: '请填写正确的地址电话',
+                    template: ''
+                });
+
+                return;
+            }
+
+            $scope.LoadingMessage = '正在添加新地址...';
+            $ionicLoading.show({
+                templateUrl: '/views/sg/templates/loadingIndicator.html',
+                scope: $scope
+            });
+
+            httpClient.addAddress($scope.shop.id, $scope.newAddress, function(data, status){
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    $ionicPopup.alert({
+                        title: '添加新地址失败:' + data.msg,
+                        template: ''
+                    });
+                    return;
+                }
+
+                $ionicLoading.hide();
+
+                AddressService.addressChangeEventAddNew($scope.newAddress);
+
+                $state.go('myOrders',null, { reload: true });
+
+
+            },function(data, status){
+
+                $ionicLoading.hide();
+
+                $ionicPopup.alert({
+                    title: '添加新地址失败,请刷新',
+                    template: ''
+                });
+            })
+        }
+
         $scope.$on("$ionicView.enter", function () {
+            $scope.newAddress = {};
             updateAddress();
         });
 

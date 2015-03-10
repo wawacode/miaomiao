@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 'localStorageService', '$localStorage',
+;angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 'localStorageService', '$localStorage',
     '$sessionStorage','$timeout', function ($http, $rootScope, localStorageService, $localStorage, $sessionStorage, $timeout) {
 
 

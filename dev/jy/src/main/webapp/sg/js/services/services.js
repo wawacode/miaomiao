@@ -1,6 +1,5 @@
-var miaomiao = angular.module('miaomiao.shop');
-
-miaomiao.factory('httpClient', ['$http', function ($http) {
+;
+angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http) {
 
         var doGet = function (path, params, success, fail) {
             $http({
@@ -82,7 +81,7 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
                 doGet('search/query', 'shop_id=' + shopId + '&key=' + key, success, fail);
             },
 
-            getSearchSuggestion:function( shopId, key, success, fail){
+            getSearchSuggestion: function (shopId, key, success, fail) {
 
                 doGet('/suggestion/query', 'shop_id=' + shopId + '&q=' + key, success, fail);
 
@@ -99,7 +98,7 @@ miaomiao.factory('httpClient', ['$http', function ($http) {
             },
             getShopInfo: function (shop_id, success, fail) {
 
-                doGet('shop', 'shop_id=' + shop_id , success, fail);
+                doGet('shop', 'shop_id=' + shop_id, success, fail);
 
             },
             getNearShopList: function (lat, lng, success, fail) {

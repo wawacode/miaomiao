@@ -155,8 +155,9 @@ public class ItemConsoleController extends BasicConsoleController{
 		resultJson.put("msg", "服务器错误，请稍后重试");
 		String picUrl = "";
     	if(!StringUtils.isBlank(pic_url)){
-            Product product =  productDao.geProduct(serialNo);
-    		picUrl = product.getPic_url();
+
+            Product p = productDao.geProduct(serialNo);
+    		picUrl = p.getPic_url();
     	}
     	int onsell = Constants.ITEM_NOT_SALE;
     	if(!StringUtils.isBlank(saleStatus)){

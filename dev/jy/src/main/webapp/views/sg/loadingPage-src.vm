@@ -1,0 +1,63 @@
+<html ng-app="miaomiao.shop">
+<head>
+    <meta charset="utf-8">
+    <title>喵喵</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="format-detection" content="telephone=no">
+
+    <link href="/css/ionic.min.css" rel="stylesheet">
+    <link href="/js/ionic-rating/ionic-rating.css" rel="stylesheet">
+    <!--<link href="/css/app.css" rel="stylesheet">-->
+    <link href="/css/app-ui.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+
+    <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
+
+    <script type="text/javascript" src="/js/bower_components/angular-bindonce/bindonce.min.js"></script>
+    <script type="text/javascript" src="/js/bower_components/quick-ng-repeat/quick-ng-repeat.js"></script>
+
+
+    <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
+    <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
+    <script type="text/javascript" src="/js/ionic-rating/ionic-rating.min.js"></script>
+
+    <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
+
+    <script src="/sg/js/services/app.js"></script>
+    <script src="/sg/js/services/directives.js"></script>
+    <script src="/sg/js/services/filters.js"></script>
+    <script src="/sg/js/services/services.js"></script>
+    <script src="/sg/js/services/shoppingCart.js"></script>
+
+    <script src="/sg/js/controllers/GetLocationController.js"></script>
+    <script src="/sg/js/controllers/FindShopController.js"></script>
+    <script src="/sg/js/controllers/ShopController.js"></script>
+    <script src="/sg/js/controllers/GoToShopController.js"></script>
+    <script src="/sg/js/controllers/SearchController.js"></script>
+    <script src="/sg/js/controllers/CheckoutController.js"></script>
+    <script src="/sg/js/controllers/AddressListController.js"></script>
+    <script src="/sg/js/controllers/ShowProductDetailController.js"></script>
+    <script src="/sg/js/controllers/MyOrdersController.js"></script>
+    <script src="/sg/js/controllers/ShoppingCartController.js"></script>
+    <script src="/sg/js/controllers/OrderSuccessCtroller.js"></script>
+    <script src="/sg/js/controllers/UserAddressListController.js"></script>
+
+</head>
+<body>
+
+<ion-nav-view></ion-nav-view>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?39973e3981da4da56b413e225a122b0f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</body>
+</html>

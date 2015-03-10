@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop')
+;angular.module('miaomiao.shop')
     .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService, MMUtils) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
@@ -8,7 +8,7 @@ angular.module('miaomiao.shop')
         $scope.info.address = {};
         $scope.info.newOrderAddress = '';
         $scope.info.newOrderPhone = '';
-        $scope.info.showAddNewAddress = false;
+        $scope.info.dataReady = false;
 
         function checkOrders() {
 
@@ -22,6 +22,7 @@ angular.module('miaomiao.shop')
             httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function (data, status) {
 
                 $ionicLoading.hide();
+                $scope.info.dataReady = true;
 
                 var code = data.code, dataDetail = data.data;
                 if (code == 500) {
@@ -60,6 +61,7 @@ angular.module('miaomiao.shop')
 
             }, function (data, status) {
                 $ionicLoading.hide();
+                $scope.info.dataReady = true;
             });
         }
 

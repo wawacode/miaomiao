@@ -1,4 +1,4 @@
-angular.module('miaomiao.shop').controller('ProductDetailCtrl', ['$scope', '$ionicModal',
+;angular.module('miaomiao.shop').controller('ProductDetailCtrl', ['$scope', '$ionicModal',
 
     function ($scope, $ionicModal) {
 
