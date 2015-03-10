@@ -161,6 +161,62 @@ public class WXController {
         return  response;
     }
 
+
+    @Get("test")
+    @Post("test")
+    public String test( Invocation inv,@Param("echostr") String echostr) {
+        HttpServletRequest request =  inv.getRequest();
+        String body = "";
+        try {
+            body = getBodyString(request.getReader());
+            LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(!StringUtils.isBlank(body)){
+            String str = test_parse(body);
+            LoggerUtils.getInstance().log(String.format("return %s  ", str)) ;
+            return "@" + str;
+        }
+        return "@" + echostr;
+    }
+
+
+
+    private  String test_parse(String body) {
+        String mtype =  getMtype(body);
+        String toUser = getToUser(body);
+        String fromUser = getFromUser(body);
+        String event = getEvent(body);
+        String content = getContent(body);
+        //商家查询增量粉丝
+        int count = 0 ;
+        try {
+           count = Integer.valueOf(content);
+        }catch(Exception e){
+           // do not thing;
+        }
+        if(count !=0){
+               long fss = JRedisUtil.getInstance().scard("set_"+PREFIX+ count);
+               String response = CONTENT.replace("{message}", fss + "");  // 这个其实没用
+               response = response.replace("{toUser}",fromUser);
+               response = response.replace("{fromUser}",toUser);
+               response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+               return  response;
+        }
+        // 用户给发消息
+        LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
+        String response = DUOKEFU.replace("{message}", MESSAGE);  // 这个其实没用
+        response = response.replace("{toUser}",fromUser);
+        response = response.replace("{fromUser}",toUser);
+        response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+        return  response;
+    }
+
+
+
+
+
     private String getContent(String body) {
         String s = "<Content><![CDATA[";
         String e = "]]></Content>";

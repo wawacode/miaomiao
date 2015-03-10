@@ -18,11 +18,11 @@ import java.util.List;
 public interface StorageDAO {
     static final String TABLE_NAME= "storage";
     static final String  FIELDS = "user_id,shop_id"  ;
-    @SQL("select "+ FIELDS + " from " + TABLE_NAME +" where user_id =:1")
+    @SQL("select shop_id  from " + TABLE_NAME +" where user_id =:1")
     public long getShop(long user_id) ;
 
 
     @ReturnGeneratedKeys
-    @SQL("insert into " + TABLE_NAME + "(" + FIELDS +" ) values"  + " (:1,:2) on duplicate key update set shop_id =:2")
+    @SQL("insert into " + TABLE_NAME + "(" + FIELDS +" ) values"  + " (:1,:2) on duplicate key update shop_id =:2")
     public long insertAndUpdate(long user_id,long shop_id);
 }
