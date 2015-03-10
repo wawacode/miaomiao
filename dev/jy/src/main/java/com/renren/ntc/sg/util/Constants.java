@@ -31,6 +31,7 @@ public class Constants {
 
     public static  final String PRERROR = "{\"code\":1,\"msg\":\"{msg}\"}";
     public static  final String LEAKERROR = "{\"code\":100,\"msg\":\"库存不足\"}";
+    public static  final String UNLOGINERROR = "{\"code\":101,\"msg\":\"未登录\"}";
     public static  final String UKERROR = "{\"code\":500,\"msg\":\"服务器异常\"}";
     public static  final String DONE = "{\"code\":0,\"msg\":\"done\"}";
 
