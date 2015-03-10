@@ -222,14 +222,15 @@
         $scope.info.showCart = !$scope.info.showCart;
     }
 
+    $ionicModal.fromTemplateUrl('/views/sg/templates/switchShop.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function (modal) {
+        $scope.modal = modal;
+    });
+
     $scope.switchShop = function () {
-        $ionicModal.fromTemplateUrl('/views/sg/templates/switchShop.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function (modal) {
-                $scope.modal = modal;
-                $scope.modal.show();
-            });
+        $scope.modal.show();
     }
 
     // Execute action on hide modal
