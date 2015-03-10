@@ -1,7 +1,10 @@
 package com.renren.ntc.sg.controllers.console.api;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.User;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.biz.dao.StorageDAO;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.util.Constants;
@@ -23,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
  @Path("storage")
 public class StorageController {
+    @Autowired
+    public ShopDAO shopDao ;
 
     @Autowired
     public StorageDAO storageDao;
@@ -58,12 +63,18 @@ public class StorageController {
         }
         long  userid = getUserId(token);
         long shop_id = storageDao.getShop(userid);
+        Shop shop = shopDao.getShop(shop_id);
         JSONObject  jb = new JSONObject();
-        jb.put("shop_id",shop_id);
-        return "@json:" + jb.toJSONString();
+        jb.put("shop", (JSONObject)JSON.toJSON(shop));
+        return "@json:" + getDataResult(0,jb);
     }
 
-
+    protected String getDataResult(int code,JSONObject data) {
+        JSONObject result = new JSONObject();
+        result.put("code", code);
+        result.put("data", data);
+        return result.toJSONString();
+    }
 
 
 }
