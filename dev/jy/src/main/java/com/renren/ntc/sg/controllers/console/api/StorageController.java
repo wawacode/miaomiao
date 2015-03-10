@@ -23,26 +23,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class StorageController {
 
     @Autowired
-    public NtcHostHolder holder;
-    @Autowired
     public StorageDAO storageDao;
 
     @Post("set")
     @Get("set")
-    public String set(Invocation inv,@Param("shop_id") long shop_id){
-        User u = holder.getUser();
-        storageDao.insertAndUpdate(u.getId(),shop_id);
+    public String set(Invocation inv,@Param("token") String token, @Param("shop_id") long shop_id){
+        long  userid = getUserId(token);
+        storageDao.insertAndUpdate(userid,shop_id);
         return "@json;" + Constants.DONE;
     }
+
+    private long getUserId(String token) {
+        String [] args = token.split("_");
+        String id = args[1] ;
+        long uid = 0 ;
+        try {
+           uid = Long.valueOf(id);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return uid;
+    }
+
     @Post("get")
     @Get("get")
-    public String get(Invocation inv ){
-
-        User u = holder.getUser();
-        if( null == u ){
-            return "@json;" + Constants.UNLOGINERROR;
-        }
-        long shop_id = storageDao.getShop(u.getId());
+    public String get(Invocation inv,@Param("token") String token ){
+        long  userid = getUserId(token);
+        long shop_id = storageDao.getShop(userid);
         JSONObject  jb = new JSONObject();
         jb.put("shop_id",shop_id);
         return "@json;" + jb.toJSONString();
