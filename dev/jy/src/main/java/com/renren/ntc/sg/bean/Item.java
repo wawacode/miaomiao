@@ -34,6 +34,15 @@ public class Item {
     private  long  shop_id  = 0;
     private  String  name  ;
 
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+
+    private String test ="" ;
 
 
     private  long  status  ;
