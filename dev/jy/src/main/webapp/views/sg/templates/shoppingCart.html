@@ -1,13 +1,13 @@
 <div class="shoppingCartListContent">
     <div class="shop-cart-list">
-        <ul style="margin: 0; padding:0px 20px 0 20px;" class="">
+        <ul style="margin: 0; padding:0px 10px 0 20px;" class="">
             <div style="border-bottom: solid 1px #eaeaea;">
                 <div class="clearShoppingCart" style="" ng-click="clearShoppingCart()">
                     <button class="button button-clear button-dark"><i class="icon ion-ios7-trash-outline assertive"></i> 清空购物车</button>
                 </div>
             </div>
         </ul>
-        <ul style="margin: 0; padding:0px 20px 0 20px" class="js-shop-cart-list">
+        <ul style="margin: 0; padding:0px 10px 0 20px" class="js-shop-cart-list">
             <li bindonce ng-repeat="item in info.shoppingCartItems"
                 class="product-item " ng-include src="'/views/sg/templates/productDetail.html'">
             </li>
