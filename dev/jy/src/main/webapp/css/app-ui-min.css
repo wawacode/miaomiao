@@ -95,7 +95,7 @@ ul.rating li i{font-size:12px}
 .addressTitle{margin-right:10px;color:#7a7a7a}
 .addressItem-address{word-wrap:break-word}
 .addressItem-phone{word-wrap:break-word;margin-top:10px}
-.addressInput{font-size:15px;border:0;padding:5px}
+.addressInput{font-size:15px;padding:5px;border-top:none !important;border-left:none !important;border-right:none !important}
 .addAddrHint{padding:15px 20px 10px 20px}
 .shoppingCartDisplayBackground{height:100%;background-color:rgba(0,0,0,0.6);position:absolute;bottom:44;left:0;width:100%;display:none;overflow:hidden;z-index:100}
 .shoppingCartDisplay{height:60%;background-color:#fff;position:absolute;bottom:44;left:0;width:100%;overflow:scroll;z-index:200;display:none;border-top:solid 2px #ef5356;-webkit-overflow-scrolling:touch}

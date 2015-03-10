@@ -739,8 +739,10 @@ ul.rating li i {
 .addressInput {
 
     font-size: 15px;
-    border: none;
     padding: 5px;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
 
 }
 
