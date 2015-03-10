@@ -66,6 +66,24 @@ public class HomeController {
 
         return "loadingPage";
     }
+    @Get("loading2")
+    public String loadingPage (Invocation inv){
+
+        String code =  inv.getParameter("code");
+        String state =  inv.getParameter("state");
+        LoggerUtils.getInstance().log(String.format("code %s, state %s",code ,state ));
+
+        return "loadingPage";
+    }
+    @Get("loading3")
+    public String loadingPage (Invocation inv){
+
+        String code =  inv.getParameter("code");
+        String state =  inv.getParameter("state");
+        LoggerUtils.getInstance().log(String.format("code %s, state %s",code ,state ));
+
+        return "loadingPage";
+    }
 
     @Get("f")
     @Post("f")
