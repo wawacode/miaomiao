@@ -23,6 +23,6 @@ public interface StorageDAO {
 
 
     @ReturnGeneratedKeys
-    @SQL("insert into " + TABLE_NAME + "(" + FIELDS +" ) values"  + " (:1.user_id,:1.shop_id) on ")
-    public long insert(Device o);
+    @SQL("insert into " + TABLE_NAME + "(" + FIELDS +" ) values"  + " (:1,:2) on duplicate key update set shop_id =:2")
+    public long insertAndUpdate(long user_id,long shop_id);
 }

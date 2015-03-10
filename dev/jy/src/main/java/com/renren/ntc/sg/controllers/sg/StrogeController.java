@@ -32,14 +32,19 @@ public class StrogeController {
     @Get("set")
     public String set(Invocation inv,@Param("shop_id") long shop_id){
         User u = holder.getUser();
-
+        storageDao.insertAndUpdate(u.getId(),shop_id);
         return "@json;" + Constants.DONE;
     }
     @Post("get")
     @Get("get")
     public String get(Invocation inv ){
+
+        User u = holder.getUser();
+        if( null == u ){
+            return "@json;" + Constants.UNLOGINERROR;
+        }
+        long shop_id = storageDao.getShop(u.getId());
         JSONObject  jb = new JSONObject();
-        long shop_id  = 1;
         jb.put("shop_id",shop_id);
         return "@json;" + jb.toJSONString();
     }
