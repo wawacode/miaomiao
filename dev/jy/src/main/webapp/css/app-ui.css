@@ -919,7 +919,7 @@ ul.rating li i {
     padding: 0;
     overflow: hidden;
     height: 49;
-    border-top: solid 1px lightgray;
+    border-top: solid 1px lightgray !important;
 }
 
 .checkoutBasePadding {
