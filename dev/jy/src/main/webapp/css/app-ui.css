@@ -740,9 +740,7 @@ ul.rating li i {
 
     font-size: 15px;
     padding: 5px;
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
+    border: none !important;
 
 }
 
@@ -1087,4 +1085,5 @@ ul.rating li i {
     font-size: 14px;
     padding-left: 10px !important;
     border-radius: 3px;
+    text-shadow: none !important;
 }

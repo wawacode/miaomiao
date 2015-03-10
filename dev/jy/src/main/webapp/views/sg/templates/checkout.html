@@ -33,13 +33,19 @@
                 <div class="addNewAddressHint">
                     您还没有添加收货人信息,请添加
                 </div>
-                <div class="checkoutBasePadding">
-                    <input class="addressInput" style="border-bottom: solid 1px #eaeaea !important;"
-                           type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress"
-                           required>
-                    <input class="addressInput"
-                           type="tel" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"
-                           required style=" border-bottom: none !important;margin-top: 10px">
+                <div class="checkoutBasePadding" style="padding-bottom: 5px">
+
+                    <div style="width: 100%;border-bottom: solid 1px #eaeaea;">
+                        <input class="addressInput" style=""
+                               type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress"
+                               required>
+                    </div>
+                    <div style="width: 100%;border: none;margin-top: 10px">
+                        <input class="addressInput"
+                               type="tel" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"
+                               required style="">
+                    </div>
+
                 </div>
             </div>
             <div class="checkoutBasePadding" style="padding-top: 10px;background-color: #ffffff"
