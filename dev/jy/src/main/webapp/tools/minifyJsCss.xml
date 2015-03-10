@@ -41,7 +41,7 @@
                       files="app-min.js, directives-min.js,filters-min.js,services-min.js,shoppingCart-min.js"/>
 
             <filelist dir="${src}/sg/js/compress/controllers"
-                      files="GetLocationController-min.js, FindShopController-min.js,ShopController-min.js,GoToShopController-min.js,SearchController-min.js,
+                      files="GetLocationController-min.js, FindShopController-min.js,ProductListController-min.js,GoToShopController-min.js,SearchController-min.js,
                       CheckoutController-min.js,AddressListController-min.js,ShowProductDetailController-min.js,MyOrdersController-min.js,ShoppingCartController-min.js,UserAddressListController-min.js"/>
 
         </concat>

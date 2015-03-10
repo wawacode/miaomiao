@@ -33,7 +33,7 @@
 
     <script src="/sg/js/controllers/GetLocationController.js"></script>
     <script src="/sg/js/controllers/FindShopController.js"></script>
-    <script src="/sg/js/controllers/ShopController.js"></script>
+    <script src="/sg/js/controllers/ProductListController.js"></script>
     <script src="/sg/js/controllers/GoToShopController.js"></script>
     <script src="/sg/js/controllers/SearchController.js"></script>
     <script src="/sg/js/controllers/CheckoutController.js"></script>
