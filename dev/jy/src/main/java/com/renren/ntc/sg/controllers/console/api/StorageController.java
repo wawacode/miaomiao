@@ -52,7 +52,7 @@ public class StorageController {
         long shop_id = storageDao.getShop(userid);
         JSONObject  jb = new JSONObject();
         jb.put("shop_id",shop_id);
-        return "@json;" + jb.toJSONString();
+        return "@json:" + jb.toJSONString();
     }
 
 
