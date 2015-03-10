@@ -12,7 +12,7 @@
 
     <link href="/css/ionic.min.css" rel="stylesheet">
     <link href="/js/ionic-rating/ionic-rating.css" rel="stylesheet">
-    <link href="/css/app-ui-min.css" rel="stylesheet">
+    <link href="/css/app-ui-min.css?version=1.0.0" rel="stylesheet">
 
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
     <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
@@ -29,7 +29,7 @@
 
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
 
-    <script src="/sg/js/compress/app-ui-min.js" type="text/javascript"></script>
+    <script src="/sg/js/compress/app-ui-min?version=1.0.0.js" type="text/javascript"></script>
 
 </head>
 <body>
