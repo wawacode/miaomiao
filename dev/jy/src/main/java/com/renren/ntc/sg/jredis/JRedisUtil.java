@@ -36,6 +36,11 @@ public class JRedisUtil {
         return jds.set(key,value);
     }
 
+    public Long  expire(String key, int seconds){
+        return jds.expire(key,seconds);
+    }
+
+
 
     public long  sadd( String key, String value){
         return jds.sadd(key,value);
