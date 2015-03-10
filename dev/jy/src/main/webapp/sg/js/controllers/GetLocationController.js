@@ -2,8 +2,7 @@
     controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout, ShopService ,httpClient, MMUtils) {
 
         $scope.info = {};
-        $scope.info.getGeolocationTitle = "定位中...";
-        $scope.info.getGeolocationTitleClass = 'blink_me';
+
         $scope.info.showLocateImg = true;
 
         function showPosition(position) {
@@ -72,17 +71,18 @@
 
         $scope.$on("$ionicView.afterEnter", function () {
 
+            $scope.info.getGeolocationTitle = "定位中...";
+            $scope.info.getGeolocationTitleClass = 'blink_me';
+
             // make sure shop info from server is source of truth
             $scope.info.hasDefaultShop = false;
             ShopService.getDefaultShopFromServer(function(shop){
-
                 $scope.info.hasDefaultShop = true;
                 ShopService.setDefaultShop(shop);
                 $state.go('productList');
 
             },function(){
                 $scope.info.hasDefaultShop = false;
-
                 $timeout(function () {
                     getLocation();
                 }, 500);

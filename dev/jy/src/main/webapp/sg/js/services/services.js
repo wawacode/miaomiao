@@ -102,14 +102,15 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             },
 
-            getDefaultShopInfo: function (shop_id, success, fail) {
+            getDefaultShopInfo: function (success, fail) {
 
-                doGet('shop', '', success, fail);
+                doGet('getDefaultShop', '', success, fail);
 
             },
+
             setDefaultShopInfo: function (shop_id, success, fail) {
 
-                doGet('shopDefault', '', success, fail);
+                doGet('setDefaultShop', 'shop_id=' + shop_id, success, fail);
 
             },
 
@@ -190,7 +191,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             setDefaultShop: function (shop) {
                 _defaultShop = shop;
-                this.setDefaultShopToServer(shop.id,null,null);
+                this.setDefaultShopToServer(shop.id,function(){},function(){});
             },
 
             getDefaultShop: function () {
@@ -202,9 +203,8 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 httpClient.getDefaultShopInfo(function(data, status){
                     var code = data.code, dataDetail = data.data;
                     if (dataDetail.shop) {
-                        success(dataDetail.shop);
                         self.setDefaultShop(dataDetail.shop);
-                        return;
+                        return success(dataDetail.shop);
                     }
                     fail(null);
                 },function(data, status){

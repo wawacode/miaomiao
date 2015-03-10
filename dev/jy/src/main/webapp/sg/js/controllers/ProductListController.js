@@ -42,10 +42,6 @@
 
             // force update shop info
             $scope.shop = dataDetail.shop;
-            if($scope.shop){
-                ShopService.setDefaultShop(dataDetail.shop);
-            }
-
             $scope.categoryls = dataDetail.categoryls;
 
             // extend for use
@@ -349,11 +345,6 @@
                 alertPopup.then(function(res) {
                     $state.go('findshop' ,null, { reload: true });
                     return;
-                });
-            }else{
-                var alertPopup = $ionicPopup.alert({
-                    title: '加载店铺失败',
-                    template: ''
                 });
             }
         });
