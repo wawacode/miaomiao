@@ -35,6 +35,9 @@ public class WXHttpClient {
 //    private static String appKey = "ebd5d6bf4c597a617b2420341da1c03d";
 //    private static String appId = "wxd64a39a599e2ce3a";
 
+
+
+
     private static final int CONN_TIMEOUT = 10000;
 	private static final int READ_TIMEOUT = 10000;
 	private static final int RETRY = 2;
@@ -127,7 +130,7 @@ public class WXHttpClient {
         JSONObject button  = new JSONObject();
         button.put("type","view");
         button.put("name","我要下单");
-        button.put("url","http://www.mbianli.com/sg/loading2" );
+        button.put("url","http://www.mbianli.com/sg/loading3" );
         buttons.add(button);
 
 
@@ -158,7 +161,7 @@ public class WXHttpClient {
 //        button2.put("name","个人中心");
 //        button2.put("url","http://www.mbianli.com/sg/loading#/myorders" );
 //        buttons.add(button2);
- //
+
         ob.put("button",buttons);
 
         byte [] t = WXHttpClient.sendPostRequest(url,ob.toJSONString());

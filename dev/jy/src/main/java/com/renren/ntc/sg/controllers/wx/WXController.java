@@ -278,11 +278,6 @@ public class WXController {
           for (String s :ss ){
               System.out.println(s);
           }
-//        System.out.println(System.currentTimeMillis());
-//        String s = "<xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421837689</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[A地方法规和]]></Content><MsgId>6106746374681307894</MsgId></xml> ";
-//        System.out.println(getToUser(s));
-//        System.out.println(getFromUser(s));
-//        System.out.println(getMtype(s));
-//        System.out.println(getEvent(s));
+
     }
 }

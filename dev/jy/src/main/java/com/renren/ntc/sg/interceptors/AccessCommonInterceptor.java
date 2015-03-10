@@ -47,9 +47,13 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
 
     @Override
     protected Object before(Invocation inv) throws Exception {
+        String code = inv.getParameter("code");
+
     	String path = inv.getRequest().getRequestURI() ;
         User u = null    ;
         String uuid  = CookieManager.getInstance().getCookie(inv.getRequest(), Constants.COOKIE_KEY_USER);
+
+//        public static String GETOPENID = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx762f832959951212&secret=914f4388312ca90e4cb750b817d15368&code={code}&grant_type=authorization_code";
         if(null  != uuid) {
             u = userDAO.getUser(SUtils.unwrapper(uuid));
         }
