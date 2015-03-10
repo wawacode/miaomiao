@@ -133,9 +133,7 @@ public class WXController {
                    }
                 }
                 return  response;
-
             }
-
         }
         String content = getContent(body);
         //商家查询增量粉丝

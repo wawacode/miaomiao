@@ -131,15 +131,16 @@ public class WXHttpClient {
         buttons.add(button);
 
 
-//        JSONObject button2  = new JSONObject();
-//        button2.put("type","view");
-//        button2.put("name","关于喵喵");
-//        button2.put("url","http://www.mbianli.com/sg/about" );
-
         JSONObject button2  = new JSONObject();
-        button2.put("type","click");
+        button2.put("type","view");
         button2.put("name","关于喵喵");
-        button2.put("key","about_miaomiao" );
+//        button2.put("url","http://www.mbianli.com/sg/about");
+        button2.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Fabout&response_type=code&scope=snsapi_base&state=128#wechat_redirect" );
+
+//        JSONObject button2  = new JSONObject();
+//        button2.put("type","click");
+//        button2.put("name","关于喵喵");
+//        button2.put("key","about_miaomiao" );
         buttons.add(button2);
 
 //v2
@@ -230,8 +231,8 @@ public class WXHttpClient {
             return ;
         }
         JSONObject ob =(JSONObject) JSONObject.parse(e);
-        addkf(ob.getString("access_token"));
-//        createMenu(ob.getString("access_token"));
+//        addkf(ob.getString("access_token"));
+        createMenu(ob.getString("access_token"));
 
          //scene
 //        for (int i =1 ; i <10000 ; i++) {

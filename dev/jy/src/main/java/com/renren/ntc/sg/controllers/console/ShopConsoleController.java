@@ -128,6 +128,10 @@ public class ShopConsoleController {
         if(itemls.size() >=  offset){
            inv.addModel("next_f", from  + offset);
         }
+        for (Item it : itemls){
+            float tt = (float)it.getPrice()/100;
+            it.setTest(tt + "");
+        }
         inv.addModel("itemls", itemls);
         inv.addModel("categoryls",categoryls);
         inv.addModel("curr_cate_id",category_id);
@@ -240,13 +244,13 @@ public class ShopConsoleController {
             offset = 50 ;
         }
         List<Order> orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
-
+        int base = from ;
         if(from != 0){
-            from = from - offset;
+            from = base - offset;
             inv.addModel("previous_f", from< 0?0:from);
         }
         if(orderls.size() >=  offset){
-            inv.addModel("next_f", from  + offset);
+            inv.addModel("next_f", base  + offset);
         }
         orderls = orderService.forV(orderls);
         inv.addModel("shop",shop);
