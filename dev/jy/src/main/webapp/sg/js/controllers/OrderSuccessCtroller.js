@@ -1,8 +1,8 @@
 ;angular.module('miaomiao.shop')
-    .controller('OrderSuccessCtrl', function ($scope, $rootScope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage,ShoppingCart,OrderService) {
+    .controller('OrderSuccessCtrl', function ($scope, $rootScope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage,ShoppingCart,OrderService,ShopService) {
 
         // go to orders page
-        $scope.shop = localStorageService.get('MMMETA_shop');
+        $scope.shop = ShopService.getDefaultShop() || {};
         $scope.message = "订单成功，将为您跳转...";
 
         OrderService.onOrderChangeEventSuccess($scope,function(){

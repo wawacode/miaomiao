@@ -1,8 +1,8 @@
 ;angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
-                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService) {
+                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService,ShopService) {
 
     // get shop info from local storage cause in locate page we have got one
-    $scope.shop = localStorageService.get('MMMETA_shop');
+    $scope.shop = ShopService.getDefaultShop() || {};
 
     if(!$scope.shop){
 
@@ -43,7 +43,7 @@
             // force update shop info
             $scope.shop = dataDetail.shop;
             if($scope.shop){
-                localStorageService.set('MMMETA_shop',$scope.shop);
+                ShopService.setDefaultShop(dataDetail.shop);
             }
 
             $scope.categoryls = dataDetail.categoryls;
@@ -206,8 +206,6 @@
 
     $scope.checkout = function () {
 
-        localStorageService.set('MMMETA_shop', $scope.shop);
-
         if (!$scope.info.cartReadyToShip)return;
 
         $state.go('checkout', null, { reload: true });
@@ -236,7 +234,7 @@
     // Execute action on hide modal
     $scope.$on('modal.hidden', function() {
 
-        var shop = localStorageService.get('MMMETA_shop');
+        var shop = ShopService.getDefaultShop() || {};
         if(shop.id != $scope.shop.id){
 
             $timeout(function () {
@@ -338,31 +336,31 @@
     function checkShopStatus(){
         // must check shop status
 
-        var shopInfo = localStorageService.get('MMMETA_shop');
+        var shopInfo = ShopService.getDefaultShop() || {};
         $timeout(function () {
             $scope.shop = shopInfo;
-        });
 
-        httpClient.getShopInfo(shopInfo.id, function (data, status) {
-            var code = data.code, dataDetail = data.data;
-            if (dataDetail.shop && dataDetail.shop.status != 0) {
+            if ($scope.shop && $scope.shop.status != 0) {
 
                 var alertPopup = $ionicPopup.alert({
-                    title: dataDetail.shop.name + '打烊啦，去其他店铺看看？',
+                    title: $scope.shop.name + '打烊啦，去其他店铺看看？',
                     template: ''
                 });
                 alertPopup.then(function(res) {
                     $state.go('findshop' ,null, { reload: true });
                     return;
                 });
+            }else{
+                var alertPopup = $ionicPopup.alert({
+                    title: '加载店铺失败',
+                    template: ''
+                });
             }
-        },function(data, status){
-
         });
     }
 
     // when back from checkout or other state, just refresh the numbers
-    $scope.$on("$ionicView.enter", function () {
+    $scope.$on("$ionicView.afterEnter", function () {
 
         checkShopStatus();
 

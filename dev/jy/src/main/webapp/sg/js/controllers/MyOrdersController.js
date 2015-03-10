@@ -1,8 +1,8 @@
 ;angular.module('miaomiao.shop')
     .controller('MyOrdersCtrl',function ($scope, $ionicLoading,$ionicPopup, $timeout, $http, $state,$ionicScrollDelegate,
-                                         localStorageService,$sessionStorage,httpClient,AddressService,OrderService,MMUtils) {
+                                         localStorageService,$sessionStorage,httpClient,AddressService,OrderService,ShopService,MMUtils) {
 
-        $scope.shop = localStorageService.get('MMMETA_shop') || {};
+        $scope.shop = ShopService.getDefaultShop() || {};
 
         $scope.goToAddressList = function(){
             $state.go('userAddressList', null, { reload: true });
@@ -154,7 +154,7 @@
 
         $scope.goToShopOrFindShop = function(){
 
-            var lastShop = localStorageService.get('MMMETA_shop');
+            var lastShop = ShopService.getDefaultShop();
             if (lastShop && lastShop.id) {
                 $state.go('productList',null,{reload:true});
             } else {
@@ -173,7 +173,7 @@
         });
 
         $scope.$on("$ionicView.enter", function () {
-            $scope.shop = localStorageService.get('MMMETA_shop') || {};
+            $scope.shop = ShopService.getDefaultShop() || {};
             reloadInfo();
         });
     });

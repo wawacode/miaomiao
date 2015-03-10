@@ -1,8 +1,8 @@
 ;angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService, MMUtils) {
+    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService,ShopService, MMUtils) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
-        $scope.shop = localStorageService.get('MMMETA_shop');
+        $scope.shop = ShopService.getDefaultShop() || {};
 
         $scope.info = {};
         $scope.info.address = {};
