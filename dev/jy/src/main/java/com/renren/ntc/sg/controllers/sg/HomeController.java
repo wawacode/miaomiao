@@ -67,7 +67,7 @@ public class HomeController {
         return "loadingPage";
     }
     @Get("loading2")
-    public String loadingPage (Invocation inv){
+    public String loadingPage2 (Invocation inv){
 
         String code =  inv.getParameter("code");
         String state =  inv.getParameter("state");
@@ -76,7 +76,7 @@ public class HomeController {
         return "loadingPage";
     }
     @Get("loading3")
-    public String loadingPage (Invocation inv){
+    public String loadingPag3 (Invocation inv){
 
         String code =  inv.getParameter("code");
         String state =  inv.getParameter("state");
