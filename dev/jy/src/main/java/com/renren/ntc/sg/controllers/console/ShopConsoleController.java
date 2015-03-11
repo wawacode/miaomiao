@@ -495,4 +495,55 @@ public class ShopConsoleController {
 		return "r:/console/shop?shop_id="+shopId+"&category_id="+categoryId;
 	}
 
+    //注册的时候ajax校验用户名，违禁词和嫌疑词不让注册
+    @Post("test")
+    @Get("test")
+    public String test(Invocation inv, @Param("shop_id") long shop_id ,@Param("category_id") int category_id ,
+                        @Param("from") int from, @Param("offset") int offset){
+        if (0  >= shop_id){
+            shop_id = Constants.DEFAULT_SHOP ;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+
+        if(null == shop){
+            LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
+            shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
+        }
+
+        if ( 0 == from){
+            from = 0;
+        }
+        if ( 0 == offset){
+            offset = 50 ;
+        }
+        List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
+        inv.addModel("shop",shop) ;
+
+        if ( 0 == category_id ){
+            if (categoryls.size() > 0){
+                category_id =   categoryls.get(0).getCategory_id();
+            }
+            else{
+                LoggerUtils.getInstance().log(String.format(" category is 0  && no category find on shop %d ",shop_id));
+                return "shop_test";
+            }
+        }
+        List<Item> itemls = itemsDAO.getItemsWithZero(SUtils.generTableName(shop_id),shop_id,category_id,from,offset);
+        if(from != 0){
+            int begin = from;
+            begin = begin - offset;
+            inv.addModel("previous_f", begin< 0?0:begin);
+        }
+        if(itemls.size() >=  offset){
+            inv.addModel("next_f", from  + offset);
+        }
+        for (Item it : itemls){
+            float tt = (float)it.getPrice()/100;
+            it.setTest(tt + "");
+        }
+        inv.addModel("itemls", itemls);
+        inv.addModel("categoryls",categoryls);
+        inv.addModel("curr_cate_id",category_id);
+        return "shop_test";
+    }
 }

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"> 喵喵-${shop.name} </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/console/shop/order?shop_id=${shop_id}">我的订单</a></li>
+                <li><a href="/console/shop/addindex?shop_id=${shop_id}">+添加商品</a></li>
+                <li><a href="/console/shop/cate?shop_id=${shop_id}">分类编辑</a></li>
+                <li><a href="/console/allshop">所有店铺</a></li>
+                <li><a href="/console/product">产品总表</a></li>
+            </ul>
+            <form id="query_form" class="navbar-form navbar-right" action="/console/shop/query">
+                <input id="query_input" name="query" type="text" class="form-control"  placeholder="Search...">
+                <input id="query_shop" name="shop_id" value="${shop_id}" style="display:none">
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-0 main">
+            <div class="row" style="margin-top:50px">
+                #foreach($item in $itemls)
+                <div class="col-sm-6 col-md-4" style="width:300px;heigth:300px">
+                    <div class="thumbnail">
+                        <img src="$item.pic_url" alt="...">
+                        <div class="caption">
+                            <h4>$item.name</h4>
+                            <p>$item.test 元</p>
+                        </div>
+                    </div>
+                </div>
+                #end
+            </div>
+                <nav>
+                    <ul class="pager">
+                        #if($previous_f)
+                        <li>
+                          <a href="/console/shop?shop_id=${shop_id}&category_id=${curr_cate_id}&from=$previous_f&offset=50">Previous</a></li>
+                        #end
+                        #if($next_f)
+                        <li><a href="/console/shop?shop_id=${shop_id}&category_id=${curr_cate_id}&from=$next_f&offset=50">Next</a></li>
+                        #end
+                    </ul>
+                </nav>
+            </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('.edit').editable('/console/shop/ud',{
+    tooltip : 'Click to edit...',
+    callback : function(value, settings) {
+    location.reload() ;
+    }
+    });
+    $('.edit_area').editable('/console/shop/ud' ,{
+    type : 'textarea',
+    cancel : 'Cancel',
+    submit : 'OK',
+    indicator : '<img src="img/indicator.gif">',
+    tooltip : 'Click to edit...'
+    });
+    });
+    $(".btn").click(function(){
+		var result = confirm("是否确认删除"),
+			oThis = $(this);
+		if(result){
+		$.ajax({
+			type:"POST",url:"/console/shop/del",
+			data:{id:oThis.data('id'),shop_id:oThis.data('shopid')},
+			success:function(data){
+				  alert(data);
+				  location.reload();
+				}
+			});
+		}
+	});
+    $("#query_input").keydown(function(e){
+    var curKey = e.which;
+    if(curKey == 13)
+    {
+      $("#query_form").submit();
+    }
+    });
+    function fileChange(item) {
+            var ss = (item.value).split('.');
+            if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
+                $("#fileName").val(item.value);
+            } else {
+                var obj = document.getElementById("inputfile");
+               obj.outerHTML = obj.outerHTML;
+                $("#inputfile").val("");
+                alert("用户源配置文件格式错误");
+            }
+        }
+    $(".form-add").click(function(){
+		var result = confirm("是否确认提交"),
+		oThis = $(this);
+		if(result){
+			var pic = oThis.data('id');
+			var picVal =$('#'+ pic).val();
+			if(picVal == ''){
+			  alert("请上传图片");
+			  return false;
+			}
+			return true;
+		}
+		return false;
+	});
+</script>
+</body>
+</html>

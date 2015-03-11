@@ -1,12 +1,10 @@
-package com.renren.ntc.sg.controllers.console.api;
+package com.renren.ntc.sg.controllers.sg;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Shop;
-import com.renren.ntc.sg.bean.User;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.biz.dao.StorageDAO;
-import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
 import net.paoding.rose.web.Invocation;
