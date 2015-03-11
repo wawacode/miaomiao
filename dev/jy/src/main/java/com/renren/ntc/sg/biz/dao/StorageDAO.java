@@ -24,5 +24,5 @@ public interface StorageDAO {
 
     @ReturnGeneratedKeys
     @SQL("insert into " + TABLE_NAME + "(" + FIELDS +" ) values"  + " (:1,:2) on duplicate key update shop_id =:2")
-    public long insertAndUpdate(long user_id,long shop_id);
+    public void insertAndUpdate(long user_id,long shop_id);
 }
