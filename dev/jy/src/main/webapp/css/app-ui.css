@@ -155,6 +155,33 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
+    background-color: rgba(239,84,90,1.0);
+    text-align: center;
+}
+
+.loadingImageTop{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 15%;
+}
+
+.loadingImageCenter{
+
+    width: 75%;
+    height: auto;
+
+}
+.loadingImageBottom{
+    background-image: url('/images/loadingpage-bottom.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .getGeolocation {
@@ -162,7 +189,7 @@ body {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 25%;
+    bottom: 120;
     text-align: center
 }
 

@@ -107,7 +107,7 @@
                 $scope.info.showAddNewAddress = false;
             }
 
-            MMUtils.showLoadingIndicator('正在生成订单,请稍候...');
+            MMUtils.showLoadingIndicator('正在生成订单,请稍候...',$scope);
 
             httpClient.getOrderSave($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
                 $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
@@ -149,7 +149,7 @@
 
             } else {
                 // update from server
-                MMUtils.showLoadingIndicator('正在更新地址...');
+                MMUtils.showLoadingIndicator('正在更新地址...',$scope);
 
                 httpClient.getAddressList($scope.shop.id, function (data, status) {
 
