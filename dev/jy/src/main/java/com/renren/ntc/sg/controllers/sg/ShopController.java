@@ -42,8 +42,8 @@ public class ShopController {
         if (0  >= shop_id){
             shop_id = Constants.DEFAULT_SHOP ;
         }
+        LoggerUtils.getInstance().log(String.format("get %d, %s" , shop_id));
         Shop shop = shopDAO.getShop(shop_id);
-
         if(null == shop){
             LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
             shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
@@ -107,32 +107,15 @@ public class ShopController {
              LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
               shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
         }
-//        List<ShopCategory> categoryls  = shopCategoryDAO.getCategory(shop.getId());
-//        List<ShopCategory4v> shopCategoryls =  new ArrayList< ShopCategory4v >() ;
-//        for (ShopCategory category : categoryls)  {
-//            ShopCategory4v s  =  new ShopCategory4v();
-//            s.setName(category.getName());
-//            s.setCategory_id(category.getCategory_id());
-//            List<Item> itemls = itemsDAO.getItems(SUtils.generTableName(shop_id),shop_id,category.getCategory_id(),0,10);
-//            s.setItemls(itemls);
-//            shopCategoryls.add(s);
-//        }
-//
-//        inv.addModel("categoryls",shopCategoryls);
         long now = System.currentTimeMillis();
         SUtils.forV(shop,now);
-
         JSONObject jb =  new JSONObject() ;
         JSONObject shopJson = (JSONObject) JSONObject.toJSON(shop);
         JSONObject data =  new JSONObject() ;
         data.put("shop",shopJson);
-
         jb.put("data",data);
         jb.put("code",0);
-
         return "@" + jb.toJSONString() ;
-//        inv.addModel("shop",shop);
-//        return "shop" ;
     }
 
     @Get("category/get")
