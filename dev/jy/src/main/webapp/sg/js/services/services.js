@@ -184,29 +184,32 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             }
         }
     }])
-    .factory('ShopService', ['$http', '$rootScope', '$timeout','httpClient', function ($http, $rootScope, $timeout,httpClient) {
+    .factory('ShopService', ['$http', '$rootScope', '$timeout','httpClient','localStorageService',
+        function ($http, $rootScope, $timeout,httpClient,localStorageService) {
 
-        var _defaultShop = {};
+        var _defaultShop = null;
         return {
 
             setDefaultShop: function (shop) {
                 _defaultShop = shop;
+                localStorageService.set('MMMETA_shop',shop);
             },
 
             setDefaultShopAndSync: function (shop) {
                 _defaultShop = shop;
+                localStorageService.set('MMMETA_shop',shop);
                 this.setDefaultShopToServer(shop.id,function(){},function(){});
             },
 
             getDefaultShop: function () {
-               return _defaultShop;
+               return _defaultShop || localStorageService.get('MMMETA_shop');
             },
 
             getDefaultShopFromServer: function (success, fail) {
                 var self = this;
                 httpClient.getDefaultShopInfo(function(data, status){
                     var code = data.code, dataDetail = data.data;
-                    if (code == 0 && dataDetail.shop) {
+                    if (code == 0 && dataDetail && dataDetail.shop) {
                         self.setDefaultShop(dataDetail.shop);
                         return success(dataDetail.shop);
                     }
