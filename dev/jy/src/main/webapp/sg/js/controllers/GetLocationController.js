@@ -79,7 +79,7 @@
             ShopService.getDefaultShopFromServer(function(shop){
                 $scope.info.hasDefaultShop = true;
                 ShopService.setDefaultShop(shop);
-//                $state.go('productList');
+                $state.go('productList');
 
             },function(){
                 // for legalcy reasons ,if have local meta data
