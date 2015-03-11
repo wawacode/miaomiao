@@ -97,10 +97,11 @@ public class ShopController {
 
     @Get("")
     public String index (Invocation inv,@Param("shop_id") long shop_id){
-
+        LoggerUtils.getInstance().log(String.format("shop find shop %d, ",shop_id));
         if (0  >= shop_id){
             shop_id = Constants.DEFAULT_SHOP ;
         }
+        LoggerUtils.getInstance().log(String.format("shop find shop %d, ",shop_id));
         Shop shop = shopDAO.getShop(shop_id);
 
         if(null == shop){
