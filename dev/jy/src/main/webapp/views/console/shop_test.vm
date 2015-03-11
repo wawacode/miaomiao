@@ -45,10 +45,14 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-0 main">
             <div class="row">
                 #foreach($item in $itemls)
-                <div class="col-xs-5 col-md-3" style="height:200px">
-                    <a href="#" class="thumbnail">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
                         <img src="$item.pic_url" alt="...">
-                    </a>
+                        <div class="caption">
+                            <h4>$item.name</h4>
+                            <p>$item.test 元</p>
+                        </div>
+                    </div>
                 </div>
                 #end
             </div>
