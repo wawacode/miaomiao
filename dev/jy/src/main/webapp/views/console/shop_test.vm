@@ -43,15 +43,15 @@
 
 <div class="container-fluid">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-0 main">
-            #foreach($item in $itemls)
             <div class="row">
+                #foreach($item in $itemls)
                 <div class="col-xs-5 col-md-3" style="height:200px">
                     <a href="#" class="thumbnail">
                         <img src="$item.pic_url" alt="...">
                     </a>
                 </div>
+                #end
             </div>
-            #end
                 <nav>
                     <ul class="pager">
                         #if($previous_f)
