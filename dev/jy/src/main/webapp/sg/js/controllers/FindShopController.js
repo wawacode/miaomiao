@@ -208,7 +208,7 @@
             } else {
                 $scope.shop_info.locationMessage = "浏览器不支持定位";
             }
-        }
+        };
 
         function updateRealGEOAddressByGEOData(lng, lat) {
 

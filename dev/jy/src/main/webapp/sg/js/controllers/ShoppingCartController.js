@@ -9,7 +9,7 @@
             item.count += 1;
 
             ShoppingCart.itemChangeEventInShoppingCart(item);
-        }
+        };
 
         $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
 
@@ -21,12 +21,12 @@
             }
 
             ShoppingCart.itemChangeEventInShoppingCart(item);
-        }
+        };
 
         $scope.clearShoppingCart = function(){
             $scope.info.shoppingCartItems = [];
             ShoppingCart.clearAll();
-        }
+        };
 
         ShoppingCart.onItemChangeEventInProductList($scope, function (message) {
 

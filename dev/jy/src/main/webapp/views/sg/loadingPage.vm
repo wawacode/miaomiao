@@ -26,42 +26,615 @@
 <ion-nav-view></ion-nav-view>
 
 <script id="templates/locate.html" type="text/ng-template">
-
+    <ion-view view-title="喵喵">
+        <ion-content>
+            <div class="loadingBackground" style="background-image: url('/images/loadingpage-short.jpg');
+            background-size: cover;background-repeat: no-repeat">
+                <!--<img class="background-img"-->
+                <!--style="width: 100%;height: auto; position: absolute;top: 0;bottom: 0;left: 0;right: 0;"-->
+                <!--src="/images/loadingpage-short.jpg">-->
+            </div>
+            <div class="getGeolocation">
+                <div class="getGeolocation-title" ng-class="info.getGeolocationTitleClass">
+                    {{info.getGeolocationTitle}}
+                </div>
+            </div>
+        </ion-content>
+    </ion-view>
 </script>
-
 <script id="templates/findShop.html" type="text/ng-template">
-
+    <ion-view>
+        <ion-content padding="false"
+                     has-tabs="false"
+                     has-header="false">
+            <div class="chooseShopHeader">
+                选择店铺
+            </div>
+            <div ng-include src="'/views/sg/templates/shoplist.html'">
+            </div>
+        </ion-content>
+    </ion-view>
 </script>
 <script id="templates/productList.html" type="text/ng-template">
+    <ion-view>
+        <ion-nav-bar class="bar-light homepageHeaderBar headerBarWithShadow" align-title="center">
+            <ion-nav-buttons side="left">
+                <button class="button button-clear button-outline button-icon ion-ios7-person-outline"
+                        ui-sref="myOrders"></button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                <button class="button button-clear button-icon button-assertive ion-ios7-search"
+                        ng-click="goToSearch()"></button>
+            </ion-nav-buttons>
+            <ion-nav-title ng-click="switchShop()">
+                {{shop.name}} <i class="icon ion-chevron-down" style=" font-size: 15px !important"></i>
+            </ion-nav-title>
+        </ion-nav-bar>
+        <ion-content class="homepageContent"
+                     padding="false"
+                     has-tabs="true"
+                     has-header="true"
+                     scroll="false"
+                     has-bouncing="false">
+            <div class="commonProductList" ng-if="categoryls && categoryls.length">
+                <div class="leftContainer">
+                    <ion-content padding="false"
+                                 scroll="true"
+                                 has-bouncing="true"
+                                 scrollbar-y="false"
+                                 overflow-scroll="false">
+                        <div class="shop-categray-list" style="width: 100%;font-size: 15px">
+                            <ul style="margin: 0;padding-top: 0px; padding-bottom: 50px">
+                                <li bindonce quick-ng-repeat="category in categoryls track by category.category_id"
+                                    class="shop-categray "
+                                    ng-click="selectCategory($index)"
+                                    ng-class="{'shop-categray-selected': category.selected}">
+                                    <div bo-text="category.name" class="shop-categray-item">
+                                    </div>
+                                    <div class="shop-categray-item-edge" ng-if="category.totalCnt">
+                                        {{category.totalCnt}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </ion-content>
+                </div>
+                <div class="rightContainer">
+                    <ion-content padding="false"
+                                 scroll="true"
+                                 has-bouncing="true"
+                                 overflow-scroll="false"
+                                 delegate-handle="productScroll">
+                        <div class="shop-product-list" ng-if="currentDisplayItems && currentDisplayItems.length">
+                            <ul class="shop-product-categray-list list" style="padding-bottom: 50px">
+                                <li bindonce quick-ng-repeat="item in currentDisplayItems track by item.id"
+                                    class="product-item js-product-item">
+                                    <!--ng-include-->
+                                    <!--src="'/views/sg/templates/productDetail.html'">-->
+                                    <!-- add all src here for performance issue -->
+                                    <div class="prod_icon_clickable" ng-click="showImage(item)"></div>
+                                    <div class="prod_icon" back-img="{{item.pic_url}}"></div>
+                                    <div class="prod_detail_info">
+                                <span class="product-title oneline" bo-text="item.name">
+                                </span>
+                                        <div class="prod_info">
+                                            <div class="product-price">
+                                                <span bo-text="'¥'+ item.price/100.0"></span>
+                                            </div>
+                                            <div class="product_stepper">
+                                                <div class="product_stepper_minus baseRedColor icon ion-ios7-minus-outline"
+                                                     ng-click="removeItem(item)" ng-show="item.count">
+                                                </div>
+                                                <div class="product_stepper_count" ng-show="item.count">
+                                                    {{item.count}}
+                                                </div>
+                                                <div class="product_stepper_add baseRedColor icon ion-ios7-plus" ng-click="selectItem(item)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <ion-infinite-scroll
+                                        ng-if="moreDataCanBeLoaded()"
+                                        icon="ion-loading-c"
+                                        on-infinite="addItems()">
+                                </ion-infinite-scroll>
+                            </ul>
+                        </div>
+                    </ion-content>
+                </div>
+            </div>
+        </ion-content>
+        <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
+        </div>
+        <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
+            <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
+                 src="'/views/sg/templates/shoppingCart.html'">
+            </div>
+        </div>
+        <ion-footer-bar class="bar-light homepageFooterBar" ng-if="categoryls && categoryls.length">
+            <div class="row nonPadding">
+                <div class="col nonPadding">
+                    <div class="row nonPadding" >
+                        <div class="col text-center nonPadding" style="padding-top: 13px;" ng-click="showShoppingCart()">
 
+                        <span style="position: relative">
+                            <span class="assertive-bg assertive-border light shoppingCartBadge"
+                                  ng-if="info.shoppingCartItems && info.shoppingCartItems.length">
+                                {{info.shoppingCartItems | getTotolCount}}
+                            </span>
+                            <!--<img src="/images/cart-64.png" class="base-icon-shopping-cart">-->
+                            <button class="button button-clear button-assertive button-icon"
+                                    ng-class="{'ion-ios7-cart': info.cartReadyToShip, 'ion-ios7-cart-outline':!info.cartReadyToShip}">
+                            </button>
+                        </span>
+                        </div>
+                        <div class="col nonPadding" style="padding-top: 4px;margin-left: 10px">
+                            <p class="text-left" style="font-size: 11px;margin: 0">总计:</p>
+                            <p class="text-left assertive" style="font-size: 17px;margin: 0">￥{{info.shoppingCartItems | getTotolPrice}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col text-center nonPadding" style="position: relative">
+                    <button style="position: absolute;left: 0;right: 0;top: 0;bottom: 0"
+                            class="button button-assertive button-block shoppingCartHintMessage"
+                            ng-class="{'button-outline': !info.cartReadyToShip }"
+                            ng-click="checkout()">{{info.checkoutHintMessage}}
+                    </button>
+                </div>
+            </div>
+        </ion-footer-bar>
+    </ion-view>
 </script>
 <script id="templates/searchProduct.html" type="text/ng-template">
+    <ion-view>
+        <ion-nav-bar class="bar-light" align-title="center">
+            <ion-nav-buttons side="left">
+                <button class="button button-outline button-clear" ui-sref="productList"><i class="ion-chevron-left dark">
+                    首页</i></button>
+            </ion-nav-buttons>
+            <ion-nav-title>
+                搜索商品
+            </ion-nav-title>
+        </ion-nav-bar>
+        <ion-header-bar class="bar-light" style="text-align: left;top: 44;padding: 0">
+            <div id="search-box" class="item-input-inset search-box"
+                 style="">
+                <div class="item-input-wrapper" style="background-color: #ffffff">
+                    <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
+                    <input type="search" placeholder="请输入商品名称" ng-model="info.key" ng-focus="startSearch()"
+                           ng-change="getSearchSuggestions()"
+                           ng-keyup="$event.keyCode == 13 && performSearch(info.key,$event)"
+                           style="color: #7a7a7a;font-size: 14px">
+                    <!--<i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"-->
+                    <!--ng-click="clearSearch()"></i>-->
+                </div>
+                <button class="button-clear" style="color: #000000;font-size: 15px;min-width: 50px" ng-click="performSearch(info.key,$event)"> 搜索 </button>
+            </div>
+        </ion-header-bar>
+        <div class="list searchSuggestionResultList" ng-if="info.showSearchSuggestion"
+             ng-click="info.showSearchSuggestion = !info.showSearchSuggestion"
+             style="">
+            <div class="item" bindonce quick-ng-repeat="item in info.search_suggestions track by item.key"
+                 ng-click="goToSearchItem(item,$event)" style="border-left: none;border-right: none;padding: 10">
+                <div style="color: #000000;font-size: 14px;" bo-text="item.key">
+                </div>
+            </div>
+        </div>
+        <ion-content class="homepageContent"
+                     padding="false"
+                     has-tabs="true"
+                     has-header="true"
+                     scroll="true"
+                     delegate-handle="searchResultScroll"
+                     style="text-align: left;top: 84;z-index: 1">
 
+            <div class="shop-product-list" style="padding-bottom: 50px">
+                <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list" ng-if="info.hasNoResults == false">
+                    <li bindonce ng-repeat="item in searchResultsItems" class="product-item js-product-item"
+                        ng-include src="'/views/sg/templates/productDetail.html'">
+                    </li>
+                </ul>
+                <div class="no-result-display" style="text-align: center;color: #7a7a7a" ng-if="info.hasNoResults == true">
+                    没有结果
+                </div>
+            </div>
+        </ion-content>
+        <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
+        </div>
+        <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
+            <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
+                 src="'/views/sg/templates/shoppingCart.html'">
+            </div>
+        </div>
+        <ion-footer-bar class="bar-light homepageFooterBar">
+            <div class="row nonPadding">
+                <div class="col nonPadding">
+                    <div class="row nonPadding">
+                        <div class="col text-center nonPadding" style="padding-top: 13px;" ng-click="showShoppingCart()">
+
+                        <span style="position: relative">
+                            <span class="assertive-bg assertive-border light shoppingCartBadge"
+                                  ng-if="info.shoppingCartItems && info.shoppingCartItems.length">
+                                {{info.shoppingCartItems | getTotolCount}}
+                            </span>
+                            <!--<img src="/images/cart-64.png" class="base-icon-shopping-cart">-->
+                            <button class="button button-clear button-assertive button-icon"
+                                    ng-class="{'ion-ios7-cart': info.cartReadyToShip, 'ion-ios7-cart-outline':!info.cartReadyToShip}">
+                            </button>
+                        </span>
+                        </div>
+                        <div class="col nonPadding" style="padding-top: 4px;margin-left: 10px">
+                            <p class="text-left" style="font-size: 11px;margin: 0">总计:</p>
+
+                            <p class="text-left assertive" style="font-size: 17px;margin: 0">￥{{info.shoppingCartItems |
+                                getTotolPrice}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col text-center nonPadding" style="position: relative">
+                    <button style="position: absolute;left: 0;right: 0;top: 0;bottom: 0"
+                            class="button button-assertive button-block shoppingCartHintMessage"
+                            ng-class="{'button-outline': !info.cartReadyToShip }"
+                            ng-click="checkout()">{{info.checkoutHintMessage}}
+                    </button>
+                </div>
+            </div>
+        </ion-footer-bar>
+    </ion-view>
 </script>
 <script id="templates/checkoutOrder.html" type="text/ng-template">
+    <ion-view>
+        <ion-nav-bar class="bar bar-light checkoutHeaderbar headerBarWithShadow" align-title="center">
+            <ion-nav-buttons side="left">
+                <button class="button button-clear" ui-sref="productList"><i class="ion-chevron-left dark">&nbsp;首页</i>
+                </button>
+            </ion-nav-buttons>
+            <ion-nav-title>
+                订单确认
+            </ion-nav-title>
+        </ion-nav-bar>
+        <ion-content padding="false"
+                     has-tabs="false"
+                     has-header="true"
+                     scroll="true"
+                     style="bottom: 49px;top: 49px;z-index: 9;">
 
+            <div style="background-color: #eaeaea;width: 100%;height: 100%" ng-if="info.dataReady == true">
+                <div ng-if="addressls && addressls.length" style="background-color: #ffffff">
+                    <div class="addressItem addressDefault addressSelected item-icon-right" ng-click="goToAddressList()">
+                        <div class="addressItem-address">
+                            <span class="addressTitle">收货地址:</span>
+                            {{addressls[0].address}}
+                        </div>
+                        <div class="addressItem-phone">
+                            <span class="addressTitle">联系电话:</span>
+                            {{addressls[0].phone}}
+                        </div>
+                        <a class="icon baseRedColor ion-ios7-arrow-right" style="right: 20px"></a>
+                    </div>
+                </div>
+                <div class="addNewAddressContainer" ng-if="info.showAddNewAddress == true"
+                     ng-animate="{show:'animate-show', hide:'animate-hide'}">
+                    <div class="addNewAddressHint">
+                        您还没有添加收货人信息,请添加
+                    </div>
+                    <div class="checkoutBasePadding" style="padding-bottom: 5px">
+
+                        <div style="width: 100%;border-bottom: solid 1px #eaeaea;">
+                            <input class="addressInput" style=""
+                                   type="text" placeholder="收货地址:" value="" ng-model="info.newOrderAddress"
+                                   required>
+                        </div>
+                        <div style="width: 100%;border: none;margin-top: 10px">
+                            <input class="addressInput"
+                                   type="tel" placeholder="联系电话:" value="" ng-model="info.newOrderPhone"
+                                   required style="">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="checkoutBasePadding" style="padding-top: 10px;background-color: #ffffff"
+                     ng-if="info.dataReady == true">
+                    <ul>
+                        <li class="product-item"
+                            bindonce
+                            ng-repeat="item in shoppingCartItems"
+                            ng-class="{'noBorderBottonLi':$index + 1 == shoppingCartItems.length }">
+                            <div class="prod_icon" back-img="{{item.pic_url}}"></div>
+                            <div>
+                                <span class="product-title oneline" bo-text="item.name"></span>
+                                <span class="product-title oneline assertive" bo-text="商品库存不足" ng-if="item.message"></span>
+
+                                <div class="prod_info">
+                                    <div class="product-price">
+                                        <span bo-text="'¥'+ item.price/100.0"></span>
+                                    </div>
+                                    <div class="product_stepper">
+                                        <div class="product_stepper_minus icon baseRedColor ion-ios7-minus-outline"
+                                             ng-click="removeItem(item)">
+                                        </div>
+                                        <div class="product_stepper_count">
+                                            {{item.count}}
+                                        </div>
+                                        <div class="product_stepper_add icon baseRedColor ion-ios7-plus"
+                                             ng-click="selectItem(item)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="no-item-hint" style="padding:0px 9px;text-align: center;"
+                        ng-if="!shoppingCartItems || shoppingCartItems.length == 0">
+                        <div style="font-size: 15px; color:#7a7a7a; padding-top: 50px;padding-bottom: 50px;">
+                            <span ui-sref="productList" ng-click="goback()"> 点此返回,重新下单 </span>
+                        </div>
+                    </ul>
+
+                    <div class="remarks" style="margin-top: 20px;" ng-if="shoppingCartItems.length">
+                        <div>
+                            <input class="orderRemarks" ng-model="info.remarks" type="text" placeholder="给卖家留言">
+                        </div>
+                    </div>
+                </div>
+                <div style="" ng-if="info.dataReady == true">
+                    <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
+                        付款方式
+                    </div>
+                    <div>
+                        <div class="list">
+                            <div class="item item-icon-right" style="border: none">
+                                <div style="padding-left: 5px;font-size: 15px"> 货到付款</div>
+                                <div class="icon balanced ion-ios7-checkmark commonSelected" style="right: 25px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </ion-content>
+        <ion-footer-bar class="bar-light checkoutFooterBar" ng-if="info.dataReady == true">
+            <div class="row nonPadding">
+                <div class="col nonPadding">
+                    <div class="row nonPadding">
+                        <div class="col nonPadding text-center" style="padding-top: 15px;margin-right: 10px">
+                            <p class=" assertive" style="font-size: 17px;margin: 0">
+                                <span class="" style="font-size: 17px;margin: 0">总计:</span>
+                                ￥{{shoppingCartItems | getTotolPrice}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col text-center nonPadding" style="position: relative">
+                    <button style="position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin-right: 30px !important;"
+                            class="button button-assertive button-block shoppingCartHintMessage"
+                            ng-class="{'button-outline': !cartReadyToShip }"
+                            ng-click="confirmCheckout()">{{checkoutHintMessage}}
+                    </button>
+                </div>
+            </div>
+        </ion-footer-bar>
+    </ion-view>
 </script>
 <script id="templates/addressList.html" type="text/ng-template">
+    <ion-view>
+        <ion-nav-bar class="bar-light addressListBar" align-title="center">
+            <ion-nav-back-button class="button-dark button-clear">
+                <i class="ion-chevron-left dark"></i> 返回
+            </ion-nav-back-button>
+            <ion-nav-title>
+                选择送货地址
+            </ion-nav-title>
+        </ion-nav-bar>
+        <ion-content padding="false"
+                     has-tabs="false"
+                     scroll="true"
+                     has-header="false">
 
+            <div class="list" style=" background-color: #ededed;" ng-if="addressls != undefined">
+                <div class="addressListHeader" ng-if="addressls && addressls.length">
+                    常用地址
+                </div>
+                <div class="addressItem addressdefault addressSelected item-icon-right"
+                     ng-class="{'addressSelected': addr.isDefault ,'addressUnselected':  !addr.isDefault}"
+                     bindonce
+                     quick-ng-repeat="addr in addressls"
+                     ng-click="setDefaultAddress(addr)">
+                    <div class="addressItem-address"><span
+                            class="addressTitle">收货地址:</span>
+                        {{addr.address}}
+                    </div>
+                    <div class="addressItem-phone"><span
+                            class="addressTitle">联系电话:</span>
+                        {{addr.phone}}
+                    </div>
+                    <div class="icon balanced commonSelected" ng-class="{'ion-ios7-checkmark':addr.isDefault,'ion-ios7-circle-outline':!addr.isDefault}"
+                         style="right: 20px"></div>
+                </div>
+                <div class="addressListHeader">
+                    使用其他地址
+                </div>
+                <div class="item" style="padding-left: 20px;padding-bottom: 10px">
+                    <div style="width: 100%;border-bottom: solid 1px #eaeaea;">
+                        <input class="addressInput"  style=""
+                               type="text" placeholder="收货地址:" value="" ng-model="newAddress.address"
+                               required>
+                    </div>
+                    <div style="width: 100%;border: none;margin-top: 10px">
+                        <input class="addressInput"
+                               type="tel" placeholder="联系电话:" value="" ng-model="newAddress.phone"
+                               required style="">
+                    </div>
+
+                </div>
+                <div style="position: absolute; left: 10;right: 10;padding-top: 40px">
+                    <button class="button button-block button-assertive"
+                            style="height: 40px"
+                            ng-disabled = "!newAddress.address || !newAddress.phone"
+                            ng-click="addNewAddressConfirm()">确定</button>
+                </div>
+            </div>
+        </ion-content>
+    </ion-view>
 </script>
 <script id="templates/myOrders.html" type="text/ng-template">
+    <ion-view>
+        <ion-nav-bar class="bar-light orderHeaderbar headerBarWithShadow" align-title="center">
+            <ion-nav-buttons side="left" class="">
+                <button class="button button-clear" ng-click="goToShopOrFindShop()"><i class="ion-chevron-left dark">&nbsp;首页</i></button>
+            </ion-nav-buttons>
+            <ion-nav-title>
+                我的订单
+            </ion-nav-title>
+        </ion-nav-bar>
+        <ion-content padding="false"
+                     has-tabs="false"
+                     has-header="true"
+                     scroll="true">
 
+            <div style="background-color: #eaeaea;width: 100%;height: 100%" ng-if="info.hasOrder != undefined">
+                <div ng-if="addressls && addressls.length">
+                    <div class="addressItem addressDefault addressSelected item-icon-right" ng-click="goToAddressList()">
+                        <div class="addressItem-address">
+                            <span class="addressTitle">收货地址:</span>
+                            {{addressls[0].address}}
+                        </div>
+                        <div class="addressItem-phone">
+                            <span class="addressTitle">联系电话:</span>
+                            {{addressls[0].phone}}
+                        </div>
+                        <a class="icon baseRedColor ion-ios7-arrow-right" style="right: 12px"></a>
+                    </div>
+                </div>
+                <div class="addNewAddressContainer" ng-if="info.hasAddress == false && info.hasShop"
+                     ng-animate="{show:'animate-show', hide:'animate-hide'}">
+                    <!--<div class="addNewAddressHint">-->
+                    <!--您还没有添加收货人信息,请添加-->
+                    <!--</div>-->
+                    <div class="addAddrHint text-center">
+                        <a class="icon icon-2x ion-ios7-plus-outline" style="font-size: 15px"
+                           ng-click="switchToAddressList($event)"> 添加新地址</a>
+                    </div>
+                </div>
+                <div class="noOrderHint" ng-if="info.hasOrder == false">
+                    <div class="noOrderImageHint"></div>
+                    <div style="padding-top: 30px;color: #7a7a7a;font-size: 14px">还没有订单</div>
+                    <div class="noOrderGotoShop" ng-click="goToShopOrFindShop()">
+                        去逛逛?
+                    </div>
+                </div>
+                <div class="order-list" style="" ng-if="info.hasOrder == true">
+                    <div class="orderListHeader" ng-if="latestOrder && latestOrder.length">
+                        最新订单
+                    </div>
+                    <div style="padding: 0px 20px 0px 20px;" ng-if="latestOrder && latestOrder.length">
+                        <div class="order-items" style="" bindonce ng-repeat="order in latestOrder"
+                             ng-include="'templates/snapshotOrder.html'">
+                        </div>
+                    </div>
+                    <div class="orderListHeader" style="padding-top: 0px" ng-if="historyOrder && historyOrder.length">
+                        历史订单
+                    </div>
+                    <div style="padding: 0px 20px 0px 20px;" ng-if="historyOrder && historyOrder.length">
+                        <div class="order-items" style="" bindonce ng-repeat="order in historyOrder"
+                             ng-include="'templates/snapshotOrder.html'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        </ion-content>
+    </ion-view>
+</script>
+<script id="templates/snapshotOrder.html" type="text/ng-template">
+    <div class="orderSnapshotHeader">
+        <div class="orderId" bo-text="($index + 1) + '. ' + order.shop_name4V "></div>
+        <div class="orderDate" bo-text="(order.create_time | date:'yyyy-MM-dd H:mm')"></div>
+    </div>
+    <div class="orderSnapshot" bindonce quick-ng-repeat="orderItem in order.items">
+        <div class="prod_icon" back-img="{{orderItem.pic_url}}"></div>
+        <div><span class="orderSnapshotItemName oneline" bo-text="orderItem.name"></span></div>
+        <div class="orderSnapshotItemPrice">
+            <span bo-text="'¥'+ orderItem.price/100.0"></span>
+            <span class="orderSnapshotCountNumber" bo-text="' X ' + orderItem.count"></span>
+        </div>
+    </div>
+    <div class="orderSnapshotRemark" bo-text="'买家留言: ' + order.remarks" ng-if="order.remarks"></div>
+    <div class="orderSnapshotTotal">
+        <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
+                        <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
+                        </span>
+    </div>
 </script>
 <script id="templates/loadingIndicator.html" type="text/ng-template">
-
+    <div class="loadingIndicatorIcon ion-loading-c"></div>
+    <br/>
+    <span style="font-size: 14px;padding-top: 20px;color: rgba(68,68,68,1.0)">{{LoadingMessage}}</span>
 </script>
 <script id="templates/productDetail.html" type="text/ng-template">
-
+    <div class="prod_icon_clickable" ng-click="showImage(item)"></div>
+    <div class="prod_icon" back-img="{{item.pic_url}}"></div>
+    <div>
+        <span class="product-title oneline" bo-text="item.name"></span>
+        <div class="prod_info">
+            <div class="product-price">
+                <span bo-text="'¥'+ item.price/100.0"></span>
+            </div>
+            <div class="product_stepper">
+                <div class="product_stepper_minus icon baseRedColor ion-ios7-minus-outline"
+                     ng-click="removeItem(item)" ng-show="item.count">
+                </div>
+                <div class="product_stepper_count" ng-show="item.count">
+                    {{item.count}}
+                </div>
+                <div class="product_stepper_add icon baseRedColor ion-ios7-plus" ng-click="selectItem(item)">
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
-
 <script id="templates/productPreview.html" type="text/ng-template">
-
+    <div class="modal image-modal transparent" ng-click="closePreviewModal()">
+        <ion-pane class="transparent">
+            <img ng-src="{{imageSrc}}" class="fullscreen-image"/>
+        </ion-pane>
+    </div>
 </script>
 <script id="templates/shoppingCart.html" type="text/ng-template">
-
+    <div class="shoppingCartListContent">
+        <div class="shop-cart-list">
+            <ul style="margin: 0; padding:0px 10px 0 20px;" class="">
+                <div style="border-bottom: solid 1px #eaeaea;">
+                    <div class="clearShoppingCart" style="" ng-click="clearShoppingCart()">
+                        <button class="button button-clear button-dark"><i class="icon ion-ios7-trash-outline assertive"></i> 清空购物车</button>
+                    </div>
+                </div>
+            </ul>
+            <ul style="margin: 0; padding:0px 10px 0 20px" class="js-shop-cart-list">
+                <li bindonce ng-repeat="item in info.shoppingCartItems"
+                    class="product-item " ng-include src="'/views/sg/templates/productDetail.html'">
+                </li>
+            </ul>
+        </div>
+    </div>
 </script>
-
 <script id="templates/switchShop.html" type="text/ng-template">
+    <ion-modal-view ng-controller="FindShopCtrl">
+        <ion-header-bar class="bar bar-header bar-light headerBarWithShadow">
+            <!--<button class="button button-clear button-icon ion-ios7-location-outline" ng-click="relocation()" ></button>-->
+            <h2 class="title" style="font-size: 16px">切换店铺</h2>
+            <button class="button button-clear button-assertive button-icon ion-ios7-close-empty" ng-click="modal.hide()"></button>
+        </ion-header-bar>
+        <ion-content padding="false"
+                     has-tabs="false"
+                     has-header="true" >
+            <div ng-include src="'/views/sg/templates/shoplist.html'">
+            </div>
+        </ion-content>
+    </ion-modal-view>
 
 </script>
 

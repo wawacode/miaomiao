@@ -1,15 +1,12 @@
 ;angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
-                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService,ShopService) {
+                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService,ShopService,MMUtils) {
 
     // get shop info from local storage cause in locate page we have got one
     $scope.shop = ShopService.getDefaultShop() || {};
 
     if(!$scope.shop){
 
-        $ionicPopup.alert({
-            title: '加载店铺失败,请重新选择店铺',
-            template: ''
-        });
+        MMUtils.showAlert('加载店铺失败,请重新选择店铺');
         $state.go('findshop');
         return;
     }
@@ -21,22 +18,14 @@
 
     function initShopData(){
 
-        $scope.LoadingMessage = '正在加载商品 ...';
-        $ionicLoading.show({
-            templateUrl: '/views/sg/templates/loadingIndicator.html',
-            scope: $scope,
-            noBackdrop: true
-        });
+        MMUtils.showLoadingIndicator('正在加载商品...',$scope);
 
         httpClient.getProductList($scope.shop.id, function (data, status) {
             $ionicLoading.hide();
 
             var code = data.code, dataDetail = data.data;
             if (!code == 0) {
-                $ionicPopup.alert({
-                    title: '加载数据失败',
-                    template: ''
-                });
+                MMUtils.showAlert('加载数据失败');
                 return;
             }
 
@@ -76,10 +65,7 @@
 
         }, function (data, status) {
             $ionicLoading.hide();
-            $ionicPopup.alert({
-                title: '加载数据失败',
-                template: ''
-            });
+            MMUtils.showAlert('加载数据失败');
             return;
         });
     }
@@ -107,11 +93,11 @@
 
         $ionicScrollDelegate.$getByHandle('productScroll').scrollTop();
 
-    }
+    };
 
     $scope.moreDataCanBeLoaded = function () {
         return $scope.currentDisplayCategory.canLoadMore;
-    }
+    };
 
     $scope.addItems = function () {
 
@@ -158,7 +144,7 @@
             $scope.$broadcast('scroll.infiniteScrollComplete');
 
         });
-    }
+    };
 
 
     function updateShoppingCart() {
@@ -182,7 +168,7 @@
 
         ShoppingCart.itemChangeEventInProductList(item);
 
-    }
+    };
 
     $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
 
@@ -197,7 +183,7 @@
         $scope.currentDisplayCategory.totalCnt -= 1;
         $scope.currentDisplayCategory.totalCnt = $scope.currentDisplayCategory.totalCnt >= 0 ? $scope.currentDisplayCategory.totalCnt : 0;
 
-    }
+    };
 
 
     $scope.checkout = function () {
@@ -206,17 +192,17 @@
 
         $state.go('checkout', null, { reload: true });
 
-    }
+    };
 
     $scope.goToSearch = function () {
         $state.go('search', null, { reload: true });
-    }
+    };
 
     $scope.showShoppingCart = function () {
         $scope.info.showCart = !$scope.info.showCart;
-    }
+    };
 
-    $ionicModal.fromTemplateUrl('/views/sg/templates/switchShop.html', {
+    $ionicModal.fromTemplateUrl('templates/switchShop.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function (modal) {
@@ -225,7 +211,7 @@
 
     $scope.switchShop = function () {
         $scope.modal.show();
-    }
+    };
 
     // Execute action on hide modal
     $scope.$on('modal.hidden', function() {
@@ -251,7 +237,7 @@
 
 
     // for image preview
-    $ionicModal.fromTemplateUrl('/views/sg/templates/productPreview.html', {
+    $ionicModal.fromTemplateUrl('templates/productPreview.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function(modal) {
@@ -268,14 +254,14 @@
 
     $scope.showImage = function(item) {
         $scope.imageSrc = item.pic_url;
-        $ionicModal.fromTemplateUrl('/views/sg/templates/productPreview.html', {
+        $ionicModal.fromTemplateUrl('templates/productPreview.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
                 $scope.previewModal = modal;
                 $scope.openPreviewModal();
         });
-    }
+    };
 
     function fullyUpdateForProductList() {
 

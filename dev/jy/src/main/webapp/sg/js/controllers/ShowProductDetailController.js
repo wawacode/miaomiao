@@ -2,7 +2,7 @@
 
     function ($scope, $ionicModal) {
 
-        $ionicModal.fromTemplateUrl('/views/sg/templates/productPreview.html', {
+        $ionicModal.fromTemplateUrl('templates/productPreview.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
@@ -32,8 +32,6 @@
         $scope.$on('modal.shown', function() {
 
         });
-
-        $scope.imageSrc = 'http://ionicframework.com/img/ionic-logo-blog.png';
 
         $scope.showImage = function(item) {
             $scope.imageSrc = item.pic_url;

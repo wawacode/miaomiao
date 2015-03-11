@@ -6,11 +6,11 @@
 
         $scope.goToAddressList = function(){
             $state.go('userAddressList', null, { reload: true });
-        }
+        };
 
         $scope.backToHome = function(){
             $state.go('productList');
-        }
+        };
 
         function transformOrderData(orders){
             if(!orders) return;
@@ -25,8 +25,8 @@
         }
 
         $scope.info = {};
-
         $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
+
         $scope.addr = {};
         $scope.addressls = $sessionStorage.MMMETA_OrderAddresses || [];
         $scope.orders = $sessionStorage.MMMETA_OrderOrders || [];
@@ -42,11 +42,7 @@
 
             }else{
 
-                $scope.LoadingMessage = '正在加载,请稍候...';
-                $ionicLoading.show({
-                    templateUrl: '/views/sg/templates/loadingIndicator.html',
-                    scope: $scope
-                });
+                MMUtils.showLoadingIndicator('正在加载,请稍候...',$scope);
 
                 $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
 
@@ -96,29 +92,19 @@
 
             if(!$scope.addr.address || !$scope.addr.phone || !MMUtils.isValidTelNumber($scope.addr.phone)){
 
-                $ionicPopup.alert({
-                    title: '请填写正确的地址电话',
-                    template: ''
-                });
+                MMUtils.showAlert('请填写正确的地址电话');
 
                 return;
             }
 
-            $scope.LoadingMessage = '正在添加新地址...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在添加新地址...',$scope);
 
             var shopId = $scope.shop && $scope.shop.id || 1 ; // make a default one
             httpClient.addAddress(shopId, $scope.addr, function(data, status){
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    $ionicPopup.alert({
-                        title: '添加新地址失败:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('添加新地址失败:' + data.msg);
                     return;
                 }
 
@@ -135,14 +121,11 @@
 
                 $ionicLoading.hide();
 
-                $ionicPopup.alert({
-                    title: '添加新地址失败,重试',
-                    template: ''
-                });
+                MMUtils.showAlert('添加新地址失败,请重试');
 
                 $ionicScrollDelegate.resize();
             })
-        }
+        };
 
         $scope.switchToAddressList = function($event){
 
@@ -150,7 +133,7 @@
             $event.stopPropagation();
 
             $state.go('userAddressList',null,{reload:true});
-        }
+        };
 
         $scope.goToShopOrFindShop = function(){
 
@@ -160,7 +143,7 @@
             } else {
                 $state.go('findshop',null,{reload:true});
             }
-        }
+        };
 
         OrderService.orderChangeEventSuccess();
 

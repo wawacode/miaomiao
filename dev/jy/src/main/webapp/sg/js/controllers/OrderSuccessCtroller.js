@@ -1,5 +1,5 @@
 ;angular.module('miaomiao.shop')
-    .controller('OrderSuccessCtrl', function ($scope, $rootScope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage,ShoppingCart,OrderService,ShopService) {
+    .controller('OrderSuccessCtrl', function ($scope, $rootScope, $ionicPopup, $ionicLoading, $http, $state, $timeout, httpClient, localStorageService, $sessionStorage,ShoppingCart,OrderService,ShopService,MMUtils) {
 
         // go to orders page
         $scope.shop = ShopService.getDefaultShop() || {};
@@ -16,10 +16,7 @@
 
                 var code = data.code, dataDetail = data.data;
                 if (code == 500) {
-                    $ionicPopup.alert({
-                        title: '加载数据失败:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('加载数据失败:' + data.msg);
                     return;
                 }
 
@@ -34,11 +31,7 @@
 
 
             },function(data, status){
-
-                $ionicPopup.alert({
-                    title: '加载数据失败,请刷新',
-                    template: ''
-                });
+                MMUtils.showAlert('加载数据失败,请刷新');
             });
 
         });

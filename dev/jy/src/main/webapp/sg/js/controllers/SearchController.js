@@ -1,4 +1,4 @@
-;angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading,$ionicScrollDelegate, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart,ShopService) {
+;angular.module('miaomiao.shop').controller('SearchCtrl', function ($scope, $rootScope, $ionicLoading,$ionicScrollDelegate, $ionicPopup, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart,ShopService,MMUtils) {
 
 
 
@@ -12,11 +12,7 @@
 
         var KEY = key || $scope.info.key;
 
-        $scope.LoadingMessage = '正在搜索...';
-        $ionicLoading.show({
-            templateUrl: '/views/sg/templates/loadingIndicator.html',
-            scope: $scope
-        });
+        MMUtils.showLoadingIndicator('正在搜索...',$scope);
 
         $scope.info.showSearchSuggestion = false;
         $scope.info.showSearchResult = true;
@@ -52,7 +48,7 @@
             $ionicLoading.hide();
             $scope.info.hasNoResults = true;
         });
-    }
+    };
 
 
     $scope.getSearchSuggestions = function(){
@@ -72,7 +68,7 @@
         }, function (data, status) {
         });
 
-    }
+    };
 
     $scope.goToSearchItem = function(item,$event){
 
@@ -83,7 +79,7 @@
 
         $scope.performSearch(item.key,$event);
 
-    }
+    };
     function updateShoppingCart(){
 
         $timeout(function(){
@@ -104,7 +100,7 @@
 
         ShoppingCart.itemChangeEventInProductList(item);
 
-    }
+    };
 
     $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
 
@@ -116,18 +112,18 @@
 
         ShoppingCart.itemChangeEventInProductList(item);
 
-    }
+    };
 
     $scope.startSearch = function(){
         $scope.info.showSearchSuggestion = true;
         $scope.info.showSearchResult = false;
-    }
+    };
 
     $scope.clearSearch = function(){
         $scope.info.key = '';
         $scope.info.showSearchSuggestion = true;
         $scope.info.showSearchResult = false;
-    }
+    };
 
     $scope.checkout = function () {
 
@@ -135,11 +131,11 @@
 
         $state.go('checkout',null, { reload: true });
 
-    }
+    };
 
     $scope.showShoppingCart = function(){
         $scope.info.showCart = ! $scope.info.showCart;
-    }
+    };
 
 
     // we update item slection in shopping car ,will have to update shop list
