@@ -104,13 +104,13 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             getDefaultShopInfo: function (success, fail) {
 
-                doGet('getDefaultShop', '', success, fail);
+                doGet('storage/get', '', success, fail);
 
             },
 
             setDefaultShopInfo: function (shop_id, success, fail) {
 
-                doGet('setDefaultShop', 'shop_id=' + shop_id, success, fail);
+                doGet('storage/set', 'shop_id=' + shop_id, success, fail);
 
             },
 
