@@ -170,6 +170,39 @@ public class WXHttpClient {
 
     }
 
+    public static  void createMenuxiaoguo(String access_token){
+        String url =  "https://api.weixin.qq.com/cgi-bin/menu/create?access_token={token}";
+        url = url.replace("{token}",access_token);
+        JSONObject  ob = new JSONObject();
+        JSONArray buttons   = new JSONArray();
+        JSONObject button  = new JSONObject();
+        button.put("type","view");
+        button.put("name","测试入口");
+        button.put("url","http://www.mbianli.com:8088/sg/loading" );
+        buttons.add(button);
+
+
+        JSONObject button2  = new JSONObject();
+        button2.put("type","view");
+        button2.put("name","开店工具");
+        button2.put("url","http://www.mbianli.com/catstaff/test" );
+        buttons.add(button2);
+
+//        JSONObject button3  = new JSONObject();
+//        button2.put("type","view");
+//        button2.put("name","测试开店");
+//        button2.put("url","http://www.mbianli.com:8088/catstaff/test" );
+//        buttons.add(button3);
+
+        ob.put("button",buttons);
+
+        byte [] t = WXHttpClient.sendPostRequest(url,ob.toJSONString());
+        String e = new String(t);
+        System.out.println("rec data " + e );
+
+    }
+
+
     public static void addkf(String access_token){
         String url = "https://api.weixin.qq.com/customservice/kfaccount/add?access_token={token}";
         url = url.replace("{token}",access_token);

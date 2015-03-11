@@ -60,9 +60,12 @@ public class StorageController {
             token =  CookieManager.getInstance().getCookie(inv.getRequest(),Constants.COOKIE_KEY_USER);
         }
         long  userid = getUserId(token);
-        long shop_id = storageDao.getShop(userid);
+        long  shop_id = storageDao.getShop(userid);
         Shop shop = shopDao.getShop(shop_id);
         JSONObject  jb = new JSONObject();
+        if (null == shop){
+            return "@json:" + getDataResult(0,jb);
+        }
         jb.put("shop", (JSONObject)JSON.toJSON(shop));
         return "@json:" + getDataResult(0,jb);
     }
@@ -74,5 +77,7 @@ public class StorageController {
         return result.toJSONString();
     }
 
-
+    public static void main(String[] args) {
+        System.out.println(JSON.toJSON(null));
+    }
 }
