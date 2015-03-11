@@ -61,55 +61,50 @@ angular.module('miaomiao.shop', ['ionic',
         $stateProvider
             .state('locate', {
                 url: '/locate',
-                templateUrl: '/views/sg/templates/locate.html',
+                templateUrl: 'templates/locate.html',
                 controller: 'LoadingCtrl'
             })
             .state('findshop', {
                 url: '/findshop',
-                templateUrl: '/views/sg/templates/findShop.html',
+                templateUrl: 'templates/findShop.html',
                 controller: 'FindShopCtrl'
             })
             .state('productList', {
                 url: '/productlist',
-                templateUrl: '/views/sg/templates/productList.html',
+                templateUrl: 'templates/productList.html',
                 controller: 'ProductCtrl'
 
             })
             .state('goToShop', {
                 url: "/shop?shop_id",
-                templateUrl: '/views/sg/templates/productList.html',
+                templateUrl: 'templates/productList.html',
                 controller: 'GoToShopCtrl'
 
             })
             .state('search', {
                 url: '/search',
-                templateUrl: '/views/sg/templates/searchProduct.html',
+                templateUrl: 'templates/searchProduct.html',
                 controller: 'SearchCtrl'
 
             })
             .state('checkout', {
                 url: '/checkout',
-                templateUrl: '/views/sg/templates/checkoutOrder.html',
+                templateUrl: 'templates/checkoutOrder.html',
                 controller: 'CheckoutCtrl'
             })
             .state('addressList', {
                 url: '/addresslist',
-                templateUrl: '/views/sg/templates/addressList.html',
+                templateUrl: 'templates/addressList.html',
                 controller: 'AddressListCtrl'
             })
             .state('userAddressList', {
                 url: '/useraddresslist',
-                templateUrl: '/views/sg/templates/addressList.html',
+                templateUrl: 'templates/addressList.html',
                 controller: 'UserAddressListCtrl'
             })
-//            .state('orderSuccess', {
-//                url: '/ordersuccess',
-//                templateUrl: '/views/sg/templates/orderSuccess.html',
-//                controller: 'OrderSuccessCtrl'
-//            })
             .state('myOrders', {
                 url: '/myorders',
-                templateUrl: '/views/sg/templates/myOrders.html',
+                templateUrl: 'templates/myOrders.html',
                 controller: 'MyOrdersCtrl'
             });
 

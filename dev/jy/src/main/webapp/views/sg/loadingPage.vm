@@ -25,6 +25,47 @@
 
 <ion-nav-view></ion-nav-view>
 
+<script id="templates/locate.html" type="text/ng-template">
+
+</script>
+
+<script id="templates/findShop.html" type="text/ng-template">
+
+</script>
+<script id="templates/productList.html" type="text/ng-template">
+
+</script>
+<script id="templates/searchProduct.html" type="text/ng-template">
+
+</script>
+<script id="templates/checkoutOrder.html" type="text/ng-template">
+
+</script>
+<script id="templates/addressList.html" type="text/ng-template">
+
+</script>
+<script id="templates/myOrders.html" type="text/ng-template">
+
+</script>
+<script id="templates/loadingIndicator.html" type="text/ng-template">
+
+</script>
+<script id="templates/productDetail.html" type="text/ng-template">
+
+</script>
+
+<script id="templates/productPreview.html" type="text/ng-template">
+
+</script>
+<script id="templates/shoppingCart.html" type="text/ng-template">
+
+</script>
+
+<script id="templates/switchShop.html" type="text/ng-template">
+
+</script>
+
+
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
 <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
 

@@ -13,11 +13,8 @@
         function checkOrders() {
 
             $scope.info.remarks = "";
-            $scope.LoadingMessage = '正在核对,请稍候...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
+
+            MMUtils.showLoadingIndicator('正在查看库存,请稍候...',$scope);
 
             httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function (data, status) {
 
@@ -26,16 +23,10 @@
 
                 var code = data.code, dataDetail = data.data;
                 if (code == 500) {
-                    $ionicPopup.alert({
-                        title: '加载数据失败:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('加载数据失败:' + data.msg);
                     return;
                 } else if (code == 100) {
-                    $ionicPopup.alert({
-                        title: '部分商品不足，请谨慎购买:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('部分商品不足，您可以购买部分商品:' + data.msg);
                 }
 
                 $scope.shop = dataDetail.shop;
@@ -68,11 +59,11 @@
 
         $scope.goToAddressList = function () {
             $state.go('addressList', null, { reload: true });
-        }
+        };
 
         $scope.goback = function () {
             $state.go('productList', null, { reload: true });
-        }
+        };
 
         $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
 
@@ -82,7 +73,7 @@
 
             ShoppingCart.itemChangeEventInShoppingCart(item);
             updateShoppingCart();
-        }
+        };
 
         $scope.removeItem = function (item, removeUIElementWhenEmtpy) {
 
@@ -95,7 +86,7 @@
 
             ShoppingCart.itemChangeEventInShoppingCart(item);
             updateShoppingCart();
-        }
+        };
 
         $scope.confirmCheckout = function () {
 
@@ -107,10 +98,7 @@
                 $scope.info.address = {'id': '', 'address': $scope.info.newOrderAddress, 'phone': $scope.info.newOrderPhone};
 
                 if (!$scope.info.newOrderAddress || !$scope.info.newOrderPhone || !MMUtils.isValidTelNumber($scope.info.newOrderPhone)) {
-                    $ionicPopup.alert({
-                        title: '请填写正确的地址电话',
-                        template: ''
-                    });
+                    MMUtils.showAlert('请填写正确的地址电话');
                     return;
                 }
 
@@ -119,11 +107,7 @@
                 $scope.info.showAddNewAddress = false;
             }
 
-            $scope.LoadingMessage = '正在生成订单,请稍候...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在生成订单,请稍候...');
 
             httpClient.getOrderSave($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
                 $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
@@ -132,16 +116,10 @@
 
                     var code = data.code, dataDetail = data.data;
                     if (code == 500) {
-                        $ionicPopup.alert({
-                            title: '生成订单失败，请重新购买:' + data.msg,
-                            template: ''
-                        });
+                        MMUtils.showAlert('生成订单失败，请重新购买:' + data.msg);
                         return;
                     } else if (code == 100) {
-                        $ionicPopup.alert({
-                            title: '部分商品不足，请重新购买:' + data.msg,
-                            template: ''
-                        });
+                        MMUtils.showAlert('部分商品不足，请重新购买:' + data.msg);
                         return;
                     }
 
@@ -157,18 +135,12 @@
 
                 }, function (data, status) {
                     $ionicLoading.hide();
-                    $ionicPopup.alert({
-                        title: '生成订单失败，请重新购买:' + data.msg,
-                        template: ''
-                    });
-
+                    MMUtils.showAlert('生成订单失败，请重新购买');
                 })
-        }
+        };
 
 
         function updateDefaultOrderAddress(addr) {
-
-
             if (addr) {
 
                 $scope.addressls = $scope.addressls || [];
@@ -177,20 +149,13 @@
 
             } else {
                 // update from server
-                $scope.LoadingMessage = '正在更新地址...';
-                $ionicLoading.show({
-                    templateUrl: '/views/sg/templates/loadingIndicator.html',
-                    scope: $scope
-                });
+                MMUtils.showLoadingIndicator('正在更新地址...');
 
                 httpClient.getAddressList($scope.shop.id, function (data, status) {
 
                     var code = data.code, dataDetail = data.data;
                     if (code != 0) {
-                        $ionicPopup.alert({
-                            title: '加载数据失败:' + data.msg,
-                            template: ''
-                        });
+                        MMUtils.showAlert('加载数据失败:' + data.msg);
                         return;
                     }
 
@@ -200,14 +165,9 @@
 
                 }, function (data, status) {
                     $scope.addressls = [];
-                    $ionicPopup.alert({
-                        title: '加载数据失败,请重试',
-                        template: ''
-                    });
+                    MMUtils.showAlert('加载数据失败,请重试');
                 })
             }
-
-
         }
 
 

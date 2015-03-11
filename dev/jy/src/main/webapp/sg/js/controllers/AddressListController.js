@@ -5,20 +5,14 @@ angular.module('miaomiao.shop')
         $scope.shop = ShopService.getDefaultShop() || {};
 
         function updateAddress() {
-            $scope.LoadingMessage = '正在加载地址列表...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
+
+            MMUtils.showLoadingIndicator('正在加载地址列表...',$scope);
 
             httpClient.getAddressList($scope.shop.id, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    $ionicPopup.alert({
-                        title: '加载数据失败:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('加载数据失败:' + data.msg);
                     return;
                 }
 
@@ -33,16 +27,13 @@ angular.module('miaomiao.shop')
 
             }, function (data, status) {
                 $scope.addressls = [];
-                $ionicPopup.alert({
-                    title: '加载数据失败,请刷新',
-                    template: ''
-                });
+                MMUtils.showAlert('加载数据失败,请刷新');
             })
         }
 
         $scope.goToAddNewAddress = function () {
             $state.go('addAddress');
-        }
+        };
 
         $scope.setDefaultAddress = function (addr) {
 
@@ -51,20 +42,13 @@ angular.module('miaomiao.shop')
             }
             addr.isDefault = true;
 
-            $scope.LoadingMessage = '正在切换默认地址...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在切换默认地址...',$scope);
 
             httpClient.setDefaultAddress($scope.shop.id, addr, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    $ionicPopup.alert({
-                        title: '切换默认地址:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('切换默认地址失败:' + data.msg);
                     return;
                 }
 
@@ -79,39 +63,23 @@ angular.module('miaomiao.shop')
 
                 $ionicLoading.hide();
 
-                $ionicPopup.alert({
-                    title: '加载数据失败,请刷新',
-                    template: ''
-                });
+                MMUtils.showAlert('切换默认地址失败');
             })
-        }
+        };
 
         $scope.addNewAddressConfirm = function () {
 
             if (!$scope.newAddress.address || !$scope.newAddress.phone || !MMUtils.isValidTelNumber($scope.newAddress.phone)) {
-
-                $ionicPopup.alert({
-                    title: '请填写正确的地址电话',
-                    template: ''
-                });
-
+                MMUtils.showAlert('请填写正确的地址电话');
                 return;
             }
-
-            $scope.LoadingMessage = '正在添加新地址...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在添加新地址...',$scope);
 
             httpClient.addAddress($scope.shop.id, $scope.newAddress, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    $ionicPopup.alert({
-                        title: '添加新地址失败:' + data.msg,
-                        template: ''
-                    });
+                    MMUtils.showAlert('添加新地址失败:' + data.msg);
                     return;
                 }
 
@@ -125,13 +93,9 @@ angular.module('miaomiao.shop')
             }, function (data, status) {
 
                 $ionicLoading.hide();
-
-                $ionicPopup.alert({
-                    title: '添加新地址失败,请刷新',
-                    template: ''
-                });
+                MMUtils.showAlert('添加新地址失败,请刷新');
             })
-        }
+        };
 
         $scope.$on("$ionicView.enter", function () {
             $scope.newAddress = {};

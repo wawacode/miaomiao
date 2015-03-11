@@ -111,7 +111,7 @@
                 $scope.shop_info.locationMessage = item.title;
             });
             $scope.performSearch(item.title);
-        }
+        };
 
         $scope.performSearch = function (key, $event) {
 
@@ -124,11 +124,7 @@
                 $scope.shop_info.startSearch = false;
             });
 
-            $scope.LoadingMessage = '正在搜索' + KEY + '附近的店...';
-            $ionicLoading.show({
-                templateUrl: '/views/sg/templates/loadingIndicator.html',
-                scope: $scope
-            });
+            MMUtils.showLoadingIndicator('正在搜索' + KEY + '附近的店...',$scope);
 
             var myGeo = new BMap.Geocoder();
             myGeo.getPoint(KEY, function (point) {
@@ -206,11 +202,7 @@
                     timeout: 10000
                 };
 
-                $scope.LoadingMessage = '正在重新定位...';
-                $ionicLoading.show({
-                    templateUrl: '/views/sg/templates/loadingIndicator.html',
-                    scope: $scope
-                });
+                MMUtils.showLoadingIndicator('正在重新定位',$scope);
 
                 navigator.geolocation.getCurrentPosition(showPosition, showError, position_option);
             } else {
