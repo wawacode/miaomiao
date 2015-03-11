@@ -50,7 +50,7 @@
             <div class="chooseShopHeader">
                 选择店铺
             </div>
-            <div ng-include src="'/views/sg/templates/shoplist.html'">
+            <div ng-include='templates/shoplist.html'">
             </div>
         </ion-content>
     </ion-view>
@@ -148,8 +148,7 @@
         <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
         </div>
         <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
-            <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
-                 src="'/views/sg/templates/shoppingCart.html'">
+            <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include="'templates/shoppingCart.html'">
             </div>
         </div>
         <ion-footer-bar class="bar-light homepageFooterBar" ng-if="categoryls && categoryls.length">
@@ -232,7 +231,7 @@
             <div class="shop-product-list" style="padding-bottom: 50px">
                 <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list" ng-if="info.hasNoResults == false">
                     <li bindonce ng-repeat="item in searchResultsItems" class="product-item js-product-item"
-                        ng-include src="'/views/sg/templates/productDetail.html'">
+                        ng-include="'templates/productDetail.html'">
                     </li>
                 </ul>
                 <div class="no-result-display" style="text-align: center;color: #7a7a7a" ng-if="info.hasNoResults == true">
@@ -243,8 +242,7 @@
         <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
         </div>
         <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
-            <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include
-                 src="'/views/sg/templates/shoppingCart.html'">
+            <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include="'templates/shoppingCart.html'">
             </div>
         </div>
         <ion-footer-bar class="bar-light homepageFooterBar">
@@ -615,7 +613,7 @@
             </ul>
             <ul style="margin: 0; padding:0px 10px 0 20px" class="js-shop-cart-list">
                 <li bindonce ng-repeat="item in info.shoppingCartItems"
-                    class="product-item " ng-include src="'/views/sg/templates/productDetail.html'">
+                    class="product-item " ng-include="'templates/productDetail.html'">
                 </li>
             </ul>
         </div>
@@ -631,11 +629,10 @@
         <ion-content padding="false"
                      has-tabs="false"
                      has-header="true" >
-            <div ng-include src="'/views/sg/templates/shoplist.html'">
+            <div ng-include="'templates/shoplist.html'">
             </div>
         </ion-content>
     </ion-modal-view>
-
 </script>
 
 
