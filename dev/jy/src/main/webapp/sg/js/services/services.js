@@ -191,6 +191,10 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             setDefaultShop: function (shop) {
                 _defaultShop = shop;
+            },
+
+            setDefaultShopAndSync: function (shop) {
+                _defaultShop = shop;
                 this.setDefaultShopToServer(shop.id,function(){},function(){});
             },
 
@@ -202,11 +206,11 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 var self = this;
                 httpClient.getDefaultShopInfo(function(data, status){
                     var code = data.code, dataDetail = data.data;
-                    if (dataDetail.shop) {
+                    if (code == 0 && dataDetail.shop) {
                         self.setDefaultShop(dataDetail.shop);
                         return success(dataDetail.shop);
                     }
-                    fail(null);
+                    return fail(null);
                 },function(data, status){
                     fail(null);
                 })

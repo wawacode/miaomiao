@@ -68,7 +68,7 @@
             }
 
             localStorageService.set('MMMETA_shop_history', $scope.shop_history);
-            ShopService.setDefaultShop(shop);
+            ShopService.setDefaultShopAndSync(shop);
 
             if ($scope.modal) {
                 $scope.modal.hide();

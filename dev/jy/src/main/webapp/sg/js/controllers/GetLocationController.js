@@ -82,10 +82,18 @@
                 $state.go('productList');
 
             },function(){
-                $scope.info.hasDefaultShop = false;
-                $timeout(function () {
-                    getLocation();
-                }, 500);
+                // for legalcy reasons ,if have local meta data
+                var localDefaultShop = localStorageService.get('MMMETA_shop');
+                if (localDefaultShop && localDefaultShop.id) {
+                    $scope.info.hasDefaultShop = true;
+                    ShopService.setDefaultShopAndSync(localDefaultShop);
+                    $state.go('productList');
+                } else {
+                    $scope.info.hasDefaultShop = false;
+                    $timeout(function () {
+                        getLocation();
+                    }, 500);
+                }
             });
         });
     });
