@@ -1,5 +1,8 @@
 package com.renren.ntc.sg.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Created with IntelliJ IDEA.
  * User: yunming.zhu
@@ -8,6 +11,8 @@ package com.renren.ntc.sg.service;
  * To change this template use File | Settings | File Templates.
  */
 public class LoggerUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoggerUtils.class);
 
     private static LoggerUtils instance = new  LoggerUtils();
 
@@ -19,7 +24,7 @@ public class LoggerUtils {
         return instance;
     }
     public void log (String message){
-              System.out.println(System.currentTimeMillis()   + " " + message);
+        logger.info(System.currentTimeMillis()   + " " + message);
     }
 
 }
