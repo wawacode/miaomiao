@@ -1,5 +1,5 @@
 ;angular.module('miaomiao.shop').factory('ShoppingCart', ['$http', '$rootScope', 'localStorageService', '$localStorage',
-    '$sessionStorage','$timeout', function ($http, $rootScope, localStorageService, $localStorage, $sessionStorage, $timeout) {
+    '$sessionStorage','$timeout','ShopService', function ($http, $rootScope, localStorageService, $localStorage, $sessionStorage, $timeout,ShopService) {
 
 
         return {
@@ -123,14 +123,14 @@
 
             cartReadyToShip: function () {
 
-                var shop = localStorageService.get('MMMETA_shop') || {},
+                var shop = ShopService.getDefaultShop() || {},
                     basePrice = shop.base_price || 2000;
 
                 return this.getTotalPrice() >= basePrice/100.0;
             },
 
             cartNotReadyLeftPrice: function () {
-                var shop = localStorageService.get('MMMETA_shop') || {},
+                var shop = ShopService.getDefaultShop() || {},
                     basePrice = shop.base_price || 2000;
 
                  return Math.round((basePrice/100.0 - this.getTotalPrice()) * 100) / 100;

@@ -1,5 +1,5 @@
 ;angular.module('miaomiao.shop').controller('GoToShopCtrl', function ($scope, $stateParams, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
-                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService) {
+                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService,ShopService) {
 
     // get shop info from local storage cause in locate page we have got one
 
@@ -26,7 +26,7 @@
 
         $scope.shop = dataDetail.shop;
 
-        localStorageService.set('MMMETA_shop',$scope.shop);
+        ShopService.setDefaultShop(dataDetail.shop);
 
         $state.go('productList', null, { reload: true });
 

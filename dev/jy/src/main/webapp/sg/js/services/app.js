@@ -5,7 +5,8 @@ angular.module('miaomiao.shop', ['ionic',
         'ngAnimate',
         'pasvaz.bindonce',
         'QuickList',
-        'ionic.rating'])
+        'ionic.rating'
+    ])
     .config(function ($httpProvider, $provide) {
 
         // Use x-www-form-urlencoded Content-Type

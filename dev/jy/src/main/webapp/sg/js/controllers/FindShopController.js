@@ -1,5 +1,5 @@
 ;angular.module('miaomiao.shop').
-    controller('FindShopCtrl', function ($scope, $http, $state,$location, $ionicLoading, localStorageService, httpClient, MMUtils, $timeout) {
+    controller('FindShopCtrl', function ($scope, $http, $state,$location, $ionicLoading, localStorageService, httpClient,ShopService, MMUtils, $timeout) {
 
         $scope.shop_data = {};
         $scope.shop_items = [];
@@ -68,7 +68,7 @@
             }
 
             localStorageService.set('MMMETA_shop_history', $scope.shop_history);
-            localStorageService.set('MMMETA_shop', shop);
+            ShopService.setDefaultShopAndSync(shop);
 
             if ($scope.modal) {
                 $scope.modal.hide();

@@ -1,13 +1,9 @@
 ;angular.module('miaomiao.shop').
-    controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout, httpClient, MMUtils) {
+    controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout, ShopService ,httpClient, MMUtils) {
 
         $scope.info = {};
-        $scope.info.getGeolocationTitle = "定位中...";
-        $scope.info.getGeolocationTitleClass = 'blink_me';
-        $scope.info.showLocateImg = true;
 
-        // not first time loading, just go to shop
-        $scope.info.lastShop = localStorageService.get('MMMETA_shop');
+        $scope.info.showLocateImg = true;
 
         function showPosition(position) {
 
@@ -52,19 +48,7 @@
                     break;
                 default:
                     $scope.info.getGeolocationTitle = "定位失败，请您重试";
-
             }
-
-            //TODO: test code, remove this
-//            $scope.info.getGeolocationTitle = "定位成功，正在加载请稍候...";
-//            $scope.info.getGeolocationTitleClass = 'getGeolocation-title-success';
-//
-//            localStorageService.set('MMMETA_location_pos_ready',1);
-//            localStorageService.set('MMMETA_location_pos_data',
-//                {'lat':116.515155,'lng':39.931855});
-//            $state.go('findshop');
-//            return;
-
             // let user see the error message
             localStorageService.set('MMMETA_location_pos_ready',0);
             $state.go('findshop');
@@ -87,13 +71,29 @@
 
         $scope.$on("$ionicView.afterEnter", function () {
 
-            if ($scope.info.lastShop && $scope.info.lastShop.id) {
-                $state.go('productList');
-            } else {
-                $timeout(function () {
-                    getLocation();
-                }, 1000);
-            }
-        });
+            $scope.info.getGeolocationTitle = "定位中...";
+            $scope.info.getGeolocationTitleClass = 'blink_me';
 
+            // make sure shop info from server is source of truth
+            $scope.info.hasDefaultShop = false;
+            ShopService.getDefaultShopFromServer(function(shop){
+                $scope.info.hasDefaultShop = true;
+                ShopService.setDefaultShop(shop);
+                $state.go('productList');
+
+            },function(){
+                // for legalcy reasons ,if have local meta data
+                var localDefaultShop = localStorageService.get('MMMETA_shop');
+                if (localDefaultShop && localDefaultShop.id) {
+                    $scope.info.hasDefaultShop = true;
+                    ShopService.setDefaultShopAndSync(localDefaultShop);
+                    $state.go('productList');
+                } else {
+                    $scope.info.hasDefaultShop = false;
+                    $timeout(function () {
+                        getLocation();
+                    }, 500);
+                }
+            });
+        });
     });

@@ -101,6 +101,19 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 doGet('shop', 'shop_id=' + shop_id, success, fail);
 
             },
+
+            getDefaultShopInfo: function (success, fail) {
+
+                doGet('storage/get', '', success, fail);
+
+            },
+
+            setDefaultShopInfo: function (shop_id, success, fail) {
+
+                doGet('storage/set', 'shop_id=' + shop_id, success, fail);
+
+            },
+
             getNearShopList: function (lat, lng, success, fail) {
 
                 doGet('near', 'lat=' + lat + '&lng=' + lng, success, fail);
@@ -168,6 +181,56 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 $scope.$on('MMEVENT_OrderChangeEventSuccess', function (event, message) {
                     handler(message);
                 });
+            }
+        }
+    }])
+    .factory('ShopService', ['$http', '$rootScope', '$timeout','httpClient','localStorageService',
+        function ($http, $rootScope, $timeout,httpClient,localStorageService) {
+
+        var _defaultShop = null;
+        return {
+
+            setDefaultShop: function (shop) {
+                _defaultShop = shop;
+                localStorageService.set('MMMETA_shop',shop);
+            },
+
+            setDefaultShopAndSync: function (shop) {
+                _defaultShop = shop;
+                localStorageService.set('MMMETA_shop',shop);
+                this.setDefaultShopToServer(shop.id,function(){},function(){});
+            },
+
+            getDefaultShop: function () {
+               return _defaultShop || localStorageService.get('MMMETA_shop');
+            },
+
+            getDefaultShopFromServer: function (success, fail) {
+                var self = this;
+                httpClient.getDefaultShopInfo(function(data, status){
+                    var code = data.code, dataDetail = data.data;
+                    if (code == 0 && dataDetail && dataDetail.shop) {
+                        self.setDefaultShop(dataDetail.shop);
+                        return success(dataDetail.shop);
+                    }
+                    return fail(null);
+                },function(data, status){
+                    fail(null);
+                })
+            },
+
+            setDefaultShopToServer: function (shop_id,success, fail) {
+
+                httpClient.setDefaultShopInfo(shop_id, function(data, status){
+                    var code = data.code, dataDetail = data.data;
+                    if (code == 0) {
+                        success();
+                        return;
+                    }
+                    fail(null);
+                },function(data, status){
+                    fail(null);
+                })
             }
         }
     }]).factory('MMUtils', ['$timeout', function ($timeout) {
