@@ -332,6 +332,8 @@
                     template: ''
                 });
                 alertPopup.then(function(res) {
+                    // clear current display items so when it come back ,will refresh the view
+                    $scope.currentDisplayItems = [];
                     $state.go('findshop' ,null, { reload: true });
                     return;
                 });
