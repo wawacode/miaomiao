@@ -42,16 +42,6 @@
 </nav>
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar" style="padding-top:30px">
-            <ul class="nav nav-sidebar">
-
-                <li class="active"><a href="#">    </a></li>
-                #foreach($category in $categoryls)
-                <li #if($category.category_id == $curr_cate_id ) class="active" #end><a href="/console/shop?shop_id=${shop.id}&category_id=${category.category_id}"> $category.name</a></li>
-                #end
-            </ul>
-        </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-0 main">
             #foreach($item in $itemls)
             <div class="row">
@@ -74,7 +64,6 @@
                     </ul>
                 </nav>
             </div>
-        </div>
     </div>
 </div>
 
