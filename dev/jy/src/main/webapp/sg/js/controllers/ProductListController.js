@@ -335,11 +335,14 @@
         var shopInfo = ShopService.getDefaultShop() || {};
         $timeout(function () {
             $scope.shop = shopInfo;
+        });
 
-            if ($scope.shop && $scope.shop.status != 0) {
+        httpClient.getShopInfo(shopInfo.id, function (data, status) {
+            var code = data.code, dataDetail = data.data;
+            if (dataDetail && dataDetail.shop && dataDetail.shop.status != 0) {
 
                 var alertPopup = $ionicPopup.alert({
-                    title: $scope.shop.name + '打烊啦，去其他店铺看看？',
+                    title: dataDetail.shop.name + '打烊啦，去其他店铺看看？',
                     template: ''
                 });
                 alertPopup.then(function(res) {
@@ -347,6 +350,8 @@
                     return;
                 });
             }
+        },function(data, status){
+
         });
     }
 
