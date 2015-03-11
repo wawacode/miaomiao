@@ -525,7 +525,7 @@ public class ShopConsoleController {
             }
             else{
                 LoggerUtils.getInstance().log(String.format(" category is 0  && no category find on shop %d ",shop_id));
-                return "shop";
+                return "shop_test";
             }
         }
         List<Item> itemls = itemsDAO.getItemsWithZero(SUtils.generTableName(shop_id),shop_id,category_id,from,offset);
