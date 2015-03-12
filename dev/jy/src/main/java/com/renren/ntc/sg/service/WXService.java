@@ -27,7 +27,7 @@ public class WXService {
 	private static final int READ_TIMEOUT = 10000;
 	private static final int RETRY = 2;
 
-    public String  getOpenId (String code ){
+    public static  String  getOpenId (String code ){
         String access_token = JRedisUtil.getInstance().get(ACCESS_TOKEN);
         String openId = null;
         if(null == access_token){

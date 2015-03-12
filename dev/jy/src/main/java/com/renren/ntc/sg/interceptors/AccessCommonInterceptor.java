@@ -5,6 +5,7 @@ import com.renren.ntc.sg.bean.User;
 import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.UserService;
+import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
 import com.renren.ntc.sg.util.SUtils;
@@ -47,19 +48,29 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
 
     @Override
     protected Object before(Invocation inv) throws Exception {
-        String code = inv.getParameter("code");
-
     	String path = inv.getRequest().getRequestURI() ;
         User u = null    ;
         String uuid  = CookieManager.getInstance().getCookie(inv.getRequest(), Constants.COOKIE_KEY_USER);
-
-//        public static String GETOPENID = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx762f832959951212&secret=914f4388312ca90e4cb750b817d15368&code={code}&grant_type=authorization_code";
         if(null  != uuid) {
             u = userDAO.getUser(SUtils.unwrapper(uuid));
         }
         if( null == u ) {
+            String code = inv.getParameter("code");
+            if( !StringUtils.isBlank(code)){
+                String openId = WXService.getOpenId(code);
+                if(StringUtils.isBlank(openId)){
+                    u  = userDAO.getUserByOpenId(openId);
+                    if(null == u){
+                        String userName = SUtils.generName();
+                        u  = userService.createUser(userName , 0,  "pwd", 1 ,openId);
+                    }
+                    CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
+                    hostHolder.setUser(u);
+                    return true;
+                }
+            }
             String userName = SUtils.generName();
-            u  = userService.createUser(userName , 0,  "pwd", 1 );
+            u  = userService.createUser(userName , 0,  "pwd", 1,"other");
             CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
         }
         hostHolder.setUser(u);

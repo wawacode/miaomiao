@@ -14,8 +14,7 @@ public class User {
 
     private long   id  ;
     private String  name;
-
-
+    private String  wx_open_id;
 
     private String phone ;
     private String pwd ;
@@ -38,6 +37,14 @@ public class User {
 
     public String getPhone() {
         return phone;
+    }
+
+    public String getWx_open_id() {
+        return wx_open_id;
+    }
+
+    public void setWx_open_id(String wx_open_id) {
+        this.wx_open_id = wx_open_id;
     }
 
     public void setPhone(String phone) {

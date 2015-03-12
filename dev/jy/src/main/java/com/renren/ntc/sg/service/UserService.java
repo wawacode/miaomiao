@@ -19,13 +19,14 @@ public class UserService {
     private UserDAO userDAO;
 
 
-    public User createUser(String name ,int type,  String pwd, int enable  ) {
+    public User createUser(String name ,int type,  String pwd, int enable ,String wx_open_id ) {
         User u =  new User ();
         u.setEnable(enable);
         u.setPhone("186");
         u.setType(type);
         u.setName(name);
         u.setPwd(pwd);
+        u.setWx_open_id(wx_open_id);
         long  id  = userDAO.createUser(u)   ;
         return userDAO.getUser(id);
     }
