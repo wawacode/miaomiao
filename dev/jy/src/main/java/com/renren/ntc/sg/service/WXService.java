@@ -1,8 +1,8 @@
 package com.renren.ntc.sg.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mongodb.util.JSON;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
@@ -60,7 +60,7 @@ public class WXService {
             t = getURLData(url);
             String s = SUtils.toString(t);
             System.out.println("wx re" + s);
-            JSONObject res = (JSONObject)JSON.parse(s);
+            JSONObject res = (JSONObject) JSON.parse(s);
             openId =  res.getString("openid");
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,7 +150,8 @@ public class WXService {
 
 
     public static void main(String[] args) throws IOException {
-
-
+        Object res = JSON.parse("{\"access_token\":\"OezXcEiiBSKSxW0eoylIeJ73JkSLxBH35eDvH8BHZg6Jq9c12WnoOvvrSP1q6j6PrE8nPbQk_yoqjyveHWeNq1DtVecLHrppEOapeDC128LLk7aSyZYw5s8kesKaWCAuUVeliAazerm0_6tS1fHlpA\",\"expires_in\":7200,\"refresh_token\":\"OezXcEiiBSKSxW0eoylIeJ73JkSLxBH35eDvH8BHZg6Jq9c12WnoOvvrSP1q6j6PoYqwyrLlR2bp_GvBlgB3FhoDRxcxRz5Nx_Qda0i7gvb3sBohI3hXqacII3AZaB-gaOasYfpRne5Ivf3bpjVT5A\",\"openid\":\"oQfDLjmZD7Lgynv6vuoBlWXUY_ic\",\"scope\":\"snsapi_base\"}");
+        ;;
+        System.out.println(res.toString());
     }
 }
