@@ -61,7 +61,11 @@ public class StorageController {
         }
         long  userid = getUserId(token);
         long  shop_id = storageDao.getShop(userid);
-        Shop shop = shopDao.getShop(shop_id);
+        Shop shop = null;
+        try{
+             shop = shopDao.getShop(shop_id);
+        }catch(Exception e){
+        }
         JSONObject  jb = new JSONObject();
         if (null == shop){
             return "@json:" + getDataResult(0,jb);
