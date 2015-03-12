@@ -192,7 +192,10 @@
             updateShoppingCart();
         });
 
-        $scope.$on("$ionicView.enter", function () {
+        $scope.$on("$ionicView.afterEnter", function () {
+
+            // force update shop
+            $scope.shop = ShopService.getDefaultShop() || {};
             updateShoppingCart();
             checkOrders();
         });

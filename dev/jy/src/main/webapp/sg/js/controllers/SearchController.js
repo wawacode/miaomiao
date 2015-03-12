@@ -153,5 +153,10 @@
 
     });
 
+    $scope.$on("$ionicView.afterEnter", function () {
+        // force update shop
+        $scope.shop = ShopService.getDefaultShop() || {};
+    });
+
 });
 
