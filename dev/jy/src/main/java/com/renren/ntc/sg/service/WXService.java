@@ -40,16 +40,15 @@ public class WXService {
                     return null;
                 }
                 JSONObject ob =(JSONObject) JSONObject.parse(e);
-                token =  ob.getString("access_token");
+                access_token =  ob.getString("access_token");
                 JRedisUtil.getInstance().set(ACCESS_TOKEN,token);
                 JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
-                return token;
             } catch (IOException e) {
                 e.printStackTrace();
-                return token;
+                return "";
             }
         }
-        return token;
+        return openId;
     }
 
 	private static byte[] getStreamData(InputStream is) throws Exception {
