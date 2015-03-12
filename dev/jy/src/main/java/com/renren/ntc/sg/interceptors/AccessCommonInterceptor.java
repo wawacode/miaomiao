@@ -4,6 +4,7 @@ import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.User;
 import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.UserService;
 import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
@@ -56,6 +57,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
         }
         if( null == u ) {
             String code = inv.getParameter("code");
+            LoggerUtils.getInstance().log( "get wx code " + code);
             if( !StringUtils.isBlank(code)){
                 String openId = WXService.getOpenId(code);
                 if(StringUtils.isBlank(openId)){
