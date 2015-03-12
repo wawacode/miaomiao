@@ -24,7 +24,8 @@ public class LoggerUtils {
         return instance;
     }
     public void log (String message){
-        logger.info(System.currentTimeMillis()   + " " + message);
+//        logger.info(System.currentTimeMillis()   + " " + message);
+        System.out.println(System.currentTimeMillis() + " " + message);
     }
 
 }
