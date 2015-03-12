@@ -55,7 +55,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
         if(null  != uuid) {
             u = userDAO.getUser(SUtils.unwrapper(uuid));
         }
-        if( null == u ) {
+        if( null == u || -1 != path.indexOf("about")) {
             String code = inv.getParameter("code");
             LoggerUtils.getInstance().log( "get wx code " + code);
             if( !StringUtils.isBlank(code)){

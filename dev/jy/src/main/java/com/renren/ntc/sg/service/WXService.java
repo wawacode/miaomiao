@@ -59,6 +59,7 @@ public class WXService {
         try {
             t = getURLData(url);
             String s = SUtils.toString(t);
+            System.out.println("re");
             JSONObject res = (JSONObject)JSON.parse(s);
             openId =  res.getString("openid");
         } catch (IOException e) {
