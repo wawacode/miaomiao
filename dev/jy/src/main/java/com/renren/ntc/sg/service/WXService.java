@@ -2,8 +2,10 @@ package com.renren.ntc.sg.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mongodb.util.JSON;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.util.MD5Utils;
+import com.renren.ntc.sg.util.SUtils;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +28,7 @@ public class WXService {
     private static final int CONN_TIMEOUT = 10000;
 	private static final int READ_TIMEOUT = 10000;
 	private static final int RETRY = 2;
+    private  static  final String OAUTH_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={appId}&secret={appKey}&code={code}&grant_type=authorization_code";
 
     public static  String  getOpenId (String code ){
         String access_token = JRedisUtil.getInstance().get(ACCESS_TOKEN);
@@ -45,8 +48,21 @@ public class WXService {
                 JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
             } catch (IOException e) {
                 e.printStackTrace();
-                return "";
+                return null;
             }
+        }
+        String url = OAUTH_URL.replace("{appId}",appId);
+        url = url.replace("{appKey}",appKey);
+        url = url.replace("{code}",code);
+
+        byte []  t = new byte[0];
+        try {
+            t = getURLData(url);
+            String s = SUtils.toString(t);
+            JSONObject res = (JSONObject)JSON.parse(s);
+            openId =  res.getString("openid");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return openId;
     }
