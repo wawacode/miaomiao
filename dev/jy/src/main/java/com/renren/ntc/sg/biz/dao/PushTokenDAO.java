@@ -36,7 +36,7 @@ public interface PushTokenDAO {
 
     @SQL("insert  into " + TABLE_NAME +" (" +  INSERT_FIELDS +") " +   " values" +
             "(:1.owner_phone,:1.device_token,:1.chn) ON DUPLICATE KEY UPDATE " +
-            " chn=:1.chn")
+            "owner_phone=1.owner_phone , chn=:1.chn")
     public int  insertPushToken (PushToken pushtoken);
 
     @SQL(" delete from " + TABLE_NAME + " where owner_phone = :1 and  device_token=:2")

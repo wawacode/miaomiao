@@ -207,7 +207,7 @@ public class HomeController {
         catstaff.setPhone(phone);
         catstaff.setPwd("12345");
         catstaff.setType(type);
-        if (StringUtils.isBlank(pwd)){
+        if (!StringUtils.isBlank(pwd)){
             catstaff.setPwd(pwd);
         }
         if (0 != type){
