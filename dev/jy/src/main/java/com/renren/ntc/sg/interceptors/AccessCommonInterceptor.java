@@ -55,20 +55,20 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             u = userDAO.getUser(SUtils.unwrapper(uuid));
         }
         if( null == u ) {
-//            String code = inv.getParameter("code");
-//            if( !StringUtils.isBlank(code)){
-//                String openId = WXService.getOpenId(code);
-//                if(StringUtils.isBlank(openId)){
-//                    u  = userDAO.getUserByOpenId(openId);
-//                    if(null == u){
-//                        String userName = SUtils.generName();
-//                        u  = userService.createUser(userName , 0,  "pwd", 1 ,openId);
-//                    }
-//                    CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
-//                    hostHolder.setUser(u);
-//                    return true;
-//                }
-//            }
+            String code = inv.getParameter("code");
+            if( !StringUtils.isBlank(code)){
+                String openId = WXService.getOpenId(code);
+                if(StringUtils.isBlank(openId)){
+                    u  = userDAO.getUserByOpenId(openId);
+                    if(null == u){
+                        String userName = SUtils.generName();
+                        u  = userService.createUser(userName , 0,  "pwd", 1 ,openId);
+                    }
+                    CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
+                    hostHolder.setUser(u);
+                    return true;
+                }
+            }
             String userName = SUtils.generName();
             u  = userService.createUser(userName , 0,  "pwd", 1,"other");
             CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
