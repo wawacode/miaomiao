@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.CatStaffCommit;
+import com.renren.ntc.sg.bean.Catstaff;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.RegistUser;
 import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
@@ -43,6 +44,10 @@ public class HomeController {
 
     @Autowired
     public CatStaffCommitDAO catStaffCommitDAO;
+
+
+    @Autowired
+    public CatStaffDAO catStaffDAO;
 
     /*
       staff_pwd 是一个类似密码的东西 由我直装到地推人员手机上
@@ -191,6 +196,25 @@ public class HomeController {
         now.set(Calendar.SECOND, 0);
         now.set(Calendar.MILLISECOND, 0);
         return now.getTime();
+    }
+
+    @Get("addstaff")
+    @Post("addstaff")
+    public String  add (Invocation inv, @Param("name")  String name ,@Param("phone")  String phone ,@Param("pwd") String pwd
+            ,@Param("type") int  type){
+        Catstaff catstaff = new Catstaff();
+        catstaff.setName(name);
+        catstaff.setPhone(phone);
+        catstaff.setPwd("12345");
+        catstaff.setType(type);
+        if (StringUtils.isBlank(pwd)){
+            catstaff.setPwd(pwd);
+        }
+        if (0 != type){
+            catstaff.setType(type);
+        }
+        catStaffDAO.insert(catstaff);
+        return "@json:" + Constants.DONE ;
     }
 }
 
