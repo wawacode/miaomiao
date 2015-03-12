@@ -60,9 +60,9 @@ public class StorageController {
             token =  CookieManager.getInstance().getCookie(inv.getRequest(),Constants.COOKIE_KEY_USER);
         }
         long  userid = getUserId(token);
-        long  shop_id = storageDao.getShop(userid);
         Shop shop = null;
         try{
+             long  shop_id = storageDao.getShop(userid);
              shop = shopDao.getShop(shop_id);
         }catch(Exception e){
         }
