@@ -27,7 +27,6 @@ public class UserService {
         u.setName(name);
         u.setPwd(pwd);
         u.setWx_open_id(wx_open_id);
-        System.out.println("create user open " + u.getWx_open_id());
         long  id  = userDAO.createUser(u)   ;
         return userDAO.getUser(id);
     }

@@ -66,7 +66,7 @@ public class WXController {
             "<Title><![CDATA[喵喵生活]]></Title> \n" +
             "<Description><![CDATA[关于喵喵]]></Description>\n" +
             "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Fabout&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
+            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
             "</item>\n" +
             "</Articles>\n" +
             "</xml> ";
@@ -136,6 +136,14 @@ public class WXController {
             }
         }
         String content = getContent(body);
+        if("1110111".equals(content)){
+            String response = CONTENT2.replace("{message}",  "");  // 这个其实没用
+               response = response.replace("{toUser}",fromUser);
+            response = response.replace("{fromUser}",toUser);
+            response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+            return  response;
+        }
+
         //商家查询增量粉丝
 //        int count = 0 ;
 //        try {
