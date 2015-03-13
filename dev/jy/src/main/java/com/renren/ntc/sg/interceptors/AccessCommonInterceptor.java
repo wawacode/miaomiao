@@ -55,6 +55,17 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
         if(null  != uuid) {
             u = userDAO.getUser(SUtils.unwrapper(uuid));
         }
+        if ( u != null){
+            String code = inv.getParameter("code");
+            if( !StringUtils.isBlank(code)){
+                try {
+                String openId = WXService.getOpenId(code);
+                userService.updateOpenId(u.getId(),openId);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
         if( null == u ) {
             String code = inv.getParameter("code");
             LoggerUtils.getInstance().log( "get wx code " + code);
@@ -75,6 +86,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             u  = userService.createUser(userName , 0,  "pwd", 1,"other");
             CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
         }
+
         hostHolder.setUser(u);
         return true;
 	}

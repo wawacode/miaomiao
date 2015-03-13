@@ -30,4 +30,8 @@ public class UserService {
         long  id  = userDAO.createUser(u)   ;
         return userDAO.getUser(id);
     }
+
+    public void updateOpenId(long id, String openId) {
+         userDAO.updateOpenId(id,openId);
+    }
 }

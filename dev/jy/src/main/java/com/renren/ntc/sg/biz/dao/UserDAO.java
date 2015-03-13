@@ -37,4 +37,7 @@ public interface UserDAO {
     @ReturnGeneratedKeys
     @SQL("insert into  "  + TABLE_NAME + " (" + INSERT_FIELDS  +") values (:1.name,:1.phone,:1.enable,:1.type,:1.pwd,:1.wx_open_id)")
     public long  createUser(User user);
+
+    @SQL("update  " + TABLE_NAME + " set wx_open_id =:2 where id =:1")
+    public int  updateOpenId(long id, String openId);
 }
