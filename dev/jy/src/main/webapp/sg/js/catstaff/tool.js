@@ -89,7 +89,7 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
         };
     })
 
-    .controller('ToolTabCtrl',function ($scope, $ionicLoading, $compile, $http, $state, $timeout, localStorageService) {
+    .controller('ToolTabCtrl',function ($scope, $ionicLoading, $compile, $http, $state, $timeout, localStorageService,$ionicPopup) {
 
         $scope.info = localStorageService.get('info') || {};
         $scope.user = $scope.info.user = localStorageService.get('user') || {};
@@ -197,14 +197,31 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
             }
 
             $scope.submitHasError = false;
-            // check empty
-            for (var key in _info) {
-                if (_info[key] == undefined) {  // some value is empty
-                    $scope.submitHasError = true;
-                    $scope.error_message = '请查看确认信息是否填写完整(红色*必填)!';
-                    return;
-                }
+
+            function showAlert(message, tmpUrl) {
+
+                $scope.error_message = '请查看确认信息是否填写完整(红色*必填)!';
+                $ionicPopup.alert({
+                    title: message,
+                    template: tmpUrl || ''
+                });
             }
+
+            if(!_info['staff_phone'] || !_info['staff_name'] || !_info['staff_name']){
+
+                showAlert("请重新登陆");
+                $state.go('signin',null, {reload:true});
+                return;
+            }
+
+            if(!_info['shop_name']){showAlert("请填写正确的店铺名称");return;}
+            if(!_info['shop_tel']){showAlert("请填写正确的店铺电话");return;}
+            if(!_info['shop_owner_phone']){showAlert("请填写正确的店铺老板电话");return;}
+            if(!_info['shop_address']){showAlert("请填写正确的店铺地址");return;}
+            if(!_info['shop_serveArea']){showAlert("请填写正确的服务小区列表");return;}
+            if(!_info['shop_basePrice']){showAlert("请填写正确的起送价格");return;}
+            if(!_info['shop_lat']){showAlert("请填写正确的纬度");return;}
+            if(!_info['shop_lng']){showAlert("请填写正确的经度");return;}
 
             // optional keys
             _info.shop_print =  $scope.info.shop_print || null;
