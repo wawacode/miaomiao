@@ -25,7 +25,7 @@ import java.util.List;
 
 @DenyCommonAccess
 @Path("p")
-public class PrinterController {
+public class  PrinterController {
 
     private static int DEFAULT_S = 1;
 

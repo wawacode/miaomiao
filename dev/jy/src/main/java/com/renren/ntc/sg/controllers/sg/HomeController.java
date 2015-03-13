@@ -167,6 +167,9 @@ public class HomeController {
                     if (null == shop){
                         continue;
                     }
+                    if(shop.getAudit() == 0){
+                        continue;
+                    }
                     SUtils.forV(shop,now);
                     shops.add(JSON.toJSON(shop));
                 }

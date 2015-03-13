@@ -130,8 +130,8 @@ public class WXHttpClient {
         JSONObject button  = new JSONObject();
         button.put("type","view");
         button.put("name","我要下单");
-        button.put("url","http://www.mbianli.com/sg/loading3" );
-//        button.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+//        button.put("url","http://www.mbianli.com/sg/loading3" );
+        button.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
         buttons.add(button);
 
 
