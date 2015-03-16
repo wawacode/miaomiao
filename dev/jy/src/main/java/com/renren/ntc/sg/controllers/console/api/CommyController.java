@@ -45,6 +45,7 @@ public class CommyController {
         Shop_Community  shop_c =   new Shop_Community();
         shop_c.setShop_id(shop_id);
         shop_c.setCommunity_id(c_id);
+        shop_c.setExt("");
         shop_communityDao.insert(shop_c);
 
         return "@json:" + Constants.DONE ;
