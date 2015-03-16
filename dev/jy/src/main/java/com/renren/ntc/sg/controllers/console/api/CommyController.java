@@ -53,7 +53,11 @@ public class CommyController {
     private boolean validate(long shop_id, long c_id) {
        Shop shop =  shopDAO.getShop(shop_id);
         Community community =  communityDao.get(c_id);
-        return (null != shop) && (null != community);
+        if((null != shop) && (null != community)) {
+            return true;
+        }
+        LoggerUtils.getInstance().log(String.format("can't find link shop %d ,community %d" ,shop_id,c_id));
+        return false;
     }
 
 }
