@@ -21,7 +21,7 @@
         </div>
         <div class="shop-product-list">
             <ul class="shop-product-categray-list list" ng-controller="ProductListCtrl">
-                <li bindonce ng-repeat="item in items track by item.id"
+                <li bindonce ng-repeat="item in items"
                     class="product-item"
                     ng-include
                     src="'templates/product-detail.html'">

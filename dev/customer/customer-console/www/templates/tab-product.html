@@ -45,7 +45,7 @@
                              delegate-handle="productScroll">
                     <div class="shop-product-list" ng-controller="ProductListCtrl">
                         <ul class="shop-product-categray-list list">
-                            <li bindonce ng-repeat="item in items track by item.id"
+                            <li bindonce ng-repeat="item in items"
                                 class="product-item"
                                 ng-include
                                 src="'templates/product-detail.html'">
