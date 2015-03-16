@@ -55,6 +55,7 @@ public class CreateShopService {
         String shop_serveArea = area.getString("shop_serveArea")  ;
         Date open_time = area.getDate("open_time")  ;
         Date close_time = area.getDate("close_time")  ;
+        int  base_price = area.getInteger("base_price");
         double lat =  catStaffCommit.getShop_lat();
         double lng =  catStaffCommit.getShop_lng();
 
@@ -77,6 +78,7 @@ public class CreateShopService {
         shop.setClose_time(close_time);
         shop.setLat(lat);
         shop.setLng(lng);
+        shop.setBase_price(base_price);
         shop.setOwner_phone(onwer_phone);
         shop.setTel(admin_tel);
         shop.setShop_address(shop_address);
