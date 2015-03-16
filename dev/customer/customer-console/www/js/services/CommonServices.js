@@ -138,8 +138,9 @@
                 for (var idx = 0; idx < categorys.length; idx++) {
                     if (cateId == categorys[idx].category_id) {
 
-                        var currentCategory = categorys[idx],items = currentCategory.itemls.concat(items);
-                        currentCategory.itemls = this.removeDuplicateItems(items);
+                        var currentCategory = categorys[idx],
+                            newitems = currentCategory.itemls.concat(items);
+                        currentCategory.itemls = this.removeDuplicateItems(newitems);
                         currentCategory.scrollIndex += items.length;
                         currentCategory.totalCnt = 0;
 
