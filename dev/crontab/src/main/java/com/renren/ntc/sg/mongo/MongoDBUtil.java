@@ -38,7 +38,8 @@ public class MongoDBUtil {
 
 	private MongoDBUtil() {
 		try {
-			m = new Mongo(Constants.HOST, 27017);
+//			m = new Mongo(Constants.TEST_HOST, 27017);
+            m = new Mongo(Constants.HOST, 27017);
 			db = m.getDB(Constants.DBNAME);
             boolean  result = db.authenticate("sg","qwer$#@!".toCharArray());
             System.out.println("re "  + result);
@@ -65,6 +66,11 @@ public class MongoDBUtil {
 
     public DBCollection getCollectionforcache() {
         return db.getCollection("sg_cache");
+    }
+
+
+    public DBCollection getCollectionforCommunity() {
+        return db.getCollection("sg_community");
     }
 
 

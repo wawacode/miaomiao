@@ -26,7 +26,6 @@ public abstract class AbstractGeoMongodbService {
 
     public AbstractGeoMongodbService() {
 		try {
-
 			geoDb = MongoDBUtil.getInstance().getDB();
             if(geoDb != null) {
 				geoTable = MongoDBUtil.getInstance().getCollection();

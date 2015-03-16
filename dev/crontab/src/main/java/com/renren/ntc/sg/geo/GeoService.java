@@ -2,6 +2,7 @@ package com.renren.ntc.sg.geo;
 
 import java.util.*;
 
+import com.renren.ntc.sg.bean.Community;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import net.paoding.rose.scanning.context.RoseAppContext;
@@ -234,6 +235,18 @@ public class GeoService {
 		return result;
 	}
 
+
+    public static void addCommunity(Community c ){
+
+
+
+
+
+    }
+
+
+
+
     public static void main (String [] args){
         long shop_id = 10031;
         RoseAppContext  rose = new RoseAppContext();
@@ -256,19 +269,19 @@ public class GeoService {
 
 //        shop.setId(shop_id);
 //        shop.setBase_price(3000);
-        shopDao.update(shop) ;
+//        shopDao.update(shop) ;
 
 
         GeoService  geoService =  new GeoService() ;
-        shop = shopDao.getShop(shop.getId());
-        ShopLocation shop_location = new ShopLocation()  ;
-        System.out.println(shop.getId());
-        System.out.println(shop.getLat());
-        System.out.println(shop.getLng());
-        shop_location.setLatitude(shop.getLat());
-        shop_location.setLongitude(shop.getLng());
-        shop_location.setShop_id(shop.getId());
-        System.out.println(geoService.updateLocation(shop_location));
+//        shop = shopDao.getShop(shop.getId());
+//        ShopLocation shop_location = new ShopLocation()  ;
+//        System.out.println(shop.getId());
+//        System.out.println(shop.getLat());
+//        System.out.println(shop.getLng());
+//        shop_location.setLatitude(shop.getLat());
+//        shop_location.setLongitude(shop.getLng());
+//        shop_location.setShop_id(shop.getId());
+//        System.out.println(geoService.updateLocation(shop_location));
 
 //      shop  = shopDao.getShop(shop_id);
 //      GeoService  geoService =  new GeoService() ;

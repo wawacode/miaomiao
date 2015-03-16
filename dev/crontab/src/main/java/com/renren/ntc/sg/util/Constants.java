@@ -26,6 +26,7 @@ public class Constants {
 
     public static final String DBNAME = "sg" ;
     public static final String HOST = "www.mbianli.com" ;
+    public static final String TEST_HOST = "123.56.102.224" ;
 
     public static  final String PARATERERROR = "{\"code\":1,\"msg\":\"paramter error\"}";
 
