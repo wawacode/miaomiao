@@ -137,10 +137,12 @@
             addMoreItemsForCategoryId: function (cateId, items) {
                 for (var idx = 0; idx < categorys.length; idx++) {
                     if (cateId == categorys[idx].category_id) {
-                        var currentCategory = categorys[idx];
-                        currentCategory.itemls = this.removeDuplicateItems(currentCategory.itemls.concat(items));
+
+                        var currentCategory = categorys[idx],items = currentCategory.itemls.concat(items);
+                        currentCategory.itemls = this.removeDuplicateItems(items);
                         currentCategory.scrollIndex += items.length;
                         currentCategory.totalCnt = 0;
+
                         break;
                     }
                 }
@@ -149,7 +151,8 @@
             addProductItemToCategory: function (cateId, item) {
                 for (var idx = 0; idx < categorys.length; idx++) {
                     if (cateId == categorys[idx].category_id) {
-                        categorys[idx].itemls = this.removeDuplicateItems(categorys[idx].itemls.push(item));
+                        categorys[idx].itemls.push(item);
+                        categorys[idx].itemls = this.removeDuplicateItems(categorys[idx].itemls);
                         break;
                     }
                 }

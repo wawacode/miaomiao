@@ -153,8 +153,9 @@ public class ItemConsoleController extends BasicConsoleController{
     	JSONObject resultJson = new JSONObject();
     	resultJson.put("code", -1);
 		resultJson.put("msg", "服务器错误，请稍后重试");
-		String picUrl = "";
-    	if(StringUtils.isBlank(pic_url)){
+
+        String picUrl = pic_url;
+    	if(StringUtils.isBlank(picUrl)){
             Product p = productDao.geProduct(serialNo);
     		picUrl = p.getPic_url();
     	}
