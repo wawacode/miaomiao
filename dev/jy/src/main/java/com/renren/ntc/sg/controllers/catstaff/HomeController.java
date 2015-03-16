@@ -57,7 +57,7 @@ public class HomeController {
     public String index(Invocation inv, @Param("staff_phone") String staff_phone,
                         @Param("staff_name") String staff_name, @Param("staff_pwd") String staff_pwd,
                         @Param("shop_name") String shop_name,
-                        @Param("shop_basePrice") String base_price,
+                        @Param("shop_basePrice") int  base_price,
                         @Param("shop_openTime") String open_time,
                         @Param("shop_closeTime") String close_time,
                         @Param("shop_owner_phone") String shop_owner_phone,
@@ -128,6 +128,7 @@ public class HomeController {
         area.put("shop_serveArea", shop_serveArea);
         area.put("open_time",openShopTime);
         area.put("close_time",closeShopTime);
+        area.put("base_price",base_price) ;
         catStaffCommit.setShop_serveArea(area.toJSONString());
         catStaffCommit.setShop_lat(shop_lat);
         catStaffCommit.setShop_lng(shop_lng);
