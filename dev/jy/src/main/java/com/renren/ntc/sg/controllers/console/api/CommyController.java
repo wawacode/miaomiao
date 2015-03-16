@@ -39,7 +39,7 @@ public class CommyController {
     @Get("add_link")
     @Post("add_link")
     public String add_link (Invocation inv,@Param("shop_id") long shop_id,  @Param("c_id") long c_id ){
-        if(validate(shop_id,c_id)){
+        if(!validate(shop_id,c_id)){
             return "@json:" + Constants.PARATERERROR ;
         }
         Shop_Community  shop_c =   new Shop_Community();
