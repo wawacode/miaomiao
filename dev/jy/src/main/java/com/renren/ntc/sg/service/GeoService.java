@@ -19,12 +19,6 @@ public class GeoService {
 
 	private static final Logger logger = Logger.getLogger(GeoService.class);
 
-	private static GeoService instance;
-
-	public static GeoService getInstance() {
-		return instance;
-	}
-
 	private AbstractGeoMongodbService dbService;
 
 	private GeoService() {

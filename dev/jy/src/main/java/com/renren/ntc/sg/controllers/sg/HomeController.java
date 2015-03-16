@@ -47,9 +47,6 @@ public class HomeController {
     public DeviceDAO deviceDAO;
 
     @Autowired
-    public SWPOrderDAO swpOrderDAO ;
-
-    @Autowired
     GeoService geoService  ;
 
 
@@ -159,10 +156,10 @@ public class HomeController {
                     ShopLocation shopLoc =  res.getShopLocation();
                     LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
                     long shop_id  = shopLoc.getShop_id();
-                    if (!isshopArea(shop_id,lat,lng)) {
-                        LoggerUtils.getInstance().log(String.format("shop %d , can't service %f ,%f",shop_id,lat,lng));
-                        continue;
-                    }
+//                    if (!isshopArea(shop_id,lat,lng)) {
+//                        LoggerUtils.getInstance().log(String.format("shop %d , can't service %f ,%f",shop_id,lat,lng));
+//                        continue;
+//                    }
                     shop = shopDAO.getShop(shop_id);
                     if (null == shop){
                         continue;

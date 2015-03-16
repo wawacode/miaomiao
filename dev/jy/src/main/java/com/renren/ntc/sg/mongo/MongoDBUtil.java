@@ -70,6 +70,9 @@ public class MongoDBUtil {
         return db.getCollection("sg_cache");
     }
 
+    public DBCollection getCollectionforCommunity() {
+        return db.getCollection("sg_community");
+    }
 
     private static boolean reCheck(WriteResult re) {
 
