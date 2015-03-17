@@ -1,17 +1,16 @@
 ;angular.module('miaomiao.shop').
-    controller('FindShopCtrl', function ($scope, $http, $state,$location, $ionicLoading, localStorageService, httpClient,ShopService, MMUtils, $timeout) {
+    controller('FindShopCtrl', function ($scope, $http, $state,$location, $ionicLoading,$ionicScrollDelegate, localStorageService, httpClient,ShopService, MMUtils, $timeout) {
 
         $scope.shop_data = {};
         $scope.shop_items = [];
         $scope.shop_info = {};
 
-        $scope.shop_info.showShopList = false;
         $scope.shop_info.showShopHistory = false;
         $scope.shop_info.showAddressSuggestion = false;
 
         $scope.shop_info.locationReady = localStorageService.get('MMMETA_location_pos_ready');
         if (!$scope.shop_info.locationReady) {
-            $scope.shop_info.locationMessage = "定位失败,您可以搜索你所在的小区"
+            $scope.shop_info.locationMessage = "定位失败,您可以搜索所在的小区"
         } else {
             $scope.shop_info.locationMessage = "定位成功，正在加载地址...";
         }
@@ -30,18 +29,25 @@
         function showSearchSuggestions() {
             $scope.shop_info.showAddressSuggestion = true;
 
-            $scope.shop_info.showShopList = false;
             $scope.shop_info.showShopHistory = false;
+            $scope.shop_info.showCommunityList = false;
+
+            $timeout(function(){
+                $ionicScrollDelegate.resize();
+            })
         }
 
         function hideSearchSuggestions() {
 
             $scope.shop_info.showAddressSuggestion = false;
-            $scope.shop_info.showShopList = true;
 
             if ($scope.shop_history.length) {
                 $scope.shop_info.showShopHistory = true;
             }
+            $scope.shop_info.showCommunityList = true;
+            $timeout(function(){
+                $ionicScrollDelegate.resize();
+            })
         }
 
         $scope.startSearch = function () {
@@ -209,58 +215,97 @@
                 $scope.shop_info.startSearch = false;
             });
 
-            MMUtils.showLoadingIndicator('正在搜索' + KEY + '附近的小区...',$scope);
+            MMUtils.showLoadingIndicator('正在搜索' + KEY + '...',$scope);
 
-            var myGeo = new BMap.Geocoder();
-            myGeo.getPoint(KEY, function (point) {
-                if (point) {
+//            var myGeo = new BMap.Geocoder();
+//            myGeo.getPoint(KEY, function (point) {
+//                if (point) {
+//
+//                    httpClient.getNearCommunityList(point.lat, point.lng, function (data, status) {
+//
+//                        $ionicLoading.hide();
+//                        var code = data.code, dataDetail = data.data;
+//
+//                        if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
+//                            $scope.community_items = dataDetail.communitys;
+//                        }else{
+//                            $scope.community_items = [];
+//                        }
+//
+//                        $scope.community_items = [
+//                            {id: 100, name:'一个测试的小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',
+//                                shops:[
+//                                    {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5},
+//                                    {id:2,name:'测试昂铺222','shop_address':'上地街道嘉华大厦',rate:5,maxRate:5}
+//                                ]
+//                            },
+//                            {id: 101, name:'上地街道可是大厦010101',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',
+//                                shops:[
+//                                    {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5}
+//                                ]},
+//                            {id: 102, name:'清河破地方小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座'},
+//                            {id: 103, name:'中关村高档小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'},
+//                            {id: 104, name:'望京西小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'}
+//                        ];
+//
+//                        hideSearchSuggestions();
+//
+//                    }, function (data, status) {
+//
+//                        $ionicLoading.hide();
+//
+//                        hideSearchSuggestions();
+//                    });
+//
+//                } else {
+//
+//                    $ionicLoading.hide();
+//                    hideSearchSuggestions();
+//
+//                }
+//            }, "北京市");
 
-                    httpClient.getNearCommunityList(point.lat, point.lng, function (data, status) {
+            // search by keywords
+            httpClient.getCommunityByName(key, function (data, status) {
 
-                        $ionicLoading.hide();
-                        var code = data.code, dataDetail = data.data;
+                $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
 
-                        if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
-                            $scope.community_items = dataDetail.communitys;
-                        }else{
-                            $scope.community_items = [];
-                        }
-
-                        $scope.community_items = [
-                            {id: 100, name:'一个测试的小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',
-                                shops:[
-                                    {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5},
-                                    {id:2,name:'测试昂铺222','shop_address':'上地街道嘉华大厦',rate:5,maxRate:5}
-                                ]
-                            },
-                            {id: 101, name:'上地街道可是大厦010101',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',
-                                shops:[
-                                    {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5}
-                                ]},
-                            {id: 102, name:'清河破地方小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座'},
-                            {id: 103, name:'中关村高档小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'},
-                            {id: 104, name:'望京西小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'}
-                        ];
-
-                        hideSearchSuggestions();
-
-                    }, function (data, status) {
-
-                        $ionicLoading.hide();
-
-                        hideSearchSuggestions();
-                    });
-
-                } else {
-
-                    $ionicLoading.hide();
-                    hideSearchSuggestions();
-
+                if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
+                    $scope.community_items = dataDetail.communitys;
+                }else{
+                    $scope.community_items = [];
                 }
-            }, "北京市");
+
+                $scope.community_items = [
+                    {id: 100, name:'一个测试的小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',
+                        shops:[
+                            {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5},
+                            {id:2,name:'测试昂铺222','shop_address':'上地街道嘉华大厦',rate:5,maxRate:5}
+                        ]
+                    },
+                    {id: 101, name:'上地街道可是大厦010101',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',
+                        shops:[
+                            {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5}
+                        ]},
+                    {id: 102, name:'清河破地方小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座'},
+                    {id: 103, name:'中关村高档小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'},
+                    {id: 104, name:'望京西小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'}
+                ];
+
+                $scope.shop_info.commmunityListTitle = "为您找到的小区";
+                hideSearchSuggestions();
+
+            }, function (data, status) {
+
+                $ionicLoading.hide();
+                $scope.shop_info.commmunityListTitle = "为您找到的小区";
+                hideSearchSuggestions();
+            });
         };
 
-//        $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr') || "切换地址";
+
+        // $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr') || "切换地址";
 
         $scope.relocation = function () {
 
@@ -271,6 +316,7 @@
                 if (position) {
 
                     $timeout(function () {
+                        $scope.shop_info.locationReady = true;
                         $scope.shop_info.locationMessage = "定位成功,正在获取地址...";
                     });
 
@@ -282,6 +328,7 @@
 
                 } else {
                     $timeout(function () {
+                        $scope.shop_info.locationReady = false;
                         $scope.shop_info.locationMessage = "定位失败！";
                     });
                 }
@@ -346,14 +393,14 @@
                             $scope.community_items = dataDetail.communitys;
 
                             $scope.shop_info.showAddressSuggestion = false;
-                            $scope.shop_info.showShopList = true;
+                            $scope.shop_info.commmunityListTitle = "附近的小区";
                         });
                     }
                 }, function (data, status) {
                     // still show it and with no item hint
                     $timeout(function () {
                         $scope.shop_info.showAddressSuggestion = false;
-                        $scope.shop_info.showShopList = true;
+                        $scope.shop_info.commmunityListTitle = "附近的小区";
                     });
                 });
             }
@@ -366,17 +413,18 @@
         });
 
         function resetFindShopView(){
-            $scope.shop_info.showShopList = false;
+
             $scope.shop_info.showShopHistory = false;
             $scope.shop_info.showAddressSuggestion = false;
-
+            $scope.shop_info.commmunityListTitle = "附近的小区";
             if ($scope.shop_history.length) {
                 $scope.shop_info.showShopHistory = true;
             }
 
-            if ($scope.shop_items.length) {
-                $scope.shop_info.showShopList = true;
+            if($scope.shop_info.locationReady){
+                $scope.shop_info.showCommunityList = true;
             }
+
         }
 
         $scope.$on("$ionicView.enter", function () {
