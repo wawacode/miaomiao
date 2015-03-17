@@ -8,7 +8,6 @@ import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.geo.GeoQueryResult;
 import com.renren.ntc.sg.geo.ShopLocation;
 import com.renren.ntc.sg.service.GeoCommunityService;
-import com.renren.ntc.sg.service.GeoService;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
