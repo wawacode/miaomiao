@@ -661,17 +661,16 @@
             重新定位 <i class="icon ion-ios7-location-outline" style="font-size: 18px"></i>
         </div>
     </div>
-    <div class="list" ng-show="shop_info.showAddressSuggestion">
-        <div class="item-hint">
+    <div class="list" style="height: 100%" ng-show="shop_info.showAddressSuggestion">
+
+        <div class="item-hint" ng-click="clickAddressSuggestions($event)">
             小区列表
         </div>
-        <div class="item" bindonce ng-repeat="item in shop_info.address_suggestions"
-             ng-click="goToSearchAddress(item)">
-            <div style="font-size: 16px" bo-text="item.title">
-            </div>
-            <div style="color: darkgray;font-size: 12px" bo-text="item.address">
-            </div>
+
+        <div class="communityList" bindonce ng-repeat="item in shop_info.address_suggestions"
+             ng-include = "'templates/community-item-simple.html'">
         </div>
+
     </div>
     <div class="list" ng-hide="shop_info.showAddressSuggestion">
         <div class="item-hint">
@@ -696,8 +695,8 @@
 
 <script id="templates/community-item.html" type="text/ng-template">
     <!--ng-class="{'item-icon-right':item.shops && item.shops.length > 1}"-->
-    <div class="item" style="border: none;position: relative"
-          ng-click="clickCommunity(item)">
+    <div class="item" style="border: none;position: relative;"
+          ng-click="clickCommunity(item,$event)">
 
         <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
              style="color: #ef5356;text-align: left;position: absolute; font-size: 11px;top: -2;left: 16">
@@ -705,7 +704,7 @@
         </div>
 
         <div>
-            <div style="font-size: 14px;display: inline-block;color: #191919" bo-text="item.name">
+            <div style="font-size: 14px;display: inline-block;color: #191919" bo-text="item.key">
             </div>
             <div ng-if="item.shops && item.shops.length"
                  style="float: right;display: inline-block;padding-right: 10px;background-color: #ef5356;padding: 1px 4px 1px 4px;border-radius: 4px;color: #ffffff;font-size: 14px;"
@@ -726,6 +725,37 @@
     </div>
 
     <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="">
+        <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: rgba(236, 236, 236, 0.3)"
+             bindonce
+             ng-repeat="item in item.shops"
+             ng-class="{'noBorderBottonLi':$index + 1 == item.shops.length }"
+             ng-click="goToShop(shop)"
+             ng-include = "'templates/shop-item.html'">
+        </div>
+    </div>
+
+</script>
+
+<script id="templates/community-item-simple.html" type="text/ng-template">
+    <!--ng-class="{'item-icon-right':item.shops && item.shops.length > 1}"-->
+    <div class="item" style="border: none;position: relative;padding: 10px"
+         ng-click="clickCommunity(item,$event)">
+
+        <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
+             style="color: #ef5356;text-align: left;position: absolute; font-size: 10px;top: -5;left: 11">
+            对不起,小喵还没覆盖到您选择的区域呢~
+        </div>
+        <div>
+            <div style="font-size: 14px;display: inline-block;color: #191919" bo-text="item.key">
+            </div>
+            <div ng-if="item.shops && item.shops.length"
+                 style="float: right;display: inline-block;padding-right: 10px;background-color: #ef5356;padding: 1px 4px 1px 4px;border-radius: 4px;color: #ffffff;font-size: 14px;"
+                 bo-text="item.shops.length + ' 家店'">
+            </div>
+        </div>
+    </div>
+
+    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="padding: 5px">
         <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: rgba(236, 236, 236, 0.3)"
              bindonce
              ng-repeat="item in item.shops"

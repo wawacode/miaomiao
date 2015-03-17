@@ -45,6 +45,7 @@
         }
 
         $scope.startSearch = function () {
+
             $scope.shop_info.startSearch = true;
             showSearchSuggestions();
         };
@@ -77,9 +78,19 @@
             }
         };
 
-        $scope.clickCommunity = function(community){
+        $scope.clickAddressSuggestions = function($event){
 
-            if(!community.shops){
+            $event.stopPropagation();
+
+            resetFindShopView();
+
+        };
+
+        $scope.clickCommunity = function(community,$event){
+
+            $event.stopPropagation();
+
+            if(!community.shops || community.shops.length == 0){
 
                 community.showShopNotReadyMessage = true;
                 $timeout(function(){
@@ -132,27 +143,51 @@
 
         $scope.getSuggestions = function (key, $event) {
 
+//            $scope.shop_info.isGettingSuggestions = true;
+
+//            var options = {
+//                onSearchComplete: function (results) {
+//                    if (local.getStatus() == BMAP_STATUS_SUCCESS) {
+//                        // 判断状态是否正确
+//                        var address_suggestions = [];
+//                        for (var i = 0; i < results.getCurrentNumPois(); i++) {
+//                            address_suggestions.push({'title': results.getPoi(i).title, 'address': results.getPoi(i).address});
+//                        }
+//                        $timeout(function () {
+//                            $scope.shop_info.address_suggestions = address_suggestions;
+//                        });
+//                    }
+//                    $scope.shop_info.isGettingSuggestions = false;
+//                }
+//            };
+//
+//            var local = new BMap.LocalSearch("北京市", options);
+//            local.search(key);
+
+            // get suggestion from server
             $scope.shop_info.isGettingSuggestions = true;
+            httpClient.getCommunitySuggestions(key,function(data, status){
 
-            var options = {
-                onSearchComplete: function (results) {
-                    if (local.getStatus() == BMAP_STATUS_SUCCESS) {
-                        // 判断状态是否正确
-                        var address_suggestions = [];
-                        for (var i = 0; i < results.getCurrentNumPois(); i++) {
-                            address_suggestions.push({'title': results.getPoi(i).title, 'address': results.getPoi(i).address});
-                        }
-                        $timeout(function () {
-                            $scope.shop_info.address_suggestions = address_suggestions;
-                        });
-                    }
-                    $scope.shop_info.isGettingSuggestions = false;
+                var code = data.code, dataDetail = data.data;
+
+                if (code == 0 &&
+                    !MMUtils.isEmptyObject(dataDetail) &&
+                    dataDetail.communitys &&
+                    dataDetail.communitys.length) {
+
+                    $timeout(function () {
+                        $scope.shop_info.address_suggestions = dataDetail.communitys;
+                    });
+
+                }else{
+                    $scope.shop_info.address_suggestions = [];
                 }
-            };
 
-            var local = new BMap.LocalSearch("北京市", options);
-            local.search(key);
+                $scope.shop_info.isGettingSuggestions = false;
 
+            },function(data, status){
+                $scope.shop_info.isGettingSuggestions = false;
+            })
 
         };
 
@@ -330,8 +365,7 @@
 
         });
 
-        $scope.$on("$ionicView.enter", function () {
-
+        function resetFindShopView(){
             $scope.shop_info.showShopList = false;
             $scope.shop_info.showShopHistory = false;
             $scope.shop_info.showAddressSuggestion = false;
@@ -343,6 +377,11 @@
             if ($scope.shop_items.length) {
                 $scope.shop_info.showShopList = true;
             }
+        }
+
+        $scope.$on("$ionicView.enter", function () {
+            resetFindShopView();
+
         });
 
     });

@@ -130,6 +130,16 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
                 doGet('commy/getshop', 'c_id=' + c_id, success, fail);
 
+            },
+
+            getCommunitySuggestions: function (query, success, fail) {
+
+                return success({"code":0,"data":{"communitys":[{"id":110738,"key":"王府温馨公寓","shops":[{id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5},
+                    {id:2,name:'测试昂铺222','shop_address':'上地街道嘉华大厦',rate:5,maxRate:5}]},{"id":110828,"key":"苇子地","shops":[{id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5},
+                    ]},{"id":110915,"key":"万盛北里","shops":[]},{"id":110922,"key":"望京东园","shops":[]},{"id":111002,"key":"万寿寺甲4号院","shops":[]},{"id":111113,"key":"梧桐公寓","shops":[]},{"id":111198,"key":"五方联智商贸中心","shops":[]},{"id":111232,"key":"五里店","shops":[]},{"id":111271,"key":"万科蓝","shops":[]},{"id":111280,"key":"苇子坑144号","shops":[]},{"id":111290,"key":"万宁小区","shops":[]},{"id":111291,"key":"万宁新区","shops":[]},{"id":111320,"key":"武警第二家属院","shops":[]},{"id":111373,"key":"瓦窑","shops":[]},{"id":111440,"key":"万宁桥小区","shops":[]},{"id":111445,"key":"万宁小区北门","shops":[]},{"id":111466,"key":"万明园小区西南门","shops":[]},{"id":111505,"key":"万福家园","shops":[]},{"id":111532,"key":"五里店第二社区","shops":[]},{"id":111534,"key":"万科中粮假日风景","shops":[]}]}});
+
+                doGet('commy/query', 'q=' + query, success, fail);
+
             }
 
         };
