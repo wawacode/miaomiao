@@ -19,23 +19,19 @@ public class TrietreeGroupService {
 
     @Autowired
     public ShopDAO shopDao ;
-
     @Autowired
-    public SuggestionDAO suggest;
+    public com.qunar.sg.dao.CommunityDAO communityDao;
 
 	private static final Logger logger = Logger.getLogger(TrietreeGroupService.class);
-	public Map<Long,  TrietreeService> trietMap = new ConcurrentHashMap<Long,  TrietreeService>();
+	public Map<String,  TrietreeService> trietMap = new ConcurrentHashMap<String,  TrietreeService>();
 
     @PostConstruct
 	public void init() {
         System.out.println( "init ...");
-        List<Shop>  shopls= shopDao.getAllShopsByAudit(1);
-        for (Shop shop :shopls){
-            System.out.println("init ..."  + shop.getId());
+            System.out.println("init ...cmmy " );
             TrietreeService tservice =  new   TrietreeService();
-            tservice.init(suggest,shop.getId());
-            trietMap.put(shop.getId() ,tservice);
-        }
+            tservice.init(communityDao,"cmmy");
+            trietMap.put("cmmy" ,tservice);
 	}
 
 
@@ -46,14 +42,11 @@ public class TrietreeGroupService {
             ts.reload();
         }
     }
-    public void addKey(long shop_id,SDoc doc) throws IllegalKeysException {
-        TrietreeService tr = trietMap.get(shop_id) ;
-        tr.addKey(doc);
-    }
 
-    public List<SDoc> find(long shop_id, String key, int count) throws IllegalKeysException {
-        TrietreeService tr = trietMap.get(shop_id) ;
+    public List<SDoc> find(String key, int count) throws IllegalKeysException {
+        TrietreeService tr = trietMap.get("cmmy") ;
         if (null == tr) {
+            System.out.println(" tr is null");
             return Collections.EMPTY_LIST;
         }
         return tr.find(key,count);

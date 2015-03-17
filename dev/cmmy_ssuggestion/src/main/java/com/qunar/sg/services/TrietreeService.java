@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
+import com.qunar.sg.dao.CommunityDAO;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -33,22 +34,22 @@ public class TrietreeService {
 
 	private static final Logger logger = Logger.getLogger(TrietreeService.class);
 
-    private SuggestionDAO  suggest ;
 	public Map<Long, SDoc> result = new ConcurrentHashMap<Long, SDoc>();
 	
 	private Timer timer;
+
+    private  CommunityDAO  comm;
 
 	public Node root;
 
     private long shop_id;
 
     @PostConstruct
-	public void init(SuggestionDAO  suggest, long shop_id) {
-        this.suggest = suggest;
-        this.shop_id = shop_id;
-		load(this.shop_id);
+	public void init(CommunityDAO comm, String cmm ) {
+        this.comm = comm;
+		load();
 		timer = new Timer();
-        timer.schedule(new ReLoadTask(this.shop_id),leftime() , Constants.ONEDAY);
+        timer.schedule(new ReLoadTask(),leftime() , Constants.ONEDAY);
 	}
 	
 	
@@ -64,13 +65,16 @@ public class TrietreeService {
 	}
 
     public void reload(){
-    	load(this.shop_id);
+    	load();
     }
-	private void load(long shop_id) {
-		Count co = suggest.getCount(shop_id);
-		int  count = co.getCount();
+	private void load() {
+		int  count = comm.getCount();
 		for (int i = 0; i < count; i = i + Constants.COUNT) {
-			List<SDoc> ldoc = suggest.getDoc(i, Constants.COUNT,shop_id);
+            System.out.println(String.format("loading  %d ,%d ",i,Constants.COUNT ));
+            List<SDoc> ldoc = comm.getDoc(i, Constants.COUNT);
+            if (ldoc.size() ==0)  {
+                break;
+            }
 			for (SDoc doc : ldoc) {
 				try {
 					addKey(doc);
@@ -83,11 +87,7 @@ public class TrietreeService {
 	}
 
 	class ReLoadTask extends TimerTask {
-        private final long shop_id;
 
-        ReLoadTask(long shop_id){
-           this.shop_id = shop_id;
-        }
         public void run() {
         	reload();
         }
@@ -171,7 +171,7 @@ public class TrietreeService {
 		for (long id : ls) {
 			SDoc d = result.get(id);
 			if (null != d) {
-				if(logger.isDebugEnabled()){
+				if(logger.isTraceEnabled()){
 					logger.debug(String.format("key %s find  uuid %d ",key,d.getId()));
 				}
 				dls.add(d);

@@ -31,7 +31,7 @@ public class IndexController {
 	
 	
 	@Autowired
-	public SuggestionDAO suggestDao;
+	public com.qunar.sg.dao.CommunityDAO communityDao;
 	
 	@Head("")
 	@Get("")
@@ -49,42 +49,12 @@ public class IndexController {
 		tr.reload();
 		return "@OK";
 	}
-	
-	
-	@Get("add")
-	@Post("add")
-	public String add(@Param("key")  String key, @Param("score") int score,@Param("shop_id") long shop_id) {
 
-		if(score == 0){
-		   return "@" + MessageUtils.formErrorMessage(ErrorCode.ILLEGAL_PARAMTERS);
-		}
-		
-		if (null == key || key == "") {
-			return "@" + MessageUtils.formErrorMessage(ErrorCode.ILLEGAL_PARAMTERS);
-		}
-
-		
-		long uuid = suggestDao.add(key, score, shop_id);
-		if(uuid <= 0){
-			return "@" + MessageUtils.formErrorMessage(ErrorCode.FAILTOADD);
-		}
-		
-		SDoc sdoc = new SDoc(uuid, key);
-		try {
-			tr.addKey(shop_id,sdoc);
-		} catch (IllegalKeysException e) {
-			e.printStackTrace();
-			logger.error(String.format("fail to add sdoc {key %s  uuid %d }", sdoc.getWord(), sdoc.getId()));
-			return "@" + MessageUtils.formErrorMessage(ErrorCode.FAILTOADD);
-		}
-		return Constants.SUCCESS;
-	}
-	
-	
 
 	@Get("query")
 	@Post("query")
 	public String query(Invocation inv, @Param("q") String q, @Param("count") int count,@Param("shop_id") long shop_id ) {
+
 		if (0 == count || count > 20) {
 			count = 20;
 		}
@@ -94,7 +64,7 @@ public class IndexController {
 		}
 		List<SDoc> lsdoc;
 		try {
-			lsdoc = tr.find(shop_id, q, count);
+			lsdoc = tr.find( q, count);
 		} catch (IllegalKeysException e) {
 			e.printStackTrace();
 			return "@" + MessageUtils.formResponse(ls);

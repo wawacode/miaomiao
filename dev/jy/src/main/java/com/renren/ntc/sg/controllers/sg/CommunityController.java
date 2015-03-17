@@ -11,7 +11,9 @@ import com.renren.ntc.sg.service.GeoCommunityService;
 import com.renren.ntc.sg.service.GeoService;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
+import com.sun.deploy.net.HttpUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -22,6 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.renren.ntc.sg.util.SUtils.forURL;
+import static com.renren.ntc.sg.util.SUtils.isOk;
+
 @Path("commy")
 public class CommunityController {
 
@@ -31,6 +36,8 @@ public class CommunityController {
 
     @Autowired
     public ItemsDAO itemsDAO;
+
+    public   static final String SURL = "http://10.170.239.52:9988/suggestion/query?q={q}";
 
     @Autowired
     public GeoCommunityService geoCommunityService  ;
@@ -76,7 +83,39 @@ public class CommunityController {
         return "@json:" + jb.toJSONString() ;
     }
 
+    @Get("sg")
+    @Post("sg")
+    public String query (Invocation inv ,@Param("q") String q ){
+        long now = System.currentTimeMillis();
+        JSONArray communitys = new JSONArray();
+        String url = SURL.replace("{q}",q);
+        String respone = SHttpClient.get(url,"");
+        if (null == respone){
+            JSONObject response =  new JSONObject();
+            JSONObject data =  new JSONObject();
+            data.put("communitys",communitys) ;
+            response.put("data", data);
+            response.put("code", 0);
+            return "@" + response.toJSONString();
+        }
+        JSONObject jb = (JSONObject)JSON.parse(respone) ;
+        JSONArray arr = jb.getJSONArray("data");
 
+        for( int i =0 ;i< arr.size();i++ ){
+            JSONObject  o = arr.getJSONObject(i);
+            long cid =  o.getLong("id");
+            List<Long> shop_ids  = shop_communityDao.get(cid);
+            List <Shop> shops= shopDAO.getAuditedShops(shop_ids);
+            SUtils.forV(shops,now);
+            o.put("shops",JSON.toJSON(shops));
+        }
+        JSONObject response =  new JSONObject();
+        JSONObject data =  new JSONObject();
+        data.put("communitys",arr) ;
+        response.put("data", data);
+        response.put("code", 0);
+        return "@" + response.toJSONString();
+    }
 
 
 

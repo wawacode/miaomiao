@@ -1,7 +1,7 @@
-package com.renren.ntc.sg.biz.dao;
+package com.qunar.sg.dao;
 
-import com.renren.ntc.sg.bean.Community;
-import com.renren.ntc.sg.bean.Ver;
+import com.qunar.sg.bean.Community;
+import com.qunar.sg.bean.SDoc;
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
@@ -41,4 +41,9 @@ public interface CommunityDAO {
     @SQL("insert into "+ TABLE_NAME + "(" +  INSERT_FIELDS +") values(:1.name ,:1.city ,:1.district,:1.address,:1.lng,:1.lat) " )
     public int insert(Community c);
 
+    @SQL("select count(*) from " + TABLE_NAME  )
+    public int getCount();
+
+    @SQL("select id,name as word from "+ TABLE_NAME + " limit :1,:2 ")
+    public List<SDoc> getDoc(int offset , int count);
 }
