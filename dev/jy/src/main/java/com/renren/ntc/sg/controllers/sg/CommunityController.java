@@ -13,7 +13,6 @@ import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
-import com.sun.deploy.net.HttpUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -24,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.renren.ntc.sg.util.SUtils.forURL;
-import static com.renren.ntc.sg.util.SUtils.isOk;
 
 @Path("commy")
 public class CommunityController {
