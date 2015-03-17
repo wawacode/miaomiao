@@ -91,7 +91,7 @@ public class CommunityController {
             loc.setLongitude(lng);
             loc.setLatitude(lat);
             // 20 公里
-            List<GeoQueryResult>  resuls = geoCommunityService.queryNear(loc, 2000,10);
+            List<GeoQueryResult>  resuls = geoCommunityService.queryNear(loc, 2000,20);
             if (resuls != null &&  resuls.size() > 0){
                 long now = System.currentTimeMillis();
                 for (GeoQueryResult  res : resuls){

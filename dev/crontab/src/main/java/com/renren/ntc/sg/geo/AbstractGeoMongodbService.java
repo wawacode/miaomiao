@@ -57,7 +57,7 @@ public abstract class AbstractGeoMongodbService {
 
     public boolean remove(long uid){
 		if(geoTable != null) {
-			WriteResult re = geoTable.remove(new BasicDBObject("uid", uid));
+			WriteResult re = geoTable.remove(new BasicDBObject("shop_id", uid));
 			return re.getN() > 0 ;
 		} else {
 			logger.error("can not remove because geo mongodb not inited");
