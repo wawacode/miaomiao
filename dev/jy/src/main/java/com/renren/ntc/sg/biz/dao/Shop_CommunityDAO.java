@@ -31,7 +31,7 @@ public interface Shop_CommunityDAO {
     static final String FIELDS = "id, shop_id ,community_id ,ext, create_time,update_time" ;
     static final String INSERT_FIELDS = "shop_id ,community_id ,ext" ;
 
-	@SQL("select shop_id  from " + TABLE_NAME + "where community_id = :1")
+	@SQL("select shop_id  from " + TABLE_NAME + " where community_id = :1")
 	public List<Long> get(long community_id);
 
     @ReturnGeneratedKeys
