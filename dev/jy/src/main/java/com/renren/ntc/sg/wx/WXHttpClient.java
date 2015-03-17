@@ -15,16 +15,16 @@ public class WXHttpClient {
 
 
 //miaomiao shenghuo
-//    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
-//    private static String token = "tooooken";
-//    private static String appKey = "914f4388312ca90e4cb750b817d15368";
-//    private static String appId = "wx762f832959951212";
-
-//jiajiaxianguo
     private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
     private static String token = "tooooken";
-    private static String appKey = "2cc1f5c798b91b3ed0c7db6b0b259914";
-    private static String appId = "wx24526189c97e6be3";
+    private static String appKey = "914f4388312ca90e4cb750b817d15368";
+    private static String appId = "wx762f832959951212";
+
+//jiajiaxianguo
+//    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
+//    private static String token = "tooooken";
+//    private static String appKey = "2cc1f5c798b91b3ed0c7db6b0b259914";
+//    private static String appId = "wx24526189c97e6be3";
 
 //    <xml><ToUserName><![CDATA[gh_226cfc194264]]></ToUserName><FromUserName><![CDATA[ofhqduNm5nNDqE3zV_FIOSz9rJdA]]></FromUserName><CreateTime>1421833304</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[r]]></Content><MsgId>6106727541249712803</MsgId></xml>
 
@@ -189,11 +189,6 @@ public class WXHttpClient {
         button2.put("url","http://www.mbianli.com/catstaff/test" );
         buttons.add(button2);
 
-//        JSONObject button3  = new JSONObject();
-//        button2.put("type","view");
-//        button2.put("name","测试开店");
-//        button2.put("url","http://www.mbianli.com:8088/catstaff/test" );
-//        buttons.add(button3);
 
         ob.put("button",buttons);
 
@@ -268,38 +263,6 @@ public class WXHttpClient {
             return ;
         }
         JSONObject ob =(JSONObject) JSONObject.parse(e);
-//        addkf(ob.getString("access_token"));
-//        createMenu(ob.getString("access_token"));
-        createMenuxiaoguo(ob.getString("access_token"));
-
-         //scene
-//        for (int i =1 ; i <10000 ; i++) {
-//        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
-//        String access_token = ob.getString("access_token");
-//        url = url.replace("{token}",access_token);
-//        JSONObject jb = new JSONObject() ;
-//        jb.put("action_name","QR_LIMIT_SCENE") ;
-//        JSONObject action_info = new JSONObject() ;
-//        JSONObject scene_str = new JSONObject() ;
-//        scene_str.put("scene_id",i) ;
-//        action_info.put("scene",scene_str);
-//        jb.put("action_info",action_info) ;
-//        System.out.println(jb.toJSONString());
-//        t = WXHttpClient.sendPostRequest(url,jb.toJSONString() ) ;
-//
-//        if(null == t){
-//            continue;
-//        }
-//        e = new String(t);
-//            System.out.println(e);
-//           JSONObject  ticket =(JSONObject) JSONObject.parse(e);
-//           String tkt =    ticket.getString("ticket");
-//           String u =    ticket.getString("url");
-//           u = u.replaceAll(":","#");
-//            u = u.replaceAll("/","#");
-//           String TICKET = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={ticket}";
-//           String  tkturl =  TICKET.replace("{ticket}",tkt);
-//           writeFile(tkturl,i+"_"+ u +".jpg");
-//        }
+        createMenu(ob.getString("access_token"));
     }
 }
