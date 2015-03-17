@@ -38,4 +38,6 @@ public interface CommunityDAO {
     @SQL("insert into "+ TABLE_NAME + "(" +  INSERT_FIELDS +") values(:1.name ,:1.city ,:1.district,:1.address,:1.lng,:1.lat) " )
     public int insert(Community c);
 
+    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where name =:1  limit 1 ")
+    public Community  getByName(String s);
 }

@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.bean;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +13,16 @@ import java.util.Date;
 public class Community {
     private long id ;
 
+
+    public List<Shop> getShops() {
+        return shops;
+    }
+
+    public void setShops(List<Shop> shops) {
+        this.shops = shops;
+    }
+
+    private List<Shop> shops = null ;
     public String getName() {
         return name;
     }

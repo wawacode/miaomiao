@@ -77,6 +77,16 @@ public class SHttpClient {
 		return b;
 	}
 
+    public static String get(String url, String host){
+        try {
+            byte[]  re = getURLData(url,host) ;
+            return new String(re) ;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static byte[]  sendPostRequest(String url,String postParam) {
 
         org.apache.commons.httpclient.HttpClient client = new org.apache.commons.httpclient.HttpClient();

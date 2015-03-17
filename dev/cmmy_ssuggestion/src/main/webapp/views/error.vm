@@ -1,0 +1,46 @@
+#parse("/WEB-INF/classes/config.vm")
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" name="viewport" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection" />
+		<title>去哪儿网 - 去哪儿网 Qunar.com</title>
+		
+		<style>
+			body{
+				font: normal 1.6 "microsoft yahei",arial,sans-serif;
+				min-width: 320px;
+				background-color: #f2f8fb;
+				margin: 0;
+				padding: 0;
+				color: #333;
+			}
+			.error-area{
+				text-align: center;
+				margin-top: 48%;
+			}
+			.error-area img{
+				width: 60px;
+			}
+			.error-area p{
+				color: #959595;
+				font-size: 12px;
+				line-height: 1.8;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="error-area">
+			<div class="error-area-inner">
+				<img src="${staticimgpath2}error-page-image.jpg" />
+				<p>页面出错啦</p>
+			</div>
+		</div>
+		
+	</body>
+	
+</html>

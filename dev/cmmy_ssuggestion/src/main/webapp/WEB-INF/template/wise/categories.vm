@@ -1,0 +1,42 @@
+#set($q_title = "分类")
+
+#define($q_css)
+
+#end
+#define($q_body)
+#render_loginbar()
+<div class="qn_catbanner qn_lh">
+娱乐生活
+<div class="qn_box">
+	<div class="flex1"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg"/></div>
+	<div class="flex1"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg"/></div>
+</div>
+<div class="qn_box">
+	<div class="flex1"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg"/></div>
+	<div class="flex1"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg"/></div>
+</div>
+<div class="qn_taglist">
+		<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.6&amp;sprefer=p23659#!list/256/p1">T恤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.7&amp;sprefer=p23660#!list/255/p1">潮卫衣</a><a class="tag-red" href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.8&amp;sprefer=p23661#!list/309/p1">牛仔裤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.9&amp;sprefer=p23662#!list/751/p1">polo衫</a>
+</div>
+</div>
+
+
+<div class="qn_catbanner qn_lh">
+娱乐生活
+<div class="qn_box">
+	<div class="flex1"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg"/></div>
+	<div class="flex1"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg"/></div>
+</div>
+<div class="qn_box">
+	<div class="flex1"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg"/></div>
+	<div class="flex1"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg"/></div>
+</div>
+<div class="qn_taglist">
+		<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.6&amp;sprefer=p23659#!list/256/p1">T恤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.7&amp;sprefer=p23660#!list/255/p1">潮卫衣</a><a class="tag-red" href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.8&amp;sprefer=p23661#!list/309/p1">牛仔裤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.9&amp;sprefer=p23662#!list/751/p1">polo衫</a>
+</div>
+</div>
+#end
+#define($q_js)
+
+#end
+#render()

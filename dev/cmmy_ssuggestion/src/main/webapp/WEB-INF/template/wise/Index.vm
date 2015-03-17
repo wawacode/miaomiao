@@ -1,0 +1,109 @@
+#set($q_title = "首页")
+
+
+#define( $q_css )
+#end
+
+#define($q_body)
+#render_loginbar()
+
+<div class="qn_pa10">
+	<div class="qn_box" style="margin-top:24px">
+		<div class="flex1 qn_banner_text blue"><h3>美食<br/>餐饮</h3><p>吃喝玩乐麻将</p> <b></b></div>
+		<div class="flex2 qn_banner_image"><img src="http://p1.meituan.net/122.74/deal/__12828784__6647550.jpg" /><p>辛辣道中关村店5折起</p></div>
+	</div>
+	<div class="qn_box">
+		<div class="qn_taglistbig big"> 
+			<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">东来顺火锅西直门店</a> 
+			<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">诸葛烤鱼真好吃，好吃好吃</a> 
+		</div>
+	
+		##<div class="flex1 qn_banner_image small"><img src="http://p1.meituan.net/122.74/deal/__12820674__3277241.jpg" /><p>东来顺火锅西直门店</p></div>
+		##<div class="flex1 qn_banner_image small"><img src="http://p0.meituan.net/122.74/deal/__11685391__3518002.jpg"/><p>诸葛烤鱼真好吃，好吃好吃</p></div>
+	</div>
+	<div class="qn_taglist">
+		<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.6&amp;sprefer=p23659#!list/256/p1">T恤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.7&amp;sprefer=p23660#!list/255/p1">潮卫衣</a><a class="tag-red" href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.8&amp;sprefer=p23661#!list/309/p1">牛仔裤</a>    
+	</div>
+</div>
+
+<div class="qn_pa10">
+	<div class="qn_box ">
+		<div class="flex2 qn_banner_image"><img src="http://img1.qunarzz.com/wugc/p36/201305/28/7102c7471f56a73493835fbb.jpg_600x340_cf3e1581.jpg" /><p>北海公园门票聚便宜</p></div>
+		<div class="flex1 qn_banner_text green"><h3>景点<br/>门票</h3><p>风景这边独好</p> <b></b></div>
+	</div>
+	<div class="qn_box">
+		<div class="qn_taglistbig big"> 
+			<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">东来顺火锅西直门店</a> 
+			<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">诸葛烤鱼真好吃，好吃好吃</a> 
+		</div>
+	
+		##<div class="flex1 qn_banner_image small"><img src="http://img1.qunarzz.com/wugc/p215/201305/29/f6c08fb3c17d122b93835fbb.jpg_600x340_562cce37.jpg" /><p>大东海，我来了</p></div>
+		##<div class="flex1 qn_banner_image small"><img src="http://img1.qunarzz.com/wugc/p203/201305/29/7d00a495aad8262393835fbb.jpg_600x340_a298ad69.jpg"/><p>谈谈情，说说爱，一起走天涯</p></div>
+	</div>
+	<div class="qn_taglist">
+		<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.6&amp;sprefer=p23659#!list/256/p1">T恤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.7&amp;sprefer=p23660#!list/255/p1">潮卫衣</a><a class="tag-red" href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.8&amp;sprefer=p23661#!list/309/p1">牛仔裤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.9&amp;sprefer=p23662#!list/751/p1">polo衫</a>
+	</div>
+</div>
+
+<div class="qn_pa10">
+	<div class="qn_box ">
+		<div class="flex1 qn_banner_text pink"><h3>休闲<br/>娱乐</h3><p>吃喝玩乐麻将</p> <b></b></div>
+		<div class="flex2 qn_banner_image"><img src="http://img03.taobaocdn.com/tps/i3/T1U_CRXs0eXXapDmbI-400-300.jpg_200x200.jpg" /><p>一二三</p></div>
+	</div>
+	<div class="qn_box">
+		<div class="qn_taglistbig big"> 
+			<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">东来顺火锅西直门店</a> 
+			<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">诸葛烤鱼真好吃，好吃好吃</a> 
+		</div>
+	
+
+		##<div class="flex1 qn_banner_image small"><img src="http://img02.taobaocdn.com/tps/i2/T1FPSRXtRdXXapDmbI-400-300.jpg_200x200.jpg" /><p>一二三</p></div>
+		##<div class="flex1 qn_banner_image small"><img src="http://img04.taobaocdn.com/tps/i4/T12UCSXzlaXXapDmbI-400-300.jpg_200x200.jpg"/><p>一二三</p></div>
+	</div>
+	<div class="qn_taglist">
+		<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.6&amp;sprefer=p23659#!list/256/p1">T恤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.7&amp;sprefer=p23660#!list/255/p1">潮卫衣</a><a class="tag-red" href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.8&amp;sprefer=p23661#!list/309/p1">牛仔裤</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.9&amp;sprefer=p23662#!list/751/p1">polo衫</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.10&amp;sprefer=p23663#!list/755/p1">帆布鞋</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.11&amp;sprefer=p23664#!list/252/p1">衬衫</a><a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275664.12&amp;sprefer=p23665#!list/310/p1">休闲裤</a>    
+	</div>
+</div>
+
+<div class="qn_pa10">
+	<div class="qn_box ">
+		<div class="flex1 qn_banner_text small pink"><h3>生活服务</h3><p>爱生活，爱拉风</p><b></b></div>
+		<div class="flex1 qn_banner_text small blue"><h3>新闻资讯</h3><p>天下事事事关心</p> <b></b></div>
+		<div class="flex1 qn_banner_text small green"><h3>天气</h3><p>吃喝玩乐麻将</p> <b></b></div>
+	</div>
+	<div class="qn_box">
+	</div>
+</div>
+
+<div class="qn_luotuojia">
+	<div class="menu hide">
+		<div class="qn_box">
+			<div class="qn_taglistbig"> 
+				<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">北京，北京</a> 
+				<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">我的周边</a> 
+			</div>
+		</div>
+		<div class="qn_box">
+			<div class="qn_taglistbig mid"> 
+				<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">美食</a> 
+				<a href="http://wo.m.taobao.com/?sid=80631a487eb3a75c&amp;spm=41.303154.275663.4&amp;sprefer=p23640#!list/11/p1">美食</a>
+			</div>
+		</div>
+	
+	</div>
+	<div class="btn">
+		<div class="inner"></div>
+	</div>	
+</div>
+#render_foot(1)
+#end
+#define($q_js)
+<script type="text/javascript">
+$(".qn_luotuojia .btn").click(function(){
+$(".qn_luotuojia .menu").toggleClass("hide");
+})	
+</script>
+</script>
+#end
+
+#render()

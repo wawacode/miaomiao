@@ -261,6 +261,7 @@
 
             if (navigator.geolocation) {
                 var position_option = {
+                    enableHighAccuracy: true,
                     timeout: 10000
                 };
 
@@ -274,15 +275,19 @@
 
         function updateRealGEOAddressByGEOData(lng, lat) {
 
-            var myGeo = new BMap.Geocoder();
-            // 根据坐标得到地址描述
-            myGeo.getLocation(new BMap.Point(lng, lat), function (result) {
-                if (result) {
-                    localStorageService.set('MMMETA_location_pos_addr', result.address);
-                    $timeout(function () {
-                        $scope.shop_info.locationMessage = result.address;
-                    });
-                }
+            var gpsPoint = new BMap.Point(lng, lat);
+
+            BMap.Convertor.translate(gpsPoint, 0, function(point){ //百度官方发布的接口
+                var myGeo = new BMap.Geocoder();
+                // 根据坐标得到地址描述
+                myGeo.getLocation(point, function (result) {
+                    if (result) {
+                        localStorageService.set('MMMETA_location_pos_addr', result.address);
+                        $timeout(function () {
+                            $scope.shop_info.locationMessage = result.address;
+                        });
+                    }
+                });
             });
         }
 
