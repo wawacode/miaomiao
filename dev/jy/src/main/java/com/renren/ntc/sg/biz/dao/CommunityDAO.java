@@ -1,10 +1,12 @@
 package com.renren.ntc.sg.biz.dao;
 
 import com.renren.ntc.sg.bean.Community;
+import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Ver;
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
+import net.paoding.rose.jade.annotation.SQLParam;
 
 import java.util.List;
 
@@ -40,5 +42,10 @@ public interface CommunityDAO {
     @ReturnGeneratedKeys
     @SQL("insert into "+ TABLE_NAME + "(" +  INSERT_FIELDS +") values(:1.name ,:1.city ,:1.district,:1.address,:1.lng,:1.lat) " )
     public int insert(Community c);
+
+
+
+    @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where name like :1 limit 10")
+    public  List<Community> like( String key);
 
 }
