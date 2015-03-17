@@ -77,6 +77,56 @@
             }
         };
 
+        $scope.clickCommunity = function(community){
+
+            if(!community.shops){
+
+                community.showShopNotReadyMessage = true;
+                $timeout(function(){
+                    community.showShopNotReadyMessage = false;
+                },1000);
+
+                return;
+
+            }
+
+            if(community.shops && community.shops.length == 1){
+                $scope.goToShop(community.shops[0]);
+                return;
+            }
+
+            if(community.shops && community.shops.length > 1){
+                community.showShopsInCommunity = !community.showShopsInCommunity;
+                return;
+            }
+
+
+            //TODO:
+//            MMUtils.showLoadingIndicator('正在加载店铺...',$scope);
+//
+//            httpClient.getShopsByCommunityId(community.id, function (data, status) {
+//
+//                $ionicLoading.hide();
+//                var code = data.code, dataDetail = data.data;
+//
+//                if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
+//                    $scope.shop_items = dataDetail.shop;
+//                }
+//
+//                hideSearchSuggestions();
+//
+//            }, function (data, status) {
+//
+//                $ionicLoading.hide();
+//
+//                hideSearchSuggestions();
+//            });
+        };
+
+        $scope.toggleShopsInCommunity = function($event,item){
+            $event.stopPropagation();
+        };
+
         // for shop star
         $scope.readonly = true;
 
@@ -124,26 +174,38 @@
                 $scope.shop_info.startSearch = false;
             });
 
-            MMUtils.showLoadingIndicator('正在搜索' + KEY + '附近的店...',$scope);
+            MMUtils.showLoadingIndicator('正在搜索' + KEY + '附近的小区...',$scope);
 
             var myGeo = new BMap.Geocoder();
             myGeo.getPoint(KEY, function (point) {
                 if (point) {
 
-                    httpClient.getNearShopList(point.lat, point.lng, function (data, status) {
+                    httpClient.getNearCommunityList(point.lat, point.lng, function (data, status) {
 
                         $ionicLoading.hide();
                         var code = data.code, dataDetail = data.data;
 
                         if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
-                            $scope.shop_items = dataDetail.shops;
-                            for (var i = 0; i < $scope.shop_items.length; i++) {
-                                $scope.shop_items[i].rate = 5;
-                                $scope.shop_items[i].maxRate = 5;
-                            }
+                            $scope.community_items = dataDetail.communitys;
                         }else{
-                            $scope.shop_items = [];
+                            $scope.community_items = [];
                         }
+
+                        $scope.community_items = [
+                            {id: 100, name:'一个测试的小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',
+                                shops:[
+                                    {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5},
+                                    {id:2,name:'测试昂铺222','shop_address':'上地街道嘉华大厦',rate:5,maxRate:5}
+                                ]
+                            },
+                            {id: 101, name:'上地街道可是大厦010101',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',
+                                shops:[
+                                    {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5}
+                                ]},
+                            {id: 102, name:'清河破地方小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座'},
+                            {id: 103, name:'中关村高档小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'},
+                            {id: 104, name:'望京西小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'}
+                        ];
 
                         hideSearchSuggestions();
 
@@ -234,24 +296,19 @@
 
                 updateRealGEOAddressByGEOData($scope.shop_info.locationData.lng, $scope.shop_info.locationData.lat);
 
-                httpClient.getNearShopList($scope.shop_info.locationData.lat, $scope.shop_info.locationData.lng, function (data, status) {
+                httpClient.getNearCommunityList($scope.shop_info.locationData.lat, $scope.shop_info.locationData.lng, function (data, status) {
 
                     var code = data.code, dataDetail = data.data;
 
                     if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
 
                         $timeout(function () {
-                            $scope.shop_items = dataDetail.shops;
-                            for (var i = 0; i < $scope.shop_items.length; i++) {
-                                $scope.shop_items[i].rate = 5;
-                                $scope.shop_items[i].maxRate = 5;
-                            }
+                            $scope.community_items = dataDetail.communitys;
 
                             $scope.shop_info.showAddressSuggestion = false;
                             $scope.shop_info.showShopList = true;
                         });
                     }
-
                 }, function (data, status) {
                     // still show it and with no item hint
                     $timeout(function () {
