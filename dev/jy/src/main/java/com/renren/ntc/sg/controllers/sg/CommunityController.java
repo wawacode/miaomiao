@@ -144,6 +144,12 @@ public class CommunityController {
                         SUtils.forV(shops,now );
                         community.setShops(shops);
                     }
+                    try {
+                    double distinct  =   distinct(lat ,lng,community.getLat(),community.getLng()) ;
+                    community.setDistinct(distinct);
+                    }catch(Exception e){
+                       e.printStackTrace();
+                    }
                     communitys.add(JSON.toJSON(community));
                 }
             } else {
@@ -156,6 +162,12 @@ public class CommunityController {
         response.put("data", data);
         response.put("code", 0);
         return "@" + response.toJSONString();
+    }
+
+    private double distinct(double lat, double lng, double lat1, double lng1) {
+        double[] from = new double[]{lat,lng};
+        double[] to = new double[]{lat1,lng1};
+        return geoCommunityService.calDistance(from,to) ;
     }
 
 }
