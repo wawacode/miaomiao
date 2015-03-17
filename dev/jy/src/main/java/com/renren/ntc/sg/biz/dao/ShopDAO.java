@@ -36,7 +36,7 @@ public interface ShopDAO {
     @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where audit = 1  limit :1,:2")
     public List<Shop> getAuditedShops(int from, int offset);
 
-    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where shop_id in (:1)")
+    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where id in (:1)")
     public List<Shop> getAuditedShops(List<Long> ids );
 
     @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " limit :1,:2")
