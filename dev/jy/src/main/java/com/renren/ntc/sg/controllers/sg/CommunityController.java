@@ -8,7 +8,6 @@ import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.geo.GeoQueryResult;
 import com.renren.ntc.sg.geo.ShopLocation;
 import com.renren.ntc.sg.service.GeoCommunityService;
-import com.renren.ntc.sg.service.GeoService;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
@@ -18,6 +17,7 @@ import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -120,7 +120,6 @@ public class CommunityController {
     public String query(Invocation inv, @Param("lat") float lat, @Param("lng") float lng) {
         long now = System.currentTimeMillis();
         JSONArray communitys = new JSONArray();
-        Community community = null;
         if (lat != 0 && lng != 0) {
             ShopLocation loc = new ShopLocation();
             loc.setLongitude(lng);
@@ -133,7 +132,7 @@ public class CommunityController {
                     JSONObject com = new JSONObject();
                     LoggerUtils.getInstance().log(String.format("near find  shop_id  %d ,lat %f , lng %f ", shopLoc.getShop_id(), shopLoc.getLatitude(), shopLoc.getLongitude()));
                     //这里 其实是小区ID；
-                    community = communityDao.get(shopLoc.getShop_id());
+                    Community community = communityDao.get(shopLoc.getShop_id());
                     if (null == community) {
                         continue;
                     }
@@ -141,14 +140,14 @@ public class CommunityController {
                     List<Long> shopids = shop_communityDao.get(cid);
                     if (shopids != null && shopids.size() != 0) {
                         List<Shop> shops = shopDAO.getAuditedShops(shopids);
-                        SUtils.forV(shops,now );
+                        SUtils.forV(shops, now);
                         community.setShops(shops);
                     }
                     try {
-                    double distinct  =   distinct(lat ,lng,community.getLat(),community.getLng()) ;
-                    community.setDistinct(distinct);
-                    }catch(Exception e){
-                       e.printStackTrace();
+                        double distinct = distinct(lat, lng, community.getLat(), community.getLng());
+                        community.setDistinct(distinct);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     communitys.add(JSON.toJSON(community));
                 }
@@ -164,10 +163,45 @@ public class CommunityController {
         return "@" + response.toJSONString();
     }
 
+    @Get("search")
+    @Post("search")
+    public String search(Invocation inv, @Param("key") String key) {
+        long now = System.currentTimeMillis();
+        JSONArray communitys = new JSONArray();
+        if (StringUtils.isBlank(key)) {
+            JSONObject response = new JSONObject();
+            JSONObject data = new JSONObject();
+            data.put("communitys", communitys);
+            response.put("data", data);
+            response.put("code", 0);
+            return "@json:" + response.toJSONString();
+
+        }
+        key = SUtils.wrap(key);
+        List<Community> cls = communityDao.like(key);
+        for (Community c : cls) {
+            JSONObject com = new JSONObject();
+            List<Long> shopids = shop_communityDao.get(c.getId());
+            if (shopids != null && shopids.size() != 0) {
+                List<Shop> shops = shopDAO.getAuditedShops(shopids);
+                SUtils.forV(shops, now);
+                c.setShops(shops);
+            }
+            communitys.add(JSON.toJSON(c));
+        }
+        JSONObject response = new JSONObject();
+        JSONObject data = new JSONObject();
+        data.put("communitys", communitys);
+        response.put("data", data);
+        response.put("code", 0);
+        return "@json:" + response.toJSONString();
+    }
+
+
     private double distinct(double lat, double lng, double lat1, double lng1) {
-        double[] from = new double[]{lat,lng};
-        double[] to = new double[]{lat1,lng1};
-        return geoCommunityService.calDistance(from,to) ;
+        double[] from = new double[]{lat, lng};
+        double[] to = new double[]{lat1, lng1};
+        return geoCommunityService.calDistance(from, to);
     }
 
 }
