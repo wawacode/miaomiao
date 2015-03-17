@@ -26,12 +26,13 @@
     <file path="/ShopArea.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1424071412459" ignored="false" />
     <file path="/AddProduct2Shop_628.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426224571311" ignored="false" />
     <file path="/GeoCommunityMongodbService2d.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426490971582" ignored="false" />
-    <file path="/GeoCommunityService.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426495651537" ignored="false" />
-    <file path="/LoadCommunity.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426487519366" ignored="false" />
+    <file path="/GeoCommunityService.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426566078082" ignored="false" />
+    <file path="/LoadCommunity.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426564081444" ignored="false" />
     <file path="/Community.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426486214369" ignored="false" />
     <file path="/Constants.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426489245774" ignored="false" />
     <file path="/ShopLocation.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426491506536" ignored="false" />
     <file path="$PROJECT_DIR$/../jy/src/main/java/com/renren/ntc/sg/bean/Community.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426494351566" ignored="false" />
+    <file path="/CommunityDAO.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426563797897" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +128,16 @@
       <file leaf-file-name="GeoCommunityService.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="125" selection-start="1169" selection-end="1169" vertical-scroll-proportion="-15.742739">
+            <state line="278" column="48" selection-start="9797" selection-end="9797" vertical-scroll-proportion="1.3402985">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoadCommunity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="83" column="90" selection-start="2752" selection-end="2752" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -169,28 +179,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="AbstractGeoMongodbService.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/AbstractGeoMongodbService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="59" column="93" selection-start="1704" selection-end="1704" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="PrinterService.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/PrinterService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="14" column="13" selection-start="346" selection-end="346" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GeoService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="170" column="30" selection-start="5169" selection-end="5180" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GeoService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="127" column="46" selection-start="4371" selection-end="4371" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -208,7 +209,7 @@
       <file leaf-file-name="GeoCommunityMongodbService2d.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityMongodbService2d.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="36" selection-start="637" selection-end="654" vertical-scroll-proportion="0.0">
+            <state line="33" column="70" selection-start="1043" selection-end="1043" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -229,9 +230,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_628.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvHAHAShopItems.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/bean/Community.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/CommunityDAO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/AbstractGeoMongodbService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Constants.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/mongo/MongoDBUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/ShopLocation.java" />
@@ -239,6 +237,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityMongodbService2d.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java" />
         <option value="$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/AbstractGeoMongodbService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/CommunityDAO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityService.java" />
       </list>
     </option>
@@ -275,7 +276,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -337,66 +337,6 @@
               <option name="myItemId" value="sg" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sg_crontab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crontab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sg_crontab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crontab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -431,6 +371,7 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -439,14 +380,14 @@
     <property name="options.lastSelected" value="fileColors" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jy" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cmmy_ssuggestion" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
+    <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -562,6 +503,19 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -587,19 +541,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -667,13 +608,12 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24531516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27768314" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5076661" sideWeight="0.27727273" order="7" side_tool="true" content_ui="tabs" />
@@ -684,10 +624,11 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.51277685" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48722318" sideWeight="0.7227273" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.67291313" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.7227273" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24531516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -766,9 +707,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/views/console/orders.vm">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="43" selection-start="2797" selection-end="2797" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="67" column="43" selection-start="2797" selection-end="2797" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="jar://$M2_REPO$/org/mongodb/mongo-java-driver/2.7.3/mongo-java-driver-2.7.3-sources.jar!/com/mongodb/DBCollection.java">
@@ -778,25 +717,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/AbstractGeoMongodbService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="39" selection-start="3541" selection-end="3541" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="82" selection-start="1062" selection-end="1062" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="47" selection-start="2310" selection-end="2310" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="19" column="82" selection-start="1062" selection-end="1062" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java">
@@ -809,34 +732,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="170" column="30" selection-start="5169" selection-end="5180" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityMongodbService2d.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="36" selection-start="637" selection-end="654" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2d.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="45" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2dSphere.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="64" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoQueryResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="70" selection-start="563" selection-end="563" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -855,6 +750,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityMongodbService2d.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="70" selection-start="1043" selection-end="1043" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoQueryResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="70" selection-start="563" selection-end="563" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/AbstractGeoMongodbService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="93" selection-start="1704" selection-end="1704" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="83" column="90" selection-start="2752" selection-end="2752" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2dSphere.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="64" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2d.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="45" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/CommunityDAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="34" column="27" selection-start="1171" selection-end="1171" vertical-scroll-proportion="0.0">
@@ -864,7 +801,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="125" selection-start="1169" selection-end="1169" vertical-scroll-proportion="-15.742739">
+        <state line="278" column="48" selection-start="9797" selection-end="9797" vertical-scroll-proportion="1.3402985">
           <folding />
         </state>
       </provider>

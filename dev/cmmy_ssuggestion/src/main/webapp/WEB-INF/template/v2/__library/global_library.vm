@@ -1,0 +1,347 @@
+##
+## 在使用模板语法时，时刻记住macro或者define 都是基于宏命令的
+## 也就是说是编译时代码块的替换，而不是函数的执行
+##
+
+#*
+@param $q_title 当前页面的title
+@param $q_css 插入页面头部的css
+@param $q_body 插入q_container的代码
+@param $q_js 页面底部插入的javascript
+*#
+#macro(render $subchannel)
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" name="viewport" />
+<meta content="telephone=no" name="format-detection" />
+<meta name="keywords" content="#if($q_keywords)$q_keywords#end" />
+<meta name="description" content="#if($q_desc)$q_desc#end" />
+#if($NOSCRIPT_JUMP && $NOSCRIPT_JUMP == 1)
+<noscript>
+<meta http-equiv="refresh" content="0; url=http://m.qunar.com/index.jsp" />
+</noscript>
+#end
+<link rel="apple-touch-icon-precomposed" href="/qunar-touch.png"/>
+<title>#if($q_title)$q_title - #end去哪儿网 Qunar.com</title>
+<link rel="stylesheet" href="$!{qzzUrl}/v2/css/common-#include('.ver').css"  type='text/css' />
+#if($!image2x && $!image2x == 1)
+<link rel="stylesheet" href="$!{qzzUrl}/v2/css/common-image2x-#include('.ver').css"  type='text/css' />
+#end
+#if($!subchannel)
+<link rel="stylesheet" href="$!{qzzUrl}/v2/css/$!{subchannel}-#include('.ver').css"  type='text/css' />
+#end
+#if($q_css)
+<style tyle="text/css">
+#if($!commonParam && $!commonParam.userAgent && $!commonParam.userAgent.matches(".*Windows NT.*"))
+.qn_main{width:320px;margin:0 auto;}
+#end
+#if($!commonParam && $!commonParam.userAgent && $!commonParam.userAgent.matches("MicroMessenger"))
+.qn_qunar{ background:#25a4bb;}
+.qn_qunar .bg{ margin:0 auto; width:320px; height:44px; background:url(http://source.qunar.com/site/images/wap/touch/images/v2/qunar.png) 0 0 no-repeat; background-size:100% 100%;}
+#end
+
+.qn_title_bar_holder{height:24px}
+.qn_title_bar{height:24px;font-size:12px;line-height:24px;padding:0 10px;position:fixed;width:95%;z-index:1;left:0;}
+.qn_title_bar.black{background:#000;color:#fff}
+
+.qn_box{display: -webkit-flex; width: 100%; }
+.qn_box img{width:100%;display:block}
+.qn_box .flex1{-webkit-flex: 1 1 auto;-webkit-flex-basis: 0;overflow:hidden}
+.qn_box .flex2{-webkit-flex: 2 1 auto;-webkit-flex-basis: 0;overflow:hidden}
+.qn_box .flex3{-webkit-flex: 3 1 auto;-webkit-flex-basis: 0;overflow:hidden}
+
+.qn_banner_text{color:#fff;height:130px;position:relative}
+.qn_banner_text h3{font-size: 24px;padding: 8px;line-height: 24px;}
+.qn_banner_text p{font-size: 12px;line-height: 16px;padding:0 8px}
+.qn_banner_text.pink{background:#FF9999;}
+.qn_banner_text.blue{background:#9999FF;}
+.qn_banner_text.green{background:#AADDAA;}
+.qn_banner_text:after{content: ' ';
+position: absolute;width: 22px;height: 22px;bottom: 8px;right: 8px;z-index: 1;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsBAMAAADsqkcyAAAAA3NCSVQICAjb4U/gAAAAMFBMVEX///////////////////////////////////////////////////////////////9Or7hAAAAAEHRSTlMAESIzRFVmd4iZqrvM3e7/dpUBFQAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAGESURBVCiRdZO9SsNQFMdvTFW0Ci5OgvgEkslBRDMWB+0bKPgA6RPYxb2+gCDoKEZwFTq46RBXJ9E6dcngJ2nN35Nz7z25DeQM6c2/v5x7PpXS5rWugIeTJTVhjWuwDUNX9RMYGwWlOhVDLFsTea/4/CjwNwpX71adoZdLfdyl46GRe8C9RbaAX4G/y3u6Ft9H7oTVSPHJYaQYuMFuIy+CaQIML1scuKGfA+3Z63fE+xc9E/5TreDHyE2M+Rv20Qc64iVU88j4JYLgMc7VKj4kVYPv4JWiflIVfJEi7+FUVfA5yj9GW1XwabruBbbwgvv4Uymkfxb3kCtAqiE4aY5MCVNoWnacUNHywDhJ5Moi/4G+ckzndgWmAEdlOgJzOpK8wJy8LVUJc6lsYUuYC+u0wcA+K6ZpXYEXiqbZFs/KWETcYjsQxwY2A0Hj88Z1M/C6Hp+aYauMZiSTTIN8a9VykLn8F/q46Yw9L8lzsSRn7pLUrVTNAlJYhs9CNWFe6w54lOX+ByrVQGHwXOM3AAAAAElFTkSuQmCC) no-repeat;background-size:100% 100%;}
+
+.qn_banner_text.small{height:95px;}
+.qn_banner_text.small h3{font-size: 20px;padding: 8px;line-height: 24px;}
+
+
+.qn_banner_image{height:130px;position:relative}
+.qn_banner_image.small{height:100px}
+.qn_banner_image p{position: absolute;bottom: 0;left: 0;width: 100%;height: 25px;line-height: 25px;background-color: rgba(0, 0, 0, 0.5);color: #fff;text-align: center;}
+
+
+.qn_taglist a {display: inline-block;border: 1px #ddd solid;border-radius: 4px;-webkit-border-radius: 4px;font-size: 12px;color: #666;background-color: #fff;height: 24px;line-height: 24px;padding: 0 5px;margin: 6px 6px 0 0;font-family: verdana;}
+
+.qn_taglistbig a{text-align: center;width: 90px;float: left;margin:8px 0 0 8px;display: block;border: 1px #ddd solid;border-radius: 2px;-webkit-border-radius: 2px;background-color: #fff;height: 50px;line-height: 48px;font-size: 16px;color: #333;text-decoration: none;}
+.qn_taglistbig.mid a{width:40px;height:30px;font-size:14px;line-height:30px;margin-left:5px}
+.qn_taglistbig.big a{width:148px;height:45px;font-size:12px;line-height:48px;margin-left:1px; background-color: #cccccc;margin:0 0 0 0;}
+
+.qn_luotuojia{position: fixed;border-left: 1px solid #eee;bottom: 10px;left: 0px;z-index: 998;-webkit-user-select: none;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);-webkit-transform: translate3d(0, 0, 0);}
+
+.qn_luotuojia .btn,.qn_luotuojia .inner{width: 54px;height: 54px;background: url(http://source.qunar.com/site/images/wap/touch/images/wise/luotuojia.png) no-repeat;
+-webkit-background-size: 163px 56px;background-position: 0 0;}
+.qn_luotuojia .inner{background-position:-107px 0}
+.qn_luotuojia .menu{position: absolute;left: 50px;bottom: 50px;width: 245px;height: 108px;overflow: hidden;-webkit-transition: all linear 0.15s;background:#fff}
+.qn_luotuojia .menu.hide{opacity:0;-webkit-transform: translate(-104px, 64px) scale(0.2);}
+
+
+/*categories*/
+.qn_catbanner{padding-top:25px;position:relative}
+.qn_catbanner .flex1 {height:100px;overflow:hidden}
+.qn_catbanner .flex1  img{display:block;width:100%}
+
+.qn_dropmenu{position:absolute;right:80px;top:25px;background:#fff;padding:10px}
+.qn_dropmenu a{display:block}
+
+/**/
+.qn_picitem{padding:5px}
+$!q_css
+</style>
+#end
+</head>
+<body>
+<div class="qn_main">
+$!q_body
+</div><!-- end qn_main -->
+
+<script type="text/javascript" src="$!{qzzUrl}/v2/js/zepto-#include('.ver').js"></script>
+#if($q_js)
+$!q_js	
+#end
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?45585c4dc07dfd48a91539497071518d";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</body>
+</html>
+#end
+
+
+#macro(render_calendarTpl)
+<script type="text/template" id="calendarTpl">
+ <table>
+    <thead><tr><td colspan="7"><h5><%= display.y %>年<span class="qn_blue"><%= display.m %>月</span></h5></td></tr></thead>
+    <tbody <% if(tags) { %>class="withTag" <% } %>>
+        <tr class="weeks">
+            <th>周一</th>
+            <th>周二</th>
+            <th>周三</th>
+            <th>周四</th>
+            <th>周五</th>
+            <th class="weekend">周六</th>
+            <th class="weekend">周日</th>
+        </tr>
+        <% if(tags) { %>
+        <% _.each(weeks, function(days){ %>
+            <tr class="days">
+                <% for(var i = 0; i < 7; i++){ %>
+                    <td class="<% if(choosen.d == days[i] && choosen.m == display.m && choosen.y == display.y){ %>active<% } %> 
+                    <% if (i > 4){ %>weekend<% } %>
+                    <% if (holiday[$.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-')]){ %>holiday<% } %>
+                    <% if (tiaoxiu[$.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-')]){ %>weekday<% } %>
+                    <% if (!days[i]){ %>null"<% } %>
+                    <% if (days[i] < 0) { %>disable"
+                    <% } else{ %>" data-day="<%= $.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-') %>" <% } %>>
+                    <p>
+                    <% if(holiday[$.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-')]) { %>
+                    <%= holiday[$.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-')] %>
+                    <% } else { %>
+                    <%= days[i] ? ((today.d == days[i] && today.m == display.m) ? "今天" : Math.abs(days[i])) : "&nbsp;" %></p>
+                    <% } %>
+                    <%= tags[$.fixTo8Date(display.y, display.m, Math.abs(days[i]))] || '<p>&nbsp;</p>' %>
+                    </td>
+                <% } %>
+            </tr>
+        <% })} else if(holiday) { %>
+            <% _.each(weeks, function(days){ %>
+            <tr class="days">
+                <% for(var i = 0; i < 7; i++){ %>
+                    <td class="<% if(choosen.d == days[i] && choosen.m == display.m && choosen.y == display.y){ %>active<% } %> 
+                    <% if (i > 4){ %>weekend<% } %>
+                    <% if (holiday[$.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-')]){ %>holiday<% } %>
+                    <% if (tiaoxiu[$.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-')]){ %>weekday<% } %>
+                    <% if (!days[i]){ %>null"<% } %>
+                    <% if (days[i] < 0) { %>disable"
+                    <% } else{ %>" data-day="<%= $.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-') %>" <% } %>>
+                    <% if(holiday[$.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-')]) { %>
+                    <%= holiday[$.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-')] %>
+                    <% } else { %>
+                    <%= days[i] ? ((today.d == days[i] && today.m == display.m) ? "今天" : Math.abs(days[i])) : "&nbsp;" %>
+                    <% } %>
+                    </td>
+                <% } %>
+            </tr>
+        <% })} else { %>
+            <% _.each(weeks, function(days){ %>
+            <tr class="days">
+                <% for(var i = 0; i < 7; i++){ %>
+                    <td class="<% if(choosen.d == days[i] && choosen.m == display.m && choosen.y == display.y){ %>active<% } %> 
+                    <% if (i > 4){ %>weekend<% } %>
+                    <% if (!days[i]){ %>null"<% } %>
+                    <% if (days[i] < 0) { %>disable"
+                    <% } else{ %>" data-day="<%= $.fixTo8Date(display.y, display.m, Math.abs(days[i]), '-') %>" <% } %>>
+                    <%= days[i] ? ((today.d == days[i] && today.m == display.m) ? "今天" : Math.abs(days[i])) : "&nbsp;" %>
+                    </td>
+                <% } %>
+            </tr>
+        <% })} %>
+    </tbody>
+</table>
+</script>
+#end
+#macro(render_citiesTpl)
+<script type="text/template" id="citiesTpl">
+      <% _.each(data, function(value, key){ %>
+            <dt><%= key %></dt>
+            <% _.each(value, function(item){ %>
+                <dd><%= item.n %></dd>
+            <% }) %>
+        <% }) %>
+        
+</script>
+#end
+#macro(render_citiesPage $id $back)
+<!-- 城市列表 -->
+<div class="qn_page" id="$id">
+    <div class="qn_header">
+        <div class="back"><a href="#$back">后退</a></div>
+        <div class="title">城市选择</div>
+    </div>
+    <div class="qn_index_list">
+        <div class="search ">
+            <div class="search_icon fl"></div>
+            <div class="delete_icon fr"></div>
+            <div class="input">
+                <input type="text" placeholder="请输入拼音/简拼/中文"/>
+            </div>
+        </div>
+            <div class="content">
+	            <div class="search_result"></div>
+	            <dl>
+	    <div class="qn_tab2">
+                <div class="tab_title active" id="city1">国内城市</div>
+                <div class="tab_title" id="city2">国际城市</div>
+        </div>
+        
+	    <div class="tab_content" id="city1_tab">
+	                <dt>GPS定位当前城市</dt>
+	                <dd class="location">点击获取当前城市</dd>
+	    
+	    </div>
+	   <div class="tab_content qn_hide" id="city2_tab"></div>
+	            </dl>
+	    
+	    
+	        </div>
+        
+       
+        #*<div class="bar">
+            <ol>
+                <li>A</li>
+                <li>B</li>
+                <li>C</li>
+                <li>D</li>
+                <li>E</li>
+                <li>F</li>
+                <li>G</li>
+                <li>H</li>
+                <li>I</li>
+                <li>J</li>
+                <li>K</li>
+                <li>L</li>
+                <li>M</li>
+                <li>N</li>
+                <li>O</li>
+                <li>P</li>
+                <li>Q</li>
+                <li>R</li>
+                <li>S</li>
+                <li>T</li>
+                <li>U</li>
+                <li>V</li>
+                <li>W</li>
+                <li>X</li>
+                <li>Y</li>
+                <li>Z</li>
+            </ol>
+        </div>*#
+    </div>  
+</div>
+<!-- /城市列表 -->
+#end
+#macro(render_calendarPage $id $back $title)
+<!-- 日期列表 -->
+<div class="qn_page" id="$!id">
+    <div class="qn_header">
+        <div class="back"><a href="#$!back">后退</a></div>
+        <div class="title">#if($!{title})$!{title}#else日期选择#end</div>
+    </div>
+    <div class="qn_calendar">
+    </div>
+</div>
+<!-- /日期列表 -->
+#end
+
+#macro(render_foot $level $adjs)
+<div class="qn_footer">
+	#if($level >= 3)	
+	<ul class="main_nav">
+	    #if($!subchannel == 'hotel')
+	    <li class="flight"><a href="/h5/flight/"></a></li>
+	    #elseif($!subchannel == 'flight')
+	    <li class="hotel"><a href="/h5/hotel/"></a></li>
+	    #end
+	    <li class="tuan"><a href="/city.jsp"></a></li>
+	    <li class="desctination"><a href="/train.jsp"></a></li>
+	    <li class="train"><a href="http://touch.piao.qunar.com/touch/index.htm"></a></li>
+	    <li class="order" style="background:url(http://source.qunar.com/site/images/wap/touch/images/dangdi.png) no-repeat -1px -1px;background-size:100% 100%";><a href="http://dangdi.qunar.com/touch"></a></li>
+	    <li class="lvtu"><a href="http://touch.lvtu.qunar.com/"></a></li>
+	</ul>
+	#end
+	#if($level >= 2)
+	<div class="ad">
+		#if($!adjs)
+	   <script type="text/javascript" src="$adjs"></script>
+	   #end
+	</div>
+	<ul class="footer_nav clearfix">
+	    <li><a href="/h5/user/usercenter">个人中心</a></li>
+	    <li><a href="/h5/recent">最近浏览</a></li>
+	    <li><a href="/h5/about">关于我们</a></li>
+	</ul>
+	<ul class="mobile_pc clearfix">
+	    <li class="active"><a href="$!touchUrl/h5/">触屏版</a></li>
+	    <li><a href="http://www.qunar.com/index.htm?from=mobile">电脑版</a></li>
+	</ul>
+	#end
+	<div class="copyright">
+	    <span >Qunar 京ICP备05021087</span>
+	    <a class="qn_ml25" href="/h5/feedback">意见反馈</a>
+	</div>
+</div>
+#end
+
+#macro(render_ad $adjs)
+<div class="ad">
+   <script type="text/javascript" src="$adjs"></script>
+</div>
+#end
+
+#macro(render_qunar $argu)
+<div class="qn_qunar">
+	<div class="bg"></div>
+</div>
+#end
+
+#macro(render_loginbar)
+<div class="qn_title_bar black">
+	<div class="qn_fr"><span>设置喜欢<span> <span>登录<span> </div>
+	$!{dataMap.locDesc}，猜猜你的喜欢... 
+</div>
+<div class="qn_title_bar_holder"></div>
+#end

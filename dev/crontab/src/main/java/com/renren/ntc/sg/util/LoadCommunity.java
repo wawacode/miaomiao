@@ -48,8 +48,10 @@ public class LoadCommunity {
                     c.setCity(cc[8]);
                     c.setLat(Double.parseDouble(cc[5]));
                     c.setLng(Double.parseDouble(cc[4]));
-                    cDao.insert(c);
-//                    System.out.println((JSONObject)JSON.toJSON(c));
+                    if(null == cDao.getByName(c.getName())){
+                        System.out.println((JSONObject)JSON.toJSON(c));
+                        cDao.insert(c);
+                    }
                 }
             }else{
                 System.out.println("找不到指定的文件");

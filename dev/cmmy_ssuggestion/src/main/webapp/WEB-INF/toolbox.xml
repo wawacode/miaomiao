@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbox>
+	<tool>
+		<key>date</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.DateTool</class>
+	</tool>
+	<tool>
+		<key>math</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.MathTool</class>
+	</tool>
+	<tool>
+		<key>sortTool</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.SortTool</class>
+	</tool>
+	<tool>
+		<key>number</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.NumberTool</class>
+	</tool>
+	
+	<tool>
+		<key>jsonTool</key>
+		<scope>application</scope>
+		<class>com.qunar.mobile.touch2.utils.JSONUtil</class>
+	</tool>
+</toolbox>
