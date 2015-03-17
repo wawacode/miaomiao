@@ -656,47 +656,54 @@
             </div>
         </div>
 
-        <div style=";width: 100%;height: 100%" ng-if="!shop_info.showAddressSuggestion">
-            <div style="padding-top:3px;padding-bottom:3px;margin-top: 3px; background-color: #ffffff;color: #999999;" ng-click="relocation()">
-                <div style="display: inline-block;padding-left: 10px">
-                    {{shop_info.locationMessage}}
-                </div>
-                <div style="display: inline-block;float: right;padding-right: 15px;color: #ef5356">
-                    重新定位 <i class="icon icon ion-android-locate" style="font-size: 14px"></i>
-                </div>
+        <div style="padding-top:3px;padding-bottom:3px;margin-top: 3px; background-color: #ffffff;color: #999999;"
+             ng-click="relocation()">
+            <div style="display: inline-block;padding-left: 10px">
+                {{shop_info.locationMessage}}
             </div>
-
-            <div class="" ng-if="shop_info.showCommunityList" style="margin: 0">
-                <div class="item-hint">
-                    为您推荐的小区
-                </div>
-                <div ng-if="!community_items.length" style="color: #999999;text-align: center;font-size: 14px;padding-top: 50px;padding-bottom: 50px;background-color: #ffffff">
-                    对不起,小喵还没覆盖到您所在的区域呢~
-                </div>
-                <div class="communityList" bindonce ng-repeat="item in community_items"
-                     ng-include = "'templates/community-item.html'">
-                </div>
-            </div>
-
-            <div class="" ng-if="shop_info.showShopHistory" style="margin-bottom: 5px;background-color: #ffffff">
-                <div class="item-hint" ng-show="shop_history.length">
-                    历史店铺
-                </div>
-                <div class="item-shop-history" ng-repeat="item in shop_history" ng-click="goToShop(item)" style="">
-                    {{item.name}}
-                </div>
+            <div style="display: inline-block;float: right;padding-right: 15px;color: #ef5356">
+                重新定位 <i class="icon icon ion-android-locate" style="font-size: 14px"></i>
             </div>
         </div>
 
-        <div class="list" style="" ng-if="shop_info.showAddressSuggestion">
-            <div class="item-hint" ng-click="clickAddressSuggestions($event)">
-                小区列表
+        <div class="" ng-if="community_items" style="margin: 0;background-color: #eaeaea">
+            <div class="item-hint">
+                为您推荐的小区
             </div>
-            <div style="background-color: #ffffff;height: 100%;width: 100%">
-                <div class="communityList" bindonce ng-repeat="item in shop_info.address_suggestions"
-                     ng-include = "'templates/community-item-simple.html'">
+            <div ng-if="!community_items.length" style="color: #999999;text-align: center;font-size: 14px;padding-top: 50px;padding-bottom: 50px;background-color: #ffffff">
+                对不起,小喵还没覆盖到您所在的区域呢~
+            </div>
+            <div class="communityList" bindonce ng-repeat="item in community_items"
+                 ng-include = "'templates/community-item.html'">
+            </div>
+        </div>
+
+        <div class="" ng-if="shop_history.length" style="margin-bottom: 5px;background-color: #ffffff">
+            <div class="item-hint">
+                历史店铺
+            </div>
+            <div class="item-shop-history" ng-repeat="item in shop_history" ng-click="goToShop(item)" style="">
+                {{item.name}}
+            </div>
+        </div>
+
+        <div class="addressSuggestions" style="position: absolute;top:72;bottom: 0;left: 0;right: 0;width: 100%;background-color: #ffffff;z-index: 999;"
+             ng-if="shop_info.showAddressSuggestion">
+
+            <ion-content padding="false"
+                         has-tabs="true"
+                         has-header="true"
+                         scroll="true">
+                <div class="item-hint" ng-click="clickAddressSuggestions($event)">
+                    小区列表
                 </div>
-            </div>
+                <div style="background-color: #ffffff;">
+                    <div class="communityListSimple" bindonce ng-repeat="item in shop_info.address_suggestions track by item.id"
+                         ng-include = "'templates/community-item-simple.html'">
+                    </div>
+                </div>
+            </ion-content>
+
         </div>
 
     </div>
@@ -726,6 +733,10 @@
                 <i class="ion-ios7-location" style="font-size: 15px;margin-right: 12px;color: lightgray"></i>
                 <span bo-text="'地址: ' + item.city + item.district + item.address"></span>
             </div>
+            <div class="item-text-wrap" style="font-size: 12px;" ng-if="item.distinct">
+                <i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 8px;color: lightgray"></i>
+                <span  bo-text="'距离' + item.distinct + '米'"></span>
+            </div>
         </div>
 
         <!--<span class="icon assertive" ng-show="item.shops && item.shops.length > 1 "-->
@@ -734,11 +745,10 @@
 
     </div>
 
-    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="background-color: #ffffff">
+    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="background-color: #ffffff" ng-if="item.shops && item.shops.length">
         <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: rgba(236, 236, 236, 0.3)"
              bindonce
              ng-repeat="item in item.shops"
-             ng-class="{'noBorderBottonLi':$index + 1 == item.shops.length }"
              ng-click="goToShop(shop)"
              ng-include = "'templates/shop-item.html'">
         </div>
@@ -765,11 +775,10 @@
         </div>
     </div>
 
-    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="padding: 5px">
+    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="padding: 5px" ng-if="item.shops && item.shops.length">
         <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: rgba(236, 236, 236, 0.3)"
              bindonce
              ng-repeat="item in item.shops"
-             ng-class="{'noBorderBottonLi':$index + 1 == item.shops.length }"
              ng-click="goToShop(shop)"
              ng-include = "'templates/shop-item.html'">
         </div>
