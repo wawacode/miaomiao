@@ -138,33 +138,14 @@
 
             // search by keywords
             httpClient.getCommunityByName(key, function (data, status) {
-
                 $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
 
-//                var code = data.code, dataDetail = data.data;
-//
-//                if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
-//                    $scope.community_items = dataDetail.communitys;
-//                }else{
-//                    $scope.community_items = [];
-//                }
-
-                $scope.community_items = [
-                    {id: 100, name:'一个测试的小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',distinct:100,
-                        shops:[
-                            {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5},
-                            {id:2,name:'测试昂铺222','shop_address':'上地街道嘉华大厦',rate:5,maxRate:5}
-                        ]
-                    },
-                    {id: 101, name:'上地街道可是大厦010101',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座',distinct:500,
-                        shops:[
-                            {id:1,name:'测试店铺','shop_address':'上地街道可是大厦123',rate:5,maxRate:5}
-                        ]},
-                    {id: 102, name:'清河破地方小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦B座'},
-                    {id: 103, name:'中关村高档小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'},
-                    {id: 104, name:'望京西小区',city:'北京市',district:'海淀区',address:'上地街道可是大厦010101'}
-                ];
-
+                if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
+                    $scope.community_items = dataDetail.communitys;
+                }else{
+                    $scope.community_items = [];
+                }
                 $scope.shop_info.commmunityListTitle = "为您找到的小区";
 
                 hideSearchSuggestions();
