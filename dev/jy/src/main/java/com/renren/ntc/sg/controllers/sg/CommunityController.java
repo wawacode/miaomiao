@@ -80,8 +80,8 @@ public class CommunityController {
         return "@json:" + jb.toJSONString() ;
     }
 
-    @Get("sg")
-    @Post("sg")
+    @Get("query")
+    @Post("query")
     public String query (Invocation inv ,@Param("q") String q ){
         long now = System.currentTimeMillis();
         JSONArray communitys = new JSONArray();
