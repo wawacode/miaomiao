@@ -118,7 +118,7 @@ public class CommunityController {
     @Get("near")
     @Post("near")
     public String query(Invocation inv, @Param("lat") float lat, @Param("lng") float lng) {
-
+        long now = System.currentTimeMillis();
         JSONArray communitys = new JSONArray();
         Community community = null;
         if (lat != 0 && lng != 0) {
@@ -128,7 +128,6 @@ public class CommunityController {
             // 20 公里
             List<GeoQueryResult> resuls = geoCommunityService.queryNear(loc, 2000, 20);
             if (resuls != null && resuls.size() > 0) {
-                long now = System.currentTimeMillis();
                 for (GeoQueryResult res : resuls) {
                     ShopLocation shopLoc = res.getShopLocation();
                     JSONObject com = new JSONObject();
@@ -142,6 +141,7 @@ public class CommunityController {
                     List<Long> shopids = shop_communityDao.get(cid);
                     if (shopids != null && shopids.size() != 0) {
                         List<Shop> shops = shopDAO.getAuditedShops(shopids);
+                        SUtils.forV(shops,now );
                         community.setShops(shops);
                     }
                     communitys.add(JSON.toJSON(community));
