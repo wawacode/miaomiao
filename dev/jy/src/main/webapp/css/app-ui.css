@@ -357,6 +357,10 @@ body {
     padding: 10px;display: none;
 }
 
+.shopsInCommunity:before{
+    
+}
+
 /* shop list star ratings*/
 
 .rating {

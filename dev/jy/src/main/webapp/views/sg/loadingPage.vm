@@ -663,7 +663,7 @@
     </div>
     <div class="list" ng-show="shop_info.showAddressSuggestion">
         <div class="item-hint">
-            地址列表
+            小区列表
         </div>
         <div class="item" bindonce ng-repeat="item in shop_info.address_suggestions"
              ng-click="goToSearchAddress(item)">
@@ -700,7 +700,7 @@
           ng-click="clickCommunity(item)">
 
         <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
-             style="color: #ef5356;text-align: left;position: absolute; font-size: 11px;top: -5;left: 16">
+             style="color: #ef5356;text-align: left;position: absolute; font-size: 11px;top: -2;left: 16">
             对不起,小喵还没覆盖到您选择的区域呢~
         </div>
 
