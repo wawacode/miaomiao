@@ -95,7 +95,7 @@
                     return;
                 }
 
-                if (!newitem.new_pic_url || !newitem.pic_url) {
+                if (!newitem.new_pic_url && !newitem.pic_url) {
                     MMUtils.showAlert('请添加图片');
                     return;
                 }
