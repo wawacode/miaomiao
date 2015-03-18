@@ -61,6 +61,7 @@ public class WXPlayTestController {
     @Get("ua_ck")
     @Post("ua_ck")
     public String ck( Invocation inv) {
+
         String ua = inv.getRequest().getHeader("User-Agent") ;
         canwxpay(ua) ;
         return "play";
@@ -89,17 +90,23 @@ public class WXPlayTestController {
     @Post("test")
     public String test( Invocation inv) {
         User user =  ntcHost.getUser();
+
+        String ua = inv.getRequest().getHeader("User-Agent") ;
+        if(!canwxpay(ua)) {
+
+        }
         String user_open_id = "oQfDLjmJTHCMo-b6gKECZWkTBUzc";
         String  out_trade_no = "C123123213" ;
         int  total_fee = 1000;
         String  trade_type = "JSAPI";
         String attach = "test";
         String body = "test";
+        JSONObject  data = new JSONObject();
         try {
             SortedMap<String,String> map  = new TreeMap <String,String> ();
             String nonce_str = Sha1Util.getNonceStr();
             String timestamp = Sha1Util.getTimeStamp();
-            String spbill_create_ip = "123.56.102.224";
+            String spbill_create_ip = "";
             map.put("appid",appId);
             map.put("attach",attach);
             map.put("body",body);
@@ -128,11 +135,17 @@ public class WXPlayTestController {
             System.out.println("send " + content);
             TenpayHttpClient http = new TenpayHttpClient();
             http.callHttpPost(URL,content);
-            System.out.println( "wx rec " + http.getResContent() );
-        }catch(Exception e) {
+            String  res  = http.getResContent();
+            System.out.println( "wx rec " +  res );
+            String pre_id = getPrePay(res);
+
+            data.put("pre_id",pre_id) ;
+            data.put("appid",appId) ;
+        } catch (Exception e) {
             e.printStackTrace();
+            return "@json:" + Constants.UKERROR;
         }
-        return "play";
+        return "pay";
     }
 
 
@@ -144,6 +157,7 @@ public class WXPlayTestController {
         String  trade_type = "JSAPI";
         String attach = "test";
         String body = "test";
+        JSONObject  data = new JSONObject();
         try {
         SortedMap<String,String> map  = new TreeMap <String,String> ();
         String nonce_str = Sha1Util.getNonceStr();
@@ -177,11 +191,31 @@ public class WXPlayTestController {
         System.out.println("send " + content);
         TenpayHttpClient http = new TenpayHttpClient();
         http.callHttpPost(URL,content);
-        System.out.println( "wx rec " + http.getResContent() );
+        String  res  = http.getResContent();
+        System.out.println( "wx rec " +  res );
+        String pre_id = getPrePay(res);
+
+        data.put("pre_id",pre_id) ;
+        data.put("appid",appId) ;
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("@json:" + Constants.UKERROR);
+
         }
+
     }
+
+    private static String getPrePay(String res) {
+        String s = "<prepay_id><![CDATA[";
+        String e = "]]></prepay_id>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+
 
     public static String createSign(SortedMap<String, String> packageParams) {
         StringBuffer sb = new StringBuffer();

@@ -142,7 +142,10 @@ public class CommunityController {
                         List<Shop> shops = shopDAO.getAuditedShops(shopids);
                         SUtils.forV(shops, now);
                         community.setShops(shops);
+                    }else{
+                        continue ;
                     }
+
                     try {
                         double distinct = distinct(lat, lng, community.getLat(), community.getLng());
                         community.setDistinct(distinct);
@@ -186,6 +189,8 @@ public class CommunityController {
                 List<Shop> shops = shopDAO.getAuditedShops(shopids);
                 SUtils.forV(shops, now);
                 c.setShops(shops);
+            }else{
+              continue ;
             }
             communitys.add(JSON.toJSON(c));
         }
