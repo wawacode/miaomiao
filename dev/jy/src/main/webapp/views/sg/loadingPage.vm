@@ -632,7 +632,7 @@
         </ion-header-bar>
         <ion-content padding="false"
                      has-tabs="false"
-                     has-header="true">
+                     has-header="true" style="top: 46">
             <div ng-include="'templates/shoplist.html'">
             </div>
         </ion-content>
@@ -642,9 +642,9 @@
 
     <div style="background-color: #eaeaea;width: 100%;height: 100%;position: relative">
 
-        <div style=";height: 44px;padding-top: 0px;">
+        <div style=";padding-top: 0px;">
             <div id="search-box" class="item-input-inset"
-                 style=";margin: auto;height: 42px;background-color: #ffffff">
+                 style=";margin: auto;height: 44px;background-color: #ffffff">
                 <div class="item-input-wrapper">
                     <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
                     <input type="search" placeholder="请输入小区名如,中关村小区" ng-model="shop_data.searchQuery"
