@@ -9,7 +9,11 @@
         if (!$scope.shop_info.locationReady) {
             $scope.shop_info.locationMessage = "定位失败,您可以搜索所在的小区"
         } else {
-            $scope.shop_info.locationMessage = "定位成功，正在加载地址...";
+            if(localStorageService.get('MMMETA_location_pos_addr')){
+                $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr');
+            }else{
+                $scope.shop_info.locationMessage = "点击重新定位";
+            }
         }
 
         $scope.shop_history = localStorageService.get('MMMETA_shop_history') || [];
