@@ -255,18 +255,6 @@
                             $timeout(function () {
                                 $scope.community_items = dataDetail.communitys;
                                 $scope.shop_info.commmunityListTitle = "附近的小区";
-
-                                $scope.community_items[0].shops=[
-                                    {
-                                        "id":10041,"shop_address":"北京市朝阳区广泽路6号院13号楼一层","name":"日日鑫","id":10041,
-                                        'shop_info':"韩国特色商品",distant:200
-
-                                    },
-                                    {
-                                        "id":10041,"shop_address":"北京市朝阳区广泽路6号院13号楼一层","name":"日日鑫","id":10041
-                                    }
-                                ]
-
                             });
                         }else{
                             $scope.community_items = [];
