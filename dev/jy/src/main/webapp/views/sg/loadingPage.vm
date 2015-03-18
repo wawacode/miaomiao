@@ -669,7 +669,7 @@
 
             <div class="" style="margin: 0;background-color: #eaeaea">
                 <div class="item-hint" ng-show="shop_info.locationReady || community_items && community_items.length >= 0">
-                    选择您所在的小区 <i class="icon ion-loading-c assertive" ng-if="shop_info.loadingCoummnityItems == true"></i>
+                    选择您所在的小区 <span ng-show="shop_info.loadingCoummnityItems == true"><i class="icon ion-loading-c assertive"></i></span>
                 </div>
                 <div ng-if="community_items && community_items.length == 0" style="color: #999999;text-align: center;font-size: 14px;padding-top: 50px;padding-bottom: 50px;background-color: #ffffff">
                     对不起,小喵还没覆盖到您所在的区域呢~
@@ -679,7 +679,7 @@
                 </div>
             </div>
 
-            <div class="" ng-if="shop_history.length" style="margin-top: 5px; margin-bottom: 5px;background-color: #ffffff">
+            <div class="" ng-if="shop_history.length" style="margin-top: 5px; margin-bottom: 5px;padding-top: 5px;background-color: #ffffff">
                 <div class="item-hint">
                     历史店铺
                 </div>
@@ -755,7 +755,7 @@
 
 <script id="templates/community-item-simple.html" type="text/ng-template">
     <!--ng-class="{'item-icon-right':item.shops && item.shops.length > 1}"-->
-    <div class="item" style="border: none;position: relative;padding: 12px"
+    <div class="item" style="border-top: none;border-left: none;border-right: none; position: relative;padding: 12px"
          ng-click="clickCommunity(item,$event)">
 
         <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
