@@ -16,6 +16,8 @@
             }
         }
 
+        $scope.searchButtonText = "搜索";
+
         $scope.shop_history = localStorageService.get('MMMETA_shop_history') || [];
 
         $scope.clearSearch = function () {
@@ -32,6 +34,13 @@
         }
 
         $scope.startSearch = function () {
+
+            if($scope.shop_data.searchQuery && $scope.shop_data.searchQuery.length > 0){
+                $scope.searchButtonText = "搜索";
+            }else{
+                $scope.searchButtonText = "取消";
+            }
+
             showSearchSuggestions();
         };
 
@@ -106,6 +115,12 @@
 
         $scope.getSuggestions = function (key, $event) {
 
+            if($scope.shop_data.searchQuery && $scope.shop_data.searchQuery.length > 0){
+                $scope.searchButtonText = "搜索";
+            }else{
+                $scope.searchButtonText = "取消";
+            }
+
             // get suggestion from server
             httpClient.getCommunitySuggestions(key,function(data, status){
 
@@ -131,6 +146,12 @@
         $scope.performSearch = function (key, $event) {
 
             if ($event)$event.target.blur();
+
+            if($scope.searchButtonText == "取消"){
+                $scope.searchButtonText = "搜索";
+                hideSearchSuggestions();
+                return;
+            }
 
             var KEY = key || $scope.shop_data.searchQuery;
             if(!KEY)return;
@@ -299,7 +320,7 @@
         $scope.$on("$ionicView.enter", function () {
 
             $scope.shop_info.commmunityListTitle = "附近的小区";
-
+            $scope.searchButtonText = "搜索";
             $timeout(function () {
                 updateUIWhenPositionDataReady();
             });
