@@ -97,18 +97,26 @@ public class CommunityController {
         }
         JSONObject jb = (JSONObject) JSON.parse(respone);
         JSONArray arr = jb.getJSONArray("data");
-
+        JSONArray cmm = new JSONArray();
         for (int i = 0; i < arr.size(); i++) {
             JSONObject o = arr.getJSONObject(i);
             long cid = o.getLong("id");
             List<Long> shop_ids = shop_communityDao.get(cid);
+            if( shop_ids == null || shop_ids.size() == 0 ) {
+                 continue;
+            }
             List<Shop> shops = shopDAO.getAuditedShops(shop_ids);
+
+            if( shops == null || shops.size() == 0 ) {
+                continue;
+            }
             SUtils.forV(shops, now);
             o.put("shops", JSON.toJSON(shops));
+            cmm.add(o);
         }
         JSONObject response = new JSONObject();
         JSONObject data = new JSONObject();
-        data.put("communitys", arr);
+        data.put("communitys", cmm);
         response.put("data", data);
         response.put("code", 0);
         return "@" + response.toJSONString();
@@ -142,10 +150,7 @@ public class CommunityController {
                         List<Shop> shops = shopDAO.getAuditedShops(shopids);
                         SUtils.forV(shops, now);
                         community.setShops(shops);
-                    }else{
-                        continue ;
                     }
-
                     try {
                         double distinct = distinct(lat, lng, community.getLat(), community.getLng());
                         community.setDistinct(distinct);
@@ -189,8 +194,6 @@ public class CommunityController {
                 List<Shop> shops = shopDAO.getAuditedShops(shopids);
                 SUtils.forV(shops, now);
                 c.setShops(shops);
-            }else{
-              continue ;
             }
             communitys.add(JSON.toJSON(c));
         }
