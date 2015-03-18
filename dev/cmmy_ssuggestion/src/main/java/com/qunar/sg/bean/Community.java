@@ -1,4 +1,6 @@
-package com.renren.ntc.sg.bean;
+package com.qunar.sg.bean;
+
+import com.qunar.sg.bean.Shop;
 
 import java.util.Date;
 import java.util.List;
