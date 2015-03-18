@@ -46,6 +46,6 @@ public interface CommunityDAO {
     @SQL("select count(*) from " + TABLE_NAME  )
     public int getCount();
 
-    @SQL("select id,name as word from "+ TABLE_NAME + " limit :1,:2 ")
+    @SQL("select id,name as word from "+ TABLE_NAME + " order by score desc limit :1,:2 ")
     public List<SDoc> getDoc(int offset , int count);
 }
