@@ -26,7 +26,7 @@ public interface ProductDAO {
     public List<Product> geProducts(long category_id ,int from ,int offset );
 
 
-    @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where name like :1 ")
+    @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where (name like :1 or serialNo = :1)")
     public List<Product> geProducts(String query );
 
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where serialNo=:1 ")
