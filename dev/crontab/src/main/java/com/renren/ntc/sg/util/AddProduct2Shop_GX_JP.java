@@ -48,8 +48,7 @@ public class AddProduct2Shop_GX_JP {
                     String name = args[0].trim();
                     String price_str = args[5].trim();
                     int price =(int)  (Float.valueOf(price_str)* 100);
-                    Item item = itemDao.getItem(SUtils.generTableName(shop_id),serialNo);
-
+                    Item item = itemDao.getItem(SUtils.generTableName(shop_id),serialNo,shop_id);
                     if (item != null )  {
                         JSONObject ob = (JSONObject)JSON.toJSON(item);
                         System.out.println(ob.toJSONString());
