@@ -298,7 +298,6 @@
         $scope.$on("$ionicView.enter", function () {
 
             $scope.shop_info.commmunityListTitle = "附近的小区";
-            $scope.shop_info.loadingCoummnityItems = true;
 
             $timeout(function () {
                 updateUIWhenPositionDataReady();
