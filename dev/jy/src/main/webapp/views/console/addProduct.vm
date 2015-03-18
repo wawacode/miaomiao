@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title> 喵喵-!${shop.name}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <form class="form-horizontal" method="post"  enctype="multipart/form-data"  action="/console/product/add">
+        <h2 class="form-signin-heading">添加商品</h2>
+        <input name="shopId" style="display:none" value="$shopId">
+        <div class="form-group">
+        <input type="text" id="serialNo" name="serialNo" class="form-control" placeholder="产品条形码" required>
+        </div>
+        <div class="form-group">
+        <input type="text" name="name" class="form-control" placeholder="商品名" required>
+        </div>
+        <div class="form-group">
+        <h5 class="form-signin-heading">分类</h5>
+        <select class="form-control" name="categoryId">
+        	#foreach($category in $categoryls)
+  			<option value = "${category.id}">$category.name</option>
+  			#end
+		</select>
+		</div>
+         <div class="form-group">
+        <input type="text" name="score" class="form-control" placeholder="评分" required>
+        </div>
+        <div class="form-group">
+        <input type="text" name="price" class="form-control" placeholder="零售价" required>
+        </div>
+        <div class="form-group">
+        <label for="inputfile">上次商品图片</label>
+      	<input type="file" id="inputfile" name="pic" onChange="fileChange(this);" required>
+      	</div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="add">添加</button>
+    </form>
+
+</div> <!-- /container -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+	
+	});
+    function fileChange(item) {
+            var ss = (item.value).split('.');
+            if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
+                $("#fileName").val(item.value);
+            } else {
+                var obj = document.getElementById("inputfile");
+               obj.outerHTML = obj.outerHTML;
+                $("#inputfile").val("");
+                alert("用户源配置文件格式错误");
+            }
+        }
+</script>
+</body>
+</html>
