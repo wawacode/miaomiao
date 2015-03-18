@@ -197,8 +197,6 @@ public class CommunityController {
                 List<Shop> shops = shopDAO.getAuditedShops(shopids);
                 SUtils.forV(shops, now);
                 c.setShops(shops);
-            }else{
-              continue ;
             }
             communitys.add(JSON.toJSON(c));
         }
