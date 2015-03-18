@@ -632,7 +632,7 @@
         </ion-header-bar>
         <ion-content padding="false"
                      has-tabs="false"
-                     has-header="true" >
+                     has-header="true" style="top:46">
             <div ng-include="'templates/shoplist.html'">
             </div>
         </ion-content>
@@ -743,7 +743,7 @@
     </div>
 
     <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="background-color: #ffffff" ng-if="item.shops && item.shops.length">
-        <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: rgba(236, 236, 236, 0.3)"
+        <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: #ffffff;border: solid 1px lightgray"
              bindonce
              ng-repeat="item in item.shops"
              ng-click="goToShop(shop)"

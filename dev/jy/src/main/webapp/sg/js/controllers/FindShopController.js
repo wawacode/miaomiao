@@ -133,6 +133,7 @@
             if ($event)$event.target.blur();
 
             var KEY = key || $scope.shop_data.searchQuery;
+            if(!KEY)return;
 
             $timeout(function () {
                 $scope.shop_info.locationMessage = KEY;
@@ -258,6 +259,14 @@
 
                             $timeout(function () {
                                 $scope.community_items = dataDetail.communitys;
+                                $scope.community_items[0].shops=[
+                                    {
+                                        'id':'111','name':'勒令便利','shop_address':'一个地址',remark:"韩国商品",distant:100
+
+                                    },{
+                                        'id':'111','name':'勒令便利','shop_address':'一个地址',remark:"韩国商品",distant:100
+                                    }
+                                ];
                                 $scope.shop_info.commmunityListTitle = "附近的小区";
                             });
                         }else{
