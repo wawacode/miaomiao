@@ -25,7 +25,6 @@ public class Sha1Util {
 		return String.valueOf(System.currentTimeMillis() / 1000);
 	}
 	
-   //����ǩ��SHA1
 	public static String createSHA1Sign(SortedMap<String, String> signParams) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		Set es = signParams.entrySet();
@@ -35,11 +34,9 @@ public class Sha1Util {
 			String k = (String) entry.getKey();
 			String v = (String) entry.getValue();
 			sb.append(k + "=" + v + "&");
-			//Ҫ����URLENCODER��ԭʼֵ��
 		}
-		String params = sb.substring(0, sb.lastIndexOf("&"));
-		System.out.println("sha1 sb:" + params);
-		return getSha1(params);
+		System.out.println("sha1 sb:" + sb.toString());
+		return getSha1(sb.toString());
 	}
 	//Sha1ǩ��
 	public static String getSha1(String str) {
