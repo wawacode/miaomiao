@@ -679,7 +679,7 @@
                 </div>
             </div>
 
-            <div class="" ng-if="shop_history.length" style="margin-top: 5px; margin-bottom: 5px;padding-top: 5px;background-color: #ffffff">
+            <div class="" ng-if="shop_history.length" style="margin-top: 0px; margin-bottom: 5px;padding-top: 5px;background-color: #ffffff">
                 <div class="item-hint">
                     历史店铺
                 </div>
@@ -761,7 +761,7 @@
 
         <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
              style="color: #ef5356;text-align: left;position: absolute; font-size: 10px;top: -5;left: 11">
-            对不起,小喵还没覆盖到您选择的小区呢~
+            小喵正在努力覆盖您选择的小区,敬请期待!
         </div>
         <div>
             <div style="font-size: 14px;display: inline-block;color: #191919" bo-text="item.key">
