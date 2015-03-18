@@ -669,10 +669,10 @@
 
             <div class="" style="margin: 0;background-color: #eaeaea">
                 <div class="item-hint" ng-if="shop_info.locationReady || community_items && community_items.length >= 0">
-                    选择您所在的小区 <span ng-if="shop_info.loadingCoummnityItems == true"><i class="icon ion-loading-c assertive"></i></span>
+                    选择您所在的小区 <span class="assertive" ng-if="shop_info.loadingCoummnityItems == true"><i class="icon ion-loading-c assertive"></i></span>
                 </div>
                 <div ng-if="community_items && community_items.length == 0" style="color: #999999;text-align: center;font-size: 14px;padding-top: 50px;padding-bottom: 50px;background-color: #ffffff">
-                    小喵正在努力覆盖您所在的小区,敬请期待!
+                    小喵正在努力覆盖您所在的小区,敬请期待哦 !
                 </div>
                 <div class="communityList" bindonce ng-repeat="item in community_items"
                      ng-include = "'templates/community-item.html'">
@@ -719,7 +719,7 @@
 
         <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
              style="color: #ef5356;text-align: left;position: absolute; font-size: 11px;top: -2;left: 16">
-            小喵正在努力覆盖您选择的小区,敬请期待!
+            小喵正在努力覆盖您选择的小区,敬请期待哦!
         </div>
 
         <div>
@@ -761,7 +761,7 @@
 
         <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
              style="color: #ef5356;text-align: left;position: absolute; font-size: 10px;top: -5;left: 11">
-            小喵正在努力覆盖您选择的小区,敬请期待!
+            小喵正在努力覆盖您选择的小区,敬请期待哦!
         </div>
         <div>
             <div style="font-size: 14px;display: inline-block;color: #191919" bo-text="item.key">
