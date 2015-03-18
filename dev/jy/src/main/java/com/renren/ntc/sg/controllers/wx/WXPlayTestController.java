@@ -92,6 +92,7 @@ public class WXPlayTestController {
         User user =  ntcHost.getUser();
 
         String ua = inv.getRequest().getHeader("User-Agent") ;
+        LoggerUtils.getInstance().log(String.format("User Agent  %s ",ua));
         if(!canwxpay(ua)) {
 
         }
@@ -101,6 +102,7 @@ public class WXPlayTestController {
         String  trade_type = "JSAPI";
         String attach = "test";
         String body = "test";
+        JSONObject  respone = new JSONObject();
         JSONObject  data = new JSONObject();
         try {
             SortedMap<String,String> map  = new TreeMap <String,String> ();
@@ -141,11 +143,16 @@ public class WXPlayTestController {
 
             data.put("pre_id",pre_id) ;
             data.put("appid",appId) ;
+            data.put("out_trade_no",out_trade_no) ;
+            data.put("total_fee",total_fee) ;
+            data.put("trade_type",trade_type) ;
+            respone.put("code",0);
+            respone.put("data",data);
         } catch (Exception e) {
             e.printStackTrace();
             return "@json:" + Constants.UKERROR;
         }
-        return "pay";
+        return "@json:" + respone.toJSONString();
     }
 
 
