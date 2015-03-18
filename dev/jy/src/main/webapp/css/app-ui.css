@@ -327,6 +327,16 @@ body {
     color: #999999;
 }
 
+.hasOpenShop{
+    background-color: #ef5356;
+    color: #ffffff;
+}
+
+.hasNoOpenShop{
+    background-color: #eaeaea;
+    color: #999999;
+}
+
 .shopItem {
 
 }

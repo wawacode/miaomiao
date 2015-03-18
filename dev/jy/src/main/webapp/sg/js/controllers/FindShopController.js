@@ -48,6 +48,7 @@
 
             //TODO: check shop status
             if (shop.status != undefined && shop.status != 0) {
+                MMUtils.showAlert('您选择的小区店铺已经打烊了');
                 return;
             }
 
@@ -168,7 +169,7 @@
                 var code = data.code, dataDetail = data.data;
 
                 if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
-                    $scope.community_items = dataDetail.communitys;
+                    $scope.community_items = _updateShopStatusForCommunity(dataDetail.communitys);
                 }else{
                     $scope.community_items = [];
                 }
@@ -259,6 +260,21 @@
             });
         }
 
+        function _updateShopStatusForCommunity(comm_items){
+            for(var i=0; i<  comm_items.length;i++){
+                var hasOpenShop = false;
+                if(comm_items[i].shops){
+                    for(var j=0;j< comm_items[i].shops.length;j++){
+                        if(comm_items[i].shops[j].status == 0){
+                            hasOpenShop = true;
+                        }
+                    }
+                }
+                comm_items[i].hasOpenShop = hasOpenShop;
+            }
+            return comm_items;
+        }
+
         function updateUIWhenPositionDataReady() {
 
             $scope.shop_info.locationReady = localStorageService.get('MMMETA_location_pos_ready');
@@ -279,8 +295,7 @@
                         if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
 
                             $timeout(function () {
-                                $scope.community_items = dataDetail.communitys;
-                                $scope.shop_info.commmunityListTitle = "附近的小区";
+                                $scope.community_items = _updateShopStatusForCommunity(dataDetail.communitys);
                             });
                         }else{
                             $scope.community_items = [];

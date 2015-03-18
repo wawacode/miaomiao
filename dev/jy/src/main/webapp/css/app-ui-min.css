@@ -49,6 +49,8 @@ body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;fon
 .item-hint{height:25px;margin:auto;padding-left:11px;padding-top:2px;background-color:#eaeaea;color:#999;font-size:12px}
 .item-hint-shadow{height:1px;box-shadow:0 2px 5px gray;padding:0}
 .item-shop-history{display:inline-block;background-color:#ededed;padding:5px 10px 5px 10px;border:solid 1px #ededed;margin:10px 5px 10px 10px;border-radius:5px;font-size:14px;color:#999}
+.hasOpenShop{background-color:#ef5356;color:#fff}
+.hasNoOpenShop{background-color:#eaeaea;color:#999}
 .shopItemStatusOpen{display:inline-block;float:right;font-size:12px;color:#fff;background-color:#ef5356;padding:2px 5px 2px 5px;border-radius:4px}
 .shopItemStatusClosed{display:inline-block;float:right;font-size:12px;color:#fff;background-color:#a6a6a6;padding:2px 5px 2px 5px;border-radius:4px}
 .shopsInCommunity{padding:10px;display:none}
