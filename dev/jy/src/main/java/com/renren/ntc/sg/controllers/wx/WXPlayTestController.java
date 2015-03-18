@@ -2,7 +2,6 @@ package com.renren.ntc.sg.controllers.wx;
 
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.User;
-import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
@@ -133,14 +132,14 @@ public class WXPlayTestController {
             content  = content.replace("{trade_type}",trade_type);
             content  = content.replace("{sign}",sign);
             System.out.println("send " + content);
-            TenpayHttpClient http = new TenpayHttpClient();
-            http.callHttpPost(URL,content);
-            String  res  = http.getResContent();
-            System.out.println( "wx rec " +  res );
-            String pre_id = getPrePay(res);
+//            TenpayHClient http = new TenpayHttpClient();
+//            http.callHttpPost(URL,content);
+//            String  res  = http.getResContent();
+//            System.out.println( "wx rec " +  res );
+//            String pre_id = getPrePay(res);
 
-            data.put("pre_id",pre_id) ;
-            data.put("appid",appId) ;
+//            data.put("pre_id",pre_id) ;
+//            data.put("appid",appId) ;
         } catch (Exception e) {
             e.printStackTrace();
             return "@json:" + Constants.UKERROR;
@@ -189,14 +188,14 @@ public class WXPlayTestController {
         content  = content.replace("{trade_type}",trade_type);
         content  = content.replace("{sign}",sign);
         System.out.println("send " + content);
-        TenpayHttpClient http = new TenpayHttpClient();
-        http.callHttpPost(URL,content);
-        String  res  = http.getResContent();
-        System.out.println( "wx rec " +  res );
-        String pre_id = getPrePay(res);
+//        TenpayHttpClient http = new TenpayHttpClient();
+//        http.callHttpPost(URL,content);
+//        String  res  = http.getResContent();
+//        System.out.println( "wx rec " +  res );
+//        String pre_id = getPrePay(res);
 
-        data.put("pre_id",pre_id) ;
-        data.put("appid",appId) ;
+//        data.put("pre_id",pre_id) ;
+//        data.put("appid",appId) ;
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("@json:" + Constants.UKERROR);
