@@ -92,7 +92,10 @@ public class WXPlayTestController {
         User user =  ntcHost.getUser();
 
         String ua = inv.getRequest().getHeader("User-Agent") ;
+        String read_ip = inv.getRequest().getHeader("X-Real-IP") ;
         LoggerUtils.getInstance().log(String.format("User Agent  %s ",ua));
+        LoggerUtils.getInstance().log(String.format("X-Real-IP  %s ",read_ip));
+
         if(!canwxpay(ua)) {
 
         }
@@ -241,8 +244,6 @@ public class WXPlayTestController {
         System.out.println("md5 sb:" + sb);
         String sign = MD5Util.MD5Encode(sb.toString(), "utf-8")
                 .toUpperCase();
-
         return sign;
-
     }
 }
