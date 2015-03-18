@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
+import java.util.*;
 
 @Path("wxplay")
 public class WXPlayTestController {
@@ -34,6 +31,8 @@ public class WXPlayTestController {
     private static String appId = "wx762f832959951212";
     private static String mch_id = "1233699402";
 
+    private static String  notify_url ="http:/www.mbianli.com/wx/cb";
+
 
     private static String TXT = "<xml>\n" +
             "   <appid>{appId}</appid>\n" +
@@ -41,17 +40,38 @@ public class WXPlayTestController {
             "   <body>JSAPI支付测试</body>\n" +
             "   <mch_id>{mch_id}</mch_id>\n" +
             "   <nonce_str>{nonce_str}</nonce_str>\n" +
-            "   <notify_url>http://wxpay.weixin.qq.com/pub_v2/pay/notify.v2.php</notify_url>\n" +
+            "   <notify_url>{notify_url}</notify_url>\n" +
             "   <openid>{user_open_id}</openid>\n" +
             "   <out_trade_no>{order_id}</out_trade_no>\n" +
-            "   <spbill_create_ip>14.23.150.211</spbill_create_ip>\n" +
-            "   <total_fee>1</total_fee>\n" +
+            "   <spbill_create_ip>{spbill_create_ip}/spbill_create_ip>\n" +
+            "   <total_fee>{total_fee}</total_fee>\n" +
             "   <trade_type>JSAPI</trade_type>\n" +
             "   <sign>{sign}</sign>\n" +
             "</xml>"  ;
     @Get("test")
     @Post("test")
-    public String rd( Invocation inv,@Param("phone")String phone) {
+    public String test( Invocation inv) {
+        String user_open_id = "";
+        String  order_id = "C123123213" ;
+        int  total_fee = 1000;
+        SortedMap<String,String> map  = new TreeMap <String,String> ();
+        String noncestr = Sha1Util.getNonceStr();
+        String timestamp = Sha1Util.getTimeStamp();
+        String spbill_create_ip = "123.56.102.224";
+        map.put("appid",appId);
+        map.put("attach","支付测试");
+        map.put("body","JSAPI支付测试");
+        map.put("mch_id",mch_id);
+        map.put("nonce_str",noncestr);
+        map.put("notify_url",notify_url) ;
+        map.put("openid", user_open_id );
+        map.put("out_trade_no", order_id );
+        map.put("spbill_create_ip", spbill_create_ip );
+        map.put("trade_type", "JSAPI" );
+        map.put("total_fee",total_fee + "");
+
+
+        String sign = getSign(map)  ;
 
         return "play";
     }

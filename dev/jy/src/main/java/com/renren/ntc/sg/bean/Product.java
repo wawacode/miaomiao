@@ -22,6 +22,23 @@ public class Product {
 
     private Date create_time ;
     private Date update_time  ;
+    
+    private int  count  = 0;
+    private  int  price;
+    private int  score;
+    
+    public Product(){
+    	
+    }
+    
+    public Product(String serialNo,String name,String picUrl,int categoryId,int score,int price){
+    	this.serialNo = serialNo;
+    	this.name = name;
+    	this.pic_url = picUrl;
+    	this.category_id = categoryId;
+    	this.score = score;
+    	this.price = price;
+    }
 
     public Date getCreate_time() {
         return create_time;
@@ -93,6 +110,30 @@ public class Product {
     public void setCategory_sub_id(int category_sub_id) {
         this.category_sub_id = category_sub_id;
     }
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
 
 
 }
