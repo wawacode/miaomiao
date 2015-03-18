@@ -99,6 +99,11 @@ public class WXController {
         }
         return "@" + echostr;
     }
+    @Get("cb")
+    @Post("cb")
+    public String index( Invocation inv) {
+        return "@" + Constants.DONE;
+    }
 
 
 
