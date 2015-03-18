@@ -51,7 +51,16 @@ public class WXPlayTestController {
             "</xml>"  ;
     @Get("test")
     @Post("test")
-    public String rd( Invocation inv,@Param("phone")String phone) {
+    public String rd( Invocation inv) {
+        SortedMap<String,String> map  = new SortedMap<String,String>();
+        map.put("appid",appId);
+        map.put("attach","支付测试");
+        map.put("body","JSAPI支付测试");
+        map.put("mch_id",mch_id);
+        map.put("nonce_str",)
+
+
+        String sign = getSign()  ;
 
         return "play";
     }
