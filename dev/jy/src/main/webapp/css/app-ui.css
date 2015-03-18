@@ -84,11 +84,11 @@ body {
 }
 
 .toggleFade {
-    -webkit-transition: -webkit-transition : all linear 0.5 s;
-    -moz-transition: all linear 0.5s;
-    -ms-transition: all linear 0.5s;
-    -o-transition: all linear 0.5s;
-    transition: all linear 0.5s;
+    -webkit-transition: -webkit-transition : all linear 1.5 s;
+    -moz-transition: all linear 1.5s;
+    -ms-transition: all linear 1.5s;
+    -o-transition: all linear 1.5s;
+    transition: all linear 1.5s;
 }
 
 .toggleFade.ng-enter {
@@ -421,7 +421,7 @@ ul.rating li i {
     padding-bottom: 2px;
     padding-right: 2px;
     margin-bottom: 5px;
-
+    background-color: #ffffff;
 }
 
 
@@ -431,7 +431,7 @@ ul.rating li i {
     padding-left: 2px;
     padding-bottom: 8px;
     padding-right: 2px;
-    border-bottom: solid 1px #eaeaea;
+    background-color: #ffffff;
 }
 /* home page - product list*/
 .homepageContent {

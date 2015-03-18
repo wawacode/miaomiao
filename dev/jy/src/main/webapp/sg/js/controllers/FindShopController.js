@@ -211,7 +211,7 @@
             }
         };
 
-        function updateRealGEOAddressByGEOData(lng, lat) {
+        function updateRealGEOAddressByGEOData(lng, lat,cb) {
 
             var gpsPoint = new BMap.Point(lng, lat);
 
@@ -226,6 +226,10 @@
                         });
                     }
                 });
+
+                if(cb){
+                    cb(point);
+                }
             });
         }
 
@@ -237,35 +241,54 @@
 
                 $scope.shop_info.locationData = localStorageService.get('MMMETA_location_pos_data');
 
-                updateRealGEOAddressByGEOData($scope.shop_info.locationData.lng, $scope.shop_info.locationData.lat);
+                function onBMAPPointReady(point){
 
-                httpClient.getNearCommunityList($scope.shop_info.locationData.lat, $scope.shop_info.locationData.lng, function (data, status) {
+                    $scope.shop_info.loadingCoummnityItems = true;
+                    $scope.community_items = null;
 
-                    var code = data.code, dataDetail = data.data;
+                    httpClient.getNearCommunityList(point.lat, point.lng, function (data, status) {
 
-                    if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
+                        var code = data.code, dataDetail = data.data;
 
+                        if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
+
+                            $timeout(function () {
+                                $scope.community_items = dataDetail.communitys;
+                                $scope.shop_info.commmunityListTitle = "附近的小区";
+
+                                $scope.community_items[0].shops=[
+                                    {
+                                        "id":10041,"shop_address":"北京市朝阳区广泽路6号院13号楼一层","name":"日日鑫","id":10041,
+                                        'shop_info':"韩国特色商品",distant:200
+
+                                    },
+                                    {
+                                        "id":10041,"shop_address":"北京市朝阳区广泽路6号院13号楼一层","name":"日日鑫","id":10041
+                                    }
+                                ]
+
+                            });
+                        }else{
+                            $scope.community_items = [];
+                        }
+
+                        $scope.shop_info.loadingCoummnityItems = false;
+
+                    }, function (data, status) {
+
+                        // still show it and with no item hint
                         $timeout(function () {
-                            $scope.community_items = dataDetail.communitys;
+                            $scope.shop_info.loadingCoummnityItems = false;
+                            $scope.community_items = [];
                             $scope.shop_info.commmunityListTitle = "附近的小区";
                         });
-                    }else{
-                        $scope.community_items = [];
-                    }
-
-                }, function (data, status) {
-                    // still show it and with no item hint
-                    $timeout(function () {
-                        $scope.community_items = [];
-                        $scope.shop_info.commmunityListTitle = "附近的小区";
                     });
-                });
+                }
+
+                updateRealGEOAddressByGEOData($scope.shop_info.locationData.lng, $scope.shop_info.locationData.lat,onBMAPPointReady);
+
             }
         }
-
-        $timeout(function () {
-            updateUIWhenPositionDataReady();
-        });
 
         function resetFindShopView(){
             $scope.shop_info.showAddressSuggestion = false;
@@ -275,6 +298,10 @@
         $scope.$on("$ionicView.enter", function () {
 
             $scope.shop_info.commmunityListTitle = "附近的小区";
+            $scope.shop_info.loadingCoummnityItems = true;
 
+            $timeout(function () {
+                updateUIWhenPositionDataReady();
+            });
         });
     });
