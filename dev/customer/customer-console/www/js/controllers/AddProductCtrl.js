@@ -76,7 +76,9 @@
             };
 
 
-            $scope.saveItem = function (newitem) {
+            $scope.saveItem = function () {
+
+                var newitem = $scope.newitem;
 
                 if (!newitem.currentCateId) {
                     MMUtils.showAlert('请选择商品分类');
