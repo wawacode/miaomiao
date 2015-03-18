@@ -632,7 +632,7 @@
         </ion-header-bar>
         <ion-content padding="false"
                      has-tabs="false"
-                     has-header="true" style="top:46">
+                     has-header="true">
             <div ng-include="'templates/shoplist.html'">
             </div>
         </ion-content>
