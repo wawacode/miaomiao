@@ -35,5 +35,9 @@
         return function(input){
             return input.length == 2 ? input.charAt(0) + "    " + input.charAt(1) : input;
         }
+    }).filter('parseIntDistant', function () {
+        return function(input){
+            return parseInt(input);
+        }
     });
 

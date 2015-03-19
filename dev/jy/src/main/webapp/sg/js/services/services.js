@@ -118,6 +118,29 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
                 doGet('near', 'lat=' + lat + '&lng=' + lng, success, fail);
 
+            },
+
+            getNearCommunityList: function (lat, lng, success, fail) {
+
+                doGet('commy/near', 'lat=' + lat + '&lng=' + lng, success, fail);
+
+            },
+
+            getShopsByCommunityId: function (c_id, success, fail) {
+
+                doGet('commy/getshop', 'c_id=' + c_id, success, fail);
+
+            },
+
+            getCommunitySuggestions: function (query, success, fail) {
+
+                doGet('commy/query', 'q=' + query, success, fail);
+
+            },
+
+            getCommunityByName:function(query, success, fail){
+
+                doGet('commy/search', 'key=' + query, success, fail);
             }
 
         };
