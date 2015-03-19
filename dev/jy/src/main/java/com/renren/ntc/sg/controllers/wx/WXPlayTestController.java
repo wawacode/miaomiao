@@ -86,6 +86,12 @@ public class WXPlayTestController {
         return false;
     }
 
+    @Get("test_order")
+    @Post("test_order")
+    public String test_order( Invocation inv) {
+        return "test_order"  ;
+    }
+
     @Get("test")
     @Post("test")
     public String test( Invocation inv) {
