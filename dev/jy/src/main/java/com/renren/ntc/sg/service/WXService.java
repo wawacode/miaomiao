@@ -50,7 +50,7 @@ public class WXService {
                 }
                 JSONObject ob =(JSONObject) JSONObject.parse(e);
                 access_token =  ob.getString("access_token");
-                JRedisUtil.getInstance().set(ACCESS_TOKEN,token);
+                JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
                 JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -91,7 +91,7 @@ public class WXService {
                 }
                 JSONObject ob =(JSONObject) JSONObject.parse(e);
                 access_token =  ob.getString("access_token");
-                JRedisUtil.getInstance().set(ACCESS_TOKEN,token);
+                JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
                 JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
             } catch (IOException e) {
                 e.printStackTrace();
