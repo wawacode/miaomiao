@@ -35,7 +35,7 @@ public class mvHAHAShopItems {
             for (Item item : itemls) {
                     item.setShop_id(to_shop_id);
 
-                     Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), item.getSerialNo());
+                     Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), item.getSerialNo(),to_shop_id);
                     if (null == ii) {
                            System.out.println("insert " + item.getSerialNo());
                            itemDao.insert(SUtils.generTableName(to_shop_id), item);

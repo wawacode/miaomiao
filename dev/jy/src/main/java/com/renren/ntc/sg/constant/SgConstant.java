@@ -9,4 +9,8 @@ public class SgConstant {
 	public static final String ADD_CAT_SUC_RESULT = "分类添加成功";
 	public static final String DEL_SHOP_CAT_SUC_RESULT = "删除商品分类成功";
 	public static final String DEL_SHOP_CAT_FAILED_RESULT = "删除商品分类失败,请稍后重试";
+	public static final String SAVE_PRODUCT_PIC_PATH = "/data/images/cat/images/product/";
+	//public static final String SAVE_PRODUCT_PIC_PATH = "d:/";
+	public static final String REMOTE_PRODCUT_FILE_PATH_PRE = "http://www.mbianli.com/cat/images/product/";
+	
 }

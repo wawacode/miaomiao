@@ -19,8 +19,8 @@ import java.util.List;
 public interface ProductDAO {
 
     static final String TABLE_NAME= "product";
-    static final String FIELDS = "id, serialNo,name,pic_url,category_id,category_sub_id ,create_time ,update_time" ;
-    static final String INSERT_FIELDS = "serialNo,name,pic_url,category_id,category_sub_id " ;
+    static final String FIELDS = "id, serialNo,name,pic_url,category_id,category_sub_id ,create_time ,update_time,price,score" ;
+    static final String INSERT_FIELDS = "serialNo,name,category_id,score,price,pic_url " ;
 
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where category_id=:1 limit :2,:3 ")
     public List<Product> geProducts(long category_id ,int from ,int offset );
@@ -35,12 +35,20 @@ public interface ProductDAO {
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  limit :1,:2 ")
     public List<Product> geProducts(int from ,int offset );
 
-
-    @SQL("insert into  " + TABLE_NAME  + " (" + INSERT_FIELDS + ")" +" value (:1.serialNo,:1.name," +
-            ":1.pic_url,:1.category_id,:1.category_sub_id)")
-    public  int insert(Product product);
-
     @SQL("update " + TABLE_NAME + "  set pic_url=:1 where serialNo = :2 ")
     public int update(String url, String serialNo);
+    
+    @SQL("update " + TABLE_NAME + " set pic_url=:1 where id =:2")
+    public  int updateByProId(String picUrl, long id);
+    
+    @SQL("delete from " + TABLE_NAME + " where id =:1")
+    public int delProductById(long proId);
+    
+    @SQL("insert into " + TABLE_NAME + " (" + INSERT_FIELDS + ")" +" value (:1.serialNo,:1.name," +
+            ":1.category_id,:1.score,:1.price,:1.pic_url)")
+    public  int insert(Product product);
+    
+    @SQL("update  " + TABLE_NAME + " set ##(:key) = :3  where id =:1")
+    public int update(long id, @SQLParam("key") String key, String value);
 
 }

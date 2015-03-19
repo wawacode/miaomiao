@@ -76,7 +76,9 @@
             };
 
 
-            $scope.saveItem = function (newitem) {
+            $scope.saveItem = function () {
+
+                var newitem = $scope.newitem;
 
                 if (!newitem.currentCateId) {
                     MMUtils.showAlert('请选择商品分类');
@@ -93,7 +95,7 @@
                     return;
                 }
 
-                if (!newitem.new_pic_url || !newitem.pic_url) {
+                if (!newitem.new_pic_url && !newitem.pic_url) {
                     MMUtils.showAlert('请添加图片');
                     return;
                 }

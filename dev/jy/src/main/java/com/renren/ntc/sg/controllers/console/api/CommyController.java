@@ -38,26 +38,44 @@ public class CommyController {
 
     @Get("add_link")
     @Post("add_link")
-    public String add_link (Invocation inv,@Param("shop_id") long shop_id,  @Param("c_id") long c_id ){
-        if(!validate(shop_id,c_id)){
-            return "@json:" + Constants.PARATERERROR ;
+    public String add_link(Invocation inv, @Param("shop_id") long shop_id, @Param("c_id") String c_ids) {
+        String[] strs = c_ids.split(",");
+        for (String s : strs) {
+            try{
+            int c_id = Integer.valueOf(s);
+            if (!validate(shop_id, c_id)) {
+                return "@json:" + Constants.PARATERERROR;
+            }
+            Shop_Community shop_c = new Shop_Community();
+            shop_c.setShop_id(shop_id);
+            shop_c.setCommunity_id(c_id);
+            shop_c.setExt("");
+            shop_communityDao.insert(shop_c);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
-        Shop_Community  shop_c =   new Shop_Community();
-        shop_c.setShop_id(shop_id);
-        shop_c.setCommunity_id(c_id);
-        shop_c.setExt("");
-        shop_communityDao.insert(shop_c);
+        return "@json:" + Constants.DONE;
+    }
 
-        return "@json:" + Constants.DONE ;
+    @Get("del_link")
+    @Post("del_link")
+    public String del_link(Invocation inv, @Param("shop_id") long shop_id, @Param("c_id") long c_id) {
+        if (!validate(shop_id, c_id)) {
+            return "@json:" + Constants.PARATERERROR;
+        }
+        shop_communityDao.del(shop_id, c_id);
+
+        return "@json:" + Constants.DONE;
     }
 
     private boolean validate(long shop_id, long c_id) {
-       Shop shop =  shopDAO.getShop(shop_id);
-        Community community =  communityDao.get(c_id);
-        if((null != shop) && (null != community)) {
+        Shop shop = shopDAO.getShop(shop_id);
+        Community community = communityDao.get(c_id);
+        if ((null != shop) && (null != community)) {
             return true;
         }
-        LoggerUtils.getInstance().log(String.format("can't find link shop %d ,community %d" ,shop_id,c_id));
+        LoggerUtils.getInstance().log(String.format("can't find link shop %d ,community %d", shop_id, c_id));
         return false;
     }
 

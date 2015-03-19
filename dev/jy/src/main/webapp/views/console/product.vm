@@ -32,6 +32,9 @@
                 <li><a href="#">Profile</a></li>
                 <li><a href="#">Help</a></li>
             </ul> -->
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/console/product/addindex">+添加商品</a></li>
+            </ul>
             <form class="navbar-form navbar-right" action="/console/product/query">
                 <input  name="query" type="text" class="form-control" placeholder="Search...">
             </form>
@@ -62,16 +65,33 @@
                         <th>产品条形码</th>
                         <th>商品名</th>
                         <th>分类</th>
+                        <th>评分</th>
+                        <th>零售价</th>
+                        <th>预览图片</th>
                         <th>图片</th>
+                        <th>上传本地图片操作</th>
                     </tr>
                     </thead>
                     #foreach($item in $itemls)
                     <tr>
                         <td>${item.id}</td>
-                        <td class="" id="e-${item.shop_id}-serialNo-$item.id">$item.serialNo</td>
-                        <td class="" id="e-{$item.shop_id}-name-$item.id">$item.name</td>
-                        <td class="" id="e-{$item.shop_id}-category_id-$item.id">$item.category_id</td>
-                        <td class="" id="e-${item.shop_id}-pic_url-$item.id"> #if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end</td>
+                        <td>$item.serialNo</td>
+                        <td class="edit" id="e-name-$item.id">$item.name</td>
+                        <td class="edit" id="e-category_id-$item.id">$item.category_id</td>
+                        <td class="edit" id="e-score-$item.id">$item.score</td>
+                        <td class="edit" id="e-price-$item.id">$item.price</td>
+                        <td>#if($item.pic_url)<a href="$item.pic_url">预览商品</a>#else预览商品#end</td>
+                        <td class="edit" id="e-pic_url-$item.id">#if($item.pic_url)<img style="width:60px" src="$item.pic_url"/>#end</td>
+                    	<td>
+                    	<form class="form-horizontal" method="post"  enctype="multipart/form-data"  action="/console/product/uploadPic">
+                    	<input name="id" style="display:none" value="${item.id}">
+                    	<input name="serialNo" style="display:none" value="${item.serialNo}">
+                    	<input name="categoryId" style="display:none" value="${item.categoryId}">
+                    	<input type="file" id="${item.id}-inputfile" name="pic" onChange="fileChange(this);">
+                    	<button type="submit" class="form-add" data-id="${item.id}-inputfile" >提交</button>
+                    	</form>
+                    	</td>
+                    	<td><button type="button" class="btn btn-danger" data-id="${item.id}"><a>删除</a></button></td>
                     </tr>
                     #end
                     </tbody>
@@ -100,13 +120,13 @@
 <script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-    $('.edit').editable('/console/product/ud',{
+    $('.edit').editable('/console/product/edit',{
     tooltip : 'Click to edit...',
     callback : function(value, settings) {
     location.reload() ;
     }
     });
-    $('.edit_area').editable('/console/product/ud' ,{
+    $('.edit_area').editable('/console/product/edit' ,{
     type : 'textarea',
     cancel : 'Cancel',
     submit : 'OK',
@@ -114,6 +134,45 @@
     tooltip : 'Click to edit...'
     });
     });
+    $(".btn").click(function(){
+		var result = confirm("是否确认删除"),
+			oThis = $(this);
+		if(result){
+		$.ajax({
+			type:"POST",url:"/console/product/del",
+			data:{id:oThis.data('id')},
+			success:function(data){
+				  alert(data);
+				  location.reload();
+				}
+			});
+		}
+	});
+    function fileChange(item) {
+            var ss = (item.value).split('.');
+            if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
+                $("#fileName").val(item.value);
+            } else {
+                var obj = document.getElementById("inputfile");
+               obj.outerHTML = obj.outerHTML;
+                $("#inputfile").val("");
+                alert("用户源配置文件格式错误");
+            }
+        }
+    $(".form-add").click(function(){
+		var result = confirm("是否确认提交"),
+		oThis = $(this);
+		if(result){
+			var pic = oThis.data('id');
+			var picVal =$('#'+ pic).val();
+			if(picVal == ''){
+			  alert("请上传图片");
+			  return false;
+			}
+			return true;
+		}
+		return false;
+	});
 </script>
 </body>
 </html>

@@ -38,4 +38,6 @@ public interface Shop_CommunityDAO {
     @SQL("insert into "+ TABLE_NAME + "(" +  INSERT_FIELDS +") values(:1.shop_id ,:1.community_id ,:1.ext) " )
     public int insert(Shop_Community c);
 
+    @SQL("delete from "+ TABLE_NAME + " where shop_id=:1 and community_id=:2 " )
+    public void del(long shop_id, long c_id);
 }
