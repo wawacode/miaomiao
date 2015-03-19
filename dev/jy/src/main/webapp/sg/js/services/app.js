@@ -4,8 +4,7 @@ angular.module('miaomiao.shop', ['ionic',
         'ngStorage',
         'ngAnimate',
         'pasvaz.bindonce',
-        'QuickList',
-        'ionic.rating'
+        'QuickList'
     ])
     .config(function ($httpProvider, $provide) {
 

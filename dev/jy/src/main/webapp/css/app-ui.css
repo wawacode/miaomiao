@@ -1,9 +1,9 @@
 /*commmon css*/
 /*@font-face {*/
-    /*font-family: 'w3';*/
-    /*src: url('/fonts/Hiragino-Sans.ttf') format('truetype');*/
-    /*font-weight: normal;*/
-    /*font-style: normal;*/
+/*font-family: 'w3';*/
+/*src: url('/fonts/Hiragino-Sans.ttf') format('truetype');*/
+/*font-weight: normal;*/
+/*font-style: normal;*/
 /*}*/
 
 html {
@@ -92,6 +92,30 @@ body {
     opacity: 0 !important;;
 }
 
+.toggleFade {
+    -webkit-transition: -webkit-transition : all linear 1.5 s;
+    -moz-transition: all linear 1.5s;
+    -ms-transition: all linear 1.5s;
+    -o-transition: all linear 1.5s;
+    transition: all linear 1.5s;
+}
+
+.toggleFade.ng-enter {
+    opacity: 0;
+}
+
+.toggleFade.ng-enter-active {
+    opacity: 1;
+}
+
+.toggleFade.ng-leave {
+    opacity: 1;
+}
+
+.toggleFade.ng-leave-active {
+    opacity: 0;
+}
+
 .headerBarWithShadow:after {
     content: "";
     position: absolute;
@@ -111,7 +135,6 @@ body {
     top: 49;
 }
 
-
 .smallHeaderButton {
     z-index: 1;
     padding: 0 5px !important;
@@ -124,35 +147,35 @@ body {
     margin-left: 5px !important;
 }
 
-
-.loading-backdrop{
+.loading-backdrop {
     margin-top: 44px;
     background-color: #ffffff;
 }
 
 .backdrop {
-    background-color: rgba(255,255,255,.4) !important;
+    background-color: rgba(255, 255, 255, .4) !important;
 }
 
-.loading-container{
+.loading-container {
     margin-top: 44px; /*loading should stay under the header*/
-    background-color: rgba(255,255,255,0.4) !important;
+    background-color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .loading-container .loading {
 
-    background-color: rgba(255,255,255,1.0) !important;
+    background-color: rgba(255, 255, 255, 1.0) !important;
     color: #000000;
     font-size: 15px;
 }
 
-.popup-container .popup{
+.popup-container .popup {
     border: solid 1px #eaeaea;
 }
 
-.bar.bar-light.bar-footer{
+.bar.bar-light.bar-footer {
     height: 49px !important;
 }
+
 /**********************************
     css per page
 **********************************/
@@ -164,24 +187,25 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: rgba(239,84,90,1.0);
+    background-color: rgba(239, 84, 90, 1.0);
     text-align: center;
 }
 
-.loadingImageTop{
+.loadingImageTop {
     position: absolute;
     left: 0;
     right: 0;
     top: 15%;
 }
 
-.loadingImageCenter{
+.loadingImageCenter {
 
     width: 75%;
     height: auto;
 
 }
-.loadingImageBottom{
+
+.loadingImageBottom {
     background-image: url('/images/loadingpage-bottom.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -281,18 +305,17 @@ body {
         opacity: 1.0;
     }
 }
+
 /* shop list*/
 
 .item-hint {
     height: 25px;
-    border-top: solid 1px #ededed;
     margin: auto;
     padding-left: 11px;
     padding-top: 2px;
-    background-color: #ededed;
+    background-color: #eaeaea;
     color: #999999;
     font-size: 12px;
-    box-shadow: inset 0 2px 5px #ededee;
 
 }
 
@@ -307,11 +330,21 @@ body {
     background-color: #ededed;
     padding: 5px 10px 5px 10px;
     border: solid 1px #ededed;
-    margin: 10px 5px 5px 10px;
+    margin: 10px 5px 10px 10px;
     border-radius: 5px;
     font-size: 14px;
+    color: #999999;
 }
 
+.hasOpenShop{
+    background-color: #ef5356;
+    color: #ffffff;
+}
+
+.hasNoOpenShop{
+    background-color: #eaeaea;
+    color: #999999;
+}
 
 .shopItem {
 
@@ -320,7 +353,7 @@ body {
 .shopItemStatusOpen {
     display: inline-block;
     float: right;
-    font-size: 14px;
+    font-size: 12px;
     color: #ffffff;
     background-color: #ef5356;
     padding: 2px 5px 2px 5px;
@@ -330,11 +363,20 @@ body {
 .shopItemStatusClosed {
     display: inline-block;
     float: right;
-    font-size: 14px;
+    font-size: 12px;
     color: #ffffff;
     background-color: #a6a6a6;
     padding: 2px 5px 2px 5px;
     border-radius: 4px
+}
+
+.shopsInCommunity {
+    padding: 10px;
+    display: none;
+}
+
+.shopsInCommunity:before {
+
 }
 
 /* shop list star ratings*/
@@ -359,7 +401,6 @@ ul.rating li {
 ul.rating li i {
     font-size: 12px;
 }
-
 
 /* search page */
 .search-box {
@@ -391,6 +432,26 @@ ul.rating li i {
     padding: 5px 10px 0px 10px;
 }
 
+/* community list*/
+.communityList {
+
+    padding-top: 2px;
+    padding-left: 2px;
+    padding-bottom: 2px;
+    padding-right: 2px;
+    margin-bottom: 5px;
+    background-color: #ffffff;
+}
+
+
+.communityListSimple{
+
+    padding-top: 8px;
+    padding-left: 2px;
+    padding-bottom: 8px;
+    padding-right: 2px;
+    background-color: #ffffff;
+}
 /* home page - product list*/
 .homepageContent {
     position: absolute;
@@ -450,7 +511,6 @@ ul.rating li i {
     left: 27%;
     overflow: hidden;
 }
-
 
 .shoppingCartBadge {
     position: absolute;
@@ -587,7 +647,6 @@ ul.rating li i {
     margin-right: -5px;
 }
 
-
 .shop-product-list {
     background-color: #ffffff;
 }
@@ -616,7 +675,8 @@ ul.rating li i {
     position: relative;
     color: #ef5356;
 }
-.shop-categray-selected:before{
+
+.shop-categray-selected:before {
     content: "";
     position: absolute;
     left: 0;
@@ -626,7 +686,6 @@ ul.rating li i {
     background-color: #ef5356;
     color: #ef5356;
 }
-
 
 .shop-categray-item {
 
@@ -668,7 +727,6 @@ ul.rating li i {
 .shop-categray-item-selected {
     color: #ef5356;
 }
-
 
 /* address list */
 
@@ -780,10 +838,9 @@ ul.rating li i {
 
 }
 
-.addAddrHint{
+.addAddrHint {
     padding: 15px 20px 10px 20px;
 }
-
 
 /* shopping cart page*/
 
@@ -944,9 +1001,8 @@ ul.rating li i {
 .loadingIndicatorIcon {
     font-size: 35px !important;
     padding: 10px;
-    color: rgba(68,68,68,1.0);
+    color: rgba(68, 68, 68, 1.0);
 }
-
 
 /* checkout page*/
 .checkoutFooterBar {
@@ -968,7 +1024,7 @@ ul.rating li i {
     z-index: 500 !important;
 }
 
-.commonSelected:before{
+.commonSelected:before {
     font-size: 25px !important;
     width: 28px;
     height: 28px;
@@ -1058,7 +1114,7 @@ ul.rating li i {
     color: #6a6a6a;
 }
 
-.orderSnapshotItemPrice{
+.orderSnapshotItemPrice {
     position: absolute;
     bottom: 20;
     left: 85;
@@ -1081,7 +1137,7 @@ ul.rating li i {
     margin-top: 10px;
 }
 
-.orderSnapshotRemark{
+.orderSnapshotRemark {
     display: inline-block;
     width: 100%;
     padding: 15px 0px 5px;

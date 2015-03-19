@@ -164,17 +164,16 @@ public class OrderController {
         if (!ok) {
             return "@" + Constants.LEAKERROR;
         }
-        //库存变化 TODO
-
-        for (Item4V it : itemls) {
-            int count = it.getCount();
-            long s_id = it.getShop_id();
-            long i_id = it.getId();
-            JSONObject jb = new JSONObject();
-
-            itemsDAO.decr(SUtils.generTableName(s_id), s_id, i_id, count);
-            LoggerUtils.getInstance().log(String.format(" item  %d   decr %d", i_id, count));
-        }
+        //库存变化 不再处理库存
+//        for (Item4V it : itemls) {
+//            int count = it.getCount();
+//            long s_id = it.getShop_id();
+//            long i_id = it.getId();
+//            JSONObject jb = new JSONObject();
+//
+//            itemsDAO.decr(SUtils.generTableName(s_id), s_id, i_id, count);
+//            LoggerUtils.getInstance().log(String.format(" item  %d   decr %d", i_id, count));
+//        }
         Order order = new Order();
         order.setOrder_id(order_id);
         order.setShop_id(shop_id);

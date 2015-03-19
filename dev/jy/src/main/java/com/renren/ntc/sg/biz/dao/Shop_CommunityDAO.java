@@ -40,4 +40,8 @@ public interface Shop_CommunityDAO {
 
     @SQL("delete from "+ TABLE_NAME + " where shop_id=:1 and community_id=:2 " )
     public void del(long shop_id, long c_id);
+
+
+    @SQL("select shop_id  from " + TABLE_NAME + " where community_id = :1")
+    public void getCmmy(long shop_id);
 }
