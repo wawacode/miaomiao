@@ -174,7 +174,6 @@
                         MMUtils.showAlert('生成订单失败，请重新购买');
                     })
             }else if(selectCheckoutType.id == CheckoutTypeEnum.CHECKOUTTYPE_WXPAY){
-                    MMUtils.showAlert('wip');
 
 //                httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
 //                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {

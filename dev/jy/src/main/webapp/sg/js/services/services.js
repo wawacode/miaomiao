@@ -374,6 +374,45 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
         }
 
         /*
+         * These functions implement the four basic operations the algorithm uses.
+         */
+        function md5_cmn(q, a, b, x, s, t)
+        {
+            return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);
+        }
+        function md5_ff(a, b, c, d, x, s, t)
+        {
+            return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+        }
+        function md5_gg(a, b, c, d, x, s, t)
+        {
+            return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+        }
+        function md5_hh(a, b, c, d, x, s, t)
+        {
+            return md5_cmn(b ^ c ^ d, a, b, x, s, t);
+        }
+        function md5_ii(a, b, c, d, x, s, t)
+        {
+            return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+        }
+
+        /*
+         * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+         * to work around bugs in some JS interpreters.
+         */
+        function safe_add(x, y)
+        {
+            var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+            var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+            return (msw << 16) | (lsw & 0xFFFF);
+        }
+
+        function bit_rol(num, cnt)
+        {
+            return (num << cnt) | (num >>> (32 - cnt));
+        }
+        /*
          * Convert an array of little-endian words to a string
          */
         function binl2rstr(input) {
