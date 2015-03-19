@@ -6,8 +6,6 @@
     <meta name="format-detection" content="telephone=no">
 
     <link href="/css/ionic.min.css" rel="stylesheet">
-    <link href="/js/ionic-rating/ionic-rating.css" rel="stylesheet">
-
     <link href="/css/app-ui-min.css?version=1.0.6" rel="stylesheet">
 
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
@@ -15,7 +13,6 @@
     <script type="text/javascript" src="/js/bower_components/quick-ng-repeat/quick-ng-repeat.js"></script>
     <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
     <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
-    <script type="text/javascript" src="/js/ionic-rating/ionic-rating.min.js"></script>
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
 
     <script src="/sg/js/compress/app-ui-min.js?version=1.0.6" type="text/javascript"></script>
@@ -793,7 +790,6 @@
 
             <div style="display: inline-block;margin-left: 6px">
                 <span style="color: #ef5356;font-size: 12px" ng-if="item.remark" bo-text="item.remark"></span>
-                <!--<rating ng-model="item.rate" max="item.maxRate" readonly></rating>-->
             </div>
             <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }"
                     bo-text="item.status | getShopStatusString ">
