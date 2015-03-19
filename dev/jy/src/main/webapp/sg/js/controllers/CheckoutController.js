@@ -175,37 +175,51 @@
                     })
             }else if(selectCheckoutType.id == CheckoutTypeEnum.CHECKOUTTYPE_WXPAY){
 
-//                httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
-//                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
-//
-//                        $ionicLoading.hide();
-//
-//                        var code = data.code, dataDetail = data.data;
-//                        if (code == 500) {
-//                            MMUtils.showAlert('生成订单失败，请重新购买:' + data.msg);
-//                            return;
-//                        } else if (code == 100) {
-//                            MMUtils.showAlert('部分商品不足，请重新购买:' + data.msg);
-//                            return;
-//                        }
-//
-//                        // clear all shopping cart
-//                        ShoppingCart.clearAll();
-//
-//                        updateShoppingCart();
-//
-//                        $state.go('myOrders', null, {reload: true});
-//
-//                    }, function (data, status) {
-//                        $ionicLoading.hide();
-//                        MMUtils.showAlert('生成订单失败，请重新购买');
-//                    });
+                function onWeixinPaySuccess(){
+                    // clear all shopping cart
+                    ShoppingCart.clearAll();
 
-                    WeiChatPay.chooseWXPay(function(){
-                        MMUtils.showAlert('微信支付成功');
-                    },function(){
-                        MMUtils.showAlert('微信支付失败');
-                    })
+                    updateShoppingCart();
+
+                    $state.go('myOrders', null, {reload: true});
+                }
+
+                httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
+                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
+
+                        $ionicLoading.hide();
+
+                        var code = data.code, dataDetail = data.data;
+                        if (code == 500) {
+                            MMUtils.showAlert('生成订单失败，请重新购买:' + data.msg);
+                            return;
+                        } else if (code == 100) {
+                            MMUtils.showAlert('部分商品不足，请重新购买:' + data.msg);
+                            return;
+                        }
+
+                        dataDetail = {'prepay_id':'001','total_fee':100};
+
+                        MMUtils.showLoadingIndicator('请稍候...',$scope);
+
+                        WeiChatPay.chooseWXPay(dataDetail,function(){
+
+                            $ionicLoading.hide();
+
+                        },function(){
+
+                            MMUtils.showAlert('微信支付成功');
+                            onWeixinPaySuccess();
+
+                        },function(){
+                            MMUtils.showAlert('微信支付失败');
+                        })
+
+                    }, function (data, status) {
+                        $ionicLoading.hide();
+                        MMUtils.showAlert('生成订单失败，请重试');
+                    });
+
             }
 
         };
