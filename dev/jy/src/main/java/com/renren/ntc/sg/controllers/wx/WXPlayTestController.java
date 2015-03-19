@@ -25,7 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
-@Path("wxplay")
+@Path("wxpay")
 public class WXPlayTestController {
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
