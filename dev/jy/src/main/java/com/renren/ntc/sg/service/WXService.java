@@ -33,8 +33,7 @@ public class WXService {
 	private static final int RETRY = 2;
     private  static  final String OAUTH_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={appId}&secret={appKey}&code={code}&grant_type=authorization_code";
 
-    private  static  final String JSAPI = "https://api.weixin.qq.com/cgAi-bin/ticket/getticket?access_token={access_token}&type=jsap";
-
+    private  static  final String JSAPI = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={access_token}&type=jsapi";
 
     public  String  getOpenId (String code ){
         String openId = null;
