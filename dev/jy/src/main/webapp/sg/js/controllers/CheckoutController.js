@@ -1,5 +1,7 @@
 ;angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService,ShopService, MMUtils) {
+    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup,
+                                          $http, $state, localStorageService, httpClient, ShoppingCart, AddressService,
+                                          OrderService,ShopService, MMUtils,WeiChatPay) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.shop = ShopService.getDefaultShop() || {};
@@ -9,6 +11,18 @@
         $scope.info.newOrderAddress = '';
         $scope.info.newOrderPhone = '';
         $scope.info.dataReady = false;
+
+        var CheckoutTypeEnum = {
+            CHECKOUTTYPE_CASH:01,
+            CHECKOUTTYPE_WXPAY:02,
+            CHECKOUTTYPE_ALIPAY:03
+        };
+
+        $scope.checkoutType = [{
+            'id': CheckoutTypeEnum.CHECKOUTTYPE_CASH,'name': '货到付款','selected':true
+        },{
+            'id': CheckoutTypeEnum.CHECKOUTTYPE_WXPAY,'name': '微信支付','selected':false
+        }];
 
         function checkOrders() {
 
@@ -56,6 +70,18 @@
             });
         }
 
+        $scope.selectCheckoutType = function(index){
+
+            for(var i=0;i< $scope.checkoutType.length;i++){
+                if(index != i){
+                    $scope.checkoutType[i].selected = false;
+                }
+            }
+
+            $scope.checkoutType[index].selected = true;
+
+            _updateCheckoutHintMessage();
+        };
 
         $scope.goToAddressList = function () {
             $state.go('addressList', null, { reload: true });
@@ -107,36 +133,82 @@
                 $scope.info.showAddNewAddress = false;
             }
 
-            MMUtils.showLoadingIndicator('正在生成订单,请稍候...',$scope);
+            var selectCheckoutType = $scope.checkoutType[0];
+            for(var i=0;i< $scope.checkoutType.length;i++){
+                if($scope.checkoutType[i].selected){
+                    selectCheckoutType = $scope.checkoutType[i];
+                    break;
+                }
+            }
 
-            httpClient.getOrderSave($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
-                $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
+            if(selectCheckoutType.id == CheckoutTypeEnum.CHECKOUTTYPE_CASH){
 
-                    $ionicLoading.hide();
+                MMUtils.showLoadingIndicator('正在生成订单,请稍候...',$scope);
 
-                    var code = data.code, dataDetail = data.data;
-                    if (code == 500) {
-                        MMUtils.showAlert('生成订单失败，请重新购买:' + data.msg);
-                        return;
-                    } else if (code == 100) {
-                        MMUtils.showAlert('部分商品不足，请重新购买:' + data.msg);
-                        return;
-                    }
+                httpClient.getOrderSave($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
+                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
 
-                    // clear all shopping cart
-                    ShoppingCart.clearAll();
+                        $ionicLoading.hide();
 
-                    updateShoppingCart();
+                        var code = data.code, dataDetail = data.data;
+                        if (code == 500) {
+                            MMUtils.showAlert('生成订单失败，请重新购买:' + data.msg);
+                            return;
+                        } else if (code == 100) {
+                            MMUtils.showAlert('部分商品不足，请重新购买:' + data.msg);
+                            return;
+                        }
 
-                    // goto order success
+                        // clear all shopping cart
+                        ShoppingCart.clearAll();
+
+                        updateShoppingCart();
+
+                        // goto order success
 //                    $state.go('orderSuccess');
 
-                    $state.go('myOrders', null, {reload: true});
+                        $state.go('myOrders', null, {reload: true});
 
-                }, function (data, status) {
-                    $ionicLoading.hide();
-                    MMUtils.showAlert('生成订单失败，请重新购买');
-                })
+                    }, function (data, status) {
+                        $ionicLoading.hide();
+                        MMUtils.showAlert('生成订单失败，请重新购买');
+                    })
+            }else if(selectCheckoutType.id == CheckoutTypeEnum.CHECKOUTTYPE_WXPAY){
+                    MMUtils.showAlert('wip');
+
+//                httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
+//                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
+//
+//                        $ionicLoading.hide();
+//
+//                        var code = data.code, dataDetail = data.data;
+//                        if (code == 500) {
+//                            MMUtils.showAlert('生成订单失败，请重新购买:' + data.msg);
+//                            return;
+//                        } else if (code == 100) {
+//                            MMUtils.showAlert('部分商品不足，请重新购买:' + data.msg);
+//                            return;
+//                        }
+//
+//                        // clear all shopping cart
+//                        ShoppingCart.clearAll();
+//
+//                        updateShoppingCart();
+//
+//                        $state.go('myOrders', null, {reload: true});
+//
+//                    }, function (data, status) {
+//                        $ionicLoading.hide();
+//                        MMUtils.showAlert('生成订单失败，请重新购买');
+//                    });
+
+                    WeiChatPay.chooseWXPay(function(){
+                        MMUtils.showAlert('微信支付成功');
+                    },function(){
+                        MMUtils.showAlert('微信支付失败');
+                    })
+            }
+
         };
 
 
@@ -170,12 +242,26 @@
             }
         }
 
+        function _getCheckoutTypeDisplayMessage(){
+
+            for(var i=0;i< $scope.checkoutType.length;i++){
+                if($scope.checkoutType[i].selected){
+                    return $scope.checkoutType[i].name;
+                }
+            }
+
+            return "货到付款";
+        }
+
+        function _updateCheckoutHintMessage(){
+            $scope.checkoutHintMessage = $scope.cartReadyToShip ? _getCheckoutTypeDisplayMessage() : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
+        }
 
         function updateShoppingCart() {
             $timeout(function () {
                 $scope.shoppingCartItems = ShoppingCart.getAllItems();
                 $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
-                $scope.checkoutHintMessage = $scope.cartReadyToShip ? "货到付款" : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
+                _updateCheckoutHintMessage();
             });
 
         }

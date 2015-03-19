@@ -75,6 +75,15 @@ body {
 
 }
 
+.borderBotton{
+
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid 1px #eaeaea;
+
+}
+
 .hidden {
     display: none !important;
 }

@@ -387,13 +387,9 @@
                     </div>
                     <div>
                         <div class="list">
-                            <div class="item item-icon-right" style="border: none">
-                                <div style="padding-left: 5px;font-size: 15px"> 货到付款</div>
-                                <div class="icon balanced ion-ios7-checkmark commonSelected" style="right: 25px"></div>
-                            </div>
-                            <div class="item item-icon-right" style="border: none">
-                                <div style="padding-left: 5px;font-size: 15px"> 微信支付</div>
-                                <div class="icon balanced ion-ios7-circle-outline commonSelected" style="right: 25px"></div>
+                            <div class="item item-icon-right borderBotton" style="margin-top: 1px" bindonce ng-repeat="checkt in checkoutType" ng-click="selectCheckoutType($index)">
+                                <div style="padding-left: 5px;font-size: 15px" bo-text="checkt.name"></div>
+                                <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':checkt.selected,'ion-ios7-circle-outline': !checkt.selected}"></div>
                             </div>
                         </div>
                     </div>
