@@ -181,7 +181,7 @@ function str2rstr_utf8(input) {
     }
     return output;
 }
-/*
+
 ;angular.module('miaomiao.shop').factory('WeiChatPay', function ($http) {
 
     if (!wx) {
@@ -313,6 +313,4 @@ function str2rstr_utf8(input) {
 
     return weiChatPayUtils;
 
-})
-;
-*/
+});

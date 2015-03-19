@@ -391,6 +391,10 @@
                                 <div style="padding-left: 5px;font-size: 15px"> 货到付款</div>
                                 <div class="icon balanced ion-ios7-checkmark commonSelected" style="right: 25px"></div>
                             </div>
+                            <div class="item item-icon-right" style="border: none">
+                                <div style="padding-left: 5px;font-size: 15px"> 微信支付</div>
+                                <div class="icon balanced ion-ios7-circle-outline commonSelected" style="right: 25px"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
