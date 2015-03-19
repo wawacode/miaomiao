@@ -7,6 +7,7 @@ import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.SMSService;
+import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
 import com.renren.ntc.sg.util.SHttpClient;
@@ -31,6 +32,8 @@ public class WXPlayTestController {
 
     @Autowired
     private NtcHostHolder  ntcHost ;
+    @Autowired
+    private WXService  wxService;
 
     private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
     private static String token = "tooooken";
@@ -164,60 +167,25 @@ public class WXPlayTestController {
         return "@json:" + respone.toJSONString();
     }
 
+    @Get("getjtk")
+    @Post("getjtk")
+    public String getjtk(Invocation inv){
+        String  js_ticket = wxService.getJS_ticket();
+        return "@" + js_ticket;
+    }
 
+    @Get("sign")
+    @Post("sign")
+    public String sign(Invocation inv){
+      SortedMap<String, String> packageParams = new TreeMap<String, String>();
+      String  sign =  createSign(packageParams);
+      return "@" + sign;
+     }
 
     public static void main(String[] args) {
-        String user_open_id = "oQfDLjmJTHCMo-b6gKECZWkTBUzc";
-        String  out_trade_no = "C123123213" ;
-        int  total_fee = 1000;
-        String  trade_type = "JSAPI";
-        String attach = "test";
-        String body = "test";
-        JSONObject  data = new JSONObject();
-        try {
-        SortedMap<String,String> map  = new TreeMap <String,String> ();
-        String nonce_str = Sha1Util.getNonceStr();
-        String timestamp = Sha1Util.getTimeStamp();
-        String spbill_create_ip = "123.56.102.224";
-        map.put("appid",appId);
-        map.put("attach",attach);
-        map.put("body",body);
-        map.put("mch_id",mch_id);
-        map.put("nonce_str",nonce_str);
-        map.put("notify_url",notify_url) ;
-        map.put("openid", user_open_id );
-        map.put("out_trade_no", out_trade_no );
-        map.put("spbill_create_ip", spbill_create_ip );
-        map.put("total_fee",total_fee + "") ;
-        map.put("trade_type", trade_type );
-        String sign =  createSign(map).toUpperCase()  ;
 
-        String content = TXT.replace("{appId}",appId);
-        content  = content.replace("{attach}",attach);
-        content  = content.replace("{body}",body);
-        content  = content.replace("{mch_id}",mch_id);
-        content  = content.replace("{nonce_str}",nonce_str);
-        content  = content.replace("{notify_url}",notify_url);
-        content  = content.replace("{openid}",user_open_id);
-        content  = content.replace("{out_trade_no}",out_trade_no);
-        content  = content.replace("{spbill_create_ip}",spbill_create_ip);
-        content  = content.replace("{total_fee}",total_fee+"");
-        content  = content.replace("{trade_type}",trade_type);
-        content  = content.replace("{sign}",sign);
-        System.out.println("send " + content);
-        TenpayHttpClient http = new TenpayHttpClient();
-        http.callHttpPost(URL,content);
-        String  res  = http.getResContent();
-        System.out.println( "wx rec " +  res );
-        String pre_id = getPrePay(res);
-
-        data.put("pre_id",pre_id) ;
-        data.put("appid",appId) ;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("@json:" + Constants.UKERROR);
-
-        }
+        WXService wx =  new WXService();
+        System.out.println(wx.getJS_ticket());
 
     }
 
