@@ -71,10 +71,11 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
 
     },function(){
         // may not be call api then
+        wx.config(config);
     });
 
     wx.error(function (res) {
-        MMUtils.alert('微信JS-API 配置失败：' + res);
+        MMUtils.showAlert('[DEBUG]微信JS-API 配置失败：' + res);
         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 
     });
