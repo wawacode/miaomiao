@@ -200,6 +200,11 @@
 
                         dataDetail = {'prepay_id':'001','total_fee':100};
 
+                        if(!WeiChatPay.chooseWXPay){
+                            MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
+                            return;
+                        }
+
                         MMUtils.showLoadingIndicator('请稍候...',$scope);
 
                         WeiChatPay.chooseWXPay(dataDetail,function(){

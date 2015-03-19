@@ -76,7 +76,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             getOrderPrepayInfo: function (shopId, addressId, address, phone, remarks, items, orderId, success, fail) {
 
-                return {'data':{},'code': 0};
+                return success({'data':{},'code': 0});
 
                 doPost('order/preSave?shop_id=' + shopId,
                     {'items': JSON.stringify(items), 'address_id': addressId,
@@ -87,16 +87,16 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             getJsapi_ticket:function(success, fail){
 
-                return success('stirng');
+//                return success('stirng');
 
-                doGet('pay/jsapiTicket', success, fail);
+                doGet('pay/jsapiTicket','', success, fail);
             },
 
             getHashFromServer:function(string, success, fail){
 
-                return success('stirng');
+//                return success('stirng');
 
-                doGet('pay/hash', success, fail);
+                doGet('pay/hash', string, success, fail);
             },
 
             getMyOrders: function (shopId, success, fail) {

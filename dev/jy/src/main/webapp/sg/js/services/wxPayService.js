@@ -116,6 +116,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
             };
 
             var string = this.getHashCondidate(info);
+            console.log(' hash string is:' + string);
 
             httpClient.getHashFromServer(string,function(data,status){
                 info.paySign = data.data;
@@ -143,7 +144,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
         };
 
     });
-    
+
     return weiChatPayUtils;
 
 });
