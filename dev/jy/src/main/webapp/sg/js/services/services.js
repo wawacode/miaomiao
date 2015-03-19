@@ -75,11 +75,29 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             },
 
             getOrderPrepayInfo: function (shopId, addressId, address, phone, remarks, items, orderId, success, fail) {
-                doPost('order/save?shop_id=' + shopId,
+
+                return success({'data':{},'code': 0});
+
+                doPost('order/preSave?shop_id=' + shopId,
                     {'items': JSON.stringify(items), 'address_id': addressId,
                         'address': address, 'phone': phone,
                         'remarks': remarks, 'order_id': orderId},
                     success, fail);
+            },
+
+            getJsapi_ticket:function(success, fail){
+
+                doGet('/wx/wxpay/getjtk','', success, fail);
+            },
+
+            getPageConfig:function(url, success, fail){
+
+                doGet('/wx/wxpay/getConfig','url=' + url, success, fail);
+            },
+
+            getHashFromServer:function(string,signType, success, fail){
+
+                doGet('/wx/wxpay/getHash', 'package=' + string + '&signType=' + signType,success, fail);
             },
 
             getMyOrders: function (shopId, success, fail) {

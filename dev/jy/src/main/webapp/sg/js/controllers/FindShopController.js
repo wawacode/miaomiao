@@ -227,7 +227,8 @@
             if (navigator.geolocation) {
                 var position_option = {
                     enableHighAccuracy: true,
-                    timeout: 10000
+                    timeout: 10000,
+                    maximumAge:0
                 };
 
                 MMUtils.showLoadingIndicator('正在重新定位',$scope);

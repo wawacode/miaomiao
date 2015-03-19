@@ -16,6 +16,21 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
         return Math.random().toString(36).substr(2, 15);
     };
 
+    weiChatPayUtils.getHashCondidate = function (params) {
+
+        var objKeys = Object.keys(params);
+        objKeys = objKeys.sort();// 默认字典序
+
+        var str = '';
+        for (var i = 0; i < objKeys.length; i++) {
+            str += objKeys[i].toLowerCase() + '=' + params[objKeys[i]] + '&';
+        }
+
+        var stringSignTemp = str + "key=" + wechatConfig.appsecret; //  our key
+
+        return stringSignTemp;
+    };
+
     weiChatPayUtils.getHash = function (params) {
 
         var objKeys = Object.keys(params);
@@ -23,11 +38,10 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
 
         var str = '';
         for (var i = 0; i < objKeys.length; i++) {
-            str += objKeys[i] + '=' + params[objKeys[i]] + '&';
+            str += objKeys[i].toLowerCase() + '=' + params[objKeys[i]] + '&';
         }
 
         var stringSignTemp = str + "key=" + wechatConfig.appsecret; //  our key
-        console.log('after sort the sing tmp is: ' + stringSignTemp);
 
         return MMUtils.hex_md5(stringSignTemp).toUpperCase();
     };
@@ -37,21 +51,27 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
     };
 
     var config = {
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-        appId: wechatConfig.appId, // 必填，公众号的唯一标识
-        timestamp: weiChatPayUtils.getTimestamp(), // 必填，生成签名的时间戳
-        nonceStr: weiChatPayUtils.getNonceStr() // 必填，生成签名的随机串
+//        'debug': true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        'appId': wechatConfig.appId, // 必填，公众号的唯一标识
+        'jsApiList': ['chooseWXPay']
     };
 
-    config.signature = weiChatPayUtils.getHash(config);// 必填，签名，见附录1
+    // config js-sdk for current page
+    httpClient.getPageConfig(window.location.href.split('#')[0], function (data, status) {
 
-    // step 1: config js-sdk
-//    httpClient.getJsapi_ticket
-//    wx.config(config);
+        var detail = data.data;
+
+        config.signature = detail.signature.toUpperCase();
+        config.nonceStr = detail.nonceStr;
+        config.timestamp = detail.timestamp;
+
+        wx.config(config);
+
+    }, function () {
+        // may not be call api then
+    });
 
     wx.error(function (res) {
-
-        MMUtils.alert('config 失败：' + res);
 
         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 
@@ -77,87 +97,49 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
             });
         };
 
+        weiChatPayUtils.chooseWXPay = function (info, beforeHandoverToWCPay, success, fail) {
 
-        //TODO: move this api call to server
-        weiChatPayUtils.unifiedorder = function (success, fail) {
-            var url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
+            var pkg = '';
+            for (var p in info) {
+                pkg += p + '=' + info[p] + '&';
+            }
 
-            // see http://pay.weixin.qq.com/wiki/doc/api/index.php?chapter=9_1
-            var params = {
-                appId: 'wx762f832959951212', // 必填，公众号的唯一标识
-                mch_id: '1233699402', //商户号
-                nonce_str: '',
-                sign: '',
-                body: '',
-                attach: '', // 附加数据，可以放置优惠券信息
-                out_trade_no: '', //商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
-                total_fee: '', // 订单总金额，只能为整数
-                spbill_create_ip: '', //APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
-                notify_url: '',
-                trade_type: 'JSAPI',
-                openid: '' //trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识
-            };
-
-            $http.post(url, params,
-                {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-                }).
-                success(function (data, status, headers, config) {
-                    //return_code : SUCCESS/FAIL
-                    console.log(data);
-                    success(data, status, headers, config)
-                }).
-                error(function (data, status, headers, config) {
-                    fail(data, status, headers, config)
-                });
-        };
-
-        weiChatPayUtils.chooseWXPay = function (success, fail) {
+            pkg = pkg.slice(0, -1);
 
             var info = {
-                "appId": wechatConfig.appId,
-                "timestamp": this.getTimestamp(), // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                "nonceStr": this.getNonceStr(), // 支付签名随机串，不长于 32 位
-                "package": 'prepay_id=test12121212', // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                "signType": 'MD5' // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                "signType": 'SHA1',
+                "package": pkg   // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
             };
 
-            info.paySign = this.getHash(info); // 支付签名
+            function onHashReady() {
 
-//                info.success = function (res) {
-//                    // 支付成功后的回调函数
-//                    if (res.err_msg == "get_brand_wcpay_request:ok") {
-//                        success(res);
-//                    } else{
-//                        fail(res);
-//                    }    // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-//                };
+                info.success = function (res) {
+                    // 支付成功后的回调函数
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        success(res);
+                    } else {
+                        fail(res);
+                    }    // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                };
 
-//            wx.chooseWXPay(info);
+                if (beforeHandoverToWCPay)beforeHandoverToWCPay();
 
-            function onBridgeReady() {
-                WeixinJSBridge.invoke(
-                    'getBrandWCPayRequest', info,
-                    function (res) {
-                        if (res.err_msg == "get_brand_wcpay_request:ok") {
-                            success(res);
-                        } else {
-                            fail(res);
-                        }
-                    }
-                );
+                wx.chooseWXPay(info);
             }
 
-            if (typeof WeixinJSBridge == "undefined") {
-                if (document.addEventListener) {
-                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-                } else if (document.attachEvent) {
-                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-                }
-            } else {
-                onBridgeReady();
-            }
+            httpClient.getHashFromServer(info['package'], info['signType'], function (data, status) {
+
+                var detail = data.data;
+
+                info.paySign = detail.signature.toUpperCase();
+                info.nonceStr = detail.nonceStr;
+                info.timestamp = detail.timestamp;
+
+                onHashReady();
+
+            }, function (data, status) {
+                fail();
+            });
         };
 
     });
