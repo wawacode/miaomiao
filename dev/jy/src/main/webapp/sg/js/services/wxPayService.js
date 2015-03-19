@@ -64,9 +64,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
     // config js-sdk for current page
     httpClient.getJsapi_ticket(function(data, status){
 
-        if(data && data.data && data.data.ticket){
-            config.signature = data.data.ticket;
-        }
+        config.signature = data;
         wx.config(config);
 
     },function(){

@@ -164,9 +164,6 @@
 
                         updateShoppingCart();
 
-                        // goto order success
-//                    $state.go('orderSuccess');
-
                         $state.go('myOrders', null, {reload: true});
 
                     }, function (data, status) {

@@ -87,16 +87,12 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             getJsapi_ticket:function(success, fail){
 
-//                return success('stirng');
-
-                doGet('pay/jsapiTicket','', success, fail);
+                doGet('/wx/wxpay/getjtk','', success, fail);
             },
 
             getHashFromServer:function(string, success, fail){
 
-//                return success('stirng');
-
-                doGet('pay/hash', string, success, fail);
+                doGet('/wx/wxpay/hash', string, success, fail);
             },
 
             getMyOrders: function (shopId, success, fail) {
