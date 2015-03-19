@@ -25,6 +25,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
+import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Formatter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.io.UnsupportedEncodingException;
+
+
 @Path("wxpay")
 public class WXPlayTestController {
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
@@ -180,6 +189,131 @@ public class WXPlayTestController {
       String  sign =  createSign(packageParams);
       return "@" + sign;
      }
+
+    @Get("getConfig")
+    @Post("getConfig")
+    public String getConfig(Invocation inv, @Param("url") String url) {
+
+        String nonce_str = create_nonce_str();
+        String timestamp = create_timestamp();
+        String string1;
+        String signature = "";
+
+        String  js_ticket = wxService.getJS_ticket();
+
+        //注意这里参数名必须全部小写，且必须有序
+        string1 = "jsapi_ticket=" + js_ticket +
+                "&noncestr=" + nonce_str +
+                "&timestamp=" + timestamp +
+                "&url=" + url;
+
+        System.out.println(string1);
+
+        try
+        {
+            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+            crypt.reset();
+            crypt.update(string1.getBytes("UTF-8"));
+            signature = byteToHex(crypt.digest());
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        JSONObject  respone = new JSONObject();
+        JSONObject  data = new JSONObject();
+
+        data.put("url", url);
+        data.put("jsapi_ticket", js_ticket);
+        data.put("nonceStr", nonce_str);
+        data.put("timestamp", timestamp);
+        data.put("signature", signature);
+
+        respone.put("code",0);
+        respone.put("data",data);
+
+        return "@json:" + respone.toJSONString();
+    }
+
+    @Get("getHash")
+    @Post("getHash")
+    public String getHash(Invocation inv, @Param("package") String pkg,@Param("signType") String signt) {
+
+        String nonce_str = create_nonce_str();
+        String timestamp = create_timestamp();
+        String string1;
+        String signature = "";
+
+        String  js_ticket = wxService.getJS_ticket();
+
+        //prepay_id 通过微信支付统一下单接口拿到，paySign 采用统一的微信支付 Sign 签名生成方法，
+        // 注意这里 appId 也要参与签名，appId 与 config 中传入的 appId 一致，
+        // 即最后参与签名的参数有appId, timeStamp, nonceStr, package, signType。
+
+
+        string1 = "appId=" + appId +
+                "&noncestr=" + nonce_str +
+                "&package=" + pkg +
+                "&signType=" + signt +
+                "&timestamp=" + timestamp;
+
+        System.out.println(string1);
+
+        try
+        {
+            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+            crypt.reset();
+            crypt.update(string1.getBytes("UTF-8"));
+            signature = byteToHex(crypt.digest());
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        JSONObject  respone = new JSONObject();
+        JSONObject  data = new JSONObject();
+
+        data.put("nonceStr", nonce_str);
+        data.put("timestamp", timestamp);
+        data.put("signature", signature);
+
+        respone.put("code",0);
+        respone.put("data",data);
+
+        return "@json:" + respone.toJSONString();
+    }
+
+    private static String byteToHex(final byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash)
+        {
+            formatter.format("%02x", b);
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
+    }
+
+    private static String create_nonce_str() {
+        return UUID.randomUUID().toString();
+    }
+
+    private static String create_timestamp() {
+        return Long.toString(System.currentTimeMillis() / 1000);
+    }
+
 
     public static void main(String[] args) {
 

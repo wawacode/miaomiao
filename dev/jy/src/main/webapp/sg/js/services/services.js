@@ -90,9 +90,14 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 doGet('/wx/wxpay/getjtk','', success, fail);
             },
 
-            getHashFromServer:function(string, success, fail){
+            getPageConfig:function(url, success, fail){
 
-                doGet('/wx/wxpay/hash', string, success, fail);
+                doGet('/wx/wxpay/getConfig','url=' + url, success, fail);
+            },
+
+            getHashFromServer:function(string,signType, success, fail){
+
+                doGet('/wx/wxpay/getHash', 'package=' + string + '&signType=' + signType,success, fail);
             },
 
             getMyOrders: function (shopId, success, fail) {
