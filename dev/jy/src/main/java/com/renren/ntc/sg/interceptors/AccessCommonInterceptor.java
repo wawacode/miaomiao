@@ -29,7 +29,8 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
 
     @Autowired
     private NtcHostHolder hostHolder;
-
+    @Autowired
+    private WXService wxService;
     @Autowired
     private UserService userService;
 
@@ -59,7 +60,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             String code = inv.getParameter("code");
             if( !StringUtils.isBlank(code)){
                 try {
-                String openId = WXService.getOpenId(code);
+                String openId =wxService .getOpenId(code);
                 userService.updateOpenId(u.getId(),openId);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -70,7 +71,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             String code = inv.getParameter("code");
             LoggerUtils.getInstance().log( "get wx code " + code);
             if( !StringUtils.isBlank(code)){
-                String openId = WXService.getOpenId(code);
+                String openId = wxService.getOpenId(code);
                 if(StringUtils.isBlank(openId)){
                     u  = userDAO.getUserByOpenId(openId);
                     if(null == u){
