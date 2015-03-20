@@ -17,14 +17,22 @@ angular.module('miaomiao.shop')
             CHECKOUTTYPE_ALIPAY: 03
         };
 
-        $scope.checkoutType = [
-            {
-                'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
-            },
-            {
-                'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false
-            }
-        ];
+        if($scope.shop.id == '10033'){
+            $scope.checkoutType = [
+                {
+                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
+                },
+                {
+                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false
+                }
+            ];
+        }else{
+            $scope.checkoutType = [
+                {
+                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
+                }
+            ];
+        }
 
         function checkOrders() {
 
