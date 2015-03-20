@@ -78,10 +78,10 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
                 return success({'data':{},'code': 0});
 
-                doPost('order/preSave?shop_id=' + shopId,
+                doPost('order/save?shop_id=' + shopId,
                     {'items': JSON.stringify(items), 'address_id': addressId,
                         'address': address, 'phone': phone,
-                        'remarks': remarks, 'order_id': orderId},
+                        'remarks': remarks, 'order_id': orderId,'act':'wx'},
                     success, fail);
             },
 
