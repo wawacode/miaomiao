@@ -88,6 +88,7 @@ public class WXService {
                  return jsciket;
              }
         String access_token =  getAccessToken();
+
         String ticket = "";
         String url = JSAPI.replace("{access_token}",access_token);
         try {
@@ -96,8 +97,10 @@ public class WXService {
             System.out.println("wx re" + s);
             JSONObject res = (JSONObject) JSON.parse(s);
             ticket   =  res.getString("ticket");
+            if(!StringUtils.isBlank(access_token) ){
             JRedisUtil.getInstance().set(JSAPI_TOKEN,ticket);
             JRedisUtil.getInstance().expire(JSAPI_TOKEN,4900);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,7 +109,7 @@ public class WXService {
 
     public String  getAccessToken(){
         String access_token = JRedisUtil.getInstance().get(ACCESS_TOKEN);
-        if(null == access_token){
+        if(StringUtils.isBlank(access_token)){
             byte [] t = new byte[0];
             try {
                 t = WXService.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
@@ -117,8 +120,10 @@ public class WXService {
                 }
                 JSONObject ob =(JSONObject) JSONObject.parse(e);
                 access_token =  ob.getString("access_token");
-                JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
-                JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
+                if(!StringUtils.isBlank(access_token) ){
+                   JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
+                   JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
