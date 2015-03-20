@@ -12,16 +12,16 @@
         $scope.info.newOrderPhone = '';
         $scope.info.dataReady = false;
 
-        var CheckoutTypeEnum = {
+        $scope.CheckoutTypeEnum = {
             CHECKOUTTYPE_CASH:01,
             CHECKOUTTYPE_WXPAY:02,
             CHECKOUTTYPE_ALIPAY:03
         };
 
         $scope.checkoutType = [{
-            'id': CheckoutTypeEnum.CHECKOUTTYPE_CASH,'name': '货到付款','selected':true
+            'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH,'name': '货到付款','selected':true
         },{
-            'id': CheckoutTypeEnum.CHECKOUTTYPE_WXPAY,'name': '微信支付','selected':false
+            'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY,'name': '微信支付','selected':false
         }];
 
         function checkOrders() {
@@ -141,7 +141,7 @@
                 }
             }
 
-            if(selectCheckoutType.id == CheckoutTypeEnum.CHECKOUTTYPE_CASH){
+            if(selectCheckoutType.id == $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH){
 
                 MMUtils.showLoadingIndicator('正在生成订单,请稍候...',$scope);
 
@@ -170,7 +170,7 @@
                         $ionicLoading.hide();
                         MMUtils.showAlert('生成订单失败，请重新购买');
                     })
-            }else if(selectCheckoutType.id == CheckoutTypeEnum.CHECKOUTTYPE_WXPAY){
+            }else if(selectCheckoutType.id == $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY){
 
                 function onWeixinPaySuccess(){
                     // clear all shopping cart
@@ -187,16 +187,12 @@
                         $ionicLoading.hide();
 
                         var code = data.code, dataDetail = data.data;
-                        if (code == 500) {
+                        if (code != 0) {
                             MMUtils.showAlert('生成订单失败，请重新购买:' + data.msg);
-                            return;
-                        } else if (code == 100) {
-                            MMUtils.showAlert('部分商品不足，请重新购买:' + data.msg);
                             return;
                         }
 
-                        dataDetail = {'prepay_id':'wx201410272009395522657a690389285100','total_fee':10,'out_trade_no':1414723227818375338,
-                            'partner':1900000109,'spbill_create_ip':'127.0.0.1'};
+                        dataDetail = {'prepay_id':dataDetail.pre_id};
 
                         if(!WeiChatPay.chooseWXPay){
                             MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
