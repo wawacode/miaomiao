@@ -1,5 +1,5 @@
 ;angular.module('miaomiao.shop').
-    controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout, ShopService ,httpClient, MMUtils) {
+    controller('LoadingCtrl', function ($scope, $ionicLoading, $http, $state, localStorageService, $timeout, ShopService ,httpClient, MMUtils,WeiChatPay) {
 
         $scope.info = {};
 
