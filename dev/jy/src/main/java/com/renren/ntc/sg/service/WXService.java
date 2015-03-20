@@ -182,8 +182,20 @@ public class WXService {
 
 
     public static void main(String[] args) throws IOException {
-        Object res = JSON.parse("{\"access_token\":\"OezXcEiiBSKSxW0eoylIeJ73JkSLxBH35eDvH8BHZg6Jq9c12WnoOvvrSP1q6j6PrE8nPbQk_yoqjyveHWeNq1DtVecLHrppEOapeDC128LLk7aSyZYw5s8kesKaWCAuUVeliAazerm0_6tS1fHlpA\",\"expires_in\":7200,\"refresh_token\":\"OezXcEiiBSKSxW0eoylIeJ73JkSLxBH35eDvH8BHZg6Jq9c12WnoOvvrSP1q6j6PoYqwyrLlR2bp_GvBlgB3FhoDRxcxRz5Nx_Qda0i7gvb3sBohI3hXqacII3AZaB-gaOasYfpRne5Ivf3bpjVT5A\",\"openid\":\"oQfDLjmZD7Lgynv6vuoBlWXUY_ic\",\"scope\":\"snsapi_base\"}");
-        ;;
-        System.out.println(res.toString());
+        WXService w = new WXService();
+        byte [] t = new byte[0];
+        try {
+            t = WXService.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
+                    "grant_type=client_credential&appid=" + appId + "&secret=" + appKey);
+            String e = new String(t);
+            if (StringUtils.isBlank(e)){
+            }
+            JSONObject ob =(JSONObject) JSONObject.parse(e);
+           String  access_token =  ob.getString("access_token");
+            JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
+            JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
