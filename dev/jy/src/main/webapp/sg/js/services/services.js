@@ -76,8 +76,6 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             getOrderPrepayInfo: function (shopId, addressId, address, phone, remarks, items, orderId, success, fail) {
 
-                return success({'data':{},'code': 0});
-
                 doPost('order/save?shop_id=' + shopId,
                     {'items': JSON.stringify(items), 'address_id': addressId,
                         'address': address, 'phone': phone,
