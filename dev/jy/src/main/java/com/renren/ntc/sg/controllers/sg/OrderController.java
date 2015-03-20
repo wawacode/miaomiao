@@ -181,7 +181,6 @@ public class OrderController {
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
         if("wx".equals(act)){
-
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,order_id,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
@@ -195,19 +194,23 @@ public class OrderController {
         data.put("order_id",order_id);
         response.put("data", data);
         response.put("code", 0);
-        return "@" + response.toJSONString();
+        return "@json:" + response.toJSONString();
     }
 
 
     @Get("pay_cb")
     @Post("pay_cb")
-    public String pay_cb(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id) {
+    public String pay_cb(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("msg") String msg) {
         if(StringUtils.isBlank(order_id) || shop_id ==0  ){
              return "@json:"+Constants.PARATERERROR;
         }
         Shop shop = shopDAO.getShop(shop_id);
         if ( null == shop ){
             return "@json:"+Constants.PARATERERROR;
+        }
+        LoggerUtils.getInstance().log(String.format(" pay_cb shop  %d  order %s  msg %s ",order_id,msg));
+        if ("paydone".equals(msg)){
+            ordersDAO.paydone(4,order_id);
         }
 
         return "@json:"+Constants.DONE;
