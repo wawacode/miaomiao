@@ -187,8 +187,9 @@ public class OrderController {
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
                 return "@" + Constants.UKERROR;
             }
+            data.put("js_ticket",js_id) ;
             data.put("pre_id",pre_id) ;
-            data.put("out_trade_no",price) ;
+            data.put("out_trade_no",order_id) ;
             data.put("total_fee",price) ;
         }
         data.put("order_id",order_id);
