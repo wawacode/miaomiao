@@ -192,8 +192,7 @@
                             return;
                         }
 
-                        dataDetail = {'prepay_id':'wx201410272009395522657a690389285100','total_fee':10,'out_trade_no':1414723227818375338,
-                            'partner':1900000109,'spbill_create_ip':'127.0.0.1'};
+                        dataDetail = {'prepay_id':dataDetail.pre_id};
 
                         if(!WeiChatPay.chooseWXPay){
                             MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
