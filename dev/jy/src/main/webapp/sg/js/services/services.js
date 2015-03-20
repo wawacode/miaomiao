@@ -82,6 +82,12 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                         'remarks': remarks, 'order_id': orderId,'act':'wx'},
                     success, fail);
             },
+            updateOrderStatus: function (shopId, orderId,msg, success, fail) {
+
+                doPost('order/pay_cb?shop_id=' + shopId,
+                    {'order_id': orderId,'msg':msg},
+                    success, fail);
+            },
 
             getJsapi_ticket:function(success, fail){
 

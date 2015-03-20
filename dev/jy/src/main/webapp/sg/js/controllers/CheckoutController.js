@@ -1,7 +1,6 @@
-;angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup,
-                                          $http, $state, localStorageService, httpClient, ShoppingCart, AddressService,
-                                          OrderService,ShopService, MMUtils,WeiChatPay) {
+;
+angular.module('miaomiao.shop')
+    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService, ShopService, MMUtils, WeiChatPay) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.shop = ShopService.getDefaultShop() || {};
@@ -13,22 +12,25 @@
         $scope.info.dataReady = false;
 
         $scope.CheckoutTypeEnum = {
-            CHECKOUTTYPE_CASH:01,
-            CHECKOUTTYPE_WXPAY:02,
-            CHECKOUTTYPE_ALIPAY:03
+            CHECKOUTTYPE_CASH: 01,
+            CHECKOUTTYPE_WXPAY: 02,
+            CHECKOUTTYPE_ALIPAY: 03
         };
 
-        $scope.checkoutType = [{
-            'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH,'name': '货到付款','selected':true
-        },{
-            'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY,'name': '微信支付','selected':false
-        }];
+        $scope.checkoutType = [
+            {
+                'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
+            },
+            {
+                'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false
+            }
+        ];
 
         function checkOrders() {
 
             $scope.info.remarks = "";
 
-            MMUtils.showLoadingIndicator('正在查看库存,请稍候...',$scope);
+            MMUtils.showLoadingIndicator('正在查看库存,请稍候...', $scope);
 
             httpClient.getConfirmCartList($scope.shop.id, ShoppingCart.getAllItems(), function (data, status) {
 
@@ -70,10 +72,10 @@
             });
         }
 
-        $scope.selectCheckoutType = function(index){
+        $scope.selectCheckoutType = function (index) {
 
-            for(var i=0;i< $scope.checkoutType.length;i++){
-                if(index != i){
+            for (var i = 0; i < $scope.checkoutType.length; i++) {
+                if (index != i) {
                     $scope.checkoutType[i].selected = false;
                 }
             }
@@ -134,16 +136,16 @@
             }
 
             var selectCheckoutType = $scope.checkoutType[0];
-            for(var i=0;i< $scope.checkoutType.length;i++){
-                if($scope.checkoutType[i].selected){
+            for (var i = 0; i < $scope.checkoutType.length; i++) {
+                if ($scope.checkoutType[i].selected) {
                     selectCheckoutType = $scope.checkoutType[i];
                     break;
                 }
             }
 
-            if(selectCheckoutType.id == $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH){
+            if (selectCheckoutType.id == $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH) {
 
-                MMUtils.showLoadingIndicator('正在生成订单,请稍候...',$scope);
+                MMUtils.showLoadingIndicator('正在生成订单,请稍候...', $scope);
 
                 httpClient.getOrderSave($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
                     $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
@@ -170,48 +172,71 @@
                         $ionicLoading.hide();
                         MMUtils.showAlert('生成订单失败，请重新购买');
                     })
-            }else if(selectCheckoutType.id == $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY){
+            } else if (selectCheckoutType.id == $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY) {
 
-                function onWeixinPaySuccess(){
+                function onWeixinPaySuccess(shopId, orderId, message) {
                     // clear all shopping cart
-                    ShoppingCart.clearAll();
 
-                    updateShoppingCart();
+                    httpClient.updateOrderStatus(shopId, orderId, message, function (data, status) {
 
-                    $state.go('myOrders', null, {reload: true});
+                        ShoppingCart.clearAll();
+
+                        updateShoppingCart();
+
+                        $state.go('myOrders', null, {reload: true});
+
+                    }, function (data, status) {
+
+                        MMUtils.showAlert('支付成功，但是订单出现未知错误');
+                        return;
+                    })
                 }
+
+                function onWeixinPayFailed(shopId, orderId, message) {
+
+                    httpClient.updateOrderStatus(shopId, orderId, message, function (data, status) {
+                        console.log('订单出现未知错误');
+                        return;
+                    }, function (data, status) {
+
+                    });
+                };
 
                 httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
                     $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
 
                         $ionicLoading.hide();
 
-                        var code = data.code, dataDetail = data.data;
+                        var code = data.code, dataDetail = data.data, order_id, cbMessage, pkg;
                         if (code != 0) {
                             MMUtils.showAlert('生成订单失败，请重新购买:' + data.msg);
                             return;
                         }
 
-                        dataDetail = {'prepay_id':dataDetail.pre_id};
+                        order_id = dataDetail.order_id;
+                        pkg = {'prepay_id': dataDetail['pre_id']};
 
-                        if(!WeiChatPay.chooseWXPay){
+
+                        if (!WeiChatPay.chooseWXPay) {
                             MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
                             return;
                         }
 
-                        MMUtils.showLoadingIndicator('请稍候...',$scope);
+                        MMUtils.showLoadingIndicator('请稍候...', $scope);
 
-                        WeiChatPay.chooseWXPay(dataDetail,function(){
+                        WeiChatPay.chooseWXPay(pkg, function () {
 
                             $ionicLoading.hide();
 
-                        },function(){
+                        }, function () {
 
                             MMUtils.showAlert('微信支付成功');
-                            onWeixinPaySuccess();
+                            onWeixinPaySuccess($scope.shop.id, order_id, 'paydone');
 
-                        },function(){
+                        }, function () {
                             MMUtils.showAlert('微信支付失败');
+                            //TODO: add failure message
+                            onWeixinPayFailed($scope.shop.id, order_id, '微信支付失败');
                         })
 
                     }, function (data, status) {
@@ -221,7 +246,8 @@
 
             }
 
-        };
+        }
+        ;
 
 
         function updateDefaultOrderAddress(addr) {
@@ -233,7 +259,7 @@
 
             } else {
                 // update from server
-                MMUtils.showLoadingIndicator('正在更新地址...',$scope);
+                MMUtils.showLoadingIndicator('正在更新地址...', $scope);
 
                 httpClient.getAddressList($scope.shop.id, function (data, status) {
 
@@ -254,10 +280,10 @@
             }
         }
 
-        function _getCheckoutTypeDisplayMessage(){
+        function _getCheckoutTypeDisplayMessage() {
 
-            for(var i=0;i< $scope.checkoutType.length;i++){
-                if($scope.checkoutType[i].selected){
+            for (var i = 0; i < $scope.checkoutType.length; i++) {
+                if ($scope.checkoutType[i].selected) {
                     return $scope.checkoutType[i].name;
                 }
             }
@@ -265,7 +291,7 @@
             return "货到付款";
         }
 
-        function _updateCheckoutHintMessage(){
+        function _updateCheckoutHintMessage() {
             $scope.checkoutHintMessage = $scope.cartReadyToShip ? _getCheckoutTypeDisplayMessage() : "差 " + ShoppingCart.cartNotReadyLeftPrice() + " 元起送";
         }
 
@@ -297,5 +323,7 @@
             updateShoppingCart();
             checkOrders();
         });
-    });
+    }
+)
+;
 
