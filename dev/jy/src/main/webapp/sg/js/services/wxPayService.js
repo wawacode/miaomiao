@@ -63,14 +63,15 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
 
         // config js-sdk for current page
         httpClient.getPageConfig(window.location.href.split('#')[0], function (data, status) {
+            if(data && data.data){
 
-            var detail = data.data;
+                var detail = data.data;
+                config.signature = detail.signature.toUpperCase();
+                config.nonceStr = detail.nonceStr;
+                config.timestamp = detail.timestamp;
 
-            config.signature = detail.signature.toUpperCase();
-            config.nonceStr = detail.nonceStr;
-            config.timestamp = detail.timestamp;
-
-            wx.config(config);
+                wx.config(config);
+            }
 
         }, function () {
             // may not be call api then

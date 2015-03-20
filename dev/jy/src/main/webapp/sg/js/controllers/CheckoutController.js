@@ -195,7 +195,7 @@
                             return;
                         }
 
-                        dataDetail = {'prepay_id':'001','total_fee':100,'out_trade_no':1414723227818375338,
+                        dataDetail = {'prepay_id':'wx201410272009395522657a690389285100','total_fee':10,'out_trade_no':1414723227818375338,
                             'partner':1900000109,'spbill_create_ip':'127.0.0.1'};
 
                         if(!WeiChatPay.chooseWXPay){
