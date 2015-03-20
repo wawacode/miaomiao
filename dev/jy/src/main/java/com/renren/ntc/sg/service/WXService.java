@@ -3,9 +3,12 @@ package com.renren.ntc.sg.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
+import com.renren.ntc.sg.util.wx.MD5Util;
+import com.renren.ntc.sg.util.wx.Sha1Util;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.*;
 
 @Service
 public class WXService {
@@ -34,6 +38,29 @@ public class WXService {
     private  static  final String OAUTH_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={appId}&secret={appKey}&code={code}&grant_type=authorization_code";
 
     private  static  final String JSAPI = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={access_token}&type=jsapi";
+
+    private static final String mch_id = "1233699402";
+    private static final String key = "210f760a89db30aa72ca258a3483cc7f";
+    private static final String  notify_url ="http:/www.mbianli.com/wx/cb";
+    private static final  String  trade_type = "JSAPI";
+    private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+
+
+    private static final String TXT = "<xml>\n" +
+            "   <appid>{appId}</appid>\n" +
+            "   <attach>{attach}</attach>\n" +
+            "   <body>{body}</body>\n" +
+            "   <mch_id>{mch_id}</mch_id>\n" +
+            "   <nonce_str>{nonce_str}</nonce_str>\n" +
+            "   <notify_url>{notify_url}</notify_url>\n" +
+            "   <openid>{openid}</openid>\n" +
+            "   <out_trade_no>{out_trade_no}</out_trade_no>\n" +
+            "   <spbill_create_ip>{spbill_create_ip}</spbill_create_ip>\n" +
+            "   <total_fee>{total_fee}</total_fee>\n" +
+            "   <trade_type>JSAPI</trade_type>\n" +
+            "   <sign>{sign}</sign>\n" +
+            "</xml>"  ;
+
 
     public  String  getOpenId (String code ){
         String openId = null;
@@ -197,5 +224,81 @@ public class WXService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {
+        String pre_id = "";
+        try {
+            SortedMap<String,String> map  = new TreeMap<String,String>();
+            String nonce_str = Sha1Util.getNonceStr();
+            String timestamp = Sha1Util.getTimeStamp();
+            String spbill_create_ip = "";
+            map.put("appid",appId);
+            map.put("attach",attach);
+            map.put("body",body);
+            map.put("mch_id",mch_id);
+            map.put("nonce_str",nonce_str);
+            map.put("notify_url",notify_url) ;
+            map.put("openid", open_id);
+            map.put("out_trade_no", out_trade_no );
+            map.put("spbill_create_ip", spbill_create_ip );
+            map.put("total_fee",total_fee + "") ;
+            map.put("trade_type", trade_type );
+            String sign =  createSign(map).toUpperCase()  ;
+            String content = TXT.replace("{appId}",appId);
+            content  = content.replace("{attach}",attach);
+            content  = content.replace("{body}",body);
+            content  = content.replace("{mch_id}",mch_id);
+            content  = content.replace("{nonce_str}",nonce_str);
+            content  = content.replace("{notify_url}",notify_url);
+            content  = content.replace("{openid}",open_id);
+            content  = content.replace("{out_trade_no}",out_trade_no);
+            content  = content.replace("{spbill_create_ip}",spbill_create_ip);
+            content  = content.replace("{total_fee}",total_fee+"");
+            content  = content.replace("{trade_type}",trade_type);
+            content  = content.replace("{sign}",sign);
+            System.out.println("send " + content);
+            TenpayHttpClient http = new TenpayHttpClient();
+            http.callHttpPost(URL,content);
+            String  res  = http.getResContent();
+            System.out.println( "wx rec " +  res );
+            pre_id = getPrePay(res);
+            if (StringUtils.isBlank(pre_id)){
+              return pre_id;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return pre_id;
+    }
+
+    private static String getPrePay(String res) {
+        String s = "<prepay_id><![CDATA[";
+        String e = "]]></prepay_id>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+    public static String createSign(SortedMap<String, String> packageParams) {
+        StringBuffer sb = new StringBuffer();
+        Set es = packageParams.entrySet();
+        Iterator it = es.iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String k = (String) entry.getKey();
+            String v = (String) entry.getValue();
+            if (null != v && !"".equals(v) && !"sign".equals(k)
+                    && !"key".equals(k)) {
+                sb.append(k + "=" + v + "&");
+            }
+        }
+        sb.append("key=" + key);
+        System.out.println("md5 sb:" + sb);
+        String sign = MD5Util.MD5Encode(sb.toString(), "utf-8")
+                .toUpperCase();
+        return sign;
     }
 }
