@@ -16,7 +16,7 @@ public class Test {
     public static void main (String [] args ){
 
         try {
-            System.out.println(new Date(1425745954604L));
+            System.out.println(URLEncoder.encode(":"));
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
