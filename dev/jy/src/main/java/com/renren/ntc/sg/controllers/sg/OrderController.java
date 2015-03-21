@@ -79,7 +79,7 @@ public class OrderController {
                        @Param("phone") String phone,
                        @Param("remarks") String remarks,
                        @Param("items") String items, @Param("act") String act) {
-
+        LoggerUtils.getInstance().log(String.format(" items %s ,act %s ",items,act));
         User u = holder.getUser();
         long user_id = 0;
         if (null != u) {
@@ -146,6 +146,7 @@ public class OrderController {
         String order_id = SUtils.getOrderId();
         LoggerUtils.getInstance().log(String.format("create new  order %s,  items %s  ", order_id, items));
         if (!ok) {
+            LoggerUtils.getInstance().log("order save return uk ");
             return "@" + Constants.LEAKERROR;
         }
         //库存变化 不再处理库存
@@ -171,6 +172,7 @@ public class OrderController {
         int re = ordersDAO.insertUpdate(order, SUtils.generOrderTableName(shop_id));
         int o = userOrdersDAO.insertUpdate(order, SUtils.generUserOrderTableName(user_id));
         if (re != 1 || o != 1) {
+            LoggerUtils.getInstance().log("order save return uk ");
             return "@" + Constants.UKERROR;
         }
         if("wx".equals(act)){
@@ -194,6 +196,7 @@ public class OrderController {
         data.put("order_id",order_id);
         response.put("data", data);
         response.put("code", 0);
+        LoggerUtils.getInstance().log("return " + response.toJSONString());
         return "@json:" + response.toJSONString();
     }
 
