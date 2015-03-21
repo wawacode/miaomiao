@@ -113,8 +113,8 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                 pkg = pkg.slice(0, -1);
 
                 var info = {
-                    "signType": 'SHA1',
-                    "package": pkg   // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                    "signType": 'MD5',
+                    "package": pkg  // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
                 };
 
                 function onHashReady() {
@@ -140,6 +140,8 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                     info.paySign = detail.signature.toUpperCase();
                     info.nonceStr = detail.nonceStr;
                     info.timestamp = detail.timestamp;
+
+                    window.alert('weixin pay info:' + JSON.stringify(info));
 
                     onHashReady();
 

@@ -245,52 +245,28 @@ public class WXPlayTestController {
     @Post("getHash")
     public String getHash(Invocation inv, @Param("package") String pkg,@Param("signType") String signt) {
 
-        String nonce_str = create_nonce_str();
-        String timestamp = create_timestamp();
-        String string1;
-        String signature = "";
-
-        String  js_ticket = wxService.getJS_ticket();
-
         //prepay_id 通过微信支付统一下单接口拿到，paySign 采用统一的微信支付 Sign 签名生成方法，
         // 注意这里 appId 也要参与签名，appId 与 config 中传入的 appId 一致，
         // 即最后参与签名的参数有appId, timeStamp, nonceStr, package, signType。
 
+        SortedMap<String,String> map  = new TreeMap <String,String> ();
+        String nonce_str = Sha1Util.getNonceStr();
+        String timestamp = Sha1Util.getTimeStamp();
 
-        string1 = "appId=" + appId +
-                "&nonceStr=" + nonce_str +
-                "&package=" + pkg +
-                "&signType=" + signt +
-                "&timeStamp=" + timestamp;
+        map.put("appId",appId);
+        map.put("nonceStr",nonce_str);
+        map.put("package",pkg);
+        map.put("signType", signt);
+        map.put("timeStamp", timestamp);
 
-        System.out.println(string1);
-
-        try
-        {
-
-            String signType = signt.equalsIgnoreCase("MD5")?"MD5": "SHA-1";
-
-            MessageDigest crypt = MessageDigest.getInstance(signType);
-            crypt.reset();
-            crypt.update(string1.getBytes("UTF-8"));
-            signature = byteToHex(crypt.digest());
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-        }
-
+        String sign =  createSign(map).toUpperCase();
 
         JSONObject  respone = new JSONObject();
         JSONObject  data = new JSONObject();
 
         data.put("nonceStr", nonce_str);
         data.put("timestamp", timestamp);
-        data.put("signature", signature);
+        data.put("signature", sign);
 
         respone.put("code",0);
         respone.put("data",data);
