@@ -31,8 +31,7 @@ public class WXPlayTestController {
 
     @Autowired
     private NtcHostHolder  ntcHost ;
-    @Autowired
-    private WXService  wxService;
+    private static WXService  wxService = new WXService();
 
     private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
     private static String token = "tooooken";

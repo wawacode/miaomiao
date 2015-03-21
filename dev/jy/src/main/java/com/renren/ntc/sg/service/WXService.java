@@ -15,7 +15,6 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
-@Service
 public class WXService {
 
 
