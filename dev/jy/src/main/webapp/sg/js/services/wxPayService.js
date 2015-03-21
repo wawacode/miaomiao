@@ -1,5 +1,5 @@
 ;
-angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, httpClient) {
+angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, httpClient,ShopService) {
 
     if (!wx) {
         console.log('Error' + "微信js-sdk 没有加载");
@@ -14,45 +14,13 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
         appsecret: '914f4388312ca90e4cb750b817d15368'
     };
 
-    weiChatPayUtils.getNonceStr = function () {
-        return Math.random().toString(36).substr(2, 15);
-    };
-
-    weiChatPayUtils.getHashCondidate = function (params) {
-
-        var objKeys = Object.keys(params);
-        objKeys = objKeys.sort();// 默认字典序
-
-        var str = '';
-        for (var i = 0; i < objKeys.length; i++) {
-            str += objKeys[i].toLowerCase() + '=' + params[objKeys[i]] + '&';
-        }
-
-        var stringSignTemp = str + "key=" + wechatConfig.appsecret; //  our key
-
-        return stringSignTemp;
-    };
-
-    weiChatPayUtils.getHash = function (params) {
-
-        var objKeys = Object.keys(params);
-        objKeys = objKeys.sort();// 默认字典序
-
-        var str = '';
-        for (var i = 0; i < objKeys.length; i++) {
-            str += objKeys[i].toLowerCase() + '=' + params[objKeys[i]] + '&';
-        }
-
-        var stringSignTemp = str + "key=" + wechatConfig.appsecret; //  our key
-
-        return MMUtils.hex_md5(stringSignTemp).toUpperCase();
-    };
-
-    weiChatPayUtils.getTimestamp = function () {
-        return parseInt(new Date().getTime() / 1000) + '';
-    };
-
     if(!hasBeenInit){
+
+        // TODO: remove this
+        var shop = ShopService.getDefaultShop() || {};
+        if(shop && shop.id != '10033'){
+            return weiChatPayUtils;
+        }
 
         // init the api
         var config = {
@@ -62,7 +30,8 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
         };
 
         // config js-sdk for current page
-        httpClient.getPageConfig(window.location.href.split('#')[0], function (data, status) {
+        var url = window.location.href.split('#')[0];
+        httpClient.getPageConfig(url, function (data, status) {
             if(data && data.data){
 
                 var detail = data.data;
