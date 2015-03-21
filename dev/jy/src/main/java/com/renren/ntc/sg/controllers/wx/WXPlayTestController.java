@@ -258,16 +258,19 @@ public class WXPlayTestController {
 
 
         string1 = "appId=" + appId +
-                "&noncestr=" + nonce_str +
+                "&nonceStr=" + nonce_str +
                 "&package=" + pkg +
                 "&signType=" + signt +
-                "&timestamp=" + timestamp;
+                "&timeStamp=" + timestamp;
 
         System.out.println(string1);
 
         try
         {
-            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+
+            String signType = signt.equalsIgnoreCase("MD5")?"MD5": "SHA-1";
+
+            MessageDigest crypt = MessageDigest.getInstance(signType);
             crypt.reset();
             crypt.update(string1.getBytes("UTF-8"));
             signature = byteToHex(crypt.digest());

@@ -113,7 +113,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                 pkg = pkg.slice(0, -1);
 
                 var info = {
-                    "signType": 'SHA1',
+                    "signType": 'MD5',
                     "package": pkg   // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
                 };
 
