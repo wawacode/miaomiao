@@ -122,6 +122,7 @@ public class OrderController {
             Item item = itemsDAO.getItem(SUtils.generTableName(shop_id), shop_id, item_id);
             //计算库存是否足够
             Item4V i4v = new Item4V();
+            i4v.setSerialNo(item.getSerialNo());
             i4v.setExt(count);
             i4v.setCount(count);
             i4v.setName(item.getName());
@@ -140,7 +141,7 @@ public class OrderController {
             }
             infos.add(JSON.toJSON(i4v));
             itemls.add(i4v);
-            sb.append(i4v.getName()).append(" 数量").append(i4v.getExt() + " ");
+            sb.append(i4v.getSerialNo()).append(" count").append(i4v.getExt() + " ");
             price += i4v.getPrice() * i4v.getExt();
         }
         String order_id = SUtils.getOrderId();
