@@ -111,7 +111,7 @@ public class WXService {
 
     public String  getAccessToken(){
         String access_token = JRedisUtil.getInstance().get(ACCESS_TOKEN);
-        if(StringUtils.isBlank(access_token)){
+        if(StringUtils.isBlank(access_token)|| "tooooken".equals(access_token)){
             byte [] t = new byte[0];
             try {
                 t = WXService.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
