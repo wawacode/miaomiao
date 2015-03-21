@@ -65,12 +65,43 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             getConfirmCartList: function (shopId, items, success, fail) {
                 doPost('shopCar/confirm?shop_id=' + shopId, {'items': JSON.stringify(items)}, success, fail);
             },
+
             getOrderSave: function (shopId, addressId, address, phone, remarks, items, orderId, success, fail) {
                 doPost('order/save?shop_id=' + shopId,
                     {'items': JSON.stringify(items), 'address_id': addressId,
                         'address': address, 'phone': phone,
                         'remarks': remarks, 'order_id': orderId},
                     success, fail);
+            },
+
+            getOrderPrepayInfo: function (shopId, addressId, address, phone, remarks, items, orderId, success, fail) {
+
+                doPost('order/save?shop_id=' + shopId,
+                    {'items': JSON.stringify(items), 'address_id': addressId,
+                        'address': address, 'phone': phone,
+                        'remarks': remarks, 'order_id': orderId,'act':'wx'},
+                    success, fail);
+            },
+            updateOrderStatus: function (shopId, orderId,msg, success, fail) {
+
+                doPost('order/pay_cb?shop_id=' + shopId,
+                    {'order_id': orderId,'msg':msg},
+                    success, fail);
+            },
+
+            getJsapi_ticket:function(success, fail){
+
+                doGet('/wx/wxpay/getjtk','', success, fail);
+            },
+
+            getPageConfig:function(url, success, fail){
+
+                doGet('/wx/wxpay/getConfig','url=' + url, success, fail);
+            },
+
+            getHashFromServer:function(string,signType, success, fail){
+
+                doGet('/wx/wxpay/getHash', 'package=' + string + '&signType=' + signType,success, fail);
             },
 
             getMyOrders: function (shopId, success, fail) {
@@ -302,7 +333,12 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                     title: message,
                     template: tmpUrl || ''
                 });
+            },
+
+            hex_md5:  function(s) {
+                return rstr2hex(rstr_md5(str2rstr_utf8(s)));
             }
-        }
+
+    }
     }]);
 

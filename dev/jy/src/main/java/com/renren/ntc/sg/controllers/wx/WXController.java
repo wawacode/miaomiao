@@ -66,7 +66,7 @@ public class WXController {
             "<Title><![CDATA[喵喵生活]]></Title> \n" +
             "<Description><![CDATA[关于喵喵]]></Description>\n" +
             "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
+            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fwx%2Fr&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
             "</item>\n" +
             "</Articles>\n" +
             "</xml> ";
@@ -99,6 +99,12 @@ public class WXController {
         }
         return "@" + echostr;
     }
+    @Get("r")
+    @Post("r")
+    public String r( Invocation inv) {
+        return "r:" + "http://www.mbianli.com/sg/loading#/shop?shop_id=10033";
+    }
+
     @Get("cb")
     @Post("cb")
     public String index( Invocation inv) {

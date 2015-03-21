@@ -31,6 +31,15 @@ public class Item4V {
     private  long   shop_id  = 0;
     private  String  name   = "";
 
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
+
+    private String serialNo = "";
 
 
     private  long  status = 0  ;
