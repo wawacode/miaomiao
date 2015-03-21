@@ -9,11 +9,13 @@ import com.renren.ntc.sg.util.SUtils;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+@Service
 public class WXService {
 
 
