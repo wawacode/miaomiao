@@ -92,9 +92,11 @@ public class WXService {
         String ticket = "";
         String url = JSAPI.replace("{access_token}",access_token);
         try {
+
             byte [] t = getURLData(url);
+            LoggerUtils.getInstance().log("get ticket wx call " + url);
             String s = SUtils.toString(t);
-            System.out.println("wx re" + s);
+            LoggerUtils.getInstance().log("get ticket wx re" + s);
             JSONObject res = (JSONObject) JSON.parse(s);
             ticket   =  res.getString("ticket");
             if(!StringUtils.isBlank(ticket) ){
@@ -109,7 +111,7 @@ public class WXService {
 
     public String  getAccessToken(){
         String access_token = JRedisUtil.getInstance().get(ACCESS_TOKEN);
-        if(StringUtils.isBlank(access_token)){
+        if(StringUtils.isBlank(access_token)|| "tooooken".equals(access_token)){
             byte [] t = new byte[0];
             try {
                 t = WXService.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
