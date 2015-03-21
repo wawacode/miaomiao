@@ -229,6 +229,7 @@ angular.module('miaomiao.shop')
                             MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
                             return;
                         }
+                        window.alert('the prepay_id is:' + JSON.stringify(pkg) + " and the order id is:" + order_id);
 
                         MMUtils.showLoadingIndicator('请稍候...', $scope);
 
