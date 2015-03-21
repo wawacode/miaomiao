@@ -94,7 +94,7 @@ public class WXService {
         try {
             byte [] t = getURLData(url);
             String s = SUtils.toString(t);
-            System.out.println("wx re" + s);
+            System.out.println("get ticket wx re" + s);
             JSONObject res = (JSONObject) JSON.parse(s);
             ticket   =  res.getString("ticket");
             if(!StringUtils.isBlank(ticket) ){
