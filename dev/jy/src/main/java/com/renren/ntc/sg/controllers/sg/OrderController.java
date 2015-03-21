@@ -176,7 +176,7 @@ public class OrderController {
             LoggerUtils.getInstance().log("order save return uk ");
             return "@" + Constants.UKERROR;
         }
-        if("wx".equals(act)){
+        if(!"wx".equals(act)){
             sendInfo(shop,order_id);
         }
 
