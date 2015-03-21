@@ -32,7 +32,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
         // config js-sdk for current page
         var url = window.location.href.split('#')[0];
         httpClient.getPageConfig(url, function (data, status) {
-            if(data && data.data){
+            if(data && data.data && data.data.signature){
 
                 var detail = data.data;
                 config.signature = detail.signature.toUpperCase();
