@@ -187,6 +187,7 @@ public class OrderController {
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,order_id,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
+                LoggerUtils.getInstance().log("order save return "+ js_id + " "+ pre_id  + " " );
                 return "@" + Constants.UKERROR;
             }
             data.put("js_ticket",js_id) ;
@@ -221,6 +222,9 @@ public class OrderController {
     }
 
     private void sendInfo( Shop shop ,String order_id){
+            if(shop.getId() == 10033){
+                return;
+            }
             smsService.sendSMS2LocPush(order_id, shop);
             pushService.send2locPush(order_id, shop);
             pushService.send2kf(order_id, shop);
