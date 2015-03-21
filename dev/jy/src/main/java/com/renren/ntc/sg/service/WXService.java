@@ -97,9 +97,9 @@ public class WXService {
             System.out.println("wx re" + s);
             JSONObject res = (JSONObject) JSON.parse(s);
             ticket   =  res.getString("ticket");
-            if(!StringUtils.isBlank(access_token) ){
-            JRedisUtil.getInstance().set(JSAPI_TOKEN,ticket);
-            JRedisUtil.getInstance().expire(JSAPI_TOKEN,4900);
+            if(!StringUtils.isBlank(ticket) ){
+               JRedisUtil.getInstance().set(JSAPI_TOKEN,ticket);
+               JRedisUtil.getInstance().expire(JSAPI_TOKEN,4900);
             }
         } catch (IOException e) {
             e.printStackTrace();
