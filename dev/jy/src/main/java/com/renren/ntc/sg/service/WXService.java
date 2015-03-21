@@ -92,9 +92,11 @@ public class WXService {
         String ticket = "";
         String url = JSAPI.replace("{access_token}",access_token);
         try {
+
             byte [] t = getURLData(url);
+            LoggerUtils.getInstance().log("get ticket wx call " + url);
             String s = SUtils.toString(t);
-            System.out.println("get ticket wx re" + s);
+            LoggerUtils.getInstance().log("get ticket wx re" + s);
             JSONObject res = (JSONObject) JSON.parse(s);
             ticket   =  res.getString("ticket");
             if(!StringUtils.isBlank(ticket) ){
