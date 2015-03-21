@@ -71,7 +71,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             LoggerUtils.getInstance().log( "get wx code " + code);
             if( !StringUtils.isBlank(code)){
                 String openId = WXService.getOpenId(code);
-                if(StringUtils.isBlank(openId)){
+                if(!StringUtils.isBlank(openId)){
                     u  = userDAO.getUserByOpenId(openId);
                     if(null == u){
                         String userName = SUtils.generName();
