@@ -9,6 +9,8 @@ import com.renren.ntc.sg.service.PrinterService;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -22,6 +24,20 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class SUtils {
+
+    public static String getBodyString(BufferedReader br) {
+        String inputLine;
+        String str = "";
+        try {
+            while ((inputLine = br.readLine()) != null) {
+                str += inputLine;
+            }
+            br.close();
+        } catch (IOException e) {
+            System.out.println("IOException: " + e);
+        }
+        return str;
+    }
 
     public static boolean online(long now, Shop shop) {
         Date open_time = shop.getOpen_time();

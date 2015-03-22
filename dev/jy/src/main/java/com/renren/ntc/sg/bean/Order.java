@@ -24,6 +24,16 @@ public class Order {
     private int status    ;
     private String info ;
 
+    public String getAct() {
+        return act;
+    }
+
+    public void setAct(String act) {
+        this.act = act;
+    }
+
+    private String act = "" ;
+
 
 
     private  int readed = 0;

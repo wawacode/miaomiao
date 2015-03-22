@@ -16,7 +16,7 @@ public class Test {
     public static void main (String [] args ){
 
         try {
-            System.out.println(URLEncoder.encode("www.mbianli.com:8088"));
+            System.out.println(URLEncoder.encode("/sg/loading#/findshop"));
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

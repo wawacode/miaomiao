@@ -150,16 +150,7 @@ public class OrderController {
             LoggerUtils.getInstance().log("error order save return uk ");
             return "@" + Constants.LEAKERROR;
         }
-        //库存变化 不再处理库存
-//        for (Item4V it : itemls) {
-//            int count = it.getCount();
-//            long s_id = it.getShop_id();
-//            long i_id = it.getId();
-//            JSONObject jb = new JSONObject();
-//
-//            itemsDAO.decr(SUtils.generTableName(s_id), s_id, i_id, count);
-//            LoggerUtils.getInstance().log(String.format(" item  %d   decr %d", i_id, count));
-//        }
+
         Order order = new Order();
         order.setOrder_id(order_id);
         order.setShop_id(shop_id);
@@ -188,12 +179,15 @@ public class OrderController {
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
         if("wx".equals(act)){
-            String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,order_id,sb.toString());
+            String attach = shop_id + "_" +user_id;
+            String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
                 LoggerUtils.getInstance().log("error order save return "+ js_id + " "+ pre_id  + " " );
                 return "@" + Constants.UKERROR;
             }
+            ordersDAO.updateWXPay(order_id,pre_id,act,SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateWXPay(order_id,pre_id,act,SUtils.generOrderTableName(user_id));
             data.put("js_ticket",js_id) ;
             data.put("pre_id",pre_id) ;
             data.put("out_trade_no",order_id) ;
@@ -210,7 +204,6 @@ public class OrderController {
     @Get("pay_cb")
     @Post("pay_cb")
     public String pay_cb(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("msg") String msg) {
-
         User u = holder.getUser();
         if(StringUtils.isBlank(order_id) || shop_id ==0  ){
              return "@json:"+Constants.PARATERERROR;
@@ -222,8 +215,7 @@ public class OrderController {
         }
         LoggerUtils.getInstance().log(String.format("user %s pay_cb shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,msg));
         if ("paydone".equals(msg)){
-            ordersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(u.getId()));
+            // do nothing
         }else{
             ordersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generOrderTableName(shop_id));
             userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(u.getId()));
