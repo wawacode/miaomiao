@@ -282,7 +282,7 @@ public class WXController {
     public String getOut_trade_no(String body){
         String str =  "<out_trade_no><![CDATA[" ;
         int start =body.indexOf(str);
-        int end =body.indexOf("]]></result_code>");
+        int end =body.indexOf("]]></out_trade_no>");
         if(start == -1 || end == -1){
             return "";
         }
@@ -537,10 +537,8 @@ public class WXController {
     }
 
     public static void main(String[] args) {
-          Set<java.lang.String>  ss =  JRedisUtil.getInstance().keys(PREFIX+"*");
-          for (String s :ss ){
-              System.out.println(s);
-          }
-
+        String CONTENT="<xml><appid><![CDATA[wx762f832959951212]]></appid><attach><![CDATA[10033_12459]]></attach><bank_type><![CDATA[CITIC_CREDIT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[1233699402]]></mch_id><nonce_str><![CDATA[01b36d0eae3771391455661b45834805]]></nonce_str><openid><![CDATA[oQfDLjmZD7Lgynv6vuoBlWXUY_ic]]></openid><out_trade_no><![CDATA[C201503222017230498949]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[6BFF12810DFD8E14A99115F0CC4A69FD]]></sign><time_end><![CDATA[20150322201730]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[1008640350201503220035656051]]></transaction_id></xml>";
+        WXController s = new WXController();
+        System.out.println(s.getOut_trade_no(CONTENT));
     }
 }
