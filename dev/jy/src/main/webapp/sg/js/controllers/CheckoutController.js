@@ -17,7 +17,7 @@ angular.module('miaomiao.shop')
             CHECKOUTTYPE_ALIPAY: 03
         };
 
-        if($scope.shop.id == '10033'){
+        if(ShopService.isWeixinEnabledShop($scope.shop)){
             $scope.checkoutType = [
                 {
                     'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true

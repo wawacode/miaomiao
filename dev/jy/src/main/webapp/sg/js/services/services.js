@@ -292,6 +292,10 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 },function(data, status){
                     fail(null);
                 })
+            },
+
+            isWeixinEnabledShop:function(shop){
+                return shop.id == '10033';
             }
         }
     }]).factory('MMUtils', ['$timeout', '$ionicLoading', '$ionicPopup', function ($timeout,$ionicLoading, $ionicPopup) {

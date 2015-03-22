@@ -18,7 +18,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
 
         // TODO: remove this
         var shop = ShopService.getDefaultShop() || {};
-        if(shop && shop.id != '10033'){
+        if(shop && !ShopService.isWeixinEnabledShop(shop)){
             return weiChatPayUtils;
         }
 
