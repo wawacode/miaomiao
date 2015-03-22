@@ -161,9 +161,9 @@ public class PrinterService {
         sb.append("================================\n");
         sb.append("支付方式:");
         if("wx".equals(o.getAct())){
-            sb.append("微信支付 \n");
+            sb.append("微信支付. \n");
         }else{
-            sb.append("货到付款 \n");
+            sb.append("货到付款. \n");
         }
         sb.append("================================\n");
         sb.append(o.getAddress() + " " +  o.getPhone() + "\n");
