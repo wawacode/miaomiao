@@ -223,9 +223,13 @@ public class OrderController {
             }catch (Exception e){
                 e.printStackTrace();
             }
+            if (null == om)  {
+               om = new JSONObject();
+            }
             om.put("confirm","done");
             ordersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(shop_id));
             userOrdersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(u.getId()));
+
         }
         return "@json:"+Constants.DONE;
     }
