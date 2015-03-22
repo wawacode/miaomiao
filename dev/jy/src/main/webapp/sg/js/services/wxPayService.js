@@ -91,7 +91,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                     info.success = function (res) {
                         // 支付成功后的回调函数
 
-                        if (res & res.errMsg == "chooseWXPay:ok") {
+                        if (res.errMsg == "chooseWXPay:ok") {
                             success(res.errMsg);
                         } else {
                             fail('支付失败:' + res.errMsg);
