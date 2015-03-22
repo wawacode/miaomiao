@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Path("")
@@ -108,6 +105,11 @@ public class WXController {
     @Get("cb")
     @Post("cb")
     public String index( Invocation inv) {
+        Map m =  inv.getRequest().getParameterMap();
+       Set <String > ss =  m.keySet();
+        for (String s  :ss){
+            LoggerUtils.getInstance().log(String.format("wx callback key %s , value %s" , s, m.get(s)));
+        }
         return "@" + Constants.DONE;
     }
 

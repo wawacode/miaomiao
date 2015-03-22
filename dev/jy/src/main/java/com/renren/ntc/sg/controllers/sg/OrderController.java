@@ -31,14 +31,14 @@ public class OrderController {
     public ShopDAO shopDAO;
 
     @Autowired
-    public OrdersDAO ordersDAO;
+    public OrdersDAO userOrdersDAOordersDAO;
 
 
     @Autowired
     public UserOrdersDAO userOrdersDAO;
 
     @Autowired
-    public OrdersDAO cDAO;
+    public OrdersDAO ordersDAO;
 
     @Autowired
     public NtcHostHolder holder;
@@ -168,7 +168,11 @@ public class OrderController {
         order.setRemarks(remarks);
         order.setInfo(infos.toJSONString());
         order.setSnapshot(items);
-        order.setStatus(1);         //已经确认的状态
+        if(!"wx".equals(act)){
+            order.setStatus(Constants.ORDER_WAIT_FOR_PRINT);         //已经确认的状态
+        }else {
+            order.setStatus(Constants.ORDER_PAY_PENDING);
+        }
         order.setUser_id(user_id);
         int re = ordersDAO.insertUpdate(order, SUtils.generOrderTableName(shop_id));
         int o = userOrdersDAO.insertUpdate(order, SUtils.generUserOrderTableName(user_id));
@@ -212,14 +216,18 @@ public class OrderController {
              return "@json:"+Constants.PARATERERROR;
         }
         Shop shop = shopDAO.getShop(shop_id);
+        Order order = ordersDAO.getOrder( order_id ,SUtils.generOrderTableName(shop_id));
         if ( null == shop ){
             return "@json:"+Constants.PARATERERROR;
         }
         LoggerUtils.getInstance().log(String.format("user %s pay_cb shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,msg));
         if ("paydone".equals(msg)){
-            ordersDAO.paydone(4,order_id);
+            ordersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(u.getId()));
+        }else{
+            ordersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(u.getId()));
         }
-
         return "@json:"+Constants.DONE;
     }
 
