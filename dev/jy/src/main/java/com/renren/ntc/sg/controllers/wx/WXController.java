@@ -213,7 +213,7 @@ public class WXController {
         String[] ids = attach.split("_");
         long user_id = 0 ;
         try{
-            user_id= Long.valueOf(ids[0]);
+            user_id= Long.valueOf(ids[1]);
         }catch (Exception e){
             e.printStackTrace();
         }

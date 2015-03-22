@@ -63,7 +63,7 @@ public interface UserOrdersDAO {
     public int  read(@SQLParam("tableName") String tableName, String order_id);
 
 
-    @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
+    @SQL("update ##(:tableName)  set status=:1 where order_id = :2 ")
     public void paydone(int status, String order_id,@SQLParam("tableName") String tableName);
 
     @SQL("update ##(:tableName)   set pre_id =:2 , act =:3 where order_id = :1 ")
