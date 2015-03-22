@@ -185,17 +185,16 @@ angular.module('miaomiao.shop')
                 function onWeixinPaySuccess(shopId, orderId, message) {
                     // clear all shopping cart
 
-                    httpClient.updateOrderStatus(shopId, orderId, message, function (data, status) {
-
+                    function gotoOrders(){
                         ShoppingCart.clearAll();
-
                         updateShoppingCart();
-
                         $state.go('myOrders', null, {reload: true});
+                    }
 
+                    httpClient.updateOrderStatus(shopId, orderId, message, function (data, status) {
+                        gotoOrders();
                     }, function (data, status) {
-
-                        MMUtils.showAlert('支付成功，但是订单出现未知错误');
+                        MMUtils.showAlert('支付成功，但是订单状态出现未知错误');
                         return;
                     })
                 }
@@ -224,12 +223,10 @@ angular.module('miaomiao.shop')
                         order_id = dataDetail.order_id;
                         pkg = {'prepay_id': dataDetail['pre_id']};
 
-
                         if (!WeiChatPay.chooseWXPay) {
                             MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
                             return;
                         }
-                        window.alert('the prepay_id is:' + JSON.stringify(pkg) + " and the order id is:" + order_id);
 
                         MMUtils.showLoadingIndicator('请稍候...', $scope);
 
@@ -242,21 +239,17 @@ angular.module('miaomiao.shop')
                             MMUtils.showAlert('微信支付成功');
                             onWeixinPaySuccess($scope.shop.id, order_id, 'paydone');
 
-                        }, function () {
-                            MMUtils.showAlert('微信支付失败');
-                            //TODO: add failure message
-                            onWeixinPayFailed($scope.shop.id, order_id, '微信支付失败');
+                        }, function (errMsg) {
+                            MMUtils.showAlert(errMsg);
+                            onWeixinPayFailed($scope.shop.id, order_id, '微信支付失败:' + errMsg);
                         })
 
                     }, function (data, status) {
                         $ionicLoading.hide();
                         MMUtils.showAlert('生成订单失败，请重试');
                     });
-
             }
-
-        }
-        ;
+        };
 
 
         function updateDefaultOrderAddress(addr) {

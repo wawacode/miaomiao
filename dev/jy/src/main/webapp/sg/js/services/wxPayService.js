@@ -91,9 +91,9 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                     info.success = function (res) {
                         // 支付成功后的回调函数
                         if (res.err_msg == "get_brand_wcpay_request:ok") {
-                            success(res);
+                            success(res.err_msg);
                         } else {
-                            fail(res);
+                            fail('微信支付失败:' + res.err_msg);
                         }    // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                     };
 
@@ -110,12 +110,10 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                     info.nonceStr = detail.nonceStr;
                     info.timestamp = detail.timestamp;
 
-                    window.alert('weixin pay info:' + JSON.stringify(info));
-
                     onHashReady();
 
                 }, function (data, status) {
-                    fail();
+                    fail('获取订单hash出错');
                 });
             };
 
