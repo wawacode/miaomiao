@@ -104,6 +104,10 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                         fail('支付失败:JS-API失败');
                     };
 
+                    info.cancel = function(res){
+                        fail('支付取消');
+                    };
+
                     if (beforeHandoverToWCPay)beforeHandoverToWCPay();
 
                     wx.chooseWXPay(info);
