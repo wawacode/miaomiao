@@ -162,6 +162,7 @@ public class OrderController {
         if(!"wx".equals(act)){
             order.setStatus(Constants.ORDER_WAIT_FOR_PRINT);         //已经确认的状态
         }else {
+            order.setAct(act);
             order.setStatus(Constants.ORDER_PAY_PENDING);
         }
         order.setUser_id(user_id);
@@ -187,7 +188,7 @@ public class OrderController {
                 return "@" + Constants.UKERROR;
             }
             ordersDAO.updateWXPay(order_id, pre_id, act, SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateWXPay(order_id, pre_id, act, SUtils.generOrderTableName(user_id));
+            userOrdersDAO.updateWXPay(order_id, pre_id, act, SUtils.generUserOrderTableName(user_id));
             data.put("js_ticket",js_id) ;
             data.put("pre_id",pre_id) ;
             data.put("out_trade_no",order_id) ;
