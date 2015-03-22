@@ -106,7 +106,7 @@ public class OrderController {
             sddressService.defaultAddress(address_id);
         }
         if (StringUtils.isBlank(items)) {
-            LoggerUtils.getInstance().log(String.format("can't find shop  %d  items %s", shop_id, items));
+            LoggerUtils.getInstance().log(String.format("error can't find shop  %d  items %s", shop_id, items));
             return "@" + Constants.PARATERERROR;
         }
         boolean ok = true;
@@ -145,9 +145,9 @@ public class OrderController {
             price += i4v.getPrice() * i4v.getExt();
         }
         String order_id = SUtils.getOrderId();
-        LoggerUtils.getInstance().log(String.format("create new  order %s,  items %s  ", order_id, items));
+        LoggerUtils.getInstance().log(String.format(" error create new  order %s,  items %s  ", order_id, items));
         if (!ok) {
-            LoggerUtils.getInstance().log("order save return uk ");
+            LoggerUtils.getInstance().log("error order save return uk ");
             return "@" + Constants.LEAKERROR;
         }
         //库存变化 不再处理库存
@@ -177,7 +177,7 @@ public class OrderController {
         int re = ordersDAO.insertUpdate(order, SUtils.generOrderTableName(shop_id));
         int o = userOrdersDAO.insertUpdate(order, SUtils.generUserOrderTableName(user_id));
         if (re != 1 || o != 1) {
-            LoggerUtils.getInstance().log("order save return uk ");
+            LoggerUtils.getInstance().log(" error order save return uk ");
             return "@" + Constants.UKERROR;
         }
         if(!"wx".equals(act)){
@@ -191,7 +191,7 @@ public class OrderController {
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,order_id,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
-                LoggerUtils.getInstance().log("order save return "+ js_id + " "+ pre_id  + " " );
+                LoggerUtils.getInstance().log("error order save return "+ js_id + " "+ pre_id  + " " );
                 return "@" + Constants.UKERROR;
             }
             data.put("js_ticket",js_id) ;
@@ -202,7 +202,7 @@ public class OrderController {
         data.put("order_id",order_id);
         response.put("data", data);
         response.put("code", 0);
-        LoggerUtils.getInstance().log("order save return " + response.toJSONString());
+        LoggerUtils.getInstance().log("error order save return " + response.toJSONString());
         return "@json:" + response.toJSONString();
     }
 

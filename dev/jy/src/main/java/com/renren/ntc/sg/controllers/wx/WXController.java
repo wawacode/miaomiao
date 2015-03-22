@@ -99,7 +99,7 @@ public class WXController {
     @Get("r")
     @Post("r")
     public String r( Invocation inv) {
-        return "r:" + "http://www.mbianli.com/sg/loading#/shop?shop_id=10033";
+        return "r:" + "http://www.mbianli.com:8088/sg/loading#/shop?shop_id=10033";
     }
 
     @Get("cb")
