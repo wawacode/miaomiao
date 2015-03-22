@@ -194,18 +194,19 @@ angular.module('miaomiao.shop')
                     httpClient.updateOrderStatus(shopId, orderId, message, function (data, status) {
                         gotoOrders();
                     }, function (data, status) {
-                        MMUtils.showAlert('支付成功，但是订单状态出现未知错误');
-                        return;
+                        // not shown error message, let server sync the order status
+                        // MMUtils.showAlert('支付成功，但是订单状态出现未知错误');
+                        gotoOrders();
                     })
                 }
 
                 function onWeixinPayFailed(shopId, orderId, message) {
 
                     httpClient.updateOrderStatus(shopId, orderId, message, function (data, status) {
-                        console.log('订单出现未知错误');
+                        console.log('订单状态更新成功');
                         return;
                     }, function (data, status) {
-
+                        console.log('订单状态更新失败');
                     });
                 };
 
@@ -234,13 +235,13 @@ angular.module('miaomiao.shop')
 
                             $ionicLoading.hide();
 
-                        }, function () {
+                        }, function (errMsg) {
 
                             MMUtils.showAlert('微信支付成功');
                             onWeixinPaySuccess($scope.shop.id, order_id, 'paydone');
 
                         }, function (errMsg) {
-                            MMUtils.showAlert(errMsg);
+                            MMUtils.showAlert('微信支付失败' + errMsg);
                             onWeixinPayFailed($scope.shop.id, order_id, '微信支付失败:' + errMsg);
                         })
 
