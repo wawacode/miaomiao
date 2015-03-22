@@ -26,6 +26,7 @@ public class JRedisUtil {
 
     private JRedisUtil() {
         jds = new Jedis("123.56.102.224") ;
+        jds = new Jedis("123.56.145.69") ;
     }
 
     public static JRedisUtil getInstance() {

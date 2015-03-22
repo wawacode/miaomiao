@@ -206,6 +206,8 @@ public class OrderController {
     @Get("pay_cb")
     @Post("pay_cb")
     public String pay_cb(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("msg") String msg) {
+
+        User u = holder.getUser();
         if(StringUtils.isBlank(order_id) || shop_id ==0  ){
              return "@json:"+Constants.PARATERERROR;
         }
@@ -213,7 +215,7 @@ public class OrderController {
         if ( null == shop ){
             return "@json:"+Constants.PARATERERROR;
         }
-        LoggerUtils.getInstance().log(String.format(" pay_cb shop  %d  order %s  msg %s ",order_id,msg));
+        LoggerUtils.getInstance().log(String.format("user %s pay_cb shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,msg));
         if ("paydone".equals(msg)){
             ordersDAO.paydone(4,order_id);
         }
