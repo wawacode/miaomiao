@@ -9,6 +9,7 @@ import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.SMSService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
+import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -84,7 +85,7 @@ public class WXController {
         HttpServletRequest request =  inv.getRequest();
         String body = "";
         try {
-             body = getBodyString(request.getReader());
+             body = SUtils.getBodyString(request.getReader());
              LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,10 +107,17 @@ public class WXController {
     @Post("cb")
     public String index( Invocation inv) {
         LoggerUtils.getInstance().log(String.format("wx  cb  call "));
+        String body = "";
+        try {
+            body = SUtils.getBodyString(inv.getRequest().getReader());
+            LoggerUtils.getInstance().log(String.format("wx  cb  call rec body %s  ", body));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Map m =  inv.getRequest().getParameterMap();
        Set <String > ss =  m.keySet();
         for (String s  :ss){
-            LoggerUtils.getInstance().log(String.format("wx callback key %s , value %s" , s, m.get(s)));
+            LoggerUtils.getInstance().log(String.format("wx callback key %s , value %s", s, m.get(s)));
         }
         return "@" + Constants.DONE;
     }
@@ -190,7 +198,7 @@ public class WXController {
         HttpServletRequest request =  inv.getRequest();
         String body = "";
         try {
-            body = getBodyString(request.getReader());
+            body = SUtils.getBodyString(request.getReader());
             LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
         } catch (IOException e) {
             e.printStackTrace();
@@ -301,19 +309,7 @@ public class WXController {
         return body.substring( 21 + start ,end);
     }
 
-    public static String getBodyString(BufferedReader br) {
-        String inputLine;
-        String str = "";
-        try {
-            while ((inputLine = br.readLine()) != null) {
-                str += inputLine;
-            }
-            br.close();
-        } catch (IOException e) {
-            System.out.println("IOException: " + e);
-        }
-        return str;
-    }
+
 
 
     @Get("rd")
