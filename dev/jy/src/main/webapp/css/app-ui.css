@@ -1067,6 +1067,17 @@ ul.rating li i {
 .orderListHeader {
     background-color: #EAEAEA;
     padding: 5px 5px 5px 20px;
+    position: relative;
+}
+
+.orderListHeader:before{
+    content: "";
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ef5356;
 }
 
 .order-list {
@@ -1079,16 +1090,16 @@ ul.rating li i {
     position: relative;
 }
 
-.order-items:after {
-    content: "";
-    position: absolute;
-    left: -20;
-    right: -20;
-    bottom: 0;
-    width: 110%;
-    height: 5px;
-    background-color: #eaeaea;
-}
+/*.order-items:after {*/
+    /*content: "";*/
+    /*position: absolute;*/
+    /*left: -20;*/
+    /*right: -20;*/
+    /*bottom: 0;*/
+    /*width: 120%;*/
+    /*height: 5px;*/
+    /*background-color: #eaeaea;*/
+/*}*/
 
 .orderSnapshotHeader {
     display: inline-block;
@@ -1156,10 +1167,16 @@ ul.rating li i {
 }
 
 .orderDate {
-    float: right;
+    float: left;
     font-size: 12px;
 }
 
+.orderPayType{
+    float: right;
+    font-size: 11px;
+    /*padding: 3px 5px 3px 5px;*/
+    /*border-radius: 4px;*/
+}
 .orderStatus {
 
     float: right;
