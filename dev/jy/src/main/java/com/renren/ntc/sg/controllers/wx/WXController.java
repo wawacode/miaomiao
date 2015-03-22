@@ -308,7 +308,7 @@ public class WXController {
             }
             if ("Vkefudianhua".equals(eventKey)){
                 LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
-                String response = CONTENT2.replace("{message}", MESSAGE_KEFU);
+                String response = MESSAGE_KEFU;
                 response = response.replace("{toUser}",fromUser);
                 response = response.replace("{fromUser}",toUser);
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
@@ -316,7 +316,7 @@ public class WXController {
             }
             if ("Vfuwufanwei".equals(eventKey)){
                 LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
-                String response = CONTENT2.replace("{message}", MESSAGE_FUWUFANWEI);
+                String response = MESSAGE_FUWUFANWEI;
                 response = response.replace("{toUser}",fromUser);
                 response = response.replace("{fromUser}",toUser);
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
@@ -324,7 +324,7 @@ public class WXController {
             }
             if ("Vcuidan".equals(eventKey)){
                 LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
-                String response = CONTENT2.replace("{message}", MESSAGE_CUIDAN);
+                String response = MESSAGE_CUIDAN;
                 response = response.replace("{toUser}",fromUser);
                 response = response.replace("{fromUser}",toUser);
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
