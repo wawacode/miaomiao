@@ -186,6 +186,8 @@ public class OrderController {
                 LoggerUtils.getInstance().log("error order save return "+ js_id + " "+ pre_id  + " " );
                 return "@" + Constants.UKERROR;
             }
+            ordersDAO.updateWXPay(order_id,pre_id,act,SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateWXPay(order_id,pre_id,act,SUtils.generOrderTableName(user_id));
             data.put("js_ticket",js_id) ;
             data.put("pre_id",pre_id) ;
             data.put("out_trade_no",order_id) ;

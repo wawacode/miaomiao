@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.wx;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.util.MD5Utils;
@@ -123,68 +124,58 @@ public class WXHttpClient {
         JSONObject button  = new JSONObject();
         button.put("type","view");
         button.put("name","我要下单");
-//        button.put("url","http://www.mbianli.com/sg/loading3" );
         button.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
         buttons.add(button);
 
-
         JSONObject button2  = new JSONObject();
-        button2.put("type","view");
-        button2.put("name","关于喵喵");
-//        button2.put("url","http://www.mbianli.com/sg/about");
-        button2.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Fabout&response_type=code&scope=snsapi_base&state=128#wechat_redirect" );
+        button2.put("name","我的");
+        JSONArray sub_button =  new JSONArray ();
+        JSONObject order   = new JSONObject();
+        order.put("name","我的订单");
+        order.put("type","view");
+        order.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
+                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Fmyorders&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+        sub_button.add(order);
 
-//        JSONObject button2  = new JSONObject();
-//        button2.put("type","click");
-//        button2.put("name","关于喵喵");
-//        button2.put("key","about_miaomiao" );
+//        JSONObject cuidan   = new JSONObject();
+//        cuidan.put("name","催单");
+//        cuidan.put("type","click");
+//        cuidan.put("key","Vcuidan");
+//        sub_button.add(cuidan);
+
+        JSONObject findshop  = new JSONObject();
+        findshop.put("name","切换店铺");
+        findshop.put("type","view");
+        findshop.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
+                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Ffindshop&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+        sub_button.add(findshop) ;
         buttons.add(button2);
+        button2.put("sub_button",sub_button);
+        JSONObject button3 = new JSONObject() ;
+        button3.put("name","关于喵喵") ;
+        JSONArray sub_button2 =  new JSONArray ();
+        JSONObject fuwofanwei   = new JSONObject();
+        fuwofanwei.put("name","服务范围");
+        fuwofanwei.put("type","click");
+        fuwofanwei.put("key","Vfuwufanwei");
+        sub_button2.add(fuwofanwei);
 
-//v2
-//        JSONObject  ob = new JSONObject();
-//        JSONArray buttons   = new JSONArray();
-//        JSONObject button  = new JSONObject();
-//        button.put("type","view");
-//        button.put("name","我要下单");
-//        button.put("url","http://www.mbianli.com/sg/loading" );
-//        buttons.add(button);
-//
-//
-//        JSONObject button2  = new JSONObject();
-//        button2.put("type","view");
-//        button2.put("name","个人中心");
-//        button2.put("url","http://www.mbianli.com/sg/loading#/myorders" );
-//        buttons.add(button2);
+        JSONObject yijianfankui   = new JSONObject();
+        yijianfankui.put("name","意见反馈");
+        yijianfankui.put("type","view");
+        yijianfankui.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
+                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Fabout&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+        sub_button2.add(yijianfankui);
+        JSONObject kefudianhua    = new JSONObject();
+        kefudianhua.put("name","客服电话");
+        kefudianhua.put("type","click");
+        kefudianhua.put("key","Vkefudianhua");
+        sub_button2.add(kefudianhua);
+
+        button3.put("sub_button",sub_button2);
+        buttons.add(button3);
 
         ob.put("button",buttons);
-
-        byte [] t = WXHttpClient.sendPostRequest(url,ob.toJSONString());
-        String e = new String(t);
-        System.out.println("rec data " + e );
-
-    }
-
-    public static  void createMenuxiaoguo(String access_token){
-        String url =  "https://api.weixin.qq.com/cgi-bin/menu/create?access_token={token}";
-        url = url.replace("{token}",access_token);
-        JSONObject  ob = new JSONObject();
-        JSONArray buttons   = new JSONArray();
-        JSONObject button  = new JSONObject();
-        button.put("type","view");
-        button.put("name","测试入口");
-        button.put("url","http://www.mbianli.com:8088/catstaff/test" );
-        buttons.add(button);
-
-
-        JSONObject button2  = new JSONObject();
-        button2.put("type","view");
-        button2.put("name","开店工具");
-        button2.put("url","http://www.mbianli.com/catstaff/test" );
-        buttons.add(button2);
-
-
-        ob.put("button",buttons);
-
         byte [] t = WXHttpClient.sendPostRequest(url,ob.toJSONString());
         String e = new String(t);
         System.out.println("rec data " + e );

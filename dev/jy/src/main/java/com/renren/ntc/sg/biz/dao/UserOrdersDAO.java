@@ -26,8 +26,8 @@ CREATE TABLE `items` (
 
 @DAO(catalog = "ABC")
 public interface UserOrdersDAO {
-    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,info ,snapshot,status,price,create_time,update_time" ;
-    static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks ,info,snapshot,status,price" ;
+    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,info ,snapshot,status,price,create_time,update_time" ;
+    static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks,act ,info,snapshot,status,price" ;
 
 	@SQL("select "+ FIELDS +" from ##(:tableName)   where user_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
 	public List<Order> getOrder(long user_id, int start, int offset, @SQLParam("tableName") String tableName);
@@ -38,7 +38,7 @@ public interface UserOrdersDAO {
 
 
     @SQL("insert into  ##(:tableName) (" + INSERT_FIELDS + ") values(:1.order_id,:1.readed,:1.shop_id," +
-            ":1.user_id,:1.address_id,:1.remarks,:1.info,:1.snapshot,:1.status,:1.price)  ")
+            ":1.user_id,:1.address_id,:1.remarks,:1.act,:1.info,:1.snapshot,:1.status,:1.price)  ")
     public int  insertUpdate(Order o, @SQLParam("tableName") String tableName);
 
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and status = 1 ")
@@ -64,5 +64,8 @@ public interface UserOrdersDAO {
 
 
     @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
-    void paydone(int status, String order_id,@SQLParam("tableName") String tableName);
+    public void paydone(int status, String order_id,@SQLParam("tableName") String tableName);
+
+    @SQL("update ##(:tableName)   set pre_id =:2 , act =:3 where order_id = :1 ")
+    public void updateWXPay(String order_id, String pre_id, String act,@SQLParam("tableName") String tableName);
 }

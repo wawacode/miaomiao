@@ -94,6 +94,10 @@ public class WXController {
             "</Articles>\n" +
             "</xml> ";
 
+    private static final String MESSAGE_KEFU = "您好，感谢对小喵的支持！小喵热线是4008816807，如需帮助请随时（24小时）致电:-)";
+    private static final String MESSAGE_FUWUFANWEI = "目前喵喵已成功覆盖：\n" ;
+    private static final String MESSAGE_CUIDAN = "已完成催单，请稍后，如有疑问请联系喵喵客服4008816807。" ;
+
     static final String MESSAGE = "喵喵生活为您连接身边便利，在家动动手指，便利百货为您送货上门。\n" +
             "\n" +
             "配送商品: 便利百货，在便利店能买到的我们都能送；\n" +
@@ -169,8 +173,6 @@ public class WXController {
                     LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
                     return "@" + Constants.UKERROR;
                 }
-                //orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
-                //userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
             }
         }
         return "@" + Constants.DONE;
@@ -303,6 +305,30 @@ public class WXController {
               response = response.replace("{fromUser}",toUser);
               response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
               return  response;
+            }
+            if ("Vkefudianhua".equals(eventKey)){
+                LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
+                String response = CONTENT2.replace("{message}", MESSAGE_KEFU);
+                response = response.replace("{toUser}",fromUser);
+                response = response.replace("{fromUser}",toUser);
+                response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                return  response;
+            }
+            if ("Vfuwufanwei".equals(eventKey)){
+                LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
+                String response = CONTENT2.replace("{message}", MESSAGE_FUWUFANWEI);
+                response = response.replace("{toUser}",fromUser);
+                response = response.replace("{fromUser}",toUser);
+                response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                return  response;
+            }
+            if ("Vcuidan".equals(eventKey)){
+                LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
+                String response = CONTENT2.replace("{message}", MESSAGE_CUIDAN);
+                response = response.replace("{toUser}",fromUser);
+                response = response.replace("{fromUser}",toUser);
+                response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                return  response;
             }
             if ("subscribe".equals(event)){
                 String content = getContent(body);
