@@ -186,8 +186,8 @@ public class OrderController {
                 LoggerUtils.getInstance().log("error order save return "+ js_id + " "+ pre_id  + " " );
                 return "@" + Constants.UKERROR;
             }
-            ordersDAO.updateWXPay(order_id,pre_id,act,SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateWXPay(order_id,pre_id,act,SUtils.generOrderTableName(user_id));
+            ordersDAO.updateWXPay(order_id, pre_id, act, SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateWXPay(order_id, pre_id, act, SUtils.generOrderTableName(user_id));
             data.put("js_ticket",js_id) ;
             data.put("pre_id",pre_id) ;
             data.put("out_trade_no",order_id) ;
@@ -200,6 +200,35 @@ public class OrderController {
         return "@json:" + response.toJSONString();
     }
 
+    @Get("order_confirm")
+    @Post("order_confirm")
+    public String order_confirm(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
+        User u = holder.getUser();
+        if(StringUtils.isBlank(order_id) || shop_id ==0  ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+        Order order = ordersDAO.getOrder( order_id ,SUtils.generOrderTableName(shop_id));
+        if ( null == shop ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        LoggerUtils.getInstance().log(String.format("user %s order_confirm shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
+        if ("done".equals(confirm)){
+            Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            String msg = o.getMsg();
+            JSONObject om = new JSONObject();
+            try{
+               om = (JSONObject) JSON.parse(msg);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            om.put("confirm","done");
+            ordersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(u.getId()));
+        }
+        return "@json:"+Constants.DONE;
+    }
+
 
     @Get("pay_cb")
     @Post("pay_cb")
@@ -209,7 +238,7 @@ public class OrderController {
              return "@json:"+Constants.PARATERERROR;
         }
         Shop shop = shopDAO.getShop(shop_id);
-        Order order = ordersDAO.getOrder( order_id ,SUtils.generOrderTableName(shop_id));
+        Order order = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop_id));
         if ( null == shop ){
             return "@json:"+Constants.PARATERERROR;
         }
