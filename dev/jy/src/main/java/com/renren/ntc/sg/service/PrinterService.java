@@ -159,6 +159,13 @@ public class PrinterService {
         sb.append("订单号 ： " + order_id +  "\n");
         sb.append("下单时间 ： " + time(o.getCreate_time())  +  "\n");
         sb.append("================================\n");
+        sb.append("支付方式:");
+        if("wx".equals(o.getAct())){
+            sb.append("微信支付 \n");
+        }else{
+            sb.append("货到付款 \n");
+        }
+        sb.append("================================\n");
         sb.append(o.getAddress() + " " +  o.getPhone() + "\n");
         if(!StringUtils.isBlank(o.getRemarks())){
         sb.append("买家备注 ： " +o.getRemarks()  + "\n");
