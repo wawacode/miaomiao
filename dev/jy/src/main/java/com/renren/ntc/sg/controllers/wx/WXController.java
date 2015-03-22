@@ -105,6 +105,7 @@ public class WXController {
     @Get("cb")
     @Post("cb")
     public String index( Invocation inv) {
+        LoggerUtils.getInstance().log(String.format("wex  cb  call "));
         Map m =  inv.getRequest().getParameterMap();
        Set <String > ss =  m.keySet();
         for (String s  :ss){
