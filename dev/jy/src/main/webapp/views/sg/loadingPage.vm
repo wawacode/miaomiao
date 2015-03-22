@@ -298,6 +298,7 @@
                      has-tabs="false"
                      has-header="true"
                      scroll="true"
+                     delegate-handle="checkoutScroll"
                      style="bottom: 49px;top: 49px;z-index: 9;">
 
             <div style="background-color: #eaeaea;width: 100%;height: 100%" ng-if="info.dataReady == true">
@@ -387,9 +388,20 @@
                             <div class="item item-icon-right borderBotton" style="margin-top: 1px" bindonce ng-repeat="checkt in checkoutType" ng-click="selectCheckoutType($index)">
                                 <div style="padding-left: 5px;font-size: 15px" bo-text="checkt.name"></div>
                                 <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':checkt.selected,'ion-ios7-circle-outline': !checkt.selected}"></div>
-                                <!--<div ng-if="checkt.id=CheckoutTypeEnum.CHECKOUTTYPE_WXPAY">-->
-                                    <!--选择优惠券-->
-                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="info.showCouponCard == true">
+                        <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
+                            使用优惠券
+                        </div>
+                        <div>
+                            <div class="list">
+                                <div class="item item-icon-right borderBotton" style="margin-top: 1px" bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)">
+                                    <span style="padding: 5px 8px 5px 8px;background-color: #ef5356;color: #ffffff;padding-left: 5px;font-size: 15px" bo-text="card.value + '元'"></span>
+                                    <span style="padding-left: 5px;font-size: 15px" bo-text="card.desc"></span>
+                                    <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':card.selected,'ion-ios7-circle-outline': !card.selected}"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -404,7 +416,7 @@
                         <div class="col nonPadding text-center" style="padding-top: 15px;margin-right: 10px">
                             <p class=" assertive" style="font-size: 17px;margin: 0">
                                 <span class="" style="font-size: 17px;margin: 0">总计:</span>
-                                ￥{{shoppingCartItems | getTotolPrice}}
+                                ￥{{shoppingCartItems | getTotolPrice}} <span style="font-size: 10px;padding: 2px;color: #ef5356">-{{selectedCoupon.value}}</span>
                             </p>
                         </div>
                     </div>

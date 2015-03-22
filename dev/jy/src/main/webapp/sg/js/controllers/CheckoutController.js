@@ -1,6 +1,6 @@
 ;
 angular.module('miaomiao.shop')
-    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService, ShopService, MMUtils, WeiChatPay) {
+    .controller('CheckoutCtrl', function ($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicLoading, $ionicPopup, $http, $state, localStorageService, httpClient, ShoppingCart, AddressService, OrderService, ShopService, MMUtils, WeiChatPay) {
 
         $scope.shoppingCartItems = ShoppingCart.getAllItems();
         $scope.shop = ShopService.getDefaultShop() || {};
@@ -17,16 +17,22 @@ angular.module('miaomiao.shop')
             CHECKOUTTYPE_ALIPAY: 03
         };
 
-        if($scope.shop.id == '10033'){
+        if ($scope.shop.id == '10033') {
             $scope.checkoutType = [
                 {
-                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
+                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true, 'canUseCoupon': false
+
                 },
                 {
-                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false
+                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false,
+                    coupons: [
+                        {'value': 10, 'desc': '满50元可用', 'condition': 50},
+                        {'value': 5, 'desc': '满30元可用', 'condition': 30}
+                    ],
+                    'canUseCoupon': true
                 }
             ];
-        }else{
+        } else {
             $scope.checkoutType = [
                 {
                     'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
@@ -89,8 +95,61 @@ angular.module('miaomiao.shop')
             }
 
             $scope.checkoutType[index].selected = true;
+            if ($scope.checkoutType[index].canUseCoupon == true) {
+                $scope.info.showCouponCard = true;
+                $scope.couponCards = $scope.checkoutType[index].coupons;
+
+                _updateAvailbleConpons();
+
+            } else {
+                $scope.info.showCouponCard = false;
+            }
+
+            $ionicScrollDelegate.$getByHandle('checkoutScroll').resize();
+            $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom();
+
 
             _updateCheckoutHintMessage();
+        };
+
+        function _updateAvailbleConpons() {
+
+            if ($scope.info.showCouponCard == false)return;
+            if (!$scope.couponCards || $scope.couponCards.length <= 0)return;
+
+            var maxAvailbale = 0, totalPrice = ShoppingCart.getTotalPrice();
+
+            for (var i = 0; i < $scope.couponCards.length; i++) {
+
+                $scope.couponCards[i].selected = false;
+                if ($scope.couponCards[i].condition <= totalPrice &&
+                    $scope.couponCards[i].condition >= maxAvailbale) {
+                    $scope.couponCards[i].selected = true;
+                    $scope.selectedCoupon = $scope.couponCards[i];
+                    maxAvailbale = $scope.couponCards[i].condition;
+                }
+            }
+        };
+
+        $scope.selectCouponCards = function (idx) {
+
+            function clearAllCards(){
+                for (var i = 0; i < $scope.couponCards.length; i++) {
+                    $scope.couponCards[i].selected = false;
+                }
+            }
+
+            if ($scope.couponCards[idx].selected == true) {
+                $scope.couponCards[idx].selected = false;
+                $scope.selectedCoupon = null;
+            } else {
+                var totalPrice = ShoppingCart.getTotalPrice();
+                if ($scope.couponCards[idx].condition <= totalPrice) {
+                    clearAllCards();
+                    $scope.couponCards[idx].selected = true;
+                    $scope.selectedCoupon = $scope.couponCards[idx];
+                }
+            }
         };
 
         $scope.goToAddressList = function () {
@@ -185,7 +244,7 @@ angular.module('miaomiao.shop')
                 function onWeixinPaySuccess(shopId, orderId, message) {
                     // clear all shopping cart
 
-                    function gotoOrders(){
+                    function gotoOrders() {
                         ShoppingCart.clearAll();
                         updateShoppingCart();
                         $state.go('myOrders', null, {reload: true});
@@ -303,6 +362,7 @@ angular.module('miaomiao.shop')
                 $scope.shoppingCartItems = ShoppingCart.getAllItems();
                 $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
                 _updateCheckoutHintMessage();
+                _updateAvailbleConpons();
             });
 
         }
