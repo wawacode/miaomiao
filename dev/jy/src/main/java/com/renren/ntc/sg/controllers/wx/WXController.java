@@ -289,13 +289,11 @@ public class WXController {
         return body.substring( str.length() + start ,end);
     }
 
-
     private  String parse(String body) {
         String mtype =  getMtype(body);
         String toUser = getToUser(body);
         String fromUser = getFromUser(body);
         String event = getEvent(body);
-
         if ("event".equals(mtype)) {
             String eventKey = getEventKey(body);
             if ("about_miaomiao".equals(eventKey)){
@@ -482,12 +480,13 @@ public class WXController {
     }
 
     private static String getFromUser(String body) {
-        int start =body.indexOf("<FromUserName><![CDATA[");
+        String PRE = "<FromUserName><![CDATA[";
+        int start =body.indexOf(PRE);
         int end =body.indexOf("]]></FromUserName>");
         if(start == -1 || end == -1){
             return "";
         }
-        return body.substring( 23 + start ,end);
+        return body.substring(PRE.length() + start ,end);
     }
 
     private static String getToUser(String body) {
