@@ -92,7 +92,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             confirmMyOrders:function (shopId, orderId,msg, success, fail) {
                 doPost('order/order_confirm?shop_id=' + shopId,
-                    {'order_id': orderId,'msg':msg},
+                    {'order_id': orderId,'confirm':msg},
                     success, fail);
             },
 
