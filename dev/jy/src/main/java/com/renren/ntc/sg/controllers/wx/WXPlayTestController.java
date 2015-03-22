@@ -294,9 +294,7 @@ public class WXPlayTestController {
 
 
     public static void main(String[] args) {
-
-        WXService wx =  new WXService();
-        System.out.println(wx.getJS_ticket());
+        System.out.println(JRedisUtil.getInstance().get("access_token"));
 
     }
 
