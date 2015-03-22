@@ -151,7 +151,7 @@ public class WXController {
                 String attach = getAttach(body);
                 long  shop_id = getShop_id(attach) ;
                 long  user_id = getUser_id(attach) ;
-                if (shop_id != 0 && user_id!= 0){
+                if (shop_id == 0 || user_id == 0){
                    LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
                     return "@" + Constants.UKERROR;
                 }
