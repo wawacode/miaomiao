@@ -4,9 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.DeviceDAO;
+import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.PushService;
 import com.renren.ntc.sg.service.SMSService;
+import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
 import com.renren.ntc.sg.util.SUtils;
@@ -28,8 +35,26 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WXController {
 
     @Autowired
+    public OrdersDAO orderDao;
+
+    @Autowired
+    public UserOrdersDAO userOrdersDAO;
+
+    @Autowired
     public SMSService smsService;
-//    public Map <String,String>  map = new ConcurrentHashMap<String,String>() ;
+
+    @Autowired
+    public WXService wxService;
+
+    @Autowired
+    public DeviceDAO deviceDAO;
+
+    @Autowired
+    public ShopDAO shopDao;
+
+    @Autowired
+    public PushService pushService;
+
 
     private  static final String PREFIX = "qrscene_";
     public  WXController (){
@@ -106,22 +131,161 @@ public class WXController {
     @Get("cb")
     @Post("cb")
     public String index( Invocation inv) {
-        LoggerUtils.getInstance().log(String.format("wx  cb  call "));
+        LoggerUtils.getInstance().log(String.format("wx  callback  call "));
         String body = "";
         try {
             body = SUtils.getBodyString(inv.getRequest().getReader());
-            LoggerUtils.getInstance().log(String.format("wx  cb  call rec body %s  ", body));
+            LoggerUtils.getInstance().log(String.format("wx pay callback  call rec body %s  ", body));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Map m =  inv.getRequest().getParameterMap();
-       Set <String > ss =  m.keySet();
-        for (String s  :ss){
-            LoggerUtils.getInstance().log(String.format("wx callback key %s , value %s", s, m.get(s)));
+        if(!StringUtils.isBlank(body)) {
+            String return_code = getResult_code(body);
+            if ("SUCCESS".equals(return_code)){
+                String order_id = getOut_trade_no(body);
+                String fee = getCash_fee(body);
+                String attach = getAttach(body);
+                long  shop_id = getShop_id(attach) ;
+                long  user_id = getUser_id(attach) ;
+                if (shop_id != 0 && user_id!= 0){
+                   LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
+                    return "@" + Constants.UKERROR;
+                }
+                orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
+                userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
+                Shop shop = shopDao.getShop(shop_id);
+                if(null == shop ){
+                    LoggerUtils.getInstance().log(String.format("check wx pay cb  miss shop  %d ",shop_id));
+                    return "@" + Constants.UKERROR;
+                }
+                sendInfo(shop, order_id) ;
+            }
+            if("FAIL".equals(return_code)){
+                String order_id = getOut_trade_no(body);
+                String attach = getAttach(body);
+                long  shop_id = getShop_id(attach) ;
+                long  user_id = getUser_id(attach) ;
+                if (shop_id != 0 && user_id!= 0){
+                    LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
+                    return "@" + Constants.UKERROR;
+                }
+                //orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
+                //userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
+            }
         }
         return "@" + Constants.DONE;
     }
 
+    private void sendInfo( Shop shop ,String order_id){
+        if(shop.getId() == 10033){
+            return;
+        }
+        smsService.sendSMS2LocPush(order_id, shop);
+        pushService.send2locPush(order_id, shop);
+        pushService.send2kf(order_id, shop);
+        // 发送短信通知
+        Device devcie = deviceDAO.getDevByShopId(shop.getId());
+        if (null == devcie || SUtils.isOffline(devcie)) {
+            System.out.println("device is null or  printer offline ");
+            // 发送通知给 用户和 老板     \
+            System.out.println("send push to boss");
+            pushService.send2Boss(order_id, shop);
+            System.out.println("send sms to boss");
+            smsService.sendSMS2Boss(order_id, shop);
+            System.out.println("send sms to user");
+            smsService.sendSMS2User(order_id, shop);
+        }
+    }
+    private long getShop_id(String attach) {
+         String[] ids = attach.split("_");
+         long shop_id = 0 ;
+        try{
+             shop_id= Long.valueOf(ids[0]);
+         }catch (Exception e){
+            e.printStackTrace();
+        }
+        return shop_id;
+    }
+
+    private long getUser_id(String attach) {
+        String[] ids = attach.split("_");
+        long user_id = 0 ;
+        try{
+            user_id= Long.valueOf(ids[0]);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return user_id;
+    }
+
+    private String getAttach(String body) {
+        String str =  "<attach><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></attach>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+
+
+    public String getResult_code(String body){
+        String str =  "<result_code><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></result_code>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+
+    public String getbank_type(String body){
+        String str =  "<bank_type><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></bank_type>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+    public String getCash_fee(String body){
+        String str =  "<cash_fee><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></cash_fee>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+
+    public String getFee_type(String body){
+        String str =  "<fee_type><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></fee_type>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+
+    public String getOpenid(String body){
+        String str =  "<openid><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></openid>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+    public String getOut_trade_no(String body){
+        String str =  "<out_trade_no><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></result_code>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
 
 
     private  String parse(String body) {
