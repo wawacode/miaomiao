@@ -145,6 +145,28 @@
             }
         };
 
+        $scope.confirmOrder = function(order){
+
+            //TODO: update order status
+            MMUtils.showLoadingIndicator('正在确认订单...',$scope);
+            httpClient.confirmMyOrders($scope.shop.id,order.order_id,'', function(data, status){
+
+                $ionicLoading.hide();
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    MMUtils.showAlert('确认订单失败,请重试:' + data.msg);
+                    return;
+                }
+                $timeout(function(){
+                    order.confirm == 'done';
+                });
+
+            },function(data, status){
+                MMUtils.showAlert('确认订单失败,请重试');
+            });
+        };
+
         OrderService.orderChangeEventSuccess();
 
         AddressService.onAddressChangeEventSwitchDefault($scope,function(message){

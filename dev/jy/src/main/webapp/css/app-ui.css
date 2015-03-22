@@ -1101,6 +1101,13 @@ ul.rating li i {
     /*background-color: #eaeaea;*/
 /*}*/
 
+.orderPayConfirm{
+    border: solid 1px #ef5356;
+    background-color: #ffffff;
+    color: #ef5356;
+    border-radius: 2px;
+    padding: 1px 3px 1px 3px;
+}
 .orderSnapshotHeader {
     display: inline-block;
     border-bottom: solid 1px #eaeaea;

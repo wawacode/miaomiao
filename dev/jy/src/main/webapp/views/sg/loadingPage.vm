@@ -549,7 +549,19 @@
 <script id="templates/snapshotOrder.html" type="text/ng-template">
     <div class="orderSnapshotHeader">
         <div class="orderId" bo-text="($index + 1) + '. ' + order.shop_name4V "></div>
-        <div class="orderPayType balanced" bo-text="order.act"></div>
+        <div ng-if="order.act != 'wx'">
+            <div class="orderPayType balanced" ng-if="order.confirm">
+                交易成功
+            </div>
+            <div class="orderPayType" ng-if="!order.confirm">
+                <div class="orderPayConfirm" ng-click="confirmOrder(order)">确认收货</div>
+            </div>
+        </div>
+        <!--<div ng-if="order.act != 'wx'">-->
+            <!--<div class="orderPayType balanced">-->
+                <!--货到付款-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
     <div class="orderSnapshot" bindonce quick-ng-repeat="orderItem in order.items">
         <div class="prod_icon" back-img="{{orderItem.pic_url}}"></div>
