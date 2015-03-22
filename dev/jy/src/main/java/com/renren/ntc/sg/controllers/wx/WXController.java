@@ -99,13 +99,13 @@ public class WXController {
     @Get("r")
     @Post("r")
     public String r( Invocation inv) {
-        return "r:" + "http://www.mbianli.com:8088/sg/loading#/shop?shop_id=10033";
+        return "r:" + "http://www.mbianli.com/sg/loading#/shop?shop_id=10033";
     }
 
     @Get("cb")
     @Post("cb")
     public String index( Invocation inv) {
-        LoggerUtils.getInstance().log(String.format("wex  cb  call "));
+        LoggerUtils.getInstance().log(String.format("wx  cb  call "));
         Map m =  inv.getRequest().getParameterMap();
        Set <String > ss =  m.keySet();
         for (String s  :ss){

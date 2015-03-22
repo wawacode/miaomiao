@@ -41,7 +41,7 @@ public class WXService {
 
     private static final String mch_id = "1233699402";
     private static final String key = "210f760a89db30aa72ca258a3483cc7f";
-    private static final String  notify_url ="http:/www.mbianli.com:8088/wx/cb";
+    private static final String  notify_url ="http:/www.mbianli.com/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
