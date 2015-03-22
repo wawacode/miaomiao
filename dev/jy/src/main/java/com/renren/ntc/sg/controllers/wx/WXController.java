@@ -308,7 +308,7 @@ public class WXController {
             }
             if ("Vkefudianhua".equals(eventKey)){
                 LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
-                String response = String response = CONTENT.replace("{message}", MESSAGE_KEFU);
+                String response = CONTENT.replace("{message}", MESSAGE_KEFU);
                 response = response.replace("{toUser}",fromUser);
                 response = response.replace("{fromUser}",toUser);
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
