@@ -207,15 +207,6 @@ public class PrinterV2Controller {
                 jarr.add(jb);
             }
         }
-
-        if ("order".equals(chn)){
-            List<Order>  ls = ordersDAO.get10Orders(SUtils.generOrderTableName(1));
-            for (Order o :ls ){
-                JSONObject jb =   new JSONObject();
-                jb.put( o.getOrder_id() ,o.getStatus() + o.getSnapshot());
-                jarr.add(jb);
-            }
-        }
         return "@" + jarr.toJSONString();
     }
 

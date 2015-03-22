@@ -30,11 +30,7 @@ public interface OrdersDAO {
     static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,info ,snapshot,status,price,create_time,update_time" ;
     static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks ,info,snapshot,status,price" ;
 
-	@SQL("select "+ FIELDS +" from ##(:tableName)   where user_id =:1 order by create_time desc limit :2,:3")
-	public List<Order> getOrder(long user_id, int start, int offset ,@SQLParam("tableName") String tableName);
-
-
-    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:1 order by create_time desc limit :2,:3")
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
     public List<Order> getOrderByShop(long shop_id, int start, int offset,@SQLParam("tableName") String tableName);
 
 
@@ -48,11 +44,9 @@ public interface OrdersDAO {
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and status = 2 ")
     public List<Order> getFinalOrder(long shop_id,@SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 order by create_time desc limit :2,:3 ")
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3 ")
     List<Order> get10Orders(long shop_id,int from, int offset,@SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  order by create_time desc limit 0,100 ")
-    List<Order> get10Orders(@SQLParam("tableName") String tableName);
 
     @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
     int update(int i, String orderId,@SQLParam("tableName") String tableName);
