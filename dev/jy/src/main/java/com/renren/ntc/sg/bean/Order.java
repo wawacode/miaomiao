@@ -18,6 +18,15 @@ public class Order {
     private long address_id ;
     private String remarks ="";
 
+    public String getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
+    }
+
+    private String confirm ="";
     private String pre_id ="";
     private String msg ="";
     private String snapshot="" ;
