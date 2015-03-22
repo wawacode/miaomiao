@@ -143,7 +143,7 @@ ul.rating li i{font-size:12px}
 .orderListHeader:before{content:"";width:5px;height:100%;position:absolute;top:0;left:0;background-color:#ef5356}
 .order-list{padding:0;background-color:#fff}
 .order-items{padding-bottom:20px;position:relative}
-.orderPayConfirm{border:solid 1px #ef5356;background-color:#fff;color:#ef5356;border-radius:2px;padding:1px 3px 1px 3px}
+.orderPayConfirm{border:solid 1px #ef5356;background-color:#fff;color:#ef5356;border-radius:2px;padding:2px 4px 2px 4px}
 .orderSnapshotHeader{display:inline-block;border-bottom:solid 1px #eaeaea;width:100%;padding-top:10px;padding-bottom:10px}
 .orderSnapshot{position:relative;display:inline-block;width:100%;padding-top:10px;padding-bottom:10px;border-bottom:solid 1px #eaeaea}
 .orderSnapshotItemName{float:left;padding-left:10px;font-size:14px;color:#6a6a6a}
