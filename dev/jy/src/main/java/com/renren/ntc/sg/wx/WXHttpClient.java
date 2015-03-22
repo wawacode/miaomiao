@@ -154,11 +154,11 @@ public class WXHttpClient {
         JSONObject button3 = new JSONObject() ;
         button3.put("name","关于喵喵") ;
         JSONArray sub_button2 =  new JSONArray ();
-        JSONObject fuwofanwei   = new JSONObject();
-        fuwofanwei.put("name","服务范围");
-        fuwofanwei.put("type","click");
-        fuwofanwei.put("key","Vfuwufanwei");
-        sub_button2.add(fuwofanwei);
+//        JSONObject fuwofanwei   = new JSONObject();
+//        fuwofanwei.put("name","服务范围");
+//        fuwofanwei.put("type","click");
+//        fuwofanwei.put("key","Vfuwufanwei");
+//        sub_button2.add(fuwofanwei);
 
         JSONObject yijianfankui   = new JSONObject();
         yijianfankui.put("name","意见反馈");
