@@ -107,8 +107,10 @@ angular.module('miaomiao.shop')
             }
 
             $ionicScrollDelegate.$getByHandle('checkoutScroll').resize();
-            $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom();
 
+            $timeout(function(){
+                $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom();
+            },500);
 
             _updateCheckoutHintMessage();
         };
