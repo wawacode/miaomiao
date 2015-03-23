@@ -550,7 +550,7 @@
     <div class="orderSnapshotHeader">
         <div class="orderId" bo-text="$index + 1 + '. ' + order.shop_name4V"></div>
         <div ng-if="order.act == 'wx'">
-            <div class="orderPayType balanced" ng-if="order.confirm == true">
+            <div class="orderPayType balanced" ng-if="order.confirm">
                 交易成功
             </div>
             <div class="orderPayType" ng-if="!order.confirm">
