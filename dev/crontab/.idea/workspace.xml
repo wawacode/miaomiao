@@ -146,6 +146,15 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="applicationContext-datasource.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="57" selection-start="955" selection-end="955" vertical-scroll-proportion="0.608">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Refresh2Produdce.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -173,15 +182,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddProduct2Shop_Axsjhlcs.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Axsjhlcs.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="56" selection-start="1169" selection-end="1169" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="AddProduct2Shop_A108bld.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A108bld.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -191,10 +191,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeoService.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GeoService.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="284" column="24" selection-start="8217" selection-end="8217" vertical-scroll-proportion="1.5222552">
+            <state line="254" column="35" selection-start="7155" selection-end="7155" vertical-scroll-proportion="-6.64">
               <folding />
             </state>
           </provider>
@@ -212,7 +212,7 @@
       <file leaf-file-name="GeoService.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="222" column="76" selection-start="6298" selection-end="6298" vertical-scroll-proportion="0.0">
+            <state line="221" column="51" selection-start="6282" selection-end="6282" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -231,7 +231,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_product.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_113.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_jmcs.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_628.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A108bld.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A113.java" />
@@ -244,6 +243,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml" />
       </list>
     </option>
   </component>
@@ -421,7 +421,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="service" />
+              <option name="myItemId" value="geo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -741,15 +741,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="38" selection-start="837" selection-end="892" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1427111901037" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/ItemsDAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="89" column="77" selection-start="4492" selection-end="4503" vertical-scroll-proportion="-4.96">
@@ -834,13 +825,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="222" column="76" selection-start="6298" selection-end="6298" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="13" selection-start="406" selection-end="406" vertical-scroll-proportion="0.0">
@@ -848,9 +832,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="221" column="51" selection-start="6282" selection-end="6282" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="284" column="24" selection-start="8217" selection-end="8217" vertical-scroll-proportion="1.5222552">
+        <state line="254" column="35" selection-start="7155" selection-end="7155" vertical-scroll-proportion="-6.64">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="57" selection-start="955" selection-end="955" vertical-scroll-proportion="0.608">
           <folding />
         </state>
       </provider>

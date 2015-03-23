@@ -253,23 +253,23 @@ public class GeoService {
         ShopDAO shopDao = rose.getBean(ShopDAO.class);
         Shop shop = new Shop();
         Date date = new Date();
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(date);
-//        c.set(Calendar.HOUR_OF_DAY,10);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY,10);
 
-//        c.set(Calendar.MINUTE,0);
-//        c.set(Calendar.SECOND,0);
-//        shop.setOpen_time(c.getTime());
-//        c = Calendar.getInstance();
-//        c.setTime(date);
-//        c.set(Calendar.HOUR_OF_DAY,22);
-//        c.set(Calendar.SECOND,0);
-//        c.set(Calendar.MINUTE,0);
-//        shop.setClose_time(c.getTime());
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+        shop.setOpen_time(c.getTime());
+        c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY,22);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MINUTE,0);
+        shop.setClose_time(c.getTime());
 
-//        shop.setId(shop_id);
-//        shop.setBase_price(3000);
-//        shopDao.update(shop) ;
+        shop.setId(shop_id);
+        shop.setBase_price(3000);
+        shopDao.update(shop) ;
 
 
         GeoService  geoService =  new GeoService() ;
@@ -292,7 +292,6 @@ public class GeoService {
         for (GeoQueryResult geo :ls ) {
             System.out.println(String.format("shop_id %d  , lng %f , lat %f ",geo.getShopLocation().getShop_id() , geo.getShopLocation().getLongitude(),geo.getShopLocation().getLatitude()));
         }
-//        geoService.removeLocation(0);
     }
 
 }
