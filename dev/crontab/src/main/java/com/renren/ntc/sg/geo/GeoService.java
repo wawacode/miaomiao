@@ -8,12 +8,6 @@ import com.renren.ntc.sg.biz.dao.ShopDAO;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.log4j.Logger;
 
-/**
- * @className GeoService
- * @description 更新 店铺 开店关店时间 同时更新 店铺经纬度到 mongo 数据库中的 逻辑
- * @author LQ
- * @date 2015-3-23 下午8:38:40
- */
 public class GeoService {
 
     private static int DEFAULT_MAX_DISTANCE = 500 * 1000; // 50km
@@ -253,47 +247,37 @@ public class GeoService {
         ShopDAO shopDao = rose.getBean(ShopDAO.class);
         Shop shop = new Shop();
         Date date = new Date();
-        //        Calendar c = Calendar.getInstance();
-        //        c.setTime(date);
-        //        c.set(Calendar.HOUR_OF_DAY,10);
+        // 设置店铺 开店关店时间
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        shop.setOpen_time(c.getTime());
+        c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, 22);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MINUTE, 0);
+        shop.setClose_time(c.getTime());
+        shop.setId(shop_id);
+        //设置店铺 起送价格
+        shop.setBase_price(3000);
+        shopDao.update(shop);
 
-        //        c.set(Calendar.MINUTE,0);
-        //        c.set(Calendar.SECOND,0);
-        //        shop.setOpen_time(c.getTime());
-        //        c = Calendar.getInstance();
-        //        c.setTime(date);
-        //        c.set(Calendar.HOUR_OF_DAY,22);
-        //        c.set(Calendar.SECOND,0);
-        //        c.set(Calendar.MINUTE,0);
-        //        shop.setClose_time(c.getTime());
-
-        //        shop.setId(shop_id);
-        //        shop.setBase_price(3000);
-        //        shopDao.update(shop) ;
-
+        //更新店铺坐标到 线上 mongo 服务
         GeoService geoService = new GeoService();
-        //        shop = shopDao.getShop(shop.getId());
-        //        ShopLocation shop_location = new ShopLocation()  ;
-        //        System.out.println(shop.getId());
-        //        System.out.println(shop.getLat());
-        //        System.out.println(shop.getLng());
-        //        shop_location.setLatitude(shop.getLat());
-        //        shop_location.setLongitude(shop.getLng());
-        //        shop_location.setShop_id(shop.getId());
-        //        System.out.println(geoService.updateLocation(shop_location));
+        shop = shopDao.getShop(shop.getId());
+        ShopLocation shop_location = new ShopLocation();
+        System.out.println(shop.getId());
+        System.out.println(shop.getLat());
+        System.out.println(shop.getLng());
+        shop_location.setLatitude(shop.getLat());
+        shop_location.setLongitude(shop.getLng());
+        shop_location.setShop_id(shop.getId());
+        System.out.println(geoService.updateLocation(shop_location));
 
-        //      shop  = shopDao.getShop(shop_id);
-        //      GeoService  geoService =  new GeoService() ;
-        //        ShopLocation shop_location = new ShopLocation()  ;
-        //        shop_location = new ShopLocation()  ;
-        //        shop_location.setLatitude(shop.getLat());
-        //        shop_location.setLongitude(shop.getLng());
-        //        shop_location.setShop_id(shop.getId());
-        //        System.out.println(geoService.updateLocation(shop_location));
-
-        //        shopDao.audit(shop.getId());
-        //
-        //
+        // 一下是 测试 更新到mongo 是否成功
         ShopLocation shopL = new ShopLocation();
         shopL.setShop_id(10);
         shopL.setLatitude(40.001361);
@@ -303,7 +287,6 @@ public class GeoService {
             System.out.println(String.format("shop_id %d  , lng %f , lat %f ", geo.getShopLocation().getShop_id(), geo.getShopLocation().getLongitude(), geo
                     .getShopLocation().getLatitude()));
         }
-        //        geoService.removeLocation(0);
     }
 
 }

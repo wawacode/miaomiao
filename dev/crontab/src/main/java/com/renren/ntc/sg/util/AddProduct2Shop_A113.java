@@ -30,7 +30,7 @@ public class AddProduct2Shop_A113 {
     public static void readTxtFile(String filePath,ProductDAO pdDao,ItemsDAO itemDao){
         InputStreamReader read = null;
         try {
-
+            itemDao.del(SUtils.generTableName(shop_id),shop_id);
             String encoding="utf-8";
             File file=new File(filePath);
             if(file.isFile() && file.exists()){ //判断文件是否存在

@@ -21,7 +21,7 @@ public class AddProduct2Shop_Ajccs {
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
         AddProduct2Shop_Ajccs addProduct = new AddProduct2Shop_Ajccs();
-        String filePath = "C:\\20150323\\京诚超市.txt";
+        String filePath = "F:\\product\\20150323\\京诚超市.txt";
         readTxtFile(filePath, pdDao, itemDao);
 
     }
@@ -29,7 +29,7 @@ public class AddProduct2Shop_Ajccs {
     public static void readTxtFile(String filePath, ProductDAO pdDao, ItemsDAO itemDao) {
         InputStreamReader read = null;
         try {
-
+            itemDao.del(SUtils.generTableName(shop_id),shop_id);
             String encoding = "utf-8";
             File file = new File(filePath);
             if (file.isFile() && file.exists()) { //判断文件是否存在
@@ -72,7 +72,7 @@ public class AddProduct2Shop_Ajccs {
                         it.setShop_id(shop_id);
                         JSONObject ob = (JSONObject) JSON.toJSON(it);
                         System.out.println(ob.toJSONString());
-                        //                        itemDao.insert(SUtils.generTableName(shop_id),it) ;
+                        itemDao.insert(SUtils.generTableName(shop_id),it) ;
                     }
                 }
             } else {
