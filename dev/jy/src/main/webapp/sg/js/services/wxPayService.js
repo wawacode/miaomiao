@@ -18,7 +18,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
 
         // TODO: remove this
         var shop = ShopService.getDefaultShop() || {};
-        if(shop && shop.id != '10033'){
+        if(shop && !ShopService.isWeixinEnabledShop(shop)){
             return weiChatPayUtils;
         }
 
@@ -89,9 +89,6 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                 function onHashReady() {
 
                     info.success = function (res) {
-
-                        // 支付成功后的回调函数
-                        window.alert('微信支付api返回:'+JSON.stringify(res));
 
                         if (res.errMsg == "chooseWXPay:ok") {
                             success(res.errMsg);

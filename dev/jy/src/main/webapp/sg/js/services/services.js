@@ -87,6 +87,13 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 doPost('order/pay_cb?shop_id=' + shopId,
                     {'order_id': orderId,'msg':msg},
                     success, fail);
+
+            },
+
+            confirmMyOrders:function (shopId, orderId,msg, success, fail) {
+                doPost('order/order_confirm?shop_id=' + shopId,
+                    {'order_id': orderId,'confirm':msg},
+                    success, fail);
             },
 
             getJsapi_ticket:function(success, fail){
@@ -285,6 +292,10 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 },function(data, status){
                     fail(null);
                 })
+            },
+
+            isWeixinEnabledShop:function(shop){
+                return shop.id == '10033';
             }
         }
     }]).factory('MMUtils', ['$timeout', '$ionicLoading', '$ionicPopup', function ($timeout,$ionicLoading, $ionicPopup) {
