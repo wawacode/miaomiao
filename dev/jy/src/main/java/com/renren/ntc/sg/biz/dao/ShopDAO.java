@@ -26,7 +26,9 @@ public interface ShopDAO {
     public Shop getShopbyOwner_id(long id);
 
     @ReturnGeneratedKeys
-	@SQL("insert into " + TABLE_NAME + "(" + INSERT_FIELDS +" ) values"  + " (:1.owner_user_id,:1.base_price,:1.open_time,:1.close_time,:1.name,:1.shop_address,:1.tel,:1.owner_phone,:1.head_url,:1.shop_url,:1.shop_info,:1.lng,:1.lat)")
+	@SQL("insert into " + TABLE_NAME + "(" + INSERT_FIELDS +" ) values"  + " (:1.owner_user_id,:1.base_price," +
+            ":1.open_time,:1.close_time,:1.name," +
+            ":1.shop_address,:1.tel,:1.owner_phone,:1.head_url,:1.shop_url,:1.shop_info,:1.lng,:1.lat)")
 	public int insert(Shop o);
 
 
