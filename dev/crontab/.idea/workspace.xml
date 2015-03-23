@@ -128,55 +128,64 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="LoadCommunity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="13" selection-start="449" selection-end="449" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="AddProduct2Shop_A113.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A113.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="64" selection-start="1115" selection-end="1115" vertical-scroll-proportion="0.0">
+            <state line="15" column="53" selection-start="428" selection-end="428" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddProduct2Shop_628.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_628.java">
+      <file leaf-file-name="AddProduct2Shop_Ajmcs.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajmcs.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="59" selection-start="952" selection-end="952" vertical-scroll-proportion="0.0">
+            <state line="15" column="53" selection-start="429" selection-end="429" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="applicationContext-datasource.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
+      <file leaf-file-name="AddProduct2Shop_Ajykcs.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajykcs.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="16" selection-start="867" selection-end="867" vertical-scroll-proportion="0.0">
+            <state line="16" column="36" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Refresh2Produdce.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java">
+      <file leaf-file-name="AddProduct2Shop_Arrxc.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Arrxc.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="58" selection-start="1285" selection-end="1285" vertical-scroll-proportion="0.0">
+            <state line="17" column="74" selection-start="533" selection-end="533" vertical-scroll-proportion="-3.712">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProductDAO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/ProductDAO.java">
+      <file leaf-file-name="AddProduct2Shop_Axsjhlcs.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Axsjhlcs.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="74" selection-start="1770" selection-end="1770" vertical-scroll-proportion="0.0">
+            <state line="22" column="58" selection-start="784" selection-end="784" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MegerShopItems.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/MegerShopItems.java">
+      <file leaf-file-name="AddProduct2Shop_Ajccs.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajccs.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="13" selection-start="281" selection-end="281" vertical-scroll-proportion="0.0">
+            <state line="15" column="56" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -185,34 +194,25 @@
       <file leaf-file-name="AddProduct2Shop_A108bld.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A108bld.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="64" selection-start="1128" selection-end="1128" vertical-scroll-proportion="0.0">
+            <state line="42" column="102" selection-start="1759" selection-end="1759" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeoService.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
+      <file leaf-file-name="mvHAHAShopItems.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvHAHAShopItems.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="288" column="62" selection-start="8342" selection-end="8342" vertical-scroll-proportion="0.4925816">
+            <state line="23" column="54" selection-start="537" selection-end="537" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/UserService.java">
+      <file leaf-file-name="CreateShop.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/CreateShop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="406" selection-end="406" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GeoService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="221" column="51" selection-start="6282" selection-end="6282" vertical-scroll-proportion="0.0">
+            <state line="12" column="13" selection-start="296" selection-end="296" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -232,18 +232,18 @@
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_113.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_jmcs.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_628.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A108bld.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A113.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajccs.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajmcs.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajykcs.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Arrxc.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Axsjhlcs.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/ProductDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A108bld.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Arrxc.java" />
       </list>
     </option>
   </component>
@@ -395,36 +395,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sg_crontab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crontab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="geo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -451,7 +421,23 @@
       <recent name="com.renren.ntc.sg.stats" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Refresh2Produdce">
+  <component name="RunManager" selected="Application.AddProduct2Shop_Axsjhlcs">
+    <configuration default="false" name="AddProduct2Shop_Ajccs" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.AddProduct2Shop_Ajccs" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="sg_crontab" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
     <configuration default="false" name="AddProduct2Shop_Ajmcs" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.AddProduct2Shop_Ajmcs" />
       <option name="VM_PARAMETERS" />
@@ -502,22 +488,6 @@
     </configuration>
     <configuration default="false" name="AddProduct2Shop_Axsjhlcs" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.AddProduct2Shop_Axsjhlcs" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="sg_crontab" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Refresh2Produdce" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.Refresh2Produdce" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -621,19 +591,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajmcs" />
-      <item index="1" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajykcs" />
-      <item index="2" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Arrxc" />
-      <item index="3" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Axsjhlcs" />
-      <item index="4" class="java.lang.String" itemvalue="Application.Refresh2Produdce" />
+      <item index="0" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajccs" />
+      <item index="1" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajmcs" />
+      <item index="2" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajykcs" />
+      <item index="3" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Arrxc" />
+      <item index="4" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Axsjhlcs" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.Refresh2Produdce" />
-        <item index="1" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Axsjhlcs" />
+        <item index="0" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Axsjhlcs" />
+        <item index="1" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Arrxc" />
         <item index="2" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajykcs" />
-        <item index="3" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Arrxc" />
-        <item index="4" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajmcs" />
+        <item index="3" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajmcs" />
+        <item index="4" class="java.lang.String" itemvalue="Application.AddProduct2Shop_Ajccs" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -668,7 +638,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.7189097" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2810903" sideWeight="0.7227273" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2810903" sideWeight="0.7227273" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24531516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -743,112 +713,112 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/ItemsDAO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="77" selection-start="4492" selection-end="4503" vertical-scroll-proportion="-4.96">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajccs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="64" selection-start="1118" selection-end="1118" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajmcs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="64" selection-start="1114" selection-end="1114" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajykcs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="64" selection-start="1128" selection-end="1128" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Arrxc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="64" selection-start="1111" selection-end="1111" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Axsjhlcs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="56" selection-start="1169" selection-end="1169" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A113.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="64" selection-start="1115" selection-end="1115" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_628.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="59" selection-start="952" selection-end="952" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A108bld.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="64" selection-start="1128" selection-end="1128" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/MegerShopItems.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="13" selection-start="281" selection-end="281" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/ProductDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="74" selection-start="1770" selection-end="1770" vertical-scroll-proportion="0.0">
+        <state line="89" column="77" selection-start="4492" selection-end="4503" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="58" selection-start="1285" selection-end="1285" vertical-scroll-proportion="0.0">
+        <state line="24" column="64" selection-start="528" selection-end="528" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/UserService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-interceptors.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="406" selection-end="406" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="221" column="51" selection-start="6282" selection-end="6282" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="16" selection-start="867" selection-end="867" vertical-scroll-proportion="0.0">
+        <state line="23" column="71" selection-start="1296" selection-end="1296" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_628.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="288" column="62" selection-start="8342" selection-end="8342" vertical-scroll-proportion="0.4925816">
+        <state line="51" column="85" selection-start="2043" selection-end="2043" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_GX_JP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="13" selection-start="361" selection-end="361" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/CreateShop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="13" selection-start="296" selection-end="296" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="13" selection-start="449" selection-end="449" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvHAHAShopItems.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="54" selection-start="537" selection-end="537" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A108bld.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="102" selection-start="1759" selection-end="1759" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajccs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="56" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajykcs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="36" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Axsjhlcs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="58" selection-start="784" selection-end="784" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A113.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="53" selection-start="428" selection-end="428" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajmcs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="53" selection-start="429" selection-end="429" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Arrxc.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="74" selection-start="533" selection-end="533" vertical-scroll-proportion="-3.712">
           <folding />
         </state>
       </provider>
