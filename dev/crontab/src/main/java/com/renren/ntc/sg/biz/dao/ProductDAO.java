@@ -48,7 +48,7 @@ public interface ProductDAO {
 
 
 
-    @SQL("update " + TABLE_NAME + "  set pic_url=:1.pic_url , name=:1.name,price=:1.price," +
+    @SQL("update " + TABLE_NAME + "  set pic_url=:1.pic_url , name=:1.name," +
             "score=:1.score,category_id=:1.category_id  where serialNo = :2 ")
     public int update(Product p, String serialNo);
 

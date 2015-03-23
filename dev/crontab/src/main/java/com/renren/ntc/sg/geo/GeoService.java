@@ -273,28 +273,17 @@ public class GeoService {
 
 
         GeoService  geoService =  new GeoService() ;
-//        shop = shopDao.getShop(shop.getId());
-//        ShopLocation shop_location = new ShopLocation()  ;
-//        System.out.println(shop.getId());
-//        System.out.println(shop.getLat());
-//        System.out.println(shop.getLng());
-//        shop_location.setLatitude(shop.getLat());
-//        shop_location.setLongitude(shop.getLng());
-//        shop_location.setShop_id(shop.getId());
-//        System.out.println(geoService.updateLocation(shop_location));
-
-//      shop  = shopDao.getShop(shop_id);
-//      GeoService  geoService =  new GeoService() ;
-//        ShopLocation shop_location = new ShopLocation()  ;
-//        shop_location = new ShopLocation()  ;
-//        shop_location.setLatitude(shop.getLat());
-//        shop_location.setLongitude(shop.getLng());
-//        shop_location.setShop_id(shop.getId());
-//        System.out.println(geoService.updateLocation(shop_location));
+        shop = shopDao.getShop(shop.getId());
+        ShopLocation shop_location = new ShopLocation()  ;
+        System.out.println(shop.getId());
+        System.out.println(shop.getLat());
+        System.out.println(shop.getLng());
+        shop_location.setLatitude(shop.getLat());
+        shop_location.setLongitude(shop.getLng());
+        shop_location.setShop_id(shop.getId());
+        System.out.println(geoService.updateLocation(shop_location));
 
 //        shopDao.audit(shop.getId());
-//
-//
         ShopLocation shopL = new ShopLocation () ;
         shopL.setShop_id(10);
         shopL.setLatitude(40.001361);
