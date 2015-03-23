@@ -74,7 +74,7 @@ public class AddProduct2Shop_A113 {
                         it.setShop_id(shop_id);
                         JSONObject ob = (JSONObject)JSON.toJSON(it);
                         System.out.println(ob.toJSONString());
-//                        itemDao.insert(SUtils.generTableName(shop_id),it) ;
+                        itemDao.insert(SUtils.generTableName(shop_id),it) ;
                     }
                 }
             }else{
