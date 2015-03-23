@@ -148,7 +148,7 @@ angular.module('miaomiao.shop')
         $scope.confirmOrder = function (order) {
 
             MMUtils.showLoadingIndicator('正在确认订单...', $scope);
-            httpClient.confirmMyOrders($scope.shop.id, order.order_id, 'done', function (data, status) {
+            httpClient.confirmMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
 
                 $ionicLoading.hide();
 
