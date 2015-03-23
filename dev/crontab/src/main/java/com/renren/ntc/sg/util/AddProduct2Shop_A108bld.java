@@ -21,7 +21,7 @@ public class AddProduct2Shop_A108bld {
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
         AddProduct2Shop_A108bld addProduct = new AddProduct2Shop_A108bld();
-        String filePath = "F:\\product\\20150323\\首开知语城（108便利店）.txt";
+        String filePath = "C:\\20150323\\首开知语城（108便利店）.txt";
         readTxtFile(filePath, pdDao, itemDao);
 
     }

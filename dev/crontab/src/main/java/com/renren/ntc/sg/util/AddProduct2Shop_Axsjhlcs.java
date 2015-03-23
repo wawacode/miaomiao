@@ -21,7 +21,7 @@ public class AddProduct2Shop_Axsjhlcs {
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
         AddProduct2Shop_Axsjhlcs addProduct = new AddProduct2Shop_Axsjhlcs();
-        String filePath = "F:\\product\\20150323\\鑫世纪华联超市.txt";
+        String filePath = "C:\\20150323\\鑫世纪华联超市.txt";
         readTxtFile(filePath, pdDao, itemDao);
 
     }

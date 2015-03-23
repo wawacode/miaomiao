@@ -21,7 +21,7 @@ public class AddProduct2Shop_Ajykcs {
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
         AddProduct2Shop_Ajykcs addProduct = new AddProduct2Shop_Ajykcs();
-        String filePath = "F:\\product\\20150323\\望馨花园(嘉源康超市).txt";
+        String filePath = "C:\\20150323\\望馨花园(嘉源康超市).txt";
         readTxtFile(filePath, pdDao, itemDao);
 
     }
