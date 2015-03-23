@@ -106,11 +106,10 @@ angular.module('miaomiao.shop')
                 $scope.selectedCoupon = null;
             }
 
-            $ionicScrollDelegate.$getByHandle('checkoutScroll').resize();
-
+            $ionicScrollDelegate.$getByHandle('checkoutScroll').resize(false);
             $timeout(function(){
-                $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom();
-            },500);
+                $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom(true);
+            });
 
             _updateCheckoutHintMessage();
         };
