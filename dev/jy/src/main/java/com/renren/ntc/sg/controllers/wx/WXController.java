@@ -4,11 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.DeviceDAO;
+import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.PushService;
 import com.renren.ntc.sg.service.SMSService;
+import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
+import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -20,18 +28,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Path("")
 public class WXController {
 
     @Autowired
+    public OrdersDAO orderDao;
+
+    @Autowired
+    public UserOrdersDAO userOrdersDAO;
+
+    @Autowired
     public SMSService smsService;
-//    public Map <String,String>  map = new ConcurrentHashMap<String,String>() ;
+
+    @Autowired
+    public WXService wxService;
+
+    @Autowired
+    public DeviceDAO deviceDAO;
+
+    @Autowired
+    public ShopDAO shopDao;
+
+    @Autowired
+    public PushService pushService;
+
 
     private  static final String PREFIX = "qrscene_";
     public  WXController (){
@@ -66,10 +89,14 @@ public class WXController {
             "<Title><![CDATA[喵喵生活]]></Title> \n" +
             "<Description><![CDATA[关于喵喵]]></Description>\n" +
             "<PicUrl><![CDATA[http://www.mbianli.com/images/loadingpage-full.png]]></PicUrl>\n" +
-            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
+            "<Url><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=http%3A%2F%2Fwww.mbianli.com%2Fwx%2Fr&response_type=code&scope=snsapi_base&state=128#wechat_redirect]]></Url>\n" +
             "</item>\n" +
             "</Articles>\n" +
             "</xml> ";
+
+    private static final String MESSAGE_KEFU = "您好，感谢对小喵的支持！小喵热线是4008816807，如需帮助请随时（24小时）致电:-)";
+    private static final String MESSAGE_FUWUFANWEI = "目前喵喵已成功覆盖：\n" ;
+    private static final String MESSAGE_CUIDAN = "已完成催单，请稍后，如有疑问请联系喵喵客服4008816807。" ;
 
     static final String MESSAGE = "喵喵生活为您连接身边便利，在家动动手指，便利百货为您送货上门。\n" +
             "\n" +
@@ -87,7 +114,7 @@ public class WXController {
         HttpServletRequest request =  inv.getRequest();
         String body = "";
         try {
-             body = getBodyString(request.getReader());
+             body = SUtils.getBodyString(request.getReader());
              LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,20 +126,174 @@ public class WXController {
         }
         return "@" + echostr;
     }
+    @Get("r")
+    @Post("r")
+    public String r( Invocation inv) {
+        return "r:" + "http://www.mbianli.com:8088/sg/loading#/shop?shop_id=10033";
+    }
+
     @Get("cb")
     @Post("cb")
     public String index( Invocation inv) {
+        LoggerUtils.getInstance().log(String.format("wx  callback  call "));
+        String body = "";
+        try {
+            body = SUtils.getBodyString(inv.getRequest().getReader());
+            LoggerUtils.getInstance().log(String.format("wx pay callback  call rec body %s  ", body));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(!StringUtils.isBlank(body)) {
+            String return_code = getResult_code(body);
+            if ("SUCCESS".equals(return_code)){
+                String order_id = getOut_trade_no(body);
+                String fee = getCash_fee(body);
+                String attach = getAttach(body);
+                long  shop_id = getShop_id(attach) ;
+                long  user_id = getUser_id(attach) ;
+                if (shop_id != 0 && user_id!= 0){
+                   LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
+                    return "@" + Constants.UKERROR;
+                }
+                orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
+                userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
+                Shop shop = shopDao.getShop(shop_id);
+                if(null == shop ){
+                    LoggerUtils.getInstance().log(String.format("check wx pay cb  miss shop  %d ",shop_id));
+                    return "@" + Constants.UKERROR;
+                }
+                sendInfo(shop, order_id) ;
+            }
+            if("FAIL".equals(return_code)){
+                String order_id = getOut_trade_no(body);
+                String attach = getAttach(body);
+                long  shop_id = getShop_id(attach) ;
+                long  user_id = getUser_id(attach) ;
+                if (shop_id != 0 && user_id!= 0){
+                    LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
+                    return "@" + Constants.UKERROR;
+                }
+            }
+        }
         return "@" + Constants.DONE;
     }
 
+    private void sendInfo( Shop shop ,String order_id){
+        if(shop.getId() == 10033){
+            return;
+        }
+        smsService.sendSMS2LocPush(order_id, shop);
+        pushService.send2locPush(order_id, shop);
+        pushService.send2kf(order_id, shop);
+        // 发送短信通知
+        Device devcie = deviceDAO.getDevByShopId(shop.getId());
+        if (null == devcie || SUtils.isOffline(devcie)) {
+            System.out.println("device is null or  printer offline ");
+            // 发送通知给 用户和 老板     \
+            System.out.println("send push to boss");
+            pushService.send2Boss(order_id, shop);
+            System.out.println("send sms to boss");
+            smsService.sendSMS2Boss(order_id, shop);
+            System.out.println("send sms to user");
+            smsService.sendSMS2User(order_id, shop);
+        }
+    }
+    private long getShop_id(String attach) {
+         String[] ids = attach.split("_");
+         long shop_id = 0 ;
+        try{
+             shop_id= Long.valueOf(ids[0]);
+         }catch (Exception e){
+            e.printStackTrace();
+        }
+        return shop_id;
+    }
 
+    private long getUser_id(String attach) {
+        String[] ids = attach.split("_");
+        long user_id = 0 ;
+        try{
+            user_id= Long.valueOf(ids[0]);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return user_id;
+    }
+
+    private String getAttach(String body) {
+        String str =  "<attach><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></attach>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+
+
+    public String getResult_code(String body){
+        String str =  "<result_code><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></result_code>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+
+    public String getbank_type(String body){
+        String str =  "<bank_type><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></bank_type>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+    public String getCash_fee(String body){
+        String str =  "<cash_fee><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></cash_fee>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+
+    public String getFee_type(String body){
+        String str =  "<fee_type><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></fee_type>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+
+    public String getOpenid(String body){
+        String str =  "<openid><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></openid>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
+    public String getOut_trade_no(String body){
+        String str =  "<out_trade_no><![CDATA[" ;
+        int start =body.indexOf(str);
+        int end =body.indexOf("]]></result_code>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        return body.substring( str.length() + start ,end);
+    }
 
     private  String parse(String body) {
         String mtype =  getMtype(body);
         String toUser = getToUser(body);
         String fromUser = getFromUser(body);
         String event = getEvent(body);
-
         if ("event".equals(mtype)) {
             String eventKey = getEventKey(body);
             if ("about_miaomiao".equals(eventKey)){
@@ -122,6 +303,30 @@ public class WXController {
               response = response.replace("{fromUser}",toUser);
               response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
               return  response;
+            }
+            if ("Vkefudianhua".equals(eventKey)){
+                LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
+                String response = CONTENT.replace("{message}", MESSAGE_KEFU);
+                response = response.replace("{toUser}",fromUser);
+                response = response.replace("{fromUser}",toUser);
+                response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                return  response;
+            }
+            if ("Vfuwufanwei".equals(eventKey)){
+                LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
+                String response = CONTENT.replace("{message}", MESSAGE_FUWUFANWEI);
+                response = response.replace("{toUser}",fromUser);
+                response = response.replace("{fromUser}",toUser);
+                response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                return  response;
+            }
+            if ("Vcuidan".equals(eventKey)){
+                LoggerUtils.getInstance().log( String.format(" rec event from wx fromUser  %s  event %s ,eventKey %s",fromUser, event ,eventKey));
+                String response = CONTENT.replace("{message}", MESSAGE_CUIDAN);
+                response = response.replace("{toUser}",fromUser);
+                response = response.replace("{fromUser}",toUser);
+                response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
+                return  response;
             }
             if ("subscribe".equals(event)){
                 String content = getContent(body);
@@ -181,7 +386,7 @@ public class WXController {
         HttpServletRequest request =  inv.getRequest();
         String body = "";
         try {
-            body = getBodyString(request.getReader());
+            body = SUtils.getBodyString(request.getReader());
             LoggerUtils.getInstance().log(String.format("rec body %s  ", body));
         } catch (IOException e) {
             e.printStackTrace();
@@ -275,12 +480,13 @@ public class WXController {
     }
 
     private static String getFromUser(String body) {
-        int start =body.indexOf("<FromUserName><![CDATA[");
+        String PRE = "<FromUserName><![CDATA[";
+        int start =body.indexOf(PRE);
         int end =body.indexOf("]]></FromUserName>");
         if(start == -1 || end == -1){
             return "";
         }
-        return body.substring( 23 + start ,end);
+        return body.substring(PRE.length() + start ,end);
     }
 
     private static String getToUser(String body) {
@@ -292,19 +498,7 @@ public class WXController {
         return body.substring( 21 + start ,end);
     }
 
-    public static String getBodyString(BufferedReader br) {
-        String inputLine;
-        String str = "";
-        try {
-            while ((inputLine = br.readLine()) != null) {
-                str += inputLine;
-            }
-            br.close();
-        } catch (IOException e) {
-            System.out.println("IOException: " + e);
-        }
-        return str;
-    }
+
 
 
     @Get("rd")

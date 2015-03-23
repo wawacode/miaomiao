@@ -1,51 +1,46 @@
 ;angular.module('miaomiao.shop').
-    controller('FindShopCtrl', function ($scope, $http, $state,$location, $ionicLoading, localStorageService, httpClient,ShopService, MMUtils, $timeout) {
+    controller('FindShopCtrl', function ($scope, $http, $state,$location, $ionicLoading,$ionicScrollDelegate, localStorageService, httpClient,ShopService, MMUtils, $timeout) {
 
         $scope.shop_data = {};
         $scope.shop_items = [];
         $scope.shop_info = {};
 
-        $scope.shop_info.showShopList = false;
-        $scope.shop_info.showShopHistory = false;
-        $scope.shop_info.showAddressSuggestion = false;
-
         $scope.shop_info.locationReady = localStorageService.get('MMMETA_location_pos_ready');
         if (!$scope.shop_info.locationReady) {
-            $scope.shop_info.locationMessage = "定位失败,您可以搜索你所在的小区"
+            $scope.shop_info.locationMessage = "定位失败,您可以搜索所在的小区"
         } else {
-            $scope.shop_info.locationMessage = "定位成功，正在加载地址...";
+            if(localStorageService.get('MMMETA_location_pos_addr')){
+                $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr');
+            }else{
+                $scope.shop_info.locationMessage = "点击重新定位";
+            }
         }
 
+        $scope.searchButtonText = "搜索";
+
         $scope.shop_history = localStorageService.get('MMMETA_shop_history') || [];
-        if ($scope.shop_history.length) {
-            $scope.shop_info.showShopHistory = true;
-        }
 
         $scope.clearSearch = function () {
             $scope.shop_data.searchQuery = '';
-            $scope.shop_info.startSearch = false;
             hideSearchSuggestions();
         };
 
         function showSearchSuggestions() {
             $scope.shop_info.showAddressSuggestion = true;
-
-            $scope.shop_info.showShopList = false;
-            $scope.shop_info.showShopHistory = false;
         }
 
         function hideSearchSuggestions() {
-
             $scope.shop_info.showAddressSuggestion = false;
-            $scope.shop_info.showShopList = true;
-
-            if ($scope.shop_history.length) {
-                $scope.shop_info.showShopHistory = true;
-            }
         }
 
         $scope.startSearch = function () {
-            $scope.shop_info.startSearch = true;
+
+            if($scope.shop_data.searchQuery && $scope.shop_data.searchQuery.length > 0){
+                $scope.searchButtonText = "搜索";
+            }else{
+                $scope.searchButtonText = "取消";
+            }
+
             showSearchSuggestions();
         };
 
@@ -53,6 +48,7 @@
 
             //TODO: check shop status
             if (shop.status != undefined && shop.status != 0) {
+                MMUtils.showAlert('您选择的小区店铺已经打烊了');
                 return;
             }
 
@@ -77,93 +73,122 @@
             }
         };
 
+        $scope.clickAddressSuggestions = function($event){
+
+            $event.stopPropagation();
+
+            resetFindShopView();
+
+        };
+
+        $scope.clickCommunity = function(community,$event){
+
+            $event.stopPropagation();
+
+            if(!community.shops || community.shops.length == 0){
+
+                community.showShopNotReadyMessage = true;
+                $timeout(function(){
+                    community.showShopNotReadyMessage = false;
+                },1000);
+
+                return;
+
+            }
+
+            if(community.shops && community.shops.length == 1){
+                $scope.goToShop(community.shops[0]);
+                return;
+            }
+
+            if(community.shops && community.shops.length > 1){
+                community.showShopsInCommunity = !community.showShopsInCommunity;
+                return;
+            }
+        };
+
+        $scope.toggleShopsInCommunity = function($event,item){
+            $event.stopPropagation();
+        };
+
         // for shop star
         $scope.readonly = true;
 
         $scope.getSuggestions = function (key, $event) {
 
-            $scope.shop_info.isGettingSuggestions = true;
+            if($scope.shop_data.searchQuery && $scope.shop_data.searchQuery.length > 0){
+                $scope.searchButtonText = "搜索";
+            }else{
+                $scope.searchButtonText = "取消";
+            }
 
-            var options = {
-                onSearchComplete: function (results) {
-                    if (local.getStatus() == BMAP_STATUS_SUCCESS) {
-                        // 判断状态是否正确
-                        var address_suggestions = [];
-                        for (var i = 0; i < results.getCurrentNumPois(); i++) {
-                            address_suggestions.push({'title': results.getPoi(i).title, 'address': results.getPoi(i).address});
-                        }
-                        $timeout(function () {
-                            $scope.shop_info.address_suggestions = address_suggestions;
-                        });
-                    }
-                    $scope.shop_info.isGettingSuggestions = false;
+            // get suggestion from server
+            httpClient.getCommunitySuggestions(key,function(data, status){
+
+                var code = data.code, dataDetail = data.data;
+
+                if (code == 0 &&
+                    !MMUtils.isEmptyObject(dataDetail) &&
+                    dataDetail.communitys &&
+                    dataDetail.communitys.length) {
+
+                    $timeout(function () {
+                        $scope.shop_info.address_suggestions = dataDetail.communitys;
+                    });
+
+                }else{
+                    $scope.shop_info.address_suggestions = [];
                 }
-            };
+            },function(data, status){
+            })
 
-            var local = new BMap.LocalSearch("北京市", options);
-            local.search(key);
-
-
-        };
-
-        $scope.goToSearchAddress = function (item) {
-            $timeout(function () {
-                $scope.shop_info.locationMessage = item.title;
-            });
-            $scope.performSearch(item.title);
         };
 
         $scope.performSearch = function (key, $event) {
 
             if ($event)$event.target.blur();
 
+            if($scope.searchButtonText == "取消"){
+                $scope.searchButtonText = "搜索";
+                hideSearchSuggestions();
+                return;
+            }
+
             var KEY = key || $scope.shop_data.searchQuery;
+            if(!KEY)return;
 
             $timeout(function () {
                 $scope.shop_info.locationMessage = KEY;
-                $scope.shop_info.startSearch = false;
             });
 
-            MMUtils.showLoadingIndicator('正在搜索' + KEY + '附近的店...',$scope);
+            MMUtils.showLoadingIndicator('正在搜索' + KEY + '...',$scope);
 
-            var myGeo = new BMap.Geocoder();
-            myGeo.getPoint(KEY, function (point) {
-                if (point) {
+            // search by keywords
+            httpClient.getCommunityByName(key, function (data, status) {
+                $ionicLoading.hide();
+                var code = data.code, dataDetail = data.data;
 
-                    httpClient.getNearShopList(point.lat, point.lng, function (data, status) {
-
-                        $ionicLoading.hide();
-                        var code = data.code, dataDetail = data.data;
-
-                        if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
-                            $scope.shop_items = dataDetail.shops;
-                            for (var i = 0; i < $scope.shop_items.length; i++) {
-                                $scope.shop_items[i].rate = 5;
-                                $scope.shop_items[i].maxRate = 5;
-                            }
-                        }else{
-                            $scope.shop_items = [];
-                        }
-
-                        hideSearchSuggestions();
-
-                    }, function (data, status) {
-
-                        $ionicLoading.hide();
-
-                        hideSearchSuggestions();
-                    });
-
-                } else {
-
-                    $ionicLoading.hide();
-                    hideSearchSuggestions();
-
+                if (code == 0 && !MMUtils.isEmptyObject(dataDetail)) {
+                    $scope.community_items = _updateShopStatusForCommunity(dataDetail.communitys);
+                }else{
+                    $scope.community_items = [];
                 }
-            }, "北京市");
+                $scope.shop_info.commmunityListTitle = "为您找到的小区";
+
+                hideSearchSuggestions();
+
+            }, function (data, status) {
+
+                $ionicLoading.hide();
+                $scope.community_items = [];
+                $scope.shop_info.commmunityListTitle = "为您找到的小区";
+
+                hideSearchSuggestions();
+            });
         };
 
-//        $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr') || "切换地址";
+
+        // $scope.shop_info.locationMessage = localStorageService.get('MMMETA_location_pos_addr') || "切换地址";
 
         $scope.relocation = function () {
 
@@ -174,6 +199,7 @@
                 if (position) {
 
                     $timeout(function () {
+                        $scope.shop_info.locationReady = true;
                         $scope.shop_info.locationMessage = "定位成功,正在获取地址...";
                     });
 
@@ -185,6 +211,7 @@
 
                 } else {
                     $timeout(function () {
+                        $scope.shop_info.locationReady = false;
                         $scope.shop_info.locationMessage = "定位失败！";
                     });
                 }
@@ -200,7 +227,8 @@
             if (navigator.geolocation) {
                 var position_option = {
                     enableHighAccuracy: true,
-                    timeout: 10000
+                    timeout: 10000,
+                    maximumAge:0
                 };
 
                 MMUtils.showLoadingIndicator('正在重新定位',$scope);
@@ -211,7 +239,7 @@
             }
         };
 
-        function updateRealGEOAddressByGEOData(lng, lat) {
+        function updateRealGEOAddressByGEOData(lng, lat,cb) {
 
             var gpsPoint = new BMap.Point(lng, lat);
 
@@ -226,7 +254,26 @@
                         });
                     }
                 });
+
+                if(cb){
+                    cb(point);
+                }
             });
+        }
+
+        function _updateShopStatusForCommunity(comm_items){
+            for(var i=0; i<  comm_items.length;i++){
+                var hasOpenShop = false;
+                if(comm_items[i].shops){
+                    for(var j=0;j< comm_items[i].shops.length;j++){
+                        if(comm_items[i].shops[j].status == 0){
+                            hasOpenShop = true;
+                        }
+                    }
+                }
+                comm_items[i].hasOpenShop = hasOpenShop;
+            }
+            return comm_items;
         }
 
         function updateUIWhenPositionDataReady() {
@@ -237,55 +284,53 @@
 
                 $scope.shop_info.locationData = localStorageService.get('MMMETA_location_pos_data');
 
-                updateRealGEOAddressByGEOData($scope.shop_info.locationData.lng, $scope.shop_info.locationData.lat);
+                function onBMAPPointReady(point){
 
-                httpClient.getNearShopList($scope.shop_info.locationData.lat, $scope.shop_info.locationData.lng, function (data, status) {
+                    $scope.shop_info.loadingCoummnityItems = true;
+                    $scope.community_items = null;
 
-                    var code = data.code, dataDetail = data.data;
+                    httpClient.getNearCommunityList(point.lat, point.lng, function (data, status) {
 
-                    if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
+                        var code = data.code, dataDetail = data.data;
 
+                        if (code == 0 || !MMUtils.isEmptyObject(dataDetail)) {
+
+                            $timeout(function () {
+                                $scope.community_items = _updateShopStatusForCommunity(dataDetail.communitys);
+                            });
+                        }else{
+                            $scope.community_items = [];
+                        }
+
+                        $scope.shop_info.loadingCoummnityItems = false;
+
+                    }, function (data, status) {
+
+                        // still show it and with no item hint
                         $timeout(function () {
-                            $scope.shop_items = dataDetail.shops;
-                            for (var i = 0; i < $scope.shop_items.length; i++) {
-                                $scope.shop_items[i].rate = 5;
-                                $scope.shop_items[i].maxRate = 5;
-                            }
-
-                            $scope.shop_info.showAddressSuggestion = false;
-                            $scope.shop_info.showShopList = true;
+                            $scope.shop_info.loadingCoummnityItems = false;
+                            $scope.community_items = [];
+                            $scope.shop_info.commmunityListTitle = "附近的小区";
                         });
-                    }
-
-                }, function (data, status) {
-                    // still show it and with no item hint
-                    $timeout(function () {
-                        $scope.shop_info.showAddressSuggestion = false;
-                        $scope.shop_info.showShopList = true;
                     });
-                });
+                }
+
+                updateRealGEOAddressByGEOData($scope.shop_info.locationData.lng, $scope.shop_info.locationData.lat,onBMAPPointReady);
+
             }
         }
 
-        $timeout(function () {
-
-            updateUIWhenPositionDataReady();
-
-        });
+        function resetFindShopView(){
+            $scope.shop_info.showAddressSuggestion = false;
+            $scope.shop_info.commmunityListTitle = "附近的小区";
+        }
 
         $scope.$on("$ionicView.enter", function () {
 
-            $scope.shop_info.showShopList = false;
-            $scope.shop_info.showShopHistory = false;
-            $scope.shop_info.showAddressSuggestion = false;
-
-            if ($scope.shop_history.length) {
-                $scope.shop_info.showShopHistory = true;
-            }
-
-            if ($scope.shop_items.length) {
-                $scope.shop_info.showShopList = true;
-            }
+            $scope.shop_info.commmunityListTitle = "附近的小区";
+            $scope.searchButtonText = "搜索";
+            $timeout(function () {
+                updateUIWhenPositionDataReady();
+            });
         });
-
     });

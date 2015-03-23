@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvShopItems.java" line="18" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvShopItems.java" line="19" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e325f75e-c355-4593-91c5-aa001aa4a3aa" name="Default" comment="" />
@@ -11,13 +11,13 @@
     <file path="/AbstractGeoMongodbService.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426488039162" ignored="false" />
     <file path="/GeoService.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426483377732" ignored="false" />
     <file path="/PrinterMoniter.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422591841750" ignored="false" />
-    <file path="/fragment.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426491531150" ignored="false" />
+    <file path="/fragment.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1427097809525" ignored="false" />
     <file path="/t.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422962343000" ignored="false" />
     <file path="/RefreshFromProdudce.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422602280677" ignored="false" />
     <file path="/UserLose.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422679629110" ignored="false" />
     <file path="/OrdersDAO.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422677099483" ignored="false" />
     <file path="/topUser.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422676635405" ignored="false" />
-    <file path="/mvShopItems.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422698004829" ignored="false" />
+    <file path="/mvShopItems.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426652064664" ignored="false" />
     <file path="/Tools.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422869485548" ignored="false" />
     <file path="/MvOrder.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1423711272647" ignored="false" />
     <file path="/ShopCategoryDAO.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1423711168463" ignored="false" />
@@ -33,6 +33,9 @@
     <file path="/ShopLocation.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426491506536" ignored="false" />
     <file path="$PROJECT_DIR$/../jy/src/main/java/com/renren/ntc/sg/bean/Community.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426494351566" ignored="false" />
     <file path="/CommunityDAO.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426563797897" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/mongo/MongoDBUtil.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426651580726" ignored="false" />
+    <file path="/ItemsDAO.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426651852587" ignored="false" />
+    <file path="/AddProduct2Shop_113.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1427097243895" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +50,39 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/mongo/MongoDBUtil.java" line="72" class="com.renren.ntc.sg.mongo.MongoDBUtil" package="com.renren.ntc.sg.mongo">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2d.java" line="11" class="com.renren.ntc.sg.geo.GeoMongodbService2d" package="com.renren.ntc.sg.geo">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -83,39 +119,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/mongo/MongoDBUtil.java" line="72" class="com.renren.ntc.sg.mongo.MongoDBUtil" package="com.renren.ntc.sg.mongo">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2d.java" line="11" class="com.renren.ntc.sg.geo.GeoMongodbService2d" package="com.renren.ntc.sg.geo">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -125,91 +128,91 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GeoCommunityService.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityService.java">
+      <file leaf-file-name="AddProduct2Shop_product.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_product.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="278" column="48" selection-start="9797" selection-end="9797" vertical-scroll-proportion="1.3402985">
+            <state line="22" column="23" selection-start="772" selection-end="780" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoadCommunity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java">
+      <file leaf-file-name="CookieManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/CookieManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="90" selection-start="2752" selection-end="2752" vertical-scroll-proportion="0.0">
+            <state line="14" column="13" selection-start="237" selection-end="237" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommunityDAO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/CommunityDAO.java">
+      <file leaf-file-name="Refresh2Produdce.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="27" selection-start="1171" selection-end="1171" vertical-scroll-proportion="0.0">
+            <state line="54" column="13" selection-start="1834" selection-end="1834" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeoMongodbService2d.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2d.java">
+      <file leaf-file-name="AddProduct2Shop_A113.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A113.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="45" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0">
+            <state line="16" column="39" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeoQueryResult.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoQueryResult.java">
+      <file leaf-file-name="AddProduct2Shop_Ajmcs.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajmcs.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="70" selection-start="563" selection-end="563" vertical-scroll-proportion="0.0">
+            <state line="23" column="58" selection-start="853" selection-end="853" vertical-scroll-proportion="0.70933336">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OrderService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/OrderService.java">
+      <file leaf-file-name="FloatingDecimal.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.7.0_25/jre/lib/rt.jar!/sun/misc/FloatingDecimal.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="13" selection-start="502" selection-end="502" vertical-scroll-proportion="0.0">
+            <state line="106" column="0" selection-start="4261" selection-end="4261" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AbstractGeoMongodbService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/AbstractGeoMongodbService.java">
+      <file leaf-file-name="Float.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.7.0_25/src.zip!/java/lang/Float.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="93" selection-start="1704" selection-end="1704" vertical-scroll-proportion="0.0">
+            <state line="416" column="0" selection-start="16648" selection-end="16648" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PrinterService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/PrinterService.java">
+      <file leaf-file-name="AddProduct2Shop.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="13" selection-start="346" selection-end="346" vertical-scroll-proportion="0.0">
+            <state line="15" column="38" selection-start="413" selection-end="418" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeoMongodbService2dSphere.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2dSphere.java">
+      <file leaf-file-name="AddProduct2Shop_GX.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_GX.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="64" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0">
+            <state line="13" column="13" selection-start="361" selection-end="361" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeoCommunityMongodbService2d.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityMongodbService2d.java">
+      <file leaf-file-name="AddProduct2Shop_lt.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_lt.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="70" selection-start="1043" selection-end="1043" vertical-scroll-proportion="0.0">
+            <state line="14" column="13" selection-start="405" selection-end="405" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -225,22 +228,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddShopServiceAreas.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/MegerShopItems.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_628.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvHAHAShopItems.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/bean/Community.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Constants.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/mongo/MongoDBUtil.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/ShopLocation.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/Location.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityMongodbService2d.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/AbstractGeoMongodbService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/CommunityDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/ItemsDAO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_GX_JP.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvHAHAShopItems.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/MegerShopItems.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvShopItems.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_product.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_113.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_jmcs.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajmcs.java" />
       </list>
     </option>
   </component>
@@ -330,11 +333,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sg" />
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -364,7 +363,33 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="geo" />
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sg_crontab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="crontab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sg" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -385,66 +410,18 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.renren.ntc.sg.geo" />
       <recent name="com.renren.ntc.sg.util" />
+      <recent name="com.renren.ntc.sg.geo" />
       <recent name="com.renren.ntc.sg.stats" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.GeoCommunityService">
-    <configuration default="false" name="AddProduct2Shop_628" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.AddProduct2Shop_628" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="sg_crontab" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="mvHAHAShopItems" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.mvHAHAShopItems" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="sg_crontab" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="LoadCommunity" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.LoadCommunity" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="sg_crontab" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Application.AddProduct2Shop_A113">
     <configuration default="false" name="GeoCommunityService" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.geo.GeoCommunityService" />
       <option name="VM_PARAMETERS" />
@@ -467,8 +444,8 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="GeoService" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.geo.GeoService" />
+    <configuration default="false" name="Refresh2Produdce" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.Refresh2Produdce" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -479,13 +456,55 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="sg_crontab" />
       <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="mvShopItems" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.mvShopItems" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="sg_crontab" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="AddProduct2Shop_product" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.AddProduct2Shop_product" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="sg_crontab" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="AddProduct2Shop_A113" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.renren.ntc.sg.util.AddProduct2Shop_A113" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="sg_crontab" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -501,19 +520,6 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -541,6 +547,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -578,19 +597,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Application.AddProduct2Shop_628" />
-      <item index="1" class="java.lang.String" itemvalue="Application.mvHAHAShopItems" />
-      <item index="2" class="java.lang.String" itemvalue="Application.LoadCommunity" />
-      <item index="3" class="java.lang.String" itemvalue="Application.GeoCommunityService" />
-      <item index="4" class="java.lang.String" itemvalue="Application.GeoService" />
+      <item index="0" class="java.lang.String" itemvalue="Application.GeoCommunityService" />
+      <item index="1" class="java.lang.String" itemvalue="Application.Refresh2Produdce" />
+      <item index="2" class="java.lang.String" itemvalue="Application.mvShopItems" />
+      <item index="3" class="java.lang.String" itemvalue="Application.AddProduct2Shop_product" />
+      <item index="4" class="java.lang.String" itemvalue="Application.AddProduct2Shop_A113" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.GeoCommunityService" />
-        <item index="1" class="java.lang.String" itemvalue="Application.LoadCommunity" />
-        <item index="2" class="java.lang.String" itemvalue="Application.GeoService" />
-        <item index="3" class="java.lang.String" itemvalue="Application.mvHAHAShopItems" />
-        <item index="4" class="java.lang.String" itemvalue="Application.AddProduct2Shop_628" />
+        <item index="0" class="java.lang.String" itemvalue="Application.AddProduct2Shop_A113" />
+        <item index="1" class="java.lang.String" itemvalue="Application.mvShopItems" />
+        <item index="2" class="java.lang.String" itemvalue="Application.AddProduct2Shop_product" />
+        <item index="3" class="java.lang.String" itemvalue="Application.Refresh2Produdce" />
+        <item index="4" class="java.lang.String" itemvalue="Application.GeoCommunityService" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -608,7 +627,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -624,8 +643,8 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.67291313" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.7227273" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.7189097" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2810903" sideWeight="0.7227273" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24531516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -698,110 +717,114 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/ShopLocation.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/MvOrder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="70" selection-start="173" selection-end="173" vertical-scroll-proportion="0.0">
+        <state line="10" column="13" selection-start="226" selection-end="226" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/views/console/orders.vm">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/mvShopItems.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="43" selection-start="2797" selection-end="2797" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="jar://$M2_REPO$/org/mongodb/mongo-java-driver/2.7.3/mongo-java-driver-2.7.3-sources.jar!/com/mongodb/DBCollection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="196" column="21" selection-start="7247" selection-end="7253" vertical-scroll-proportion="0.0">
+        <state line="27" column="69" selection-start="757" selection-end="757" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/MegerShopItems.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="82" selection-start="1062" selection-end="1062" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="127" column="46" selection-start="4371" selection-end="4371" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="170" column="30" selection-start="5169" selection-end="5180" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/OrderService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="13" selection-start="502" selection-end="502" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/PrinterService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="13" selection-start="346" selection-end="346" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityMongodbService2d.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="70" selection-start="1043" selection-end="1043" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoQueryResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="70" selection-start="563" selection-end="563" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/AbstractGeoMongodbService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="93" selection-start="1704" selection-end="1704" vertical-scroll-proportion="0.0">
+        <state line="38" column="111" selection-start="1297" selection-end="1297" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/LoadCommunity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="90" selection-start="2752" selection-end="2752" vertical-scroll-proportion="0.0">
+        <state line="54" column="92" selection-start="2083" selection-end="2083" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2dSphere.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/DownFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="64" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0">
+        <state line="12" column="13" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoMongodbService2d.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/CreateShop.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="45" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0">
+        <state line="12" column="13" selection-start="296" selection-end="296" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/CommunityDAO.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/CookieManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="27" selection-start="1171" selection-end="1171" vertical-scroll-proportion="0.0">
+        <state line="14" column="13" selection-start="237" selection-end="237" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoCommunityService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="278" column="48" selection-start="9797" selection-end="9797" vertical-scroll-proportion="1.3402985">
+        <state line="15" column="38" selection-start="413" selection-end="418" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_GX.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="13" selection-start="361" selection-end="361" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_lt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="13" selection-start="405" selection-end="405" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_product.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="23" selection-start="772" selection-end="780" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="13" selection-start="1834" selection-end="1834" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.7.0_25/jre/lib/rt.jar!/sun/misc/FloatingDecimal.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="0" selection-start="4261" selection-end="4261" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.7.0_25/src.zip!/java/lang/Float.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="416" column="0" selection-start="16648" selection-end="16648" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_A113.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="39" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/AddProduct2Shop_Ajmcs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="58" selection-start="853" selection-end="853" vertical-scroll-proportion="0.70933336">
           <folding />
         </state>
       </provider>

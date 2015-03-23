@@ -143,7 +143,13 @@ public class SMSService {
             String v = null;
             String url;
             byte[] t = null;
+
             String response = "用户下单";
+            if("wx".equals(value.getAct())){
+                response = response + ",支付方式：微信支付.";
+            }else{
+                response = response + ",支付方式：货到付款.";
+            }
             long adr_id = value.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
 

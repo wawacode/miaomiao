@@ -6,19 +6,16 @@
     <meta name="format-detection" content="telephone=no">
 
     <link href="/css/ionic.min.css" rel="stylesheet">
-    <link href="/js/ionic-rating/ionic-rating.css" rel="stylesheet">
-
-    <link href="/css/app-ui-min.css?version=1.0.5" rel="stylesheet">
+    <link href="/css/app-ui-min.css?version=1.0.7" rel="stylesheet">
 
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
     <script type="text/javascript" src="/js/bower_components/angular-bindonce/bindonce.min.js"></script>
     <script type="text/javascript" src="/js/bower_components/quick-ng-repeat/quick-ng-repeat.js"></script>
     <script type="text/javascript" src="/js/angular-local-storage.min.js"></script>
     <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
-    <script type="text/javascript" src="/js/ionic-rating/ionic-rating.min.js"></script>
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
 
-    <script src="/sg/js/compress/app-ui-min.js?version=1.0.5" type="text/javascript"></script>
+    <script src="/sg/js/compress/app-ui-min.js?version=1.0.7" type="text/javascript"></script>
 
 </head>
 <body>
@@ -387,9 +384,12 @@
                     </div>
                     <div>
                         <div class="list">
-                            <div class="item item-icon-right" style="border: none">
-                                <div style="padding-left: 5px;font-size: 15px"> 货到付款</div>
-                                <div class="icon balanced ion-ios7-checkmark commonSelected" style="right: 25px"></div>
+                            <div class="item item-icon-right borderBotton" style="margin-top: 1px" bindonce ng-repeat="checkt in checkoutType" ng-click="selectCheckoutType($index)">
+                                <div style="padding-left: 5px;font-size: 15px" bo-text="checkt.name"></div>
+                                <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':checkt.selected,'ion-ios7-circle-outline': !checkt.selected}"></div>
+                                <!--<div ng-if="checkt.id=CheckoutTypeEnum.CHECKOUTTYPE_WXPAY">-->
+                                    <!--选择优惠券-->
+                                <!--</div>-->
                             </div>
                         </div>
                     </div>
@@ -632,104 +632,198 @@
         </ion-header-bar>
         <ion-content padding="false"
                      has-tabs="false"
-                     has-header="true" >
+                     has-header="true" style="top: 46">
             <div ng-include="'templates/shoplist.html'">
             </div>
         </ion-content>
     </ion-modal-view>
 </script>
 <script id="templates/shoplist.html" type="text/ng-template">
-    <div style=";height: 57px;padding-top: 10px;">
-        <div id="search-box" class="item-input-inset"
-             style=";margin: auto;height: 36px">
-            <div class="item-input-wrapper">
-                <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
-                <input type="search" placeholder="请输入地址例如,五道口" ng-model="shop_data.searchQuery"
-                       ng-focus="startSearch()" ng-change='getSuggestions(shop_data.searchQuery,$event)' ng-keyup="$event.keyCode == 13 && performSearch(shop_data.searchQuery,$event)" style="color: #7a7a7a">
-                <!--<i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"-->
-                <!--ng-click="clearSearch()" ng-show="shop_info.startSearch"></i>-->
-            </div>
-            <button class="button-clear" style="color: #000000;font-size: 15px;min-width: 50px" ng-click="performSearch(shop_data.searchQuery,$event)"> 搜索 </button>
-        </div>
-    </div>
-    <div style="padding-top:3px;padding-bottom:3px;margin-bottom:10px;  background-color: #ededed;color: #999999;" ng-click="relocation()"
-         ng-hide="shop_info.showAddressSuggestion">
-        <div style="display: inline-block;padding-left: 10px">
-            {{shop_info.locationMessage}}
-        </div>
-        <div style="display: inline-block;float: right;padding-right: 15px;">
-            重新定位 <i class="icon ion-ios7-location-outline" style="font-size: 18px"></i>
-        </div>
-    </div>
-    <div class="list" ng-show="shop_info.showAddressSuggestion">
-        <div class="item-hint">
-            地址列表
-        </div>
-        <div class="item" ng-repeat="item in shop_info.address_suggestions"
-             ng-click="goToSearchAddress(item)">
-            <div style="font-size: 16px">
-                {{item.title}}
-            </div>
-            <div style="color: darkgray;font-size: 12px">
-                {{item.address}}
+
+    <div style="background-color: #eaeaea;width: 100%;height: 100%;position: relative">
+
+        <div style=";padding-top: 0px;">
+            <div id="search-box" class="item-input-inset"
+                 style=";margin: auto;height: 44px;background-color: #ffffff">
+                <div class="item-input-wrapper">
+                    <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
+                    <input type="search" placeholder="请输入小区名如,中关村小区" ng-model="shop_data.searchQuery"
+                           ng-focus="startSearch()" ng-change='getSuggestions(shop_data.searchQuery,$event)' ng-keyup="$event.keyCode == 13 && performSearch(shop_data.searchQuery,$event)" style="color: #7a7a7a">
+                    <!--<i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"-->
+                    <!--ng-click="clearSearch()" ng-show="shop_info.startSearch"></i>-->
+                </div>
+                <button class="button-clear" style="color: #000000;font-size: 15px;min-width: 50px" ng-click="performSearch(shop_data.searchQuery,$event)"> {{searchButtonText}} </button>
             </div>
         </div>
+
+        <div class="ShopContent" ng-if="!shop_info.showAddressSuggestion">
+            <div style="padding-top:5px;padding-bottom:5px;margin-top: 5px; background-color: #ffffff;color: #999999;"
+                 ng-click="relocation()">
+                <div style="display: inline-block;padding-left: 10px">
+                    {{shop_info.locationMessage}}
+                </div>
+                <div style="display: inline-block;float: right;padding-right: 15px;color: #ef5356">
+                    重新定位 <i class="icon icon ion-android-locate" style="font-size: 14px"></i>
+                </div>
+            </div>
+
+            <div class="" style="margin: 0;background-color: #eaeaea">
+                <div class="item-hint" ng-if="shop_info.locationReady || community_items && community_items.length >= 0">
+                    选择您所在的小区 <span class="assertive" ng-if="shop_info.loadingCoummnityItems == true"><i class="icon ion-loading-c assertive"></i></span>
+                </div>
+                <div ng-if="community_items && community_items.length == 0" style="color: #999999;text-align: center;font-size: 14px;padding-top: 50px;padding-bottom: 50px;background-color: #ffffff">
+                    小喵正在努力覆盖您所在的小区,敬请期待哦 !
+                </div>
+                <div class="communityList" bindonce ng-repeat="item in community_items"
+                     ng-include = "'templates/community-item.html'">
+                </div>
+            </div>
+
+            <div class="" ng-if="shop_history.length" style="margin-top: 0px; margin-bottom: 5px;padding-top: 5px;background-color: #ffffff">
+                <div class="item-hint">
+                    历史店铺
+                </div>
+                <div class="item-shop-history" ng-repeat="item in shop_history" ng-click="goToShop(item)" style="">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+
+        <div class="addressSuggestions" style="position: absolute;top:45;bottom: 0;left: 0;right: 0;width: 100%;background-color: #ffffff;z-index: 999;"
+             ng-if="shop_info.showAddressSuggestion == true">
+
+            <ion-content padding="false"
+                         has-tabs="true"
+                         has-header="true"
+                         scroll="true">
+                <div class="item-hint" ng-click="clickAddressSuggestions($event)">
+                    小区列表
+                </div>
+                <div style="background-color: #ffffff;">
+                    <div class="communityListSimple" bindonce ng-repeat="item in shop_info.address_suggestions track by item.id"
+                         ng-include = "'templates/community-item-simple.html'">
+                    </div>
+                </div>
+            </ion-content>
+
+        </div>
+
     </div>
-    <div class="list" ng-hide="shop_info.showAddressSuggestion">
-        <div class="item-hint">
-            附近的便利店
-        </div>
-        <div ng-show="!shop_items.length" style="color: darkgray;text-align: center;font-size: 12px;padding-top: 10px">
-            对不起,小喵还没覆盖到您所在的区域呢~
-        </div>
-        <div class="item" ng-repeat="item in shop_items"
-             ng-click="goToShop(item)" ng-include = "'templates/shop-item.html'">
-        </div>
-    </div>
-    <div class="list" ng-if="shop_info.showShopHistory" style="margin-bottom: 5px" ng-hide="shop_info.showAddressSuggestion">
-        <div class="item-hint" ng-show="shop_history.length">
-            历史店铺
-        </div>
-        <div class="item-shop-history" ng-repeat="item in shop_history" ng-click="goToShop(item)" style="">
-            {{item.name}}
-        </div>
-    </div>
+
 </script>
-<script id="templates/shop-item.html" type="text/ng-template">
-    <div style="padding-top: 6px;padding-left: 13px;padding-bottom: 0px;padding-right: 13px;">
+
+<script id="templates/community-item.html" type="text/ng-template">
+    <!--ng-class="{'item-icon-right':item.shops && item.shops.length > 1}"-->
+    <div class="item" style="border: none;position: relative;"
+          ng-click="clickCommunity(item,$event)">
+
+        <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
+             style="color: #ef5356;text-align: left;position: absolute; font-size: 11px;top: -2;left: 16">
+            小喵正在努力覆盖您选择的小区,敬请期待哦!
+        </div>
+
         <div>
-            <div style="font-size: 16px;display: inline-block;color: #191919">
-                {{item.name}}
+            <div style="font-size: 14px;display: inline-block;color: #191919" bo-text="item.name">
             </div>
-            <div style="display: inline-block;margin-left: 2px">
-                <rating ng-model="item.rate" max="item.maxRate" readonly></rating>
+            <div ng-if="item.shops && item.shops.length"
+                 style="float: right;display: inline-block;padding-right: 10px;padding: 1px 4px 1px 4px;border-radius: 4px;font-size: 14px;"
+                 ng-class="{'hasOpenShop':item.hasOpenShop,'hasNoOpenShop':!item.hasOpenShop}"
+                 bo-text="item.shops.length + ' 家店'">
             </div>
-            <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }">
-                {{item.status | getShopStatusString }}
+        </div>
+        <div style="margin-top: 5px;color: #6a6a6a">
+            <div class="item-text-wrap" style="font-size: 12px;">
+                <i class="ion-ios7-location" style="font-size: 15px;margin-right: 12px;color: lightgray"></i>
+                <span bo-text="'地址: ' + item.city + item.district + item.name"></span>
+            </div>
+            <div class="item-text-wrap" style="font-size: 12px;" ng-if="item.distinct > 0">
+                <i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 8px;color: lightgray"></i>
+                <span  bo-text="'距离' + (item.distinct | parseIntDistant) + '米'"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="background-color: #ffffff" ng-if="item.shops && item.shops.length">
+        <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: #ffffff;border: solid 1px lightgray"
+             bindonce
+             ng-repeat="item in item.shops"
+             ng-click="goToShop(item)"
+             ng-include = "'templates/shop-item.html'">
+        </div>
+    </div>
+
+</script>
+
+<script id="templates/community-item-simple.html" type="text/ng-template">
+    <!--ng-class="{'item-icon-right':item.shops && item.shops.length > 1}"-->
+    <div class="item" style="border-top: none;border-left: none;border-right: none; position: relative;padding: 12px"
+         ng-click="clickCommunity(item,$event)">
+
+        <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
+             style="color: #ef5356;text-align: left;position: absolute; font-size: 10px;top: -5;left: 11">
+            小喵正在努力覆盖您选择的小区,敬请期待哦!
+        </div>
+        <div>
+            <div style="font-size: 14px;display: inline-block;color: #191919" bo-text="item.key">
+            </div>
+            <div ng-if="item.shops && item.shops.length"
+                 style="float: right;display: inline-block;padding-right: 10px;background-color: #ef5356;padding: 2px 5px 2px 5px;border-radius: 4px;color: #ffffff;font-size: 14px;"
+                 bo-text="item.shops.length + ' 家店'">
+            </div>
+        </div>
+    </div>
+
+    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="padding: 5px" ng-if="item.shops && item.shops.length">
+        <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: #ffffff;border: solid 1px lightgray"
+             bindonce
+             ng-repeat="item in item.shops"
+             ng-click="goToShop(item)"
+             ng-include = "'templates/shop-item.html'">
+        </div>
+    </div>
+
+</script>
+
+<script id="templates/shop-item.html" type="text/ng-template">
+
+    <div style="">
+        <div>
+            <div style="font-size: 12px;display: inline-block;color: #191919" bo-text="item.name">
+            </div>
+
+            <div style="display: inline-block;margin-left: 6px">
+                <span style="color: #ef5356;font-size: 12px" ng-if="item.remark" bo-text="item.remark"></span>
+            </div>
+            <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }"
+                    bo-text="item.status | getShopStatusString ">
             </div>
         </div>
         <div style="margin-top: 12px;color: #6a6a6a">
             <div style="font-size: 12px;">
                 <div style=" display: inline-block" ng-show="item.open_time || item.close_time">
-                    <i class="icon ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> 早{{item.open_time| date:'shortTime' | removeAMPM}} - 晚{{item.close_time| date:'shortTime' | removeAMPM}}
+                    <i class=" ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> 早{{item.open_time| date:'shortTime' | removeAMPM}} - 晚{{item.close_time| date:'shortTime' | removeAMPM}}
                 </div>
                 <div style=" display: inline-block;" ng-show="!item.open_time && !item.close_time">
-                    <i class="icon ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>全天营业
+                    <i class=" ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>全天营业
                 </div>
                 <div style=" display: inline-block; padding-left: 20px">
-                    <i class="icon ion-ios7-pricetags" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> {{ item.base_price | getShopMinPrice }}元起送
+                    <i class="ion-ios7-pricetags" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> {{ item.base_price | getShopMinPrice }}元起送
                 </div>
             </div>
             <div class="item-text-wrap" style="font-size: 12px;" ng-show="item.shop_address">
-                <i class="icon ion-ios7-location" style="font-size: 15px;margin-right: 12px;color: lightgray"></i>地址: {{item.shop_address}}
+                <i class=" ion-ios7-location" style="font-size: 15px;margin-right: 12px;color: lightgray"></i>地址: {{item.shop_address}}
             </div>
-            <div class="item-text-wrap" style="font-size: 12px;color: #ef5356" ng-show="item.shop_info">
-                <i class="icon ion-ios7-navigate" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>服务区域: {{item.shop_info}}
+            <!--<div class="item-text-wrap" style="font-size: 12px;color: #ef5356" ng-show="item.shop_info">-->
+                <!--<i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>服务区域: {{item.shop_info}}-->
+            <!--</div>-->
+            <div class="item-text-wrap" style="font-size: 12px;" ng-show="item.distant > 0">
+                <i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>距离: {{item.distant | parseIntDistant}} 米
             </div>
         </div>
     </div>
 </script>
 
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
 <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
 

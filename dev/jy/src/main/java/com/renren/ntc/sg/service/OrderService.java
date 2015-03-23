@@ -44,6 +44,11 @@ public class OrderService {
             o.setPhone(adr.getPhone());
             o.setAddress(adr.getAddress());
             o.setStatus4V(toStr(o.getStatus(), first));
+            String msg = o.getMsg();
+            JSONObject js = (JSONObject) JSON.parse(msg);
+            if (null != js){
+               o.setConfirm(js.getString("confirm"));
+            }
             o.setPrice4V(((float) o.getPrice() / 100) + "");
             Shop shop = shopDAO.getShop(o.getShop_id());
             o.setShop_name4V(shop.getName());

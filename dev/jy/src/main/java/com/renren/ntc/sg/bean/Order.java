@@ -17,9 +17,31 @@ public class Order {
     private long   user_id;
     private long address_id ;
     private String remarks ="";
+
+    public String getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
+    }
+
+    private String confirm ="";
+    private String pre_id ="";
+    private String msg ="";
     private String snapshot="" ;
     private int status    ;
     private String info ;
+
+    public String getAct() {
+        return act;
+    }
+
+    public void setAct(String act) {
+        this.act = act;
+    }
+
+    private String act = "" ;
 
 
 
@@ -63,6 +85,22 @@ public class Order {
     public String getPrice4V() {
         return price4V;
     }
+    public String getPre_id() {
+        return pre_id;
+    }
+
+    public void setPre_id(String pre_id) {
+        this.pre_id = pre_id;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
 
     public void setPrice4V(String price4V) {
         this.price4V = price4V;

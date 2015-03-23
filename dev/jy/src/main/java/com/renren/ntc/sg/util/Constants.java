@@ -58,4 +58,12 @@ public class Constants {
     public static int ITEM_NOT_SALE = 0;
 
     public static final String  STAFFKEY= "staff-";
+
+    public static final int ORDER_WAIT_FOR_PRINT = 1;
+
+    public static final int ORDER_PAY_PENDING = 0;
+
+    public static final int ORDER_PAY_FAIL = 5;
+
+    public static final int ORDER_FINISH = 2;
 }

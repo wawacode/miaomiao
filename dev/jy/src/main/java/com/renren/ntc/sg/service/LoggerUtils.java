@@ -3,6 +3,10 @@ package com.renren.ntc.sg.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: yunming.zhu
@@ -24,8 +28,7 @@ public class LoggerUtils {
         return instance;
     }
     public void log (String message){
-//        logger.info(System.currentTimeMillis()   + " " + message);
-        System.out.println(System.currentTimeMillis() + " " + message);
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd EE hh:mm:ss");
+        System.out.println(df.format(new Date())+ " " + message);
     }
-
 }

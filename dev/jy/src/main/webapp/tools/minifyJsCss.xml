@@ -38,7 +38,7 @@
         <concat destfile="${src}/sg/js/compress/app-ui-min.js">
 
             <filelist dir="${src}/sg/js/compress/services"
-                      files="app-min.js, directives-min.js,filters-min.js,services-min.js,shoppingCart-min.js"/>
+                      files="app-min.js, directives-min.js,filters-min.js,services-min.js,shoppingCart-min.js,wxPayService-min.js"/>
 
             <filelist dir="${src}/sg/js/compress/controllers"
                       files="GetLocationController-min.js, FindShopController-min.js,ProductListController-min.js,GoToShopController-min.js,SearchController-min.js,

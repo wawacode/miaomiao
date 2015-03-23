@@ -1,5 +1,8 @@
 package com.renren.ntc.sg.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -16,7 +19,7 @@ public class Test {
     public static void main (String [] args ){
 
         try {
-            System.out.println(new Date(1425745954604L));
+            System.out.println((JSONObject) JSON.parse(""));;
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

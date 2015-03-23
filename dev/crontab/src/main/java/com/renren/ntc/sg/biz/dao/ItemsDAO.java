@@ -37,8 +37,8 @@ public interface ItemsDAO {
     @SQL("select "+ FIELDS +" from  ##(:tableName)   where shop_id =:2 and  category_id =::3  limit :4,:5")
     public List<Item> getItems(@SQLParam("tableName") String tableName,long shop_id, long category_id, int from,int offset);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)   where serialNo =:2")
-    public  Item getItem(@SQLParam("tableName") String tableName,String  serialNo);
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id=:3 and serialNo =:2")
+    public  Item getItem(@SQLParam("tableName") String tableName,String  serialNo,long to_shop_id);
 
 
     @SQL("select "+ FIELDS +" from ##(:tableName)   where id =:3")
