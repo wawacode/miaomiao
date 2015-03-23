@@ -33,6 +33,8 @@ public class Shop {
     private  Date  updatetime;
     private  String  owner_phone   = "";
     private  String  head_url   = "";
+    private String remark;//备注
+    private String ext;//扩展字段json
 
     public String getShop_info() {
         return shop_info;
@@ -212,6 +214,22 @@ public class Shop {
     public void setHead_url(String head_url) {
         this.head_url = head_url;
     }
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
 
 
 
