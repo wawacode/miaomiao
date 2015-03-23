@@ -27,7 +27,7 @@ CREATE TABLE `items` (
 
 @DAO(catalog = "ABC")
 public interface OrdersDAO {
-    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,info ,snapshot,status,price,create_time,update_time" ;
+    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time" ;
     static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks ,act, info,snapshot,status,price" ;
 
     @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
