@@ -253,10 +253,10 @@ public class GeoService {
         ShopDAO shopDao = rose.getBean(ShopDAO.class);
         Shop shop = new Shop();
         Date date = new Date();
+        // 设置店铺 开店关店时间
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.set(Calendar.HOUR_OF_DAY,10);
-
         c.set(Calendar.MINUTE,0);
         c.set(Calendar.SECOND,0);
         shop.setOpen_time(c.getTime());
@@ -266,12 +266,13 @@ public class GeoService {
         c.set(Calendar.SECOND,0);
         c.set(Calendar.MINUTE,0);
         shop.setClose_time(c.getTime());
-
         shop.setId(shop_id);
+        //设置店铺 起送价格
         shop.setBase_price(3000);
         shopDao.update(shop) ;
 
 
+        //更新店铺坐标到 线上 mongo 服务
         GeoService  geoService =  new GeoService() ;
         shop = shopDao.getShop(shop.getId());
         ShopLocation shop_location = new ShopLocation()  ;
@@ -283,7 +284,8 @@ public class GeoService {
         shop_location.setShop_id(shop.getId());
         System.out.println(geoService.updateLocation(shop_location));
 
-//        shopDao.audit(shop.getId());
+
+        // 一下是 测试 更新到mongo 是否成功
         ShopLocation shopL = new ShopLocation () ;
         shopL.setShop_id(10);
         shopL.setLatitude(40.001361);

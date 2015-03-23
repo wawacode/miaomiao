@@ -9,7 +9,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/a.dummy" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426483240396" ignored="false" />
     <file path="/AbstractGeoMongodbService.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426488039162" ignored="false" />
-    <file path="/GeoService.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1426483377732" ignored="false" />
+    <file path="/GeoService.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1427114628924" ignored="false" />
     <file path="/PrinterMoniter.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422591841750" ignored="false" />
     <file path="/fragment.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1427097809525" ignored="false" />
     <file path="/t.java" changelist="e325f75e-c355-4593-91c5-aa001aa4a3aa" time="1422962343000" ignored="false" />
@@ -146,10 +146,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="applicationContext-datasource.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="applicationContext-datasource.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="57" selection-start="955" selection-end="955" vertical-scroll-proportion="0.608">
+            <state line="16" column="16" selection-start="867" selection-end="867" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -191,10 +191,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeoService.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="GeoService.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="254" column="35" selection-start="7155" selection-end="7155" vertical-scroll-proportion="-6.64">
+            <state line="288" column="62" selection-start="8342" selection-end="8342" vertical-scroll-proportion="0.4925816">
               <folding />
             </state>
           </provider>
@@ -242,8 +242,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/biz/dao/ProductDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/util/Refresh2Produdce.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/service/GeoService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java" />
         <option value="$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java" />
       </list>
     </option>
   </component>
@@ -839,16 +839,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="254" column="35" selection-start="7155" selection-end="7155" vertical-scroll-proportion="-6.64">
+        <state line="16" column="16" selection-start="867" selection-end="867" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext-datasource.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/renren/ntc/sg/geo/GeoService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="57" selection-start="955" selection-end="955" vertical-scroll-proportion="0.608">
+        <state line="288" column="62" selection-start="8342" selection-end="8342" vertical-scroll-proportion="0.4925816">
           <folding />
         </state>
       </provider>
