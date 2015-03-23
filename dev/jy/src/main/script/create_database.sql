@@ -266,3 +266,8 @@ insert into  items (shop_id,name,category_id,score,count,price,price_new,pic_url
 insert into  items (shop_id,name,category_id,score,count,price,price_new,pic_url) value(1,'玉米',1,10,14,1000,2000,'http://www.baidu.com');
 insert into  items (shop_id,name,category_id,score,count,price,price_new,pic_url) value(1,'玉米',1,10,14,1000,2000,'http://www.baidu.com');
 insert into  items (shop_id,name,category_id,score,count,price,price_new,pic_url) value(1,'玉米',1,10,14,1000,2000,'http://www.baidu.com');
+/**
+ * 2015.03.18 shop添加两个字段
+ */
+alter table shop add remark varchar(256) not null default '' comment '备注';
+alter table shop add ext varchar(2000) not null default '' comment '扩展字段';

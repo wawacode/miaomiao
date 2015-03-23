@@ -60,7 +60,8 @@
                         <th>开业时间</th>
                         <th>闭业时间</th>
                         <th>店铺地址</th>
-                        <th>商店备注</th>
+                        <th>服务范围</th>
+                        <th>店铺备注</th>
                         <th>店铺已上线(0:下线 1:上线)</th>
                         <th>店铺操作</th>
                     </tr>
@@ -78,6 +79,7 @@
                         <td class="edit" id="e-${shop.id}-close_time">#if (! $shop.close_time) #else $date.format('HH:mm',$shop.close_time) #end</td>
                         <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
                         <td class="edit" id="e-${shop.id}-shop_info">$shop.shop_info</td>
+                        <td class="edit" id="e-${shop.id}-remark">$shop.remark</td>
                         <td class="edit" id="e-${shop.id}-audit">$shop.audit</td>
                         <td><a href="/sg/shop?shop_id=${shop.id}">访问店铺 </a><br/>
                             <a href="/console/login">店铺后台 </a></td>
