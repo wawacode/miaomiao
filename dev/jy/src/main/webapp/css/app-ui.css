@@ -84,6 +84,14 @@ body {
 
 }
 
+.verticalCenter{
+    position: absolute;top: 0;bottom: 0
+}
+.baseRedRounded{
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #ef5356;color: #ffffff
+}
 .hidden {
     display: none !important;
 }

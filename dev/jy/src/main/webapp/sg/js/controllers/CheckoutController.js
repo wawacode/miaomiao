@@ -103,6 +103,7 @@ angular.module('miaomiao.shop')
 
             } else {
                 $scope.info.showCouponCard = false;
+                $scope.selectedCoupon = null;
             }
 
             $ionicScrollDelegate.$getByHandle('checkoutScroll').resize();
