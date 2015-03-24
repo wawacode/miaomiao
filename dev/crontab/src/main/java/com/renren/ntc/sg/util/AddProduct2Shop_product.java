@@ -7,21 +7,20 @@ import com.renren.ntc.sg.bean.Product;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
 import net.paoding.rose.scanning.context.RoseAppContext;
-import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
 
 
-public class AddProduct2Shop_628 {
+public class AddProduct2Shop_product {
 
-    private static int shop_id = 10044;
+    private static int shop_id = 10033;
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
-        AddProduct2Shop_628 addProduct = new AddProduct2Shop_628();
-        String filePath = "F:\\product\\628.txt";
+        AddProduct2Shop_product addProduct = new AddProduct2Shop_product();
+        String filePath = "F:\\product\\filter.txt";
         readTxtFile(filePath,pdDao,itemDao);
 
     }
@@ -30,7 +29,7 @@ public class AddProduct2Shop_628 {
     public static void readTxtFile(String filePath,ProductDAO pdDao,ItemsDAO itemDao){
         InputStreamReader read = null;
         try {
-            itemDao.del(SUtils.generTableName(shop_id),shop_id);
+
             String encoding="GBK";
             File file=new File(filePath);
             if(file.isFile() && file.exists()){ //判断文件是否存在
@@ -40,26 +39,16 @@ public class AddProduct2Shop_628 {
                 String lineTxt = null;
                 while((lineTxt = bufferedReader.readLine()) != null){
 //                    System.out.println(lineTxt);
-                     String [] args = lineTxt.split("\t");
-                     if (null != args && args.length < 9) {
-                         System.out.println("drop " + lineTxt);
-                                  return ;
-
-                     }
-                    String serialNo = args[3].trim();
+                    String [] args = lineTxt.split("\t");
+                    String serialNo = args[0].trim();
                     serialNo = upacage(serialNo);
-                    String name = args[3].trim();
-                    String price_str = args[15].trim();
+                    String name = args[0].trim();
+                    String price_str = "10";
                     int price =(int)  (Float.valueOf(price_str)* 100);
                     Product p = pdDao.geProductsByserialNo(serialNo);
 
-                    if(StringUtils.isBlank(serialNo)){
-                        continue;
-                    }
                     if (p != null )  {
-                        if (p.getCategory_id()==15){
-                            continue;
-                        }
+
                         if (p.getCategory_id()==0){
                             p.setCategory_id(28);
                         }
@@ -75,6 +64,16 @@ public class AddProduct2Shop_628 {
                         JSONObject ob = (JSONObject)JSON.toJSON(it);
                         System.out.println(ob.toJSONString());
                         itemDao.insert(SUtils.generTableName(shop_id),it) ;
+                    } else{
+                        Item it=  new Item() ;
+                        it.setName(name);
+                        it.setScore(10);
+                        it.setShop_id(shop_id);
+                        it.setCategory_id(28);
+                        it.setSerialNo(serialNo);
+                        it.setCount(1000);
+                        it.setPrice(price);
+                        itemDao.insert(SUtils.generTableName(shop_id),it);
                     }
                 }
             }else{

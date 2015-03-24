@@ -12,16 +12,16 @@ import org.apache.commons.lang.StringUtils;
 import java.io.*;
 
 
-public class AddProduct2Shop_628 {
+public class AddProduct2Shop_A113 {
 
-    private static int shop_id = 10044;
+    private static int shop_id = 10053;
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
-        AddProduct2Shop_628 addProduct = new AddProduct2Shop_628();
-        String filePath = "F:\\product\\628.txt";
+        AddProduct2Shop_A113 addProduct = new AddProduct2Shop_A113();
+        String filePath = "F:\\product\\20150323\\113便利店条码.txt";
         readTxtFile(filePath,pdDao,itemDao);
 
     }
@@ -31,7 +31,7 @@ public class AddProduct2Shop_628 {
         InputStreamReader read = null;
         try {
             itemDao.del(SUtils.generTableName(shop_id),shop_id);
-            String encoding="GBK";
+            String encoding="utf-8";
             File file=new File(filePath);
             if(file.isFile() && file.exists()){ //判断文件是否存在
                 read = new InputStreamReader(
@@ -39,18 +39,18 @@ public class AddProduct2Shop_628 {
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
                 while((lineTxt = bufferedReader.readLine()) != null){
-//                    System.out.println(lineTxt);
-                     String [] args = lineTxt.split("\t");
-                     if (null != args && args.length < 9) {
+                     String [] args = lineTxt.split(",");
+                     if (null != args && args.length < 2) {
                          System.out.println("drop " + lineTxt);
                                   return ;
 
                      }
-                    String serialNo = args[3].trim();
+                    String serialNo = args[0].trim();
+                    System.out.println("serialNo " + serialNo);
                     serialNo = upacage(serialNo);
-                    String name = args[3].trim();
-                    String price_str = args[15].trim();
-                    int price =(int)  (Float.valueOf(price_str)* 100);
+                    String price_str = args[1].trim();
+                    System.out.println("price " + price_str);
+                    int price =Integer.valueOf(price_str);
                     Product p = pdDao.geProductsByserialNo(serialNo);
 
                     if(StringUtils.isBlank(serialNo)){

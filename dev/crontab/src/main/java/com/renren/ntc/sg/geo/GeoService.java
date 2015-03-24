@@ -10,300 +10,283 @@ import org.apache.log4j.Logger;
 
 public class GeoService {
 
-	private static int DEFAULT_MAX_DISTANCE = 500 * 1000; // 50km
-	private static int DEFAULT_MAX_NUM = 100;
+    private static int DEFAULT_MAX_DISTANCE = 500 * 1000; // 50km
 
-	private static final Logger logger = Logger.getLogger(GeoService.class);
+    private static int DEFAULT_MAX_NUM = 100;
 
-	private static GeoService instance;
+    private static final Logger logger = Logger.getLogger(GeoService.class);
 
-	public static GeoService getInstance() {
-		return instance;
-	}
+    private static GeoService instance;
 
-	private AbstractGeoMongodbService dbService;
+    public static GeoService getInstance() {
+        return instance;
+    }
 
-	private GeoService() {
+    private AbstractGeoMongodbService dbService;
+
+    private GeoService() {
         dbService = new GeoMongodbService2dSphere();
-	}
+    }
 
+    public static void setDefaultMaxDistance(int distance) {
+        DEFAULT_MAX_DISTANCE = distance;
+    }
 
-	public static void setDefaultMaxDistance(int distance) {
-		DEFAULT_MAX_DISTANCE = distance;
-	}
+    public static void setDefaultMaxNum(int maxNum) {
+        DEFAULT_MAX_NUM = maxNum;
+    }
 
-	public static void setDefaultMaxNum(int maxNum) {
-		DEFAULT_MAX_NUM = maxNum;
-	}
+    /**
+     * 需要注意，数组中，经度在前，维度在后
+     * 
+     * @param point1
+     * @param point2
+     * @return 返回单位是米
+     */
+    public double calDistance(double[] point1, double[] point2) {
+        double part1 = Math.pow(Math.sin((point1[1] - point2[1]) * Math.PI / 180 / 2), 2);
+        double part2 = Math.cos(point1[1] * Math.PI / 180) * Math.cos(point2[1] * Math.PI / 180);
+        double part3 = Math.pow(Math.sin((point1[0] - point2[0]) * Math.PI / 180 / 2), 2);
+        double distance = 6378.137 * 2 * Math.asin(Math.sqrt(part1 + part2 * part3)) * 1000;
+        return distance;
+    }
 
-	/**
-	 * 需要注意，数组中，经度在前，维度在后
-	 *
-	 * @param point1
-	 * @param point2
-	 * @return 返回单位是米
-	 */
-	public double calDistance(double[] point1, double[] point2) {
-		double part1 = Math.pow(Math.sin((point1[1] - point2[1]) * Math.PI / 180 / 2), 2);
-		double part2 = Math.cos(point1[1] * Math.PI / 180) * Math.cos(point2[1] * Math.PI / 180);
-		double part3 = Math.pow(Math.sin((point1[0] - point2[0]) * Math.PI / 180 / 2), 2);
-		double distance = 6378.137 * 2 * Math.asin(Math.sqrt(part1 + part2 * part3)) * 1000;
-		return distance;
-	}
+    /**
+     * 计算距离，返回米
+     * 
+     * @param point1
+     * @param point2
+     * @return
+     */
+    public double calDistance(ShopLocation point1, ShopLocation point2) {
+        double part1 = Math.pow(Math.sin((point1.getLatitude() - point2.getLatitude()) * Math.PI / 180 / 2), 2);
+        double part2 = Math.cos(point1.getLatitude() * Math.PI / 180) * Math.cos(point2.getLatitude() * Math.PI / 180);
+        double part3 = Math.pow(Math.sin((point1.getLongitude() - point2.getLongitude()) * Math.PI / 180 / 2), 2);
+        double distance = 6378.137 * 2 * Math.asin(Math.sqrt(part1 + part2 * part3)) * 1000;
+        return distance;
+    }
 
-	/**
-	 * 计算距离，返回米
-	 *
-	 * @param point1
-	 * @param point2
-	 * @return
-	 */
-	public double calDistance(ShopLocation point1, ShopLocation point2) {
-		double part1 = Math.pow(Math.sin((point1.getLatitude() - point2.getLatitude()) * Math.PI / 180 / 2), 2);
-		double part2 = Math.cos(point1.getLatitude() * Math.PI / 180) * Math.cos(point2.getLatitude() * Math.PI / 180);
-		double part3 = Math.pow(Math.sin((point1.getLongitude() - point2.getLongitude()) * Math.PI / 180 / 2), 2);
-		double distance = 6378.137 * 2 * Math.asin(Math.sqrt(part1 + part2 * part3)) * 1000;
-		return distance;
-	}
+    /**
+     * 更精确的计算距离，返回米
+     * 
+     * @param point1
+     * @param point2
+     * @return
+     */
+    public double calAccurateDistance(double[] point1, double[] point2) {
+        double a = 6378137, b = 6356752.3142, f = 1 / 298.257223563;
+        double degToRad = 0.0174532925199433;
+        double EPSILON = 1e-12;
+        double L = (point2[0] - point1[0]) * degToRad;
+        double U1 = Math.atan((1 - f) * Math.tan(point1[1] * degToRad));
+        double U2 = Math.atan((1 - f) * Math.tan(point2[1] * degToRad));
+        double sinU1 = Math.sin(U1), cosU1 = Math.cos(U1);
+        double sinU2 = Math.sin(U2), cosU2 = Math.cos(U2);
 
-	/**
-	 * 更精确的计算距离，返回米
-	 * 
-	 * @param point1
-	 * @param point2
-	 * @return
-	 */
-	public double calAccurateDistance(double[] point1, double[] point2) {
-		double a = 6378137, b = 6356752.3142, f = 1 / 298.257223563;
-		double degToRad = 0.0174532925199433;
-		double EPSILON = 1e-12;
-		double L = (point2[0] - point1[0]) * degToRad;
-		double U1 = Math.atan((1 - f) * Math.tan(point1[1] * degToRad));
-		double U2 = Math.atan((1 - f) * Math.tan(point2[1] * degToRad));
-		double sinU1 = Math.sin(U1), cosU1 = Math.cos(U1);
-		double sinU2 = Math.sin(U2), cosU2 = Math.cos(U2);
+        double cosSqAlpha, sinSigma, cos2SigmaM, cosSigma, sigma;
 
-		double cosSqAlpha, sinSigma, cos2SigmaM, cosSigma, sigma;
+        double lambda = L, lambdaP, iterLimit = 20;
+        do {
+            double sinLambda = Math.sin(lambda), cosLambda = Math.cos(lambda);
+            sinSigma = Math.sqrt((cosU2 * sinLambda) * (cosU2 * sinLambda) + (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda)
+                    * (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda));
+            if (sinSigma == 0) {
+                return 0; // co-incident points
+            }
+            cosSigma = sinU1 * sinU2 + cosU1 * cosU2 * cosLambda;
+            sigma = Math.atan2(sinSigma, cosSigma);
+            double sinAlpha = cosU1 * cosU2 * sinLambda / sinSigma;
+            cosSqAlpha = 1 - sinAlpha * sinAlpha;
+            cos2SigmaM = cosSigma - 2 * sinU1 * sinU2 / cosSqAlpha;
+            if (cos2SigmaM == Double.NaN) {
+                cos2SigmaM = 0; // equatorial line: cosSqAlpha=0 (�6)
+            }
+            double C = f / 16 * cosSqAlpha * (4 + f * (4 - 3 * cosSqAlpha));
+            lambdaP = lambda;
+            lambda = L + (1 - C) * f * sinAlpha * (sigma + C * sinSigma * (cos2SigmaM + C * cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM)));
+        } while (Math.abs(lambda - lambdaP) > EPSILON && --iterLimit > 0);
 
-		double lambda = L, lambdaP, iterLimit = 20;
-		do {
-			double sinLambda = Math.sin(lambda), cosLambda = Math.cos(lambda);
-			sinSigma = Math.sqrt((cosU2 * sinLambda) * (cosU2 * sinLambda) + (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda)
-					* (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda));
-			if (sinSigma == 0) {
-				return 0; // co-incident points
-			}
-			cosSigma = sinU1 * sinU2 + cosU1 * cosU2 * cosLambda;
-			sigma = Math.atan2(sinSigma, cosSigma);
-			double sinAlpha = cosU1 * cosU2 * sinLambda / sinSigma;
-			cosSqAlpha = 1 - sinAlpha * sinAlpha;
-			cos2SigmaM = cosSigma - 2 * sinU1 * sinU2 / cosSqAlpha;
-			if (cos2SigmaM == Double.NaN) {
-				cos2SigmaM = 0; // equatorial line: cosSqAlpha=0 (�6)
-			}
-			double C = f / 16 * cosSqAlpha * (4 + f * (4 - 3 * cosSqAlpha));
-			lambdaP = lambda;
-			lambda = L + (1 - C) * f * sinAlpha * (sigma + C * sinSigma * (cos2SigmaM + C * cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM)));
-		} while (Math.abs(lambda - lambdaP) > EPSILON && --iterLimit > 0);
+        if (iterLimit == 0) {
+            return Double.NaN;
+        }
+        double uSquared = cosSqAlpha * (a * a - b * b) / (b * b);
+        double A = 1 + uSquared / 16384 * (4096 + uSquared * (-768 + uSquared * (320 - 175 * uSquared)));
+        double B = uSquared / 1024 * (256 + uSquared * (-128 + uSquared * (74 - 47 * uSquared)));
+        double deltaSigma = B
+                * sinSigma
+                * (cos2SigmaM + B
+                        / 4
+                        * (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) - B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma)
+                                * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
+        double s = b * A * (sigma - deltaSigma);
 
-		if (iterLimit == 0) {
-			return Double.NaN;
-		}
-		double uSquared = cosSqAlpha * (a * a - b * b) / (b * b);
-		double A = 1 + uSquared / 16384 * (4096 + uSquared * (-768 + uSquared * (320 - 175 * uSquared)));
-		double B = uSquared / 1024 * (256 + uSquared * (-128 + uSquared * (74 - 47 * uSquared)));
-		double deltaSigma = B
-				* sinSigma
-				* (cos2SigmaM + B / 4
-						* (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) - B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
-		double s = b * A * (sigma - deltaSigma);
+        return s;
+    }
 
-		return s;
-	}
+    /**
+     * 更新用户位置
+     * 
+     * @param uloc
+     * @return
+     */
+    public boolean updateLocation(ShopLocation uloc) {
+        try {
+            return dbService.update(uloc);
+        } catch (Exception e) {
+            logger.error("updateLocation error, uloc: " + uloc, e);
+            return false;
+        }
+    }
 
-	/**
-	 * 更新用户位置
-	 * 
-	 * @param uloc
-	 * @return
-	 */
-	public boolean updateLocation(ShopLocation uloc) {
-		try {
-			return dbService.update(uloc);
-		} catch (Exception e) {
-			logger.error("updateLocation error, uloc: " + uloc, e);
-			return false;
-		}
-	}
+    public boolean removeLocation(long uid) {
+        try {
+            return dbService.remove(uid);
+        } catch (Exception e) {
+            logger.error("removeLocation error, uid : " + uid, e);
+            return false;
+        }
+    }
 
-	public boolean removeLocation(long uid) {
-		try {
-			return dbService.remove(uid);
-		} catch (Exception e) {
-			logger.error("removeLocation error, uid : " + uid, e);
-			return false;
-		}
-	}
+    /**
+     * 查询附近的用户
+     * 
+     * @param uloc
+     * @return
+     */
+    public List<GeoQueryResult> queryNearUser(ShopLocation uloc, int r) {
+        return this.queryNearUser(uloc, r, DEFAULT_MAX_NUM);
+    }
 
-	/**
-	 * 查询附近的用户
-	 * 
-	 * @param uloc
-	 * @return
-	 */
-	public List<GeoQueryResult> queryNearUser(ShopLocation uloc,int r ) {
-		return this.queryNearUser(uloc, r, DEFAULT_MAX_NUM);
-	}
+    /**
+     * 查询附近的用户
+     * 
+     * @param uloc
+     * @param maxDistance
+     * @param maxNum
+     * @return
+     */
+    public List<GeoQueryResult> queryNearUser(ShopLocation uloc, int maxDistance, int maxNum) {
+        List<GeoQueryResult> result;
+        try {
+            result = dbService.query(uloc, maxDistance, maxNum);
+            for (GeoQueryResult gr : result) {
+                gr.setDistance(this.calDistance(uloc, gr.getShopLocation()));
+            }
+            Collections.sort(result);
+        } catch (Exception e) {
+            logger.error("queryNearUser error, uloc: " + uloc, e);
+            result = Collections.emptyList();
+        }
+        return result;
+    }
 
-	/**
-	 * 查询附近的用户
-	 * 
-	 * @param uloc
-	 * @param maxDistance
-	 * @param maxNum
-	 * @return
-	 */
-	public List<GeoQueryResult> queryNearUser(ShopLocation uloc, int maxDistance, int maxNum) {
-		List<GeoQueryResult> result;
-		try {
-			result = dbService.query(uloc, maxDistance, maxNum);
-			for (GeoQueryResult gr : result) {
-				gr.setDistance(this.calDistance(uloc, gr.getShopLocation()));
-			}
-			Collections.sort(result);
-		} catch (Exception e) {
-			logger.error("queryNearUser error, uloc: " + uloc, e);
-			result = Collections.emptyList();
-		}
-		return result;
-	}
+    /**
+     * 获取用户位置，可能返回null
+     * 
+     * @param uid
+     * @return
+     */
+    public ShopLocation queryLocationByUid(long uid) {
+        try {
+            return dbService.queryByUid(uid);
+        } catch (Exception e) {
+            logger.error("queryLocationByUid error, uid: " + uid, e);
+            return null;
+        }
+    }
 
-	/**
-	 * 获取用户位置，可能返回null
-	 * 
-	 * @param uid
-	 * @return
-	 */
-	public ShopLocation queryLocationByUid(long uid) {
-		try {
-			return dbService.queryByUid(uid);
-		} catch (Exception e) {
-			logger.error("queryLocationByUid error, uid: " + uid, e);
-			return null;
-		}
-	}
+    /**
+     * 获取一群uid的位置
+     * 
+     * @param uids
+     * @return
+     */
+    public Map<Long, ShopLocation> queryLocationByUidList(List<Long> uids) {
+        Map<Long, ShopLocation> result;
+        try {
+            result = dbService.queryLocationMap(uids);
+        } catch (Exception e) {
+            logger.error("queryLocationMap error, uid size: " + uids.size(), e);
+            result = Collections.emptyMap();
+        }
+        return result;
+    }
 
-	/**
-	 * 获取一群uid的位置
-	 * 
-	 * @param uids
-	 * @return
-	 */
-	public Map<Long, ShopLocation> queryLocationByUidList(List<Long> uids) {
-		Map<Long, ShopLocation> result;
-		try {
-			result = dbService.queryLocationMap(uids);
-		} catch (Exception e) {
-			logger.error("queryLocationMap error, uid size: " + uids.size(), e);
-			result = Collections.emptyMap();
-		}
-		return result;
-	}
+    /**
+     * 获取一群uid的位置以及和baseLoc的距离
+     * 
+     * @param baseLoc
+     * @param uids
+     * @return
+     */
+    public Map<Long, GeoQueryResult> queryLocationAndDistance(ShopLocation baseLoc, List<Long> uids) {
+        Map<Long, GeoQueryResult> result;
+        try {
+            Map<Long, ShopLocation> map = dbService.queryLocationMap(uids);
+            result = new HashMap<Long, GeoQueryResult>();
+            for (Map.Entry<Long, ShopLocation> entry : map.entrySet()) {
+                GeoQueryResult gr = new GeoQueryResult();
+                gr.setShopLocation(entry.getValue());
+                gr.setDistance(this.calDistance(baseLoc, entry.getValue()));
+                result.put(entry.getKey(), gr);
+            }
+        } catch (Exception e) {
+            logger.error("queryLocationAndDistanceByUidList error, uid size: " + uids.size(), e);
+            result = Collections.emptyMap();
+        }
+        return result;
+    }
 
-	/**
-	 * 获取一群uid的位置以及和baseLoc的距离
-	 * 
-	 * @param baseLoc
-	 * @param uids
-	 * @return
-	 */
-	public Map<Long, GeoQueryResult> queryLocationAndDistance(ShopLocation baseLoc, List<Long> uids) {
-		Map<Long, GeoQueryResult> result;
-		try {
-			Map<Long, ShopLocation> map = dbService.queryLocationMap(uids);
-			result = new HashMap<Long, GeoQueryResult>();
-			for (Map.Entry<Long, ShopLocation> entry : map.entrySet()) {
-				GeoQueryResult gr = new GeoQueryResult();
-				gr.setShopLocation(entry.getValue());
-				gr.setDistance(this.calDistance(baseLoc, entry.getValue()));
-				result.put(entry.getKey(), gr);
-			}
-		} catch (Exception e) {
-			logger.error("queryLocationAndDistanceByUidList error, uid size: " + uids.size(), e);
-			result = Collections.emptyMap();
-		}
-		return result;
-	}
-
-
-    public static void addCommunity(Community c ){
-
-
-
-
+    public static void addCommunity(Community c) {
 
     }
 
-
-
-
-    public static void main (String [] args){
+    public static void main(String[] args) {
         long shop_id = 10031;
-        RoseAppContext  rose = new RoseAppContext();
+        RoseAppContext rose = new RoseAppContext();
         ShopDAO shopDao = rose.getBean(ShopDAO.class);
         Shop shop = new Shop();
         Date date = new Date();
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(date);
-//        c.set(Calendar.HOUR_OF_DAY,10);
+        // 设置店铺 开店关店时间
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        shop.setOpen_time(c.getTime());
+        c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, 22);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MINUTE, 0);
+        shop.setClose_time(c.getTime());
+        shop.setId(shop_id);
+        //设置店铺 起送价格
+        shop.setBase_price(3000);
+        shopDao.update(shop);
 
-//        c.set(Calendar.MINUTE,0);
-//        c.set(Calendar.SECOND,0);
-//        shop.setOpen_time(c.getTime());
-//        c = Calendar.getInstance();
-//        c.setTime(date);
-//        c.set(Calendar.HOUR_OF_DAY,22);
-//        c.set(Calendar.SECOND,0);
-//        c.set(Calendar.MINUTE,0);
-//        shop.setClose_time(c.getTime());
+        //更新店铺坐标到 线上 mongo 服务
+        GeoService geoService = new GeoService();
+        shop = shopDao.getShop(shop.getId());
+        ShopLocation shop_location = new ShopLocation();
+        System.out.println(shop.getId());
+        System.out.println(shop.getLat());
+        System.out.println(shop.getLng());
+        shop_location.setLatitude(shop.getLat());
+        shop_location.setLongitude(shop.getLng());
+        shop_location.setShop_id(shop.getId());
+        System.out.println(geoService.updateLocation(shop_location));
 
-//        shop.setId(shop_id);
-//        shop.setBase_price(3000);
-//        shopDao.update(shop) ;
-
-
-        GeoService  geoService =  new GeoService() ;
-//        shop = shopDao.getShop(shop.getId());
-//        ShopLocation shop_location = new ShopLocation()  ;
-//        System.out.println(shop.getId());
-//        System.out.println(shop.getLat());
-//        System.out.println(shop.getLng());
-//        shop_location.setLatitude(shop.getLat());
-//        shop_location.setLongitude(shop.getLng());
-//        shop_location.setShop_id(shop.getId());
-//        System.out.println(geoService.updateLocation(shop_location));
-
-//      shop  = shopDao.getShop(shop_id);
-//      GeoService  geoService =  new GeoService() ;
-//        ShopLocation shop_location = new ShopLocation()  ;
-//        shop_location = new ShopLocation()  ;
-//        shop_location.setLatitude(shop.getLat());
-//        shop_location.setLongitude(shop.getLng());
-//        shop_location.setShop_id(shop.getId());
-//        System.out.println(geoService.updateLocation(shop_location));
-
-//        shopDao.audit(shop.getId());
-//
-//
-        ShopLocation shopL = new ShopLocation () ;
+        // 一下是 测试 更新到mongo 是否成功
+        ShopLocation shopL = new ShopLocation();
         shopL.setShop_id(10);
         shopL.setLatitude(40.001361);
         shopL.setLongitude(116.478426);
-        List<GeoQueryResult> ls  = geoService.queryNearUser(shopL , 20 * 1000);
-        for (GeoQueryResult geo :ls ) {
-            System.out.println(String.format("shop_id %d  , lng %f , lat %f ",geo.getShopLocation().getShop_id() , geo.getShopLocation().getLongitude(),geo.getShopLocation().getLatitude()));
+        List<GeoQueryResult> ls = geoService.queryNearUser(shopL, 20 * 1000);
+        for (GeoQueryResult geo : ls) {
+            System.out.println(String.format("shop_id %d  , lng %f , lat %f ", geo.getShopLocation().getShop_id(), geo.getShopLocation().getLongitude(), geo
+                    .getShopLocation().getLatitude()));
         }
-//        geoService.removeLocation(0);
     }
 
 }

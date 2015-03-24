@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Refresh2Produdce {
 
-    private static long  shop_id= 1;
+    private static long  shop_id= 10033;
 
     public Refresh2Produdce() throws IOException {
 
@@ -27,7 +27,7 @@ public class Refresh2Produdce {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
-        int offset = 100;
+        int offset = 1000;
         for (int i=0 ;i < 100000 ; ){
 
             List<Item> itemls =  itemDao.getItems(SUtils.generTableName(shop_id), shop_id,i, offset);
@@ -40,7 +40,7 @@ public class Refresh2Produdce {
                 p.setCategory_id(item.getCategory_id());
                 p.setScore(item.getScore());
                 p.setPic_url(item.getPic_url());
-                p.setPrice(item.getPrice());
+//                p.setPrice(item.getPrice());
                 p.setName(item.getName());
                 p.setSerialNo(item.getSerialNo());
                 Product pp = pdDao.geProductsByserialNo(item.getSerialNo());
