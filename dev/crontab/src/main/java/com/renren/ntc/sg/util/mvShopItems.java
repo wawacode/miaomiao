@@ -13,8 +13,8 @@ import java.util.List;
 
 public class mvShopItems {
 
-    private static long shop_id = 10026;
-    private static long to_shop_id = 1;
+    private static long shop_id = 1;
+    private static long to_shop_id = 10055;
     private static int category_id = 15;
 
 
