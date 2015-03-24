@@ -512,9 +512,6 @@
                 </div>
                 <div class="addNewAddressContainer" ng-if="info.hasAddress == false && info.hasShop"
                      ng-animate="{show:'animate-show', hide:'animate-hide'}">
-                    <!--<div class="addNewAddressHint">-->
-                    <!--您还没有添加收货人信息,请添加-->
-                    <!--</div>-->
                     <div class="addAddrHint text-center">
                         <a class="icon icon-2x ion-ios7-plus-outline" style="font-size: 15px"
                            ng-click="switchToAddressList($event)"> 添加新地址</a>
@@ -527,22 +524,20 @@
                         去逛逛?
                     </div>
                 </div>
-                <div class="order-list" style="" ng-if="info.hasOrder == true">
+                <div class="order-list" style="background-color:#eaeaea" ng-if="info.hasOrder == true">
                     <div class="orderListHeader" ng-if="latestOrder && latestOrder.length">
                         最新订单
                     </div>
-                    <div style="padding: 0px 20px 0px 20px;" ng-if="latestOrder && latestOrder.length">
-                        <div class="order-items" style="" bindonce ng-repeat="order in latestOrder"
-                             ng-include="'templates/snapshotOrder.html'">
-                        </div>
+                    <div class="order-items" style="padding: 0px 20px 10px 20px;background-color: #ffffff" bindonce ng-repeat="order in latestOrder"
+                         ng-style="{'margin-bottom': $index+1 == latestOrder.length ? '0px' : '5px' }"
+                         ng-include="'templates/snapshotOrder.html'">
                     </div>
-                    <div class="orderListHeader" style="padding-top: 0px" ng-if="historyOrder && historyOrder.length">
+                    <div class="orderListHeader" ng-if="historyOrder && historyOrder.length">
                         历史订单
                     </div>
-                    <div style="padding: 0px 20px 0px 20px;" ng-if="historyOrder && historyOrder.length">
-                        <div class="order-items" style="" bindonce ng-repeat="order in historyOrder"
-                             ng-include="'templates/snapshotOrder.html'">
-                        </div>
+                    <div class="order-items" style="padding: 0px 20px 10px 20px;margin-bottom:5px;background-color: #ffffff" bindonce ng-repeat="order in historyOrder"
+                         ng-style="{ 'margin-bottom': $index + 1 == historyOrder.length ? '0px' : '5px' }"
+                         ng-include="'templates/snapshotOrder.html'">
                     </div>
                 </div>
             </div>
@@ -553,8 +548,20 @@
 </script>
 <script id="templates/snapshotOrder.html" type="text/ng-template">
     <div class="orderSnapshotHeader">
-        <div class="orderId" bo-text="($index + 1) + '. ' + order.shop_name4V "></div>
-        <div class="orderDate" bo-text="(order.create_time | date:'yyyy-MM-dd H:mm')"></div>
+        <div class="orderId" bo-text="$index + 1 + '. ' + order.shop_name4V"></div>
+        <div ng-if="order.act == 'wx'">
+            <div class="orderPayType balanced" ng-if="order.confirm">
+                交易成功
+            </div>
+            <div class="orderPayType" ng-if="!order.confirm">
+                <div class="orderPayConfirm" ng-click="confirmOrder(order)">确认收货</div>
+            </div>
+        </div>
+        <div ng-if="order.act != 'wx'">
+            <div class="orderPayType balanced">
+                货到付款
+            </div>
+        </div>
     </div>
     <div class="orderSnapshot" bindonce quick-ng-repeat="orderItem in order.items">
         <div class="prod_icon" back-img="{{orderItem.pic_url}}"></div>
@@ -564,8 +571,9 @@
             <span class="orderSnapshotCountNumber" bo-text="' X ' + orderItem.count"></span>
         </div>
     </div>
-    <div class="orderSnapshotRemark" bo-text="'买家留言: ' + order.remarks" ng-if="order.remarks"></div>
+    <div class="orderSnapshotRemark" ng-if="order.remarks" bo-text="'买家留言: ' + order.remarks"></div>
     <div class="orderSnapshotTotal">
+        <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd H:mm'}}</div>
         <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
                         <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
                         </span>

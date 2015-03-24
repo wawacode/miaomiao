@@ -27,7 +27,7 @@ CREATE TABLE `items` (
 
 @DAO(catalog = "ABC")
 public interface OrdersDAO {
-    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,info ,snapshot,status,price,create_time,update_time" ;
+    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time" ;
     static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks ,act, info,snapshot,status,price" ;
 
     @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
@@ -60,10 +60,10 @@ public interface OrdersDAO {
     @SQL("update ##(:tableName)   set readed=1 where order_id=:2")
     public int  read(@SQLParam("tableName") String tableName, String order_id);
 
-    @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
+    @SQL("update ##(:tableName)  set status=:1 where order_id = :2 ")
     public void paydone(int status, String order_id,@SQLParam("tableName") String tableName);
 
-    @SQL("update ##(:tableName)   set pre_id =:2 , act =:3 where order_id = :1 ")
+    @SQL("update ##(:tableName)  set pre_id =:2 , act =:3 where order_id = :1 ")
     public void updateWXPay(String order_id, String pre_id, String act,@SQLParam("tableName") String tableName);
 
     @SQL("update ##(:tableName)   set msg =:2 , update_time=now() where order_id = :1 ")

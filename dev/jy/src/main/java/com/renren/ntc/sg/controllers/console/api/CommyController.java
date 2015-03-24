@@ -35,7 +35,6 @@ public class CommyController {
     @Autowired
     public Shop_CommunityDAO shop_communityDao;
 
-
     @Get("add_link")
     @Post("add_link")
     public String add_link(Invocation inv, @Param("shop_id") long shop_id, @Param("c_id") String c_ids) {
