@@ -422,14 +422,14 @@
                     <div class="row nonPadding">
                         <div class="col nonPadding text-center" ng-if="!selectedCoupon.value">
                             <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;padding-top: 15px">总计:</div>
-                            <div class="assertive" style="padding-top: 15px;padding-left: 20px;font-size: 17px;position: relative">
+                            <div class="assertive" style="padding-top: 15px;padding-left: 35px;font-size: 17px;position: relative">
                                 <span>￥{{shoppingCartItems|getTotolPrice}}</span>
                             </div>
                         </div>
                         <div class="col nonPadding text-center" style="position: relative;display: inline-block;width: 100%;height: 100%" ng-if="selectedCoupon.value">
                             <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;padding-top: 15px">总计:</div>
-                            <div style="position: absolute;left: 75px;top: 0;bottom: 0;height: 100%">
-                                <div style="position: absolute; top: 8;left: 0;font-size: 17px">￥{{(shoppingCartItems | getTotolPrice) - selectedCoupon.value}}</div>
+                            <div style="position: absolute;left: 65px;top: 0;bottom: 0;height: 100%">
+                                <div style="position: absolute; top: 8;left: 0;font-size: 17px">￥{{((shoppingCartItems | getTotolPrice) - selectedCoupon.value) | changeTwoDecimal}}</div>
                                 <div style="position: absolute; bottom: 3;left: 3;font-size: 10px;color: #999999"><s>￥{{(shoppingCartItems | getTotolPrice)}}</s></div>
                             </div>
                         </div>
