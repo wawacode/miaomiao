@@ -254,7 +254,7 @@ public class WXService {
             String sign =  createSign(map).toUpperCase()  ;
             String content = TXT.replace("{appId}",appId);
             content  = content.replace("{attach}",attach);
-            content  = content.replace("{body}",body);
+            content  = content.replace("{body}",new String(body.getBytes("UTF-8"),"GBK"));
             content  = content.replace("{mch_id}",mch_id);
             content  = content.replace("{nonce_str}",nonce_str);
             content  = content.replace("{notify_url}",notify_url);

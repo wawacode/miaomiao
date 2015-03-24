@@ -60,7 +60,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             String code = inv.getParameter("code");
             if( !StringUtils.isBlank(code)&& (StringUtils.isBlank(u.getWx_open_id()) || "other".equals(u.getWx_open_id()))){
                 try {
-                String openId =wxService .getOpenId(code);
+                String openId =wxService.getOpenId(code);
                 userService.updateOpenId(u.getId(),openId);
                 }catch (Exception e){
                     e.printStackTrace();
