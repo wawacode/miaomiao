@@ -1,24 +1,24 @@
-;angular.module('miaomiao.shop')
-    .controller('MyOrdersCtrl',function ($scope, $ionicLoading,$ionicPopup, $timeout, $http, $state,$ionicScrollDelegate,
-                                         localStorageService,$sessionStorage,httpClient,AddressService,OrderService,ShopService,MMUtils) {
+;
+angular.module('miaomiao.shop')
+    .controller('MyOrdersCtrl', function ($scope, $ionicLoading, $ionicPopup, $timeout, $http, $state, $ionicScrollDelegate, localStorageService, $sessionStorage, httpClient, AddressService, OrderService, ShopService, MMUtils) {
 
         $scope.shop = ShopService.getDefaultShop() || {};
 
-        $scope.goToAddressList = function(){
+        $scope.goToAddressList = function () {
             $state.go('userAddressList', null, { reload: true });
         };
 
-        $scope.backToHome = function(){
+        $scope.backToHome = function () {
             $state.go('productList');
         };
 
-        function transformOrderData(orders){
-            if(!orders) return;
-            for(var i=0;i< orders.length;i++){
+        function transformOrderData(orders) {
+            if (!orders) return;
+            for (var i = 0; i < orders.length; i++) {
                 var order = orders[i];
-                try{
+                try {
                     order.items = JSON.parse(order.snapshot);
-                }catch (e){
+                } catch (e) {
 
                 }
             }
@@ -32,21 +32,21 @@
         $scope.orders = $sessionStorage.MMMETA_OrderOrders || [];
         transformOrderData($scope.orders);
 
-        function reloadInfo(addr){
+        function reloadInfo(addr) {
 
-            if(addr){
+            if (addr) {
 
                 $scope.addressls = $scope.addressls || [];
                 $scope.addressls[0] = addr;
                 $scope.info.address = $scope.addressls[0];
 
-            }else{
+            } else {
 
-                MMUtils.showLoadingIndicator('正在加载,请稍候...',$scope);
+                MMUtils.showLoadingIndicator('正在加载,请稍候...', $scope);
 
                 $scope.info.hasShop = $scope.shop && $scope.shop.id != null;
 
-                httpClient.getMyOrders($scope.shop.id ,function(data, status){
+                httpClient.getMyOrders($scope.shop.id, function (data, status) {
 
                     $ionicLoading.hide();
 
@@ -55,18 +55,18 @@
                     $scope.shop = dataDetail.shop;
 
                     $scope.addressls = dataDetail.addressls;
-                    $scope.info.hasAddress = $scope.addressls.length > 0? true: false;
+                    $scope.info.hasAddress = $scope.addressls.length > 0 ? true : false;
 
                     $scope.orders = dataDetail.orders;
                     transformOrderData($scope.orders);
 
-                    $scope.info.hasOrder = $scope.orders.length > 0? true : false;
+                    $scope.info.hasOrder = $scope.orders.length > 0 ? true : false;
 
-                    $timeout(function(){
-                        if($scope.orders.length >= 1){
-                            $scope.latestOrder = $scope.orders.slice(0,1);
+                    $timeout(function () {
+                        if ($scope.orders.length >= 1) {
+                            $scope.latestOrder = $scope.orders.slice(0, 1);
                         }
-                        if($scope.orders.length > 1){
+                        if ($scope.orders.length > 1) {
                             $scope.historyOrder = $scope.orders.slice(1);
                         }
                     });
@@ -76,7 +76,7 @@
 
                     $ionicScrollDelegate.resize();
 
-                },function(data, status){
+                }, function (data, status) {
 
                     $scope.info.hasOrder = false;
                     $scope.info.hasAddress = false;
@@ -88,19 +88,19 @@
 
         }
 
-        $scope.addNewAddressInOrderPage = function(){
+        $scope.addNewAddressInOrderPage = function () {
 
-            if(!$scope.addr.address || !$scope.addr.phone || !MMUtils.isValidTelNumber($scope.addr.phone)){
+            if (!$scope.addr.address || !$scope.addr.phone || !MMUtils.isValidTelNumber($scope.addr.phone)) {
 
                 MMUtils.showAlert('请填写正确的地址电话');
 
                 return;
             }
 
-            MMUtils.showLoadingIndicator('正在添加新地址...',$scope);
+            MMUtils.showLoadingIndicator('正在添加新地址...', $scope);
 
-            var shopId = $scope.shop && $scope.shop.id || 1 ; // make a default one
-            httpClient.addAddress(shopId, $scope.addr, function(data, status){
+            var shopId = $scope.shop && $scope.shop.id || 1; // make a default one
+            httpClient.addAddress(shopId, $scope.addr, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
@@ -114,10 +114,10 @@
 
                 $ionicScrollDelegate.resize();
 
-                $state.go('myOrders',null, { reload: true });
+                $state.go('myOrders', null, { reload: true });
 
 
-            },function(data, status){
+            }, function (data, status) {
 
                 $ionicLoading.hide();
 
@@ -127,31 +127,65 @@
             })
         };
 
-        $scope.switchToAddressList = function($event){
+        $scope.switchToAddressList = function ($event) {
 
             $event.target.blur();
             $event.stopPropagation();
 
-            $state.go('userAddressList',null,{reload:true});
+            $state.go('userAddressList', null, {reload: true});
         };
 
-        $scope.goToShopOrFindShop = function(){
+        $scope.goToShopOrFindShop = function () {
 
             var lastShop = ShopService.getDefaultShop();
             if (lastShop && lastShop.id) {
-                $state.go('productList',null,{reload:true});
+                $state.go('productList', null, {reload: true});
             } else {
-                $state.go('findshop',null,{reload:true});
+                $state.go('findshop', null, {reload: true});
             }
+        };
+
+        $scope.confirmOrder = function (order) {
+
+            MMUtils.showLoadingIndicator('正在确认订单...', $scope);
+            httpClient.confirmMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
+
+                $ionicLoading.hide();
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    MMUtils.showAlert('确认订单失败,请重试:' + data.msg);
+                    return;
+                }
+
+                function confirmOrders(userOrders) {
+                    if (userOrders && userOrders.length) {
+                        for (var i = 0; i < userOrders.length; i++) {
+                            if (userOrders[i].order_id == order.order_id) {
+                                order.confirm = true;
+                                userOrders[i] = order;
+                            }
+                        }
+                    }
+                }
+
+                $timeout(function () {
+                    confirmOrders($scope.latestOrder);
+                    confirmOrders($scope.historyOrder);
+                });
+
+            }, function (data, status) {
+                MMUtils.showAlert('确认订单失败,请重试');
+            });
         };
 
         OrderService.orderChangeEventSuccess();
 
-        AddressService.onAddressChangeEventSwitchDefault($scope,function(message){
+        AddressService.onAddressChangeEventSwitchDefault($scope, function (message) {
             reloadInfo(message.item);
         });
 
-        AddressService.onAddressChangeEventAddNew($scope,function(message){
+        AddressService.onAddressChangeEventAddNew($scope, function (message) {
             reloadInfo(message.item);
         });
 

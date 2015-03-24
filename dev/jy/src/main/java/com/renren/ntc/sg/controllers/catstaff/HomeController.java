@@ -217,5 +217,10 @@ public class HomeController {
         catStaffDAO.insert(catstaff);
         return "@json:" + Constants.DONE ;
     }
+
+    public static void main(String[] args) {
+        HomeController home =   new HomeController();
+        System.out.println(home.getDateStrByCondition("8:00")) ;
+    }
 }
 

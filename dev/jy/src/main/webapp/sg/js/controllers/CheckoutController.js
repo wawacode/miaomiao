@@ -17,7 +17,7 @@ angular.module('miaomiao.shop')
             CHECKOUTTYPE_ALIPAY: 03
         };
 
-        if($scope.shop.id == '10033'){
+        if(ShopService.isWeixinEnabledShop($scope.shop)){
             $scope.checkoutType = [
                 {
                     'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
@@ -210,6 +210,8 @@ angular.module('miaomiao.shop')
                     });
                 };
 
+                MMUtils.showLoadingIndicator('正在生成订单,请稍候...', $scope);
+
                 httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
                     $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
 
@@ -229,7 +231,7 @@ angular.module('miaomiao.shop')
                             return;
                         }
 
-                        MMUtils.showLoadingIndicator('请稍候...', $scope);
+                        MMUtils.showLoadingIndicator('微信支付...', $scope);
 
                         WeiChatPay.chooseWXPay(pkg, function () {
 
