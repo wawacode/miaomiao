@@ -66,7 +66,7 @@ public class TenpayHttpClient {
 		this.timeOut = 30;// 30��
 
 		this.responseCode = 0;
-		this.charset = "GBK";
+		this.charset = "utf-8";
 
 		this.inputStream = null;
 	}
