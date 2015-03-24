@@ -242,7 +242,7 @@ public class WXService {
             String spbill_create_ip = "";
             map.put("appid",appId);
             map.put("attach",attach);
-            map.put("body",new String(body.getBytes("gbk"),"utf-8"));
+            map.put("body",body);
             map.put("mch_id",mch_id);
             map.put("nonce_str",nonce_str);
             map.put("notify_url",notify_url) ;
@@ -254,7 +254,7 @@ public class WXService {
             String sign =  createSign(map).toUpperCase()  ;
             String content = TXT.replace("{appId}",appId);
             content  = content.replace("{attach}",attach);
-            content  = content.replace("{body}",new String(body.getBytes("gbk"),"utf-8"));
+            content  = content.replace("{body}",body);
             content  = content.replace("{mch_id}",mch_id);
             content  = content.replace("{nonce_str}",nonce_str);
             content  = content.replace("{notify_url}",notify_url);
