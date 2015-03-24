@@ -6,11 +6,12 @@ import com.renren.ntc.sg.biz.dao.ItemsDAO;
 
 public class DeleteShopItems {
 
-    private static long shop_id = 10041;
+    private static long shop_id = 10064;
 
     public static void main(String[] args) {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         itemDao.del(SUtils.generTableName(shop_id), shop_id);
+        System.out.println("删除完成");
     }
 }
