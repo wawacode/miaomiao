@@ -34,7 +34,7 @@ public class CommunityController {
     @Autowired
     public ItemsDAO itemsDAO;
 
-    public static final String SURL = "http://10.170.239.52:9988/suggestion/query?q={q}";
+    public static final String SURL = "http://10.170.239.52:9988/suggestion/query?q={q}&count=50";
 
     @Autowired
     public GeoCommunityService geoCommunityService;

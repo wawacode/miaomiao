@@ -55,8 +55,8 @@ public class IndexController {
 	@Post("query")
 	public String query(Invocation inv, @Param("q") String q, @Param("count") int count,@Param("shop_id") long shop_id ) {
 
-		if (0 == count || count > 20) {
-			count = 20;
+		if (0 == count || count > 50) {
+			count = 50;
 		}
 		JSONArray ls = new JSONArray();
 		if (StringUtils.isEmpty(q)) {
