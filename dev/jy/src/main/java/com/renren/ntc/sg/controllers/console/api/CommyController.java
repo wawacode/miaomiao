@@ -58,7 +58,17 @@ public class CommyController {
         }
         return "@json:" + Constants.DONE;
     }
-
+    @Get("get_links")
+    @Post("get_links")
+    public String get_links(Invocation inv, @Param("shop_id") long shop_id) {
+            try{
+                List <Long > c_ids = shop_communityDao.getCmmy(shop_id);
+                communityDao.get(c_ids);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        return "@json:" + Constants.DONE;
+    }
 
 
     @Get("del_link")

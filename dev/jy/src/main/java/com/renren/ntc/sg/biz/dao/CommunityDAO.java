@@ -39,6 +39,9 @@ public interface CommunityDAO {
     @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where id = :1")
     public Community get(long id );
 
+    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where id in (:c_ids)")
+    public List<Community> gets(@SQLParam("c_ids") List<Long> c_ids );
+
     @ReturnGeneratedKeys
     @SQL("insert into "+ TABLE_NAME + "(" +  INSERT_FIELDS +") values(:1.name ,:1.city ,:1.score,:1.district,:1.address,:1.lng,:1.lat) " )
     public int insert(Community c);
