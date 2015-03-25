@@ -48,4 +48,6 @@ public interface CommunityDAO {
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where name like :1 limit 10")
     public  List<Community> like( String key);
 
+    @SQL("update " + TABLE_NAME + " set score = score + 10 where id = :1 ")
+    public int upScore(int c_id);
 }

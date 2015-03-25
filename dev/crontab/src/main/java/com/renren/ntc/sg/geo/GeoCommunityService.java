@@ -252,22 +252,22 @@ public class GeoCommunityService {
         CommunityDAO communityDao = rose.getBean(CommunityDAO.class);
         int limit = 1000;
         GeoCommunityService geoService = new GeoCommunityService();
-//        for (int i = 0; i < 30000; ) {
-//            System.out.println(i);
-//            List<Community> cls = communityDao.get(i, limit);
-//            if (cls.size() == 0 ){
-//                break;
-//            }
-//            for (Community c : cls) {
-//                ShopLocation shop_location = new ShopLocation();
-//                shop_location.setLatitude(c.getLat());
-//                shop_location.setLongitude(c.getLng());
-//                shop_location.setShop_id(c.getId());
-//                System.out.println(JSON.toJSON(shop_location).toString());
-//                System.out.println(geoService.updateLocation(shop_location));
-//            }
-//            i = i+limit;
-//        }
+        for (int i = 0; i < 100000; ) {
+            System.out.println(i);
+            List<Community> cls = communityDao.get(i, limit);
+            if (cls.size() == 0 ){
+                break;
+            }
+            for (Community c : cls) {
+                ShopLocation shop_location = new ShopLocation();
+                shop_location.setLatitude(c.getLat());
+                shop_location.setLongitude(c.getLng());
+                shop_location.setShop_id(c.getId());
+                System.out.println(JSON.toJSON(shop_location).toString());
+                System.out.println(geoService.updateLocation(shop_location));
+            }
+            i = i+limit;
+        }
 //
 //        ShopLocation shopL = new ShopLocation();
 //        shopL.setShop_id(10);

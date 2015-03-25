@@ -50,6 +50,8 @@ public class CommyController {
             shop_c.setCommunity_id(c_id);
             shop_c.setExt("");
             shop_communityDao.insert(shop_c);
+            // 提升排序
+            communityDao.upScore(c_id);
             }catch(Exception e){
                 e.printStackTrace();
             }

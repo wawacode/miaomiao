@@ -13,6 +13,7 @@ public class DeleteShopItems {
 
     public static void main(String[] args) {
         deleteAllItems();
+        deleteAllItems();
     }
 
     private static void deleteAllItems() {
