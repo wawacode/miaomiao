@@ -139,6 +139,9 @@ public interface ItemsDAO {
     @SQL("delete from ##(:tableName) where  shop_id =:2 and price = 0")
     public void delPrice0(@SQLParam("tableName") String tableName, long del_shop_id);
 
+    @SQL("delete from ##(:tableName) where  shop_id =:2 and category_id = :3")
+    public void delCategory(@SQLParam("tableName") String tableName, long del_shop_id, long category_id);
+
     @SQL("delete from ##(:tableName) where  shop_id =:2 and serialNo=:3")
     public void del(@SQLParam("tableName") String tableName, long del_shop_id, String serialNo);
 

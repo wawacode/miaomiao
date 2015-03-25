@@ -12,7 +12,7 @@ public class DeleteShopItems {
     private static long shop[] = { 10052 };
 
     public static void main(String[] args) {
-        deleteAllItems();
+        deleteCategory();
     }
 
     private static void deleteAllItems() {
@@ -30,6 +30,13 @@ public class DeleteShopItems {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         itemDao.del(SUtils.generTableName(shop_id), shop_id);
+        System.out.println("删除完成");
+    }
+
+    private static void deleteCategory() {
+        RoseAppContext rose = new RoseAppContext();
+        ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
+        itemDao.delCategory(SUtils.generTableName(shop_id), shop_id, 15);
         System.out.println("删除完成");
     }
 }
