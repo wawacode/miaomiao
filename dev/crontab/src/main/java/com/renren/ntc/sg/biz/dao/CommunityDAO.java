@@ -5,6 +5,7 @@ import com.renren.ntc.sg.bean.Ver;
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
+import net.paoding.rose.jade.annotation.SQLParam;
 
 import java.util.List;
 
@@ -45,4 +46,10 @@ public interface CommunityDAO {
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME + " where name =:1  limit 1 ")
     public Community getByName(String s);
+
+    @SQL("select score from " + TABLE_NAME + " where id =:1")
+    public int getScore(int id);
+
+    @SQL("update " + TABLE_NAME + " set ##(:key) = :3  where id =:1")
+    public int update(long id, @SQLParam("key") String key, String value);
 }

@@ -6,13 +6,13 @@ import com.renren.ntc.sg.biz.dao.ItemsDAO;
 
 public class DeleteShopItems {
 
-    private static long shop_id = 10059;
+    private static long shop_id = 10060;
 
-    //private static long shop[] = { 10044, 10058, 10053, 10048, 10049, 10051, 10041, 10059, 10043, 10042, 10047, 10045, 10062 };
-    private static long shop[] = { 10052 };
+    //private static long shop[] = { 10044, 10058, 10053, 10048, 10049, 10051, 10041, 10059, 10043, 10042, 10047, 10045, 10062,10052,10034,10060 };
+    private static long shop[] = { 10060 };
 
     public static void main(String[] args) {
-        deleteCategory();
+        deleteAllItems();
     }
 
     private static void deleteAllItems() {

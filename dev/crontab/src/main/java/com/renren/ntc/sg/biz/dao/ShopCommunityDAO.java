@@ -35,4 +35,7 @@ public interface ShopCommunityDAO {
     @SQL("select community_id from " + TABLE_NAME + " where shop_id = :1")
     public List<String> getCommunityId(int shop_id);
 
+    @SQL("select distinct community_id from " + TABLE_NAME)
+    public List<String> getAllCommunityId();
+
 }

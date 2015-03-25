@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.paoding.rose.scanning.context.RoseAppContext;
 
+import com.renren.ntc.sg.bean.Community;
 import com.renren.ntc.sg.biz.dao.CommunityDAO;
 import com.renren.ntc.sg.biz.dao.ShopCommunityDAO;
 
@@ -15,10 +16,10 @@ import com.renren.ntc.sg.biz.dao.ShopCommunityDAO;
  */
 public class getBindCommunity {
 
-    private static int shop_id = 10063;
+    private static int shop_id = 10060;
 
     public static void main(String[] args) {
-        getBindCommunity();
+        updateBindCommunity();
     }
 
     public static void getBindCommunity() {
@@ -31,5 +32,20 @@ public class getBindCommunity {
             String name = communityDAO.getCommunityName(Integer.valueOf(string));
             System.out.println(name);
         }
+    }
+
+    public static void updateBindCommunity() {
+        RoseAppContext rose = new RoseAppContext();
+        ShopCommunityDAO shopCommunityDAO = rose.getBean(ShopCommunityDAO.class);
+        CommunityDAO communityDAO = rose.getBean(CommunityDAO.class);
+        List<String> communityIds = shopCommunityDAO.getAllCommunityId();
+        System.out.println(">>>:" + communityIds.size());
+        for (String id : communityIds) {
+            int score = communityDAO.getScore(Integer.valueOf(id));
+            score += 100;
+            System.out.println("Score:" + score);
+            communityDAO.update(Integer.valueOf(id), "score", score + "");
+        }
+        System.out.println("OK");
     }
 }
