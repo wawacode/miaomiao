@@ -24,20 +24,25 @@ CREATE TABLE `items` (
 
  */
 
-
 @DAO(catalog = "ABC")
 public interface CommunityDAO {
-    static final String TABLE_NAME= "community";
-    static final String FIELDS = "id, name ,city ,district,address,lng,lat, create_time,update_time" ;
-    static final String INSERT_FIELDS = " name ,city ,district,address,lng,lat" ;
 
-	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " limit :1,:2")
-	public List<Community> get(int from ,int offset);
+    static final String TABLE_NAME = "community";
+
+    static final String FIELDS = "id, name ,city ,district,address,lng,lat, create_time,update_time";
+
+    static final String INSERT_FIELDS = " name ,city ,district,address,lng,lat";
+
+    @SQL("select name from " + TABLE_NAME + " where id = :1")
+    public String getCommunityName(int community_id);
+
+    @SQL("select " + FIELDS + " from " + TABLE_NAME + " limit :1,:2")
+    public List<Community> get(int from, int offset);
 
     @ReturnGeneratedKeys
-    @SQL("insert into "+ TABLE_NAME + "(" +  INSERT_FIELDS +") values(:1.name ,:1.city ,:1.district,:1.address,:1.lng,:1.lat) " )
+    @SQL("insert into " + TABLE_NAME + "(" + INSERT_FIELDS + ") values(:1.name ,:1.city ,:1.district,:1.address,:1.lng,:1.lat) ")
     public int insert(Community c);
 
-    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where name =:1  limit 1 ")
-    public Community  getByName(String s);
+    @SQL("select " + FIELDS + " from " + TABLE_NAME + " where name =:1  limit 1 ")
+    public Community getByName(String s);
 }
