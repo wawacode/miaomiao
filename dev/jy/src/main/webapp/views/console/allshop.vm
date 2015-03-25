@@ -38,7 +38,7 @@
     </div>
 </nav>
 
-<div class="container-fluid">
+<div class="container-fluid" style="width: 150%">
     <div class="row">
         <!--<div class="col-sm-3 col-md-2 sidebar">-->
         <!--<ul class="nav nav-sidebar">-->
@@ -115,13 +115,18 @@
     </div>
 </div>
 
-<div class="bindCom" id="bindCom" style="display: none;padding-top: 100px; width: 500px;height: 500px;">
+<div class="bindCom" id="bindCom" style="display: none;padding-top: 100px; width: 60%;height: 100%;">
     <div style=";background-color: white;width: 100%;height: 100%;padding: 20px 5px">
-        <input type="text" name="country" id="autocomplete" style="width: 300px" placeholder="输入小区名字"/><span>
-            <button id="performBind">绑定此小区</button>
+
+        <h1 style="text-align: center;">绑定小区信息</h1>
+
+        <input type="text" name="country" id="autocomplete" style="width: 60%" placeholder="输入小区名字"/><span>
+            <button class="bottom" id="performBind">绑定此小区</button>
         </span>
         <div id="autocomplete-sugg">
         </div>
+        <h2 style="background-color: #eaeaea;font-size: 20px;margin-top: 20px">已经绑定的小区</h2>
+        <div style=";max-height: 200px;overflow: scroll" id="alreadyBindCommunity"></div>
     </div>
 </div>
 
@@ -150,17 +155,49 @@
             tooltip: 'Click to edit...'
         });
 
+        function generate_community_item(name,id){
+           return '<div id="COMMUNITY'+ id + '" class="row" style="margin: 10px;border-bottom: solid 1px #eaeaea"><span class="col-md-4">'+ name +
+                    '</span><span class="col-md-2" style="padding-left: 30px"><button class="unbindButton" data-communityid="'+ id + '">解除绑定</button>' +
+            '</span></div>';
+        }
+
+        function bindUnbindButton(){
+            $('.unbindButton').click(function(){
+                $.post('/console/api/commy/del_link',{'shop_id':curShop,'c_id':$(this).data('communityid')},function(resp){
+                    if(resp.code !=0){
+                        window.alert('解除绑定失败');
+                        return;
+                    }
+                    window.alert('解除绑定成功');
+
+                    refreshBindCommunity();
+                    
+                });
+            });
+        }
         var curShop = null;
+
+        function refreshBindCommunity(){
+            $('#alreadyBindCommunity').empty();
+            $.post('/console/api/commy/get_links',{'shop_id':curShop},function(resp){
+
+                var commu = resp;
+                for(var  i=0;i< commu.length;i++){
+                    $('#alreadyBindCommunity').append(
+                        generate_community_item(commu[i].name,commu[i].id)
+                    )
+                }
+                bindUnbindButton();
+            });
+        }
 
         $('.e-bindButton').click(function(){
             curShop = $(this).data('shopid');
             $('#bindCom').bPopup();
-        });
 
-        var countries = [
-            { value: 'Andorra', data: 'AD' },
-            { value: 'Zimbabwe', data: 'ZZ' }
-        ];
+            refreshBindCommunity();
+
+        });
 
         var curCommu = null;
         $('#autocomplete').autocomplete({
@@ -188,7 +225,11 @@
                     window.alert('绑定失败');
                     return;
                 }
-                return window.alert('绑定成功');
+                window.alert('绑定成功');
+                $('#alreadyBindCommunity').prepend(
+                        generate_community_item(curCommu.value,curCommu.data)
+                );
+                bindUnbindButton();
             });
         });
 
