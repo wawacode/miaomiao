@@ -47,7 +47,30 @@ public class DownFile {
                         System.out.println("drop " + lineTxt);
                         continue;
                     }
-                    System.out.println( lineTxt);
+                    try {
+                    String serialNo = args[0];
+                    String name = args[1];
+                    String price = args[2];
+                    String pic_url = args[3];
+                    int pp =  (int)(Float.valueOf (price) * 100) ;
+                    System.out.println(pic_url);
+                    String  end = getSuffix(pic_url);
+                    String pic_name= serialNo + end;
+                    Product p = new Product();
+                    String url = "http://www.mbianli.com/cat/images/" + pic_name ;
+                    writeFile(pic_url,pic_name);
+                    p.setSerialNo(serialNo);
+                    p.setCategory_id(28);
+                    p.setPrice(pp);
+                    p.setName(name);
+                    if (new File("d:\\webimg\\" + pic_name ).exists()){
+                        p.setPic_url(url);
+                    }
+                    System.out.println("insert into " + JSON.toJSON(p).toString());
+                    //pdDao.insert(p);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }else{
                 System.out.println("找不到指定的文件");
@@ -67,6 +90,11 @@ public class DownFile {
             }
         }
 
+    }
+
+    private static String getSuffix(String pic_url) {
+        int f = pic_url.lastIndexOf(".");
+        return pic_url.substring(f,pic_url.length());  //To change body of created methods use File | Settings | File Templates.
     }
 
     public static void writeFile(String strUrl, String fileName) {
