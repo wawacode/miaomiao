@@ -18,7 +18,7 @@ public class mvShopItems {
 
     private static int category_id = 15;
 
-    private static long shop[] = { 10065, 10066 };
+    private static long shop[] = { 10060 };
 
     public mvShopItems() throws IOException {
 
@@ -46,7 +46,7 @@ public class mvShopItems {
                         try {
                             Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), item.getSerialNo(), to_shop_id);
                             if (null == ii) {
-                                System.out.println("insert " + item.getSerialNo());
+                                System.out.println("insert " + ">" + i + "<" + item.getSerialNo());
                                 itemDao.insert(SUtils.generTableName(to_shop_id), item);
                             } else {
                                 System.out.println("update" + item.getSerialNo() + " " + item.getId());

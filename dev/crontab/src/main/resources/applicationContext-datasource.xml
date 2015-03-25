@@ -10,10 +10,10 @@
 		</property>
 
 		<!-- 正式服务器 -->
-		<!--<property name="jdbcUrl"-->
-			<!--value="jdbc:mysql://123.57.38.234:3306/sg?characterEncoding=utf8"/>-->
-		<!--<property name="user" value="test"/>-->
-		<!--<property name="password" value="test"/>-->
+		<!-- <property name="jdbcUrl" 
+			value="jdbc:mysql://123.57.38.234:3306/sg?characterEncoding=utf8"/>
+		<property name="user" value="test"/>
+		<property name="password" value="test"/> -->
 
 
 		<!-- 测试服务器 -->
