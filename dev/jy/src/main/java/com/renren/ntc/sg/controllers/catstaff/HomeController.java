@@ -70,6 +70,8 @@ public class HomeController {
 
         LoggerUtils.getInstance().log(String.format("ext info  %s ,%s , %s ,%s ",staff_phone ,base_price,open_time,close_time));
 
+        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
+        
         if (!legal(staff_phone, staff_name, staff_pwd)) {
             return "@" + Constants.PARATERERROR;
         }
@@ -155,6 +157,8 @@ public class HomeController {
                         @Param("staff_name") String staff_name,
                         @Param("staff_pwd") String staff_pwd,@Param("from") int from, @Param("offset") int offset)
     {
+        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
+
         if (!legal(staff_phone, staff_name, staff_pwd)) {
         return "@" + Constants.PARATERERROR;
     }
