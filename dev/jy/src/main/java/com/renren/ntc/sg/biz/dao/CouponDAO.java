@@ -23,7 +23,7 @@ public interface CouponDAO {
     static final String  INSERT_FIELDS = "createer,price,name ,desc , ext,start_time,end_time"  ;
 
 
-    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where ;1 > start_time and :1 <= end_time")
+    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where :1 > start_time and :1 <= end_time")
     public List<Coupon> getCouponRule(Date time) ;
 
 
