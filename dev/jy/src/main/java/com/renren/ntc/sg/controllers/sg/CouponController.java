@@ -16,6 +16,7 @@ import com.renren.ntc.sg.util.wx.Sha1Util;
 import com.renren.ntc.sg.util.wx.TenpayUtil;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
+import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import java.util.List;
  * Time: 上午11:29
  * To change this template use File | Settings | File Templates.
  */
+@Path("coupon")
 public class CouponController {
     @Autowired
     NtcHostHolder  hostHolder;
@@ -74,7 +76,7 @@ public class CouponController {
             if (tickets == null  || tickets.size() == 0 ) {
                 try {
                     UserCoupon userCoupon =  new UserCoupon() ;
-                    String code = SUtils.md5(u.getId(),c.getId(),Sha1Util.getNonceStr());
+                    String code = SUtils.md5(u.getId(), c.getId(), Sha1Util.getNonceStr());
                     userCoupon.setCode(code);
                     userCoupon.setUser_id(u.getId());
                     userCoupon.setCoupon_id(c.getId());
