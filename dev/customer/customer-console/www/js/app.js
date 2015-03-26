@@ -16,8 +16,8 @@ angular.module('miaomiao.console', [
     ])
 
     // for server config
-    .constant('serverInfo', {host: 'http://www.mbianli.com', context: '/console/api/'})
-//    .constant('serverInfo', {host: 'http://127.0.0.1:8010', context: '/console/api/'})
+//    .constant('serverInfo', {host: 'http://www.mbianli.com', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://127.0.0.1:8010', context: '/console/api/'})
 
     // for http post requests
     .config(function ($httpProvider, $provide) {
@@ -133,6 +133,15 @@ angular.module('miaomiao.console', [
                     'tab-front-page': {
                         templateUrl: 'templates/shop-edit.html',
                         controller: 'EditShopCtrl'
+                    }
+                }
+            })
+            .state('tab.community-edit', {
+                url: '/community-edit',
+                views: {
+                    'tab-front-page': {
+                        templateUrl: 'templates/community-edit.html',
+                        controller: 'EditCommunityCtrl'
                     }
                 }
             })
