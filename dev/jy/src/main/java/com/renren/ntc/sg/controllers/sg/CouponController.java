@@ -21,7 +21,7 @@ import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -70,7 +70,7 @@ public class CouponController {
     public String get(Invocation inv ){
         User u = hostHolder.getUser();
         JSONArray cos = new JSONArray();
-        List<Coupon> coupons  = couponDao.getCouponRule(new Date());
+        List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
         for (Coupon c : coupons ){
             List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),c.getId());
             if (tickets == null  || tickets.size() == 0 ) {
