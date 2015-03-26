@@ -10,6 +10,10 @@
     <title>Dashboard Template for Bootstrap</title>
     <!-- Bootstrap core CSS -->
     <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/console.css" rel="stylesheet">
+
+    <script type="text/javascript">
+    </script>
 </head>
 
 <body>
@@ -34,20 +38,20 @@
     </div>
 </nav>
 
-<div class="container-fluid">
+<div class="container-fluid" style="width: 150%">
     <div class="row">
         <!--<div class="col-sm-3 col-md-2 sidebar">-->
-            <!--<ul class="nav nav-sidebar">-->
+        <!--<ul class="nav nav-sidebar">-->
 
-                <!--<li class="active"><a href="#">    </a></li>-->
-                <!--#foreach($category in $categoryls)-->
-                <!--<li #if($category.category_id == $curr_cate_id ) class="active" #end><a href="/console/shop?shop_id=${shop.id}&category_id=${category.category_id}"> $category.name</a></li>-->
-                <!--#end-->
-            <!--</ul>-->
+        <!--<li class="active"><a href="#">    </a></li>-->
+        <!--#foreach($category in $categoryls)-->
+        <!--<li #if($category.category_id == $curr_cate_id ) class="active" #end><a href="/console/shop?shop_id=${shop.id}&category_id=${category.category_id}"> $category.name</a></li>-->
+        <!--#end-->
+        <!--</ul>-->
         <!--</div>-->
-        <div class="col-sm-9 col-sm-offset-3 col-md-12 col-md-offset-0 main"  style="padding-top:60px">
-            <div class="table-responsive" >
-                <table class="table table-striped" >
+        <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main" style="padding-top:60px">
+            <div class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>id</th>
@@ -60,7 +64,9 @@
                         <th>开业时间</th>
                         <th>闭业时间</th>
                         <th>店铺地址</th>
-                        <th>商店备注</th>
+                        <th>服务范围</th>
+                        <th>小区绑定</th>
+                        <th>店铺备注</th>
                         <th>店铺已上线(0:下线 1:上线)</th>
                         <th>店铺操作</th>
                     </tr>
@@ -74,10 +80,18 @@
                         <td class="edit" id="e-${shop.id}-create_time">$shop.create_time</td>
                         <td class="edit" id="e-${shop.id}-lng">$shop.lng</td>
                         <td class="edit" id="e-${shop.id}-lat">$shop.lat</td>
-                        <td class="edit" id="e-${shop.id}-open_time">#if (! $shop.open_time) #else $date.format('HH:mm',$shop.open_time) #end</td>
-                        <td class="edit" id="e-${shop.id}-close_time">#if (! $shop.close_time) #else $date.format('HH:mm',$shop.close_time) #end</td>
+                        <td class="edit" id="e-${shop.id}-open_time">#if (! $shop.open_time) #else
+                            $date.format('HH:mm',$shop.open_time) #end
+                        </td>
+                        <td class="edit" id="e-${shop.id}-close_time">#if (! $shop.close_time) #else
+                            $date.format('HH:mm',$shop.close_time) #end
+                        </td>
                         <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
                         <td class="edit" id="e-${shop.id}-shop_info">$shop.shop_info</td>
+                        <td class="button" id="e-${shop.id}-bind">
+                            <button type="button" class="e-bindButton btn btn-success" data-shopid="${shop.id}" data-shopname="${shop.name}">绑定小区</button>
+                        </td>
+                        <td class="edit" id="e-${shop.id}-remark">$shop.remark</td>
                         <td class="edit" id="e-${shop.id}-audit">$shop.audit</td>
                         <td><a href="/sg/shop?shop_id=${shop.id}">访问店铺 </a><br/>
                             <a href="/console/login">店铺后台 </a></td>
@@ -89,7 +103,7 @@
                     <ul class="pager">
                         #if($previous_f)
                         <li>
-                          <a href="/console/allshop?from=$previous_f&offset=10">Previous</a></li>
+                            <a href="/console/allshop?from=$previous_f&offset=10">Previous</a></li>
                         #end
                         #if($next_f)
                         <li><a href="/console/allshop?from=$next_f&offset=10">Next</a></li>
@@ -101,27 +115,137 @@
     </div>
 </div>
 
+<div class="bindCom" id="bindCom" style="display: none;padding-top: 100px; width: 60%;height: 100%;">
+    <div style=";background-color: white;width: 100%;height: 100%;padding: 20px 5px">
+
+        <h1 style="text-align: center;">绑定小区:<span id="curCommunityName"></span> 到店铺:<span id="curShopName"></span></h1>
+
+        <div style="margin-top: 20px;text-align: center">
+            <input type="text" name="country" id="autocomplete" style="width: 60%" placeholder="输入小区名字"/><span>
+            <button type="button" class="btn btn-success" id="performBind">绑定此小区</button>
+        </span>
+        </div>
+
+        <div id="autocomplete-sugg">
+        </div>
+        <h2 style="background-color: #eaeaea;font-size: 20px;margin-top: 20px">已经绑定的小区<span id="gettingCommunityStatus"></span></h2>
+        <div style=";max-height: 200px;overflow: auto" id="alreadyBindCommunity"></div>
+    </div>
+</div>
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="/js/jquery/dist/jquery.min.js"></script>
 <script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/js/jquery.bpopup.js"></script>
+<script src="/js/jquery.autocomplete.min.js"></script>
 <script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-    $('.edit').editable('/console/allshop/edit',{
-    tooltip : 'Click to edit...',
-    callback : function(value, settings) {
-    location.reload() ;
-    }
-    });
-    $('.edit_area').editable('/console/allshop/edit' ,{
-    type : 'textarea',
-    cancel : 'Cancel',
-    submit : 'OK',
-    indicator : '<img src="img/indicator.gif">',
-    tooltip : 'Click to edit...'
-    });
+    $(document).ready(function () {
+
+        $('.edit').editable('/console/allshop/edit', {
+            tooltip: 'Click to edit...',
+            callback: function (value, settings) {
+                location.reload();
+            }
+        });
+        $('.edit_area').editable('/console/allshop/edit', {
+            type: 'textarea',
+            cancel: 'Cancel',
+            submit: 'OK',
+            indicator: '<img src="img/indicator.gif">',
+            tooltip: 'Click to edit...'
+        });
+
+        function generate_community_item(name,id){
+           return '<div id="COMMUNITY'+ id + '" class="row" style="margin: 10px;border-bottom: solid 1px #eaeaea"><span class="col-md-4">'+ name +
+                    '</span><span class="col-md-2" style="padding-left: 30px"><button type="button" class="unbindButton btn btn-danger" data-communityid="'+ id + '">解除绑定</button>' +
+            '</span></div>';
+        }
+
+        function bindUnbindButton(){
+
+            $('.unbindButton').unbind('click');
+            $('.unbindButton').click(function(){
+                $.post('/console/api/commy/del_link',{'shop_id':curShop,'c_id':$(this).data('communityid')},function(resp){
+                    if(resp.code !=0){
+                        window.alert('解除绑定失败');
+                        return;
+                    }
+                    window.alert('解除绑定成功');
+
+                    refreshBindCommunity();
+
+                });
+            });
+        }
+        var curShop = null,curShopName = null;
+
+        function refreshBindCommunity(){
+            $('#alreadyBindCommunity').empty();
+            $('#gettingCommunityStatus').text('(加载小区列表...)');
+            $.post('/console/api/commy/get_links',{'shop_id':curShop},function(resp){
+                var commu = resp;
+                for(var  i=0;i< commu.length;i++){
+                    $('#alreadyBindCommunity').append(
+                        generate_community_item(commu[i].name,commu[i].id)
+                    )
+                }
+
+                $('#gettingCommunityStatus').text('(加载完成)');
+
+                bindUnbindButton();
+            });
+        }
+
+        $('.e-bindButton').click(function(){
+            curShop = $(this).data('shopid');
+            curShopName = $(this).data('shopname');
+
+            $('#curShopName').text(curShopName);
+
+            $('#bindCom').bPopup();
+
+            refreshBindCommunity();
+
+        });
+
+        var curCommu = null;
+        $('#autocomplete').autocomplete({
+            paramName:'key',
+            serviceUrl: '/sg/commy/search',
+            minChars: 0,
+            noSuggestionNotice: '没有匹配的小区',
+            appendTo: '#autocomplete-sugg',
+            transformResult: function(response) {
+                response = JSON.parse(response);
+                return {
+                    suggestions: $.map(response.data.communitys, function(dataItem) {
+                        return { value: dataItem.name, data: dataItem.id };
+                    })
+                };
+            },
+            onSelect: function (suggestion) {
+                curCommu = suggestion;
+                $('#curCommunityName').text(curCommu.value);
+            }
+        });
+
+        $('#performBind').click(function(){
+            $.post('/console/api/commy/add_link',{'shop_id':curShop,'c_id':curCommu.data},function(resp){
+                if(resp.code !=0){
+                    window.alert('绑定失败');
+                    return;
+                }
+                window.alert('绑定成功');
+                $('#alreadyBindCommunity').prepend(
+                        generate_community_item(curCommu.value,curCommu.data)
+                );
+                bindUnbindButton();
+            });
+        });
+
     });
 </script>
 </body>

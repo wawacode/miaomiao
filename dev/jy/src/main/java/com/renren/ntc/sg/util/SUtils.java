@@ -25,6 +25,7 @@ import java.util.*;
  */
 public class SUtils {
 
+
     public static String getBodyString(BufferedReader br) {
         String inputLine;
         String str = "";
@@ -346,5 +347,10 @@ public class SUtils {
         result.put("code", code);
         result.put("msg", message);
         return result.toJSONString();
+    }
+
+    public static String md5(long id, long id1, String nonceStr) {
+        StringBuffer sb =  new StringBuffer() ;
+        return MD5Utils.MD5(sb.append(id+"").append(id1 + "").append(nonceStr).toString());
     }
 }

@@ -118,7 +118,7 @@ public class T_WXHttpClient {
         JSONObject button  = new JSONObject();
         button.put("type","view");
         button.put("name","测试入口");
-        button.put("url","http://www.mbianli.com:8088/sg/loading" );
+        button.put("url","http://www.mbianli.com:8088/catstaff/test" );
         buttons.add(button);
 
 

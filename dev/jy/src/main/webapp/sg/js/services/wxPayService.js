@@ -105,8 +105,6 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                         fail('支付取消');
                     };
 
-                    if (beforeHandoverToWCPay)beforeHandoverToWCPay();
-
                     wx.chooseWXPay(info);
                 }
 
@@ -118,9 +116,14 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
                     info.nonceStr = detail.nonceStr;
                     info.timestamp = detail.timestamp;
 
+                    if (beforeHandoverToWCPay)beforeHandoverToWCPay();
+
                     onHashReady();
 
                 }, function (data, status) {
+
+                    if (beforeHandoverToWCPay)beforeHandoverToWCPay();
+
                     fail('获取订单hash出错');
                 });
             };

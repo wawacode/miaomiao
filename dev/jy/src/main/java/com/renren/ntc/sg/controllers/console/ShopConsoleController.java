@@ -297,7 +297,6 @@ public class ShopConsoleController {
         }else {
 			query = query.trim();
 			query = SUtils.wrap(query);
-		    query = SUtils.wrap(query);
 		    itemls =  itemsDAO.indistinctSearch(SUtils.generTableName(shop_id),shop_id,query);//支持产品条形码和商品名称
 		}
 

@@ -153,6 +153,18 @@
                 doGet('subscribe', 'ower_phone=' + ower_phone + '&chn=' + chn + '&device_token=' + device_token, success, fail);
 
             }
+            ,
+            getCommunityList:function(shop_id, success, fail){
+                doGet('commy/get_links', 'shop_id=' + shop_id, success, fail);
+            },
+
+            addCommunity:function(shop_id,c_id,success, fail){
+                doGet('commy/add_link', 'shop_id=' + shop_id + '&c_id=' + c_id, success, fail);
+            },
+
+            deleteCommunity:function(shop_id,c_id,success, fail){
+                doGet('commy/del_link', 'shop_id=' + shop_id + '&c_id=' + c_id, success, fail);
+            }
 
         };
     }]);

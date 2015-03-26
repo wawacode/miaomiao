@@ -51,7 +51,7 @@ public class OrderConsoleController extends BasicConsoleController{
     @Autowired
     private ShopCategoryDAO shopCategoryDAO ;
 
-	OrderConsoleController(){
+	public  OrderConsoleController(){
        
     }
 

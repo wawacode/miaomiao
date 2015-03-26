@@ -6,7 +6,7 @@
     <meta name="format-detection" content="telephone=no">
 
     <link href="/css/ionic.min.css" rel="stylesheet">
-    <link href="/css/app-ui-min.css?version=1.0.7" rel="stylesheet">
+    <link href="/css/app-ui-min.css?version=1.0.8" rel="stylesheet">
 
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
     <script type="text/javascript" src="/js/bower_components/angular-bindonce/bindonce.min.js"></script>
@@ -15,7 +15,7 @@
     <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
 
-    <script src="/sg/js/compress/app-ui-min.js?version=1.0.7" type="text/javascript"></script>
+    <script src="/sg/js/compress/app-ui-min.js?version=1.0.8" type="text/javascript"></script>
 
 </head>
 <body>

@@ -62,6 +62,10 @@ public class OrderController {
     public PushService pushService;
 
 
+    @Autowired
+    public UserCouponDAO  userCouponDao;
+
+
 
     @Get("loading")
     public String loadingPage(Invocation inv) {
@@ -78,7 +82,10 @@ public class OrderController {
                        @Param("address") String address,
                        @Param("phone") String phone,
                        @Param("remarks") String remarks,
-                       @Param("items") String items, @Param("act") String act) {
+                       @Param("items") String items,
+                       @Param("act") String act,
+                       @Param("coupon_id") int coupon_id,
+                       @Param("coupon_code") String coupon_code ) {
         LoggerUtils.getInstance().log(String.format(" items %s ,act %s ",items,act));
         User u = holder.getUser();
         long user_id = 0;
@@ -141,7 +148,7 @@ public class OrderController {
             }
             infos.add(JSON.toJSON(i4v));
             itemls.add(i4v);
-            sb.append(i4v.getSerialNo()).append(" count").append(i4v.getExt() + " ");
+            sb.append(i4v.getName()).append(" 数量 ").append(i4v.getExt() + " ");
             price += i4v.getPrice() * i4v.getExt();
         }
         String order_id = SUtils.getOrderId();
@@ -159,9 +166,10 @@ public class OrderController {
         order.setRemarks(remarks);
         order.setInfo(infos.toJSONString());
         order.setSnapshot(items);
-        if(!"wx".equals(act)){
+        if(!Constants.WXPAY.equals(act) ){
             order.setStatus(Constants.ORDER_WAIT_FOR_PRINT);         //已经确认的状态
         }else {
+
             order.setAct(act);
             order.setStatus(Constants.ORDER_PAY_PENDING);
         }
@@ -172,14 +180,26 @@ public class OrderController {
             LoggerUtils.getInstance().log(" error order save return uk ");
             return "@" + Constants.UKERROR;
         }
-        if(!"wx".equals(act)){
+        if(!Constants.WXPAY.equals(act)){
             sendInfo(shop,order_id);
         }
 
         JSONObject response = new JSONObject();
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
-        if("wx".equals(act)){
+        if(Constants.WXPAY.equals(act)){
+            if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
+                UserCoupon ticket = userCouponDao.getTicket(u.getId(), coupon_id, coupon_code, Constants.COUPONUNUSED);
+                if (ticket != null ){
+                    price = price - ticket.getPrice();
+                    data.put("discount",ticket.getPrice()) ;
+                    //满减不要大于 起送金额
+                    if( price <=  0 ){
+                        price = 0 ;
+                    }
+                }
+                update(order, ticket.getPrice());
+            }
             String attach = shop_id + "_" +user_id;
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
@@ -197,8 +217,26 @@ public class OrderController {
         data.put("order_id",order_id);
         response.put("data", data);
         response.put("code", 0);
-        LoggerUtils.getInstance().log("error order save return " + response.toJSONString());
+        LoggerUtils.getInstance().log("error  order save return " + response.toJSONString());
         return "@json:" + response.toJSONString();
+    }
+
+    private void update(Order order, int price) {
+        String msg = order.getMsg();
+        JSONObject  mesg = (JSONObject) JSON.parse(msg);
+        if (null == mesg){
+            mesg = new JSONObject();
+        }
+        mesg.put("discount",price);
+        String mess = mesg.toJSONString();
+        order.setMsg(mess);
+        ordersDAO.confirm(order.getOrder_id(),SUtils.generOrderTableName(order.getShop_id()),mess) ;
+    }
+
+    private boolean validata(long id, int coupon_id, String coupon_code) {
+        UserCoupon ticket;
+
+        return false;
     }
 
     @Get("order_confirm")
@@ -252,7 +290,7 @@ public class OrderController {
             // do nothing
         }else{
             ordersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(u.getId()));
+            userOrdersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generUserOrderTableName(u.getId()));
         }
         return "@json:"+Constants.DONE;
     }

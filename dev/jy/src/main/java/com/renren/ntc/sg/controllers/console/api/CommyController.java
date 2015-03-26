@@ -35,7 +35,6 @@ public class CommyController {
     @Autowired
     public Shop_CommunityDAO shop_communityDao;
 
-
     @Get("add_link")
     @Post("add_link")
     public String add_link(Invocation inv, @Param("shop_id") long shop_id, @Param("c_id") String c_ids) {
@@ -51,12 +50,28 @@ public class CommyController {
             shop_c.setCommunity_id(c_id);
             shop_c.setExt("");
             shop_communityDao.insert(shop_c);
+            // 提升排序
+            communityDao.upScore(c_id);
             }catch(Exception e){
                 e.printStackTrace();
             }
         }
         return "@json:" + Constants.DONE;
     }
+    @Get("get_links")
+    @Post("get_links")
+    public String get_links(Invocation inv, @Param("shop_id") long shop_id) {
+
+           List <Community> cs = null;
+            try{
+                List <Long > c_ids = shop_communityDao.getCmmy(shop_id);
+                 cs = communityDao.gets(c_ids);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        return "@json:" + ((JSONArray)JSON.toJSON(cs)).toJSONString();
+    }
+
 
     @Get("del_link")
     @Post("del_link")

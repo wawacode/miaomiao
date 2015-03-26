@@ -295,7 +295,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             },
 
             isWeixinEnabledShop:function(shop){
-                return shop.id == '10033';
+                return shop.id == '10033' || shop.id == '1';
             }
         }
     }]).factory('MMUtils', ['$timeout', '$ionicLoading', '$ionicPopup', function ($timeout,$ionicLoading, $ionicPopup) {

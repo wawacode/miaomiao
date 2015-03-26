@@ -60,7 +60,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             String code = inv.getParameter("code");
             if( !StringUtils.isBlank(code)&& (StringUtils.isBlank(u.getWx_open_id()) || "other".equals(u.getWx_open_id()))){
                 try {
-                String openId =wxService .getOpenId(code);
+                String openId =wxService.getOpenId(code);
                 userService.updateOpenId(u.getId(),openId);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -76,7 +76,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
                     u  = userDAO.getUserByOpenId(openId);
                     if(null == u){
                         String userName = SUtils.generName();
-                        u  = userService.createUser(userName , 0,  "pwd", 1 ,openId);
+                        u  = userService.createUser(userName , 0,  "pwd", 1 ,"other");
                     }
                     CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
                     hostHolder.setUser(u);

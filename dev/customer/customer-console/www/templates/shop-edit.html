@@ -30,6 +30,25 @@
                        placeholder="北京市海淀区中关村">
             </label>
             <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">店铺座机:</span>
+                <input type="text" ng-value="editingShop.tel" ng-model="editingShop.tel">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">老板电话:</span>
+                <input type="text" ng-value="editingShop.owner_phone" ng-model="editingShop.owner_phone">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label assertive">地址:</span>
+                <input type="text" ng-value="editingShop.shop_address" ng-model="editingShop.shop_address"
+                       placeholder="北京市海淀区中关村">
+            </label>
+            <a class="item item-icon-right" ui-sref="tab.community-edit">
+
+                <span class="input-label assertive">服务小区列表</span>
+                <i class="icon ion-ios7-arrow-right" ></i>
+
+            </a>
+            <label class="item item-input item-stacked-label">
                 <span class="input-label assertive">起送价格(元):</span>
                 <input type="text" ng-value="editingShop.new_base_price" ng-model="editingShop.new_base_price"
                        placeholder="20">
@@ -91,6 +110,7 @@
                     </div>
                 </div>
             </div>
+
             <label class="item item-input-inset" style="text-align: center">
                 <button class="button button-full button-balanced" ng-click="saveShop(editingShop)">保存</button>
             </label>
