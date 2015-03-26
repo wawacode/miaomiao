@@ -45,6 +45,10 @@
 
                 MMUtils.showAlert('加载数据失败');
 
+                if(!localStorageService.get('MMCONSOLE_METADATA_USER')){
+                    $state.go('signin', null, {reload: true});
+                }
+
                 canLoadMore = false;
                 return fail();
             });

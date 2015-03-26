@@ -18,9 +18,9 @@
             </button>
         </div>
         <div class="list">
-            <div class="item item-icon-right" ng-repeat="commu in info.commSuggestions" ng-click="action.selectCommunity(commu)">
+            <div class="item item-icon-right" ng-repeat="commu in info.commSuggestions">
                 {{commu.name}}
-                <i class="icon  balanced" ng-class="{'ion-ios7-circle-outline':!commu.sel,'ion-ios7-checkmark':commu.sel}"></i>
+                <i class="icon  balanced" ng-class="{'ion-ios7-circle-outline':!commu.sel,'ion-ios7-checkmark':commu.sel}" ng-click="action.selectCommunity(commu)"></i>
             </div>
         </div>
         <div class="no-result-display" style="text-align: center" ng-if="commSuggestions.length == 0">

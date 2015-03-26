@@ -109,8 +109,6 @@
                                 return;
                             }
 
-                            MMUtils.showAlert('添加成功');
-
                             $timeout(function(){
                                 $scope.info.communityList.push(com);
                             });
