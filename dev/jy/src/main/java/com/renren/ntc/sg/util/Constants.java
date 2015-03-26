@@ -46,6 +46,7 @@ public class Constants {
     public static final String COOKIE_KEY_REGISTUSER ="cat_reg_p" ;
     public static final Object DOMAIN_URL = "";
     public static final long OFFLINEFLAG = 1000 * 60 * 10;
+    public static final String WXPAY = "wx" ;
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";
@@ -66,4 +67,7 @@ public class Constants {
     public static final int ORDER_PAY_FAIL = 5;
 
     public static final int ORDER_FINISH = 2;
+
+    public static final int  COUPONUNUSED = 0;
+    public static final int  COUPONUSED = 4;
 }
