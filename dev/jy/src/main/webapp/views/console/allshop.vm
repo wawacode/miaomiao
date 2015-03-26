@@ -89,7 +89,7 @@
                         <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
                         <td class="edit" id="e-${shop.id}-shop_info">$shop.shop_info</td>
                         <td class="button" id="e-${shop.id}-bind">
-                            <button class="e-bindButton" data-shopid="${shop.id}">绑定小区</button>
+                            <button type="button" class="e-bindButton btn btn-success" data-shopid="${shop.id}" data-shopname="${shop.name}">绑定小区</button>
                         </td>
                         <td class="edit" id="e-${shop.id}-remark">$shop.remark</td>
                         <td class="edit" id="e-${shop.id}-audit">$shop.audit</td>
@@ -118,15 +118,18 @@
 <div class="bindCom" id="bindCom" style="display: none;padding-top: 100px; width: 60%;height: 100%;">
     <div style=";background-color: white;width: 100%;height: 100%;padding: 20px 5px">
 
-        <h1 style="text-align: center;">绑定小区信息</h1>
+        <h1 style="text-align: center;">绑定小区:<span id="curCommunityName"></span> 到店铺:<span id="curShopName"></span></h1>
 
-        <input type="text" name="country" id="autocomplete" style="width: 60%" placeholder="输入小区名字"/><span>
-            <button class="bottom" id="performBind">绑定此小区</button>
+        <div style="margin-top: 20px;text-align: center">
+            <input type="text" name="country" id="autocomplete" style="width: 60%" placeholder="输入小区名字"/><span>
+            <button type="button" class="btn btn-success" id="performBind">绑定此小区</button>
         </span>
+        </div>
+
         <div id="autocomplete-sugg">
         </div>
-        <h2 style="background-color: #eaeaea;font-size: 20px;margin-top: 20px">已经绑定的小区</h2>
-        <div style=";max-height: 200px;overflow: scroll" id="alreadyBindCommunity"></div>
+        <h2 style="background-color: #eaeaea;font-size: 20px;margin-top: 20px">已经绑定的小区<span id="gettingCommunityStatus"></span></h2>
+        <div style=";max-height: 200px;overflow: auto" id="alreadyBindCommunity"></div>
     </div>
 </div>
 
@@ -157,11 +160,13 @@
 
         function generate_community_item(name,id){
            return '<div id="COMMUNITY'+ id + '" class="row" style="margin: 10px;border-bottom: solid 1px #eaeaea"><span class="col-md-4">'+ name +
-                    '</span><span class="col-md-2" style="padding-left: 30px"><button class="unbindButton" data-communityid="'+ id + '">解除绑定</button>' +
+                    '</span><span class="col-md-2" style="padding-left: 30px"><button type="button" class="unbindButton btn btn-danger" data-communityid="'+ id + '">解除绑定</button>' +
             '</span></div>';
         }
 
         function bindUnbindButton(){
+
+            $('.unbindButton').unbind('click');
             $('.unbindButton').click(function(){
                 $.post('/console/api/commy/del_link',{'shop_id':curShop,'c_id':$(this).data('communityid')},function(resp){
                     if(resp.code !=0){
@@ -171,28 +176,35 @@
                     window.alert('解除绑定成功');
 
                     refreshBindCommunity();
-                    
+
                 });
             });
         }
-        var curShop = null;
+        var curShop = null,curShopName = null;
 
         function refreshBindCommunity(){
             $('#alreadyBindCommunity').empty();
+            $('#gettingCommunityStatus').text('(加载小区列表...)');
             $.post('/console/api/commy/get_links',{'shop_id':curShop},function(resp){
-
                 var commu = resp;
                 for(var  i=0;i< commu.length;i++){
                     $('#alreadyBindCommunity').append(
                         generate_community_item(commu[i].name,commu[i].id)
                     )
                 }
+
+                $('#gettingCommunityStatus').text('(加载完成)');
+
                 bindUnbindButton();
             });
         }
 
         $('.e-bindButton').click(function(){
             curShop = $(this).data('shopid');
+            curShopName = $(this).data('shopname');
+
+            $('#curShopName').text(curShopName);
+
             $('#bindCom').bPopup();
 
             refreshBindCommunity();
@@ -216,6 +228,7 @@
             },
             onSelect: function (suggestion) {
                 curCommu = suggestion;
+                $('#curCommunityName').text(curCommu.value);
             }
         });
 

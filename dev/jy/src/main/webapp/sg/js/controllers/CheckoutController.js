@@ -17,26 +17,34 @@ angular.module('miaomiao.shop')
             CHECKOUTTYPE_ALIPAY: 03
         };
 
-        if(ShopService.isWeixinEnabledShop($scope.shop)){
-            $scope.checkoutType = [
-                {
-                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
-                },
-                {
-                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false
-                }
-            ];
-        }else{
-            $scope.checkoutType = [
-                {
-                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
-                }
-            ];
+        //TODO: currently only support some shop
+        function initCheckoutType(){
+            if(ShopService.isWeixinEnabledShop($scope.shop)){
+                $scope.checkoutType = [
+                    {
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
+                    },
+                    {
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false
+                    }
+                ];
+            }else{
+                $scope.checkoutType = [
+                    {
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
+                    }
+                ];
+            }
         }
+
+        initCheckoutType();
 
         function checkOrders() {
 
             $scope.info.remarks = "";
+
+            //TODO: currently only support some shop
+            initCheckoutType();
 
             MMUtils.showLoadingIndicator('正在查看库存,请稍候...', $scope);
 
