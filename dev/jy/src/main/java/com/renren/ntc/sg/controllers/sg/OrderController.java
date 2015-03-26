@@ -188,13 +188,18 @@ public class OrderController {
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
         if(Constants.WXPAY.equals(act)){
-//            if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
-//                if(validata(u.getId(),coupon_id,coupon_code) {
-//
-//
-//                }
-
-//            }
+            if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
+                UserCoupon ticket = userCouponDao.getTicket(u.getId(), coupon_id, coupon_code, Constants.COUPONUNUSED);
+                if (ticket != null ){
+                    price = price - ticket.getPrice();
+                    data.put("discount",ticket.getPrice()) ;
+                    //满减不要大于 起送金额
+                    if( price <=  0 ){
+                        price = 0 ;
+                    }
+                }
+                update(order, ticket.getPrice());
+            }
             String attach = shop_id + "_" +user_id;
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
@@ -212,13 +217,25 @@ public class OrderController {
         data.put("order_id",order_id);
         response.put("data", data);
         response.put("code", 0);
-        LoggerUtils.getInstance().log("error order save return " + response.toJSONString());
+        LoggerUtils.getInstance().log("error  order save return " + response.toJSONString());
         return "@json:" + response.toJSONString();
+    }
+
+    private void update(Order order, int price) {
+        String msg = order.getMsg();
+        JSONObject  mesg = (JSONObject) JSON.parse(msg);
+        if (null == mesg){
+            mesg = new JSONObject();
+        }
+        mesg.put("discount",price);
+        String mess = mesg.toJSONString();
+        order.setMsg(mess);
+        ordersDAO.confirm(order.getOrder_id(),SUtils.generOrderTableName(order.getShop_id()),mess) ;
     }
 
     private boolean validata(long id, int coupon_id, String coupon_code) {
         UserCoupon ticket;
-        ticket = userCouponDao.getTicket(id, coupon_id, coupon_code, Constants.COUPONUNUSED);
+
         return false;
     }
 

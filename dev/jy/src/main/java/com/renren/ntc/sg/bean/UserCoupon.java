@@ -16,7 +16,7 @@ public class UserCoupon {
     private  long id = 0;
     private long user_id = 0 ;
     private  long  coupon_id  = 0;
-    private  long price = 0 ;
+    private  int price = 0 ;
     private String code;
     private String  name ;
     private String  desc ;
@@ -50,11 +50,11 @@ public class UserCoupon {
         this.coupon_id = coupon_id;
     }
 
-    public long getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
