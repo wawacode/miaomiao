@@ -5,7 +5,8 @@
         function ($scope, $ionicPopup, $ionicModal, httpClient, localStorageService, $timeout, $ionicLoading, Camera, MMUtils) {
 
             $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || [];
-            $scope.hasProductInfo = false;
+            $scope.info.hasProductInfo = false;
+            $scope.info.newitem = {};
 
             $scope.findItem = function (serialNo, $event) {
 
@@ -27,31 +28,30 @@
                     if (code != 0) {
                         MMUtils.showAlert('查找商品失败,请手动添加:' + data.msg);
                     }
-                    $scope.hasProductInfo = true;
+                    $scope.info.hasProductInfo = true;
                     var item = dataDetail.product;
                     $timeout(function () {
-                        $scope.newitem = item;
-                        $scope.newitem.currentCateId = item.category_id;
-                        $scope.newitem.saleStatus = 1;
-                        $scope.newitem.new_pic_url = $scope.newitem.pic_url;
-                    })
+                        $scope.info.newitem = item;
+                        $scope.info.newitem.currentCateId = item.category_id;
+                        $scope.info.newitem.saleStatus = 1;
+                        $scope.info.newitem.new_pic_url = item.pic_url;
+                        $scope.info.newitem.pic_url = item.pic_url;
+                    });
 
                 }, function (data, status) {
                     $ionicLoading.hide();
-                    $scope.hasProductInfo = true;
+                    $scope.info.hasProductInfo = true;
                     MMUtils.showAlert('查找商品失败,请手动添加');
 
                 });
             };
 
-            $scope.newitem = {};
-
             $scope.openQRScaner = function () {
                 cordova.plugins.barcodeScanner.scan(
                     function (result) {
                         $timeout(function () {
-                            $scope.newitem.serialNo = result.text;
-                            $scope.findItem($scope.newitem.serialNo);
+                            $scope.info.newitem.serialNo = result.text;
+                            $scope.findItem($scope.info.newitem.serialNo);
                         })
                     },
                     function (error) {
@@ -69,16 +69,22 @@
 
             $scope.AddItem = function () {
 
-                $scope.newitem = {};
-                $scope.hasProductInfo = false;
+                $scope.info.newitem = {};
+                $scope.info.hasProductInfo = false;
 
-                $scope.openModal();
+                $ionicModal.fromTemplateUrl('templates/product-addnew.html', {
+                    scope: $scope,
+                    animation: 'slide-in-up'
+                }).then(function (modal) {
+                        $scope.modal = modal;
+                        $scope.openModal();
+                    });
             };
 
 
             $scope.saveItem = function () {
 
-                var newitem = $scope.newitem;
+                var newitem = $scope.info.newitem;
 
                 if (!newitem.currentCateId) {
                     MMUtils.showAlert('请选择商品分类');
@@ -215,8 +221,8 @@
 
             function onCapturePhoto(fileURI) {
 
-                $scope.newitem.new_pic_url = fileURI;
-                $scope.newitem.hasNewPicture = true;
+                $scope.info.newitem.new_pic_url = fileURI;
+                $scope.info.newitem.hasNewPicture = true;
             }
 
             $scope.getPhoto = function () {

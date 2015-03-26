@@ -11,53 +11,53 @@
         <div class="list">
             <div class="item item-input item-stacked-label item-button-right">
                 <span class="input-label assertive">条形码:</span>
-                <input type="text" ng-value="newitem.serialNo" ng-model="newitem.serialNo"
-                       placeholder="扫描或者填写条形码,点击查一查" ng-keyup="$event.keyCode == 13 && findItem(newitem.serialNo,$event)">
+                <input type="text" ng-value="info.newitem.serialNo" ng-model="info.newitem.serialNo"
+                       placeholder="扫描或者填写条形码,点击查一查" ng-keyup="$event.keyCode == 13 && findItem(info.newitem.serialNo,$event)">
                 <button class="button button-balanced " ng-click="openQRScaner()">
                     <i class="icon ion-qr-scanner"></i>扫码
                 </button>
             </div>
-            <div class="padding no-detail-scan-padding" ng-class="{'has-detail-scan-padding':hasProductInfo}">
-                <button class="item button-block button button-balanced" ng-click="findItem(newitem.serialNo)">
+            <div class="padding no-detail-scan-padding" ng-class="{'has-detail-scan-padding':info.hasProductInfo}">
+                <button class="item button-block button button-balanced" ng-click="findItem(info.newitem.serialNo)">
                     查一查
                 </button>
             </div>
-            <label class="item item-input item-select" ng-show="hasProductInfo">
+            <label class="item item-input item-select" ng-show="info.hasProductInfo">
                 <div class="input-label assertive">
                     选择分类:
                 </div>
-                <select ng-model="newitem.currentCateId" ng-options="o.category_id as o.name for o in info.categorySummary">
+                <select ng-model="info.newitem.currentCateId" ng-options="o.category_id as o.name for o in info.categorySummary">
                 </select>
             </label>
-            <label class="item item-input item-stacked-label" ng-show="hasProductInfo">
+            <label class="item item-input item-stacked-label" ng-show="info.hasProductInfo">
                 <span class="input-label assertive">商品名称:</span>
-                <input type="text" ng-value="newitem.name" ng-model="newitem.name" ng-keyup="inputReadyKeyup($event)">
+                <input type="text" ng-value="info.newitem.name" ng-model="info.newitem.name" ng-keyup="inputReadyKeyup($event)">
             </label>
-            <label class="item item-input item-stacked-label" ng-show="hasProductInfo">
+            <label class="item item-input item-stacked-label" ng-show="info.hasProductInfo">
                 <span class="input-label assertive">价格(元):</span>
-                <input type="text" ng-value="newitem.price" ng-model="newitem.price" ng-keyup="inputReadyKeyup($event)">
+                <input type="text" ng-value="info.newitem.price" ng-model="info.newitem.price" ng-keyup="inputReadyKeyup($event)">
             </label>
-            <div class="item item-input item-stacked-label item-button-right" ng-show="hasProductInfo">
+            <div class="item item-input item-stacked-label item-button-right" ng-show="info.hasProductInfo">
                 <span class="input-label assertive">图片:</span>
-                <button class="button button-balanced" ng-click="getPhoto(newitem)">
+                <button class="button button-balanced" ng-click="getPhoto(info.newitem)">
                     <i class="icon ion-camera"></i>拍照
                 </button>
-                <div class="padding-vertical padding-right" ng-show="!newitem.pic_url">
+                <div class="padding-vertical padding-right" ng-show="!info.newitem.pic_url">
                     <div class="padding-vertical item-text-wrap" style="color: darkgray">
                         说明:您可以拍照上传,或者请填写正确的条形码，喵喵会为您添加高质量图片
                     </div>
                 </div>
-                <div class="padding-vertical padding-right" style="text-align: center" ng-show="newitem.pic_url || newitem.new_pic_url">
-                    <img class="full-image padding-top" ng-src="{{newitem.new_pic_url}}" ng-model="newitem.new_pic_url"
-                         ng-init="newitem.new_pic_url=newitem.pic_url" style="width: 80%;height: auto">
+                <div class="padding-vertical padding-right" style="text-align: center" ng-show="info.newitem.pic_url || info.newitem.new_pic_url">
+                    <img class="full-image padding-top" ng-src="{{info.newitem.new_pic_url}}" ng-model="info.newitem.new_pic_url"
+                         ng-init="info.newitem.new_pic_url=info.newitem.pic_url" style="width: 80%;height: auto">
                 </div>
             </div>
-            <label class="item item-input item-select" ng-show="hasProductInfo">
+            <label class="item item-input item-select" ng-show="info.hasProductInfo">
                 <div class="input-label assertive">
                     销售状态:
                 </div>
-                <select ng-model="newitem.saleStatus" ng-options="o.status as o.title for o in [{title:'在售',status:1},{title:'下架',status:0}]"
-                        ng-init="newitem.saleStatus=1">
+                <select ng-model="info.newitem.saleStatus" ng-options="o.status as o.title for o in [{title:'在售',status:1},{title:'下架',status:0}]"
+                        ng-init="info.newitem.saleStatus=1">
                 </select>
             </label>
         </div>
@@ -68,7 +68,7 @@
                 <i class="icon ion-close-circled"></i>
                 取消
             </a>
-            <a class="tab-item balanced" ng-click="saveItem(newitem)">
+            <a class="tab-item balanced" ng-click="saveItem(info.newitem)">
                 <i class="icon ion-checkmark-circled"></i>
                 保存
             </a>
