@@ -28,7 +28,7 @@ CREATE TABLE `items` (
 public class Coupon {
 
     private  long id = 0;
-    private long price = 0 ;
+    private  int price = 0 ;
     private  long  createer  = 0;
     private String name;
     private String  desc;
@@ -47,11 +47,11 @@ public class Coupon {
         this.id = id;
     }
 
-    public long getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice( int price) {
         this.price = price;
     }
 
