@@ -49,7 +49,7 @@ angular.module('ionic.tool')
                         var customInfo = data.data;
                         for (var item_idx = 0; item_idx < customInfo.length; item_idx++) {
                             var item = customInfo[item_idx];
-                            item.shop_online_url = location.origin + '/sg/loading#/shop?shop_id=' + item.shop_id;
+                            item.shop_online_url = serverInfo.host + '/sg/loading#/shop?shop_id=' + item.shop_id;
                         }
                         // save code
                         localStorageService.set('MMTOOL_METADATA_customersInfo', customInfo);
@@ -259,12 +259,45 @@ angular.module('ionic.tool')
                     $state.go('newshop');
                 });
         }
-    }).controller('MyTabCtrl',function ($scope, $ionicLoading, $compile, $http, $state, localStorageService) {
+    }).controller('MyTabCtrl',function ($scope, $ionicLoading, $compile, $http, $state, localStorageService,MMUtils,serverInfo) {
 
         $scope.user = localStorageService.get('MMTOOL_METADATA_USER') || {};
         $scope.myCustomersInfo = localStorageService.get('MMTOOL_METADATA_customersInfo') || {};
         $scope.doRefresh = function () {
-            $scope.$broadcast('scroll.refreshComplete');
+
+            $http.get(serverInfo.host + '/catstaff/query', {params: {staff_name: $scope.user.name,
+                staff_phone: $scope.user.phone,
+                staff_pwd: $scope.user.password,
+                from: 0, offset: 500}}).
+                success(function (data, status, headers, config) {
+
+                    $ionicLoading.hide();
+                    if (data && data.code != 0) {
+                        MMUtils.showAlert('无法获取您的数据，请联系管理员');
+                        return;
+                    }
+                    // update online shop url
+
+                    var customInfo = data.data;
+                    for (var item_idx = 0; item_idx < customInfo.length; item_idx++) {
+                        var item = customInfo[item_idx];
+                        item.shop_online_url = serverInfo.host + '/sg/loading#/shop?shop_id=' + item.shop_id;
+                    }
+                    // save code
+                    localStorageService.set('MMTOOL_METADATA_customersInfo', customInfo);
+
+                    $scope.$broadcast('scroll.refreshComplete');
+
+                }).
+                error(function (data, status, headers, config) {
+
+                    $ionicLoading.hide();
+                    MMUtils.showAlert('无法获取您的数据，请联系管理员');
+
+                    $scope.$broadcast('scroll.refreshComplete');
+
+                });
+
         }
 
     }).controller('NewShopCtrl', function ($scope, $ionicLoading, $compile, $http, $state, localStorageService,$timeout,serverInfo) {
