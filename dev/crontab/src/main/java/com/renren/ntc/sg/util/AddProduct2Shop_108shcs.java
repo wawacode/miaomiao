@@ -11,16 +11,16 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
 
-public class AddProduct2Shop_A113 {
+public class AddProduct2Shop_108shcs {
 
-    private static int shop_id = 10053;
+    private static int shop_id = 10047;
 
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
-        String filePath = "C:\\shop\\113便利店.txt";
+        String filePath = "C:\\shop\\108生活超市.txt";
         readTxtFile(filePath, pdDao, itemDao);
 
     }
@@ -34,7 +34,10 @@ public class AddProduct2Shop_A113 {
                 read = new InputStreamReader(new FileInputStream(file), encoding);//考虑到编码格式
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
+                int k = 0;
                 while ((lineTxt = bufferedReader.readLine()) != null) {
+                    k++;
+                    System.out.println(">>>:" + k);
                     String[] args = lineTxt.split(",");
                     if (null != args && args.length < 2) {
                         System.out.println("drop " + lineTxt);

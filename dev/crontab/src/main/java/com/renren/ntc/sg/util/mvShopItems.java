@@ -43,6 +43,7 @@ public class mvShopItems {
                     }
                     for (Item item : itemls) {
                         item.setShop_id(to_shop_id);
+                        item.setCount(1000);
                         try {
                             Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), item.getSerialNo(), to_shop_id);
                             if (null == ii) {
