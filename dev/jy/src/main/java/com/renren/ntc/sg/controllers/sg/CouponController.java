@@ -107,7 +107,7 @@ public class CouponController {
     @Post("nePop")
     public String nePop(Invocation inv ){
         User u = hostHolder.getUser();
-        List<Coupon> coupons  = couponDao.getCouponRule(new Date());
+        List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
         JSONArray cos = new JSONArray();
         for (Coupon c : coupons ){
             List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),c.getId());
