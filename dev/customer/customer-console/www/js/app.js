@@ -136,6 +136,15 @@ angular.module('miaomiao.console', [
                     }
                 }
             })
+            .state('tab.community-edit', {
+                url: '/community-edit',
+                views: {
+                    'tab-front-page': {
+                        templateUrl: 'templates/community-edit.html',
+                        controller: 'EditCommunityCtrl'
+                    }
+                }
+            })
 
             .state('tab.product', {
                 url: '/product',

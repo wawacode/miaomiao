@@ -20,7 +20,6 @@ public class AddProduct2Shop_A108bld {
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
-        AddProduct2Shop_A108bld addProduct = new AddProduct2Shop_A108bld();
         String filePath = "F:\\product\\20150323\\首开知语城108.txt";
         readTxtFile(filePath, pdDao, itemDao);
 
@@ -71,7 +70,7 @@ public class AddProduct2Shop_A108bld {
                         it.setShop_id(shop_id);
                         JSONObject ob = (JSONObject) JSON.toJSON(it);
                         System.out.println(ob.toJSONString());
-                        itemDao.insert(SUtils.generTableName(shop_id),it) ;
+                        itemDao.insert(SUtils.generTableName(shop_id), it);
                     }
                 }
             } else {

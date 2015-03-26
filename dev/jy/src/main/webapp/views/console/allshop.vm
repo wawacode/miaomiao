@@ -38,7 +38,7 @@
     </div>
 </nav>
 
-<div class="container-fluid">
+<div class="container-fluid" style="width: 150%">
     <div class="row">
         <!--<div class="col-sm-3 col-md-2 sidebar">-->
         <!--<ul class="nav nav-sidebar">-->
@@ -89,7 +89,7 @@
                         <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
                         <td class="edit" id="e-${shop.id}-shop_info">$shop.shop_info</td>
                         <td class="button" id="e-${shop.id}-bind">
-                            <button class="e-bindButton" data-shopid="${shop.id}">绑定小区</button>
+                            <button type="button" class="e-bindButton btn btn-success" data-shopid="${shop.id}" data-shopname="${shop.name}">绑定小区</button>
                         </td>
                         <td class="edit" id="e-${shop.id}-remark">$shop.remark</td>
                         <td class="edit" id="e-${shop.id}-audit">$shop.audit</td>
@@ -115,13 +115,21 @@
     </div>
 </div>
 
-<div class="bindCom" id="bindCom" style="display: none;padding-top: 100px; width: 500px;height: 500px;">
+<div class="bindCom" id="bindCom" style="display: none;padding-top: 100px; width: 60%;height: 100%;">
     <div style=";background-color: white;width: 100%;height: 100%;padding: 20px 5px">
-        <input type="text" name="country" id="autocomplete" style="width: 300px" placeholder="输入小区名字"/><span>
-            <button id="performBind">绑定此小区</button>
+
+        <h1 style="text-align: center;">绑定小区:<span id="curCommunityName"></span> 到店铺:<span id="curShopName"></span></h1>
+
+        <div style="margin-top: 20px;text-align: center">
+            <input type="text" name="country" id="autocomplete" style="width: 60%" placeholder="输入小区名字"/><span>
+            <button type="button" class="btn btn-success" id="performBind">绑定此小区</button>
         </span>
+        </div>
+
         <div id="autocomplete-sugg">
         </div>
+        <h2 style="background-color: #eaeaea;font-size: 20px;margin-top: 20px">已经绑定的小区<span id="gettingCommunityStatus"></span></h2>
+        <div style=";max-height: 200px;overflow: auto" id="alreadyBindCommunity"></div>
     </div>
 </div>
 
@@ -150,17 +158,58 @@
             tooltip: 'Click to edit...'
         });
 
-        var curShop = null;
+        function generate_community_item(name,id){
+           return '<div id="COMMUNITY'+ id + '" class="row" style="margin: 10px;border-bottom: solid 1px #eaeaea"><span class="col-md-4">'+ name +
+                    '</span><span class="col-md-2" style="padding-left: 30px"><button type="button" class="unbindButton btn btn-danger" data-communityid="'+ id + '">解除绑定</button>' +
+            '</span></div>';
+        }
+
+        function bindUnbindButton(){
+
+            $('.unbindButton').unbind('click');
+            $('.unbindButton').click(function(){
+                $.post('/console/api/commy/del_link',{'shop_id':curShop,'c_id':$(this).data('communityid')},function(resp){
+                    if(resp.code !=0){
+                        window.alert('解除绑定失败');
+                        return;
+                    }
+                    window.alert('解除绑定成功');
+
+                    refreshBindCommunity();
+
+                });
+            });
+        }
+        var curShop = null,curShopName = null;
+
+        function refreshBindCommunity(){
+            $('#alreadyBindCommunity').empty();
+            $('#gettingCommunityStatus').text('(加载小区列表...)');
+            $.post('/console/api/commy/get_links',{'shop_id':curShop},function(resp){
+                var commu = resp;
+                for(var  i=0;i< commu.length;i++){
+                    $('#alreadyBindCommunity').append(
+                        generate_community_item(commu[i].name,commu[i].id)
+                    )
+                }
+
+                $('#gettingCommunityStatus').text('(加载完成)');
+
+                bindUnbindButton();
+            });
+        }
 
         $('.e-bindButton').click(function(){
             curShop = $(this).data('shopid');
-            $('#bindCom').bPopup();
-        });
+            curShopName = $(this).data('shopname');
 
-        var countries = [
-            { value: 'Andorra', data: 'AD' },
-            { value: 'Zimbabwe', data: 'ZZ' }
-        ];
+            $('#curShopName').text(curShopName);
+
+            $('#bindCom').bPopup();
+
+            refreshBindCommunity();
+
+        });
 
         var curCommu = null;
         $('#autocomplete').autocomplete({
@@ -179,6 +228,7 @@
             },
             onSelect: function (suggestion) {
                 curCommu = suggestion;
+                $('#curCommunityName').text(curCommu.value);
             }
         });
 
@@ -188,7 +238,11 @@
                     window.alert('绑定失败');
                     return;
                 }
-                return window.alert('绑定成功');
+                window.alert('绑定成功');
+                $('#alreadyBindCommunity').prepend(
+                        generate_community_item(curCommu.value,curCommu.data)
+                );
+                bindUnbindButton();
             });
         });
 
