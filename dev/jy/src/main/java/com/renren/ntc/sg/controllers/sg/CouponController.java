@@ -50,8 +50,8 @@ public class CouponController {
     }
 
 
-    @Get("getCoupon")
-    @Post("getCoupon")
+    @Get("hiCoupon")
+    @Post("hiCoupon")
     public String hiCoupon(Invocation inv,@Param("from") int from, @Param("offset") int offset){
         User u = hostHolder.getUser();
         JSONArray cos = new JSONArray();
