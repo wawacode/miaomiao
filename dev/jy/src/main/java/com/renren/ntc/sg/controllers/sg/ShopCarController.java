@@ -66,7 +66,7 @@ public class ShopCarController {
 
         if (StringUtils.isBlank(items)) {
             LoggerUtils.getInstance().log(String.format("can't find shop  %d  items %s", shop_id, items));
-            return "r:/sg/shop?shop_id="+shop_id;
+            return "@json:" + Constants.PARATERERROR;
         }
 
         boolean ok = true;
@@ -114,7 +114,6 @@ public class ShopCarController {
           inv.addModel("msg", "部分商品库存不足");
           return "@" + Constants.LEAKERROR;
         }
-
         JSONObject  j=  new JSONObject() ;
         j.put("addressls", JSON.toJSON(addressls));
         j.put("shop", JSON.toJSON(shop));

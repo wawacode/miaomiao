@@ -19,11 +19,15 @@ import java.util.List;
 @DAO(catalog = "ABC")
 public interface CouponDAO {
     static final String TABLE_NAME= "coupon";
-    static final String  FIELDS = "id,createer,price,name,pic_url,ext,start_time,end_time,create_time,update_time"  ;
-    static final String  INSERT_FIELDS = "createer,price,name,pic_url,ext,start_time,end_time"  ;
+    static final String  FIELDS = "id,createer,price,shop_id,name,pic_url,ext,start_time,end_time,create_time,update_time"  ;
+    static final String  INSERT_FIELDS = "createer,price,shop_id,name,pic_url,ext,start_time,end_time"  ;
 
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where :1 > start_time and :1 < end_time" )
     public List<Coupon> getCouponRule(Date time) ;
+
+
+    @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where  shop_id=:2 and  :1 > start_time and :1 < end_time" )
+    public List<Coupon> getCouponbyShop(Date time,long shop_id) ;
 
 }

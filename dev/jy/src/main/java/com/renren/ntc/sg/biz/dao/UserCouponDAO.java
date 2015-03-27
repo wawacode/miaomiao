@@ -18,8 +18,8 @@ import java.util.List;
 @DAO(catalog = "ABC")
 public interface UserCouponDAO {
     static final String TABLE_NAME= "user_coupon";
-    static final String  FIELDS = "id,user_id,coupon_id,pic_url,code,status, price ,name  ,ext,start_time,end_time,create_time,update_time"  ;
-    static final String  INSERT_FIELDS = "user_id,coupon_id,pic_url,code ,status, price ,name,ext,start_time,end_time"  ;
+    static final String  FIELDS = "id,user_id,coupon_id,shop_id,pic_url,code,status, price ,name  ,ext,start_time,end_time,create_time,update_time"  ;
+    static final String  INSERT_FIELDS = "user_id,coupon_id,shop_id,pic_url,code ,status, price ,name,ext,start_time,end_time"  ;
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and status = 0 order by create_time desc limit :2,:3 ")
     public List<UserCoupon> getUser_Coupon (long user_id , int form ,int offset) ;
@@ -27,7 +27,7 @@ public interface UserCouponDAO {
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1  order by create_time desc limit :2,:3 ")
     public List<UserCoupon> getMyCoupon (long user_id , int form ,int offset) ;
 
-    @SQL("insert into " + TABLE_NAME + " ( " + INSERT_FIELDS + ") values (:1.user_id,:1.coupon_id,:1.pic_url,:1.code ,:1.status,:1.price ," +
+    @SQL("insert into " + TABLE_NAME + " ( " + INSERT_FIELDS + ") values (:1.user_id,:1.coupon_id,:1.shop_id,:1.pic_url,:1.code ,:1.status,:1.price ," +
             ":1.name ,:1.ext,:1.start_time,:1.end_time) ")
     public int insert ( UserCoupon userCoupon) ;
 
