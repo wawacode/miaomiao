@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Refresh2Produdce {
 
-    private static long  shop_id= 10033;
+    private static long  shop_id= 1;
 
     public Refresh2Produdce() throws IOException {
 
@@ -40,7 +40,7 @@ public class Refresh2Produdce {
                 p.setCategory_id(item.getCategory_id());
                 p.setScore(item.getScore());
                 p.setPic_url(item.getPic_url());
-//                p.setPrice(item.getPrice());
+                p.setPrice(item.getPrice());
                 p.setName(item.getName());
                 p.setSerialNo(item.getSerialNo());
                 Product pp = pdDao.geProductsByserialNo(item.getSerialNo());

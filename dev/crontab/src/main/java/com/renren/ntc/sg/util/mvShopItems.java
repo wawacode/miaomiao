@@ -14,11 +14,11 @@ public class mvShopItems {
 
     private static long shop_id = 1;
 
-    private static long to_shop_id = 10055;
+    private static long to_shop_id = 10044;
 
     private static int category_id = 15;
 
-    private static long shop[] = { 10060 };
+    private static long shop[] = { 10044 };
 
     public mvShopItems() throws IOException {
 

@@ -13,7 +13,7 @@ import java.io.*;
 
 public class AddProduct2Shop_Bhzymcs {
 
-    private static int shop_id = 10052;
+    private static int shop_id = 10068;
 
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
