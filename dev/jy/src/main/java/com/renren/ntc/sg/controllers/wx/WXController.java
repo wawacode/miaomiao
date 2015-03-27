@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.Shop;
-import com.renren.ntc.sg.biz.dao.DeviceDAO;
-import com.renren.ntc.sg.biz.dao.OrdersDAO;
-import com.renren.ntc.sg.biz.dao.ShopDAO;
-import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
+import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.PushService;
@@ -46,6 +43,9 @@ public class WXController {
     @Autowired
     public WXService wxService;
 
+
+    @Autowired
+    public UserCouponDAO userCouponDao ;
     @Autowired
     public DeviceDAO deviceDAO;
 
@@ -151,12 +151,17 @@ public class WXController {
                 String attach = getAttach(body);
                 long  shop_id = getShop_id(attach) ;
                 long  user_id = getUser_id(attach) ;
+                long  coupon_id = getCoupon_id(attach) ;
                 if (shop_id == 0 || user_id == 0){
                    LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
                     return "@" + Constants.UKERROR;
                 }
                 orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
                 userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
+                if( coupon_id != 0){
+                    userCouponDao.writeoff(Constants.COUPONUSED,coupon_id) ;
+
+                }
                 Shop shop = shopDao.getShop(shop_id);
                 if(null == shop ){
                     LoggerUtils.getInstance().log(String.format("check wx pay cb  miss shop  %d ",shop_id));
@@ -176,6 +181,21 @@ public class WXController {
             }
         }
         return "@" + Constants.DONE;
+    }
+
+    private long getCoupon_id(String attach) {
+        long coupon_id = 0 ;
+
+        String[] ids = attach.split("_");
+        if ( ids.length < 3 ){
+               return  coupon_id;
+        }
+        try{
+            coupon_id= Long.valueOf(ids[2]);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return coupon_id;
     }
 
     private void sendInfo( Shop shop ,String order_id){

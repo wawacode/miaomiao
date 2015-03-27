@@ -43,25 +43,19 @@ public class CouponController {
 
     String UKEY = "(*#^&*^(@)#$^IIYREOFHEKL";
 
-    public String getCardLists(Invocation inv){
-        User u = hostHolder.getUser();
 
-        return  "@json:" ;
-    }
-
-
-    @Get("hiCoupon")
-    @Post("hiCoupon")
+    @Get("")
+    @Post("")
     public String hiCoupon(Invocation inv,@Param("from") int from, @Param("offset") int offset){
         User u = hostHolder.getUser();
         if (from < 0 ){
             from = 0;
         }
-        if (offset > 50 ){
-            from = 50;
+        if (offset > 50 || offset <= 0  ){
+            offset = 50;
         }
         JSONArray cos = new JSONArray();
-        List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),from,offset);
+        List<UserCoupon> tickets = usercouponDao.getMyCoupon(u.getId(),from,offset);
         JSONObject res = new JSONObject();
         JSONObject data = new JSONObject();
         data.put("coupons",JSON.toJSON(tickets) ) ;
@@ -71,8 +65,8 @@ public class CouponController {
     }
 
 
-    @Get("getCoupon")
-    @Post("getCoupon")
+    @Get("couponObtain")
+    @Post("couponObtain")
     public String get(Invocation inv ){
         User u = hostHolder.getUser();
         JSONArray cos = new JSONArray();
@@ -87,6 +81,7 @@ public class CouponController {
                     userCoupon.setUser_id(u.getId());
                     userCoupon.setCoupon_id(c.getId());
                     userCoupon.setDesc(c.getDesc());
+                    userCoupon.setStatus(0);
                     userCoupon.setName(c.getName());
                     userCoupon.setStart_time(c.getStart_time());
                     userCoupon.setEnd_time(c.getEnd_time());
