@@ -24,6 +24,9 @@ public interface UserCouponDAO {
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and status = 0 order by create_time desc limt :2,:3 ")
     public List<UserCoupon> getUser_Coupon (long user_id , int form ,int offset) ;
 
+    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1  order by create_time desc limt :2,:3 ")
+    public List<UserCoupon> getMyCoupon (long user_id , int form ,int offset) ;
+
     @SQL("insert into " + TABLE_NAME + " ( " + INSERT_FIELDS + ") values (:1.user_id,:1.coupon_id,:1.pic_url,:1.code ,:1.status,:1.price ," +
             ":1.name ,:1.ext,:1.start_time,:1.end_time) ")
     public int insert ( UserCoupon userCoupon) ;
@@ -38,4 +41,12 @@ public interface UserCouponDAO {
     
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and coupon_id = :2 and code=:3 and status = :4")
     public UserCoupon getTicket(long user_id, int coupon_id, String coupon_code, int couponunused);
+
+
+
+
+    @SQL("update  " + TABLE_NAME +  " set status = :1 where id =:2 " )
+    public void writeoff(int used, long coupon_id);
+
+
 }

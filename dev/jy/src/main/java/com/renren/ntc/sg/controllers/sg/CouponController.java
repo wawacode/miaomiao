@@ -55,7 +55,7 @@ public class CouponController {
             offset = 50;
         }
         JSONArray cos = new JSONArray();
-        List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),from,offset);
+        List<UserCoupon> tickets = usercouponDao.getMyCoupon(u.getId(),from,offset);
         JSONObject res = new JSONObject();
         JSONObject data = new JSONObject();
         data.put("coupons",JSON.toJSON(tickets) ) ;

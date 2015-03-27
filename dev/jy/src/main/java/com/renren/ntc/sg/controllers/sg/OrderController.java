@@ -169,7 +169,6 @@ public class OrderController {
         if(!Constants.WXPAY.equals(act) ){
             order.setStatus(Constants.ORDER_WAIT_FOR_PRINT);         //已经确认的状态
         }else {
-
             order.setAct(act);
             order.setStatus(Constants.ORDER_PAY_PENDING);
         }

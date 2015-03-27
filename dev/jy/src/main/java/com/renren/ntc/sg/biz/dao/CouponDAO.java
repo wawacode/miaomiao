@@ -26,9 +26,4 @@ public interface CouponDAO {
     @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where :1 > start_time and :1 < end_time" )
     public List<Coupon> getCouponRule(Date time) ;
 
-
-
-
-
-
 }
