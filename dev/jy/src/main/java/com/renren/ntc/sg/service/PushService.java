@@ -124,7 +124,7 @@ public class PushService {
             String message = "您有新订单了 ," + adrs.getAddress() + " " + adrs.getPhone()  +
                     " 总额：" +  p ;
             if (shop != null) {
-                String phone = shop.getOwner_phone();
+                String phone = shop.getTel();
                 List <PushToken> pushTokens = pushTokenDao.getPushToken(phone);
                 for (PushToken pushToken   : pushTokens )   {
                 if(pushToken ==  null){

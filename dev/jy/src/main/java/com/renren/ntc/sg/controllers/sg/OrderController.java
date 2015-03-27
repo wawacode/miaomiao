@@ -62,6 +62,10 @@ public class OrderController {
     public PushService pushService;
 
 
+    @Autowired
+    public UserCouponDAO  userCouponDao;
+
+
 
     @Get("loading")
     public String loadingPage(Invocation inv) {
@@ -78,7 +82,10 @@ public class OrderController {
                        @Param("address") String address,
                        @Param("phone") String phone,
                        @Param("remarks") String remarks,
-                       @Param("items") String items, @Param("act") String act) {
+                       @Param("items") String items,
+                       @Param("act") String act,
+                       @Param("coupon_id") int coupon_id,
+                       @Param("coupon_code") String coupon_code ) {
         LoggerUtils.getInstance().log(String.format(" items %s ,act %s ",items,act));
         User u = holder.getUser();
         long user_id = 0;
@@ -159,9 +166,10 @@ public class OrderController {
         order.setRemarks(remarks);
         order.setInfo(infos.toJSONString());
         order.setSnapshot(items);
-        if(!"wx".equals(act)){
+        if(!Constants.WXPAY.equals(act) ){
             order.setStatus(Constants.ORDER_WAIT_FOR_PRINT);         //已经确认的状态
         }else {
+
             order.setAct(act);
             order.setStatus(Constants.ORDER_PAY_PENDING);
         }
@@ -172,14 +180,21 @@ public class OrderController {
             LoggerUtils.getInstance().log(" error order save return uk ");
             return "@" + Constants.UKERROR;
         }
-        if(!"wx".equals(act)){
+        if(!Constants.WXPAY.equals(act)){
             sendInfo(shop,order_id);
         }
 
         JSONObject response = new JSONObject();
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
-        if("wx".equals(act)){
+        if(Constants.WXPAY.equals(act)){
+//            if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
+//                if(validata(u.getId(),coupon_id,coupon_code) {
+//
+//
+//                }
+
+//            }
             String attach = shop_id + "_" +user_id;
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
@@ -199,6 +214,12 @@ public class OrderController {
         response.put("code", 0);
         LoggerUtils.getInstance().log("error order save return " + response.toJSONString());
         return "@json:" + response.toJSONString();
+    }
+
+    private boolean validata(long id, int coupon_id, String coupon_code) {
+        UserCoupon ticket;
+        ticket = userCouponDao.getTicket(id, coupon_id, coupon_code, Constants.COUPONUNUSED);
+        return false;
     }
 
     @Get("order_confirm")

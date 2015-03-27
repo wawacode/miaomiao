@@ -13,15 +13,69 @@ import java.io.*;
 
 public class AddProduct2Shop_Bhzymcs {
 
-    private static int shop_id = 10068;
+    private static int shop_id = 10064;
 
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
-        String filePath = "C:\\shop\\华芝益民超市.txt";
-        readTxtFile(filePath, pdDao, itemDao);
+        String filePath = "C:\\shop\\华芝益民超市库.txt";
+        //                readTxtFile(filePath, pdDao, itemDao);
+        readUpdataPrice(filePath, pdDao, itemDao);
+
+    }
+
+    public static void readUpdataPrice(String filePath, ProductDAO pdDao, ItemsDAO itemDao) {
+        InputStreamReader read = null;
+        try {
+            String encoding = "utf-8";
+            File file = new File(filePath);
+            if (file.isFile() && file.exists()) { //判断文件是否存在
+                read = new InputStreamReader(new FileInputStream(file), encoding);//考虑到编码格式
+                BufferedReader bufferedReader = new BufferedReader(read);
+                String lineTxt = null;
+                int m = 0;
+                while ((lineTxt = bufferedReader.readLine()) != null) {
+                    String[] args = lineTxt.split("\t");
+                    System.out.println(++m + "");
+                    if (null == args) {
+                        System.out.println("drop " + lineTxt);
+                        return;
+                    }
+                    String serialNo = args[0].trim();
+                    System.out.println("serialNo " + serialNo);
+                    serialNo = upacage(serialNo);
+                    String price_str = args[1].trim();
+                    int price = Integer.valueOf(price_str);
+                    Product p = pdDao.geProductsByserialNo(serialNo);
+
+                    if (StringUtils.isBlank(serialNo)) {
+                        continue;
+                    }
+                    if (p != null) {
+                        if (p.getPrice() == 0) {
+                            System.out.println(">>:" + serialNo);
+                            itemDao.updatePrice(SUtils.generTableName(shop_id), serialNo, price, shop_id);
+                        }
+                    }
+                }
+            } else {
+                System.out.println("找不到指定的文件");
+            }
+
+        } catch (Exception e) {
+            System.out.println("读取文件内容出错");
+            e.printStackTrace();
+        } finally {
+            if (null != read) {
+                try {
+                    read.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
 
