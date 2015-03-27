@@ -417,7 +417,7 @@
                                 <div class="item item-icon-right borderBotton" style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px" bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)">
                                     <div class="row">
                                         <div class="col-20">
-                                            <div class="" style="padding: 5px 8px 5px 8px;display: inline-block;width: 100%;
+                                            <div class="" style="padding: 5px 5px 5px 5px;display: inline-block;width: 100%;
                                             font-size: 15px;text-align: center;min-width: 60px;color: #ef5356" bo-text="card.value + '元'"></div>
                                         </div>
                                         <div class="col-50">

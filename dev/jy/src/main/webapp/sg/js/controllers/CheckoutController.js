@@ -41,6 +41,8 @@ angular.module('miaomiao.shop')
                     }
                 ];
              }
+
+            $scope.info.showCouponCard = false;
         }
 
         initCheckoutType();
@@ -50,7 +52,6 @@ angular.module('miaomiao.shop')
             $scope.info.remarks = "";
 
             //TODO: currently only support some shop
-            initCheckoutType();
 
             MMUtils.showLoadingIndicator('正在查看库存,请稍候...', $scope);
 
@@ -395,7 +396,9 @@ angular.module('miaomiao.shop')
 
             // force update shop
             $scope.shop = ShopService.getDefaultShop() || {};
+
             updateShoppingCart();
+            initCheckoutType();
             checkOrders();
         });
     }
