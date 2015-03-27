@@ -51,7 +51,7 @@ public class CouponController {
         if (from < 0 ){
             from = 0;
         }
-        if (offset > 50 ){
+        if (offset > 50 || offset <= 0  ){
             offset = 50;
         }
         JSONArray cos = new JSONArray();
