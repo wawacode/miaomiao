@@ -124,8 +124,24 @@ public class Coupon {
     public Date getUpdate_time() {
         return update_time;
     }
+    
+    public Coupon(){
+    	
+    }
 
-    public void setUpdate_time(Date update_time) {
+    public Coupon(int price, long createer, String name, String desc,
+			String pic_url, Date start_time, Date end_time) {
+		super();
+		this.price = price;
+		this.createer = createer;
+		this.name = name;
+		this.desc = desc;
+		this.pic_url = pic_url;
+		this.start_time = start_time;
+		this.end_time = end_time;
+	}
+
+	public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
 
