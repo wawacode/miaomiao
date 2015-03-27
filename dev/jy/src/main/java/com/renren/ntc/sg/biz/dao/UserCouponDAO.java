@@ -38,6 +38,10 @@ public interface UserCouponDAO {
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and coupon_id = :2")
     public List<UserCoupon> getUser_Coupon (long user_id, long coupon_id ) ;
+
+
+    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and shop_id = :2 and status= :3 ")
+    public List<UserCoupon> geShopCoupons (long user_id, long shop_id ,int status) ;
     
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and coupon_id = :2 and code=:3 and status = :4")
     public UserCoupon getTicket(long user_id, int coupon_id, String coupon_code, int couponunused);

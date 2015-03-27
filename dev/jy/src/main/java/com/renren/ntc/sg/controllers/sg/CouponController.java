@@ -44,9 +44,9 @@ public class CouponController {
     String UKEY = "(*#^&*^(@)#$^IIYREOFHEKL";
 
 
-    @Get("")
-    @Post("")
-    public String hiCoupon(Invocation inv,@Param("from") int from, @Param("offset") int offset){
+    @Get("allCoupons")
+    @Post("allCoupons")
+    public String allCoupon(Invocation inv,@Param("from") int from, @Param("offset") int offset){
         User u = hostHolder.getUser();
         if (from < 0 ){
             from = 0;
@@ -67,7 +67,7 @@ public class CouponController {
 
     @Get("couponObtain")
     @Post("couponObtain")
-    public String get(Invocation inv ){
+    public String get(Invocation inv ,long shop_id){
         User u = hostHolder.getUser();
         JSONArray cos = new JSONArray();
         List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
@@ -93,6 +93,9 @@ public class CouponController {
                     e.printStackTrace();
                 }
             }
+        }
+        if(cos.size() == 0 ){
+            return "@json:" + Constants.NOMORE ;
         }
         JSONObject res = new JSONObject();
         JSONObject data = new JSONObject();

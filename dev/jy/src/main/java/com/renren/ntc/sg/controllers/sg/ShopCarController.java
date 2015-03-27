@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
-import com.renren.ntc.sg.biz.dao.AddressDAO;
-import com.renren.ntc.sg.biz.dao.ItemsDAO;
-import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
-import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.dao.*;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
@@ -40,6 +37,9 @@ public class ShopCarController {
 
     @Autowired
     public ItemsDAO itemsDAO;
+
+    @Autowired
+    public UserCouponDAO userCouponDao;
 
     @Autowired
     public ShopCategoryDAO shopCategoryDAO;
@@ -114,10 +114,13 @@ public class ShopCarController {
           inv.addModel("msg", "部分商品库存不足");
           return "@" + Constants.LEAKERROR;
         }
+        // 获取 可用的代金券
+        List <UserCoupon> tickets = userCouponDao.geShopCoupons(u.getId(),shop_id,Constants.COUPONUNUSED);
         JSONObject  j=  new JSONObject() ;
         j.put("addressls", JSON.toJSON(addressls));
         j.put("shop", JSON.toJSON(shop));
         j.put("itemls", JSON.toJSON(itemls));
+        j.put("tickets", JSON.toJSON(tickets));
         JSONObject respone =  new JSONObject();
         respone.put("code" ,0);
         respone.put("data" ,j);
