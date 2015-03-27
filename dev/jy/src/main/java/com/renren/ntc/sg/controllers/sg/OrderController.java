@@ -188,6 +188,7 @@ public class OrderController {
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
         if(Constants.WXPAY.equals(act)){
+            String attach = shop_id + "_" +user_id;
             if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
                 UserCoupon ticket = userCouponDao.getTicket(u.getId(), coupon_id, coupon_code, Constants.COUPONUNUSED);
                 if (ticket != null ){
@@ -198,9 +199,12 @@ public class OrderController {
                         price = 0 ;
                     }
                 }
+
+                //使用代金券的时候会
+                attach = attach + "_" + ticket.getId();
                 update(order, ticket.getPrice());
             }
-            String attach = shop_id + "_" +user_id;
+            //使用了 代金券
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
