@@ -54,6 +54,12 @@ public class CouponController {
     @Post("hiCoupon")
     public String hiCoupon(Invocation inv,@Param("from") int from, @Param("offset") int offset){
         User u = hostHolder.getUser();
+        if (from < 0 ){
+            from = 0;
+        }
+        if (offset > 50 ){
+            from = 50;
+        }
         JSONArray cos = new JSONArray();
         List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),from,offset);
         JSONObject res = new JSONObject();

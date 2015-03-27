@@ -17,6 +17,10 @@ public class UserCoupon {
     private long user_id = 0 ;
     private  long  coupon_id  = 0;
     private  int price = 0 ;
+
+
+
+    private int  status = 0;
     private String code;
     private String  name ;
     private String  desc ;
@@ -30,6 +34,14 @@ public class UserCoupon {
         return id;
     }
 
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
     public void setId(long id) {
         this.id = id;
     }
