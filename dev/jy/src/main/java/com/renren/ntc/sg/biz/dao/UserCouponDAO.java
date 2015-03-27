@@ -24,7 +24,8 @@ public interface UserCouponDAO {
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 order by create_time desc limt :2,:3 ")
     public List<UserCoupon> getUser_Coupon (long user_id , int form ,int offset) ;
 
-    @SQL("insert into " + TABLE_NAME + "( " + FIELDS + ") values (:1.user_id,:1.coupon_id,,:1.code , :1.price ,:1.name  ,:1.ext,:1.start_time,:1.end_time) ")
+    @SQL("insert into " + TABLE_NAME + "( " + INSERT_FIELDS + ") values (:1.user_id,:1.coupon_id,,:1.code ,:1.price ," +
+            ":1.name ,:1.ext,:1.start_time,:1.end_time) ")
     public int insert ( UserCoupon userCoupon) ;
 
 
