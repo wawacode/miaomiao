@@ -185,21 +185,21 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
                 return success({'code':0,data:{'coupon':true}});
 
-                doGet('shop/coupon', 'shop_id=' + shop_id, success, fail);
+                doGet('coupon/coupon', 'shop_id=' + shop_id, success, fail);
             },
 
-            getAvailableCouponForUser:function(shop_id, success, fail){
+            getAvailableCouponForUser:function(from,offset, success, fail){
 
                 return success({'code':0,data:{'coupon':true}});
 
-                doGet('shop/coupon', 'shop_id=' + shop_id, success, fail);
+                doGet('coupon', 'from=' + from + '&offset=' + offset , success, fail);
             },
 
             couponObtainedByUserForShop:function(shop_id,coupon_id, success, fail){
 
                 return success({'code':0,data:{'coupon':true}});
 
-                doGet('shop/couponObtain', 'shop_id=' + shop_id, success, fail);
+                doGet('coupon/couponObtain', 'shop_id=' + shop_id, success, fail);
             },
 
             couponConsumedByUserForShop:function(shop_id,coupon_id, success, fail){

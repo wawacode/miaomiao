@@ -373,18 +373,14 @@
 
     $scope.obtainCoupon = function(){
 
-        httpClient.couponObtainedByUserForShop($scope.shop.id,'', function (data, status) {
-
+        httpClient.couponObtainedByUserForShop($scope.shop.id, function (data, status) {
             var code = data.code, dataDetail = data.data;
             //TODO: api ok
             if (dataDetail) {
-
                 $timeout(function(){
                     $scope.showCouponObtainLayout = false;
                 });
-
                 MMUtils.showAlert('领取成功,您可以到个人中心查看领取的代金券');
-
             }
         },function(data, status){
 

@@ -7,8 +7,8 @@ angular.module('miaomiao.shop')
         function updateCouponList() {
 
             MMUtils.showLoadingIndicator('正在加载优惠券...',$scope);
-
-            httpClient.getAvailableCouponForUser($scope.shop.id, function (data, status) {
+            var from = 0, offset = 100;
+            httpClient.getAvailableCouponForUser(from, offset, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
@@ -19,8 +19,11 @@ angular.module('miaomiao.shop')
                 $ionicLoading.hide();
 
                 $scope.couponList = dataDetail.coupons;
+
                 // todo: remove this
-                $scope.couponList = [{'name':'coupon','validDate':'2015-5-2','value':20},{'name':'coupon2','validDate':'2015-5-2','value':40}]
+                $scope.couponList = [{'name':'coupon','validDate':'2015-5-2','value':20},
+                    {'name':'coupon2','validDate':'2015-5-2','value':40}]
+
             }, function (data, status) {
                 $scope.couponList = [];
                 MMUtils.showAlert('加载数据失败,请刷新');
@@ -28,10 +31,7 @@ angular.module('miaomiao.shop')
         }
 
         $scope.$on("$ionicView.enter", function () {
-            $scope.couponList = [];
             updateCouponList();
         });
-
-
     });
 

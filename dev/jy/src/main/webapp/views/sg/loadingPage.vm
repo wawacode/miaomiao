@@ -408,7 +408,7 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-if="info.showCouponCard == true">
+                    <div ng-if="selectedCheckoutType.canUseCoupon == true">
                         <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
                             使用优惠券
                         </div>
