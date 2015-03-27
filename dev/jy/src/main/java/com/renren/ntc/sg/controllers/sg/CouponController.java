@@ -87,6 +87,7 @@ public class CouponController {
                     userCoupon.setUser_id(u.getId());
                     userCoupon.setCoupon_id(c.getId());
                     userCoupon.setDesc(c.getDesc());
+                    userCoupon.setStatus(0);
                     userCoupon.setName(c.getName());
                     userCoupon.setStart_time(c.getStart_time());
                     userCoupon.setEnd_time(c.getEnd_time());
