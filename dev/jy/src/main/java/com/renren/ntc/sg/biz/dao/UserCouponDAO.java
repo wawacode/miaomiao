@@ -19,7 +19,7 @@ import java.util.List;
 public interface UserCouponDAO {
     static final String TABLE_NAME= "user_coupon";
     static final String  FIELDS = "id,user_id,coupon_id,code, price ,name  ,ext,start_time,end_time,create_time,update_time"  ;
-    static final String  INSERT_FIELDS = "user_id,coupon_id,,code , price ,name  ,ext,start_time,end_time"  ;
+    static final String  INSERT_FIELDS = "user_id,coupon_id,code , price ,name  ,ext,start_time,end_time"  ;
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 order by create_time desc limt :2,:3 ")
     public List<UserCoupon> getUser_Coupon (long user_id , int form ,int offset) ;
