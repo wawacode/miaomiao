@@ -178,6 +178,21 @@ public class WXController {
         return "@" + Constants.DONE;
     }
 
+    private long getCoupon_id(String attach) {
+        long coupon_id = 0 ;
+
+        String[] ids = attach.split("_");
+        if ( ids.length < 3 ){
+               return  coupon_id;
+        }
+        try{
+            coupon_id= Long.valueOf(ids[2]);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return coupon_id;
+    }
+
     private void sendInfo( Shop shop ,String order_id){
         if(shop.getId() == 10033){
             return;

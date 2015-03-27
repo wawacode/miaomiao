@@ -58,7 +58,7 @@ public class CouponController {
             from = 0;
         }
         if (offset > 50 ){
-            from = 50;
+            offset = 50;
         }
         JSONArray cos = new JSONArray();
         List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),from,offset);
