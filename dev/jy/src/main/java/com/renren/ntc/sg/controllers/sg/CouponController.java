@@ -43,12 +43,6 @@ public class CouponController {
 
     String UKEY = "(*#^&*^(@)#$^IIYREOFHEKL";
 
-    public String getCardLists(Invocation inv){
-        User u = hostHolder.getUser();
-
-        return  "@json:" ;
-    }
-
 
     @Get("")
     @Post("")

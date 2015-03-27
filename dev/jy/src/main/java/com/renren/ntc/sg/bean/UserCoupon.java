@@ -18,6 +18,15 @@ public class UserCoupon {
     private  long  coupon_id  = 0;
     private  int price = 0 ;
 
+    public String getPic_url() {
+        return pic_url;
+    }
+
+    public void setPic_url(String pic_url) {
+        this.pic_url = pic_url;
+    }
+
+    private String pic_url;
 
 
     private int  status = 0;
