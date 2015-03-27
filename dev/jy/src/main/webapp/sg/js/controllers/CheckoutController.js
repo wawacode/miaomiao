@@ -17,48 +17,30 @@ angular.module('miaomiao.shop')
             CHECKOUTTYPE_ALIPAY: 03
         };
 
-<<<<<<< HEAD
-        if(ShopService.isWeixinEnabledShop($scope.shop)){
-            $scope.checkoutType = [
-                {
-                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true, 'canUseCoupon': false
-
-                },
-                {
-                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false,
-                    coupons: [
-                        {'value': 10, 'desc': '满50元可用', 'condition': 50},
-                        {'value': 5, 'desc': '满30元可用', 'condition': 30}
-                    ],
-                    'canUseCoupon': true
-                }
-            ];
-        } else {
-            $scope.checkoutType = [
-                {
-                    'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
-                }
-            ];
-=======
         //TODO: currently only support some shop
         function initCheckoutType(){
             if(ShopService.isWeixinEnabledShop($scope.shop)){
                 $scope.checkoutType = [
                     {
-                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true, 'canUseCoupon': false
+
                     },
                     {
-                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false,
+                        'coupons': [
+                            {'value': 10, 'desc': '满50元可用', 'condition': 50},
+                            {'value': 5, 'desc': '满30元可用', 'condition': 30}
+                        ],
+                        'canUseCoupon': true
                     }
                 ];
-            }else{
+            } else {
                 $scope.checkoutType = [
                     {
                         'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
                     }
                 ];
-            }
->>>>>>> weixin
+             }
         }
 
         initCheckoutType();

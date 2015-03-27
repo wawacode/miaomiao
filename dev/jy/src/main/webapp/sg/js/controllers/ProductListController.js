@@ -63,6 +63,8 @@
             $scope.currentDisplayCategory = $scope.categoryls.length && $scope.categoryls[0];
             $scope.currentDisplayItems = $scope.currentDisplayCategory && $scope.currentDisplayCategory.itemls;
 
+            checkAvailableCoupons();
+
         }, function (data, status) {
             $ionicLoading.hide();
             MMUtils.showAlert('加载数据失败');
@@ -343,6 +345,52 @@
         });
     }
 
+
+    function checkAvailableCoupons(){
+        // must check shop status
+
+        var shopInfo = ShopService.getDefaultShop() || {};
+        $timeout(function () {
+            $scope.shop = shopInfo;
+        });
+
+        if(ShopService.isCouponEnabledShop(shopInfo)){
+
+            httpClient.getAvailableCouponForShop(shopInfo.id, function (data, status) {
+                var code = data.code, dataDetail = data.data;
+                if (dataDetail && dataDetail.coupon) {
+
+                    $timeout(function(){
+                        $scope.showCouponObtainLayout = true;
+                    })
+
+                }
+            },function(data, status){
+
+            });
+        }
+    }
+
+    $scope.obtainCoupon = function(){
+
+        httpClient.couponObtainedByUserForShop($scope.shop.id,'', function (data, status) {
+
+            var code = data.code, dataDetail = data.data;
+            //TODO: api ok
+            if (dataDetail) {
+
+                $timeout(function(){
+                    $scope.showCouponObtainLayout = false;
+                });
+
+                MMUtils.showAlert('领取成功,您可以到个人中心查看领取的代金券');
+
+            }
+        },function(data, status){
+
+        });
+    };
+
     // when back from checkout or other state, just refresh the numbers
     $scope.$on("$ionicView.afterEnter", function () {
 
@@ -353,9 +401,8 @@
         fullyUpdateForProductList();
 
         if(!$scope.currentDisplayItems || !$scope.currentDisplayItems.length){
-            $timeout(function () {
-                initShopData();
-            });
+//            initShopData();
+            checkAvailableCoupons();
         }
     });
 

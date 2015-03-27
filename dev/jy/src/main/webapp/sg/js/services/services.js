@@ -179,6 +179,32 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             getCommunityByName:function(query, success, fail){
 
                 doGet('commy/search', 'key=' + query, success, fail);
+            },
+
+            getAvailableCouponForShop:function(shop_id, success, fail){
+
+                return success({'code':0,data:{'coupon':true}});
+
+                doGet('shop/coupon', 'shop_id=' + shop_id, success, fail);
+            },
+
+            getAvailableCouponForUser:function(shop_id, success, fail){
+
+                return success({'code':0,data:{'coupon':true}});
+
+                doGet('shop/coupon', 'shop_id=' + shop_id, success, fail);
+            },
+
+            couponObtainedByUserForShop:function(shop_id,coupon_id, success, fail){
+
+                return success({'code':0,data:{'coupon':true}});
+
+                doGet('shop/couponObtain', 'shop_id=' + shop_id, success, fail);
+            },
+
+            couponConsumedByUserForShop:function(shop_id,coupon_id, success, fail){
+
+                doGet('shop/couponConsume', 'shop_id=' + shop_id, success, fail);
             }
 
         };
@@ -295,6 +321,10 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             },
 
             isWeixinEnabledShop:function(shop){
+                return shop.id == '10033' || shop.id == '1';
+            },
+
+            isCouponEnabledShop:function(shop){
                 return shop.id == '10033' || shop.id == '1';
             }
         }
