@@ -15,6 +15,10 @@ public class UserCoupon {
     //id ,user_id,coupon_id,price,code,ext,start_time,end_time,create_time,update_time
     private  long id = 0;
     private long user_id = 0 ;
+
+
+
+    private long shop_id = 0;
     private  long  coupon_id  = 0;
     private  int price = 0 ;
 
@@ -26,6 +30,13 @@ public class UserCoupon {
         this.pic_url = pic_url;
     }
 
+    public long getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(long shop_id) {
+        this.shop_id = shop_id;
+    }
     private String pic_url;
 
 

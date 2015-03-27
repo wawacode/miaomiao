@@ -33,6 +33,7 @@ public class Constants {
     public static  final String LEAKERROR = "{\"code\":100,\"msg\":\"库存不足\"}";
     public static  final String UNLOGINERROR = "{\"code\":101,\"msg\":\"未登录\"}";
     public static  final String UKERROR = "{\"code\":500,\"msg\":\"服务器异常\"}";
+    public static  final String NOMORE = "{\"code\":10,\"msg\":\"您已经领过代金券了，请进入个人中心查看\"}";
     public static  final String DONE = "{\"code\":0,\"msg\":\"done\"}";
 
     public static  final String ALLREADYNEW = "{\"code\":0,\"msg\":\"allready new version\"}";

@@ -32,6 +32,15 @@ public class Coupon {
     private  long  createer  = 0;
     private String name;
     private String  desc;
+    private String pic_url;
+    private String   ext;
+    private Date start_time ;
+    private Date end_time ;
+    private Date create_time;
+    private Date update_time;
+
+
+    private long shop_id = 0;
 
     public String getPic_url() {
         return pic_url;
@@ -40,14 +49,13 @@ public class Coupon {
     public void setPic_url(String pic_url) {
         this.pic_url = pic_url;
     }
+    public long getShop_id() {
+        return shop_id;
+    }
 
-    private String pic_url;
-    private String   ext;
-    private Date start_time ;
-    private Date end_time ;
-    private Date create_time;
-    private Date update_time;
-
+    public void setShop_id(long shop_id) {
+        this.shop_id = shop_id;
+    }
 
     public long getId() {
         return id;
