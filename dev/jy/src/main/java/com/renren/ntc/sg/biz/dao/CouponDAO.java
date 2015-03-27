@@ -19,8 +19,8 @@ import java.util.List;
 @DAO(catalog = "ABC")
 public interface CouponDAO {
     static final String TABLE_NAME= "coupon";
-    static final String  FIELDS = "id,createer,price,name,ext,start_time,end_time,create_time,update_time"  ;
-    static final String  INSERT_FIELDS = "createer,price,name,ext,start_time,end_time"  ;
+    static final String  FIELDS = "id,createer,price,name,pic_url,ext,start_time,end_time,create_time,update_time"  ;
+    static final String  INSERT_FIELDS = "createer,price,name,pic_url,ext,start_time,end_time"  ;
 
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where :1 > start_time and :1 < end_time" )
