@@ -87,6 +87,7 @@ public class CouponController {
                     userCoupon.setEnd_time(c.getEnd_time());
                     userCoupon.setExt(c.getExt());
                     userCoupon.setPrice(c.getPrice());
+                    userCoupon.setPic_url(c.getPic_url());
                     usercouponDao.insert(userCoupon) ;
                     cos.add(JSON.toJSON(userCoupon));
                 }catch (Exception e){
@@ -126,6 +127,5 @@ public class CouponController {
         res.put("code",0);
         return "@json:" + res.toJSONString();
     }
-
 
 }
