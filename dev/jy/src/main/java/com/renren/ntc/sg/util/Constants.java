@@ -48,6 +48,11 @@ public class Constants {
     public static final Object DOMAIN_URL = "";
     public static final long OFFLINEFLAG = 1000 * 60 * 10;
     public static final String WXPAY = "wx" ;
+    public static final String TICKETPRE = "ticket_";
+    public static final String COUPONTRADE = "TRADEING";
+    public static final int TRADEPIE = 60;
+    public static final String DAYLIMIT = "daylimit_";
+    public static final String LUNDER = "_";
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";

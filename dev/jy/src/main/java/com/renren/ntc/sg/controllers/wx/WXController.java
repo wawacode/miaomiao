@@ -160,6 +160,8 @@ public class WXController {
                 userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
                 if( coupon_id != 0){
                     userCouponDao.writeoff(Constants.COUPONUSED,coupon_id) ;
+                    //todo  redis change ticket flags;
+                    // meitian yige
 
                 }
                 Shop shop = shopDao.getShop(shop_id);
@@ -374,23 +376,7 @@ public class WXController {
             return  response;
         }
 
-        //商家查询增量粉丝
-//        int count = 0 ;
-//        try {
-//           count = Integer.valueOf(content);
-//        }catch(Exception e){
-//           // do not thing;
-//        }
-//        if(count !=0){
-//               long fss = JRedisUtil.getInstance().scard("set_"+PREFIX+ count);
-//               String response = CONTENT.replace("{message}", fss + "");  // 这个其实没用
-//               response = response.replace("{toUser}",fromUser);
-//               response = response.replace("{fromUser}",toUser);
-//               response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
-//               return  response;
-//        }
         // 用户给发消息
-
         LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
         String response = DUOKEFU.replace("{message}", MESSAGE);  // 这个其实没用
         response = response.replace("{toUser}",fromUser);

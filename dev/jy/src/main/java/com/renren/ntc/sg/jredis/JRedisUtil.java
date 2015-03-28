@@ -25,8 +25,8 @@ public class JRedisUtil {
     private static JRedisUtil instance = new JRedisUtil();
 
     private JRedisUtil() {
-//        jds = new Jedis("123.56.102.224") ;
-        jds = new Jedis("123.56.145.69");
+        jds = new Jedis("10.170.239.52") ;
+//        jds = new Jedis("123.56.145.69");
     }
 
     public static JRedisUtil getInstance() {
@@ -37,10 +37,14 @@ public class JRedisUtil {
         return jds.set(key,value);
     }
 
-    public Long  expire(String key, int seconds){
-        return jds.expire(key,seconds);
+    public long  expire(String key, int seconds){
+        return jds.expire(key, seconds);
     }
 
+
+    public long  incr(String key){
+        return jds.incr(key);
+    }
 
 
     public long  sadd( String key, String value){
