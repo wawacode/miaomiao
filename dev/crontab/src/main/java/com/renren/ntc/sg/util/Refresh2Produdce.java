@@ -1,21 +1,19 @@
 package com.renren.ntc.sg.util;
 
+import java.io.IOException;
+import java.util.List;
+
+import net.paoding.rose.scanning.context.RoseAppContext;
+
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Product;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
-import net.paoding.rose.scanning.context.RoseAppContext;
-import org.apache.commons.lang.StringUtils;
-
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
 
 
 public class Refresh2Produdce {
 
-    private static long  shop_id= 10033;
+    private static long  shop_id= 10068;
 
     public Refresh2Produdce() throws IOException {
 
@@ -40,13 +38,18 @@ public class Refresh2Produdce {
                 p.setCategory_id(item.getCategory_id());
                 p.setScore(item.getScore());
                 p.setPic_url(item.getPic_url());
-//                p.setPrice(item.getPrice());
+                p.setPrice(item.getPrice());
                 p.setName(item.getName());
                 p.setSerialNo(item.getSerialNo());
                 Product pp = pdDao.geProductsByserialNo(item.getSerialNo());
                 if (null != pp){
                     System.out.println("update into " + p.getSerialNo());
-                    pdDao.update(p,item.getSerialNo()) ;
+                    if(p.getPrice() <= pp.getPrice()){
+                    	p.setPrice(pp.getPrice());
+                    }else {
+						System.out.println("商品的价格比product高,serialNo="+item.getSerialNo());
+					}
+                    pdDao.updateInfo(p,item.getSerialNo()) ;
                  }else{
                     System.out.println("insert into " + p.getSerialNo());
                     pdDao.insert(p) ;
