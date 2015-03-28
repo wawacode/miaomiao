@@ -38,6 +38,8 @@ public class Coupon {
     private Date end_time ;
     private Date create_time;
     private Date update_time;
+    private String startTimeStr;
+    private String endTimeStr;
 
 
     private long shop_id = 0;
@@ -137,21 +139,38 @@ public class Coupon {
     	
     }
 
-    public Coupon(int price, long createer, String name, String desc,
-			String pic_url, Date start_time, Date end_time) {
+    public Coupon(long shopId,int price, long createer, String name, String ext,
+			String pic_url, String start_time, String end_time) {
 		super();
+		this.shop_id = shopId;
 		this.price = price;
 		this.createer = createer;
 		this.name = name;
-		this.desc = desc;
+		this.ext = ext;
 		this.pic_url = pic_url;
-		this.start_time = start_time;
-		this.end_time = end_time;
+		this.startTimeStr = start_time;
+		this.endTimeStr = end_time;
 	}
 
 	public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
+
+	public String getStartTimeStr() {
+		return startTimeStr;
+	}
+
+	public void setStartTimeStr(String startTimeStr) {
+		this.startTimeStr = startTimeStr;
+	}
+
+	public String getEndTimeStr() {
+		return endTimeStr;
+	}
+
+	public void setEndTimeStr(String endTimeStr) {
+		this.endTimeStr = endTimeStr;
+	}
 
 
 

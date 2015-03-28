@@ -29,7 +29,7 @@ public interface CouponDAO {
     @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where :1 > start_time and :1 < end_time" )
     public List<Coupon> getCouponRule(Date time) ;
     
-    @SQL("del  "  + TABLE_NAME + " where id = :1")
+    @SQL("delete from "  + TABLE_NAME + " where id = :1")
     public int  del(long id);
     
     @SQL("update " + TABLE_NAME + " set ##(:key) = :3  where id =:1")
@@ -37,12 +37,12 @@ public interface CouponDAO {
     
     @ReturnGeneratedKeys
 	@SQL("insert into " + TABLE_NAME + "(" + INSERT_FIELDS +" ) values"  + 
-			" (:1.createer,:1.price," +":1.name,:1.pic_url,:1.ext," +
-            ":1.start_time,:1.end_time)")
+			" (:1.createer,:1.price,:1.shop_id,:1.name,:1.pic_url,:1.ext," +
+            ":1.startTimeStr,:1.endTimeStr)")
 	public int insert(Coupon o);
     
-    @SQL("select " + FIELDS + " from " + TABLE_NAME)
-    public List<Coupon> getAllCoupon() ;
+    @SQL("select " + FIELDS + " from " + TABLE_NAME +  " order by create_time desc limit :1,:2")
+    public List<Coupon> getAllCoupon(int start,int count) ;
 
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where  shop_id=:2 and  :1 > start_time and :1 < end_time" )

@@ -12,6 +12,7 @@ public class SgConstant {
 	public static final String SAVE_PRODUCT_PIC_PATH = "/data/images/cat/images/product/";
 	//public static final String SAVE_PRODUCT_PIC_PATH = "d:/";
 	public static final String REMOTE_PRODCUT_FILE_PATH_PRE = "http://www.mbianli.com/cat/images/product/";
-	public static final String SAVE_COUPON_PATH = "/data/images/cat/images/coupon/";
+	//public static final String SAVE_COUPON_PATH = "/data/images/cat/images/coupon/";
+	public static final String SAVE_COUPON_PATH = "d://";
 	public static final String REMOTE_CONPON_FILE_PATH_PRE = "http://www.mbianli.com/cat/images/coupon/";
 }
