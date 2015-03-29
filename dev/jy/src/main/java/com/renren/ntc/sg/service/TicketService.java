@@ -78,16 +78,13 @@ public class TicketService {
     public  List<UserCoupon> getUnusedTickets (long user_id,long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
         List<UserCoupon> tt = new ArrayList<UserCoupon>();
-        long value = JRedisUtil.getInstance().incr(key);
-        if (value == 1L){
-            List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id,shop_id,Constants.COUPONUNUSED);
-            for(UserCoupon t: tickets){
-              LoggerUtils.getInstance().log(String.format(" check ocupy user %d , ticket id %d , code %s ", user_id, t.getId(), t.getCode()));
-              if (canOcupy(t.getId(),t.getCode())){
-                  tt.add(t);
-              }
-          }
-        }
+        List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id,shop_id,Constants.COUPONUNUSED);
+            for(UserCoupon t: tickets) {
+                LoggerUtils.getInstance().log(String.format(" check ocupy user %d , ticket id %d , code %s ", user_id, t.getId(), t.getCode()));
+                if (canOcupy(t.getId(), t.getCode())) {
+                    tt.add(t);
+                }
+            }
         return tt;
     }
 
