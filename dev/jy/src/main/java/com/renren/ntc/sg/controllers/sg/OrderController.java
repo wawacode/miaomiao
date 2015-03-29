@@ -239,7 +239,7 @@ public class OrderController {
         mesg.put("discount",price);
         String mess = mesg.toJSONString();
         order.setMsg(mess);
-        ordersDAO.confirm(order.getOrder_id(),SUtils.generOrderTableName(order.getShop_id()),mess) ;
+        ordersDAO.confirm(order.getOrder_id(),mess,SUtils.generOrderTableName(order.getShop_id())) ;
     }
 
     private boolean validata(long id, int coupon_id, String coupon_code) {

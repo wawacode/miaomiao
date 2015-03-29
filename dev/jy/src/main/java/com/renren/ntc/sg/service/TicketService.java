@@ -39,9 +39,10 @@ public class TicketService {
 
     public boolean canOcupy(long coupon_id, String coupon_code) {
         String key = SUtils.ticketKey(coupon_id);
-
+        LoggerUtils.getInstance().log(String.format("canOcupy key %s ",  key));
         String  value = JRedisUtil.getInstance().get(key);
         if (StringUtils.isBlank(value)){
+            LoggerUtils.getInstance().log(String.format("canOcupy key %s %s ", key, coupon_code));
             return true;
         }
         return false;
