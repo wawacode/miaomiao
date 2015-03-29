@@ -65,7 +65,7 @@ public class TicketService {
         long value = JRedisUtil.getInstance().incr(key);
     }
 
-    public  boolean canusedTicket (long user_id,long shop_id) {
+    public  boolean canUsedTicket (long user_id,long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
         long  re = JRedisUtil.getInstance().getLong(key);
         if (re == 0 ){

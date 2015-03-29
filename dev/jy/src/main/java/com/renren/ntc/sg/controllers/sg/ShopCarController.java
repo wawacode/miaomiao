@@ -116,12 +116,14 @@ public class ShopCarController {
           return "@" + Constants.LEAKERROR;
         }
         // 获取 可用的代金券
+        boolean can = ticketService.canUsedTicket( u.getId(), shop_id);
         List <UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),shop_id);
         JSONObject  j=  new JSONObject() ;
         j.put("addressls", JSON.toJSON(addressls));
         j.put("shop", JSON.toJSON(shop));
         j.put("itemls", JSON.toJSON(itemls));
-        j.put("tickets", JSON.toJSON(tickets));
+        j.put("coupons", JSON.toJSON(tickets));
+        j.put("coupon_active", can);
         JSONObject respone =  new JSONObject();
         respone.put("code" ,0);
         respone.put("data" ,j);
