@@ -10,7 +10,7 @@
         <property name="driverClass" value="com.mysql.jdbc.Driver">
         </property>
         <property name="jdbcUrl"
-                  value="jdbc:mysql://123.56.102.224:3306/sg?characterEncoding=utf8"/>
+                  value="jdbc:mysql:// :3306/sg?characterEncoding=utf8"/>
         <!--<property name="jdbcUrl"-->
                   <!--value="jdbc:mysql://127.0.0.1:3306/sg?characterEncoding=utf8"/>-->
         <property name="user" value="cat_data"/>

@@ -32,6 +32,17 @@ public class Coupon {
     private  long  createer  = 0;
     private String name;
     private String  desc;
+    private String pic_url;
+    private String   ext;
+    private Date start_time ;
+    private Date end_time ;
+    private Date create_time;
+    private Date update_time;
+    private String startTimeStr;
+    private String endTimeStr;
+
+
+    private long shop_id = 0;
 
     public String getPic_url() {
         return pic_url;
@@ -40,14 +51,13 @@ public class Coupon {
     public void setPic_url(String pic_url) {
         this.pic_url = pic_url;
     }
+    public long getShop_id() {
+        return shop_id;
+    }
 
-    private String pic_url;
-    private String   ext;
-    private Date start_time ;
-    private Date end_time ;
-    private Date create_time;
-    private Date update_time;
-
+    public void setShop_id(long shop_id) {
+        this.shop_id = shop_id;
+    }
 
     public long getId() {
         return id;
@@ -124,10 +134,43 @@ public class Coupon {
     public Date getUpdate_time() {
         return update_time;
     }
+    
+    public Coupon(){
+    	
+    }
 
-    public void setUpdate_time(Date update_time) {
+    public Coupon(long shopId,int price, long createer, String name, String ext,
+			String pic_url, String start_time, String end_time) {
+		super();
+		this.shop_id = shopId;
+		this.price = price;
+		this.createer = createer;
+		this.name = name;
+		this.ext = ext;
+		this.pic_url = pic_url;
+		this.startTimeStr = start_time;
+		this.endTimeStr = end_time;
+	}
+
+	public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
+
+	public String getStartTimeStr() {
+		return startTimeStr;
+	}
+
+	public void setStartTimeStr(String startTimeStr) {
+		this.startTimeStr = startTimeStr;
+	}
+
+	public String getEndTimeStr() {
+		return endTimeStr;
+	}
+
+	public void setEndTimeStr(String endTimeStr) {
+		this.endTimeStr = endTimeStr;
+	}
 
 
 

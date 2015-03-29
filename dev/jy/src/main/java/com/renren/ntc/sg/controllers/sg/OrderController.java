@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
+import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.*;
 import com.renren.ntc.sg.util.Constants;
@@ -59,11 +60,12 @@ public class OrderController {
     public WXService wxService;
 
     @Autowired
+    public TicketService ticketService;
+
+    @Autowired
     public PushService pushService;
 
 
-    @Autowired
-    public UserCouponDAO  userCouponDao;
 
 
 
@@ -189,21 +191,19 @@ public class OrderController {
         if(Constants.WXPAY.equals(act)){
             String attach = shop_id + "_" +user_id;
             if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
-                UserCoupon ticket = userCouponDao.getTicket(u.getId(), coupon_id, coupon_code, Constants.COUPONUNUSED);
+                UserCoupon ticket = ticketService.getTicket(u.getId(), coupon_id, coupon_code);
                 if (ticket != null ){
                     price = price - ticket.getPrice();
                     data.put("discount",ticket.getPrice()) ;
                     //满减不要大于 起送金额
                     if( price <=  0 ){
-                        price = 0 ;
+                        price = 1 ;
                     }
                 }
-
-                //使用代金券的时候会
+                //使用代金券
                 attach = attach + "_" + ticket.getId();
                 update(order, ticket.getPrice());
             }
-            //使用了 代金券
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
@@ -216,6 +216,9 @@ public class OrderController {
             data.put("pre_id",pre_id) ;
             data.put("out_trade_no",order_id) ;
             data.put("total_fee",price) ;
+            //
+
+            // dajinquan geli
         }
         data.put("order_id",order_id);
         response.put("data", data);
