@@ -423,20 +423,24 @@
                         <div>
                             <div class="list">
                                 <div class="item item-icon-right borderBotton" style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px"
-                                     bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)" ng-disabled="card.status != 0"
+                                     bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)" ng-disabled="card.status == 0"
                                      ng-class="{'noBorderBottonLi':$index + 1 == couponCards.length }">
                                     <div class="row">
                                         <div class="col-20">
-                                            <div class="" style="padding: 5px 5px 5px 5px;display: inline-block;width: 100%;
+                                            <div class="" style="padding: 15px 5px 5px 5px;display: inline-block;width: 100%;
                                             font-size: 15px;text-align: center;min-width: 60px;color: #ef5356" bo-text="(card.price/100.0) + '元'"></div>
                                         </div>
                                         <div class="col-50">
-                                            <div style="padding-left: 20px;padding-top:5px;font-size: 15px" bo-text="card.ext"></div>
-                                            <div style="padding-left: 20px;;font-size: 12px" bo-text="'有效期至:' + (card.end_time | date:'yyyy-MM-dd')"></div>
+                                            <div style="padding-left: 20px;padding-top:5px;font-size: 15px" bo-text="card.ext || (card.price/100.0) + '元代金券'"></div>
+                                            <div style="padding-left: 20px;;font-size: 10px" bo-text="'有效期至:' + (card.end_time | date:'yyyy-MM-dd')"></div>
                                         </div>
                                     </div>
-                                    <div class="icon balanced commonSelected" style="right: 25px" ng-if="card.status == 0"
-                                         ng-class="{'ion-ios7-checkmark':card.selected,'ion-ios7-circle-outline': !card.selected}"></div>
+                                    <div class="icon balanced commonSelected" style="right: 25px" ng-if="couponActive == true"
+                                         ng-class="{'ion-ios7-checkmark':card.selected,'ion-ios7-circle-outline': !card.selected}">
+                                    </div>
+                                    <div class="icon stable commonSelected" style="right: 25px" ng-if="couponActive != true">
+                                        <span style="font-size: 12px;color: #999999">明天可用</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -570,6 +574,12 @@
                        </div>
                    </div>
                </div>
+
+                <div class="item item-text-wrap">
+                    <p style="color: #999999">
+                        备注：喵喵代金券仅限微信支付使用，每天只能使用一张，喵喵哒 \(^o^)/
+                    </p>
+                </div>
 
             </div>
         </ion-content>

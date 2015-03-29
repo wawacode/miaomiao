@@ -184,6 +184,9 @@ body {
     height: 49px !important;
 }
 
+.grayyed{
+    color: lightgray;
+}
 
 .buttonWithHot:after{
     content: "";

@@ -95,6 +95,8 @@ angular.module('miaomiao.shop')
                     }
                 }
 
+                $scope.couponActive = dataDetail.coupon_active;
+
                 var index = $scope.checkoutType.length == 1 ? 0: 1;
                 $scope.userSelectCheckoutType(index,true);
 
@@ -158,7 +160,7 @@ angular.module('miaomiao.shop')
         $scope.selectCouponCards = function (idx) {
 
             // don't do anything if not valid
-            if($scope.couponCards[idx].status != 0){
+            if($scope.couponActive != true){
                 return;
             }
 
