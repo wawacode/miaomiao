@@ -204,6 +204,7 @@ public class OrderController {
                     update(order, ticket.getPrice());
                 }
             }
+            LoggerUtils.getInstance().log(String.format("order  %s get pre_id %d ",order_id,price));
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
