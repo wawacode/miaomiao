@@ -58,7 +58,7 @@ public class TicketService {
     }
 
     public void writeoff(long user_id,long shop_id,long coupon_id) {
-        userCouponDao.writeoff(Constants.COUPONUNUSED, coupon_id);
+        userCouponDao.writeoff(Constants.COUPONUSED, coupon_id);
         usedTicket(user_id, shop_id);
     }
 
