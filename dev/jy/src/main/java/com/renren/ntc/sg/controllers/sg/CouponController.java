@@ -12,9 +12,7 @@ import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.TicketService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
-import com.renren.ntc.sg.util.wx.MD5Util;
 import com.renren.ntc.sg.util.wx.Sha1Util;
-import com.renren.ntc.sg.util.wx.TenpayUtil;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -61,8 +59,8 @@ public class CouponController {
             offset = 50;
         }
         JSONArray cos = new JSONArray();
-        boolean can = ticketService.canUsedTicket(u.getId(),0);
-        List<UserCoupon> tickets = usercouponDao.getMyCoupon(u.getId(),from,offset);
+        boolean can = ticketService.ticketCanUse(u.getId(), 0);
+        List<UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),0,from,offset) ;
         JSONObject res = new JSONObject();
         JSONObject data = new JSONObject();
         data.put("coupon_active",can) ;

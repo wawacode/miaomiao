@@ -184,6 +184,18 @@ body {
     height: 49px !important;
 }
 
+
+.buttonWithHot:after{
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 5px;
+    background-color: #ef5356;
+    top: 5;
+    left: 22;
+}
+
 /**********************************
     css per page
 **********************************/
@@ -1056,6 +1068,10 @@ ul.rating li i {
     font-size: 25px !important;
     width: 28px;
     height: 28px;
+}
+
+.couponHint{
+    font-size: 10px;background-color: #ef5356;color: #ffffff;padding: 4px 4px 4px 4px;border-radius: 4px;
 }
 
 /* order list*/

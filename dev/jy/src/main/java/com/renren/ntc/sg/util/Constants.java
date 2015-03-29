@@ -75,5 +75,6 @@ public class Constants {
     public static final int ORDER_FINISH = 2;
 
     public static final int  COUPONUNUSED = 0;
+
     public static final int  COUPONUSED = 4;
 }

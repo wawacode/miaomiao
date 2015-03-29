@@ -22,11 +22,11 @@ angular.module('miaomiao.shop')
             if(ShopService.isWeixinEnabledShop($scope.shop)){
                 $scope.checkoutType = [
                     {
-                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true, 'canUseCoupon': false
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': false, 'canUseCoupon': false
 
                     },
                     {
-                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false,
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': true,
                         'coupons': [],
                         'canUseCoupon': true
                     }
@@ -38,7 +38,8 @@ angular.module('miaomiao.shop')
                     }
                 ];
              }
-            $scope.selectedCheckoutType = $scope.checkoutType[0];
+
+            $scope.selectedCheckoutType = $scope.checkoutType.length == 1 ? $scope.checkoutType[0]: $scope.checkoutType[1];
 
         }
 
@@ -93,13 +94,17 @@ angular.module('miaomiao.shop')
                         }
                     }
                 }
+
+                var index = $scope.checkoutType.length == 1 ? 0: 1;
+                $scope.userSelectCheckoutType(index,true);
+
             }, function (data, status) {
                 $ionicLoading.hide();
                 $scope.info.dataReady = true;
             });
         }
 
-        $scope.selectCheckoutType = function (index) {
+        $scope.userSelectCheckoutType = function (index,needDelay) {
 
             for (var i = 0; i < $scope.checkoutType.length; i++) {
                 if (index != i) {
@@ -119,9 +124,10 @@ angular.module('miaomiao.shop')
             }
 
             $ionicScrollDelegate.$getByHandle('checkoutScroll').resize(false);
+
             $timeout(function(){
                 $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom(true);
-            });
+            }, needDelay ? 500 : 0);
 
             _updateCheckoutHintMessage();
         };
@@ -135,16 +141,17 @@ angular.module('miaomiao.shop')
 
             for (var i = 0; i < $scope.couponCards.length; i++) {
 
-                if($scope.couponCards[i].status != 0);continue; // only available cards
+                if($scope.couponCards[i].status != 0)continue; // only available cards
 
                 $scope.couponCards[i].selected = false;
 
-                if ($scope.couponCards[i].price/100.0 <= totalPrice &&
-                    $scope.couponCards[i].price/100.0 >= maxAvailbale) {
-                    $scope.couponCards[i].selected = true;
-                    $scope.selectedCoupon = $scope.couponCards[i];
-                    maxAvailbale = $scope.couponCards[i].price/100.0;
-                }
+                // don't auto choose coupon
+//                if ($scope.couponCards[i].price/100.0 <= totalPrice &&
+//                    $scope.couponCards[i].price/100.0 >= maxAvailbale) {
+//                    $scope.couponCards[i].selected = true;
+//                    $scope.selectedCoupon = $scope.couponCards[i];
+//                    maxAvailbale = $scope.couponCards[i].price/100.0;
+//                }
             }
         };
 

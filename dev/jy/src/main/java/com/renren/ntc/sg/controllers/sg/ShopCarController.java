@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.*;
-import com.renren.ntc.sg.dao.*;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.TicketService;
@@ -116,8 +115,8 @@ public class ShopCarController {
           return "@" + Constants.LEAKERROR;
         }
         // 获取 可用的代金券
-        boolean can = ticketService.canUsedTicket( u.getId(), shop_id);
-        List <UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),0);
+        boolean can = ticketService.ticketCanUse(u.getId(), shop_id);
+        List <UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),0,0,50);
         JSONObject  j=  new JSONObject() ;
         j.put("addressls", JSON.toJSON(addressls));
         j.put("shop", JSON.toJSON(shop));
