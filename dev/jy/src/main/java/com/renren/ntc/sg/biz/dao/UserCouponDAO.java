@@ -53,4 +53,6 @@ public interface UserCouponDAO {
     public int writeoff(int status , long coupon_id);
 
 
+    @SQL("select count(*) from " + TABLE_NAME +" where  user_id =:1 and status=:2  ")
+    public int getMyCouponCount(long user_id , int status);
 }
