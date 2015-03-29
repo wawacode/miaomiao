@@ -27,10 +27,7 @@ angular.module('miaomiao.shop')
                     },
                     {
                         'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false,
-                        'coupons': [
-                            {'value': 10, 'desc': '满50元可用', 'condition': 50},
-                            {'value': 5, 'desc': '满30元可用', 'condition': 30}
-                        ],
+                        'coupons': [],
                         'canUseCoupon': true
                     }
                 ];
@@ -87,6 +84,15 @@ angular.module('miaomiao.shop')
                     $scope.info.showAddNewAddress = true;
                 }
 
+                // update coupon list
+                var coupons = dataDetail.tickets;
+                if(coupons){
+                    for(var i=0;i< $scope.checkoutType.length;i++){
+                        if($scope.checkoutType[i].canUseCoupon){
+                            $scope.checkoutType[i].coupons = coupons;
+                        }
+                    }
+                }
             }, function (data, status) {
                 $ionicLoading.hide();
                 $scope.info.dataReady = true;
@@ -130,11 +136,11 @@ angular.module('miaomiao.shop')
             for (var i = 0; i < $scope.couponCards.length; i++) {
 
                 $scope.couponCards[i].selected = false;
-                if ($scope.couponCards[i].condition <= totalPrice &&
-                    $scope.couponCards[i].condition >= maxAvailbale) {
+                if ($scope.couponCards[i].price/100.0 <= totalPrice &&
+                    $scope.couponCards[i].price/100.0 >= maxAvailbale) {
                     $scope.couponCards[i].selected = true;
                     $scope.selectedCoupon = $scope.couponCards[i];
-                    maxAvailbale = $scope.couponCards[i].condition;
+                    maxAvailbale = $scope.couponCards[i].price/100.0;
                 }
             }
         };
@@ -152,7 +158,7 @@ angular.module('miaomiao.shop')
                 $scope.selectedCoupon = null;
             } else {
                 var totalPrice = ShoppingCart.getTotalPrice();
-                if ($scope.couponCards[idx].condition <= totalPrice) {
+                if ($scope.couponCards[idx].price/100.0 <= totalPrice) {
                     clearAllCards();
                     $scope.couponCards[idx].selected = true;
                     $scope.selectedCoupon = $scope.couponCards[idx];
@@ -278,9 +284,13 @@ angular.module('miaomiao.shop')
                 };
 
                 MMUtils.showLoadingIndicator('正在生成订单,请稍候...', $scope);
-
+                var coupon_id = null,coupon_code = null;
+                if($scope.selectedCheckoutType.canUseCoupon == true && $scope.selectedCoupon){
+                    coupon_id = $scope.selectedCoupon.coupon_id;
+                    coupon_code = $scope.selectedCoupon.code;
+                }
                 httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
-                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, function (data, status) {
+                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id,coupon_id,coupon_code, function (data, status) {
 
                         $ionicLoading.hide();
 

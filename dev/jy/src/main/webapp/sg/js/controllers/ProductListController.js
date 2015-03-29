@@ -359,10 +359,15 @@
             httpClient.getAvailableCouponForShop(shopInfo.id, function (data, status) {
                 var code = data.code, dataDetail = data.data;
                 if (dataDetail && dataDetail.coupons && dataDetail.coupons.length) {
+                    var totalPrice = 0.0;
+                    for(var i=0;i< dataDetail.coupons.length;i++){
+                        totalPrice += dataDetail.coupons[i].price/100.0;
+                    }
 
                     $timeout(function(){
                         $scope.showCouponObtainLayout = true;
-                    })
+                        $scope.showCouponPrice = totalPrice;
+                    });
 
                 }
             },function(data, status){
@@ -375,12 +380,13 @@
 
         httpClient.couponObtainedByUserForShop($scope.shop.id, function (data, status) {
             var code = data.code, dataDetail = data.data;
-            //TODO: api ok
-            if (dataDetail) {
+            if (code == 0 && dataDetail.coupons) {
                 $timeout(function(){
                     $scope.showCouponObtainLayout = false;
                 });
                 MMUtils.showAlert('领取成功,您可以到个人中心查看领取的代金券');
+            }else{
+                MMUtils.showAlert('领取出错了,请尝试重新进店领取');
             }
         },function(data, status){
             MMUtils.showAlert('领取出错了,请重新进店领取');

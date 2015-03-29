@@ -20,10 +20,6 @@ angular.module('miaomiao.shop')
 
                 $scope.couponList = dataDetail.coupons;
 
-                // todo: remove this
-                $scope.couponList = [{'name':'coupon','validDate':'2015-5-2','value':20},
-                    {'name':'coupon2','validDate':'2015-5-2','value':40}]
-
             }, function (data, status) {
                 $scope.couponList = [];
                 MMUtils.showAlert('加载数据失败,请刷新');

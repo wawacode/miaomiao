@@ -74,12 +74,15 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                     success, fail);
             },
 
-            getOrderPrepayInfo: function (shopId, addressId, address, phone, remarks, items, orderId, success, fail) {
+            getOrderPrepayInfo: function (shopId, addressId, address, phone, remarks, items, orderId,coupon_id,coupon_code,success, fail) {
 
                 doPost('order/save?shop_id=' + shopId,
                     {'items': JSON.stringify(items), 'address_id': addressId,
                         'address': address, 'phone': phone,
-                        'remarks': remarks, 'order_id': orderId,'act':'wx'},
+                        'remarks': remarks, 'order_id': orderId,
+                        'act':'wx',
+                        'coupon_id':coupon_id,
+                        'coupon_code':coupon_code},
                     success, fail);
             },
             updateOrderStatus: function (shopId, orderId,msg, success, fail) {
@@ -183,21 +186,15 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             getAvailableCouponForShop:function(shop_id, success, fail){
 
-                return success({'code':0,data:{'coupon':true}});
-
                 doGet('coupon/nePop', 'shop_id=' + shop_id, success, fail);
             },
 
             getAvailableCouponForUser:function(from,offset, success, fail){
 
-                return success({'code':0,data:{'coupon':true}});
-
-                doGet('coupon', 'from=' + from + '&offset=' + offset , success, fail);
+                doGet('coupon/allCoupons', 'from=' + from + '&offset=' + offset , success, fail);
             },
 
-            couponObtainedByUserForShop:function(shop_id,coupon_id, success, fail){
-
-                return success({'code':0,data:{'coupon':true}});
+            couponObtainedByUserForShop:function(shop_id, success, fail){
 
                 doGet('coupon/couponObtain', 'shop_id=' + shop_id, success, fail);
             },
