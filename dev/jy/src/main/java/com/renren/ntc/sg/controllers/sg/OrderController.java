@@ -190,6 +190,7 @@ public class OrderController {
         //添加微信支付pre_id()
         if(Constants.WXPAY.equals(act)){
             String attach = shop_id + "_" +user_id;
+            LoggerUtils.getInstance().log(String.format("order_id   %s get coupon_id %d  coupon %s ",order_id,coupon_id,coupon_code));
             if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
                 UserCoupon ticket = ticketService.getTicket(u.getId(), coupon_id, coupon_code);
                 if (ticket != null ){
