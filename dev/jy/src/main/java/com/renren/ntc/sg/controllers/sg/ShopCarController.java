@@ -117,7 +117,7 @@ public class ShopCarController {
         }
         // 获取 可用的代金券
         boolean can = ticketService.canUsedTicket( u.getId(), shop_id);
-        List <UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),shop_id);
+        List <UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),0);
         JSONObject  j=  new JSONObject() ;
         j.put("addressls", JSON.toJSON(addressls));
         j.put("shop", JSON.toJSON(shop));
