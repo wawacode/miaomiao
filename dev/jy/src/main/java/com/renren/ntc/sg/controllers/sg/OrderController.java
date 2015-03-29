@@ -190,20 +190,23 @@ public class OrderController {
         //添加微信支付pre_id()
         if(Constants.WXPAY.equals(act)){
             String attach = shop_id + "_" +user_id;
+            LoggerUtils.getInstance().log(String.format("user_id %d order_id   %s get coupon_id %d  coupon %s ",u.getId(),order_id,coupon_id,coupon_code));
             if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
                 UserCoupon ticket = ticketService.getTicket(u.getId(), coupon_id, coupon_code);
                 if (ticket != null ){
+                    LoggerUtils.getInstance().log(String.format("order_id %s  coupon_id %d price %d",order_id,coupon_id,ticket.getPrice()));
                     price = price - ticket.getPrice();
                     data.put("discount",ticket.getPrice()) ;
                     //满减不要大于 起送金额
                     if( price <=  0 ){
                         price = 1 ;
                     }
+                    //使用代金券
+                    attach = attach + "_" + ticket.getId();
+                    update(order, ticket.getPrice());
                 }
-                //使用代金券
-                attach = attach + "_" + ticket.getId();
-                update(order, ticket.getPrice());
             }
+            LoggerUtils.getInstance().log(String.format("order  %s get pre_id %d ",order_id,price));
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
@@ -223,7 +226,7 @@ public class OrderController {
         data.put("order_id",order_id);
         response.put("data", data);
         response.put("code", 0);
-        LoggerUtils.getInstance().log("error  order save return " + response.toJSONString());
+        LoggerUtils.getInstance().log("  order save return " + response.toJSONString());
         return "@json:" + response.toJSONString();
     }
 
