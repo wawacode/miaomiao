@@ -409,7 +409,8 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-if="selectedCheckoutType.canUseCoupon == true && selectedCheckoutType.coupons && selectedCheckoutType.coupons.length" style="">
+                    <div ng-if="selectedCheckoutType.canUseCoupon == true && selectedCheckoutType.coupons && selectedCheckoutType.coupons.length"
+                         style="margin-bottom: 20px;background-color: #eaeaea">
                         <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
                             使用优惠券
                         </div>

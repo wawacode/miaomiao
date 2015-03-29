@@ -127,7 +127,7 @@ angular.module('miaomiao.shop')
 
             $timeout(function(){
                 $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom(needAnimation);
-            });
+            },500);
 
             _updateCheckoutHintMessage();
         };
