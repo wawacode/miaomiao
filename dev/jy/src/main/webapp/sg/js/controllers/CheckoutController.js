@@ -117,7 +117,7 @@ angular.module('miaomiao.shop')
 
             if ($scope.selectedCheckoutType.canUseCoupon == true) {
                 $scope.couponCards = $scope.selectedCheckoutType.coupons;
-//                _updateAvailableConpons();
+                _updateAvailableConpons();
 
             } else {
                 $scope.selectedCoupon = null;
@@ -145,12 +145,13 @@ angular.module('miaomiao.shop')
 
                 $scope.couponCards[i].selected = false;
 
-                if ($scope.couponCards[i].price/100.0 <= totalPrice &&
-                    $scope.couponCards[i].price/100.0 >= maxAvailbale) {
-                    $scope.couponCards[i].selected = true;
-                    $scope.selectedCoupon = $scope.couponCards[i];
-                    maxAvailbale = $scope.couponCards[i].price/100.0;
-                }
+                // don't auto choose coupon
+//                if ($scope.couponCards[i].price/100.0 <= totalPrice &&
+//                    $scope.couponCards[i].price/100.0 >= maxAvailbale) {
+//                    $scope.couponCards[i].selected = true;
+//                    $scope.selectedCoupon = $scope.couponCards[i];
+//                    maxAvailbale = $scope.couponCards[i].price/100.0;
+//                }
             }
         };
 
@@ -396,7 +397,7 @@ angular.module('miaomiao.shop')
                 $scope.shoppingCartItems = ShoppingCart.getAllItems();
                 $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
                 _updateCheckoutHintMessage();
-//                _updateAvailableConpons();
+                _updateAvailableConpons();
             });
 
         }

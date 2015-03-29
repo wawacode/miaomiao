@@ -383,6 +383,7 @@
             if (code == 0 && dataDetail.coupons) {
                 $timeout(function(){
                     $scope.showCouponObtainLayout = false;
+                    $scope.showSomethingHot = true;
                 });
                 MMUtils.showAlert('领取成功,您可以到个人中心查看领取的代金券');
             }else{

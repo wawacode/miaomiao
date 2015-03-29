@@ -184,6 +184,17 @@ body {
     height: 49px !important;
 }
 
+
+.buttonWithHot:after{
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 5px;
+    background-color: #ef5356;
+    top: 5;
+    left: 22;
+}
 /**********************************
     css per page
 **********************************/
