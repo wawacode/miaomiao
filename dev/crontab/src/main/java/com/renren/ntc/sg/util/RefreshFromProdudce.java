@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RefreshFromProdudce {
 
-    private static long  shop_id= 10031;
+    private static long  shop_id= 1;
 
     public RefreshFromProdudce() throws IOException {
 

@@ -13,15 +13,14 @@ import java.io.*;
 
 public class AddProduct2Shop_Axsjhlcs {
 
-    private static int shop_id = 10059;
+    private static int shop_id = 10072;
 
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
-        AddProduct2Shop_Axsjhlcs addProduct = new AddProduct2Shop_Axsjhlcs();
-        String filePath = "F:\\product\\20150323\\鑫世纪华联超市.txt";
+        String filePath = "C:\\shop\\鑫世纪华联超市.txt";
         readTxtFile(filePath, pdDao, itemDao);
 
     }
@@ -36,18 +35,9 @@ public class AddProduct2Shop_Axsjhlcs {
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
                 while ((lineTxt = bufferedReader.readLine()) != null) {
-                    String[] args = lineTxt.split(",");
-                    if (null != args && args.length < 2) {
-                        System.out.println("drop " + lineTxt);
-                        return;
-
-                    }
-                    String serialNo = args[0].trim();
+                    String serialNo = lineTxt.trim();
                     System.out.println("serialNo " + serialNo);
                     serialNo = upacage(serialNo);
-                    String price_str = args[1].trim();
-                    System.out.println("price " + price_str);
-                    int price = Integer.valueOf(price_str);
                     Product p = pdDao.geProductsByserialNo(serialNo);
 
                     if (StringUtils.isBlank(serialNo)) {
@@ -65,7 +55,7 @@ public class AddProduct2Shop_Axsjhlcs {
                         it.setSerialNo(p.getSerialNo());
                         it.setCategory_id(p.getCategory_id());
                         it.setPic_url(p.getPic_url() == null ? "" : p.getPic_url());
-                        it.setPrice(price);
+                        it.setPrice(p.getPrice());
                         it.setScore(p.getScore());
                         it.setCount(1000);
                         it.setShop_id(shop_id);
