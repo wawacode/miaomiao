@@ -557,7 +557,7 @@
                    </div>
                    <div style="display: inline-block;float: right">
                        <div style="font-size: 18px;background-color: #ef5356;color: #ffffff;padding: 5px 10px 5px 10px;border-radius: 4px">
-                           {{coupon.price/100.0}}
+                           {{coupon.price/100.0}} 元
                        </div>
                    </div>
                </div>
