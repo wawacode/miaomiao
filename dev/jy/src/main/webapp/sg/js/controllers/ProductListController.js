@@ -358,7 +358,7 @@
 
             httpClient.getAvailableCouponForShop(shopInfo.id, function (data, status) {
                 var code = data.code, dataDetail = data.data;
-                if (dataDetail && dataDetail.coupon) {
+                if (dataDetail && dataDetail.coupons && dataDetail.coupons.length) {
 
                     $timeout(function(){
                         $scope.showCouponObtainLayout = true;
@@ -383,7 +383,7 @@
                 MMUtils.showAlert('领取成功,您可以到个人中心查看领取的代金券');
             }
         },function(data, status){
-
+            MMUtils.showAlert('领取出错了,请重新进店领取');
         });
     };
 
@@ -397,8 +397,7 @@
         fullyUpdateForProductList();
 
         if(!$scope.currentDisplayItems || !$scope.currentDisplayItems.length){
-//            initShopData();
-            checkAvailableCoupons();
+            initShopData();
         }
     });
 

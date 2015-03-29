@@ -185,7 +185,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
                 return success({'code':0,data:{'coupon':true}});
 
-                doGet('coupon/coupon', 'shop_id=' + shop_id, success, fail);
+                doGet('coupon/nePop', 'shop_id=' + shop_id, success, fail);
             },
 
             getAvailableCouponForUser:function(from,offset, success, fail){
