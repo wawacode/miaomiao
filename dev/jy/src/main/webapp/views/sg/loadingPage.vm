@@ -617,7 +617,7 @@
                     <div>
                     <div class="item item-icon-right" ui-sref="myCoupons">
                         <span>我的优惠券</span>
-                        <span class="couponHint" style="margin-left: 2px;padding-left: 5px;padding-right: 5px;font-size: 12px" ng-if="mycoupons && mycoupons.length">{{mycoupons.length}}张</span>
+                        <span class="couponHint" style="margin-left: 2px;padding-left: 5px;padding-right: 5px;font-size: 12px" ng-if="myCouponsCount > 0">{{myCouponsCount}}张</span>
                         <a class="icon baseRedColor ion-ios7-arrow-right" style="right: 12px"></a>
                     </div>
                 </div>

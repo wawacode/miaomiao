@@ -72,7 +72,7 @@ angular.module('miaomiao.shop')
 
                     });
 
-                    $scope.mycoupons = dataDetail.coupons;
+                    $scope.myCouponsCount = dataDetail.coupon_count;
 
                     $sessionStorage.orderAddresses = $scope.addressls;
                     $sessionStorage.orderOrders = $scope.orders;
