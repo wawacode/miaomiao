@@ -186,13 +186,7 @@ public class OrderController {
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
         if(Constants.WXPAY.equals(act)){
-//            if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
-//                if(validata(u.getId(),coupon_id,coupon_code) {
-//
-//
-//                }
 
-//            }
             String attach = shop_id + "_" +user_id;
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
