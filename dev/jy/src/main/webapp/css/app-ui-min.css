@@ -141,6 +141,7 @@ ul.rating li i{font-size:12px}
 .checkoutBasePadding{padding:10px 20px 10px 20px}
 .bar-light.checkoutHeaderbar{background:rgba(255,255,255,1.0) !important;z-index:500 !important}
 .commonSelected:before{font-size:25px !important;width:28px;height:28px}
+.couponHint{font-size:10px;background-color:#ef5356;color:#fff;padding:4px 4px 4px 4px;border-radius:4px}
 .noOrderHint{position:relative;padding-top:50px;width:100%;height:100%;display:inline-block;text-align:center;background-color:#fff}
 .noOrderImageHint{padding-top:20px;display:inline-block;width:175px;height:175px;background-image:url('/images/cat_grey.png');background-size:contain}
 .noOrderGotoShop{display:inline-block;width:134px;height:auto;font-size:17px;text-align:center;padding:10px 10px 10px 10px;margin-top:10px;background-color:#ef5356;color:#fff;border-radius:2px}
