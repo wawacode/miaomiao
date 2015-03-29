@@ -68,7 +68,7 @@ public class JRedisUtil {
         try{
             count = Long.valueOf(value);
         }catch (Exception e){
-            e.printStackTrace();
+            LoggerUtils.getInstance().log(String.format("redis  getLong parse error", value));
         }
         return count;
     }
