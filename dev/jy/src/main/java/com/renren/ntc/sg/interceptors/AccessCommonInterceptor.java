@@ -50,6 +50,14 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
 
     @Override
     protected Object before(Invocation inv) throws Exception {
+
+        //ua check
+
+        String ua = inv.getRequest().getHeader("User-Agent") ;
+        if(-1 == ua.indexOf("MicroMessenger")&& !SUtils.isDev()){
+           return "r:" + Constants.MBIANLI;
+
+        }
     	String path = inv.getRequest().getRequestURI() ;
         User u = null    ;
         String uuid  = CookieManager.getInstance().getCookie(inv.getRequest(), Constants.COOKIE_KEY_USER);

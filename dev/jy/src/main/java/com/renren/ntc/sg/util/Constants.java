@@ -41,6 +41,7 @@ public class Constants {
 //    public static final String DOMAIN = "miaomiao.com" ;UK
     public static final String DOMAIN = "127.0.0.1" ;
     public static final String DOMAIN2 = "mbianli.com:8088" ;
+    public static final String MBIANLI = "http://www.mbianli.com" ;
     public static final String DOMAIN3 = "mbianli.com" ;
     public static final String DOMAIN4 = "127.0.0.1:8080" ;
     public static final String COOKIE_KEY_USER ="cat_p" ;
