@@ -50,7 +50,7 @@ public interface UserCouponDAO {
 
 
     @SQL("update  " + TABLE_NAME +  " set status = :1 where id =:2 " )
-    public void writeoff(int used, long coupon_id);
+    public int writeoff(int status , long coupon_id);
 
 
 }

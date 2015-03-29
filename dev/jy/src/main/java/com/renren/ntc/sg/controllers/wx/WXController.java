@@ -7,10 +7,7 @@ import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.jredis.JRedisUtil;
-import com.renren.ntc.sg.service.LoggerUtils;
-import com.renren.ntc.sg.service.PushService;
-import com.renren.ntc.sg.service.SMSService;
-import com.renren.ntc.sg.service.WXService;
+import com.renren.ntc.sg.service.*;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
 import com.renren.ntc.sg.util.SUtils;
@@ -53,7 +50,7 @@ public class WXController {
     public ShopDAO shopDao;
 
     @Autowired
-    public PushService pushService;
+    public TicketService ticketService;
 
 
     private  static final String PREFIX = "qrscene_";
@@ -158,10 +155,8 @@ public class WXController {
                 }
                 orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
                 userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
-                if( coupon_id != 0){
-                    userCouponDao.writeoff(Constants.COUPONUSED,coupon_id) ;
-                    //todo  redis change ticket flags;
-                    // meitian yige
+                if( coupon_id != 0) {
+                    ticketService.writeoff(user_id,shop_id,coupon_id) ;
 
                 }
                 Shop shop = shopDao.getShop(shop_id);

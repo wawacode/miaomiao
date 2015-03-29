@@ -7,6 +7,7 @@ import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,18 +55,15 @@ public class TicketService {
         return null;
     }
 
-    public boolean writeoff(long coupon_id, String coupon_code) {
-        String key = SUtils.ticketKey(coupon_id, coupon_code);
-        String  value = JRedisUtil.getInstance().get(key);
-        if (StringUtils.isBlank(key)){
-            return true;
-        }
-        return false;
+    public void writeoff(long user_id,long shop_id,long coupon_id) {
+        userCouponDao.writeoff(Constants.COUPONUNUSED, coupon_id);
+        usedTicket(user_id, shop_id);
     }
 
 
     public  boolean usedTicket (long user_id,long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
+        long reslue = JRedisUtil;
         long value = JRedisUtil.getInstance().incr(key);
         if (value == 1L){
             return true;

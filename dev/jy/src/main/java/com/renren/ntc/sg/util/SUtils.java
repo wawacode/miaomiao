@@ -354,12 +354,10 @@ public class SUtils {
         return MD5Utils.MD5(sb.append(id + "").append(id1 + "").append(nonceStr).toString());
     }
 
-    public static String ticketKey(long coupon_id, String coupon_code) {
+    public static String ticketKey(long coupon_id) {
         StringBuffer sb  = new StringBuffer();
         sb.append(Constants.TICKETPRE);
         sb.append(coupon_id);
-        sb.append(Constants.LUNDER);
-        sb.append(coupon_code);
         return sb.toString();
     }
 
