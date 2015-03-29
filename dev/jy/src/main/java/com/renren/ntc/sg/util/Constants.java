@@ -53,6 +53,7 @@ public class Constants {
     public static final int TRADEPIE = 60;
     public static final String DAYLIMIT = "daylimit_";
     public static final String LUNDER = "_";
+    public static final String CANNOTUSETICKET = "{\"code\":12,\"msg\":\"今天已经使用过代金券\"}";;
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";

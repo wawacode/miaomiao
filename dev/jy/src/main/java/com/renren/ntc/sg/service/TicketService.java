@@ -11,10 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -50,6 +47,7 @@ public class TicketService {
 
     public UserCoupon getTicket(long user_id,long coupon_id, String coupon_code){
         UserCoupon ticket =  userCouponDao.getTicket(user_id, coupon_id, coupon_code, Constants.COUPONUNUSED);
+
         if(ticket != null && canOcupy(ticket.getId(),ticket.getCode()))
         {
             return ticket;
@@ -66,9 +64,11 @@ public class TicketService {
     public  void usedTicket (long user_id,long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
         JRedisUtil.getInstance().incr(key);
+
+
     }
 
-    public  boolean canUsedTicket (long user_id,long shop_id) {
+    public  boolean ticketCanUse(long user_id, long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
         long  re = JRedisUtil.getInstance().getLong(key);
         if (re == 0 ){
@@ -83,11 +83,19 @@ public class TicketService {
         List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id, shop_id, Constants.COUPONUNUSED, from, offset);
             for(UserCoupon t: tickets) {
                 LoggerUtils.getInstance().log(String.format(" check ocupy user %d , ticket id %d , code %s ", user_id, t.getId(), t.getCode()));
-                if (canOcupy(t.getId(), t.getCode())) {
+                if ( expire(t)&& canOcupy(t.getId(), t.getCode())) {
                     tt.add(t);
                 }
             }
         return tt;
+    }
+
+    private boolean expire(UserCoupon t) {
+         long curr = System.currentTimeMillis();
+        if (curr > t.getStart_time().getTime() &&  curr < t.getEnd_time().getTime()){
+            return true;
+        }
+        return false;
     }
 
 

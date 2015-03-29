@@ -6,8 +6,6 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
-
 public class Dateutils {
 	public static final String FORMAT_ALL = "yyyy-MM-dd HH:mm:ss";
 	private static SimpleDateFormat SDF = new SimpleDateFormat(FORMAT_ALL);

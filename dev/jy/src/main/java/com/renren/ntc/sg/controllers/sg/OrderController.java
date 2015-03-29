@@ -192,6 +192,11 @@ public class OrderController {
             String attach = shop_id + "_" +user_id;
             LoggerUtils.getInstance().log(String.format("user_id %d order_id   %s get coupon_id %d  coupon %s ",u.getId(),order_id,coupon_id,coupon_code));
             if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
+                boolean can = ticketService.ticketCanUse(u.getId(), shop_id);
+                if (!can){
+                    return "@json:" + Constants.CANNOTUSETICKET;
+                }
+
                 UserCoupon ticket = ticketService.getTicket(u.getId(), coupon_id, coupon_code);
                 if (ticket != null ){
                     LoggerUtils.getInstance().log(String.format("order_id %s  coupon_id %d price %d",order_id,coupon_id,ticket.getPrice()));
@@ -206,7 +211,7 @@ public class OrderController {
                     update(order, ticket.getPrice());
                 }
             }
-            LoggerUtils.getInstance().log(String.format("order  %s get pre_id %d ",order_id,price));
+            LoggerUtils.getInstance().log(String.format("order  %s get pre_id %d ", order_id, price));
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
@@ -218,7 +223,7 @@ public class OrderController {
             data.put("js_ticket",js_id) ;
             data.put("pre_id",pre_id) ;
             data.put("out_trade_no",order_id) ;
-            data.put("total_fee",price) ;
+            data.put("total_fee", price) ;
             //
 
             // dajinquan geli

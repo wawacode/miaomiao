@@ -102,13 +102,13 @@
 <script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-    $('.edit').editable('/console/shop/ud',{
+    $('.edit').editable('/console/coupon/edit',{
     tooltip : 'Click to edit...',
     callback : function(value, settings) {
     location.reload() ;
     }
     });
-    $('.edit_area').editable('/console/shop/ud' ,{
+    $('.edit_area').editable('/console/coupon/edit' ,{
     type : 'textarea',
     cancel : 'Cancel',
     submit : 'OK',

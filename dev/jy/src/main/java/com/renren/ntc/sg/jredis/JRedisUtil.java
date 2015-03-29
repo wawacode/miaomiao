@@ -35,6 +35,7 @@ public class JRedisUtil {
     }
 
     public String  set(String key, String value){
+        LoggerUtils.getInstance().log(String.format("redis set key  %s  value %s ",key,value));
         return jds.set(key,value);
     }
 
@@ -44,7 +45,9 @@ public class JRedisUtil {
 
 
     public long  incr(String key){
-        return jds.incr(key);
+        long code = jds.incr(key);
+        LoggerUtils.getInstance().log(String.format("redis set key  %s  value %d ",key,code));
+        return  code;
     }
 
 
