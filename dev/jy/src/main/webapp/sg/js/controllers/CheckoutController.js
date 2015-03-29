@@ -22,11 +22,11 @@ angular.module('miaomiao.shop')
             if(ShopService.isWeixinEnabledShop($scope.shop)){
                 $scope.checkoutType = [
                     {
-                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true, 'canUseCoupon': false
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': false, 'canUseCoupon': false
 
                     },
                     {
-                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': false,
+                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': true,
                         'coupons': [],
                         'canUseCoupon': true
                     }
@@ -38,7 +38,8 @@ angular.module('miaomiao.shop')
                     }
                 ];
              }
-            $scope.selectedCheckoutType = $scope.checkoutType[0];
+
+            $scope.selectedCheckoutType = $scope.checkoutType.length == 1 ? $scope.checkoutType[0]: $scope.checkoutType[1];
 
         }
 
@@ -93,6 +94,10 @@ angular.module('miaomiao.shop')
                         }
                     }
                 }
+
+                var index = $scope.checkoutType.length == 1 ? 0: 1;
+                $scope.selectCheckoutType(index);
+
             }, function (data, status) {
                 $ionicLoading.hide();
                 $scope.info.dataReady = true;
@@ -112,7 +117,7 @@ angular.module('miaomiao.shop')
 
             if ($scope.selectedCheckoutType.canUseCoupon == true) {
                 $scope.couponCards = $scope.selectedCheckoutType.coupons;
-                _updateAvailableConpons();
+//                _updateAvailableConpons();
 
             } else {
                 $scope.selectedCoupon = null;
@@ -390,7 +395,7 @@ angular.module('miaomiao.shop')
                 $scope.shoppingCartItems = ShoppingCart.getAllItems();
                 $scope.cartReadyToShip = ShoppingCart.cartReadyToShip();
                 _updateCheckoutHintMessage();
-                _updateAvailableConpons();
+//                _updateAvailableConpons();
             });
 
         }
