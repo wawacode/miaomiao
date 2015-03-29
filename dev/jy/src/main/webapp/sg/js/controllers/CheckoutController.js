@@ -135,7 +135,7 @@ angular.module('miaomiao.shop')
 
             for (var i = 0; i < $scope.couponCards.length; i++) {
 
-                if($scope.couponCards[i].status != 0);continue; // only available cards
+                if($scope.couponCards[i].status != 0)continue; // only available cards
 
                 $scope.couponCards[i].selected = false;
 
