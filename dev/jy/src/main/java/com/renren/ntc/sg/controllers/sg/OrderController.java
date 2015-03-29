@@ -199,10 +199,10 @@ public class OrderController {
                     if( price <=  0 ){
                         price = 1 ;
                     }
+                    //使用代金券
+                    attach = attach + "_" + ticket.getId();
+                    update(order, ticket.getPrice());
                 }
-                //使用代金券
-                attach = attach + "_" + ticket.getId();
-                update(order, ticket.getPrice());
             }
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
