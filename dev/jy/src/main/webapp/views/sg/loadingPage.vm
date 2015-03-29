@@ -404,12 +404,12 @@
                         <div class="list">
                             <div class="item item-icon-right borderBotton" style="margin-top: 1px;position: relative" bindonce ng-repeat="checkt in checkoutType" ng-click="selectCheckoutType($index)">
                                 <div style="padding-left: 5px;font-size: 15px" bo-text="checkt.name"></div>
-                                <div style="position: absolute;top: 5;left: 80;font-size: 8px;background-color: #ef5356;color: #ffffff;padding: 1px 2px 1px 2px" ng-if="checkt.canUseCoupon && checkt.coupons && checkt.coupons.length">优惠券</div>
+                                <div style="position: absolute;top: 8;left: 82;font-size: 10px;background-color: #ef5356;color: #ffffff;padding: 0px 2px 0px 2px;border-radius: 4px" ng-if="checkt.canUseCoupon && checkt.coupons && checkt.coupons.length">优惠券</div>
                                 <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':checkt.selected,'ion-ios7-circle-outline': !checkt.selected}"></div>
                             </div>
                         </div>
                     </div>
-                    <div ng-if="selectedCheckoutType.canUseCoupon == true">
+                    <div ng-if="selectedCheckoutType.canUseCoupon == true" style="padding-bottom: 20px;background-color: #eaeaea">
                         <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
                             使用优惠券
                         </div>
@@ -423,7 +423,7 @@
                                             font-size: 15px;text-align: center;min-width: 60px;color: #ef5356" bo-text="(card.price/100.0) + '元'"></div>
                                         </div>
                                         <div class="col-50">
-                                            <div style="padding-left: 20px;padding-top:5px;font-size: 15px" bo-text="card.desc"></div>
+                                            <div style="padding-left: 20px;padding-top:5px;font-size: 15px" bo-text="card.ext"></div>
                                             <div style="padding-left: 20px;;font-size: 12px" bo-text="'有效期至:' + (card.end_time | date:'yyyy-MM-dd')"></div>
                                         </div>
                                     </div>
