@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +39,7 @@ public class TicketService {
 
     public boolean canOcupy(long coupon_id, String coupon_code) {
         String key = SUtils.ticketKey(coupon_id);
+
         String  value = JRedisUtil.getInstance().get(key);
         if (StringUtils.isBlank(value)){
             return true;
@@ -62,7 +64,7 @@ public class TicketService {
 
     public  void usedTicket (long user_id,long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
-        long value = JRedisUtil.getInstance().incr(key);
+        JRedisUtil.getInstance().incr(key);
     }
 
     public  boolean canUsedTicket (long user_id,long shop_id) {
@@ -76,7 +78,6 @@ public class TicketService {
 
 
     public  List<UserCoupon> getUnusedTickets (long user_id,long shop_id) {
-        String key = SUtils.generDaylimitTicketKey(user_id);
         List<UserCoupon> tt = new ArrayList<UserCoupon>();
         List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id,shop_id,Constants.COUPONUNUSED);
             for(UserCoupon t: tickets) {
