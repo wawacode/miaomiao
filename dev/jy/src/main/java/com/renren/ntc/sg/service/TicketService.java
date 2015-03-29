@@ -7,7 +7,6 @@ import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,13 +31,13 @@ public class TicketService {
     public UserCouponDAO userCouponDao;
 
     public void occupy(long coupon_id, String coupon_code) {
-        String key = SUtils.ticketKey(coupon_id, coupon_code);
+        String key = SUtils.ticketKey(coupon_id);
         JRedisUtil.getInstance().set(key, Constants.COUPONTRADE );
         JRedisUtil.getInstance().expire(key,Constants.TRADEPIE);
     }
 
     public boolean canOcupy(long coupon_id, String coupon_code) {
-        String key = SUtils.ticketKey(coupon_id, coupon_code);
+        String key = SUtils.ticketKey(coupon_id);
         String  value = JRedisUtil.getInstance().get(key);
         if (StringUtils.isBlank(value)){
             return true;
@@ -61,17 +60,9 @@ public class TicketService {
     }
 
 
-    public  boolean usedTicket (long user_id,long shop_id) {
+    public  void usedTicket (long user_id,long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
-        long  re = JRedisUtil.getInstance().getLong(key);
-        if (re == 0 ){
-            return false;
-        }
         long value = JRedisUtil.getInstance().incr(key);
-        if (value == 1L){
-            return true;
-        }
-        return false;
     }
 
     public  boolean canusedTicket (long user_id,long shop_id) {
