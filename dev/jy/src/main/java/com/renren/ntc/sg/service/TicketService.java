@@ -47,6 +47,7 @@ public class TicketService {
 
     public UserCoupon getTicket(long user_id,long coupon_id, String coupon_code){
         UserCoupon ticket =  userCouponDao.getTicket(user_id, coupon_id, coupon_code, Constants.COUPONUNUSED);
+
         if(ticket != null && canOcupy(ticket.getId(),ticket.getCode()))
         {
             return ticket;
