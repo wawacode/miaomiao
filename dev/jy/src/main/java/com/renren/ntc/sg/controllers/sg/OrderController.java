@@ -62,8 +62,6 @@ public class OrderController {
     public PushService pushService;
 
 
-    @Autowired
-    public UserCouponDAO  userCouponDao;
 
 
 
@@ -216,11 +214,6 @@ public class OrderController {
         return "@json:" + response.toJSONString();
     }
 
-    private boolean validata(long id, int coupon_id, String coupon_code) {
-        UserCoupon ticket;
-        ticket = userCouponDao.getTicket(id, coupon_id, coupon_code, Constants.COUPONUNUSED);
-        return false;
-    }
 
     @Get("order_confirm")
     @Post("order_confirm")
