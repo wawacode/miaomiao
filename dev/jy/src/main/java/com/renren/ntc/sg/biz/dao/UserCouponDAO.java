@@ -44,13 +44,13 @@ public interface UserCouponDAO {
     public List<UserCoupon> geShopCoupons (long user_id, long shop_id ,int status) ;
     
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and coupon_id = :2 and code=:3 and status = :4")
-    public UserCoupon getTicket(long user_id, int coupon_id, String coupon_code, int couponunused);
+    public UserCoupon getTicket(long user_id, long coupon_id, String coupon_code, int couponunused);
 
 
 
 
     @SQL("update  " + TABLE_NAME +  " set status = :1 where id =:2 " )
-    public void writeoff(int used, long coupon_id);
+    public int writeoff(int status , long coupon_id);
 
 
 }

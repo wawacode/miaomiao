@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.jredis;
 
 import com.mongodb.*;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
 import org.apache.commons.logging.Log;
@@ -25,7 +26,7 @@ public class JRedisUtil {
     private static JRedisUtil instance = new JRedisUtil();
 
     private JRedisUtil() {
-//        jds = new Jedis("123.56.102.224") ;
+//        jds = new Jedis("10.170.239.52") ;
         jds = new Jedis("123.56.145.69");
     }
 
@@ -37,14 +38,18 @@ public class JRedisUtil {
         return jds.set(key,value);
     }
 
-    public Long  expire(String key, int seconds){
-        return jds.expire(key,seconds);
+    public long  expire(String key, int seconds){
+        return jds.expire(key, seconds);
     }
 
 
+    public long  incr(String key){
+        return jds.incr(key);
+    }
+
 
     public long  sadd( String key, String value){
-        return jds.sadd(key,value);
+        return jds.sadd(key, value);
     }
 
     public long  scard ( String key){
@@ -52,7 +57,20 @@ public class JRedisUtil {
     }
 
     public String  get(String key){
+        LoggerUtils.getInstance().log(String.format("redis get key  %s ",key));
         return jds.get(key);
+    }
+
+    public long  getLong(String key){
+        LoggerUtils.getInstance().log(String.format("redis getLong key  %s ",key));
+        String  value = jds.get(key);
+        long count = 0;
+        try{
+            count = Long.valueOf(value);
+        }catch (Exception e){
+            LoggerUtils.getInstance().log(String.format("redis  getLong parse error", value));
+        }
+        return count;
     }
 
     public Set<String> keys(String prefix){

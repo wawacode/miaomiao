@@ -8,6 +8,7 @@ import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.dao.*;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.TicketService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
@@ -39,7 +40,7 @@ public class ShopCarController {
     public ItemsDAO itemsDAO;
 
     @Autowired
-    public UserCouponDAO userCouponDao;
+    public TicketService ticketService;
 
     @Autowired
     public ShopCategoryDAO shopCategoryDAO;
@@ -115,12 +116,14 @@ public class ShopCarController {
           return "@" + Constants.LEAKERROR;
         }
         // 获取 可用的代金券
-        List <UserCoupon> tickets = userCouponDao.geShopCoupons(u.getId(),shop_id,Constants.COUPONUNUSED);
+        boolean can = ticketService.canUsedTicket( u.getId(), shop_id);
+        List <UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),0);
         JSONObject  j=  new JSONObject() ;
         j.put("addressls", JSON.toJSON(addressls));
         j.put("shop", JSON.toJSON(shop));
         j.put("itemls", JSON.toJSON(itemls));
-        j.put("tickets", JSON.toJSON(tickets));
+        j.put("coupons", JSON.toJSON(tickets));
+        j.put("coupon_active", can);
         JSONObject respone =  new JSONObject();
         respone.put("code" ,0);
         respone.put("data" ,j);

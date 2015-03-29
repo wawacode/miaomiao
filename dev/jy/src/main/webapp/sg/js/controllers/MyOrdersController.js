@@ -179,6 +179,10 @@ angular.module('miaomiao.shop')
             });
         };
 
+        $scope.goToCouponList = function(){
+
+        };
+
         OrderService.orderChangeEventSuccess();
 
         AddressService.onAddressChangeEventSwitchDefault($scope, function (message) {

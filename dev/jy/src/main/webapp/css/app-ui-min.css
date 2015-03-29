@@ -77,6 +77,8 @@ ul.rating li i{font-size:12px}
 .rightContainer{width:73%;position:absolute;height:100%;top:0;left:27%;overflow:hidden}
 .shoppingCartBadge{position:absolute;top:5;right:-14;border-radius:9px;min-width:18px;font-size:12px;height:18px;padding:0;z-index:100;font-weight:lighter;text-align:center;font-family:sans-serif}
 .shoppingCartHintMessage{margin-top:7px !important;margin-right:14px !important;margin-left:auto !important;margin-bottom:auto !important;border-radius:2px !important;font-size:17px !important;width:80% !important;height:37px !important}
+.couponLayout{height:100%;background-color:rgba(0,0,0,0.7);position:absolute;bottom:0;left:0;width:100%;overflow:hidden;z-index:800}
+.couponContent{position:absolute;top:100;bottom:100;left:0;right:0;text-align:center}
 .prod_icon{position:relative;width:70px;height:0;overflow:hidden;padding-bottom:70px;background-repeat:no-repeat;background-position:center center;background-size:contain;float:left;margin-right:5px}
 .prod_icon_clickable{min-height:100px;min-width:100px;display:inline-block;overflow:hidden;float:left;position:absolute;left:0;top:0;bottom:0;z-index:100}
 .product-item{display:list-item;border-bottom:1px solid #eaeaea;padding:9px 0 9px 0;overflow:hidden;position:relative}

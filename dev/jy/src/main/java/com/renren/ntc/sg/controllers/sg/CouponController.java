@@ -9,6 +9,7 @@ import com.renren.ntc.sg.bean.UserCoupon;
 import com.renren.ntc.sg.biz.dao.CouponDAO;
 import com.renren.ntc.sg.biz.dao.UserCouponDAO;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
+import com.renren.ntc.sg.service.TicketService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
@@ -38,8 +39,13 @@ public class CouponController {
 
     @Autowired
     CouponDAO couponDao;
+
+
     @Autowired
     UserCouponDAO usercouponDao;
+
+    @Autowired
+    public TicketService ticketService;
 
     String UKEY = "(*#^&*^(@)#$^IIYREOFHEKL";
 
@@ -55,9 +61,11 @@ public class CouponController {
             offset = 50;
         }
         JSONArray cos = new JSONArray();
+        boolean can = ticketService.canUsedTicket(u.getId(),0);
         List<UserCoupon> tickets = usercouponDao.getMyCoupon(u.getId(),from,offset);
         JSONObject res = new JSONObject();
         JSONObject data = new JSONObject();
+        data.put("coupon_active",can) ;
         data.put("coupons",JSON.toJSON(tickets) ) ;
         res.put("data",data);
         res.put("code",0);
@@ -87,6 +95,7 @@ public class CouponController {
                     userCoupon.setEnd_time(c.getEnd_time());
                     userCoupon.setExt(c.getExt());
                     userCoupon.setPrice(c.getPrice());
+                    userCoupon.setPic_url(c.getPic_url());
                     usercouponDao.insert(userCoupon) ;
                     cos.add(JSON.toJSON(userCoupon));
                 }catch (Exception e){
@@ -126,6 +135,5 @@ public class CouponController {
         res.put("code",0);
         return "@json:" + res.toJSONString();
     }
-
 
 }
