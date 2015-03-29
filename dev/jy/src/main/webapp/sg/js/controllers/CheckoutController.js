@@ -104,7 +104,7 @@ angular.module('miaomiao.shop')
             });
         }
 
-        $scope.userSelectCheckoutType = function (index,needAnimation) {
+        $scope.userSelectCheckoutType = function (index,needDelay) {
 
             for (var i = 0; i < $scope.checkoutType.length; i++) {
                 if (index != i) {
@@ -126,8 +126,8 @@ angular.module('miaomiao.shop')
             $ionicScrollDelegate.$getByHandle('checkoutScroll').resize(false);
 
             $timeout(function(){
-                $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom(needAnimation);
-            },500);
+                $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom(true);
+            }, needDelay ? 500 : 0);
 
             _updateCheckoutHintMessage();
         };
