@@ -41,7 +41,7 @@ public interface ItemsDAO {
     @SQL("select "+ FIELDS +" from ##(:tableName)   where id =:3")
     public  Item getItem(@SQLParam("tableName") String tableName, long shop_id, long id);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and category_id=:3 and count >0 order by score desc limit :4 , :5")
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and category_id=:3 and count >0 and onsell=1 order by score desc limit :4 , :5")
     public List<Item> getItems(@SQLParam("tableName") String tableName, long shop_id, int category_id, int from, int offset);
 
     @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and category_id=:3 order by score desc limit :4 , :5")
