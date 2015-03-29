@@ -40,6 +40,8 @@ public class WXController {
     @Autowired
     public WXService wxService;
 
+    @Autowired
+    public PushService pushService;
 
     @Autowired
     public UserCouponDAO userCouponDao ;

@@ -48,7 +48,7 @@ public class JRedisUtil {
 
 
     public long  sadd( String key, String value){
-        return jds.sadd(key,value);
+        return jds.sadd(key, value);
     }
 
     public long  scard ( String key){
@@ -57,6 +57,17 @@ public class JRedisUtil {
 
     public String  get(String key){
         return jds.get(key);
+    }
+
+    public long  getLong(String key){
+        String  value = jds.get(key);
+        long count = 0;
+        try{
+            count = Long.valueOf(value);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
     }
 
     public Set<String> keys(String prefix){

@@ -63,13 +63,26 @@ public class TicketService {
 
     public  boolean usedTicket (long user_id,long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
-        long reslue = JRedisUtil;
+        long  re = JRedisUtil.getInstance().getLong(key);
+        if (re == 0 ){
+            return false;
+        }
         long value = JRedisUtil.getInstance().incr(key);
         if (value == 1L){
             return true;
         }
         return false;
     }
+
+    public  boolean canusedTicket (long user_id,long shop_id) {
+        String key = SUtils.generDaylimitTicketKey(user_id);
+        long  re = JRedisUtil.getInstance().getLong(key);
+        if (re == 0 ){
+            return true;
+        }
+        return false;
+    }
+
 
     public  List<UserCoupon> getUnusedTickets (long user_id,long shop_id) {
         String key = SUtils.generDaylimitTicketKey(user_id);
