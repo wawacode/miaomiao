@@ -69,7 +69,10 @@ angular.module('miaomiao.shop')
                         if ($scope.orders.length > 1) {
                             $scope.historyOrder = $scope.orders.slice(1);
                         }
+
                     });
+
+                    $scope.myCouponsCount = dataDetail.coupon_count;
 
                     $sessionStorage.orderAddresses = $scope.addressls;
                     $sessionStorage.orderOrders = $scope.orders;

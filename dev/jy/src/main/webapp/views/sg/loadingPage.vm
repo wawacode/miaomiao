@@ -406,8 +406,11 @@
                             <div class="item item-icon-right borderBotton" style="margin-top: 1px;position: relative"
                                  bindonce ng-repeat="checkt in checkoutType" ng-click="userSelectCheckoutType($index,false)"
                                  ng-class="{'noBorderBottonLi':$index + 1 == checkoutType.length }">
-                                <div style="padding-left: 5px;font-size: 15px" bo-text="checkt.name"></div>
-                                <div style="position: absolute;top: 15;left: 85;font-size: 10px;background-color: #ef5356;color: #ffffff;padding: 0px 2px 0px 2px;border-radius: 4px" ng-if="checkt.canUseCoupon && checkt.coupons && checkt.coupons.length">优惠券</div>
+                                <div style="padding-left: 5px;font-size: 15px">
+                                    <span bo-text="checkt.name"></span>
+                                    <span class="couponHint" style=""
+                                          ng-if="checkt.canUseCoupon && checkt.coupons && checkt.coupons.length">优惠券</span>
+                                </div>
                                 <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':checkt.selected,'ion-ios7-circle-outline': !checkt.selected}"></div>
                             </div>
                         </div>
@@ -613,7 +616,8 @@
                 <!--<div ng-if="coupons && coupons.length">-->
                     <div>
                     <div class="item item-icon-right" ui-sref="myCoupons">
-                        我的优惠券
+                        <span>我的优惠券</span>
+                        <span class="couponHint" style="margin-left: 2px;padding-left: 5px;padding-right: 5px;font-size: 12px" ng-if="myCouponsCount > 0">{{myCouponsCount}}张</span>
                         <a class="icon baseRedColor ion-ios7-arrow-right" style="right: 12px"></a>
                     </div>
                 </div>
