@@ -61,6 +61,7 @@
         <ion-nav-bar class="bar-light homepageHeaderBar headerBarWithShadow" align-title="center">
             <ion-nav-buttons side="left">
                 <button class="button button-clear button-outline button-icon ion-ios7-person-outline"
+                        ng-class="{'buttonWithHot':showSomethingHot == true}"
                         ui-sref="myOrders"></button>
             </ion-nav-buttons>
             <ion-nav-buttons side="right">

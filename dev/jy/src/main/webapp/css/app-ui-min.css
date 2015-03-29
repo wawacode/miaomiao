@@ -26,6 +26,7 @@ body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;fon
 .loading-container .loading{background-color:rgba(255,255,255,1.0) !important;color:#000;font-size:15px}
 .popup-container .popup{border:solid 1px #eaeaea}
 .bar.bar-light.bar-footer{height:49px !important}
+.buttonWithHot:after{content:"";position:absolute;width:8px;height:8px;border-radius:5px;background-color:#ef5356;top:5;left:22}
 .loadingBackground{position:relative;width:100%;height:100%;background-color:rgba(239,84,90,1.0);text-align:center}
 .loadingImageTop{position:absolute;left:0;right:0;top:15%}
 .loadingImageCenter{width:75%;height:auto}
