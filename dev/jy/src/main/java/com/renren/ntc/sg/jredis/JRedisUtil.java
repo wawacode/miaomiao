@@ -35,6 +35,7 @@ public class JRedisUtil {
     }
 
     public String  set(String key, String value){
+        LoggerUtils.getInstance().log(String.format("redis set key  %s  value %s ",key,value));
         return jds.set(key,value);
     }
 
