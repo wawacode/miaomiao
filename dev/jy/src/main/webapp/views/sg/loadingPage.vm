@@ -396,7 +396,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="margin-bottom: 20px;background-color: #eaeaea" ng-if="info.dataReady == true">
+                <div style="padding-bottom: 20px;background-color: #eaeaea" ng-if="info.dataReady == true">
                     <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
                         付款方式
                     </div>
