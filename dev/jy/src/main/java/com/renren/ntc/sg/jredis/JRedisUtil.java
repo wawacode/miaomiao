@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.jredis;
 
 import com.mongodb.*;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
 import org.apache.commons.logging.Log;
@@ -56,16 +57,18 @@ public class JRedisUtil {
     }
 
     public String  get(String key){
+        LoggerUtils.getInstance().log(String.format("redis get key  %s ",key));
         return jds.get(key);
     }
 
     public long  getLong(String key){
+        LoggerUtils.getInstance().log(String.format("redis getLong key  %s ",key));
         String  value = jds.get(key);
         long count = 0;
         try{
             count = Long.valueOf(value);
         }catch (Exception e){
-            e.printStackTrace();
+            LoggerUtils.getInstance().log(String.format("redis  getLong parse error", value));
         }
         return count;
     }
