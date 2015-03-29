@@ -61,8 +61,8 @@ public class CouponController {
             offset = 50;
         }
         JSONArray cos = new JSONArray();
-        boolean can = ticketService.canUsedTicket(u.getId(),0);
-        List<UserCoupon> tickets = usercouponDao.getMyCoupon(u.getId(),from,offset);
+        boolean can = ticketService.canUsedTicket(u.getId(), 0);
+        List<UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),0,from,offset) ;
         JSONObject res = new JSONObject();
         JSONObject data = new JSONObject();
         data.put("coupon_active",can) ;
