@@ -419,7 +419,8 @@
                         <div>
                             <div class="list">
                                 <div class="item item-icon-right borderBotton" style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px"
-                                     bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)" ng-disabled="card.status != 0">
+                                     bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)" ng-disabled="card.status != 0"
+                                     ng-class="{'noBorderBottonLi':$index + 1 == couponCards.length }">
                                     <div class="row">
                                         <div class="col-20">
                                             <div class="" style="padding: 5px 5px 5px 5px;display: inline-block;width: 100%;
