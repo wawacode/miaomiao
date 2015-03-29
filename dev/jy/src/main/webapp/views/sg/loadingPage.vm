@@ -414,7 +414,8 @@
                         </div>
                         <div>
                             <div class="list">
-                                <div class="item item-icon-right borderBotton" style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px" bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)">
+                                <div class="item item-icon-right borderBotton" style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px"
+                                     bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)" ng-disabled="card.status != 0">
                                     <div class="row">
                                         <div class="col-20">
                                             <div class="" style="padding: 5px 5px 5px 5px;display: inline-block;width: 100%;
@@ -422,6 +423,7 @@
                                         </div>
                                         <div class="col-50">
                                             <div style="padding-left: 20px;padding-top:5px;font-size: 15px" bo-text="card.desc"></div>
+                                            <div style="padding-left: 20px;;font-size: 12px" bo-text="card.end_time | date:'yyyy-MM-dd'"></div>
                                         </div>
                                     </div>
                                     <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':card.selected,'ion-ios7-circle-outline': !card.selected}"></div>

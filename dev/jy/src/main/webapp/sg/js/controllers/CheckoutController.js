@@ -147,6 +147,11 @@ angular.module('miaomiao.shop')
 
         $scope.selectCouponCards = function (idx) {
 
+            // don't do anything if not valid
+            if($scope.couponCards[idx].status != 0){
+                return;
+            }
+
             function clearAllCards(){
                 for (var i = 0; i < $scope.couponCards.length; i++) {
                     $scope.couponCards[i].selected = false;
@@ -286,7 +291,7 @@ angular.module('miaomiao.shop')
                 MMUtils.showLoadingIndicator('正在生成订单,请稍候...', $scope);
                 var coupon_id = null,coupon_code = null;
                 if($scope.selectedCheckoutType.canUseCoupon == true && $scope.selectedCoupon){
-                    coupon_id = $scope.selectedCoupon.coupon_id;
+                    coupon_id = $scope.selectedCoupon.id;
                     coupon_code = $scope.selectedCoupon.code;
                 }
                 httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
