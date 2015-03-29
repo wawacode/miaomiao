@@ -423,10 +423,11 @@
                                         </div>
                                         <div class="col-50">
                                             <div style="padding-left: 20px;padding-top:5px;font-size: 15px" bo-text="card.desc"></div>
-                                            <div style="padding-left: 20px;;font-size: 12px" bo-text="card.end_time | date:'yyyy-MM-dd'"></div>
+                                            <div style="padding-left: 20px;;font-size: 12px" bo-text="'有效期至:' + (card.end_time | date:'yyyy-MM-dd')"></div>
                                         </div>
                                     </div>
-                                    <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':card.selected,'ion-ios7-circle-outline': !card.selected}"></div>
+                                    <div class="icon balanced commonSelected" style="right: 25px" ng-if="card.status == 0"
+                                         ng-class="{'ion-ios7-checkmark':card.selected,'ion-ios7-circle-outline': !card.selected}"></div>
                                 </div>
                             </div>
                         </div>
@@ -439,16 +440,17 @@
             <div class="row nonPadding">
                 <div class="col nonPadding">
                     <div class="row nonPadding">
-                        <div class="col nonPadding text-center" ng-if="!selectedCoupon.value">
+                        <div class="col nonPadding text-center" ng-if="!selectedCoupon || !selectedCoupon.price">
                             <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;padding-top: 15px">总计:</div>
                             <div class="verticalCenter" style="left: 65px;top: 0;bottom: 0;margin: 0;padding-top: 15px;font-size: 17px;">
                                 ￥{{shoppingCartItems|getTotolPrice}}
                             </div>
                         </div>
-                        <div class="col nonPadding text-center" style="position: relative;display: inline-block;width: 100%;height: 100%" ng-if="selectedCoupon.value">
+                        <div class="col nonPadding text-center" style="position: relative;display: inline-block;width: 100%;height: 100%"
+                             ng-if="selectedCoupon && selectedCoupon.price">
                             <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;padding-top: 15px">总计:</div>
                             <div style="position: absolute;left: 65px;top: 0;bottom: 0;height: 100%">
-                                <div style="position: absolute; top: 8;left: 0;font-size: 17px">￥{{((shoppingCartItems | getTotolPrice) - selectedCoupon.value) | changeTwoDecimal}}</div>
+                                <div style="position: absolute; top: 8;left: 0;font-size: 17px">￥{{((shoppingCartItems | getTotolPrice) - selectedCoupon.price/100.0) | changeTwoDecimal}}</div>
                                 <div style="position: absolute; bottom: 3;left: 3;font-size: 10px;color: #999999"><s>￥{{(shoppingCartItems | getTotolPrice)}}</s></div>
                             </div>
                         </div>

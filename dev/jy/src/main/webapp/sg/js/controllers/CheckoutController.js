@@ -85,7 +85,7 @@ angular.module('miaomiao.shop')
                 }
 
                 // update coupon list
-                var coupons = dataDetail.tickets;
+                var coupons = dataDetail.coupons;
                 if(coupons){
                     for(var i=0;i< $scope.checkoutType.length;i++){
                         if($scope.checkoutType[i].canUseCoupon){
@@ -135,7 +135,10 @@ angular.module('miaomiao.shop')
 
             for (var i = 0; i < $scope.couponCards.length; i++) {
 
+                if($scope.couponCards[i].status != 0);continue; // only available cards
+
                 $scope.couponCards[i].selected = false;
+
                 if ($scope.couponCards[i].price/100.0 <= totalPrice &&
                     $scope.couponCards[i].price/100.0 >= maxAvailbale) {
                     $scope.couponCards[i].selected = true;
