@@ -247,7 +247,7 @@ public class WXService {
         }
         User user = userDao.getUser(order.getUser_id());
 
-        orderService.mark(order_id, shop.getId());
+
         String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
         remark = remark.replace("{shop_tel}", shop.getTel());
 

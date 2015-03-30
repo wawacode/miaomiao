@@ -32,6 +32,9 @@ public class WXController {
     public OrdersDAO orderDao;
 
     @Autowired
+    public OrderService orderService;
+
+    @Autowired
     public UserOrdersDAO userOrdersDAO;
 
     @Autowired
@@ -216,6 +219,7 @@ public class WXController {
 //          System.out.println("send sms to user");
 //          smsService.sendSMS2User(order_id, shop);
             //use wx
+            orderService.mark(order_id, shop.getId());
             wxService.sendWX2User(order_id, shop);
 
 

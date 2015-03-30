@@ -320,6 +320,7 @@ public class OrderController {
             pushService.send2locPush(order_id, shop);
             pushService.send2kf(order_id, shop);
             // 发送wx 通知
+            orderService.mark(order_id, shop.getId());
             wxService.sendWX2User(order_id, shop);
 
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
