@@ -97,7 +97,6 @@ angular.module('miaomiao.shop')
 
                 $timeout(function(){
                     // init some values
-                    $scope.couponCards = [];
                     $scope.selectedCoupon = null;
                     $scope.couponActive = dataDetail.coupon_active;
                 });
