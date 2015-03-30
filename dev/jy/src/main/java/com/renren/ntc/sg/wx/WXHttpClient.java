@@ -22,12 +22,6 @@ public class WXHttpClient {
     private static String appId = "wx762f832959951212";
 
 
-    // ceshigongzong hao
-
-//    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
-//    private static String token = "tooooken";
-//    private static String appKey = "ebd5d6bf4c597a617b2420341da1c03d";
-//    private static String appId = "wxd64a39a599e2ce3a";
 
 
 
