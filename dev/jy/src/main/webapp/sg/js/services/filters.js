@@ -21,7 +21,7 @@
 
     }).filter('changeTwoDecimal', function () {
         return function (num) {
-            if(!num) return;
+            if(num == 0) return 0.0;
             return Math.round(num*100)/100; // Characters after Colon
         };
     }).filter('removeAMPM', function () {
