@@ -59,8 +59,10 @@ public class WXService {
 
 
     private static final String mch_id = "1233699402";
-    private static final String key = "210f760a89db30aa72ca258a3483cc7f";
-    private static final String  notify_url ="http://www.mbianli.com/wx/cb";
+    private static final String key = "210f760a89db30aa72ca258a3483cc7f"; 
+
+    //test url
+    private static final String  notify_url ="http://www.mbianli.com:8088/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
@@ -224,9 +226,13 @@ public class WXService {
         String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
         remark = remark.replace("{shop_tel}", shop.getTel());
 
-        orderStatus(Constants.ORDERDONE, user.getWx_open_id(),
+        String respone = orderStatus(Constants.ORDERDONE, user.getWx_open_id(),
                 Constants.ORDERDONE, order_id, remark);
-        return;
+        String access_token = getAccessToken();
+        String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+        byte[] tt = sendPostRequest(turl, respone);
+        String re = new String(tt);
+        System.out.println(tt);
     }
 	private static String _GetCookie() {
 		return "2";
@@ -285,7 +291,6 @@ public class WXService {
 
            return "" ;
     }
-
 
 
     public static void main(String[] args) throws IOException {
