@@ -947,14 +947,8 @@
     </div>
 </script>
 
-<!--<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>-->
-<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>-->
-<!--<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>-->
-
 <script>
-
     (function() {
-
         function async_load(url){
             var s = document.createElement('script');
             s.type = 'text/javascript';
@@ -963,25 +957,18 @@
             var x = document.getElementsByTagName('script')[0];
             x.parentNode.insertBefore(s, x);
         }
-
-        function loadExteranJs(){
-
+        function loadExternalJs(){
             async_load('http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624');
             async_load('http://developer.baidu.com/map/jsdemo/demo/convertor.js');
-
             async_load('http://res.wx.qq.com/open/js/jweixin-1.0.0.js');
-
             async_load('//hm.baidu.com/hm.js?39973e3981da4da56b413e225a122b0f');
         }
-
         if (window.attachEvent){
-            window.attachEvent('onload', loadExteranJs);
+            window.attachEvent('onload', loadExternalJs);
         }
-
         else
-            window.addEventListener('load', loadExteranJs, false);
+            window.addEventListener('load', loadExternalJs, false);
     })();
-
 </script>
 
 </body>
