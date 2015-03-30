@@ -312,9 +312,6 @@ public class OrderController {
     }
 
     private void sendInfo(User u ,Shop shop ,String order_id){
-            if(shop.getId() == 10033){
-                return;
-            }
 
             smsService.sendSMS2LocPush(order_id, shop);
             pushService.send2locPush(order_id, shop);

@@ -11,6 +11,7 @@ import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
+import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
@@ -220,6 +221,10 @@ public class WXService {
 
     public void sendWX2User(String order_id, long shop_id) {
 
+        if (MongoDBUtil.getInstance().haveSend("wx_xx","wx_"+order_id)) {
+            System.out.println(String.format("%s %s sms allready send ", "wx_xx", order_id));
+            return;
+        }
         Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
         if (null == order){
             return ;
@@ -230,23 +235,29 @@ public class WXService {
         String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
         remark = remark.replace("{shop_tel}", shop.getTel());
 
-        String respone = orderStatus(Constants.ORDERDONE, user.getWx_open_id(),
-                Constants.ORDERDONE, order_id, remark);
+        String respone = orderStatus(Constants.ORDERCONFRIM, user.getWx_open_id(),
+                Constants.ORDERCONFRIM, order_id, remark);
         String access_token = getAccessToken();
         String  turl  = TEMPLATEAPI.replace("{token}", access_token);
         byte[] tt = sendPostRequest(turl, respone);
+
+        MongoDBUtil.getInstance().sendmark("wx_xx", "wx_"+order_id);
         String re = new String(tt);
         System.out.println(tt);
     }
 
 
     public void sendWX2User(String order_id, Shop shop) {
+
+        if (MongoDBUtil.getInstance().haveSend("wx_xx","pay_done_"+order_id)) {
+            System.out.println(String.format("%s %s sms allready send ", "wx_xx", order_id));
+            return;
+        }
         Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop.getId()));
         if (null == order){
             return ;
         }
         User user = userDao.getUser(order.getUser_id());
-
 
         String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
         remark = remark.replace("{shop_tel}", shop.getTel());
@@ -256,6 +267,7 @@ public class WXService {
         String access_token = getAccessToken();
         String  turl  = TEMPLATEAPI.replace("{token}", access_token);
         byte[] tt = sendPostRequest(turl, respone);
+        MongoDBUtil.getInstance().sendmark("wx_xx", "pay_done_"+order_id);
         String re = new String(tt);
         System.out.println(tt);
     }
@@ -371,7 +383,7 @@ public class WXService {
             content  = content.replace("{body}",body);
             content  = content.replace("{mch_id}",mch_id);
             content  = content.replace("{nonce_str}",nonce_str);
-            content  = content.replace("{notify_url}",notify_url);
+            content  = content.replace("{notify_url}",nurl);
             content  = content.replace("{openid}",open_id);
             content  = content.replace("{out_trade_no}",out_trade_no);
             content  = content.replace("{spbill_create_ip}",spbill_create_ip);
