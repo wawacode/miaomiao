@@ -373,6 +373,13 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 });
             },
 
+            showCustomAlert: function (message) {
+                $ionicPopup.alert({
+                    title: message,
+                    templateUrl: 'templates/customAlert.html'
+                });
+            },
+
             hex_md5:  function(s) {
                 return rstr2hex(rstr_md5(str2rstr_utf8(s)));
             }

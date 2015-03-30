@@ -1024,6 +1024,12 @@
     </div>
 </script>
 
+<script id='templates/customAlert.html' type="text/ng-template">
+    <div style="background-color: #ef5356">
+        <div style="color: #ffffff">supporse</div>
+    </div>
+</script>
+
 <script>
     (function () {
         function async_load(url) {
