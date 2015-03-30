@@ -6,7 +6,7 @@ import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**

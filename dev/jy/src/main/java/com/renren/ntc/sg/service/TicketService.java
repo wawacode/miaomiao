@@ -11,7 +11,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -46,7 +48,7 @@ public class TicketService {
     }
 
     public UserCoupon getTicket(long user_id,long coupon_id, String coupon_code){
-        UserCoupon ticket =  userCouponDao.getTicket(user_id, coupon_id, coupon_code, Constants.COUPONUNUSED);
+        UserCoupon ticket =  userCouponDao.getTicket(user_id, coupon_id, coupon_code, Constants.COUPONUNUSED,new Date(System.currentTimeMillis()));
 
         if(ticket != null && canOcupy(ticket.getId(),ticket.getCode()))
         {
@@ -83,7 +85,7 @@ public class TicketService {
 
     public  List<UserCoupon> getUnusedTickets (long user_id,long shop_id,int from ,int offset) {
         List<UserCoupon> tt = new ArrayList<UserCoupon>();
-        List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id, shop_id, Constants.COUPONUNUSED, from, offset);
+        List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id, shop_id, Constants.COUPONUNUSED, from, offset,new Date(System.currentTimeMillis()));
             for(UserCoupon t: tickets) {
                 LoggerUtils.getInstance().log(String.format(" check ocupy user %d , ticket id %d , code %s ", user_id, t.getId(), t.getCode()));
                 if ( expire(t)&& canOcupy(t.getId(), t.getCode())) {
@@ -103,14 +105,7 @@ public class TicketService {
 
 
     public int getTicketCount(long user_id) {
-        List<UserCoupon> tt = new ArrayList<UserCoupon>();
-        List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id, Constants.COUPONUNUSED);
-        for(UserCoupon t: tickets) {
-            LoggerUtils.getInstance().log(String.format(" check ocupy user %d , ticket id %d , code %s ", user_id, t.getId(), t.getCode()));
-            if ( expire(t)&& canOcupy(t.getId(), t.getCode())) {
-                tt.add(t);
-            }
-        }
-        return tt.size();
+        int count  = userCouponDao.getMyCouponCount(user_id, Constants.COUPONUNUSED,new Date(System.currentTimeMillis()));
+        return count ;
     }
 }

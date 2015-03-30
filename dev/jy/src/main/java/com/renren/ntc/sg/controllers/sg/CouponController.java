@@ -78,7 +78,7 @@ public class CouponController {
         JSONArray cos = new JSONArray();
         List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
         for (Coupon c : coupons ){
-            List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),c.getId());
+            List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),c.getId(),new Date(System.currentTimeMillis()));
             if (tickets == null  || tickets.size() == 0 ) {
                 try {
                     UserCoupon userCoupon =  new UserCoupon() ;
@@ -121,7 +121,7 @@ public class CouponController {
         List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
         JSONArray cos = new JSONArray();
         for (Coupon c : coupons ){
-            List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),c.getId());
+            List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),c.getId(),new Date(System.currentTimeMillis()));
             if (tickets == null  || tickets.size() == 0 ) {
                 cos.add(JSON.toJSON(c)); ;
             }
