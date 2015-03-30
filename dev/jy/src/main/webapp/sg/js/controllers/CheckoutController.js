@@ -95,12 +95,8 @@ angular.module('miaomiao.shop')
                     }
                 }
 
-                $timeout(function(){
-                    // init some values
-                    $scope.selectedCoupon = null;
-                    $scope.couponActive = dataDetail.coupon_active;
-                });
-
+                $scope.selectedCoupon = null;
+                $scope.couponActive = dataDetail.coupon_active;
 
                 var index = $scope.checkoutType.length == 1 ? 0: 1;
                 $scope.userSelectCheckoutType(index,true);
