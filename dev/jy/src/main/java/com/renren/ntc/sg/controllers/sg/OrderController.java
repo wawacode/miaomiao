@@ -65,7 +65,8 @@ public class OrderController {
     @Autowired
     public PushService pushService;
 
-
+    @Autowired
+    public OrderService orderService;
 
 
 
@@ -232,6 +233,7 @@ public class OrderController {
         response.put("data", data);
         response.put("code", 0);
         LoggerUtils.getInstance().log("  order save return " + response.toJSONString());
+        orderService.mark(order_id);
         return "@json:" + response.toJSONString();
     }
 

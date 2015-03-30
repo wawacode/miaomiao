@@ -53,7 +53,7 @@ public class SMSService {
             String info = "用户下单";
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
-            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
+            String vv = shop.getName() + " " + shop.getTel() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
             vv = vv.replaceAll("=", "").replaceAll("&", "");
             String ro = info.replace("=", "").replace("&", "");
             float p = (float) order.getPrice() / 100;

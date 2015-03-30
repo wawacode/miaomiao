@@ -52,7 +52,12 @@ public class JRedisUtil {
 
 
     public long  sadd( String key, String value){
+
         return jds.sadd(key, value);
+    }
+
+    public long  srem (String key,String value){
+        return jds.srem(key, value);
     }
 
     public long  scard ( String key){

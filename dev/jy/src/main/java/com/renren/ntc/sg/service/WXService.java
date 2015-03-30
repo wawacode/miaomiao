@@ -114,37 +114,40 @@ public class WXService {
 
 
 
-    public String orderDone(String openId ){
+    public String orderStatus(String first,String openId ,String paydone  ,String order_id,String remark ){
         JSONObject response =  new JSONObject();
         response.put("touser",openId) ;
-        response.put("template_id","I3eB1oTmYdP1Lc9WnSSx1SYumxhpEFcILh6f2Xy6Lyg") ;
+        response.put("template_id","azG7FFMY0x3P9HnFvg5S7Qm0a2xvJttzbsBGACOb-pA") ;
         response.put("url","http://www.mbianli.com/sg/loading#/myorders");
         response.put("topcolor","#FF0000");
         JSONObject data  = new JSONObject( );
-        JSONObject first = new JSONObject();
-        first.put("value","恭喜你购买成功！");
-        first.put("color","#173177");
+        JSONObject firstob = new JSONObject();
+        firstob.put("value",first);
+        firstob.put("color","#173177");
 
-        JSONObject orderMoneySum = new JSONObject();
 
-        orderMoneySum.put("value","恭喜你购买成功！");
-        orderMoneySum.put("color","#173177");
+        JSONObject OrderSn = new JSONObject();
+        OrderSn.put("value",order_id);
+        OrderSn.put("color","#173177");
 
-        JSONObject orderProductName = new JSONObject();
-        orderProductName.put("value","恭喜你购买成功！");
-        orderProductName.put("color","#173177");
+        JSONObject OrderStatus = new JSONObject();
 
-        JSONObject remark = new JSONObject();
-        remark.put("value","恭喜你购买成功！");
-        remark.put("color","#173177");
+        OrderStatus.put("value",paydone);
+        OrderStatus.put("color","#173177");
 
-        data.put("first",first);
-        data.put("orderMoneySum",orderMoneySum);
-        data.put("orderProductName",orderProductName);
-        data.put("remark",remark);
+
+        JSONObject remarkob = new JSONObject();
+        remarkob.put("value",remark);
+        remarkob.put("color","#173177");
+
+        data.put("first",firstob);
+        data.put("OrderSn",OrderSn);
+        data.put("OrderStatus",OrderStatus);
+        data.put("remark",remarkob);
         response.put("data",data);
         return response.toJSONString();
     }
+
 
 
     public String  getAccessToken(){
@@ -254,18 +257,23 @@ public class WXService {
 
 
     public static void main(String[] args) throws IOException {
+        String openId = "oQfDLjmZD7Lgynv6vuoBlWXUY_ic";
         WXService w = new WXService();
         byte [] t = new byte[0];
         try {
-            t = WXService.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
+            t = w.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
                     "grant_type=client_credential&appid=" + appId + "&secret=" + appKey);
             String e = new String(t);
             if (StringUtils.isBlank(e)){
             }
             JSONObject ob =(JSONObject) JSONObject.parse(e);
-           String  access_token =  ob.getString("access_token");
-            JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
-            JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
+            String  access_token =  ob.getString("access_token");
+            String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+            String result = w.orderStatus("ni已下单成功。",openId,"order_id","货到付款 ","乐邻便利即将为你配送，预计30分钟内到达；乐邻便利联系电话：xxxxxxx");
+            byte[] tt = sendPostRequest(turl, result);
+            String re = new String(tt);
+            System.out.println(tt);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -304,6 +312,7 @@ public class WXService {
             content  = content.replace("{sign}",sign);
             System.out.println("send " + content);
             TenpayHttpClient http = new TenpayHttpClient();
+
             http.callHttpPost(URL,content);
             String  res  = http.getResContent();
             System.out.println( "wx rec " +  res );
