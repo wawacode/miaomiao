@@ -431,7 +431,7 @@
                                  ng-class="{'noBorderBottonLi':$index + 1 == checkoutType.length }">
                                 <div style="padding-left: 5px;font-size: 15px">
                                     <span bo-text="checkt.name"></span>
-                                    <span class="couponHint" style=""
+                                    <span class="couponHintDark" style=""
                                           ng-if="checkt.canUseCoupon && checkt.coupons && checkt.coupons.length">优惠券</span>
                                 </div>
                                 <div class="icon balanced commonSelected" style="right: 25px"
@@ -447,7 +447,7 @@
                         <div>
                             <div class="list">
                                 <div class="item item-icon-right borderBotton"
-                                     style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px"
+                                     style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px;padding-left: 5px"
                                      bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)"
                                      ng-disabled="card.status == 0"
                                      ng-class="{'noBorderBottonLi':$index + 1 == couponCards.length }">
@@ -602,25 +602,31 @@
             <div class="list" style=" background-color: #ededed;" ng-if="couponList && couponList.length">
 
                 <div class="item" ng-repeat="coupon in couponList">
-                    <div style="display: inline-block;float: left">
+                    <div style="display: inline-block;float: left" ng-class="{'disabledColor':coupon.status != 0}">
                         <div style="font-size: 16px">
-                            {{coupon.name}}
+                            {{coupon.name}}<span ng-if="coupon.status!=0" style="font-size: 14px">(已使用)</span>
                         </div>
                         <div style="font-size: 12px">
                             有效期至:{{coupon.end_time | date:'yyyy-MM-dd'}}
                         </div>
                     </div>
                     <div style="display: inline-block;float: right">
-                        <div style="font-size: 16px;padding: 5px 10px 5px 10px;"
+                        <div style="font-size: 16px;padding: 5px 10px 5px 10px;min-width: 70px;text-align: center"
                              ng-class="{'baseRedRounded':coupon.status==0,'baseGrayRounded':coupon.status==4}">
                             {{coupon.price/100.0}} 元
                         </div>
                     </div>
                 </div>
 
-                <div class="item item-text-wrap">
+                <div class="item item-text-wrap" ng-if="couponList && couponList.length">
                     <p style="color: #999999">
                         备注：喵喵代金券仅限微信支付使用，每天只能使用一张，喵喵哒 \(^o^)/
+                    </p>
+                </div>
+
+                <div class="item item-text-wrap" ng-if="!couponList || couponList.length == 0">
+                    <p style="color: #999999;text-align: center">
+                        没有优惠券
                     </p>
                 </div>
 
@@ -670,10 +676,10 @@
 
                 <!--<div ng-if="coupons && coupons.length">-->
                 <div>
-                    <div class="item item-icon-right" ui-sref="myCoupons">
+                    <div class="item item-icon-right" ui-sref="myCoupons" style="padding-right: 38px">
                         <span>我的优惠券</span>
                         <span class="couponHint"
-                              style="margin-left: 2px;padding-left: 5px;padding-right: 5px;font-size: 12px"
+                              style="margin-left: 2px;padding-left: 5px;padding-right: 5px;font-size: 14px;float: right"
                               ng-if="myCouponsCount > 0">{{myCouponsCount}}张</span>
                         <a class="icon baseRedColor ion-ios7-arrow-right" style="right: 12px"></a>
                     </div>
