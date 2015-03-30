@@ -7,6 +7,7 @@ import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.User;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
@@ -44,6 +45,9 @@ public class WXService {
 
     @Autowired
     public OrdersDAO ordersDAO;
+
+    @Autowired
+    public ShopDAO shopDao;
 
     @Autowired
     public OrderService orderService;
@@ -214,6 +218,27 @@ public class WXService {
 		return btemp;
 	}
 
+    public void sendWX2User(String order_id, long shop_id) {
+
+        Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        if (null == order){
+            return ;
+        }
+        Shop shop = shopDao.getShop(shop_id);
+        User user = userDao.getUser(order.getUser_id());
+        // del add to set
+        String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
+        remark = remark.replace("{shop_tel}", shop.getTel());
+
+        String respone = orderStatus(Constants.ORDERDONE, user.getWx_open_id(),
+                Constants.ORDERDONE, order_id, remark);
+        String access_token = getAccessToken();
+        String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+        byte[] tt = sendPostRequest(turl, respone);
+        String re = new String(tt);
+        System.out.println(tt);
+    }
+
 
     public void sendWX2User(String order_id, Shop shop) {
         Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop.getId()));
@@ -222,7 +247,7 @@ public class WXService {
         }
         User user = userDao.getUser(order.getUser_id());
 
-        orderService.mark(order_id);
+        orderService.mark(order_id, shop.getId());
         String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
         remark = remark.replace("{shop_tel}", shop.getTel());
 
