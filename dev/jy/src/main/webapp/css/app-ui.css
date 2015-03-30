@@ -92,6 +92,14 @@ body {
     border-radius: 4px;
     background-color: #ef5356;color: #ffffff
 }
+
+.baseGrayRounded{
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #eaeaea;color: #999999
+}
+
+
 .hidden {
     display: none !important;
 }
