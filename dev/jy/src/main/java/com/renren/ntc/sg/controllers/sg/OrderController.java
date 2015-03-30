@@ -183,8 +183,9 @@ public class OrderController {
             return "@" + Constants.UKERROR;
         }
         if(!Constants.WXPAY.equals(act)){
-            sendInfo(shop,order_id);
+            sendInfo( u ,shop,order_id);
         }
+
 
         JSONObject response = new JSONObject();
         JSONObject data = new JSONObject();
@@ -226,14 +227,13 @@ public class OrderController {
             data.put("out_trade_no",order_id) ;
             data.put("total_fee", price) ;
             //
-
             // dajinquan geli
         }
         data.put("order_id",order_id);
         response.put("data", data);
         response.put("code", 0);
         LoggerUtils.getInstance().log("  order save return " + response.toJSONString());
-        orderService.mark(order_id);
+
         return "@json:" + response.toJSONString();
     }
 
@@ -311,14 +311,17 @@ public class OrderController {
         return "@json:"+Constants.DONE;
     }
 
-    private void sendInfo( Shop shop ,String order_id){
+    private void sendInfo(User u ,Shop shop ,String order_id){
             if(shop.getId() == 10033){
                 return;
             }
+
             smsService.sendSMS2LocPush(order_id, shop);
             pushService.send2locPush(order_id, shop);
             pushService.send2kf(order_id, shop);
-            // 发送短信通知
+            // 发送wx 通知
+            wxService.sendWX2User(order_id, shop);
+
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
             if (null == devcie || SUtils.isOffline(devcie)) {
                 System.out.println("device is null or  printer offline ");
@@ -327,9 +330,11 @@ public class OrderController {
                 pushService.send2Boss(order_id, shop);
                 System.out.println("send sms to boss");
                 smsService.sendSMS2Boss(order_id, shop);
-                System.out.println("send sms to user");
-                smsService.sendSMS2User(order_id, shop);
-       }
+
+//              System.out.println("send sms to user");
+//              smsService.sendSMS2User(order_id, shop);
+
+            }
     }
 
 }

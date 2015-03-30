@@ -3,8 +3,14 @@ package com.renren.ntc.sg.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.bean.User;
+import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
+import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
@@ -12,6 +18,7 @@ import com.renren.ntc.sg.util.wx.Sha1Util;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -31,6 +38,15 @@ public class WXService {
 
     private  static  String ACCESS_TOKEN = "access_token";
     private  static  String JSAPI_TOKEN = "jsapi_ticket";
+
+    @Autowired
+    public UserDAO userDao;
+
+    @Autowired
+    public OrdersDAO ordersDAO;
+
+    @Autowired
+    public OrderService orderService;
 
     private static final int CONN_TIMEOUT = 10000;
 	private static final int READ_TIMEOUT = 10000;
@@ -196,6 +212,22 @@ public class WXService {
 		return btemp;
 	}
 
+
+    public void sendWX2User(String order_id, Shop shop) {
+        Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop.getId()));
+        if (null == order){
+            return ;
+        }
+        User user = userDao.getUser(order.getUser_id());
+
+        orderService.mark(order_id);
+        String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
+        remark = remark.replace("{shop_tel}", shop.getTel());
+
+        orderStatus(Constants.ORDERDONE, user.getWx_open_id(),
+                Constants.ORDERDONE, order_id, remark);
+        return;
+    }
 	private static String _GetCookie() {
 		return "2";
     }

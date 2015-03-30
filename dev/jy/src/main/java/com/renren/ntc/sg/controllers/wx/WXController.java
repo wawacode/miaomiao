@@ -213,8 +213,12 @@ public class WXController {
             pushService.send2Boss(order_id, shop);
             System.out.println("send sms to boss");
             smsService.sendSMS2Boss(order_id, shop);
-            System.out.println("send sms to user");
-            smsService.sendSMS2User(order_id, shop);
+//          System.out.println("send sms to user");
+//          smsService.sendSMS2User(order_id, shop);
+            //use wx
+            wxService.sendWX2User(order_id, shop);
+
+
         }
     }
     private long getShop_id(String attach) {
