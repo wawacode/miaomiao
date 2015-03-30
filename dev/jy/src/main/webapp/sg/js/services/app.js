@@ -76,7 +76,7 @@ angular.module('miaomiao.shop', ['ionic',
             })
             .state('goToShop', {
                 url: "/shop?shop_id",
-                templateUrl: 'templates/productList.html',
+                templateUrl: 'templates/locate.html',
                 controller: 'GoToShopCtrl'
 
             })
