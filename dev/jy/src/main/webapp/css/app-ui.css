@@ -92,6 +92,14 @@ body {
     border-radius: 4px;
     background-color: #ef5356;color: #ffffff
 }
+
+.baseGrayRounded{
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #eaeaea;color: #999999
+}
+
+
 .hidden {
     display: none !important;
 }
@@ -184,6 +192,9 @@ body {
     height: 49px !important;
 }
 
+.grayyed{
+    color: lightgray;
+}
 
 .buttonWithHot:after{
     content: "";
@@ -1197,6 +1208,7 @@ ul.rating li i {
     width: 100%;
     text-align: right;
     margin-top: 10px;
+    position: relative;
 }
 
 .orderSnapshotRemark {
@@ -1210,7 +1222,10 @@ ul.rating li i {
     font-size: 14px;
     font-weight: 100;
     color: #6a6a6a;
+    display: inline-block;
+    padding-right: 80px;
 }
+
 
 .orderId {
     float: left;

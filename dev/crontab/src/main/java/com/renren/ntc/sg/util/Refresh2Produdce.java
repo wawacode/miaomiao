@@ -13,7 +13,7 @@ import com.renren.ntc.sg.biz.dao.ProductDAO;
 
 public class Refresh2Produdce {
 
-    private static long  shop_id= 10068;
+    private static long  shop_id= 10066;
 
     public Refresh2Produdce() throws IOException {
 
@@ -32,7 +32,17 @@ public class Refresh2Produdce {
             if(itemls.size() == 0){
                 break;
             }
+            int j =0;
             for ( Item item :  itemls ){
+            	j++;
+            	if(j%100 == 0){
+            		try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+            	}
                 String pic = item.getPic_url();
                 Product p =  new Product();
                 p.setCategory_id(item.getCategory_id());
