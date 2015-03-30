@@ -6,6 +6,7 @@ import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +44,8 @@ public interface UserCouponDAO {
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and shop_id = :2 and status= :3  limit :4,:5 ")
     public List<UserCoupon> geShopCoupons (long user_id, long shop_id ,int status ,int from,int offset ) ;
 
+
+
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and id = :2 and code=:3 and status = :4")
     public UserCoupon getTicket(long user_id, long coupon_id, String coupon_code, int couponunused);
 
@@ -53,6 +56,7 @@ public interface UserCouponDAO {
     public int writeoff(int status , long coupon_id);
 
 
-    @SQL("select count(*) from " + TABLE_NAME +" where  user_id =:1 and status=:2  ")
-    public int getMyCouponCount(long user_id , int status);
+    @SQL("select count(*) from " + TABLE_NAME +" where  user_id =:1 and status=:2 and start_time <= :3  and  end_time >= :3 ")
+    public int getMyCouponCount(long user_id , int status,Date now);
+    
 }
