@@ -1208,6 +1208,7 @@ ul.rating li i {
     width: 100%;
     text-align: right;
     margin-top: 10px;
+    position: relative;
 }
 
 .orderSnapshotRemark {
@@ -1221,7 +1222,10 @@ ul.rating li i {
     font-size: 14px;
     font-weight: 100;
     color: #6a6a6a;
+    display: inline-block;
+    padding-right: 80px;
 }
+
 
 .orderId {
     float: left;

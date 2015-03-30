@@ -379,11 +379,14 @@
 
     $scope.obtainCoupon = function(){
 
+        $timeout(function(){
+            $scope.showCouponObtainLayout = false;
+        });
+
         httpClient.couponObtainedByUserForShop($scope.shop.id, function (data, status) {
             var code = data.code, dataDetail = data.data;
             if (code == 0 && dataDetail.coupons) {
                 $timeout(function(){
-                    $scope.showCouponObtainLayout = false;
                     $scope.showSomethingHot = true;
                 });
                 MMUtils.showAlert('领取成功,您可以到个人中心查看领取的代金券');

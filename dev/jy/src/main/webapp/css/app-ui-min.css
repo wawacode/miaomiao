@@ -157,9 +157,9 @@ ul.rating li i{font-size:12px}
 .orderSnapshotItemName{float:left;padding-left:10px;font-size:14px;color:#6a6a6a}
 .orderSnapshotItemPrice{position:absolute;bottom:20;left:85;font-size:14px;color:#ef5356}
 .orderSnapshotCount{float:right;padding-right:6px;font-weight:bold}
-.orderSnapshotTotal{display:inline-block;width:100%;text-align:right;margin-top:10px}
+.orderSnapshotTotal{display:inline-block;width:100%;text-align:right;margin-top:10px;position:relative}
 .orderSnapshotRemark{display:inline-block;width:100%;padding:15px 0 5px;color:gray}
-.orderSnapshotCountNumber{font-size:14px;font-weight:100;color:#6a6a6a}
+.orderSnapshotCountNumber{font-size:14px;font-weight:100;color:#6a6a6a;display:inline-block;padding-right:80px}
 .orderId{float:left;font-size:12px}
 .orderDate{float:left;font-size:12px}
 .orderPayType{float:right;font-size:11px}
