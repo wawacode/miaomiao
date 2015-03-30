@@ -59,10 +59,10 @@ public class WXService {
 
 
     private static final String mch_id = "1233699402";
-    private static final String key = "210f760a89db30aa72ca258a3483cc7f"; 
+    private static final String key = "210f760a89db30aa72ca258a3483cc7f";
 
     //test url
-    private static final String  notify_url ="http://www.mbianli.com:8088/wx/cb";
+    private static final String  notify_url ="http://www.mbianli.com{p}/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
@@ -86,7 +86,7 @@ public class WXService {
     public  String  getOpenId (String code ){
         String openId = null;
         String access_token =  getAccessToken();
-        String url = OAUTH_URL.replace("{appId}",appId);
+        String url = OAUTH_URL.replace("{appId}", appId);
         url = url.replace("{appKey}",appKey);
         url = url.replace("{code}",code);
 
@@ -328,7 +328,13 @@ public class WXService {
             map.put("body",body);
             map.put("mch_id",mch_id);
             map.put("nonce_str",nonce_str);
-            map.put("notify_url",notify_url) ;
+            String  nurl = "" ;
+            if(SUtils.isDev()) {
+                nurl = notify_url.replace("{d}","8088");
+            }else{
+                nurl = notify_url.replace("{d}","");
+            }
+            map.put("notify_url",nurl) ;
             map.put("openid", open_id);
             map.put("out_trade_no", out_trade_no );
             map.put("spbill_create_ip", spbill_create_ip );
