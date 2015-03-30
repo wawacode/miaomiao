@@ -39,6 +39,9 @@ public class WXService {
 
     private  static  final String JSAPI = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={access_token}&type=jsapi";
 
+    private  static  final String TEMPLATEAPI = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={token}";
+
+
     private static final String mch_id = "1233699402";
     private static final String key = "210f760a89db30aa72ca258a3483cc7f";
     private static final String  notify_url ="http://www.mbianli.com/wx/cb";
@@ -108,6 +111,24 @@ public class WXService {
         }
          return  ticket;
     }
+
+    public String orderDone(String openId ){
+        JSONObject response =  new JSONObject();
+        response.put("touser",openId) ;
+        response.put("template_id","I3eB1oTmYdP1Lc9WnSSx1SYumxhpEFcILh6f2Xy6Lyg") ;
+        response.put("url","http://www.mbianli.com/sg/loading#/myorders");
+        response.put("topcolor","#FF0000");
+        JSONObject data  = new JSONObject( );
+        JSONObject first = new JSONObject();
+        first.put("value","恭喜你购买成功！");
+        first.put("color","#173177");
+        data.put("first",first);
+
+        response.put("data",data);
+
+        return response.toJSONString();
+    }
+
 
     public String  getAccessToken(){
         String access_token = JRedisUtil.getInstance().get(ACCESS_TOKEN);
