@@ -112,6 +112,8 @@ public class WXService {
          return  ticket;
     }
 
+
+
     public String orderDone(String openId ){
         JSONObject response =  new JSONObject();
         response.put("touser",openId) ;
@@ -122,10 +124,25 @@ public class WXService {
         JSONObject first = new JSONObject();
         first.put("value","恭喜你购买成功！");
         first.put("color","#173177");
+
+        JSONObject orderMoneySum = new JSONObject();
+
+        orderMoneySum.put("value","恭喜你购买成功！");
+        orderMoneySum.put("color","#173177");
+
+        JSONObject orderProductName = new JSONObject();
+        orderProductName.put("value","恭喜你购买成功！");
+        orderProductName.put("color","#173177");
+
+        JSONObject remark = new JSONObject();
+        remark.put("value","恭喜你购买成功！");
+        remark.put("color","#173177");
+
         data.put("first",first);
-
+        data.put("orderMoneySum",orderMoneySum);
+        data.put("orderProductName",orderProductName);
+        data.put("remark",remark);
         response.put("data",data);
-
         return response.toJSONString();
     }
 
