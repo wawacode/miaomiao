@@ -312,14 +312,12 @@ public class OrderController {
     }
 
     private void sendInfo(User u ,Shop shop ,String order_id){
-            if(shop.getId() == 10033){
-                return;
-            }
 
             smsService.sendSMS2LocPush(order_id, shop);
             pushService.send2locPush(order_id, shop);
             pushService.send2kf(order_id, shop);
             // 发送wx 通知
+            orderService.mark(order_id, shop.getId());
             wxService.sendWX2User(order_id, shop);
 
             Device devcie = deviceDAO.getDevByShopId(shop.getId());

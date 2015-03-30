@@ -70,8 +70,8 @@ public class OrderService {
         return "历史订单" ;
     }
 
-    public void mark(String order_id) {
-        String order_key =  SUtils.generOrders(order_id);
+    public void mark(String order_id,long  shop_id) {
+        String order_key =  SUtils.generOrders(order_id,shop_id);
         JRedisUtil.getInstance().sadd(Constants.ORDER_KEY,order_key);
 
     }

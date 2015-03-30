@@ -374,10 +374,12 @@ public class SUtils {
 
     }
 
-    public static String generOrders(String order_id) {
+    public static String generOrders(String order_id,long shop_id) {
         long curr = System.currentTimeMillis();
         StringBuffer sb = new StringBuffer();
         sb.append(order_id);
+        sb.append("_");
+        sb.append(shop_id);
         sb.append("_");
         sb.append(curr);
         return sb.toString();

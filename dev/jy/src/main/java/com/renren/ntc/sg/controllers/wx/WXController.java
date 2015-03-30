@@ -32,6 +32,9 @@ public class WXController {
     public OrdersDAO orderDao;
 
     @Autowired
+    public OrderService orderService;
+
+    @Autowired
     public UserOrdersDAO userOrdersDAO;
 
     @Autowired
@@ -179,7 +182,7 @@ public class WXController {
                 }
             }
         }
-        return "@" + Constants.DONE;
+        return "@json:" + Constants.DONE;
     }
 
     private long getCoupon_id(String attach) {
@@ -198,9 +201,6 @@ public class WXController {
     }
 
     private void sendInfo( Shop shop ,String order_id){
-        if(shop.getId() == 10033){
-            return;
-        }
         smsService.sendSMS2LocPush(order_id, shop);
         pushService.send2locPush(order_id, shop);
         pushService.send2kf(order_id, shop);
@@ -216,6 +216,7 @@ public class WXController {
 //          System.out.println("send sms to user");
 //          smsService.sendSMS2User(order_id, shop);
             //use wx
+            orderService.mark(order_id, shop.getId());
             wxService.sendWX2User(order_id, shop);
 
 

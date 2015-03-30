@@ -103,7 +103,14 @@ public class TicketService {
 
 
     public int getTicketCount(long user_id) {
-        int count = userCouponDao.getMyCouponCount(user_id,Constants.COUPONUNUSED);
-        return count ;
+        List<UserCoupon> tt = new ArrayList<UserCoupon>();
+        List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id, Constants.COUPONUNUSED);
+        for(UserCoupon t: tickets) {
+            LoggerUtils.getInstance().log(String.format(" check ocupy user %d , ticket id %d , code %s ", user_id, t.getId(), t.getCode()));
+            if ( expire(t)&& canOcupy(t.getId(), t.getCode())) {
+                tt.add(t);
+            }
+        }
+        return tt.size();
     }
 }

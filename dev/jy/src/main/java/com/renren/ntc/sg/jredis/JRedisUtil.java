@@ -88,4 +88,9 @@ public class JRedisUtil {
     public static void main(String[] args) {
         JRedisUtil.getInstance().set("qrs2222e_3","33");
     }
+
+    public Set<String> smembers(String redisKey) {
+
+        return jds.smembers(redisKey);
+    }
 }
