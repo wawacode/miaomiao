@@ -41,6 +41,7 @@ public class Constants {
 //    public static final String DOMAIN = "miaomiao.com" ;UK
     public static final String DOMAIN = "127.0.0.1" ;
     public static final String DOMAIN2 = "mbianli.com:8088" ;
+    public static final String MBIANLI = "http://www.mbianli.com" ;
     public static final String DOMAIN3 = "mbianli.com" ;
     public static final String DOMAIN4 = "127.0.0.1:8080" ;
     public static final String COOKIE_KEY_USER ="cat_p" ;
@@ -54,6 +55,10 @@ public class Constants {
     public static final String DAYLIMIT = "daylimit_";
     public static final String LUNDER = "_";
     public static final String CANNOTUSETICKET = "{\"code\":12,\"msg\":\"今天已经使用过代金券\"}";;
+    public static final String ORDER_KEY = "ABC_ORDER_KEY";
+    public static final String ORDERDONE = "下单成功";
+    public static final String REMARK = "{shop_name}即将为你配送，预计30分钟内到达；\n" +
+            "联系电话：{shop_phone}。";
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";

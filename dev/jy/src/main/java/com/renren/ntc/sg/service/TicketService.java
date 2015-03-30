@@ -69,6 +69,9 @@ public class TicketService {
     }
 
     public  boolean ticketCanUse(long user_id, long shop_id) {
+        if(SUtils.isDev()){
+            return true;
+        }
         String key = SUtils.generDaylimitTicketKey(user_id);
         long  re = JRedisUtil.getInstance().getLong(key);
         if (re == 0 ){

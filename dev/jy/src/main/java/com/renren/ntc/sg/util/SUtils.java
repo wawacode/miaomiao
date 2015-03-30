@@ -373,4 +373,14 @@ public class SUtils {
         return sb.toString();
 
     }
+
+    public static String generOrders(String order_id) {
+        long curr = System.currentTimeMillis();
+        StringBuffer sb = new StringBuffer();
+        sb.append(order_id);
+        sb.append("_");
+        sb.append(curr);
+        return sb.toString();
+
+    }
 }

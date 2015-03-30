@@ -8,6 +8,9 @@ import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.jredis.JRedisUtil;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.SUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,5 +68,11 @@ public class OrderService {
             return "最新订单";
         }
         return "历史订单" ;
+    }
+
+    public void mark(String order_id) {
+        String order_key =  SUtils.generOrders(order_id);
+        JRedisUtil.getInstance().sadd(Constants.ORDER_KEY,order_key);
+
     }
 }
