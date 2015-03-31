@@ -59,4 +59,6 @@ public interface UserCouponDAO {
     @SQL("select count(*) from " + TABLE_NAME +" where  user_id =:1 and status=:2 and start_time <= :3  and  end_time >= :3 ")
     public int getMyCouponCount(long user_id , int status, Date now);
 
+    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and coupon_id = :2  ")
+    List<UserCoupon> getUserALLCoupon(long user_id, long coupon_id);
 }

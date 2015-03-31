@@ -9,6 +9,7 @@ import com.renren.ntc.sg.bean.UserCoupon;
 import com.renren.ntc.sg.biz.dao.CouponDAO;
 import com.renren.ntc.sg.biz.dao.UserCouponDAO;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.TicketService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
@@ -78,7 +79,8 @@ public class CouponController {
         JSONArray cos = new JSONArray();
         List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
         for (Coupon c : coupons ){
-            List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),c.getId(),new Date(System.currentTimeMillis()));
+            List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(), c.getId(),
+                                                   new Date(System.currentTimeMillis()));
             if (tickets == null  || tickets.size() == 0 ) {
                 try {
                     UserCoupon userCoupon =  new UserCoupon() ;
@@ -121,7 +123,7 @@ public class CouponController {
         List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
         JSONArray cos = new JSONArray();
         for (Coupon c : coupons ){
-            List<UserCoupon> tickets = usercouponDao.getUser_Coupon(u.getId(),c.getId(),new Date(System.currentTimeMillis()));
+            List<UserCoupon> tickets = usercouponDao.getUserALLCoupon(u.getId(),c.getId());
             if (tickets == null  || tickets.size() == 0 ) {
                 cos.add(JSON.toJSON(c)); ;
             }

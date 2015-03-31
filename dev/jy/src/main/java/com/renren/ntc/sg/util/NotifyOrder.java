@@ -24,12 +24,12 @@ public class NotifyOrder {
             String[] orderInfoArr = orderinfo.split("_");
             if(orderInfoArr == null || orderInfoArr.length !=3){
                 JRedisUtil.getInstance().srem(Constants.ORDER_KEY,orderinfo);
-                System.out.println(String.format("srem  message %s " ,orderinfo));
+                System.out.println(String.format("srem  message %s ", orderinfo));
                 continue;
             }
             if(StringUtils.isBlank(orderInfoArr[0])){
                 JRedisUtil.getInstance().srem(Constants.ORDER_KEY,orderinfo);
-                System.out.println(String.format("srem  message %s " ,orderinfo));
+                System.out.println(String.format("srem  message %s ", orderinfo));
                 continue;
             }
             try {
@@ -41,9 +41,10 @@ public class NotifyOrder {
                 if (left > 300000){
                     wxservice.sendWX2User(order_id,s_id);
                     JRedisUtil.getInstance().srem(Constants.ORDER_KEY, orderinfo);
-                    System.out.println(String.format("send  message %s " ,orderinfo));
+                    System.out.println(String.format("send  message %s ", orderinfo));
                     continue;
                 }
+                System.out.println(String.format("pendding message %s " ,orderinfo));
             }catch (Exception e){
                  e.printStackTrace();
                 JRedisUtil.getInstance().srem(Constants.ORDER_KEY, orderinfo);
