@@ -59,7 +59,7 @@ public class Constants {
     public static final String ORDERDONE = "下单成功";
     public static final String ORDERCONFRIM = "正在为您配送";
     public static final String REMARK = "{shop_name}即将为你配送，预计30分钟内到达；\n" +
-            "联系电话：{shop_tel}。";
+            "如有疑问请联系：{shop_tel}。";
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";
