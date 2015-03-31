@@ -118,18 +118,22 @@ public class CouponController {
 
     @Get("nePop")
     @Post("nePop")
-    public String nePop(Invocation inv ){
+    public String nePop(Invocation inv ,long shop_id){
         User u = hostHolder.getUser();
-        List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
-        JSONArray cos = new JSONArray();
-        for (Coupon c : coupons ){
-            List<UserCoupon> tickets = usercouponDao.getUserALLCoupon(u.getId(),c.getId());
-            if (tickets == null  || tickets.size() == 0 ) {
-                cos.add(JSON.toJSON(c)); ;
-            }
-        }
         JSONObject res = new JSONObject();
         JSONObject data = new JSONObject();
+
+        JSONArray cos = new JSONArray();
+        if (shop_id == 1 || shop_id == 10033 ) {
+            List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
+            for (Coupon c : coupons) {
+                List<UserCoupon> tickets = usercouponDao.getUserALLCoupon(u.getId(), c.getId());
+                if (tickets == null || tickets.size() == 0) {
+                    cos.add(JSON.toJSON(c));
+                    ;
+                }
+            }
+        }
         data.put("coupons",cos ) ;
         res.put("data",data);
         res.put("code",0);
