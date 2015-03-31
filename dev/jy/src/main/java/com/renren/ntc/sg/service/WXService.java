@@ -227,6 +227,7 @@ public class WXService {
         }
         Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
         if (null == order){
+            LoggerUtils.getInstance().log("order is null ");
             return ;
         }
         Shop shop = shopDao.getShop(shop_id);
