@@ -22,7 +22,6 @@ angular.module('miaomiao.shop')
             if(ShopService.isWeixinEnabledShop($scope.shop)){
                 $scope.checkoutType = [
                     {
-<<<<<<< HEAD
                         'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': false, 'canUseCoupon': false
 
                     },
@@ -30,12 +29,6 @@ angular.module('miaomiao.shop')
                         'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': true,
                         'coupons': [],
                         'canUseCoupon': true
-=======
-                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': false
-                    },
-                    {
-                        'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_WXPAY, 'name': '微信支付', 'selected': true
->>>>>>> master
                     }
                 ];
             } else {
