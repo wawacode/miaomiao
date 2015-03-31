@@ -179,8 +179,6 @@ angular.module('miaomiao.shop')
 
             } else {
                 var totalPrice = ShoppingCart.getTotalPrice();
-                window.alert('getting total price'+ totalPrice);
-                window.alert('select coupons is:' +  JSON.stringify($scope.couponCards[idx]));
                 if ($scope.couponCards[idx].price/100.0 <= totalPrice) {
                     clearAllCards();
                     $timeout(function(){
