@@ -239,11 +239,12 @@ public class WXService {
                 Constants.ORDERCONFRIM, order_id, remark);
         String access_token = getAccessToken();
         String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+
         byte[] tt = sendPostRequest(turl, respone);
 
         MongoDBUtil.getInstance().sendmark("wx_xx", "wx_"+order_id);
         String re = new String(tt);
-        System.out.println(tt);
+        LoggerUtils.getInstance().log(String.format("send wx response %s , %s  rec %s ", turl, respone,re));
     }
 
 
