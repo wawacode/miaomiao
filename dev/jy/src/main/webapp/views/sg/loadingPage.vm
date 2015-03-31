@@ -742,14 +742,14 @@
         </div>
     </div>
     <div class="orderSnapshotRemark" ng-if="order.remarks" bo-text="'买家留言: ' + order.remarks"></div>
-    <div class="orderSnapshotTotal" ng-if="order.useCoupon">
+    <div class="orderSnapshotTotal" ng-if="order.dprice > 0">
         <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd H:mm'}}</div>
         <div class="orderSnapshotCountNumber">共计: {{order.items | getTotolCount }} 件 </div>
-         <div style="position: absolute;top: -5;right: 0;color: red;padding-right: 8px;display: inline-block" ng-init="selectedCoupon={'price':10}">￥{{((order.items |
-             getTotolPrice) - selectedCoupon.price/100.0) | changeTwoDecimal}}</div>
+         <div style="position: absolute;top: -5;right: 0;color: red;padding-right: 8px;display: inline-block">￥{{((order.items |
+             getTotolPrice) - order.dprice/100.0) | changeTwoDecimal}}</div>
          <div style="position: absolute;bottom: -10;right: 0;color: red;padding-right: 8px;font-size: 10px"><s><span style="">￥ {{order.items | getTotolPrice }}</span></s></div>
     </div>
-    <div class="orderSnapshotTotal" ng-if="!order.useCoupon">
+    <div class="orderSnapshotTotal" ng-if="!order.dprice">
         <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd H:mm'}}</div>
         <div class="orderSnapshotCountNumber">共计: {{order.items | getTotolCount }} 件 </div>
         <div style="position: absolute;right: 0;color: red;padding-right: 8px;display: inline-block">￥ {{order.items | getTotolPrice }}</div>
