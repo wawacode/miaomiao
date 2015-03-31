@@ -67,7 +67,7 @@ public class WXService {
     private static final String key = "210f760a89db30aa72ca258a3483cc7f";
 
     //test url
-    private static final String  notify_url ="http://www.mbianli.com:{p}/wx/cb";
+    private static final String  notify_url ="http://www.mbianli.com{p}/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
@@ -369,7 +369,7 @@ public class WXService {
             map.put("nonce_str",nonce_str);
             String  nurl = "" ;
             if(SUtils.isDev()) {
-                nurl = notify_url.replace("{p}","8088");
+                nurl = notify_url.replace("{p}",":8088");
             }else{
                 nurl = notify_url.replace("{p}","");
             }
