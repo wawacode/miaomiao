@@ -74,7 +74,7 @@ public class CouponController {
 
     @Get("couponObtain")
     @Post("couponObtain")
-    public String get(Invocation inv ,long shop_id){
+    public String get(Invocation inv ,@Param("shop_id")  long shop_id){
         User u = hostHolder.getUser();
         JSONArray cos = new JSONArray();
         List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
@@ -118,7 +118,7 @@ public class CouponController {
 
     @Get("nePop")
     @Post("nePop")
-    public String nePop(Invocation inv ,long shop_id){
+    public String nePop(Invocation inv ,@Param("shop_id")  long shop_id ){
         User u = hostHolder.getUser();
         JSONObject res = new JSONObject();
         JSONObject data = new JSONObject();

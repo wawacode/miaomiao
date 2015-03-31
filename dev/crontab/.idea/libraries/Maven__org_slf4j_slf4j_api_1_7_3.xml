@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$M2_REPO$/org/slf4j/slf4j-api/1.7.3/slf4j-api-1.7.3.jar!/" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES>
       <root url="jar://$M2_REPO$/org/slf4j/slf4j-api/1.7.3/slf4j-api-1.7.3-sources.jar!/" />
     </SOURCES>
