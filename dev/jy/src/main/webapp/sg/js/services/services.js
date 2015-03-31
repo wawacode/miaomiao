@@ -322,7 +322,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             },
 
             isCouponEnabledShop:function(shop){
-                return shop.id == '10033';
+                return true; // shop.id == '10033';
             }
         }
     }]).factory('MMUtils', ['$timeout', '$ionicLoading', '$ionicPopup', function ($timeout,$ionicLoading, $ionicPopup) {
