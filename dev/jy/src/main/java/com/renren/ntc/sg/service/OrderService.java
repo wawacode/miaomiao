@@ -51,7 +51,13 @@ public class OrderService {
             String msg = o.getMsg();
             JSONObject js = (JSONObject) JSON.parse(msg);
             if (null != js){
-               o.setConfirm(js.getString("confirm"));
+                try {
+                    o.setConfirm(js.getString("confirm"));
+                    int dprice = js.getInteger("discount");
+                    o.setDprice((float) dprice / 100);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             o.setPrice4V(((float) o.getPrice() / 100) + "");
             Shop shop = shopDAO.getShop(o.getShop_id());
