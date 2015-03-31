@@ -233,7 +233,7 @@ public class WXService {
         Shop shop = shopDao.getShop(shop_id);
         User user = userDao.getUser(order.getUser_id());
         // del add to set
-        String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
+        String remark = Constants.REMARKCONFRIM.replace("{shop_name}", shop.getName());
         remark = remark.replace("{shop_tel}", shop.getTel());
 
         String respone = orderStatus(Constants.ORDERCONFRIM, user.getWx_open_id(),
