@@ -13,10 +13,6 @@
 
         <property name="user" value="test"/>
         <property name="password" value="test"/>
-        <!--<property name="jdbcUrl"
-                  value="jdbc:mysql://10.165.118.1:3306/sg?characterEncoding=utf8"/>
-        <property name="user" value="cat_prod_data"/>
-        <property name="password" value="rewq!@#$"/>-->
         <property name="initialPoolSize"  value="3"/>
         <property name="minPoolSize" value="10" />
         <property name="maxPoolSize" value="20" />
