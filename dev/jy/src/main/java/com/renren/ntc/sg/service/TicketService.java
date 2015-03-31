@@ -44,6 +44,7 @@ public class TicketService {
             LoggerUtils.getInstance().log(String.format("canOcupy key %s %s ", key, coupon_code));
             return true;
         }
+        LoggerUtils.getInstance().log(String.format("can not Ocupy key %s %s ", key, coupon_code));
         return false;
     }
 
@@ -88,7 +89,7 @@ public class TicketService {
         List<UserCoupon>  tickets = userCouponDao.geShopCoupons(user_id, shop_id, Constants.COUPONUNUSED, from, offset,new Date(System.currentTimeMillis()));
             for(UserCoupon t: tickets) {
                 LoggerUtils.getInstance().log(String.format(" check ocupy user %d , ticket id %d , code %s ", user_id, t.getId(), t.getCode()));
-                if ( expire(t)&& canOcupy(t.getId(), t.getCode())) {
+                if ( canOcupy(t.getId(), t.getCode())) {
                     tt.add(t);
                 }
             }
