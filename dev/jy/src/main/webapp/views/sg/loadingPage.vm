@@ -484,7 +484,7 @@
                 <div class="col nonPadding">
                     <div class="row nonPadding">
                         <div class="col nonPadding text-center" ng-if="!selectedCoupon || !selectedCoupon.price">
-                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;padding-top: 15px">
+                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;line-height:49px">
                                 总计:
                             </div>
                             <div class="verticalCenter"
@@ -495,10 +495,10 @@
                         <div class="col nonPadding text-center"
                              style="position: relative;display: inline-block;width: 100%;height: 100%"
                              ng-if="selectedCoupon && selectedCoupon.price">
-                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;padding-top: 15px">
+                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;line-height:49px">
                                 总计:
                             </div>
-                            <div style="position: absolute;left: 65px;top: 0;bottom: 0;height: 100%">
+                            <div style="position: absolute;left: 70px;top: 0;bottom: 0;height: 100%">
                                 <div style="position: absolute; top: 8;left: 0;font-size: 17px">￥{{((shoppingCartItems |
                                     getTotolPrice) - selectedCoupon.price/100.0) | changeTwoDecimal}}
                                 </div>
