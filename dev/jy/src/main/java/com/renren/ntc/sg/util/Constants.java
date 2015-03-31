@@ -86,4 +86,6 @@ public class Constants {
     public static final int  COUPONUNUSED = 0;
 
     public static final int  COUPONUSED = 4;
+    
+    public static final int SHOP_ANDITED = 1;
 }
