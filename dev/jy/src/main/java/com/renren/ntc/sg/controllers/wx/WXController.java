@@ -3,6 +3,7 @@ package com.renren.ntc.sg.controllers.wx;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.*;
@@ -26,6 +27,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Path("")
+@DenyCommonAccess
 public class WXController {
 
     @Autowired
