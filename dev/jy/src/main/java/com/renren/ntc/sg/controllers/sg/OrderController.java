@@ -65,11 +65,8 @@ public class OrderController {
     @Autowired
     public PushService pushService;
 
-<<<<<<< HEAD
     @Autowired
     public OrderService orderService;
-=======
->>>>>>> master
 
 
 
@@ -194,10 +191,6 @@ public class OrderController {
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
         if(Constants.WXPAY.equals(act)){
-<<<<<<< HEAD
-=======
-
->>>>>>> master
             String attach = shop_id + "_" +user_id;
             LoggerUtils.getInstance().log(String.format("user_id %d order_id   %s get coupon_id %d  coupon %s ",u.getId(),order_id,coupon_id,coupon_code));
             if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
@@ -244,7 +237,6 @@ public class OrderController {
         return "@json:" + response.toJSONString();
     }
 
-<<<<<<< HEAD
     private void update(Order order, int price) {
         String msg = order.getMsg();
         JSONObject  mesg = (JSONObject) JSON.parse(msg);
@@ -262,8 +254,6 @@ public class OrderController {
 
         return false;
     }
-=======
->>>>>>> master
 
     @Get("order_confirm")
     @Post("order_confirm")
