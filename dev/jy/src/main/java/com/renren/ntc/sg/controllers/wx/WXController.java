@@ -363,10 +363,10 @@ public class WXController {
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
                 if(eventKey.startsWith(PREFIX)) {
                 long act =   JRedisUtil.getInstance().sadd("set_" + eventKey ,fromUser) ;
-                String phone = JRedisUtil.getInstance().get(eventKey);
-                if(!StringUtils.isBlank(phone)&& act == 1) {
-                    smsService.sendSMS2tguang(fromUser,phone);
-                   }
+//                String phone = JRedisUtil.getInstance().get(eventKey);
+//                if(!StringUtils.isBlank(phone)&& act == 1) {
+//                        smsService.sendSMS2tguang(fromUser,phone);
+//                    }
                 }
                 return  response;
             }
