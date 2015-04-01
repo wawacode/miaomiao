@@ -8,19 +8,26 @@ import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.tools.generic.DateTool;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.annotations.LoginRequired;
+import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.CategoryDAO;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
+import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.OrderService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
@@ -51,6 +58,11 @@ public class AllShopConsoleController {
 	@Autowired
 	private RegistHostHolder hostHolder;
 
+	@Autowired
+    private OrdersDAO ordersDAO ;
+
+    @Autowired
+    OrderService orderService ;
 
     @Post("")
     @Get("")
@@ -129,6 +141,26 @@ public class AllShopConsoleController {
 
         shopDAO.update(shop_id, key, value);
         return  "@"+Constants.DONE ;
+    }
+    
+    @Post("orders")
+    @Get("orders")
+    public String allShopOrders(Invocation inv,@Param("shop_id") long shop_id){
+    	if(shop_id == 0L){
+    		shop_id = Constants.DEFAULT_SHOP;
+    	}
+    	//查询全部审核的店的id
+    	List<Shop> shopList = shopDAO.getAllShopsByAudit(Constants.SHOP_ANDITED);
+        if(CollectionUtils.isEmpty(shopList)){
+        	return "";
+        }
+        List<Order> orderls = ordersDAO.get10Orders(shop_id,0,20,SUtils.generOrderTableName(shop_id));
+        orderls = orderService.forV(orderls);
+        orderService.f(orderls);
+        inv.addModel("orderls",orderls);
+        inv.addModel("shops",shopList);
+        inv.addModel("curr_shop_d",shop_id);
+        return "all_shop_orders";
     }
 
 }

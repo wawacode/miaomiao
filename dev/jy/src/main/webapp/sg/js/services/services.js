@@ -189,9 +189,9 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 doGet('coupon/nePop', 'shop_id=' + shop_id, success, fail);
             },
 
-            getAvailableCouponForUser:function(from,offset, success, fail){
+            getAvailableCouponForUser:function(shop_id,from,offset, success, fail){
 
-                doGet('coupon/allCoupons', 'from=' + from + '&offset=' + offset , success, fail);
+                doGet('coupon/allCoupons', 'shop_id=' + shop_id+ '&from=' + from + '&offset=' + offset , success, fail);
             },
 
             couponObtainedByUserForShop:function(shop_id, success, fail){
@@ -322,7 +322,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             },
 
             isCouponEnabledShop:function(shop){
-                return shop.id == '10033';
+                return true; // shop.id == '10033';
             }
         }
     }]).factory('MMUtils', ['$timeout', '$ionicLoading', '$ionicPopup', function ($timeout,$ionicLoading, $ionicPopup) {

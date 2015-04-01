@@ -6,7 +6,7 @@
     <meta name="format-detection" content="telephone=no">
 
     <link href="/css/ionic.min.css" rel="stylesheet">
-    <link href="/css/app-ui-min.css?version=1.0.9" rel="stylesheet">
+    <link href="/css/app-ui-min.css?version=1.1.1" rel="stylesheet">
 
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
     <script type="text/javascript" src="/js/bower_components/angular-bindonce/bindonce.min.js"></script>
@@ -15,7 +15,7 @@
     <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
 
-    <script src="/sg/js/compress/app-ui-min.js?version=1.0.9" type="text/javascript"></script>
+    <script src="/sg/js/compress/app-ui-min.js?version=1.1.1" type="text/javascript"></script>
 
 </head>
 <body>
@@ -449,7 +449,6 @@
                                 <div class="item item-icon-right borderBotton"
                                      style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px;padding-left: 5px"
                                      bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)"
-                                     ng-disabled="card.status == 0"
                                      ng-class="{'noBorderBottonLi':$index + 1 == couponCards.length }">
                                     <div class="row">
                                         <div class="col-20">
@@ -485,7 +484,7 @@
                 <div class="col nonPadding">
                     <div class="row nonPadding">
                         <div class="col nonPadding text-center" ng-if="!selectedCoupon || !selectedCoupon.price">
-                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;padding-top: 15px">
+                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;line-height:49px">
                                 总计:
                             </div>
                             <div class="verticalCenter"
@@ -496,7 +495,7 @@
                         <div class="col nonPadding text-center"
                              style="position: relative;display: inline-block;width: 100%;height: 100%"
                              ng-if="selectedCoupon && selectedCoupon.price">
-                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;padding-top: 15px">
+                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;line-height:49px;min-width:40px">
                                 总计:
                             </div>
                             <div style="position: absolute;left: 65px;top: 0;bottom: 0;height: 100%">
@@ -743,14 +742,14 @@
         </div>
     </div>
     <div class="orderSnapshotRemark" ng-if="order.remarks" bo-text="'买家留言: ' + order.remarks"></div>
-    <div class="orderSnapshotTotal" ng-if="order.useCoupon">
+    <div class="orderSnapshotTotal" ng-if="order.dprice > 0">
         <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd H:mm'}}</div>
         <div class="orderSnapshotCountNumber">共计: {{order.items | getTotolCount }} 件 </div>
-         <div style="position: absolute;top: -5;right: 0;color: red;padding-right: 8px;display: inline-block" ng-init="selectedCoupon={'price':10}">￥{{((order.items |
-             getTotolPrice) - selectedCoupon.price/100.0) | changeTwoDecimal}}</div>
+         <div style="position: absolute;top: -5;right: 0;color: red;padding-right: 8px;display: inline-block">￥{{((order.items |
+             getTotolPrice) - order.dprice/100.0) | changeTwoDecimal}}</div>
          <div style="position: absolute;bottom: -10;right: 0;color: red;padding-right: 8px;font-size: 10px"><s><span style="">￥ {{order.items | getTotolPrice }}</span></s></div>
     </div>
-    <div class="orderSnapshotTotal" ng-if="!order.useCoupon">
+    <div class="orderSnapshotTotal" ng-if="!order.dprice">
         <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd H:mm'}}</div>
         <div class="orderSnapshotCountNumber">共计: {{order.items | getTotolCount }} 件 </div>
         <div style="position: absolute;right: 0;color: red;padding-right: 8px;display: inline-block">￥ {{order.items | getTotolPrice }}</div>
@@ -1036,6 +1035,10 @@
     </div>
 </script>
 
+<script src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624" type="text/javascript"></script>
+<script src="http://developer.baidu.com/map/jsdemo/demo/convertor.js" type="text/javascript"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
+
 <script>
     (function () {
         function async_load(url) {
@@ -1048,9 +1051,6 @@
         }
 
         function loadExternalJs() {
-            async_load('http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624');
-            async_load('http://developer.baidu.com/map/jsdemo/demo/convertor.js');
-            async_load('http://res.wx.qq.com/open/js/jweixin-1.0.0.js');
             async_load('//hm.baidu.com/hm.js?39973e3981da4da56b413e225a122b0f');
         }
 

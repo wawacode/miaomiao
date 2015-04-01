@@ -67,7 +67,7 @@ public class WXService {
     private static final String key = "210f760a89db30aa72ca258a3483cc7f";
 
     //test url
-    private static final String  notify_url ="http://www.mbianli.com:{p}/wx/cb";
+    private static final String  notify_url ="http://www.mbianli.com{p}/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
@@ -227,12 +227,13 @@ public class WXService {
         }
         Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
         if (null == order){
+            LoggerUtils.getInstance().log("order is null ");
             return ;
         }
         Shop shop = shopDao.getShop(shop_id);
         User user = userDao.getUser(order.getUser_id());
         // del add to set
-        String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
+        String remark = Constants.REMARKCONFRIM.replace("{shop_name}", shop.getName());
         remark = remark.replace("{shop_tel}", shop.getTel());
 
         String respone = orderStatus(Constants.ORDERCONFRIM, user.getWx_open_id(),
@@ -368,7 +369,7 @@ public class WXService {
             map.put("nonce_str",nonce_str);
             String  nurl = "" ;
             if(SUtils.isDev()) {
-                nurl = notify_url.replace("{p}","8088");
+                nurl = notify_url.replace("{p}",":8088");
             }else{
                 nurl = notify_url.replace("{p}","");
             }

@@ -26,7 +26,7 @@ public interface CouponDAO {
     static final String  INSERT_FIELDS = "createer,price,shop_id,name,pic_url,ext,start_time,end_time"  ;
 
 
-    @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where :1 => start_time and :1 <= end_time" )
+    @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where :1 >= start_time and :1 <= end_time" )
     public List<Coupon> getCouponRule(Date time) ;
     
     @SQL("delete from "  + TABLE_NAME + " where id = :1")
@@ -45,7 +45,7 @@ public interface CouponDAO {
     public List<Coupon> getAllCoupon(int start,int count) ;
 
 
-    @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where  shop_id=:2 and  :1 => start_time and :1 <= end_time" )
+    @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where  shop_id=:2 and  :1 >= start_time and :1 <= end_time" )
     public List<Coupon> getCouponbyShop(Date time,long shop_id) ;
 
 }

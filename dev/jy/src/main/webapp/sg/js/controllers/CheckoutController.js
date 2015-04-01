@@ -172,13 +172,18 @@ angular.module('miaomiao.shop')
             }
 
             if ($scope.couponCards[idx].selected == true) {
-                $scope.couponCards[idx].selected = false;
+                $timeout(function(){
+                    $scope.couponCards[idx].selected = false;
+                });
                 $scope.selectedCoupon = null;
+
             } else {
                 var totalPrice = ShoppingCart.getTotalPrice();
                 if ($scope.couponCards[idx].price/100.0 <= totalPrice) {
                     clearAllCards();
-                    $scope.couponCards[idx].selected = true;
+                    $timeout(function(){
+                         $scope.couponCards[idx].selected = true;
+                    });
                     $scope.selectedCoupon = $scope.couponCards[idx];
                 }
             }

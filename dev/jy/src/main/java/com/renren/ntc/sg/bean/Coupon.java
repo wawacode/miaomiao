@@ -28,6 +28,23 @@ CREATE TABLE `items` (
 public class Coupon {
 
     private  long id = 0;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     private  int price = 0 ;
     private  long  createer  = 0;
     private String name;
@@ -59,21 +76,6 @@ public class Coupon {
         this.shop_id = shop_id;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice( int price) {
-        this.price = price;
-    }
 
     public long getCreateer() {
         return createer;
@@ -134,7 +136,7 @@ public class Coupon {
     public Date getUpdate_time() {
         return update_time;
     }
-    
+
     public Coupon(){
     	
     }

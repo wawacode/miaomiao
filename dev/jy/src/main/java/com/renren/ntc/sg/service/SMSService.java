@@ -75,10 +75,10 @@ public class SMSService {
                     return;
                 }
                 String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.LOCTID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, order.getOrder_id(), url));
+                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
                 t = SHttpClient.getURLData(url, "");
                 String r = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, mobile, url));
+                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
                 MongoDBUtil.getInstance().sendmark(phone, order_id);
                 }
             }
@@ -163,7 +163,7 @@ public class SMSService {
 
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
             //节约成本  有打印机的情况不要发那么多字的短信
-            if (null != devcie || !SUtils.isOffline(devcie)) {
+            if (null != devcie && !SUtils.isOffline(devcie)) {
                 String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id();
                 vv = vv.replaceAll("=", "").replaceAll("&", "");
                 String ro = response.replace("=", "").replace("&", "");

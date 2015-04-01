@@ -3,6 +3,7 @@ package com.renren.ntc.sg.controllers.wx;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.*;
@@ -26,6 +27,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Path("")
+@DenyCommonAccess
 public class WXController {
 
     @Autowired
@@ -205,6 +207,11 @@ public class WXController {
         pushService.send2locPush(order_id, shop);
         pushService.send2kf(order_id, shop);
         // 发送短信通知
+
+        //use wx
+        orderService.mark(order_id, shop.getId());
+        wxService.sendWX2User(order_id, shop);
+
         Device devcie = deviceDAO.getDevByShopId(shop.getId());
         if (null == devcie || SUtils.isOffline(devcie)) {
             System.out.println("device is null or  printer offline ");
@@ -215,11 +222,6 @@ public class WXController {
             smsService.sendSMS2Boss(order_id, shop);
 //          System.out.println("send sms to user");
 //          smsService.sendSMS2User(order_id, shop);
-            //use wx
-            orderService.mark(order_id, shop.getId());
-            wxService.sendWX2User(order_id, shop);
-
-
         }
     }
     private long getShop_id(String attach) {
@@ -361,10 +363,10 @@ public class WXController {
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
                 if(eventKey.startsWith(PREFIX)) {
                 long act =   JRedisUtil.getInstance().sadd("set_" + eventKey ,fromUser) ;
-                String phone = JRedisUtil.getInstance().get(eventKey);
-                if(!StringUtils.isBlank(phone)&& act == 1) {
-                    smsService.sendSMS2tguang(fromUser,phone);
-                   }
+//                String phone = JRedisUtil.getInstance().get(eventKey);
+//                if(!StringUtils.isBlank(phone)&& act == 1) {
+//                        smsService.sendSMS2tguang(fromUser,phone);
+//                    }
                 }
                 return  response;
             }

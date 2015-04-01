@@ -11,55 +11,65 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
 
-public class AddProduct2Shop_Bhzymcs {
+public class AddProduct2Shop_ylmt {
 
-    private static int shop_id = 10064;
+    private static int shop_id = 10073;
 
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
-        String filePath = "C:\\shop\\华芝益民超市库.txt";
-        //                readTxtFile(filePath, pdDao, itemDao);
-        readUpdataPrice(filePath, pdDao, itemDao);
+        String filePath = "C:\\shop\\又来玛特扫描数据.txt";
+        readTxtFile1(filePath, pdDao, itemDao);
 
     }
 
-    public static void readUpdataPrice(String filePath, ProductDAO pdDao, ItemsDAO itemDao) {
+    public static void readTxtFile1(String filePath, ProductDAO pdDao, ItemsDAO itemDao) {
         InputStreamReader read = null;
         try {
-            String encoding = "utf-8";
+            String encoding = "utf8";
             File file = new File(filePath);
             if (file.isFile() && file.exists()) { //判断文件是否存在
                 read = new InputStreamReader(new FileInputStream(file), encoding);//考虑到编码格式
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
                 int m = 0;
+                int n = 0;
                 while ((lineTxt = bufferedReader.readLine()) != null) {
-                    String[] args = lineTxt.split("\t");
-                    System.out.println(++m + "");
-                    if (null == args) {
-                        System.out.println("drop " + lineTxt);
-                        return;
-                    }
-                    String serialNo = args[0].trim();
+                    String serialNo = lineTxt;
                     System.out.println("serialNo " + serialNo);
                     serialNo = upacage(serialNo);
-                    String price_str = args[1].trim();
-                    int price = Integer.valueOf(price_str);
-                    Product p = pdDao.geProductsByserialNo(serialNo);
+                    Product p = pdDao.geProductsByserialNo("kr_" + serialNo);
 
                     if (StringUtils.isBlank(serialNo)) {
                         continue;
                     }
                     if (p != null) {
-                        if (p.getPrice() == 0) {
-                            System.out.println(">>:" + serialNo);
-                            itemDao.updatePrice(SUtils.generTableName(shop_id), serialNo, price, shop_id);
+                        n++;
+                        if (p.getCategory_id() == 15) {
+                            continue;
                         }
+                        if (p.getCategory_id() == 0) {
+                            p.setCategory_id(28);
+                        }
+                        Item it = new Item();
+                        it.setName(p.getName());
+                        it.setSerialNo(p.getSerialNo());
+                        it.setCategory_id(p.getCategory_id());
+                        it.setPic_url(p.getPic_url() == null ? "" : p.getPic_url());
+                        it.setPrice(p.getPrice());
+                        it.setScore(p.getScore());
+                        it.setCount(1000);
+                        it.setShop_id(shop_id);
+                        JSONObject ob = (JSONObject) JSON.toJSON(it);
+                        System.out.println(ob.toJSONString());
+                        itemDao.insert(SUtils.generTableName(shop_id), it);
+                    } else {
+                        m++;
                     }
                 }
+                System.out.println(n + "<>" + m);
             } else {
                 System.out.println("找不到指定的文件");
             }
@@ -82,47 +92,75 @@ public class AddProduct2Shop_Bhzymcs {
     public static void readTxtFile(String filePath, ProductDAO pdDao, ItemsDAO itemDao) {
         InputStreamReader read = null;
         try {
-            String encoding = "utf-8";
+            int m = 0;
+            int k = 0;
+            int n = 0;
+            int g = 0;
+            String encoding = "Unicode";
             File file = new File(filePath);
             if (file.isFile() && file.exists()) { //判断文件是否存在
                 read = new InputStreamReader(new FileInputStream(file), encoding);//考虑到编码格式
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
                 while ((lineTxt = bufferedReader.readLine()) != null) {
-                    String[] args = lineTxt.split(",");
-                    if (null == args) {
+                    System.out.println(lineTxt);
+                    String[] args = lineTxt.split("\t");
+                    if (null != args && args.length < 3) {
                         System.out.println("drop " + lineTxt);
+                        System.out.println(">>>:" + args.length);
                         return;
                     }
                     String serialNo = args[0].trim();
-                    System.out.println("serialNo " + serialNo);
                     serialNo = upacage(serialNo);
+                    String name = args[1].trim();
+                    String price_str = args[2].trim();
+                    int price = (int) (Float.valueOf(price_str) * 100);
                     Product p = pdDao.geProductsByserialNo(serialNo);
 
-                    if (StringUtils.isBlank(serialNo)) {
-                        continue;
-                    }
+                    Item it = new Item();
+                    it.setName(name);
+                    it.setSerialNo("kr_" + serialNo);
+                    it.setCount(1000);
+                    it.setShop_id(shop_id);
+
                     if (p != null) {
+                        System.out.println("数据库中有:" + ++m);
+                        System.out.println(">>>:" + serialNo + ":" + name);
+
                         if (p.getCategory_id() == 15) {
                             continue;
                         }
                         if (p.getCategory_id() == 0) {
                             p.setCategory_id(28);
                         }
-                        Item it = new Item();
-                        it.setName(p.getName());
-                        it.setSerialNo(p.getSerialNo());
+
+                        if (price == 0) {
+                            price = p.getPrice();
+                        }
+
                         it.setCategory_id(p.getCategory_id());
                         it.setPic_url(p.getPic_url() == null ? "" : p.getPic_url());
-                        it.setPrice(p.getPrice());
+                        it.setPrice(price);
                         it.setScore(p.getScore());
-                        it.setCount(1000);
-                        it.setShop_id(shop_id);
-                        JSONObject ob = (JSONObject) JSON.toJSON(it);
-                        System.out.println(ob.toJSONString());
-                        itemDao.insert(SUtils.generTableName(shop_id), it);
+
+                    } else {
+                        System.out.println("数据库中没有:" + ++k);
+                        System.out.println(">>>:" + serialNo + ":" + name);
+
+                        it.setCategory_id(28);
+                        it.setPic_url("");
+                        it.setPrice(price);
+                        it.setScore(0);
+
                     }
+
+                    JSONObject ob = (JSONObject) JSON.toJSON(it);
+                    System.out.println(ob.toJSONString());
+                    itemDao.insert(SUtils.generTableName(shop_id), it);
                 }
+
+                System.out.println("数据库中 共有：" + m + ":" + k);
+                System.out.println(n + "<>" + g);
             } else {
                 System.out.println("找不到指定的文件");
             }

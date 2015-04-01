@@ -51,7 +51,13 @@ public class OrderService {
             String msg = o.getMsg();
             JSONObject js = (JSONObject) JSON.parse(msg);
             if (null != js){
-               o.setConfirm(js.getString("confirm"));
+                try {
+                    o.setConfirm(js.getString("confirm"));
+                    int dprice = js.getInteger("discount");
+                    o.setDprice((float) dprice / 100);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             o.setPrice4V(((float) o.getPrice() / 100) + "");
             Shop shop = shopDAO.getShop(o.getShop_id());
@@ -60,6 +66,23 @@ public class OrderService {
             first ++;
         }
         return oo;
+    }
+    
+    public void f(List<Order> orderls) {
+        for ( Order o : orderls){
+        JSONArray j  = (JSONArray) JSON.parse(o.getInfo());
+        StringBuffer sb = new StringBuffer();
+        for (int k=0 ; k<j.size() ; k++){
+            JSONObject jb = (JSONObject) j.get(k);
+            sb.append(jb.getString("name"));
+            sb.append("数量");
+            sb.append(jb.getString("count"));
+            sb.append("单价");
+            sb.append(jb.getFloat("price")/100);
+            sb.append(";<br/>");
+        }
+         o.setInfo(sb.toString());
+        }
     }
 
 

@@ -8,7 +8,7 @@ angular.module('miaomiao.shop')
 
             MMUtils.showLoadingIndicator('正在加载优惠券...',$scope);
             var from = 0, offset = 100;
-            httpClient.getAvailableCouponForUser(from, offset, function (data, status) {
+            httpClient.getAvailableCouponForUser($scope.shop.id, from, offset, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
