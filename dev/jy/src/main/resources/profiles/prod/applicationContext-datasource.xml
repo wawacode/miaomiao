@@ -9,9 +9,9 @@
         <property name="driverClass" value="com.mysql.jdbc.Driver">
         </property>
         <property name="jdbcUrl"
-                  value="jdbc:mysql://123.57.38.234:3306/sg?characterEncoding=utf8"/>
+                  value="jdbc:mysql://127.0.0.1:3306/sg?characterEncoding=utf8"/>
 
-        <property name="user" value=" "/>
+        <property name="user" value="test"/>
         <property name="password" value="test"/>
         <property name="initialPoolSize"  value="3"/>
         <property name="minPoolSize" value="10" />
