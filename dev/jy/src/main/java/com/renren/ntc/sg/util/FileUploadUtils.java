@@ -46,4 +46,31 @@ public class FileUploadUtils {
 		String picUrl = imageUrl.concat(picName);
 		return picUrl;
 	}
+	/**
+	 * 
+	 * @param file
+	 * @param fileName
+	 * @param savePath
+	 * @return
+	 * @author zhaoxiufei
+	 */
+	public static File uploadFile2(MultipartFile file, String fileName, String savePath) {
+		File f = new File(savePath);
+		File f2 = null;
+		if  (!f .exists()  && !f .isDirectory()){
+			System.out.println("--路径不存在--");
+			 f .mkdir(); //新建
+		}
+		try {
+			f2 = new File(savePath,fileName);
+			file.transferTo(f2);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return f2;
+	}
 }
