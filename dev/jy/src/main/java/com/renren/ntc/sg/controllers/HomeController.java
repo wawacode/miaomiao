@@ -2,6 +2,7 @@ package com.renren.ntc.sg.controllers;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Device;
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Shop;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Path("")
+@DenyCommonAccess
 public class HomeController {
 
     @Autowired
