@@ -16,7 +16,7 @@ import java.util.List;
     //private l
     public static void main(String[] args) throws IOException {
 
-        getPhone();
+        sendMessage();
     }
 
     public static void getPhone(){
