@@ -207,19 +207,22 @@ public class WXController {
         pushService.send2locPush(order_id, shop);
         pushService.send2kf(order_id, shop);
         // 发送短信通知
+
+        //use wx
+        orderService.mark(order_id, shop.getId());
+        wxService.sendWX2User(order_id, shop);
+
         Device devcie = deviceDAO.getDevByShopId(shop.getId());
+        if (null == devcie || SUtils.isOffline(devcie)) {
             System.out.println("device is null or  printer offline ");
             // 发送通知给 用户和 老板     \
             System.out.println("send push to boss");
             pushService.send2Boss(order_id, shop);
             System.out.println("send sms to boss");
             smsService.sendSMS2Boss(order_id, shop);
-            // System.out.println("send sms to user");
-            //smsService.sendSMS2User(order_id, shop);
-            //use wx
-            orderService.mark(order_id, shop.getId());
-            wxService.sendWX2User(order_id, shop);
-
+//          System.out.println("send sms to user");
+//          smsService.sendSMS2User(order_id, shop);
+        }
     }
     private long getShop_id(String attach) {
          String[] ids = attach.split("_");
