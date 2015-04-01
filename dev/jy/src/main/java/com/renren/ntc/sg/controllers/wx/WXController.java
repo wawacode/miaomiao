@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.jredis.JRedisUtil;
@@ -160,6 +161,13 @@ public class WXController {
                    LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
                     return "@" + Constants.UKERROR;
                 }
+
+                Order order = orderDao.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+                if(done(order)){
+                    return  "@json:" + Constants.DONE;
+                }
+
+
                 orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
                 userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
                 if( coupon_id != 0) {
@@ -185,6 +193,13 @@ public class WXController {
             }
         }
         return "@json:" + Constants.DONE;
+    }
+
+    private boolean done(Order order) {
+        if (order.getStatus() == Constants.ORDER_WAIT_FOR_PRINT || order.getStatus() == Constants.ORDER_FINISH){
+            return true;
+        }
+        return false;
     }
 
     private long getCoupon_id(String attach) {
