@@ -15,10 +15,6 @@ public class UserCoupon {
     //id ,user_id,coupon_id,price,code,ext,start_time,end_time,create_time,update_time
     private  long id = 0;
     private long user_id = 0 ;
-<<<<<<< HEAD
-    private  long  coupon_id  = 0;
-    private  long price = 0 ;
-=======
 
 
 
@@ -45,7 +41,6 @@ public class UserCoupon {
 
 
     private int  status = 0;
->>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
     private String code;
     private String  name ;
     private String  desc ;
@@ -59,8 +54,6 @@ public class UserCoupon {
         return id;
     }
 
-<<<<<<< HEAD
-=======
 
     public int getStatus() {
         return status;
@@ -69,7 +62,6 @@ public class UserCoupon {
     public void setStatus(int status) {
         this.status = status;
     }
->>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
     public void setId(long id) {
         this.id = id;
     }
@@ -90,19 +82,11 @@ public class UserCoupon {
         this.coupon_id = coupon_id;
     }
 
-<<<<<<< HEAD
-    public long getPrice() {
-        return price;
-    }
-
-    public void setPrice(long price) {
-=======
     public int getPrice() {
         return price;
     }
 
     public void setPrice(int price) {
->>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
         this.price = price;
     }
 

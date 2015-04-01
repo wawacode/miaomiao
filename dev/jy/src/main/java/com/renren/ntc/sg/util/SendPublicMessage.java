@@ -16,11 +16,11 @@ import java.util.List;
     //private l
     public static void main(String[] args) throws IOException {
 
-        sendMessage();
+        getPhone();
     }
 
     public static void getPhone(){
-        long shop_id = 10026;
+        long shop_id = 1;
         RoseAppContext rose = new RoseAppContext();
 
         OrdersDAO orderDao = rose.getBean(OrdersDAO.class);

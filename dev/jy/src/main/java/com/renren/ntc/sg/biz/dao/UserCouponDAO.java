@@ -6,10 +6,7 @@ import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 
-<<<<<<< HEAD
-=======
 import java.sql.Date;
->>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
 import java.util.List;
 
 /**
@@ -22,26 +19,7 @@ import java.util.List;
 @DAO(catalog = "ABC")
 public interface UserCouponDAO {
     static final String TABLE_NAME= "user_coupon";
-<<<<<<< HEAD
-    static final String  FIELDS = "id,user_id,coupon_id,code, price ,name ,desc ,ext,start_time,end_time,create_time,update_time"  ;
-    static final String  INSERT_FIELDS = "user_id,coupon_id,,code , price ,name ,desc ,ext,start_time,end_time"  ;
 
-    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 order by create_time desc limt :2,:3 ")
-    public List<UserCoupon> getUser_Coupon (long user_id , int form ,int offset) ;
-
-    @SQL("insert into " + TABLE_NAME + "( " + FIELDS + ") values (:1.user_id,:1.coupon_id,,:1.code , :1.price ,:1.name ,:1.desc ,:1.ext,:1.start_time,:1.end_time) ")
-    public int insert ( UserCoupon userCoupon) ;
-
-
-    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  id =:1 and code = :2")
-    public List<UserCoupon> getUser_Coupon(long user_id, long id, String code) ;
-
-
-    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and coupon_id = :2")
-    public List<UserCoupon> getUser_Coupon (long user_id, long coupon_id ) ;
-
-    UserCoupon getTicket(long id, int coupon_id, String coupon_code, Object couponunused);
-=======
     static final String  FIELDS = "id,user_id,coupon_id,shop_id,pic_url,code,status, price ,name  ,ext,start_time,end_time,create_time,update_time"  ;
     static final String  INSERT_FIELDS = "user_id,coupon_id,shop_id,pic_url,code ,status, price ,name,ext,start_time,end_time"  ;
 
@@ -84,5 +62,4 @@ public interface UserCouponDAO {
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME +" where  user_id =:1 and coupon_id = :2  ")
     List<UserCoupon> getUserALLCoupon(long user_id, long coupon_id);
->>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
 }

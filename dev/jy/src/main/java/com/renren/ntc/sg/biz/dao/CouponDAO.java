@@ -2,18 +2,12 @@ package com.renren.ntc.sg.biz.dao;
 
 import com.renren.ntc.sg.bean.Coupon;
 import com.renren.ntc.sg.bean.Device;
-<<<<<<< HEAD
-import net.paoding.rose.jade.annotation.DAO;
-import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
-import net.paoding.rose.jade.annotation.SQL;
-=======
 import com.renren.ntc.sg.bean.Shop;
 
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 import net.paoding.rose.jade.annotation.SQLParam;
->>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
 
 import java.util.Date;
 import java.util.List;
@@ -28,19 +22,6 @@ import java.util.List;
 @DAO(catalog = "ABC")
 public interface CouponDAO {
     static final String TABLE_NAME= "coupon";
-<<<<<<< HEAD
-    static final String  FIELDS = "id,createer,price ,name ,desc , ext,start_time,end_time,create_time,update_time"  ;
-    static final String  INSERT_FIELDS = "createer,price,name ,desc , ext,start_time,end_time"  ;
-
-
-    @SQL("select " + FIELDS + " from " + TABLE_NAME +" where ;1 > start_time and :1 <= end_time")
-    public List<Coupon> getCouponRule(Date time) ;
-
-
-
-
-
-=======
     static final String  FIELDS = "id,createer,price,shop_id,name,pic_url,ext,start_time,end_time,create_time,update_time"  ;
     static final String  INSERT_FIELDS = "createer,price,shop_id,name,pic_url,ext,start_time,end_time"  ;
 
@@ -66,6 +47,5 @@ public interface CouponDAO {
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME +  " where  shop_id=:2 and  :1 >= start_time and :1 <= end_time" )
     public List<Coupon> getCouponbyShop(Date time,long shop_id) ;
->>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
 
 }
