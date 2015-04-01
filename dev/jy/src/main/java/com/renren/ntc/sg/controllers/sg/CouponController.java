@@ -131,7 +131,7 @@ public class CouponController {
         JSONObject data = new JSONObject();
 
         JSONArray cos = new JSONArray();
-        if (shop_id == 10033 ) {
+        if (shop_id == 1 || shop_id == 10033 ) {
             List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
             for (Coupon c : coupons) {
                 List<UserCoupon> tickets = usercouponDao.getUserALLCoupon(u.getId(), c.getId());
