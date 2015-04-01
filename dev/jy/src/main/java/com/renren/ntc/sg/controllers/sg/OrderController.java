@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
+import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.*;
 import com.renren.ntc.sg.util.Constants;
@@ -59,11 +60,13 @@ public class OrderController {
     public WXService wxService;
 
     @Autowired
-    public PushService pushService;
-
+    public TicketService ticketService;
 
     @Autowired
-    public UserCouponDAO  userCouponDao;
+    public PushService pushService;
+
+    @Autowired
+    public OrderService orderService;
 
 
 
@@ -169,7 +172,6 @@ public class OrderController {
         if(!Constants.WXPAY.equals(act) ){
             order.setStatus(Constants.ORDER_WAIT_FOR_PRINT);         //已经确认的状态
         }else {
-
             order.setAct(act);
             order.setStatus(Constants.ORDER_PAY_PENDING);
         }
@@ -181,21 +183,37 @@ public class OrderController {
             return "@" + Constants.UKERROR;
         }
         if(!Constants.WXPAY.equals(act)){
-            sendInfo(shop,order_id);
+            sendInfo( u ,shop,order_id);
         }
+
 
         JSONObject response = new JSONObject();
         JSONObject data = new JSONObject();
         //添加微信支付pre_id()
         if(Constants.WXPAY.equals(act)){
-//            if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
-//                if(validata(u.getId(),coupon_id,coupon_code) {
-//
-//
-//                }
-
-//            }
             String attach = shop_id + "_" +user_id;
+            LoggerUtils.getInstance().log(String.format("user_id %d order_id   %s get coupon_id %d  coupon %s ",u.getId(),order_id,coupon_id,coupon_code));
+            if (coupon_id != 0  && ! StringUtils.isBlank(coupon_code)){
+                boolean can = ticketService.ticketCanUse(u.getId(), shop_id);
+                if (!can){
+                    return "@json:" + Constants.CANNOTUSETICKET;
+                }
+
+                UserCoupon ticket = ticketService.getTicket(u.getId(), coupon_id, coupon_code);
+                if (ticket != null ){
+                    LoggerUtils.getInstance().log(String.format("order_id %s  coupon_id %d price %d",order_id,coupon_id,ticket.getPrice()));
+                    price = price - ticket.getPrice();
+                    data.put("discount",ticket.getPrice()) ;
+                    //满减不要大于 起送金额
+                    if( price <=  0 ){
+                        price = 1 ;
+                    }
+                    //使用代金券
+                    attach = attach + "_" + ticket.getId();
+                    update(order, ticket.getPrice());
+                }
+            }
+            LoggerUtils.getInstance().log(String.format("order  %s get pre_id %d ", order_id, price));
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
@@ -207,18 +225,33 @@ public class OrderController {
             data.put("js_ticket",js_id) ;
             data.put("pre_id",pre_id) ;
             data.put("out_trade_no",order_id) ;
-            data.put("total_fee",price) ;
+            data.put("total_fee", price) ;
+            //
+            // dajinquan geli
         }
         data.put("order_id",order_id);
         response.put("data", data);
         response.put("code", 0);
-        LoggerUtils.getInstance().log("error order save return " + response.toJSONString());
+        LoggerUtils.getInstance().log("  order save return " + response.toJSONString());
+
         return "@json:" + response.toJSONString();
+    }
+
+    private void update(Order order, int price) {
+        String msg = order.getMsg();
+        JSONObject  mesg = (JSONObject) JSON.parse(msg);
+        if (null == mesg){
+            mesg = new JSONObject();
+        }
+        mesg.put("discount",price);
+        String mess = mesg.toJSONString();
+        order.setMsg(mess);
+        ordersDAO.confirm(order.getOrder_id(),mess,SUtils.generOrderTableName(order.getShop_id())) ;
     }
 
     private boolean validata(long id, int coupon_id, String coupon_code) {
         UserCoupon ticket;
-        ticket = userCouponDao.getTicket(id, coupon_id, coupon_code, Constants.COUPONUNUSED);
+
         return false;
     }
 
@@ -278,14 +311,15 @@ public class OrderController {
         return "@json:"+Constants.DONE;
     }
 
-    private void sendInfo( Shop shop ,String order_id){
-            if(shop.getId() == 10033){
-                return;
-            }
+    private void sendInfo(User u ,Shop shop ,String order_id){
+
             smsService.sendSMS2LocPush(order_id, shop);
             pushService.send2locPush(order_id, shop);
             pushService.send2kf(order_id, shop);
-            // 发送短信通知
+            // 发送wx 通知
+            orderService.mark(order_id, shop.getId());
+            wxService.sendWX2User(order_id, shop);
+
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
             if (null == devcie || SUtils.isOffline(devcie)) {
                 System.out.println("device is null or  printer offline ");
@@ -294,9 +328,11 @@ public class OrderController {
                 pushService.send2Boss(order_id, shop);
                 System.out.println("send sms to boss");
                 smsService.sendSMS2Boss(order_id, shop);
-                System.out.println("send sms to user");
-                smsService.sendSMS2User(order_id, shop);
-       }
+
+//              System.out.println("send sms to user");
+//              smsService.sendSMS2User(order_id, shop);
+
+            }
     }
 
 }

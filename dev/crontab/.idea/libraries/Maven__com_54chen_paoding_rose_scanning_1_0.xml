@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$M2_REPO$/com/54chen/paoding-rose-scanning/1.0/paoding-rose-scanning-1.0.jar!/" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES>
       <root url="jar://$M2_REPO$/com/54chen/paoding-rose-scanning/1.0/paoding-rose-scanning-1.0-sources.jar!/" />
     </SOURCES>

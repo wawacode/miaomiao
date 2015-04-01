@@ -48,4 +48,7 @@ public interface CatStaffCommitDAO {
 
     @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  shop_id =:1 ")
     public CatStaffCommit getbyShopid(long shop_id);
+    
+    @SQL("update " +  TABLE_NAME   + " set name =:2,phone=:3 where shop_id= :1")
+    public int  updateCatstaff(long shop_id,String userName,String phone);
 }

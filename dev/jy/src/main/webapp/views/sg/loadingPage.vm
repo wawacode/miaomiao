@@ -6,7 +6,7 @@
     <meta name="format-detection" content="telephone=no">
 
     <link href="/css/ionic.min.css" rel="stylesheet">
-    <link href="/css/app-ui-min.css?version=1.0.8" rel="stylesheet">
+    <link href="/css/app-ui-min.css?version=1.1.1" rel="stylesheet">
 
     <script type="text/javascript" src="/js/ionic.bundle.min.js"></script>
     <script type="text/javascript" src="/js/bower_components/angular-bindonce/bindonce.min.js"></script>
@@ -15,7 +15,7 @@
     <script type="text/javascript" src="/js/ngstorage/ngStorage.min.js"></script>
     <script type="text/javascript" src="/js/jquery/dist/jquery.min.js"></script>
 
-    <script src="/sg/js/compress/app-ui-min.js?version=1.0.8" type="text/javascript"></script>
+    <script src="/sg/js/compress/app-ui-min.js?version=1.1.1" type="text/javascript"></script>
 
 </head>
 <body>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <div class="loadingImageBottom" >
+                <div class="loadingImageBottom">
                 </div>
 
             </div>
@@ -61,6 +61,7 @@
         <ion-nav-bar class="bar-light homepageHeaderBar headerBarWithShadow" align-title="center">
             <ion-nav-buttons side="left">
                 <button class="button button-clear button-outline button-icon ion-ios7-person-outline"
+                        ng-class="{'buttonWithHot':showSomethingHot == true}"
                         ui-sref="myOrders"></button>
             </ion-nav-buttons>
             <ion-nav-buttons side="right">
@@ -118,6 +119,7 @@
                                     <div class="prod_detail_info">
                                 <span class="product-title oneline" bo-text="item.name">
                                 </span>
+
                                         <div class="prod_info">
                                             <div class="product-price">
                                                 <span bo-text="'¥'+ item.price/100.0"></span>
@@ -129,7 +131,8 @@
                                                 <div class="product_stepper_count" ng-show="item.count">
                                                     {{item.count}}
                                                 </div>
-                                                <div class="product_stepper_add baseRedColor icon ion-ios7-plus" ng-click="selectItem(item)">
+                                                <div class="product_stepper_add baseRedColor icon ion-ios7-plus"
+                                                     ng-click="selectItem(item)">
                                                 </div>
                                             </div>
                                         </div>
@@ -146,17 +149,43 @@
                 </div>
             </div>
         </ion-content>
-        <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
+        <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart"
+             ng-click="info.showCart = !info.showCart">
         </div>
         <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
             <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include="'templates/shoppingCart.html'">
             </div>
         </div>
+
+        <div class="couponLayout" ng-if="showCouponObtainLayout == true">
+            <div class="couponContent">
+                <div style="color: #ffffff;font-size: 24px;text-align: center">喵喵送你</div>
+                <div style="position: relative;margin-top: 20px">
+                    <img src="/images/coupon_bg.png" style="width: 150px;height: auto">
+
+                    <div style="position: absolute; top: 30;bottom: 0;left: 0;right: 20;color: rgba(254,204,48,1.0);font-size: 35px;font-weight: bold">
+                        {{showCouponPrice}}元
+                    </div>
+                </div>
+                <div style="color: red;font-size: 14px;text-align: center;margin-top: 5px">喵 喵 一 下<span
+                        style="padding-left: 20px"></span>便 利 到 家
+                </div>
+                <div style="text-align: center">
+                    <div style="margin-top: 80px;font-size: 18px;color: #ffffff;border-radius: 4px;
+                    padding: 10px;border: solid 1px #ffffff;display: inline-block;width: 125px;height: 40px"
+                         ng-click="obtainCoupon()">点击领取
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <ion-footer-bar class="bar-light homepageFooterBar" ng-if="categoryls && categoryls.length">
             <div class="row nonPadding">
                 <div class="col nonPadding">
-                    <div class="row nonPadding" >
-                        <div class="col text-center nonPadding" style="padding-top: 13px;" ng-click="showShoppingCart()">
+                    <div class="row nonPadding">
+                        <div class="col text-center nonPadding" style="padding-top: 13px;"
+                             ng-click="showShoppingCart()">
 
                         <span style="position: relative">
                             <span class="assertive-bg assertive-border light shoppingCartBadge"
@@ -171,7 +200,9 @@
                         </div>
                         <div class="col nonPadding" style="padding-top: 4px;margin-left: 10px">
                             <p class="text-left" style="font-size: 11px;margin: 0">总计:</p>
-                            <p class="text-left assertive" style="font-size: 17px;margin: 0">￥{{info.shoppingCartItems | getTotolPrice}}</p>
+
+                            <p class="text-left assertive" style="font-size: 17px;margin: 0">￥{{info.shoppingCartItems |
+                                getTotolPrice}}</p>
                         </div>
                     </div>
                 </div>
@@ -190,7 +221,8 @@
     <ion-view>
         <ion-nav-bar class="bar-light" align-title="center">
             <ion-nav-buttons side="left">
-                <button class="button button-outline button-clear" ui-sref="productList"><i class="ion-chevron-left dark">
+                <button class="button button-outline button-clear" ui-sref="productList"><i
+                        class="ion-chevron-left dark">
                     首页</i></button>
             </ion-nav-buttons>
             <ion-nav-title>
@@ -209,7 +241,9 @@
                     <!--<i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"-->
                     <!--ng-click="clearSearch()"></i>-->
                 </div>
-                <button class="button-clear" style="color: #000000;font-size: 15px;min-width: 50px" ng-click="performSearch(info.key,$event)"> 搜索 </button>
+                <button class="button-clear" style="color: #000000;font-size: 15px;min-width: 50px"
+                        ng-click="performSearch(info.key,$event)"> 搜索
+                </button>
             </div>
         </ion-header-bar>
         <div class="list searchSuggestionResultList" ng-if="info.showSearchSuggestion"
@@ -230,17 +264,20 @@
                      style="text-align: left;top: 84;z-index: 1">
 
             <div class="shop-product-list" style="padding-bottom: 50px">
-                <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list" ng-if="info.hasNoResults == false">
+                <ul style="margin: 0.0em; padding:0px 9px" class="js-search-result-list"
+                    ng-if="info.hasNoResults == false">
                     <li bindonce ng-repeat="item in searchResultsItems" class="product-item js-product-item"
                         ng-include="'templates/productDetail.html'">
                     </li>
                 </ul>
-                <div class="no-result-display" style="text-align: center;color: #7a7a7a" ng-if="info.hasNoResults == true">
+                <div class="no-result-display" style="text-align: center;color: #7a7a7a"
+                     ng-if="info.hasNoResults == true">
                     没有结果
                 </div>
             </div>
         </ion-content>
-        <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart" ng-click="info.showCart = !info.showCart">
+        <div class="shoppingCartDisplayBackground" bn-common-show="info.showCart"
+             ng-click="info.showCart = !info.showCart">
         </div>
         <div class="shoppingCartDisplay" bn-slide-show="info.showCart" slide-show-duration="2000">
             <div class="shoppingCartList" ng-controller="ShoppingCartCtrl" ng-include="'templates/shoppingCart.html'">
@@ -250,7 +287,8 @@
             <div class="row nonPadding">
                 <div class="col nonPadding">
                     <div class="row nonPadding">
-                        <div class="col text-center nonPadding" style="padding-top: 13px;" ng-click="showShoppingCart()">
+                        <div class="col text-center nonPadding" style="padding-top: 13px;"
+                             ng-click="showShoppingCart()">
 
                         <span style="position: relative">
                             <span class="assertive-bg assertive-border light shoppingCartBadge"
@@ -298,11 +336,13 @@
                      has-tabs="false"
                      has-header="true"
                      scroll="true"
+                     delegate-handle="checkoutScroll"
                      style="bottom: 49px;top: 49px;z-index: 9;">
 
             <div style="background-color: #eaeaea;width: 100%;height: 100%" ng-if="info.dataReady == true">
                 <div ng-if="addressls && addressls.length" style="background-color: #ffffff">
-                    <div class="addressItem addressDefault addressSelected item-icon-right" ng-click="goToAddressList()">
+                    <div class="addressItem addressDefault addressSelected item-icon-right"
+                         ng-click="goToAddressList()">
                         <div class="addressItem-address">
                             <span class="addressTitle">收货地址:</span>
                             {{addressls[0].address}}
@@ -344,7 +384,8 @@
                             <div class="prod_icon" back-img="{{item.pic_url}}"></div>
                             <div>
                                 <span class="product-title oneline" bo-text="item.name"></span>
-                                <span class="product-title oneline assertive" bo-text="商品库存不足" ng-if="item.message"></span>
+                                <span class="product-title oneline assertive" bo-text="商品库存不足"
+                                      ng-if="item.message"></span>
 
                                 <div class="prod_info">
                                     <div class="product-price">
@@ -378,18 +419,59 @@
                         </div>
                     </div>
                 </div>
-                <div style="" ng-if="info.dataReady == true">
+                <div style="padding-bottom: 20px;background-color: #eaeaea" ng-if="info.dataReady == true">
                     <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
                         付款方式
                     </div>
                     <div>
                         <div class="list">
-                            <div class="item item-icon-right borderBotton" style="margin-top: 1px" bindonce ng-repeat="checkt in checkoutType" ng-click="selectCheckoutType($index)">
-                                <div style="padding-left: 5px;font-size: 15px" bo-text="checkt.name"></div>
-                                <div class="icon balanced commonSelected" style="right: 25px" ng-class="{'ion-ios7-checkmark':checkt.selected,'ion-ios7-circle-outline': !checkt.selected}"></div>
-                                <!--<div ng-if="checkt.id=CheckoutTypeEnum.CHECKOUTTYPE_WXPAY">-->
-                                    <!--选择优惠券-->
-                                <!--</div>-->
+                            <div class="item item-icon-right borderBotton" style="margin-top: 1px;position: relative"
+                                 bindonce ng-repeat="checkt in checkoutType"
+                                 ng-click="userSelectCheckoutType($index,false)"
+                                 ng-class="{'noBorderBottonLi':$index + 1 == checkoutType.length }">
+                                <div style="padding-left: 5px;font-size: 15px">
+                                    <span bo-text="checkt.name"></span>
+                                    <span class="couponHintDark" style=""
+                                          ng-if="checkt.canUseCoupon && checkt.coupons && checkt.coupons.length">优惠券</span>
+                                </div>
+                                <div class="icon balanced commonSelected" style="right: 25px"
+                                     ng-class="{'ion-ios7-checkmark':checkt.selected,'ion-ios7-circle-outline': !checkt.selected}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="selectedCheckoutType.canUseCoupon == true && selectedCheckoutType.coupons && selectedCheckoutType.coupons.length"
+                         style="">
+                        <div style="background-color: #eaeaea;padding:5px 5px 5px 20px;font-size: 15px">
+                            使用优惠券
+                        </div>
+                        <div>
+                            <div class="list">
+                                <div class="item item-icon-right borderBotton"
+                                     style="margin-top: 1px;padding-top: 5px;padding-bottom: 5px;padding-left: 5px"
+                                     bindonce ng-repeat="card in couponCards" ng-click="selectCouponCards($index)"
+                                     ng-class="{'noBorderBottonLi':$index + 1 == couponCards.length }">
+                                    <div class="row">
+                                        <div class="col-20">
+                                            <div class="" style="padding: 15px 5px 5px 5px;display: inline-block;width: 100%;
+                                            font-size: 15px;text-align: center;min-width: 60px;color: #ef5356"
+                                                 bo-text="(card.price/100.0) + '元'"></div>
+                                        </div>
+                                        <div class="col-50">
+                                            <div style="padding-left: 20px;padding-top:5px;font-size: 15px"
+                                                 bo-text="card.ext || (card.price/100.0) + '元代金券'"></div>
+                                            <div style="padding-left: 20px;;font-size: 10px"
+                                                 bo-text="'有效期至:' + (card.end_time | date:'yyyy-MM-dd')"></div>
+                                        </div>
+                                    </div>
+                                    <div class="icon balanced commonSelected" style="right: 25px"
+                                         ng-if="couponActive == true"
+                                         ng-class="{'ion-ios7-checkmark':card.selected,'ion-ios7-circle-outline': !card.selected}">
+                                    </div>
+                                    <div class="icon stable commonSelected" style="right: 25px"
+                                         ng-if="couponActive != true">
+                                        <span style="font-size: 12px;color: #999999">明天可用</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -401,11 +483,28 @@
             <div class="row nonPadding">
                 <div class="col nonPadding">
                     <div class="row nonPadding">
-                        <div class="col nonPadding text-center" style="padding-top: 15px;margin-right: 10px">
-                            <p class=" assertive" style="font-size: 17px;margin: 0">
-                                <span class="" style="font-size: 17px;margin: 0">总计:</span>
-                                ￥{{shoppingCartItems | getTotolPrice}}
-                            </p>
+                        <div class="col nonPadding text-center" ng-if="!selectedCoupon || !selectedCoupon.price">
+                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;line-height:49px">
+                                总计:
+                            </div>
+                            <div class="verticalCenter"
+                                 style="left: 65px;top: 0;bottom: 0;margin: 0;padding-top: 15px;font-size: 17px;">
+                                ￥{{shoppingCartItems|getTotolPrice}}
+                            </div>
+                        </div>
+                        <div class="col nonPadding text-center"
+                             style="position: relative;display: inline-block;width: 100%;height: 100%"
+                             ng-if="selectedCoupon && selectedCoupon.price">
+                            <div class="verticalCenter" style="font-size: 17px;margin: 0;left: 20;line-height:49px;min-width:40px">
+                                总计:
+                            </div>
+                            <div style="position: absolute;left: 65px;top: 0;bottom: 0;height: 100%">
+                                <div style="position: absolute; top: 8;left: 0;font-size: 17px">￥{{((shoppingCartItems |
+                                    getTotolPrice) - selectedCoupon.price/100.0) | changeTwoDecimal}}
+                                </div>
+                                <div style="position: absolute; bottom: 3;left: 3;font-size: 10px;color: #ef5356"><s>￥{{(shoppingCartItems
+                                    | getTotolPrice)}}</s></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -452,7 +551,8 @@
                             class="addressTitle">联系电话:</span>
                         {{addr.phone}}
                     </div>
-                    <div class="icon balanced commonSelected" ng-class="{'ion-ios7-checkmark':addr.isDefault,'ion-ios7-circle-outline':!addr.isDefault}"
+                    <div class="icon balanced commonSelected"
+                         ng-class="{'ion-ios7-checkmark':addr.isDefault,'ion-ios7-circle-outline':!addr.isDefault}"
                          style="right: 20px"></div>
                 </div>
                 <div class="addressListHeader">
@@ -460,7 +560,7 @@
                 </div>
                 <div class="item" style="padding-left: 20px;padding-bottom: 10px">
                     <div style="width: 100%;border-bottom: solid 1px #eaeaea;">
-                        <input class="addressInput"  style=""
+                        <input class="addressInput" style=""
                                type="text" placeholder="收货地址:" value="" ng-model="newAddress.address"
                                required>
                     </div>
@@ -474,18 +574,72 @@
                 <div style="position: absolute; left: 10;right: 10;padding-top: 40px">
                     <button class="button button-block button-assertive"
                             style="height: 40px"
-                            ng-disabled = "!newAddress.address || !newAddress.phone"
-                            ng-click="addNewAddressConfirm()">确定</button>
+                            ng-disabled="!newAddress.address || !newAddress.phone"
+                            ng-click="addNewAddressConfirm()">确定
+                    </button>
                 </div>
             </div>
         </ion-content>
     </ion-view>
 </script>
+
+<script id="templates/couponList.html" type="text/ng-template">
+    <ion-view>
+        <ion-nav-bar class="bar-light addressListBar" align-title="center">
+            <ion-nav-back-button class="button-dark button-clear">
+                <i class="ion-chevron-left dark"></i> 返回
+            </ion-nav-back-button>
+            <ion-nav-title>
+                我的优惠券
+            </ion-nav-title>
+        </ion-nav-bar>
+        <ion-content padding="false"
+                     has-tabs="false"
+                     scroll="true"
+                     has-header="false">
+
+            <div class="list" style=" background-color: #ededed;" ng-if="couponList && couponList.length">
+
+                <div class="item" ng-repeat="coupon in couponList">
+                    <div style="display: inline-block;float: left" ng-class="{'disabledColor':coupon.status != 0}">
+                        <div style="font-size: 16px">
+                            {{coupon.name}}<span ng-if="coupon.status!=0" style="font-size: 14px">(已使用)</span>
+                        </div>
+                        <div style="font-size: 12px">
+                            有效期至:{{coupon.end_time | date:'yyyy-MM-dd'}}
+                        </div>
+                    </div>
+                    <div style="display: inline-block;float: right">
+                        <div style="font-size: 16px;padding: 5px 10px 5px 10px;min-width: 70px;text-align: center"
+                             ng-class="{'baseRedRounded':coupon.status==0,'baseGrayRounded':coupon.status==4}">
+                            {{coupon.price/100.0}} 元
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item item-text-wrap" ng-if="couponList && couponList.length">
+                    <p style="color: #999999">
+                        备注：喵喵代金券仅限微信支付使用，每天只能使用一张，喵喵哒 \(^o^)/
+                    </p>
+                </div>
+
+                <div class="item item-text-wrap" ng-if="!couponList || couponList.length == 0">
+                    <p style="color: #999999;text-align: center">
+                        没有优惠券
+                    </p>
+                </div>
+
+            </div>
+        </ion-content>
+    </ion-view>
+</script>
+
 <script id="templates/myOrders.html" type="text/ng-template">
     <ion-view>
         <ion-nav-bar class="bar-light orderHeaderbar headerBarWithShadow" align-title="center">
             <ion-nav-buttons side="left" class="">
-                <button class="button button-clear" ng-click="goToShopOrFindShop()"><i class="ion-chevron-left dark">&nbsp;首页</i></button>
+                <button class="button button-clear" ng-click="goToShopOrFindShop()"><i class="ion-chevron-left dark">
+                    &nbsp;首页</i></button>
             </ion-nav-buttons>
             <ion-nav-title>
                 我的订单
@@ -498,7 +652,8 @@
 
             <div style="background-color: #eaeaea;width: 100%;height: 100%" ng-if="info.hasOrder != undefined">
                 <div ng-if="addressls && addressls.length">
-                    <div class="addressItem addressDefault addressSelected item-icon-right" ng-click="goToAddressList()">
+                    <div class="addressItem addressDefault addressSelected item-icon-right"
+                         ng-click="goToAddressList()">
                         <div class="addressItem-address">
                             <span class="addressTitle">收货地址:</span>
                             {{addressls[0].address}}
@@ -517,6 +672,18 @@
                            ng-click="switchToAddressList($event)"> 添加新地址</a>
                     </div>
                 </div>
+
+                <!--<div ng-if="coupons && coupons.length">-->
+                <div>
+                    <div class="item item-icon-right" ui-sref="myCoupons" style="padding-right: 38px">
+                        <span>我的优惠券</span>
+                        <span class="couponHint"
+                              style="margin-left: 2px;padding-left: 5px;padding-right: 5px;font-size: 14px;float: right"
+                              ng-if="myCouponsCount > 0">{{myCouponsCount}}张</span>
+                        <a class="icon baseRedColor ion-ios7-arrow-right" style="right: 12px"></a>
+                    </div>
+                </div>
+
                 <div class="noOrderHint" ng-if="info.hasOrder == false">
                     <div class="noOrderImageHint"></div>
                     <div style="padding-top: 30px;color: #7a7a7a;font-size: 14px">还没有订单</div>
@@ -528,14 +695,17 @@
                     <div class="orderListHeader" ng-if="latestOrder && latestOrder.length">
                         最新订单
                     </div>
-                    <div class="order-items" style="padding: 0px 20px 10px 20px;background-color: #ffffff" bindonce ng-repeat="order in latestOrder"
+                    <div class="order-items" style="padding: 0px 20px 10px 20px;background-color: #ffffff" bindonce
+                         ng-repeat="order in latestOrder"
                          ng-style="{'margin-bottom': $index+1 == latestOrder.length ? '0px' : '5px' }"
                          ng-include="'templates/snapshotOrder.html'">
                     </div>
                     <div class="orderListHeader" ng-if="historyOrder && historyOrder.length">
                         历史订单
                     </div>
-                    <div class="order-items" style="padding: 0px 20px 10px 20px;margin-bottom:5px;background-color: #ffffff" bindonce ng-repeat="order in historyOrder"
+                    <div class="order-items"
+                         style="padding: 0px 20px 10px 20px;margin-bottom:5px;background-color: #ffffff" bindonce
+                         ng-repeat="order in historyOrder"
                          ng-style="{ 'margin-bottom': $index + 1 == historyOrder.length ? '0px' : '5px' }"
                          ng-include="'templates/snapshotOrder.html'">
                     </div>
@@ -572,12 +742,19 @@
         </div>
     </div>
     <div class="orderSnapshotRemark" ng-if="order.remarks" bo-text="'买家留言: ' + order.remarks"></div>
-    <div class="orderSnapshotTotal">
+    <div class="orderSnapshotTotal" ng-if="order.dprice > 0">
         <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd H:mm'}}</div>
-        <span class="orderSnapshotCountNumber">共计:</span> {{order.items | getTotolCount }} 件
-                        <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
-                        </span>
+        <div class="orderSnapshotCountNumber">共计: {{order.items | getTotolCount }} 件 </div>
+         <div style="position: absolute;top: -5;right: 0;color: red;padding-right: 8px;display: inline-block">￥{{((order.items |
+             getTotolPrice) - order.dprice/100.0) | changeTwoDecimal}}</div>
+         <div style="position: absolute;bottom: -10;right: 0;color: red;padding-right: 8px;font-size: 10px"><s><span style="">￥ {{order.items | getTotolPrice }}</span></s></div>
     </div>
+    <div class="orderSnapshotTotal" ng-if="!order.dprice">
+        <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd H:mm'}}</div>
+        <div class="orderSnapshotCountNumber">共计: {{order.items | getTotolCount }} 件 </div>
+        <div style="position: absolute;right: 0;color: red;padding-right: 8px;display: inline-block">￥ {{order.items | getTotolPrice }}</div>
+    </div>
+
 </script>
 <script id="templates/loadingIndicator.html" type="text/ng-template">
     <div class="loadingIndicatorIcon ion-loading-c"></div>
@@ -589,6 +766,7 @@
     <div class="prod_icon" back-img="{{item.pic_url}}"></div>
     <div>
         <span class="product-title oneline" bo-text="item.name"></span>
+
         <div class="prod_info">
             <div class="product-price">
                 <span bo-text="'¥'+ item.price/100.0"></span>
@@ -619,7 +797,9 @@
             <ul style="margin: 0; padding:0px 10px 0 20px;" class="">
                 <div style="border-bottom: solid 1px #eaeaea;">
                     <div class="clearShoppingCart" style="" ng-click="clearShoppingCart()">
-                        <button class="button button-clear button-dark"><i class="icon ion-ios7-trash-outline assertive"></i> 清空购物车</button>
+                        <button class="button button-clear button-dark"><i
+                                class="icon ion-ios7-trash-outline assertive"></i> 清空购物车
+                        </button>
                     </div>
                 </div>
             </ul>
@@ -636,7 +816,8 @@
         <ion-header-bar class="bar bar-header bar-light headerBarWithShadow">
             <!--<button class="button button-clear button-icon ion-ios7-location-outline" ng-click="relocation()" ></button>-->
             <h2 class="title" style="font-size: 16px">切换店铺</h2>
-            <button class="button button-clear button-assertive button-icon ion-ios7-close-empty" ng-click="modal.hide()"></button>
+            <button class="button button-clear button-assertive button-icon ion-ios7-close-empty"
+                    ng-click="modal.hide()"></button>
         </ion-header-bar>
         <ion-content padding="false"
                      has-tabs="false"
@@ -656,11 +837,15 @@
                 <div class="item-input-wrapper">
                     <i class="icon ion-ios7-search placeholder-icon assertive" style="font-size: 20px"></i>
                     <input type="search" placeholder="请输入小区名如,中关村小区" ng-model="shop_data.searchQuery"
-                           ng-focus="startSearch()" ng-change='getSuggestions(shop_data.searchQuery,$event)' ng-keyup="$event.keyCode == 13 && performSearch(shop_data.searchQuery,$event)" style="color: #7a7a7a">
+                           ng-focus="startSearch()" ng-change='getSuggestions(shop_data.searchQuery,$event)'
+                           ng-keyup="$event.keyCode == 13 && performSearch(shop_data.searchQuery,$event)"
+                           style="color: #7a7a7a">
                     <!--<i class="clear-search icon ion-ios7-close-empty" style="font-size: 20px"-->
                     <!--ng-click="clearSearch()" ng-show="shop_info.startSearch"></i>-->
                 </div>
-                <button class="button-clear" style="color: #000000;font-size: 15px;min-width: 50px" ng-click="performSearch(shop_data.searchQuery,$event)"> {{searchButtonText}} </button>
+                <button class="button-clear" style="color: #000000;font-size: 15px;min-width: 50px"
+                        ng-click="performSearch(shop_data.searchQuery,$event)"> {{searchButtonText}}
+                </button>
             </div>
         </div>
 
@@ -676,18 +861,22 @@
             </div>
 
             <div class="" style="margin: 0;background-color: #eaeaea">
-                <div class="item-hint" ng-if="shop_info.locationReady || community_items && community_items.length >= 0">
-                    选择您所在的小区 <span class="assertive" ng-if="shop_info.loadingCoummnityItems == true"><i class="icon ion-loading-c assertive"></i></span>
+                <div class="item-hint"
+                     ng-if="shop_info.locationReady || community_items && community_items.length >= 0">
+                    选择您所在的小区 <span class="assertive" ng-if="shop_info.loadingCoummnityItems == true"><i
+                        class="icon ion-loading-c assertive"></i></span>
                 </div>
-                <div ng-if="community_items && community_items.length == 0" style="color: #999999;text-align: center;font-size: 14px;padding-top: 50px;padding-bottom: 50px;background-color: #ffffff">
+                <div ng-if="community_items && community_items.length == 0"
+                     style="color: #999999;text-align: center;font-size: 14px;padding-top: 50px;padding-bottom: 50px;background-color: #ffffff">
                     小喵正在努力覆盖您所在的小区,敬请期待哦 !
                 </div>
                 <div class="communityList" bindonce ng-repeat="item in community_items"
-                     ng-include = "'templates/community-item.html'">
+                     ng-include="'templates/community-item.html'">
                 </div>
             </div>
 
-            <div class="" ng-if="shop_history.length" style="margin-top: 0px; margin-bottom: 5px;padding-top: 5px;background-color: #ffffff">
+            <div class="" ng-if="shop_history.length"
+                 style="margin-top: 0px; margin-bottom: 5px;padding-top: 5px;background-color: #ffffff">
                 <div class="item-hint">
                     历史店铺
                 </div>
@@ -697,7 +886,8 @@
             </div>
         </div>
 
-        <div class="addressSuggestions" style="position: absolute;top:45;bottom: 0;left: 0;right: 0;width: 100%;background-color: #ffffff;z-index: 999;"
+        <div class="addressSuggestions"
+             style="position: absolute;top:45;bottom: 0;left: 0;right: 0;width: 100%;background-color: #ffffff;z-index: 999;"
              ng-if="shop_info.showAddressSuggestion == true">
 
             <ion-content padding="false"
@@ -708,8 +898,9 @@
                     小区列表
                 </div>
                 <div style="background-color: #ffffff;">
-                    <div class="communityListSimple" bindonce ng-repeat="item in shop_info.address_suggestions track by item.id"
-                         ng-include = "'templates/community-item-simple.html'">
+                    <div class="communityListSimple" bindonce
+                         ng-repeat="item in shop_info.address_suggestions track by item.id"
+                         ng-include="'templates/community-item-simple.html'">
                     </div>
                 </div>
             </ion-content>
@@ -723,7 +914,7 @@
 <script id="templates/community-item.html" type="text/ng-template">
     <!--ng-class="{'item-icon-right':item.shops && item.shops.length > 1}"-->
     <div class="item" style="border: none;position: relative;"
-          ng-click="clickCommunity(item,$event)">
+         ng-click="clickCommunity(item,$event)">
 
         <div class="toggleFade" ng-if="item.showShopNotReadyMessage"
              style="color: #ef5356;text-align: left;position: absolute; font-size: 11px;top: -2;left: 16">
@@ -746,17 +937,18 @@
             </div>
             <div class="item-text-wrap" style="font-size: 12px;" ng-if="item.distinct > 0">
                 <i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 8px;color: lightgray"></i>
-                <span  bo-text="'距离' + (item.distinct | parseIntDistant) + '米'"></span>
+                <span bo-text="'距离' + (item.distinct | parseIntDistant) + '米'"></span>
             </div>
         </div>
     </div>
 
-    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="background-color: #ffffff" ng-if="item.shops && item.shops.length">
+    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000"
+         style="background-color: #ffffff" ng-if="item.shops && item.shops.length">
         <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: #ffffff;border: solid 1px lightgray"
              bindonce
              ng-repeat="item in item.shops"
              ng-click="goToShop(item)"
-             ng-include = "'templates/shop-item.html'">
+             ng-include="'templates/shop-item.html'">
         </div>
     </div>
 
@@ -781,12 +973,13 @@
         </div>
     </div>
 
-    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000" style="padding: 5px" ng-if="item.shops && item.shops.length">
+    <div class="shopsInCommunity" bn-slide-show="item.showShopsInCommunity" slide-show-duration="1000"
+         style="padding: 5px" ng-if="item.shops && item.shops.length">
         <div style=";padding: 10px 5px 10px 10px;margin-bottom: 5px; background-color: #ffffff;border: solid 1px lightgray"
              bindonce
              ng-repeat="item in item.shops"
              ng-click="goToShop(item)"
-             ng-include = "'templates/shop-item.html'">
+             ng-include="'templates/shop-item.html'">
         </div>
     </div>
 
@@ -803,45 +996,69 @@
                 <span style="color: #ef5356;font-size: 12px" ng-if="item.remark" bo-text="item.remark"></span>
             </div>
             <div ng-class="{'shopItemStatusOpen':!item.status,'shopItemStatusClosed': item.status }"
-                    bo-text="item.status | getShopStatusString ">
+                 bo-text="item.status | getShopStatusString ">
             </div>
         </div>
         <div style="margin-top: 12px;color: #6a6a6a">
             <div style="font-size: 12px;">
                 <div style=" display: inline-block" ng-show="item.open_time || item.close_time">
-                    <i class=" ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> 早{{item.open_time| date:'shortTime' | removeAMPM}} - 晚{{item.close_time| date:'shortTime' | removeAMPM}}
+                    <i class=" ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>
+                    早{{item.open_time| date:'shortTime' | removeAMPM}} - 晚{{item.close_time| date:'shortTime' |
+                    removeAMPM}}
                 </div>
                 <div style=" display: inline-block;" ng-show="!item.open_time && !item.close_time">
                     <i class=" ion-ios7-clock" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>全天营业
                 </div>
                 <div style=" display: inline-block; padding-left: 20px">
-                    <i class="ion-ios7-pricetags" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> {{ item.base_price | getShopMinPrice }}元起送
+                    <i class="ion-ios7-pricetags" style="font-size: 15px;margin-right: 9px;color: lightgray"></i> {{
+                    item.base_price | getShopMinPrice }}元起送
                 </div>
             </div>
             <div class="item-text-wrap" style="font-size: 12px;" ng-show="item.shop_address">
-                <i class=" ion-ios7-location" style="font-size: 15px;margin-right: 12px;color: lightgray"></i>地址: {{item.shop_address}}
+                <i class=" ion-ios7-location" style="font-size: 15px;margin-right: 12px;color: lightgray"></i>地址:
+                {{item.shop_address}}
             </div>
             <!--<div class="item-text-wrap" style="font-size: 12px;color: #ef5356" ng-show="item.shop_info">-->
-                <!--<i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>服务区域: {{item.shop_info}}-->
+            <!--<i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>服务区域: {{item.shop_info}}-->
             <!--</div>-->
             <div class="item-text-wrap" style="font-size: 12px;" ng-show="item.distant > 0">
-                <i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>距离: {{item.distant | parseIntDistant}} 米
+                <i class="ion-ios7-navigate" style="font-size: 15px;margin-right: 9px;color: lightgray"></i>距离:
+                {{item.distant | parseIntDistant}} 米
             </div>
         </div>
     </div>
 </script>
 
-<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
-<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+<script id='templates/customAlert.html' type="text/ng-template">
+    <div style="background-color: #ef5356">
+        <div style="color: #ffffff">supporse</div>
+    </div>
+</script>
+
+<script src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624" type="text/javascript"></script>
+<script src="http://developer.baidu.com/map/jsdemo/demo/convertor.js" type="text/javascript"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
 
 <script>
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "//hm.baidu.com/hm.js?39973e3981da4da56b413e225a122b0f";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
+    (function () {
+        function async_load(url) {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = url;
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        }
+
+        function loadExternalJs() {
+            async_load('//hm.baidu.com/hm.js?39973e3981da4da56b413e225a122b0f');
+        }
+
+        if (window.attachEvent) {
+            window.attachEvent('onload', loadExternalJs);
+        }
+        else
+            window.addEventListener('load', loadExternalJs, false);
     })();
 </script>
 

@@ -76,6 +76,19 @@ public class Dateutils {
 		now.set(Calendar.MILLISECOND, Integer.parseInt(hMS[2]));
 		return now.getTime();
 	}
+
+	public static long getTodayrest(){
+		long  current = System.currentTimeMillis();
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DATE, 1);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE,0);
+		c.set(Calendar.SECOND,0);
+		long rest = c.getTime().getTime() - current;
+		return rest ;
+	}
+
 	/**
 	 * 08:00 AM
 	 * 10:00 PM
@@ -125,4 +138,5 @@ public class Dateutils {
 		return tranferDate2Str(now.getTime());
 		
 	}
+
 }

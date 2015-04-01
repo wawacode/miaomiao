@@ -2,10 +2,7 @@ package com.renren.ntc.sg.service;
 
 import com.alibaba.fastjson.JSON;
 import com.renren.ntc.sg.bean.*;
-import com.renren.ntc.sg.biz.dao.AddressDAO;
-import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
-import com.renren.ntc.sg.biz.dao.DeviceDAO;
-import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.ConfigProperties;
 import com.renren.ntc.sg.util.Constants;
@@ -29,11 +26,19 @@ import java.util.List;
 public class SMSService {
 
     @Autowired
+    public OrderService orderService;
+
+    @Autowired
     public OrdersDAO ordersDAO;
 
     @Autowired
     public AddressDAO addressDAO;
 
+    @Autowired
+    public UserDAO userDao;
+
+    @Autowired
+    public WXService wxService;
 
     @Autowired
     public DeviceDAO deviceDAO;
@@ -53,7 +58,7 @@ public class SMSService {
             String info = "用户下单";
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
-            String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
+            String vv = shop.getName() + " " + shop.getTel() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
             vv = vv.replaceAll("=", "").replaceAll("&", "");
             String ro = info.replace("=", "").replace("&", "");
             float p = (float) order.getPrice() / 100;
@@ -63,6 +68,7 @@ public class SMSService {
             List<CatStaffCommit> catStaffCommitls = catStaffCommitDao.getbyShopid(shop.getId());
             for ( CatStaffCommit catStaffCommit : catStaffCommitls)   {
             if (catStaffCommit != null) {
+
                 String phone = catStaffCommit.getPhone();
                 if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
                     System.out.println(String.format("%s %s sms allready send ", phone, order_id));
@@ -99,40 +105,42 @@ public class SMSService {
         }
     }
 
-    public void sendSMS2User(String order_id, Shop shop) {
-        //通知用户
-        try {
-            if (SUtils.isDev()) {
-                return;
-            }
-            if (null != shop) {
-                Order value = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
-                String v = null;
-                String url;
-                String mobile = "";
-                byte[] t = null;
-                String vv = value.getOrder_id();
-                vv = vv.replaceAll("=", "").replaceAll("&", "");
-                String message = "#order_id#=" + vv + "&#shop_name#=" + shop.getName() + "&#phone#=" + shop.getTel();
-                message = URLEncoder.encode(message, "utf-8");
-                long adr_id = value.getAddress_id();
-                Address adrs = addressDAO.getAddress(adr_id);
-                String phone = adrs.getPhone().trim();
-                if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
-                    System.out.println(String.format("%s %s sms allready send ", phone, order_id));
-                    return;
-                }
-                url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_TID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                String response = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-                MongoDBUtil.getInstance().sendmark(phone, order_id);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
+
+
+//    public void sendSMS2User(String order_id, Shop shop) {
+//        //通知用户
+//        try {
+//            if (SUtils.isDev()) {
+//                return;
+//            }
+//            if (null != shop) {
+//                Order value = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
+//                String v = null;
+//                String url;
+//                String mobile = "";
+//                byte[] t = null;
+//                String vv = value.getOrder_id();
+//                vv = vv.replaceAll("=", "").replaceAll("&", "");
+//                String message = "#order_id#=" + vv + "&#shop_name#=" + shop.getName() + "&#phone#=" + shop.getTel();
+//                message = URLEncoder.encode(message, "utf-8");
+//                long adr_id = value.getAddress_id();
+//                Address adrs = addressDAO.getAddress(adr_id);
+//                String phone = adrs.getPhone().trim();
+//                if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
+//                    System.out.println(String.format("%s %s sms allready send ", phone, order_id));
+//                    return;
+//                }
+//                url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_TID, phone, message);
+//                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
+//                t = SHttpClient.getURLData(url, "");
+//                String response = SUtils.toString(t);
+//                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
+//                MongoDBUtil.getInstance().sendmark(phone, order_id);
+//            }
+//        } catch (Throwable e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void sendSMS2Boss(String order_id, Shop shop) {
         try {
@@ -155,7 +163,7 @@ public class SMSService {
 
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
             //节约成本  有打印机的情况不要发那么多字的短信
-            if (null != devcie || !SUtils.isOffline(devcie)) {
+            if (null != devcie && !SUtils.isOffline(devcie)) {
                 String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id();
                 vv = vv.replaceAll("=", "").replaceAll("&", "");
                 String ro = response.replace("=", "").replace("&", "");

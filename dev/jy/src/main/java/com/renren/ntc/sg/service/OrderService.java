@@ -8,6 +8,10 @@ import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.jredis.JRedisUtil;
+import com.renren.ntc.sg.mongo.MongoDBUtil;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.SUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +51,13 @@ public class OrderService {
             String msg = o.getMsg();
             JSONObject js = (JSONObject) JSON.parse(msg);
             if (null != js){
-               o.setConfirm(js.getString("confirm"));
+                try {
+                    o.setConfirm(js.getString("confirm"));
+                    int dprice = js.getInteger("discount");
+                    o.setDprice((float) dprice / 100);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             o.setPrice4V(((float) o.getPrice() / 100) + "");
             Shop shop = shopDAO.getShop(o.getShop_id());
@@ -82,5 +92,11 @@ public class OrderService {
             return "最新订单";
         }
         return "历史订单" ;
+    }
+
+    public void mark(String order_id,long  shop_id) {
+        String order_key =  SUtils.generOrders(order_id,shop_id);
+        JRedisUtil.getInstance().sadd(Constants.ORDER_KEY,order_key);
+
     }
 }

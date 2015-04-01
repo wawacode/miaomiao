@@ -16,7 +16,13 @@
             for (var item_idx = 0; item_idx < input.length; item_idx++) {
                 total += parseFloat(input[item_idx].price || 0.0) * parseInt(input[item_idx].count || 0);
             }
-            return total / 100.0;
+            return Math.round((total / 100.0) * 100)/100 ;
+        };
+
+    }).filter('changeTwoDecimal', function () {
+        return function (num) {
+            if(num <= 0) return 0.0;
+            return Math.round(num*100)/100; // Characters after Colon
         };
     }).filter('removeAMPM', function () {
         return function (text) {

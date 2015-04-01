@@ -75,6 +75,7 @@ public class PushService {
 
 	
 	public void sendAndroidUnicast(String title , String message ,String device_token) throws Exception {
+
         this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidUnicast unicast = new AndroidUnicast();
 		unicast.setAppMasterSecret(appMasterSecret);

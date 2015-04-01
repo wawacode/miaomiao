@@ -52,7 +52,7 @@ angular.module('miaomiao.shop', ['ionic',
             return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
         }];
     })
-    .config(function ($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
         $ionicConfigProvider.tabs.position("bottom"); //Places them at the bottom for all OS
         $ionicConfigProvider.tabs.style("standard"); //Makes them all look the same across all OS
@@ -76,7 +76,7 @@ angular.module('miaomiao.shop', ['ionic',
             })
             .state('goToShop', {
                 url: "/shop?shop_id",
-                templateUrl: 'templates/productList.html',
+                templateUrl: 'templates/locate.html',
                 controller: 'GoToShopCtrl'
 
             })
@@ -105,6 +105,11 @@ angular.module('miaomiao.shop', ['ionic',
                 url: '/myorders',
                 templateUrl: 'templates/myOrders.html',
                 controller: 'MyOrdersCtrl'
+            })
+            .state('myCoupons', {
+                url: '/mycoupons',
+                templateUrl: 'templates/couponList.html',
+                controller: 'CouponListCtrl'
             });
 
         $urlRouterProvider.otherwise('/locate');

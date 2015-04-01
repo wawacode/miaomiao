@@ -1,5 +1,6 @@
 ;angular.module('miaomiao.shop').controller('ProductCtrl', function ($scope, $rootScope, $window, $ionicLoading, $ionicPopup, $ionicModal,
-                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart, OrderService,ShopService,MMUtils) {
+                                                                    $ionicScrollDelegate, $http, $state, $timeout, localStorageService, httpClient, ShoppingCart,
+                                                                    OrderService,ShopService,MMUtils,WeiChatPay) {
 
     // get shop info from local storage cause in locate page we have got one
     $scope.shop = ShopService.getDefaultShop() || {};
@@ -62,6 +63,8 @@
 
             $scope.currentDisplayCategory = $scope.categoryls.length && $scope.categoryls[0];
             $scope.currentDisplayItems = $scope.currentDisplayCategory && $scope.currentDisplayCategory.itemls;
+
+            checkAvailableCoupons();
 
         }, function (data, status) {
             $ionicLoading.hide();
@@ -343,6 +346,58 @@
         });
     }
 
+
+    function checkAvailableCoupons(){
+        // must check shop status
+
+        var shopInfo = ShopService.getDefaultShop() || {};
+        $timeout(function () {
+            $scope.shop = shopInfo;
+        });
+
+        if(ShopService.isCouponEnabledShop(shopInfo)){
+
+            httpClient.getAvailableCouponForShop(shopInfo.id, function (data, status) {
+                var code = data.code, dataDetail = data.data;
+                if (dataDetail && dataDetail.coupons && dataDetail.coupons.length) {
+                    var totalPrice = 0.0;
+                    for(var i=0;i< dataDetail.coupons.length;i++){
+                        totalPrice += dataDetail.coupons[i].price/100.0;
+                    }
+
+                    $timeout(function(){
+                        $scope.showCouponObtainLayout = true;
+                        $scope.showCouponPrice = totalPrice;
+                    });
+
+                }
+            },function(data, status){
+
+            });
+        }
+    }
+
+    $scope.obtainCoupon = function(){
+
+        $timeout(function(){
+            $scope.showCouponObtainLayout = false;
+        });
+
+        httpClient.couponObtainedByUserForShop($scope.shop.id, function (data, status) {
+            var code = data.code, dataDetail = data.data;
+            if (code == 0 && dataDetail.coupons) {
+                $timeout(function(){
+                    $scope.showSomethingHot = true;
+                });
+                MMUtils.showAlert('领取成功,您可以到个人中心查看领取的代金券');
+            }else{
+                MMUtils.showAlert('领取出错了,请尝试重新进店领取');
+            }
+        },function(data, status){
+            MMUtils.showAlert('领取出错了,请重新进店领取');
+        });
+    };
+
     // when back from checkout or other state, just refresh the numbers
     $scope.$on("$ionicView.afterEnter", function () {
 
@@ -353,9 +408,7 @@
         fullyUpdateForProductList();
 
         if(!$scope.currentDisplayItems || !$scope.currentDisplayItems.length){
-            $timeout(function () {
-                initShopData();
-            });
+            initShopData();
         }
     });
 

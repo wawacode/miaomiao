@@ -3,8 +3,16 @@ package com.renren.ntc.sg.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.bean.User;
+import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
+import com.renren.ntc.sg.mongo.MongoDBUtil;
+import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
@@ -12,6 +20,7 @@ import com.renren.ntc.sg.util.wx.Sha1Util;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -32,6 +41,18 @@ public class WXService {
     private  static  String ACCESS_TOKEN = "access_token";
     private  static  String JSAPI_TOKEN = "jsapi_ticket";
 
+    @Autowired
+    public UserDAO userDao;
+
+    @Autowired
+    public OrdersDAO ordersDAO;
+
+    @Autowired
+    public ShopDAO shopDao;
+
+    @Autowired
+    public OrderService orderService;
+
     private static final int CONN_TIMEOUT = 10000;
 	private static final int READ_TIMEOUT = 10000;
 	private static final int RETRY = 2;
@@ -39,9 +60,14 @@ public class WXService {
 
     private  static  final String JSAPI = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={access_token}&type=jsapi";
 
+    private  static  final String TEMPLATEAPI = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={token}";
+
+
     private static final String mch_id = "1233699402";
     private static final String key = "210f760a89db30aa72ca258a3483cc7f";
-    private static final String  notify_url ="http://www.mbianli.com/wx/cb";
+
+    //test url
+    private static final String  notify_url ="http://www.mbianli.com{p}/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
@@ -65,7 +91,7 @@ public class WXService {
     public  String  getOpenId (String code ){
         String openId = null;
         String access_token =  getAccessToken();
-        String url = OAUTH_URL.replace("{appId}",appId);
+        String url = OAUTH_URL.replace("{appId}", appId);
         url = url.replace("{appKey}",appKey);
         url = url.replace("{code}",code);
 
@@ -108,6 +134,44 @@ public class WXService {
         }
          return  ticket;
     }
+
+
+
+    public String orderStatus(String first,String openId ,String paydone  ,String order_id,String remark ){
+        JSONObject response =  new JSONObject();
+        response.put("touser",openId) ;
+        response.put("template_id","azG7FFMY0x3P9HnFvg5S7Qm0a2xvJttzbsBGACOb-pA") ;
+        response.put("url","http://www.mbianli.com/sg/loading#/myorders");
+        response.put("topcolor","#FF0000");
+        JSONObject data  = new JSONObject( );
+        JSONObject firstob = new JSONObject();
+        firstob.put("value",first);
+        firstob.put("color","#173177");
+
+
+        JSONObject OrderSn = new JSONObject();
+        OrderSn.put("value",order_id);
+        OrderSn.put("color","#173177");
+
+        JSONObject OrderStatus = new JSONObject();
+
+        OrderStatus.put("value",paydone);
+        OrderStatus.put("color","#173177");
+
+
+        JSONObject remarkob = new JSONObject();
+        remarkob.put("value",remark);
+        remarkob.put("color","#173177");
+
+        data.put("first",firstob);
+        data.put("OrderSn",OrderSn);
+        data.put("OrderStatus",OrderStatus);
+        data.put("remark",remarkob);
+        response.put("data",data);
+        return response.toJSONString();
+    }
+
+
 
     public String  getAccessToken(){
         String access_token = JRedisUtil.getInstance().get(ACCESS_TOKEN);
@@ -155,6 +219,60 @@ public class WXService {
 		return btemp;
 	}
 
+    public void sendWX2User(String order_id, long shop_id) {
+
+        if (MongoDBUtil.getInstance().haveSend("wx_xx","wx_"+order_id)) {
+            System.out.println(String.format("%s %s sms allready send ", "wx_xx", order_id));
+            return;
+        }
+        Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        if (null == order){
+            LoggerUtils.getInstance().log("order is null ");
+            return ;
+        }
+        Shop shop = shopDao.getShop(shop_id);
+        User user = userDao.getUser(order.getUser_id());
+        // del add to set
+        String remark = Constants.REMARKCONFRIM.replace("{shop_name}", shop.getName());
+        remark = remark.replace("{shop_tel}", shop.getTel());
+
+        String respone = orderStatus(Constants.ORDERCONFRIM, user.getWx_open_id(),
+                Constants.ORDERCONFRIM, order_id, remark);
+        String access_token = getAccessToken();
+        String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+
+        byte[] tt = sendPostRequest(turl, respone);
+
+        MongoDBUtil.getInstance().sendmark("wx_xx", "wx_"+order_id);
+        String re = new String(tt);
+        LoggerUtils.getInstance().log(String.format("send wx response %s , %s  rec %s ", turl, respone,re));
+    }
+
+
+    public void sendWX2User(String order_id, Shop shop) {
+
+        if (MongoDBUtil.getInstance().haveSend("wx_xx","pay_done_"+order_id)) {
+            System.out.println(String.format("%s %s sms allready send ", "wx_xx", order_id));
+            return;
+        }
+        Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop.getId()));
+        if (null == order){
+            return ;
+        }
+        User user = userDao.getUser(order.getUser_id());
+
+        String remark = Constants.REMARK.replace("{shop_name}", shop.getName());
+        remark = remark.replace("{shop_tel}", shop.getTel());
+
+        String respone = orderStatus(Constants.ORDERDONE, user.getWx_open_id(),
+                Constants.ORDERDONE, order_id, remark);
+        String access_token = getAccessToken();
+        String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+        byte[] tt = sendPostRequest(turl, respone);
+        MongoDBUtil.getInstance().sendmark("wx_xx", "pay_done_"+order_id);
+        String re = new String(tt);
+        System.out.println(tt);
+    }
 	private static String _GetCookie() {
 		return "2";
     }
@@ -214,20 +332,24 @@ public class WXService {
     }
 
 
-
     public static void main(String[] args) throws IOException {
+        String openId = "oQfDLjmZD7Lgynv6vuoBlWXUY_ic";
         WXService w = new WXService();
         byte [] t = new byte[0];
         try {
-            t = WXService.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
+            t = w.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
                     "grant_type=client_credential&appid=" + appId + "&secret=" + appKey);
             String e = new String(t);
             if (StringUtils.isBlank(e)){
             }
             JSONObject ob =(JSONObject) JSONObject.parse(e);
-           String  access_token =  ob.getString("access_token");
-            JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
-            JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
+            String  access_token =  ob.getString("access_token");
+            String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+            String result = w.orderStatus("ni已下单成功。",openId,"order_id","货到付款 ","乐邻便利即将为你配送，预计30分钟内到达；乐邻便利联系电话：xxxxxxx");
+            byte[] tt = sendPostRequest(turl, result);
+            String re = new String(tt);
+            System.out.println(tt);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -245,7 +367,13 @@ public class WXService {
             map.put("body",body);
             map.put("mch_id",mch_id);
             map.put("nonce_str",nonce_str);
-            map.put("notify_url",notify_url) ;
+            String  nurl = "" ;
+            if(SUtils.isDev()) {
+                nurl = notify_url.replace("{p}",":8088");
+            }else{
+                nurl = notify_url.replace("{p}","");
+            }
+            map.put("notify_url",nurl) ;
             map.put("openid", open_id);
             map.put("out_trade_no", out_trade_no );
             map.put("spbill_create_ip", spbill_create_ip );
@@ -257,7 +385,7 @@ public class WXService {
             content  = content.replace("{body}",body);
             content  = content.replace("{mch_id}",mch_id);
             content  = content.replace("{nonce_str}",nonce_str);
-            content  = content.replace("{notify_url}",notify_url);
+            content  = content.replace("{notify_url}",nurl);
             content  = content.replace("{openid}",open_id);
             content  = content.replace("{out_trade_no}",out_trade_no);
             content  = content.replace("{spbill_create_ip}",spbill_create_ip);
@@ -266,6 +394,7 @@ public class WXService {
             content  = content.replace("{sign}",sign);
             System.out.println("send " + content);
             TenpayHttpClient http = new TenpayHttpClient();
+
             http.callHttpPost(URL,content);
             String  res  = http.getResContent();
             System.out.println( "wx rec " +  res );
