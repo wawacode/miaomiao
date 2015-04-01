@@ -75,14 +75,12 @@ import java.util.List;
                 if(phone.length()<11){
                     continue;
                 }
-                phone = "18600326217";
                 url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.TMP_TID, phone, message);
                 System.out.println(String.format("Send  SMS mobile %s  ,%s ", phone, url));
-                System.exit(0);
-//                t = SHttpClient.getURLData(url, " ");
-//                String r = SUtils.toString(t);
-//                System.out.println(String.format("Post Shop SMS message  %s , %s  %s ",
-//                        r, phone, url));
+                t = SHttpClient.getURLData(url, " ");
+                String r = SUtils.toString(t);
+                System.out.println(String.format("Post Shop SMS message  %s , %s  %s ",
+                        r, phone, url));
             }
             i = i + offset;
         }
