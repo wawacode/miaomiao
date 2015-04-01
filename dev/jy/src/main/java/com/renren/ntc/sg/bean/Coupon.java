@@ -28,16 +28,27 @@ CREATE TABLE `items` (
 public class Coupon {
 
     private  long id = 0;
+<<<<<<< HEAD
+    private long price = 0 ;
+    private  long  createer  = 0;
+    private String name;
+    private String  desc;
+=======
     private  int price = 0 ;
     private  long  createer  = 0;
     private String name;
     private String  desc;
     private String pic_url;
+>>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
     private String   ext;
     private Date start_time ;
     private Date end_time ;
     private Date create_time;
     private Date update_time;
+<<<<<<< HEAD
+
+
+=======
     private String startTimeStr;
     private String endTimeStr;
 
@@ -59,6 +70,7 @@ public class Coupon {
         this.shop_id = shop_id;
     }
 
+>>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
     public long getId() {
         return id;
     }
@@ -67,11 +79,19 @@ public class Coupon {
         this.id = id;
     }
 
+<<<<<<< HEAD
+    public long getPrice() {
+        return price;
+    }
+
+    public void setPrice(long price) {
+=======
     public int getPrice() {
         return price;
     }
 
     public void setPrice( int price) {
+>>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
         this.price = price;
     }
 
@@ -134,6 +154,13 @@ public class Coupon {
     public Date getUpdate_time() {
         return update_time;
     }
+<<<<<<< HEAD
+
+    public void setUpdate_time(Date update_time) {
+        this.update_time = update_time;
+    }
+
+=======
     
     public Coupon(){
     	
@@ -172,6 +199,7 @@ public class Coupon {
 		this.endTimeStr = endTimeStr;
 	}
 
+>>>>>>> c2ba49821de2cab88bda3ed2aaf243e65855ea77
 
 
 
