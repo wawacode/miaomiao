@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.jredis.JRedisUtil;
@@ -160,6 +161,13 @@ public class WXController {
                    LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
                     return "@" + Constants.UKERROR;
                 }
+
+                Order order = orderDao.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+                if(done(order)){
+                    return  "@json:" + Constants.DONE;
+                }
+
+
                 orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
                 userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
                 if( coupon_id != 0) {
@@ -187,6 +195,13 @@ public class WXController {
         return "@json:" + Constants.DONE;
     }
 
+    private boolean done(Order order) {
+        if (order.getStatus() == Constants.ORDER_WAIT_FOR_PRINT || order.getStatus() == Constants.ORDER_FINISH){
+            return true;
+        }
+        return false;
+    }
+
     private long getCoupon_id(String attach) {
         long coupon_id = 0 ;
 
@@ -207,6 +222,11 @@ public class WXController {
         pushService.send2locPush(order_id, shop);
         pushService.send2kf(order_id, shop);
         // 发送短信通知
+
+        //use wx
+        orderService.mark(order_id, shop.getId());
+        wxService.sendWX2User(order_id, shop);
+
         Device devcie = deviceDAO.getDevByShopId(shop.getId());
         if (null == devcie || SUtils.isOffline(devcie)) {
             System.out.println("device is null or  printer offline ");
@@ -217,11 +237,6 @@ public class WXController {
             smsService.sendSMS2Boss(order_id, shop);
 //          System.out.println("send sms to user");
 //          smsService.sendSMS2User(order_id, shop);
-            //use wx
-            orderService.mark(order_id, shop.getId());
-            wxService.sendWX2User(order_id, shop);
-
-
         }
     }
     private long getShop_id(String attach) {

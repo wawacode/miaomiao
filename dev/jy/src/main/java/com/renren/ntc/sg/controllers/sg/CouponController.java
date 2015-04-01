@@ -9,6 +9,13 @@ import com.renren.ntc.sg.bean.UserCoupon;
 import com.renren.ntc.sg.biz.dao.CouponDAO;
 import com.renren.ntc.sg.biz.dao.UserCouponDAO;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.SUtils;
+import com.renren.ntc.sg.util.wx.MD5Util;
+import com.renren.ntc.sg.util.wx.Sha1Util;
+import com.renren.ntc.sg.util.wx.TenpayUtil;
+import net.paoding.rose.web.Invocation;
+import net.paoding.rose.web.annotation.Param;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.TicketService;
 import com.renren.ntc.sg.util.Constants;
@@ -124,13 +131,12 @@ public class CouponController {
         JSONObject data = new JSONObject();
 
         JSONArray cos = new JSONArray();
-        if (shop_id == 10033 ) {
+        if (shop_id == 1 || shop_id == 10033 ) {
             List<Coupon> coupons  = couponDao.getCouponRule(new Date(System.currentTimeMillis()));
             for (Coupon c : coupons) {
                 List<UserCoupon> tickets = usercouponDao.getUserALLCoupon(u.getId(), c.getId());
                 if (tickets == null || tickets.size() == 0) {
                     cos.add(JSON.toJSON(c));
-                    ;
                 }
             }
         }

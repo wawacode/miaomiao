@@ -132,20 +132,24 @@ public class WXHttpClient {
         sub_button.add(order);
 
         JSONObject coupon   = new JSONObject();
-        coupon.put("name","我的代金券");
+        coupon.put("name","代金券");
         coupon.put("type","view");
-        coupon.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=\" +\n" +
-                "                \"http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Ffindshop&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+        coupon.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
+                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Fmycoupons&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
         sub_button.add(coupon);
 
-        JSONObject findshop  = new JSONObject();
-        findshop.put("name","切换店铺");
-        findshop.put("type","view");
-        findshop.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
-                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Ffindshop&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
-        sub_button.add(findshop) ;
+//        JSONObject findshop  = new JSONObject();
+//        findshop.put("name","切换店铺");
+//        findshop.put("type","view");
+//        findshop.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
+//                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Ffindshop&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+//        sub_button.add(findshop) ;
+
+        button2.put("sub_button", sub_button);
         buttons.add(button2);
-        button2.put("sub_button",sub_button);
+
+
+
         JSONObject button3 = new JSONObject() ;
         button3.put("name","关于喵喵") ;
         JSONArray sub_button2 =  new JSONArray ();
@@ -270,8 +274,6 @@ public class WXHttpClient {
             return ;
         }
         JSONObject ob =(JSONObject) JSONObject.parse(e);
-        for (int i= 300 ;i<10000 ;i++){
-        getTicket(ob.getString("access_token"),i);
-        }
+        createMenu(ob.getString("access_token"));
     }
 }

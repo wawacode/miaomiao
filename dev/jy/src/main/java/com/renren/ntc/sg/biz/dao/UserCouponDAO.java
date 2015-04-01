@@ -19,6 +19,7 @@ import java.util.List;
 @DAO(catalog = "ABC")
 public interface UserCouponDAO {
     static final String TABLE_NAME= "user_coupon";
+
     static final String  FIELDS = "id,user_id,coupon_id,shop_id,pic_url,code,status, price ,name  ,ext,start_time,end_time,create_time,update_time"  ;
     static final String  INSERT_FIELDS = "user_id,coupon_id,shop_id,pic_url,code ,status, price ,name,ext,start_time,end_time"  ;
 
