@@ -32,6 +32,7 @@ public class OrderDetailUtil {
 		WXPayDetail  wxpDetail = null;
 		List<WXPayShopReport> wxpayShopReports = new ArrayList<OrderDetailUtil.WXPayShopReport>();
 		for(Shop shop : shops){
+			System.out.println("shopid="+shop.getId()+",name="+shop.getName());
 			String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 0, 0, 0));
 			String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 23, 0, 0));
 			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
