@@ -66,10 +66,9 @@ public class OrderDetailUtil {
 				wxpDetail.setWxDiscount(wxDiscount/100);
 				wxpDetail.setRealPrice((order.getPrice() - wxDiscount)/100);
 				wxpDetail.setOrderTimeStr(Dateutils.tranferDate2Str(order.getCreate_time()));
-				wxpDetails.add(wxpDetail);
-				wShopReport.setShopOrderFlows(wxpDetails);
-				
+				wxpDetails.add(wxpDetail);	
 			}
+			wShopReport.setShopOrderFlows(wxpDetails);
 			wxpayShopReports.add(wShopReport);
 			
 			//System.out.println("shopid="+shop.getId()+",shopname="+shop.getName()+",微信支付总价="+(price/100));
