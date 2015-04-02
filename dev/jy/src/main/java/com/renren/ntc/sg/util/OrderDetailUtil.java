@@ -32,7 +32,7 @@ public class OrderDetailUtil {
 		List<Shop> shops = shopDAO.getAllShopsByAudit(1);
 		List<WXPayShopReport> wxpayShopReports = new ArrayList<WXPayShopReport>();
 		for(Shop shop : shops){
-			System.out.println("shopid="+shop.getId()+",name="+shop.getName());
+			//System.out.println("shopid="+shop.getId()+",name="+shop.getName());
 			String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 0, 0, 0));
 			String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 23, 0, 0));
 			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
@@ -41,7 +41,7 @@ public class OrderDetailUtil {
 			wShopReport.setShopId(shop.getId());
 			wShopReport.setShopName(shop.getName());
 			wShopReport.setOrderCount(orderSize);
-			System.out.println("wShopReport shopid="+wShopReport.getShopId()+",name="+wShopReport.getShopName());
+			//System.out.println("wShopReport shopid="+wShopReport.getShopId()+",name="+wShopReport.getShopName());
 			wShopReport.setReportDate(Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(-1, 23, 0, 0)));
 			List<WXPayDetail> wxpDetails = new ArrayList<WXPayDetail>();
 			for(Order order : orders){
@@ -68,8 +68,9 @@ public class OrderDetailUtil {
 				wxpDetail.setOrderTimeStr(Dateutils.tranferDate2Str(order.getCreate_time()));
 				wxpDetails.add(wxpDetail);
 				wShopReport.setShopOrderFlows(wxpDetails);
-				wxpayShopReports.add(wShopReport);
+				
 			}
+			wxpayShopReports.add(wShopReport);
 			
 			//System.out.println("shopid="+shop.getId()+",shopname="+shop.getName()+",微信支付总价="+(price/100));
 		}
