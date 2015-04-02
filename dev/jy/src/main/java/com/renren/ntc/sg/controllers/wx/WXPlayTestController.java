@@ -295,6 +295,7 @@ public class WXPlayTestController {
 
     public static void main(String[] args) {
         System.out.println(JRedisUtil.getInstance().get("access_token"));
+        System.out.println(JRedisUtil.getInstance().get("jsapi_ticket"));
 
     }
 
@@ -329,4 +330,5 @@ public class WXPlayTestController {
                 .toUpperCase();
         return sign;
     }
+
 }

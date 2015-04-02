@@ -188,7 +188,7 @@ public class WXService {
                 access_token =  ob.getString("access_token");
                 if(!StringUtils.isBlank(access_token) ){
                    JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
-                   JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
+                   JRedisUtil.getInstance().expire(ACCESS_TOKEN,3600);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
