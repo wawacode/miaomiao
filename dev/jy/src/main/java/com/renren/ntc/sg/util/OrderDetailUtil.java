@@ -41,9 +41,9 @@ public class OrderDetailUtil {
 			wShopReport.setShopName(shop.getName());
 			wShopReport.setOrderCount(orderSize);
 			wShopReport.setReportDate(Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(-1, 23, 0, 0)));
-			wxpDetail = new WXPayDetail();
 			List<WXPayDetail> wxpDetails = new ArrayList<WXPayDetail>();
 			for(Order order : orders){
+				wxpDetail = new WXPayDetail();
 				wxpDetail.setOrderPrice(order.getPrice()/100);
 				String msg = order.getMsg();
 				int wxDiscount = 0;
