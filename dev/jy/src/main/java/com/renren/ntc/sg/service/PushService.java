@@ -50,31 +50,28 @@ public class PushService {
 	}
 
 
-    public  void send(String phone,String message){
+    public  void send(PushToken pushToken,String message){
         this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
-         String device_token = null;
-         List<PushToken>  pushTokens = pushTokenDao.getPushToken(phone);
-         for (PushToken pushToken  : pushTokens)
-         {
-         if (null != pushToken){
+        String phone = pushToken.getOwner_phone();
+         if (null != pushToken) {
              try {
-                 if ("iOS".equals(pushToken.getChn())){
-                     LoggerUtils.getInstance().log( phone +  " " + pushToken.getDevice_token() +  " send ios");
+                 if ("iOS".equals(pushToken.getChn())) {
+                     LoggerUtils.getInstance().log(pushToken.getOwner_phone() + " " + pushToken.getDevice_token() + " send ios");
                      sendIOSUnicast(phone, message, pushToken.getDevice_token());
-                 } else{
+                 } else {
                      LoggerUtils.getInstance().log(phone + " " + pushToken.getDevice_token() + " send adr ");
-                    sendAndroidUnicast(phone,message,pushToken.getDevice_token());
+                     sendAndroidUnicast(phone, message, pushToken.getDevice_token());
                  }
              } catch (Exception e) {
                  e.printStackTrace();
              }
-         }
 
          }
     }
 
 	
 	public void sendAndroidUnicast(String title , String message ,String device_token) throws Exception {
+
         this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidUnicast unicast = new AndroidUnicast();
 		unicast.setAppMasterSecret(appMasterSecret);
@@ -131,7 +128,7 @@ public class PushService {
                        LoggerUtils.getInstance().log(String.format("miss push token  %s ", phone));
                        return ;
                 }
-                send(pushToken.getOwner_phone(), message);
+                send(pushToken, message);
                 }
             }
         } catch (Throwable e) {
@@ -162,7 +159,7 @@ public class PushService {
                     LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
                     return ;
                   }
-                  send(pushToken.getOwner_phone(), message);
+                  send(pushToken, message);
                   }
                 }
             }
@@ -190,7 +187,7 @@ public class PushService {
                         LoggerUtils.getInstance().log(String.format("miss push token  %s ", catstaff.getPhone()));
                         return ;
                     }
-                    send(pushToken.getOwner_phone(), message);
+                    send(pushToken, message);
                     }
                 }
             }

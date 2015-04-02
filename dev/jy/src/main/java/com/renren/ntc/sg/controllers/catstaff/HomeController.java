@@ -3,6 +3,7 @@ package com.renren.ntc.sg.controllers.catstaff;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.CatStaffCommit;
 import com.renren.ntc.sg.bean.Catstaff;
 import com.renren.ntc.sg.bean.Device;
@@ -29,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 @Path("")
+@DenyCommonAccess
 public class HomeController {
 
 

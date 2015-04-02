@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$M2_REPO$/commons-configuration/commons-configuration/1.9/commons-configuration-1.9.jar!/" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES>
       <root url="jar://$M2_REPO$/commons-configuration/commons-configuration/1.9/commons-configuration-1.9-sources.jar!/" />
     </SOURCES>

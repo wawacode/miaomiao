@@ -12,7 +12,7 @@ import java.util.List;
 public class mvHAHAShopItems {
 
     private static long shop_id = 1;
-    private static long to_shop_id = 10044;
+    private static long to_shop_id = 10066;
     private static int category_id = 15;
 
 

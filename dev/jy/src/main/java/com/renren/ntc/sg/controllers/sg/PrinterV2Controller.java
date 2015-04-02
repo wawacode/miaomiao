@@ -130,14 +130,14 @@ public class PrinterV2Controller {
         Shop shop = shopDao.getShop(dev.getShop_id());
         int r = 0;
         if ("true".equals(re)) {
-            // AB 测试
             if (order_id.startsWith("C")){
                 System.out.println( String.format( "%d, %s %s" ,2, order_id,SUtils.generOrderTableName(dev.getShop_id())));
                 r = ordersDAO.update(2, order_id,SUtils.generOrderTableName(dev.getShop_id()));
             }
-            if (r == 1) {
-                smsService.sendSMS2User(order_id,shop);
-            }
+            //use wx
+//            if (r == 1) {
+//                smsService.sendSMS2User(order_id,shop);
+//            }
         }
 
         //发短信通知

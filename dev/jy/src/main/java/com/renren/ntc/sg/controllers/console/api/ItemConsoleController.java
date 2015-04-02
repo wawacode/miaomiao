@@ -212,9 +212,8 @@ public class ItemConsoleController extends BasicConsoleController{
             return "@json:"+resultJson.toJSONString();
         }
         LoggerUtils.getInstance().log(String.format("ud serialNo %s  %d, %d ,%d ,%d ",serialNo ,count ,score ,price , category_id));
-        if(count != 0 && score !=0 && price !=0 && category_id !=0){
-            updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId),serialNo, itemName, category_id, score, count, price, itemId);
-        }
+
+        updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId),serialNo, itemName, category_id, score, count, price, itemId);
 
 		if(pic_url != null){
 			updateDbFlag = itemsDAO.updateItemPriceById(SUtils.generTableName(shopId),itemId,pic_url);

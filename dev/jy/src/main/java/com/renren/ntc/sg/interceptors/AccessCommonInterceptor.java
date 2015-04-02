@@ -50,13 +50,27 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
 
     @Override
     protected Object before(Invocation inv) throws Exception {
-    	String path = inv.getRequest().getRequestURI() ;
+
+        //ua check
+
+
+        String ua = inv.getRequest().getHeader("User-Agent") ;
+        String path = inv.getRequest().getRequestURI() ;
+        if (path.startsWith("/wx")|| path.startsWith("/console")){
+            return true;
+        }
+
+        if( -1 == ua.indexOf("MicroMessenger")&& !SUtils.isDev()){
+           return "r:" + Constants.MBIANLI;
+        }
+
         User u = null    ;
         String uuid  = CookieManager.getInstance().getCookie(inv.getRequest(), Constants.COOKIE_KEY_USER);
         if(null  != uuid) {
             u = userDAO.getUser(SUtils.unwrapper(uuid));
         }
         if ( u != null){
+            LoggerUtils.getInstance().log(String.format("acce user_id %d  " ,u.getId()));
             String code = inv.getParameter("code");
             if( !StringUtils.isBlank(code)&& (StringUtils.isBlank(u.getWx_open_id()) || "other".equals(u.getWx_open_id()))){
                 try {

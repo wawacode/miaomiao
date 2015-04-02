@@ -10,6 +10,7 @@ import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.AddressService;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
+import com.renren.ntc.sg.service.TicketService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
@@ -45,6 +46,9 @@ public class UserController {
     public DeviceDAO deviceDAO;
 
     @Autowired
+    public TicketService ticketService;
+
+    @Autowired
     public AddressDAO addressDAO;
 
     @Autowired
@@ -65,14 +69,16 @@ public class UserController {
         }
 
         Shop shop = shopDAO.getShop(shop_id);
-        List<Address>  addressls = addressDAO.getAddresses(user_id,0,1);
-        List<Order>  orders  = userOrdersDAO.getOrder(user_id, 0 , 20 , SUtils.generUserOrderTableName(user_id));
+        List<Address>  addressls = addressDAO.getAddresses(user_id, 0, 1);
+        List<Order>  orders  = userOrdersDAO.getOrder(user_id, 0, 20, SUtils.generUserOrderTableName(user_id));
+        int coupon_count  =  ticketService.getTicketCount(u.getId());
         inv.addModel( "addressls",addressls);
         orders = orderService.forV(orders)  ;
 
         JSONObject response =  new JSONObject();
         JSONObject data =  new JSONObject();
         data.put("shop", JSON.toJSON(shop));
+        data.put("coupon_count", coupon_count);
         data.put("orders", JSON.toJSON(orders));
         data.put("addressls", JSON.toJSON(addressls));
         response.put("data", data);

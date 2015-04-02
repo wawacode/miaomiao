@@ -74,12 +74,15 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                     success, fail);
             },
 
-            getOrderPrepayInfo: function (shopId, addressId, address, phone, remarks, items, orderId, success, fail) {
+            getOrderPrepayInfo: function (shopId, addressId, address, phone, remarks, items, orderId,coupon_id,coupon_code,success, fail) {
 
                 doPost('order/save?shop_id=' + shopId,
                     {'items': JSON.stringify(items), 'address_id': addressId,
                         'address': address, 'phone': phone,
-                        'remarks': remarks, 'order_id': orderId,'act':'wx'},
+                        'remarks': remarks, 'order_id': orderId,
+                        'act':'wx',
+                        'coupon_id':coupon_id,
+                        'coupon_code':coupon_code},
                     success, fail);
             },
             updateOrderStatus: function (shopId, orderId,msg, success, fail) {
@@ -179,6 +182,26 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             getCommunityByName:function(query, success, fail){
 
                 doGet('commy/search', 'key=' + query, success, fail);
+            },
+
+            getAvailableCouponForShop:function(shop_id, success, fail){
+
+                doGet('coupon/nePop', 'shop_id=' + shop_id, success, fail);
+            },
+
+            getAvailableCouponForUser:function(shop_id,from,offset, success, fail){
+
+                doGet('coupon/allCoupons', 'shop_id=' + shop_id+ '&from=' + from + '&offset=' + offset , success, fail);
+            },
+
+            couponObtainedByUserForShop:function(shop_id, success, fail){
+
+                doGet('coupon/couponObtain', 'shop_id=' + shop_id, success, fail);
+            },
+
+            couponConsumedByUserForShop:function(shop_id,coupon_id, success, fail){
+
+                doGet('shop/couponConsume', 'shop_id=' + shop_id, success, fail);
             }
 
         };
@@ -296,6 +319,10 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
             isWeixinEnabledShop:function(shop){
                 return shop.id == '10033' || shop.id == '1';
+            },
+
+            isCouponEnabledShop:function(shop){
+                return true; // shop.id == '10033';
             }
         }
     }]).factory('MMUtils', ['$timeout', '$ionicLoading', '$ionicPopup', function ($timeout,$ionicLoading, $ionicPopup) {
@@ -343,6 +370,13 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                 $ionicPopup.alert({
                     title: message,
                     template: tmpUrl || ''
+                });
+            },
+
+            showCustomAlert: function (message) {
+                $ionicPopup.alert({
+                    title: message,
+                    templateUrl: 'templates/customAlert.html'
                 });
             },
 

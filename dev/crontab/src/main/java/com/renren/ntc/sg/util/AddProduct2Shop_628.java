@@ -10,27 +10,30 @@ import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AddProduct2Shop_628 {
 
-    private static int shop_id = 10044;
+    private static int shop_id = 10066;
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         // 读取第一章表格内容
         AddProduct2Shop_628 addProduct = new AddProduct2Shop_628();
-        String filePath = "F:\\product\\628.txt";
+        String filePath = "d:\\product\\625_2.txt";
         readTxtFile(filePath,pdDao,itemDao);
 
     }
 
 
     public static void readTxtFile(String filePath,ProductDAO pdDao,ItemsDAO itemDao){
+    	Map<String, String> map = new HashMap<String, String>();
         InputStreamReader read = null;
         try {
-            itemDao.del(SUtils.generTableName(shop_id),shop_id);
+            //itemDao.del(SUtils.generTableName(shop_id),shop_id);
             String encoding="GBK";
             File file=new File(filePath);
             if(file.isFile() && file.exists()){ //判断文件是否存在
@@ -48,7 +51,12 @@ public class AddProduct2Shop_628 {
                      }
                     String serialNo = args[3].trim();
                     serialNo = upacage(serialNo);
+                    String proName = args[4].trim();
+                    proName = upacage(proName);
                     String name = args[3].trim();
+                    if(StringUtils.isNotBlank(serialNo) && StringUtils.isNotBlank(proName)){
+                    	map.put(serialNo.trim(), proName.trim());
+                    }
                     String price_str = args[15].trim();
                     int price =(int)  (Float.valueOf(price_str)* 100);
                     Product p = pdDao.geProductsByserialNo(serialNo);
@@ -66,6 +74,11 @@ public class AddProduct2Shop_628 {
                         Item it =  new Item();
                         it.setName(p.getName());
                         it.setSerialNo(p.getSerialNo());
+                        if(StringUtils.isNotBlank(p.getName()) && StringUtils.isNotBlank(p.getSerialNo())){
+                        	 if(p.getName().equals(p.getSerialNo())){
+                             	it.setName(map.get(p.getSerialNo()));
+                             }
+                        }
                         it.setCategory_id(p.getCategory_id());
                         it.setPic_url(p.getPic_url()== null ? "":p.getPic_url());
                         it.setPrice(price);

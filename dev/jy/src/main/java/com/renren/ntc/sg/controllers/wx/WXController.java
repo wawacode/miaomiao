@@ -3,17 +3,13 @@ package com.renren.ntc.sg.controllers.wx;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
-import com.renren.ntc.sg.biz.dao.DeviceDAO;
-import com.renren.ntc.sg.biz.dao.OrdersDAO;
-import com.renren.ntc.sg.biz.dao.ShopDAO;
-import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
+import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.jredis.JRedisUtil;
-import com.renren.ntc.sg.service.LoggerUtils;
-import com.renren.ntc.sg.service.PushService;
-import com.renren.ntc.sg.service.SMSService;
-import com.renren.ntc.sg.service.WXService;
+import com.renren.ntc.sg.service.*;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.CookieManager;
 import com.renren.ntc.sg.util.SUtils;
@@ -32,10 +28,14 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Path("")
+@DenyCommonAccess
 public class WXController {
 
     @Autowired
     public OrdersDAO orderDao;
+
+    @Autowired
+    public OrderService orderService;
 
     @Autowired
     public UserOrdersDAO userOrdersDAO;
@@ -47,13 +47,18 @@ public class WXController {
     public WXService wxService;
 
     @Autowired
+    public PushService pushService;
+
+    @Autowired
+    public UserCouponDAO userCouponDao ;
+    @Autowired
     public DeviceDAO deviceDAO;
 
     @Autowired
     public ShopDAO shopDao;
 
     @Autowired
-    public PushService pushService;
+    public TicketService ticketService;
 
 
     private  static final String PREFIX = "qrscene_";
@@ -151,12 +156,24 @@ public class WXController {
                 String attach = getAttach(body);
                 long  shop_id = getShop_id(attach) ;
                 long  user_id = getUser_id(attach) ;
+                long  coupon_id = getCoupon_id(attach) ;
                 if (shop_id == 0 || user_id == 0){
                    LoggerUtils.getInstance().log(String.format("check wx pay cb param err  miss shop_id or user_id"));
                     return "@" + Constants.UKERROR;
                 }
+
+                Order order = orderDao.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+                if(done(order)){
+                    return  "@json:" + Constants.DONE;
+                }
+
+
                 orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
                 userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
+                if( coupon_id != 0) {
+                    ticketService.writeoff(user_id,shop_id,coupon_id) ;
+
+                }
                 Shop shop = shopDao.getShop(shop_id);
                 if(null == shop ){
                     LoggerUtils.getInstance().log(String.format("check wx pay cb  miss shop  %d ",shop_id));
@@ -175,17 +192,41 @@ public class WXController {
                 }
             }
         }
-        return "@" + Constants.DONE;
+        return "@json:" + Constants.DONE;
+    }
+
+    private boolean done(Order order) {
+        if (order.getStatus() == Constants.ORDER_WAIT_FOR_PRINT || order.getStatus() == Constants.ORDER_FINISH){
+            return true;
+        }
+        return false;
+    }
+
+    private long getCoupon_id(String attach) {
+        long coupon_id = 0 ;
+
+        String[] ids = attach.split("_");
+        if ( ids.length < 3 ){
+               return  coupon_id;
+        }
+        try{
+            coupon_id= Long.valueOf(ids[2]);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return coupon_id;
     }
 
     private void sendInfo( Shop shop ,String order_id){
-        if(shop.getId() == 10033){
-            return;
-        }
         smsService.sendSMS2LocPush(order_id, shop);
         pushService.send2locPush(order_id, shop);
         pushService.send2kf(order_id, shop);
         // 发送短信通知
+
+        //use wx
+        orderService.mark(order_id, shop.getId());
+        wxService.sendWX2User(order_id, shop);
+
         Device devcie = deviceDAO.getDevByShopId(shop.getId());
         if (null == devcie || SUtils.isOffline(devcie)) {
             System.out.println("device is null or  printer offline ");
@@ -194,8 +235,8 @@ public class WXController {
             pushService.send2Boss(order_id, shop);
             System.out.println("send sms to boss");
             smsService.sendSMS2Boss(order_id, shop);
-            System.out.println("send sms to user");
-            smsService.sendSMS2User(order_id, shop);
+//          System.out.println("send sms to user");
+//          smsService.sendSMS2User(order_id, shop);
         }
     }
     private long getShop_id(String attach) {
@@ -337,10 +378,10 @@ public class WXController {
                 response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
                 if(eventKey.startsWith(PREFIX)) {
                 long act =   JRedisUtil.getInstance().sadd("set_" + eventKey ,fromUser) ;
-                String phone = JRedisUtil.getInstance().get(eventKey);
-                if(!StringUtils.isBlank(phone)&& act == 1) {
-                    smsService.sendSMS2tguang(fromUser,phone);
-                   }
+//                String phone = JRedisUtil.getInstance().get(eventKey);
+//                if(!StringUtils.isBlank(phone)&& act == 1) {
+//                        smsService.sendSMS2tguang(fromUser,phone);
+//                    }
                 }
                 return  response;
             }
@@ -354,23 +395,7 @@ public class WXController {
             return  response;
         }
 
-        //商家查询增量粉丝
-//        int count = 0 ;
-//        try {
-//           count = Integer.valueOf(content);
-//        }catch(Exception e){
-//           // do not thing;
-//        }
-//        if(count !=0){
-//               long fss = JRedisUtil.getInstance().scard("set_"+PREFIX+ count);
-//               String response = CONTENT.replace("{message}", fss + "");  // 这个其实没用
-//               response = response.replace("{toUser}",fromUser);
-//               response = response.replace("{fromUser}",toUser);
-//               response = response.replace("{time}",System.currentTimeMillis()/1000 +"");
-//               return  response;
-//        }
         // 用户给发消息
-
         LoggerUtils.getInstance().log(String.format("rec  content %s ",content));
         String response = DUOKEFU.replace("{message}", MESSAGE);  // 这个其实没用
         response = response.replace("{toUser}",fromUser);

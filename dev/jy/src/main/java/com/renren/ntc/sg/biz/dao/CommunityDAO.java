@@ -30,7 +30,7 @@ CREATE TABLE `items` (
 @DAO(catalog = "ABC")
 public interface CommunityDAO {
     static final String TABLE_NAME= "community";
-    static final String FIELDS = "id, name ,city ,score,district,address,lng,lat, create_time,update_time" ;
+    static final String FIELDS = "id, name ,city ,score,district,address,lng,lat,create_time,update_time" ;
     static final String INSERT_FIELDS = " name ,city ,score,district,address,lng,lat" ;
 
 	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " order by score desc limit :1,:2")

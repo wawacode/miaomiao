@@ -8,6 +8,9 @@ body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;fon
 .no-item-hint{text-align:center;position:relative;top:0;left:0;right:0;bottom:0;width:150px;height:120px;margin:auto}
 .oneline{text-overflow:ellipsis;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .borderBotton{border-top:0;border-left:0;border-right:0;border-bottom:solid 1px #eaeaea}
+.verticalCenter{position:absolute;top:0;bottom:0}
+.baseRedRounded{padding:5px;border-radius:4px;background-color:#ef5356;color:#fff}
+.baseGrayRounded{padding:5px;border-radius:4px;background-color:#eaeaea;color:#999}
 .hidden{display:none !important}
 .invisiable{opacity:0 !important}
 .toggleFade{-webkit-transition:-webkit-transition:all linear 1.5 s;-moz-transition:all linear 1.5s;-ms-transition:all linear 1.5s;-o-transition:all linear 1.5s;transition:all linear 1.5s}
@@ -24,6 +27,8 @@ body{height:100%;max-height:100%;overflow:hidden;padding:0;margin:0;border:0;fon
 .loading-container .loading{background-color:rgba(255,255,255,1.0) !important;color:#000;font-size:15px}
 .popup-container .popup{border:solid 1px #eaeaea}
 .bar.bar-light.bar-footer{height:49px !important}
+.grayyed{color:lightgray}
+.buttonWithHot:after{content:"";position:absolute;width:8px;height:8px;border-radius:5px;background-color:#ef5356;top:5;left:22}
 .loadingBackground{position:relative;width:100%;height:100%;background-color:rgba(239,84,90,1.0);text-align:center}
 .loadingImageTop{position:absolute;left:0;right:0;top:15%}
 .loadingImageCenter{width:75%;height:auto}
@@ -75,6 +80,8 @@ ul.rating li i{font-size:12px}
 .rightContainer{width:73%;position:absolute;height:100%;top:0;left:27%;overflow:hidden}
 .shoppingCartBadge{position:absolute;top:5;right:-14;border-radius:9px;min-width:18px;font-size:12px;height:18px;padding:0;z-index:100;font-weight:lighter;text-align:center;font-family:sans-serif}
 .shoppingCartHintMessage{margin-top:7px !important;margin-right:14px !important;margin-left:auto !important;margin-bottom:auto !important;border-radius:2px !important;font-size:17px !important;width:80% !important;height:37px !important}
+.couponLayout{height:100%;background-color:rgba(0,0,0,0.7);position:absolute;bottom:0;left:0;width:100%;overflow:hidden;z-index:800}
+.couponContent{position:absolute;top:100;bottom:100;left:0;right:0;text-align:center}
 .prod_icon{position:relative;width:70px;height:0;overflow:hidden;padding-bottom:70px;background-repeat:no-repeat;background-position:center center;background-size:contain;float:left;margin-right:5px}
 .prod_icon_clickable{min-height:100px;min-width:100px;display:inline-block;overflow:hidden;float:left;position:absolute;left:0;top:0;bottom:0;z-index:100}
 .product-item{display:list-item;border-bottom:1px solid #eaeaea;padding:9px 0 9px 0;overflow:hidden;position:relative}
@@ -136,6 +143,9 @@ ul.rating li i{font-size:12px}
 .checkoutBasePadding{padding:10px 20px 10px 20px}
 .bar-light.checkoutHeaderbar{background:rgba(255,255,255,1.0) !important;z-index:500 !important}
 .commonSelected:before{font-size:25px !important;width:28px;height:28px}
+.couponHint{font-size:10px;background-color:#fff;color:#ef5356;padding:4px 4px 4px 4px;border-radius:4px}
+.couponHintDark{font-size:10px;background-color:#ef5356;color:#fff;padding:4px 4px 4px 4px;border-radius:4px}
+.disabledColor{color:#999}
 .noOrderHint{position:relative;padding-top:50px;width:100%;height:100%;display:inline-block;text-align:center;background-color:#fff}
 .noOrderImageHint{padding-top:20px;display:inline-block;width:175px;height:175px;background-image:url('/images/cat_grey.png');background-size:contain}
 .noOrderGotoShop{display:inline-block;width:134px;height:auto;font-size:17px;text-align:center;padding:10px 10px 10px 10px;margin-top:10px;background-color:#ef5356;color:#fff;border-radius:2px}
@@ -149,9 +159,9 @@ ul.rating li i{font-size:12px}
 .orderSnapshotItemName{float:left;padding-left:10px;font-size:14px;color:#6a6a6a}
 .orderSnapshotItemPrice{position:absolute;bottom:20;left:85;font-size:14px;color:#ef5356}
 .orderSnapshotCount{float:right;padding-right:6px;font-weight:bold}
-.orderSnapshotTotal{display:inline-block;width:100%;text-align:right;margin-top:10px}
+.orderSnapshotTotal{display:inline-block;width:100%;text-align:right;margin-top:10px;position:relative}
 .orderSnapshotRemark{display:inline-block;width:100%;padding:15px 0 5px;color:gray}
-.orderSnapshotCountNumber{font-size:14px;font-weight:100;color:#6a6a6a}
+.orderSnapshotCountNumber{font-size:14px;font-weight:100;color:#6a6a6a;display:inline-block;padding-right:80px}
 .orderId{float:left;font-size:12px}
 .orderDate{float:left;font-size:12px}
 .orderPayType{float:right;font-size:11px}
