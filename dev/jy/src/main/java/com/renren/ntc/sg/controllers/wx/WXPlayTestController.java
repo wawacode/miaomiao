@@ -12,6 +12,7 @@ import com.renren.ntc.sg.util.CookieManager;
 import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.wx.MD5Util;
 import com.renren.ntc.sg.util.wx.Sha1Util;
+import net.paoding.rose.scanning.context.RoseAppContext;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -294,8 +295,12 @@ public class WXPlayTestController {
 
 
     public static void main(String[] args) {
-        System.out.println(JRedisUtil.getInstance().get("access_token"));
-        System.out.println(JRedisUtil.getInstance().get("jsapi_ticket"));
+        RoseAppContext rose =  new RoseAppContext();
+        WXPlayTestController wx = rose.getBean(WXPlayTestController.class);
+        long now = System.currentTimeMillis();
+        wx.getConfig(null, "http://www.sina.com");
+        long end = System.currentTimeMillis();
+        System.out.println("now " + (end - now));
 
     }
 
