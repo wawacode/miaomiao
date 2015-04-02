@@ -4,6 +4,7 @@
 
         function ($scope, $ionicPopup, $ionicModal, httpClient, localStorageService, $timeout, $ionicLoading, Camera, MMUtils) {
 
+            $scope.info = {};
             $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || [];
             $scope.info.hasProductInfo = false;
             $scope.info.newitem = {};
@@ -36,6 +37,7 @@
                         $scope.info.newitem.saleStatus = 1;
                         $scope.info.newitem.new_pic_url = item.pic_url;
                         $scope.info.newitem.pic_url = item.pic_url;
+                        $scope.info.newitem.price = item.price/100.0;
                     });
 
                 }, function (data, status) {
@@ -98,11 +100,6 @@
 
                 if (!newitem.price) {
                     MMUtils.showAlert('请填写商品价格');
-                    return;
-                }
-
-                if (!newitem.new_pic_url && !newitem.pic_url) {
-                    MMUtils.showAlert('请添加图片');
                     return;
                 }
 
