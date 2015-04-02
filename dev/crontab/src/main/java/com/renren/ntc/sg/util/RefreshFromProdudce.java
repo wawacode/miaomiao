@@ -19,8 +19,6 @@ public class RefreshFromProdudce {
 
     }
 
-
-
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
