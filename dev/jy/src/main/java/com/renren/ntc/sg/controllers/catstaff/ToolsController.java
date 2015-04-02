@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import net.paoding.rose.web.Invocation;
@@ -24,7 +26,9 @@ import com.renren.ntc.sg.bean.Product;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
 import com.renren.ntc.sg.constant.CatstaffConstant;
+import com.renren.ntc.sg.util.ExcelUtils;
 import com.renren.ntc.sg.util.FileUploadUtils;
+import com.renren.ntc.sg.util.MimeTypeUtils;
 import com.renren.ntc.sg.util.SUtils;
 /**
  * 地推人员工具
@@ -57,11 +61,12 @@ public class ToolsController {
 	public String uploadFile(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file) {
 		System.out.println("tools uploadFile method");
 		if(null == file){
-			return "@ File can't be empty!";
+			return "@ 文件不能为空!";
 		}
-		String type = file.getContentType();
-		if(!"text/plain".equals(type)){
-			return "@文件格式有误!";
+		String contentType = file.getContentType();
+		boolean b = valiContentType(contentType);
+		if (!b) {
+			return "@文件类型有误! 支持.txt,.xls,.xlsx 类型文件!";
 		}
 		String fileName = getUUIDFileName(shop_id, file.getOriginalFilename());
     	String savePath = inv.getServletContext().getRealPath("/") + CatstaffConstant.SAVE_UPLOAD_FILE_PATH;// 文件保存路径
@@ -71,12 +76,26 @@ public class ToolsController {
     	}
 		//删除初始商品
 		itemDao.del(SUtils.generTableName(shop_id), shop_id);
-		//读取文件
-		boolean result = readFileAndSaveData(f, shop_id);
-		if(!result){
-			return "@内容格式错误!";
+		if(MimeTypeUtils.TEXT_PLAIN.equals(contentType)){
+			//读取txt文件
+			boolean result = readFileAndSaveData(f, shop_id);
+			if(!result){
+				return "@内容格式错误!";
+			}
 		}
-		return "@上传成功!";
+		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType)) {
+			Map<String, Integer> map = ExcelUtils.readXLS2Map(f);
+			for (Entry<String, Integer> entry : map.entrySet()) {
+				saveData(shop_id, entry.getKey(), entry.getValue());
+			}
+		}
+		if (MimeTypeUtils.APPLICATION_EXCEL_2010_2013.equals(contentType)) {
+			Map<String, Integer> map = ExcelUtils.readXLSX2Map(f);
+			for (Entry<String, Integer> entry : map.entrySet()) {
+				saveData(shop_id, entry.getKey(), entry.getValue());
+			}
+		}
+		return "@文件上传成功,数据已导入!";
 	}
 	/**
 	 * 读取文件并保存数据到库
@@ -144,7 +163,7 @@ public class ToolsController {
 		Item it = new Item();
 		it.setShop_id(shop_id);
 		it.setSerialNo(serialNo);
-		it.setName(p == null ? "待编辑" : p.getName());
+		it.setName(p == null ? shop_id + "" : p.getName());
 		it.setPrice(price);
 		it.setCount(1000);
 		it.setCategory_id(p == null ? 28 : p.getCategory_id() == 15 ? 15 : 28);//不是哈哈镜 其他分类
@@ -188,6 +207,20 @@ public class ToolsController {
 			}
 		}
 		return tempArr;
+	}
+	/**
+	 *上传支持的文件类型
+	 * @param contentType
+	 * @return
+	 */
+	private boolean valiContentType(String contentType){
+		if(MimeTypeUtils.TEXT_PLAIN.equals(contentType)) 
+			return true;
+		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType))
+			return true;
+		if (MimeTypeUtils.APPLICATION_EXCEL_2010_2013.equals(contentType))
+			return true;
+		return false;
 	}
 	/**
 	 * 去掉开头的0
