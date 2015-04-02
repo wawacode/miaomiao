@@ -26,6 +26,7 @@ import java.util.List;
 
 
 @Path("commy")
+@DenyCommonAccess
 public class CommunityController {
 
 
