@@ -30,8 +30,6 @@ public class OrderDetailUtil {
 		ShopDAO shopDAO = rose.getBean(ShopDAO.class);
 		OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
 		List<Shop> shops = shopDAO.getAllShopsByAudit(1);
-		WXPayShopReport wShopReport = null;
-		WXPayDetail  wxpDetail = null;
 		List<WXPayShopReport> wxpayShopReports = new ArrayList<WXPayShopReport>();
 		for(Shop shop : shops){
 			System.out.println("shopid="+shop.getId()+",name="+shop.getName());
@@ -39,14 +37,15 @@ public class OrderDetailUtil {
 			String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 23, 0, 0));
 			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
 			int orderSize = orders == null ? 0 : orders.size();
-			wShopReport = new WXPayShopReport();
+			WXPayShopReport wShopReport = new WXPayShopReport();
 			wShopReport.setShopId(shop.getId());
 			wShopReport.setShopName(shop.getName());
 			wShopReport.setOrderCount(orderSize);
+			System.out.println("wShopReport shopid="+wShopReport.getShopId()+",name="+wShopReport.getShopName());
 			wShopReport.setReportDate(Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(-1, 23, 0, 0)));
 			List<WXPayDetail> wxpDetails = new ArrayList<WXPayDetail>();
 			for(Order order : orders){
-				wxpDetail = wShopReport.new WXPayDetail();
+				WXPayDetail  wxpDetail = wShopReport.new WXPayDetail();
 				wxpDetail.setOrderPrice(order.getPrice()/100);
 				String msg = order.getMsg();
 				int wxDiscount = 0;
