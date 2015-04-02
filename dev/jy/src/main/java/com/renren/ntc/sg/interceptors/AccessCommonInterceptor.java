@@ -56,9 +56,12 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
 
         String ua = inv.getRequest().getHeader("User-Agent") ;
         String path = inv.getRequest().getRequestURI() ;
-        if(!path.startsWith("/wx") && -1 == ua.indexOf("MicroMessenger")&& !SUtils.isDev()){
-           return "r:" + Constants.MBIANLI;
+        if (path.startsWith("/wx")|| path.startsWith("/console")){
+            return true;
+        }
 
+        if( -1 == ua.indexOf("MicroMessenger")&& !SUtils.isDev()){
+           return "r:" + Constants.MBIANLI;
         }
 
         User u = null    ;
