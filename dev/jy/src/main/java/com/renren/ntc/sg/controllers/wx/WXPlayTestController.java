@@ -301,7 +301,6 @@ public class WXPlayTestController {
         wx.getConfig(null, "http://www.sina.com");
         long end = System.currentTimeMillis();
         System.out.println("now " + (end - now));
-
     }
 
     private static String getPrePay(String res) {
