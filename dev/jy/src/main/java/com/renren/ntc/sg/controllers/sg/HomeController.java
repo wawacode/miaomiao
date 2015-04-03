@@ -240,12 +240,20 @@ public class HomeController {
     }
 
     @Get("about")
-    @Post("about")
-    public String about( Invocation inv) {
+       @Post("about")
+       public String about( Invocation inv) {
         String  wx_id = inv.getParameter("wx_id");
         String code =  inv.getParameter("code");
         String state =  inv.getParameter("state");
         LoggerUtils.getInstance().log(String.format("wx_id %s code %s, state %s",wx_id,code ,state ));
+        return "about";
+    }
+
+
+    @Get("log")
+    @Post("log")
+    public String log( Invocation inv,@Param("msg") String msg) {
+        LoggerUtils.getInstance().log(String.format("user_id %s msg %s",msg ));
         return "about";
     }
 

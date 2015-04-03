@@ -88,8 +88,7 @@ public class OrderController {
                        @Param("items") String items,
                        @Param("act") String act,
                        @Param("coupon_id") int coupon_id,
-                       @Param("coupon_code") String coupon_code ,
-                       @Param("wx_url") String url) {
+                       @Param("coupon_code") String coupon_code ) {
         LoggerUtils.getInstance().log(String.format(" items %s ,act %s ",items,act));
         User u = holder.getUser();
         long user_id = 0;
