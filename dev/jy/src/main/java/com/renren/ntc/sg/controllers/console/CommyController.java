@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.console;
 
+import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Community;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.Shop_Community;

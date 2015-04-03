@@ -35,6 +35,7 @@ public class Order {
     private String  price4V  ;
     private Date create_time ;
     private Date update_time   ;
+    private String msg;
 
     public int getReaded() {
         return readed;
@@ -172,6 +173,14 @@ public class Order {
     public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
 
 
 

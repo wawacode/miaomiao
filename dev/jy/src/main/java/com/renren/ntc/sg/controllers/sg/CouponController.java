@@ -3,6 +3,7 @@ package com.renren.ntc.sg.controllers.sg;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Coupon;
 import com.renren.ntc.sg.bean.User;
 import com.renren.ntc.sg.bean.UserCoupon;
