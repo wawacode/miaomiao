@@ -128,14 +128,14 @@ public class WXHttpClient {
         order.put("name","我的订单");
         order.put("type","view");
         order.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
-                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Fmyorders&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Forders&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
         sub_button.add(order);
 
         JSONObject coupon   = new JSONObject();
         coupon.put("name","代金券");
         coupon.put("type","view");
         coupon.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
-                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Forders&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Fmycoupons&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
         sub_button.add(coupon);
 
 //        JSONObject findshop  = new JSONObject();

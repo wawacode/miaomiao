@@ -131,7 +131,9 @@ public class BaseProduct2Shop {
                         JSONObject ob = (JSONObject)JSON.toJSON(it);
                         System.out.println(ob.toJSONString());
                         itemDao.insertBaseInfo(SUtils.generTableName(shopId),it) ;
-                    }
+                    }else {
+						System.out.println("not exist shopId="+shopId+",serialNo="+serialNo);
+					}
                 }
             }else{
                 System.out.println("找不到指定的文件");
