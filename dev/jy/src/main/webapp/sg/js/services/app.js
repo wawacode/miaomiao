@@ -106,6 +106,11 @@ angular.module('miaomiao.shop', ['ionic',
                 templateUrl: 'templates/myOrders.html',
                 controller: 'MyOrdersCtrl'
             })
+            .state('myOrdersClear', {
+                url: '/orders',
+                templateUrl: 'templates/myOrdersClear.html',
+                controller: 'MyOrdersCtrl'
+            })
             .state('myCoupons', {
                 url: '/mycoupons',
                 templateUrl: 'templates/couponList.html',
