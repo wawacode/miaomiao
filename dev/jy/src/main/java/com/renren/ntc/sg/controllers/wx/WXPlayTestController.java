@@ -315,24 +315,6 @@ public class WXPlayTestController {
     }
 
 
-    public static String createSign(SortedMap<String, String> packageParams) {
-        StringBuffer sb = new StringBuffer();
-        Set es = packageParams.entrySet();
-        Iterator it = es.iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String k = (String) entry.getKey();
-            String v = (String) entry.getValue();
-            if (null != v && !"".equals(v) && !"sign".equals(k)
-                    && !"key".equals(k)) {
-                sb.append(k + "=" + v + "&");
-            }
-        }
-        sb.append("key=" + key);
-        System.out.println("md5 sb:" + sb);
-        String sign = MD5Util.MD5Encode(sb.toString(), "utf-8")
-                .toUpperCase();
-        return sign;
-    }
+
 
 }

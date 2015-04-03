@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.PrinterService;
+import com.renren.ntc.sg.util.wx.MD5Util;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,9 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class SUtils {
+
+    private static String key = "210f760a89db30aa72ca258a3483cc7f";
+    public  static String appId = "wx762f832959951212";
 
 
     public static String byteToHex(final byte[] hash) {
@@ -404,5 +408,25 @@ public class SUtils {
         sb.append(curr);
         return sb.toString();
 
+    }
+
+    public static String createSign(SortedMap<String, String> packageParams) {
+        StringBuffer sb = new StringBuffer();
+        Set es = packageParams.entrySet();
+        Iterator it = es.iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String k = (String) entry.getKey();
+            String v = (String) entry.getValue();
+            if (null != v && !"".equals(v) && !"sign".equals(k)
+                    && !"key".equals(k)) {
+                sb.append(k + "=" + v + "&");
+            }
+        }
+        sb.append("key=" + key);
+        System.out.println("md5 sb:" + sb);
+        String sign = MD5Util.MD5Encode(sb.toString(), "utf-8")
+                .toUpperCase();
+        return sign;
     }
 }
