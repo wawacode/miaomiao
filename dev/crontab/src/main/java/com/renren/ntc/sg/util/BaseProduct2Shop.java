@@ -114,9 +114,11 @@ public class BaseProduct2Shop {
 						
                         if(itemDb != null){
                         	System.out.println("seralno is exist,seralno="+serialNo);
-                        	if(itemDb.getPrice() == 0){
-                        		itemDao.updateBaseInfo(SUtils.generTableName(shopId), serialNo, p.getName(), p.getPic_url(), p.getPrice());
-                        	}else {
+                        	if(itemDb.getPrice() == 0 && itemDb.getCount() == 0){
+                        		itemDao.updateBaseInfo(SUtils.generTableName(shopId), serialNo, p.getName(), p.getPic_url(), p.getPrice(),1000);
+                        	}else if (itemDb.getPrice() == 0 && itemDb.getCount() != 0) {
+                        		itemDao.updateBaseInfo(SUtils.generTableName(shopId), serialNo, p.getName(), p.getPic_url(), p.getPrice(),itemDb.getCount());
+							}else {
                         		itemDao.update(SUtils.generTableName(shopId), serialNo, p.getName(), p.getPic_url());
 							}
                         	System.out.println("update sucess serialNo="+serialNo);

@@ -163,6 +163,6 @@ public interface ItemsDAO {
     @SQL("delete from ##(:tableName) where  shop_id =:2 and id=:3")
     public void delById(@SQLParam("tableName") String tableName, long del_shop_id, long id);
     
-    @SQL("update  ##(:tableName) set name = :3 , pic_url=:4 , price=:5 where serialNo =:2")
-    public int updateBaseInfo(@SQLParam("tableName") String tableName, String serialNo, String name, String pic_url,int price);
+    @SQL("update  ##(:tableName) set name = :3 , pic_url=:4 , price=:5,count=:6 where serialNo =:2")
+    public int updateBaseInfo(@SQLParam("tableName") String tableName, String serialNo, String name, String pic_url,int price,int count);
 }
