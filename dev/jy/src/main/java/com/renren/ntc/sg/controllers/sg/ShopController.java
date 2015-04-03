@@ -171,7 +171,7 @@ public class ShopController {
                     "&timestamp=" + timestamp +
                     "&url=" + wx_url;
 
-            System.out.println(string1);
+            System.out.println("get js config " + string1);
 
             try
             {
@@ -199,6 +199,7 @@ public class ShopController {
         data.put("categoryls", jarr) ;
         jb.put("code",0);
         jb.put("data",data);
+        LoggerUtils.getInstance().log(String.format("category/get response %s ",jb.toJSONString()));
         return "@" + jb.toJSONString() ;
     }
 

@@ -88,43 +88,52 @@ public class BaseProduct2Shop {
                 while((lineTxt = bufferedReader.readLine()) != null){
                 	 k++;
                 	 System.out.println("lineTxt="+lineTxt);
-//                     String [] args = lineTxt.split("\t");
-//                     if(args == null || args.length<1){
-//                    	 System.out.println("arg is null or length 小于2");
-//                    	 continue;
-//                     }
-//                    String serialNo = args[0].trim();
-//                    if(StringUtils.isBlank(serialNo)){
-//                        continue;
-//                    }
-//                    serialNo = serialNo.trim();
-//                    serialNo = upacage(serialNo);
-//                    Product p = pdDao.geProductsByserialNo(serialNo);
-//
-//                    
-//                    if (p != null )  {
-//                    	Item itemDb = itemDao.getItem(SUtils.generTableName(shopId), serialNo, shopId);
-//                        if(itemDb != null){
-//                        	System.out.println("seralno is exist,seralno="+serialNo);
-//                        	continue;
-//                        }
-//                    	if (p.getCategory_id()==15){
-//                            continue;
-//                        }
-//                        if (p.getCategory_id()==0){
-//                            p.setCategory_id(28);
-//                        }
-//                        Item it =  new Item();
-//                        it.setName(p.getName());
-//                        it.setSerialNo(p.getSerialNo());
-//                        it.setCategory_id(p.getCategory_id());
-//                        it.setPic_url(p.getPic_url()== null ? "":p.getPic_url());
-//                        it.setScore(1000);
-//                        it.setShop_id(shopId);
-//                        JSONObject ob = (JSONObject)JSON.toJSON(it);
-//                        System.out.println(ob.toJSONString());
-//                        itemDao.insertBaseInfo(SUtils.generTableName(shopId),it) ;
-//                    }
+                     String [] args = lineTxt.split("\t");
+                     if(args == null || args.length<1){
+                    	 System.out.println("arg is null or length 小于2");
+                    	 continue;
+                     }
+                    String serialNo = args[0].trim();
+                    if(StringUtils.isBlank(serialNo)){
+                        continue;
+                    }
+                    serialNo = serialNo.trim();
+                    serialNo = upacage(serialNo);
+                    Product p = pdDao.geProductsByserialNo(serialNo);
+
+                    
+                    if (p != null )  {
+                    	Item itemDb = null;
+						try {
+							itemDb = itemDao.getItem(SUtils.generTableName(shopId), serialNo, shopId);
+						} catch (Exception e) {
+							System.out.println("error items shopid="+shopId+",serialNo="+serialNo);
+							e.printStackTrace();
+							continue;
+						}
+                        if(itemDb != null){
+                        	System.out.println("seralno is exist,seralno="+serialNo);
+                        	continue;
+                        }
+                    	if (p.getCategory_id()==15){
+                            continue;
+                        }
+                        if (p.getCategory_id()==0){
+                            p.setCategory_id(28);
+                        }
+                        Item it =  new Item();
+                        it.setName(p.getName());
+                        it.setSerialNo(p.getSerialNo());
+                        it.setCategory_id(p.getCategory_id());
+                        it.setPic_url(p.getPic_url()== null ? "":p.getPic_url());
+                        it.setScore(1000);
+                        it.setShop_id(shopId);
+                        JSONObject ob = (JSONObject)JSON.toJSON(it);
+                        System.out.println(ob.toJSONString());
+                        itemDao.insertBaseInfo(SUtils.generTableName(shopId),it) ;
+                    }else {
+						System.out.println("not exist shopId="+shopId+",serialNo="+serialNo);
+					}
                 }
             }else{
                 System.out.println("找不到指定的文件");
