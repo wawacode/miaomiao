@@ -26,17 +26,13 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
         config.nonceStr = wpconfig.nonceStr;
         config.timestamp = wpconfig.timestamp;
 
-        MMUtils.showAlert('微信 pay config...');
-
         wx.config(config);
 
         wx.error(function (res) {
-            MMUtils.showAlert('微信 pay config failed');
             // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
         });
 
         wx.ready(function () {
-            MMUtils.showAlert('pay config ready');
         });
     };
 
@@ -65,8 +61,6 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
             'appId': wechatConfig.appId, // 必填，公众号的唯一标识
             'jsApiList': ['chooseWXPay']
         };
-
-        info.appId = config.appId;
 
         info.success = function (res) {
 
