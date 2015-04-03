@@ -158,8 +158,8 @@ public class ShopController {
         JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
         JSONArray  jarr  = (JSONArray)JSON.toJSON(shopCategoryls);
         if(!StringUtils.isBlank(wx_url)){
-            String nonce_str = create_nonce_str();
-            String timestamp = create_timestamp();
+            String nonce_str = SUtils.create_nonce_str();
+            String timestamp = SUtils.create_timestamp();
             String string1;
             String signature = "";
 
@@ -178,7 +178,7 @@ public class ShopController {
                 MessageDigest crypt = MessageDigest.getInstance("SHA-1");
                 crypt.reset();
                 crypt.update(string1.getBytes("UTF-8"));
-                signature = byteToHex(crypt.digest());
+                signature = SUtils.byteToHex(crypt.digest());
             }
             catch (NoSuchAlgorithmException e)
             {
@@ -202,25 +202,7 @@ public class ShopController {
         return "@" + jb.toJSONString() ;
     }
 
-    private static String byteToHex(final byte[] hash) {
-        Formatter formatter = new Formatter();
-        for (byte b : hash)
-        {
-            formatter.format("%02x", b);
-        }
-        String result = formatter.toString();
-        formatter.close();
-        return result;
-    }
 
-
-    private static String create_nonce_str() {
-        return UUID.randomUUID().toString();
-    }
-
-    private static String create_timestamp() {
-        return Long.toString(System.currentTimeMillis() / 1000);
-    }
 
 
 

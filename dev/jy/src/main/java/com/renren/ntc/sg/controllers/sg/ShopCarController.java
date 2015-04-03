@@ -8,6 +8,7 @@ import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.TicketService;
+import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
@@ -18,6 +19,9 @@ import net.paoding.rose.web.annotation.rest.Post;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +49,13 @@ public class ShopCarController {
     public ShopCategoryDAO shopCategoryDAO;
 
 
+    @Autowired
+    public WXService wxService ;
+
+
     @Get("confirm")
     @Post("confirm")
-    public String hot (Invocation inv,@Param("shop_id") long shop_id,@Param("items") String items){
+    public String hot (Invocation inv,@Param("shop_id") long shop_id,@Param("items") String items,@Param("wx_url") String wx_url){
 
         User u = holder.getUser();
         long user_id = 0;
@@ -117,16 +125,56 @@ public class ShopCarController {
         // 获取 可用的代金券
         boolean can = ticketService.ticketCanUse(u.getId(), shop_id);
         List <UserCoupon> tickets = ticketService.getUnusedTickets(u.getId(),0,0,50);
-        JSONObject  j=  new JSONObject() ;
-        j.put("addressls", JSON.toJSON(addressls));
-        j.put("shop", JSON.toJSON(shop));
-        j.put("itemls", JSON.toJSON(itemls));
-        j.put("coupons", JSON.toJSON(tickets));
-        j.put("coupon_active", can);
+        JSONObject  data=  new JSONObject() ;
+
+        if(!StringUtils.isBlank(wx_url)){
+            String nonce_str = SUtils.create_nonce_str();
+            String timestamp = SUtils.create_timestamp();
+            String string1;
+            String signature = "";
+
+            String  js_ticket = wxService.getJS_ticket();
+
+            //注意这里参数名必须全部小写，且必须有序
+            string1 = "jsapi_ticket=" + js_ticket +
+                    "&noncestr=" + nonce_str +
+                    "&timestamp=" + timestamp +
+                    "&url=" + wx_url;
+
+            System.out.println(string1);
+
+            try
+            {
+                MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+                crypt.reset();
+                crypt.update(string1.getBytes("UTF-8"));
+                signature = SUtils.byteToHex(crypt.digest());
+            }
+            catch (NoSuchAlgorithmException e)
+            {
+                e.printStackTrace();
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                e.printStackTrace();
+            }
+            data.put("url", wx_url);
+            data.put("jsapi_ticket", js_ticket);
+            data.put("nonceStr", nonce_str);
+            data.put("timestamp", timestamp);
+            data.put("signature", signature);
+
+        }
+
+        data.put("addressls", JSON.toJSON(addressls));
+        data.put("shop", JSON.toJSON(shop));
+        data.put("itemls", JSON.toJSON(itemls));
+        data.put("coupons", JSON.toJSON(tickets));
+        data.put("coupon_active", can);
         JSONObject respone =  new JSONObject();
         respone.put("code" ,0);
-        respone.put("data" ,j);
-        return "@" + respone.toJSONString();
+        respone.put("data" ,data);
+        return "@json:" + respone.toJSONString();
     }
 }
 
