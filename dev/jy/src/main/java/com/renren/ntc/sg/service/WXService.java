@@ -17,6 +17,7 @@ import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
 import com.renren.ntc.sg.util.wx.Sha1Util;
+import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,8 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Service
@@ -135,7 +138,68 @@ public class WXService {
          return  ticket;
     }
 
+    public void  config(String url ) {
+        String nonce_str = create_nonce_str();
+        String timestamp = create_timestamp();
+        String string1;
+        String signature = "";
 
+        String  js_ticket = getJS_ticket();
+
+        //注意这里参数名必须全部小写，且必须有序
+        string1 = "jsapi_ticket=" + js_ticket +
+                "&noncestr=" + nonce_str +
+                "&timestamp=" + timestamp +
+                "&url=" + url;
+
+        System.out.println(string1);
+
+        try
+        {
+            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+            crypt.reset();
+            crypt.update(string1.getBytes("UTF-8"));
+            signature = byteToHex(crypt.digest());
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        JSONObject  respone = new JSONObject();
+        JSONObject  data = new JSONObject();
+
+        data.put("url", url);
+        data.put("jsapi_ticket", js_ticket);
+        data.put("nonceStr", nonce_str);
+        data.put("timestamp", timestamp);
+        data.put("signature", signature);
+    }
+
+    private static String byteToHex(final byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash)
+        {
+            formatter.format("%02x", b);
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
+    }
+
+
+    private static String create_nonce_str() {
+        return UUID.randomUUID().toString();
+    }
+
+    private static String create_timestamp() {
+        return Long.toString(System.currentTimeMillis() / 1000);
+    }
 
     public String orderStatus(String first,String openId ,String paydone  ,String order_id,String remark ){
         JSONObject response =  new JSONObject();
@@ -188,7 +252,7 @@ public class WXService {
                 access_token =  ob.getString("access_token");
                 if(!StringUtils.isBlank(access_token) ){
                    JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
-                   JRedisUtil.getInstance().expire(ACCESS_TOKEN,4900);
+                   JRedisUtil.getInstance().expire(ACCESS_TOKEN,3600);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -333,26 +397,12 @@ public class WXService {
 
 
     public static void main(String[] args) throws IOException {
-        String openId = "oQfDLjmZD7Lgynv6vuoBlWXUY_ic";
-        WXService w = new WXService();
-        byte [] t = new byte[0];
-        try {
-            t = w.getURLData("https://api.weixin.qq.com/cgi-bin/token?" +
-                    "grant_type=client_credential&appid=" + appId + "&secret=" + appKey);
-            String e = new String(t);
-            if (StringUtils.isBlank(e)){
-            }
-            JSONObject ob =(JSONObject) JSONObject.parse(e);
-            String  access_token =  ob.getString("access_token");
-            String  turl  = TEMPLATEAPI.replace("{token}", access_token);
-            String result = w.orderStatus("ni已下单成功。",openId,"order_id","货到付款 ","乐邻便利即将为你配送，预计30分钟内到达；乐邻便利联系电话：xxxxxxx");
-            byte[] tt = sendPostRequest(turl, result);
-            String re = new String(tt);
-            System.out.println(tt);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        RoseAppContext rose = new  RoseAppContext();
+        WXService wx =  rose.getBean(WXService.class);
+        long now = System.currentTimeMillis();
+        wx.config("http://www.mbianli.com");
+        long end = System.currentTimeMillis();
+        System.out.println("cos" + (end - now));
     }
 
     public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {

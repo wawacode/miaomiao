@@ -13,6 +13,7 @@ import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
+import com.renren.ntc.sg.util.wx.Sha1Util;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -155,7 +156,7 @@ public class OrderController {
             price += i4v.getPrice() * i4v.getExt();
         }
         String order_id = SUtils.getOrderId();
-        LoggerUtils.getInstance().log(String.format(" error create new  order %s,  items %s  ", order_id, items));
+        LoggerUtils.getInstance().log(String.format("  create new  order %s,  items %s  ", order_id, items));
         if (!ok) {
             LoggerUtils.getInstance().log("error order save return uk ");
             return "@" + Constants.LEAKERROR;
@@ -224,10 +225,16 @@ public class OrderController {
             userOrdersDAO.updateWXPay(order_id, pre_id, act, SUtils.generUserOrderTableName(user_id));
             data.put("js_ticket",js_id) ;
             data.put("pre_id",pre_id) ;
+
+            // get hash from pre_id
+            JSONObject res = this.getHash("prepay_id=" + pre_id, "MD5");
+
+            data.put("signature", res.get("signature"));
+            data.put("nonceStr", res.get("nonceStr"));
+            data.put("timestamp", res.get("timestamp"));
+
             data.put("out_trade_no",order_id) ;
             data.put("total_fee", price) ;
-            //
-            // dajinquan geli
         }
         data.put("order_id",order_id);
         response.put("data", data);
@@ -235,6 +242,34 @@ public class OrderController {
         LoggerUtils.getInstance().log("  order save return " + response.toJSONString());
 
         return "@json:" + response.toJSONString();
+    }
+
+
+        public JSONObject getHash(String pkg , String signt) {
+
+        //prepay_id 通过微信支付统一下单接口拿到，paySign 采用统一的微信支付 Sign 签名生成方法，
+        // 注意这里 appId 也要参与签名，appId 与 config 中传入的 appId 一致，
+        // 即最后参与签名的参数有appId, timeStamp, nonceStr, package, signType。
+
+        SortedMap<String,String> map  = new TreeMap <String,String> ();
+        String nonce_str = Sha1Util.getNonceStr();
+        String timestamp = Sha1Util.getTimeStamp();
+
+        map.put("appId",SUtils.appId);
+        map.put("nonceStr",nonce_str);
+        map.put("package",pkg);
+        map.put("signType", signt);
+        map.put("timeStamp", timestamp);
+
+        String sign =  SUtils.createSign(map).toUpperCase();
+
+        JSONObject  data = new JSONObject();
+
+        data.put("nonceStr", nonce_str);
+        data.put("timestamp", timestamp);
+        data.put("signature", sign);
+
+        return data;
     }
 
     private void update(Order order, int price) {

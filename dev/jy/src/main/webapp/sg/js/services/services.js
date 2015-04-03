@@ -32,8 +32,8 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
 
         return {
 
-            getProductList: function (shopId, success, fail) {
-                doGet('shop/category/get', 'shop_id=' + shopId, success, fail);
+            getProductList: function (shopId,wx_url, success, fail) {
+                doGet('shop/category/get', 'shop_id=' + shopId + '&wx_url' + wx_url, success, fail);
             },
             getMoreProductList: function (shopId, cateId, from, offset, success, fail) {
 
