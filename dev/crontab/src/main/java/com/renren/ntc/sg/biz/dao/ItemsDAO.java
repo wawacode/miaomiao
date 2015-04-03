@@ -153,5 +153,13 @@ public interface ItemsDAO {
     @SQL("insert into ##(:tableName) (" + INSERT_FIELDS_BASE + ")" + " value (:2.serialNo,:2.shop_id,:2.name,"
             + ":2.category_id,:2.score,:2.pic_url)")
     public int insertBaseInfo(@SQLParam("tableName") String tableName, Item item);
+    
+    @SQL("select serialNo from  ##(:tableName) where shop_id = :2  group by serialNo having(count(serialNo) > 1)")
+    public List<String> getDupSerialList(@SQLParam("tableName") String tableName, long shopId);
+    
+    @SQL("select " + FIELDS + " from ##(:tableName)   where shop_id=:3 and serialNo =:2 order by create_time desc")
+    public List<Item> getItemList(@SQLParam("tableName") String tableName, String serialNo, long to_shop_id);
 
+    @SQL("delete from ##(:tableName) where  shop_id =:2 and id=:3")
+    public void delById(@SQLParam("tableName") String tableName, long del_shop_id, long id);
 }
