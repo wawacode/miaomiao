@@ -325,8 +325,10 @@ angular.module('miaomiao.shop')
 
                         order_id = dataDetail.order_id;
 
-                        if (!WeiChatPay.chooseWXPay) {
-                            MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
+                        if(!dataDetail.signature ||
+                            !dataDetail.nonceStr ||
+                            !dataDetail.timestamp){
+                            MMUtils.showAlert('内部错误，请选择其他支付方式');
                             return;
                         }
 
@@ -338,11 +340,8 @@ angular.module('miaomiao.shop')
                         };
 
                         WeiChatPay.chooseWXPay(pkgInfo, function (errMsg) {
-
                             onWeixinPaySuccess($scope.shop.id, order_id, 'paydone');
-
                         }, function (errMsg) {
-
                             MMUtils.showAlert('微信支付失败: ' + errMsg);
                             onWeixinPayFailed($scope.shop.id, order_id, '微信支付失败:' + errMsg);
                         })
