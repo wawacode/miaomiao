@@ -72,7 +72,7 @@
 
             <filelist dir="${src}/js/compress/controllers"
                       files="MainControllers-min.js, SignInCtrl-min.js,ChangePwdCtrl-min.js,FrontPageCtrl-min.js,OrderCtrl-min.js,
-                      ProductListCtrl-min.js,ProductCtrl-min.js,ShopListCtrl-min.js,EditShopCtrl-min.js,EditCommunityCtrl-min.js,AddProductCtrl-min.js,SearchCtrl-min.js"/>
+                      ProductListCtrl-min.js,ProductCtrl-min.js,ShopListCtrl-min.js,EditShopCtrl-min.js,AddProductCtrl-min.js,SearchCtrl-min.js"/>
 
         </concat>
     </target>

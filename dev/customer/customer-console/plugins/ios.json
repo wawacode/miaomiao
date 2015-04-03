@@ -160,48 +160,6 @@
         }
     },
     "installed_plugins": {
-        "com.ionic.keyboard": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "com.monmouth.callnumber": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "com.phonegap.plugins.PushPlugin": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "com.phonegap.plugins.barcodescanner": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "com.plugin.datepicker": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "nl.x-services.plugins.toast": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.camera": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.device": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.dialogs": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.file": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.file-transfer": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.media": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.splashscreen": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        },
-        "org.apache.cordova.statusbar": {
-            "PACKAGE_NAME": "com.miaomiao.bconsole"
-        }
     },
     "dependent_plugins": {}
 }
