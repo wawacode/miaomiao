@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Interceptor(oncePerRequest = true)
@@ -87,7 +88,10 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             if( !StringUtils.isBlank(code)){
                 String openId = wxService.getOpenId(code);
                 if(!StringUtils.isBlank(openId)){
-                    u  = userDAO.getUserByOpenId(openId);
+                    List<User> us   = userDAO.getUserByOpenId(openId);
+                    if (us.size()>1){
+                        u= us.get(0);
+                    }
                     if(null == u){
                         String userName = SUtils.generName();
                         u  = userService.createUser(userName , 0,  "pwd", 1 ,openId);
