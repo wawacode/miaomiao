@@ -67,6 +67,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
 
         info.fail = function(res){
             fail('支付失败:JS-API失败');
+            httpClient.postCirticallog('支付JS-API失败:'+ JSON.stringify(res),null,null);
         };
 
         info.cancel = function(res){

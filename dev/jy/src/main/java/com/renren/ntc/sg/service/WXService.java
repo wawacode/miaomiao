@@ -74,6 +74,7 @@ public class WXService {
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
+    
 
     private static final String TXT = "<xml>\n" +
             "   <appid>{appId}</appid>\n" +
