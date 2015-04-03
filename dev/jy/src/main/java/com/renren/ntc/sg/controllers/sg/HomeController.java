@@ -156,10 +156,6 @@ public class HomeController {
                     ShopLocation shopLoc =  res.getShopLocation();
                     LoggerUtils.getInstance().log( String.format("near find  shop_id  %d ,lat %f , lng %f ",shopLoc.getShop_id(),shopLoc.getLatitude(),shopLoc.getLongitude()));
                     long shop_id  = shopLoc.getShop_id();
-//                    if (!isshopArea(shop_id,lat,lng)) {
-//                        LoggerUtils.getInstance().log(String.format("shop %d , can't service %f ,%f",shop_id,lat,lng));
-//                        continue;
-//                    }
                     shop = shopDAO.getShop(shop_id);
                     if (null == shop){
                         continue;
@@ -253,7 +249,7 @@ public class HomeController {
     @Get("log")
     @Post("log")
     public String log( Invocation inv,@Param("msg") String msg) {
-        LoggerUtils.getInstance().log(String.format("user_id %s msg %s",msg ));
+        LoggerUtils.getInstance().log(String.format("client send msg %s",msg ));
         return "about";
     }
 
