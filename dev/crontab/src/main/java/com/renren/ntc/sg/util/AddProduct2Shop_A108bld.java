@@ -57,7 +57,7 @@ public class AddProduct2Shop_A108bld {
                     Item iteminfo = itemDao.getItem(SUtils.generTableName(shop_id), serialNo, shop_id);
 
                     if (iteminfo != null) {
-
+                    	iteminfo.setShop_id(to_shop_id);
                         JSONObject ob = (JSONObject) JSON.toJSON(iteminfo);
                         System.out.println("商店有：" + ++n + "<>" + ob.toJSONString());
                         itemDao.insert(SUtils.generTableName(to_shop_id), iteminfo);
