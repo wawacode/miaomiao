@@ -15,6 +15,7 @@ public interface ShopDAO {
     static final String FIELDS = "id, owner_user_id,base_price, name,open_time,close_time,shop_address,tel,owner_phone,head_url,shop_url,lng,lat,create_time,audit,status,shop_info,remark,ext" ;
     static final String INSERT_FIELDS = "owner_user_id,base_price,open_time,close_time,name,shop_address,tel,owner_phone,head_url,shop_url,shop_info,lng,lat" ;
     static final String SHOP_NAME_FIELDS = "id,name";
+    static final int SHOP_NOT_ONLINE = 0;
 	@SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where  lat < :1 and lat > :2 and lng < :3 and lng > :4")
 	public List<Shop> getShop(double lat2, double lng1, double lng2);
 	
@@ -63,4 +64,13 @@ public interface ShopDAO {
 
     @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where id in (:shop_ids)")
     public List<Shop> getShops(@SQLParam("shop_ids") List<Long> shop_ids);
+    
+    
+    /**
+     * 获取未上线的商店 id name
+     * zhaoxiufei 
+     * @return
+     */
+    @SQL("select " + SHOP_NAME_FIELDS   + "  from "  + TABLE_NAME + " where audit ="+SHOP_NOT_ONLINE)
+    public List<Shop> getAllShopsByNotOnline();
 }
