@@ -86,11 +86,11 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             LoggerUtils.getInstance().log( "get wx code " + code);
             if( !StringUtils.isBlank(code)){
                 String openId = wxService.getOpenId(code);
-                if(StringUtils.isBlank(openId)){
+                if(!StringUtils.isBlank(openId)){
                     u  = userDAO.getUserByOpenId(openId);
                     if(null == u){
                         String userName = SUtils.generName();
-                        u  = userService.createUser(userName , 0,  "pwd", 1 ,"other");
+                        u  = userService.createUser(userName , 0,  "pwd", 1 ,openId);
                     }
                     CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
                     hostHolder.setUser(u);
