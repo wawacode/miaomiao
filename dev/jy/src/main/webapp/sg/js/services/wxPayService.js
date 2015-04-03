@@ -1,7 +1,8 @@
 ;
 angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, httpClient,ShopService) {
 
-    var weiChatPayUtils = {}, wechatConfig = {
+    var weiChatPayUtils = {},
+        wechatConfig = {
         appId: 'wx762f832959951212',
         mch_id: '1233699402',
         appsecret: '914f4388312ca90e4cb750b817d15368'
@@ -9,12 +10,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
 
     if (typeof(wx) == 'undefined') {
         console.log('Error' + "微信js-sdk 没有加载");
-        return weiChatPayUtils;
-    }
-
-    // TODO: remove this
-    var shop = ShopService.getDefaultShop() || {};
-    if(shop && !ShopService.isWeixinEnabledShop(shop)){
+        MMUtils.showAlert('微信js-sdk 没有加载');
         return weiChatPayUtils;
     }
 
@@ -33,55 +29,54 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
         wx.config(config);
 
         wx.error(function (res) {
-
+            MMUtils.showAlert('微信 pay config failed');
             // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-
         });
 
         wx.ready(function () {
-
-            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-
-            weiChatPayUtils.checkPayAPI = function (success, fail) {
-                wx.checkJsApi({
-                    jsApiList: ['chooseWXPay'],
-                    success: function (res) {
-                        if (res.checkResult.chooseWXPay) {
-                            success();
-                        } else {
-                            fail();
-                        }
-                    },
-                    fail: function () {
-                        fail();
-                    }
-                });
-            };
-
-            weiChatPayUtils.chooseWXPay = function (info, beforeHandoverToWCPay, success, fail) {
-
-                info.success = function (res) {
-
-                    if (res.errMsg == "chooseWXPay:ok") {
-                        success(res.errMsg);
-                    } else {
-                        fail('支付失败:' + res.errMsg);
-                    }    // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-                };
-
-                info.fail = function(res){
-                    fail('支付失败:JS-API失败');
-                };
-
-                info.cancel = function(res){
-                    fail('支付取消');
-                };
-
-                wx.chooseWXPay(info);
-
-            };
-
+            MMUtils.showAlert('pay config ready');
         });
+    };
+
+    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+
+    weiChatPayUtils.checkPayAPI = function (success, fail) {
+        wx.checkJsApi({
+            jsApiList: ['chooseWXPay'],
+            success: function (res) {
+                if (res.checkResult.chooseWXPay) {
+                    success();
+                } else {
+                    fail();
+                }
+            },
+            fail: function () {
+                fail();
+            }
+        });
+    };
+
+    weiChatPayUtils.chooseWXPay = function (info, beforeHandoverToWCPay, success, fail) {
+
+        info.success = function (res) {
+
+            if (res.errMsg == "chooseWXPay:ok") {
+                success(res.errMsg);
+            } else {
+                fail('支付失败:' + res.errMsg);
+            }    // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+        };
+
+        info.fail = function(res){
+            fail('支付失败:JS-API失败');
+        };
+
+        info.cancel = function(res){
+            fail('支付取消');
+        };
+
+        wx.chooseWXPay(info);
+
     };
 
     return weiChatPayUtils;

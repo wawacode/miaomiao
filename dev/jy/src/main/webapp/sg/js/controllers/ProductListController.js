@@ -70,6 +70,7 @@
             wpConfig.signature = dataDetail.signature.toUpperCase();
             wpConfig.nonceStr = dataDetail.nonceStr;
             wpConfig.timestamp = dataDetail.timestamp;
+
             WeiChatPay.initConfig(wpConfig);
 
             // check coupons available

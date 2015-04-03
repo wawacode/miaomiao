@@ -325,11 +325,6 @@ angular.module('miaomiao.shop')
 
                         order_id = dataDetail.order_id;
 
-                        if (!WeiChatPay.chooseWXPay) {
-                            MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
-                            return;
-                        }
-
                         var pkgInfo = {  "signType": 'MD5',
                             "package": 'prepay_id='+ dataDetail['pre_id'],
                             "paySign": dataDetail.signature.toUpperCase(),
