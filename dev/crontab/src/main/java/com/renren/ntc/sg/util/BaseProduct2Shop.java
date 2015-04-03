@@ -111,8 +111,15 @@ public class BaseProduct2Shop {
 							e.printStackTrace();
 							continue;
 						}
+						
                         if(itemDb != null){
                         	System.out.println("seralno is exist,seralno="+serialNo);
+                        	if(itemDb.getPrice() == 0){
+                        		itemDao.update(SUtils.generTableName(shopId), serialNo, p.getName(), p.getPic_url());
+                        	}else {
+								itemDao.updateBaseInfo(SUtils.generTableName(shopId), serialNo, p.getName(), p.getPic_url(), p.getPrice());
+							}
+                        	System.out.println("update sucess serialNo="+serialNo);
                         	continue;
                         }
                     	if (p.getCategory_id()==15){
