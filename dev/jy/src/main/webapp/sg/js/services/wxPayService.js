@@ -1,5 +1,5 @@
 ;
-angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, httpClient,ShopService) {
+angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, httpClient,ShopService,MMUtils) {
 
     var weiChatPayUtils = {}, wechatConfig = {
         appId: 'wx762f832959951212',
@@ -9,12 +9,7 @@ angular.module('miaomiao.shop').factory('WeiChatPay', function ($http, MMUtils, 
 
     if (typeof(wx) == 'undefined') {
         console.log('Error' + "微信js-sdk 没有加载");
-        return weiChatPayUtils;
-    }
-
-    // TODO: remove this
-    var shop = ShopService.getDefaultShop() || {};
-    if(shop && !ShopService.isWeixinEnabledShop(shop)){
+        MMUtils.showAlert('微信js-sdk 没有加载');
         return weiChatPayUtils;
     }
 
