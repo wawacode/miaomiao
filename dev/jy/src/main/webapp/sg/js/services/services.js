@@ -324,7 +324,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             },
 
             isWeixinEnabledShop:function(shop){
-                return true; //shop.id == '10033' || shop.id == '1';
+                return shop.id == '10033' || shop.id == '1';
             },
 
             isCouponEnabledShop:function(shop){
