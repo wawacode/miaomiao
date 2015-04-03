@@ -31,6 +31,8 @@ public interface ItemsDAO {
     static final String FIELDS = "id,serialNo, shop_id,name,category_id,category_sub_id,score ,price,price_new ,count,pic_url,create_time,update_time";
 
     static final String INSERT_FIELDS = "serialNo,shop_id,name,category_id,category_sub_id,score, price,price_new,count,pic_url";
+    
+    static final String INSERT_FIELDS_BASE = "serialNo,shop_id,name,category_id,score,pic_url";
 
     /**
      * description: 获取商品数量
@@ -147,5 +149,9 @@ public interface ItemsDAO {
 
     @SQL("update  ##(:tableName) set price=:3 where shop_id=:4 and serialNo =:2")
     void updatePrice(@SQLParam("tableName") String tableName, String serialNo, int price, long shop_id);
+    
+    @SQL("insert into ##(:tableName) (" + INSERT_FIELDS_BASE + ")" + " value (:2.serialNo,:2.shop_id,:2.name,"
+            + ":2.category_id,:2.score,:2.pic_url)")
+    public int insertBaseInfo(@SQLParam("tableName") String tableName, Item item);
 
 }
