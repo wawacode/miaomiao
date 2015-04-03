@@ -325,6 +325,13 @@ angular.module('miaomiao.shop')
 
                         order_id = dataDetail.order_id;
 
+                        if(!dataDetail.signature ||
+                            !dataDetail.nonceStr ||
+                            !dataDetail.timestamp){
+                            MMUtils.showAlert('内部错误，请选择其他支付方式');
+                            return;
+                        }
+
                         var pkgInfo = {  "signType": 'MD5',
                             "package": 'prepay_id='+ dataDetail['pre_id'],
                             "paySign": dataDetail.signature.toUpperCase(),
