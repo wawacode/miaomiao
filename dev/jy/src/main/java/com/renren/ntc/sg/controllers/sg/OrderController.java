@@ -155,7 +155,7 @@ public class OrderController {
             price += i4v.getPrice() * i4v.getExt();
         }
         String order_id = SUtils.getOrderId();
-        LoggerUtils.getInstance().log(String.format(" error create new  order %s,  items %s  ", order_id, items));
+        LoggerUtils.getInstance().log(String.format("  create new  order %s,  items %s  ", order_id, items));
         if (!ok) {
             LoggerUtils.getInstance().log("error order save return uk ");
             return "@" + Constants.LEAKERROR;
@@ -226,8 +226,6 @@ public class OrderController {
             data.put("pre_id",pre_id) ;
             data.put("out_trade_no",order_id) ;
             data.put("total_fee", price) ;
-            //
-            // dajinquan geli
         }
         data.put("order_id",order_id);
         response.put("data", data);
