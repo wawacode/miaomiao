@@ -340,11 +340,8 @@ angular.module('miaomiao.shop')
                         };
 
                         WeiChatPay.chooseWXPay(pkgInfo, function (errMsg) {
-
                             onWeixinPaySuccess($scope.shop.id, order_id, 'paydone');
-
                         }, function (errMsg) {
-
                             MMUtils.showAlert('微信支付失败: ' + errMsg);
                             onWeixinPayFailed($scope.shop.id, order_id, '微信支付失败:' + errMsg);
                         })
