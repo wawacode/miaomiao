@@ -33,7 +33,7 @@ public interface UserDAO {
 	@SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where id =:1")
 	public User getUser(long user_id);
 
-    @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where wx_open_id =:1")
+    @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where wx_open_id =:1 order by create_time desc ")
     public List<User> getUserByOpenId(String  wx_open_id );
 
     @ReturnGeneratedKeys
