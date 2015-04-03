@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.PrinterService;
+import com.renren.ntc.sg.util.wx.MD5Util;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,29 @@ import java.util.*;
  */
 public class SUtils {
 
+    private static String key = "210f760a89db30aa72ca258a3483cc7f";
+    public  static String appId = "wx762f832959951212";
+
+
+    public static String byteToHex(final byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash)
+        {
+            formatter.format("%02x", b);
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
+    }
+
+
+    public static String create_nonce_str() {
+        return UUID.randomUUID().toString();
+    }
+
+    public static String create_timestamp() {
+        return Long.toString(System.currentTimeMillis() / 1000);
+    }
 
     public static String getBodyString(BufferedReader br) {
         String inputLine;
@@ -384,5 +408,25 @@ public class SUtils {
         sb.append(curr);
         return sb.toString();
 
+    }
+
+    public static String createSign(SortedMap<String, String> packageParams) {
+        StringBuffer sb = new StringBuffer();
+        Set es = packageParams.entrySet();
+        Iterator it = es.iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String k = (String) entry.getKey();
+            String v = (String) entry.getValue();
+            if (null != v && !"".equals(v) && !"sign".equals(k)
+                    && !"key".equals(k)) {
+                sb.append(k + "=" + v + "&");
+            }
+        }
+        sb.append("key=" + key);
+        System.out.println("md5 sb:" + sb);
+        String sign = MD5Util.MD5Encode(sb.toString(), "utf-8")
+                .toUpperCase();
+        return sign;
     }
 }

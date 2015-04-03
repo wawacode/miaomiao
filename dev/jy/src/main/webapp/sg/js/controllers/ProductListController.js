@@ -21,7 +21,8 @@
 
         MMUtils.showLoadingIndicator('正在加载商品...',$scope);
 
-        httpClient.getProductList($scope.shop.id, function (data, status) {
+        var wxUrl = window.location.href.split('#')[0];
+        httpClient.getProductList($scope.shop.id, wxUrl, function (data, status) {
             $ionicLoading.hide();
 
             var code = data.code, dataDetail = data.data;
@@ -64,6 +65,15 @@
             $scope.currentDisplayCategory = $scope.categoryls.length && $scope.categoryls[0];
             $scope.currentDisplayItems = $scope.currentDisplayCategory && $scope.currentDisplayCategory.itemls;
 
+            // config wechat pay
+            var wpConfig = {};
+            wpConfig.signature = dataDetail.signature.toUpperCase();
+            wpConfig.nonceStr = dataDetail.nonceStr;
+            wpConfig.timestamp = dataDetail.timestamp;
+
+            WeiChatPay.initConfig(wpConfig);
+
+            // check coupons available
             checkAvailableCoupons();
 
         }, function (data, status) {

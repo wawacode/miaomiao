@@ -262,16 +262,13 @@
                 $event.target.parentElement.focus()
             }
 
-            item.price = item.updated_price * 100;
-            item.name = item.updated_name;
-
-            var options = {'itemName': item.name,
+            var options = {'itemName': item.updated_name,
                 itemId: item.id,
                 serialNo: item.serialNo,
                 category_id: item.category_id,
                 count: item.count,
                 score: item.score,
-                price: item.price,
+                price: item.updated_price * 100,
                 saleStatus: item.onsell
             };
 

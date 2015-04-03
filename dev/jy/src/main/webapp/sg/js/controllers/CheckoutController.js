@@ -18,8 +18,8 @@ angular.module('miaomiao.shop')
         };
 
         //TODO: currently only support some shop
-        function initCheckoutType(){
-            if(ShopService.isWeixinEnabledShop($scope.shop)){
+        function initCheckoutType() {
+            if (ShopService.isWeixinEnabledShop($scope.shop)) {
                 $scope.checkoutType = [
                     {
                         'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': false, 'canUseCoupon': false
@@ -37,9 +37,9 @@ angular.module('miaomiao.shop')
                         'id': $scope.CheckoutTypeEnum.CHECKOUTTYPE_CASH, 'name': '货到付款', 'selected': true
                     }
                 ];
-             }
+            }
 
-            $scope.selectedCheckoutType = $scope.checkoutType.length == 1 ? $scope.checkoutType[0]: $scope.checkoutType[1];
+            $scope.selectedCheckoutType = $scope.checkoutType.length == 1 ? $scope.checkoutType[0] : $scope.checkoutType[1];
 
         }
 
@@ -87,9 +87,9 @@ angular.module('miaomiao.shop')
 
                 // update coupon list
                 var coupons = dataDetail.coupons;
-                if(coupons){
-                    for(var i=0;i< $scope.checkoutType.length;i++){
-                        if($scope.checkoutType[i].canUseCoupon){
+                if (coupons) {
+                    for (var i = 0; i < $scope.checkoutType.length; i++) {
+                        if ($scope.checkoutType[i].canUseCoupon) {
                             $scope.checkoutType[i].coupons = coupons;
                         }
                     }
@@ -98,8 +98,8 @@ angular.module('miaomiao.shop')
                 $scope.selectedCoupon = null;
                 $scope.couponActive = dataDetail.coupon_active;
 
-                var index = $scope.checkoutType.length == 1 ? 0: 1;
-                $scope.userSelectCheckoutType(index,true);
+                var index = $scope.checkoutType.length == 1 ? 0 : 1;
+                $scope.userSelectCheckoutType(index, true);
 
             }, function (data, status) {
                 $ionicLoading.hide();
@@ -107,7 +107,7 @@ angular.module('miaomiao.shop')
             });
         }
 
-        $scope.userSelectCheckoutType = function (index,needDelay) {
+        $scope.userSelectCheckoutType = function (index, needDelay) {
 
             for (var i = 0; i < $scope.checkoutType.length; i++) {
                 if (index != i) {
@@ -128,7 +128,7 @@ angular.module('miaomiao.shop')
 
             $ionicScrollDelegate.$getByHandle('checkoutScroll').resize(false);
 
-            $timeout(function(){
+            $timeout(function () {
                 $ionicScrollDelegate.$getByHandle('checkoutScroll').scrollBottom(true);
             }, needDelay ? 500 : 0);
 
@@ -144,7 +144,7 @@ angular.module('miaomiao.shop')
 
             for (var i = 0; i < $scope.couponCards.length; i++) {
 
-                if($scope.couponCards[i].status != 0)continue; // only available cards
+                if ($scope.couponCards[i].status != 0)continue; // only available cards
 
                 $scope.couponCards[i].selected = false;
 
@@ -161,28 +161,28 @@ angular.module('miaomiao.shop')
         $scope.selectCouponCards = function (idx) {
 
             // don't do anything if not valid
-            if($scope.couponActive != true){
+            if ($scope.couponActive != true) {
                 return;
             }
 
-            function clearAllCards(){
+            function clearAllCards() {
                 for (var i = 0; i < $scope.couponCards.length; i++) {
                     $scope.couponCards[i].selected = false;
                 }
             }
 
             if ($scope.couponCards[idx].selected == true) {
-                $timeout(function(){
+                $timeout(function () {
                     $scope.couponCards[idx].selected = false;
                 });
                 $scope.selectedCoupon = null;
 
             } else {
                 var totalPrice = ShoppingCart.getTotalPrice();
-                if ($scope.couponCards[idx].price/100.0 <= totalPrice) {
+                if ($scope.couponCards[idx].price / 100.0 <= totalPrice) {
                     clearAllCards();
-                    $timeout(function(){
-                         $scope.couponCards[idx].selected = true;
+                    $timeout(function () {
+                        $scope.couponCards[idx].selected = true;
                     });
                     $scope.selectedCoupon = $scope.couponCards[idx];
                 }
@@ -307,13 +307,13 @@ angular.module('miaomiao.shop')
                 };
 
                 MMUtils.showLoadingIndicator('正在生成订单,请稍候...', $scope);
-                var coupon_id = null,coupon_code = null;
-                if($scope.selectedCheckoutType.canUseCoupon == true && $scope.selectedCoupon){
+                var coupon_id = null, coupon_code = null;
+                if ($scope.selectedCheckoutType.canUseCoupon == true && $scope.selectedCoupon) {
                     coupon_id = $scope.selectedCoupon.id;
                     coupon_code = $scope.selectedCoupon.code;
                 }
                 httpClient.getOrderPrepayInfo($scope.shop.id, $scope.info.address.id, $scope.info.address.address, $scope.info.address.phone,
-                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id,coupon_id,coupon_code, function (data, status) {
+                    $scope.info.remarks || '', $scope.shoppingCartItems, $scope.info.order_id, coupon_id, coupon_code, function (data, status) {
 
                         $ionicLoading.hide();
 
@@ -324,25 +324,24 @@ angular.module('miaomiao.shop')
                         }
 
                         order_id = dataDetail.order_id;
-                        pkg = {'prepay_id': dataDetail['pre_id']};
 
-                        if (!WeiChatPay.chooseWXPay) {
-                            MMUtils.showAlert('暂时无法使用微信购买,请选择其他支付方式');
+                        if(!dataDetail.signature ||
+                            !dataDetail.nonceStr ||
+                            !dataDetail.timestamp){
+                            MMUtils.showAlert('内部错误，请选择其他支付方式');
                             return;
                         }
 
-                        MMUtils.showLoadingIndicator('微信支付...', $scope);
+                        var pkgInfo = {  "signType": 'MD5',
+                            "package": 'prepay_id='+ dataDetail['pre_id'],
+                            "paySign": dataDetail.signature.toUpperCase(),
+                            "nonceStr": dataDetail.nonceStr,
+                            "timestamp": dataDetail.timestamp
+                        };
 
-                        WeiChatPay.chooseWXPay(pkg, function () {
-
-                            $ionicLoading.hide();
-
-                        }, function (errMsg) {
-
+                        WeiChatPay.chooseWXPay(pkgInfo, function (errMsg) {
                             onWeixinPaySuccess($scope.shop.id, order_id, 'paydone');
-
                         }, function (errMsg) {
-
                             MMUtils.showAlert('微信支付失败: ' + errMsg);
                             onWeixinPayFailed($scope.shop.id, order_id, '微信支付失败:' + errMsg);
                         })

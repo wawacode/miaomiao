@@ -56,6 +56,12 @@ public class SMSService {
             String mobile = "";
             byte[] t = null;
             String info = "用户下单";
+            String response = "用户下单";
+            if("wx".equals(order.getAct())){
+                response = response + ",支付方式：微信支付.";
+            }else{
+                response = response + ",支付方式：货到付款.";
+            }
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String vv = shop.getName() + " " + shop.getTel() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
@@ -147,27 +153,27 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
-            Order value = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
+            Order order = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
             String v = null;
             String url;
             byte[] t = null;
 
             String response = "用户下单";
-            if("wx".equals(value.getAct())){
+            if("wx".equals(order.getAct())){
                 response = response + ",支付方式：微信支付.";
             }else{
                 response = response + ",支付方式：货到付款.";
             }
-            long adr_id = value.getAddress_id();
+            long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
 
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
             //节约成本  有打印机的情况不要发那么多字的短信
             if (null != devcie && !SUtils.isOffline(devcie)) {
-                String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + value.getOrder_id();
+                String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
                 vv = vv.replaceAll("=", "").replaceAll("&", "");
                 String ro = response.replace("=", "").replace("&", "");
-                float p = (float) value.getPrice() / 100;
+                float p = (float) order.getPrice() / 100;
                 String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
                 message = SUtils.span(message);
                 message = URLEncoder.encode(message, "utf-8");
@@ -177,22 +183,22 @@ public class SMSService {
                     return;
                 }
                 url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.LOCTID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", phone, value.getOrder_id(), url));
+                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
                 t = SHttpClient.getURLData(url, "");
                 String r = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), r, phone, url));
+                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
                 MongoDBUtil.getInstance().sendmark(phone, order_id);
                 return;
             }
 
             String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone();
-            if (!StringUtils.isBlank(value.getRemarks())) {
-                vv = vv + "买家留言：" + value.getRemarks();
+            if (!StringUtils.isBlank(order.getRemarks())) {
+                vv = vv + "买家留言：" + order.getRemarks();
             }
             vv = vv.replaceAll("=", "").replaceAll("&", "");
             String ro = response.replaceAll("=", "").replace("&", "");
-            float p = (float) value.getPrice() / 100;
-            String detail = form(value.getSnapshot(), p);
+            float p = (float) order.getPrice() / 100;
+            String detail = form(order.getSnapshot(), p);
             detail = detail.replaceAll("=", "").replaceAll("&", "");
             String message = "#address#=" + vv + "&#status#=" + ro + "&#detail#=" + detail;
             System.out.println("message " + message);
@@ -206,10 +212,10 @@ public class SMSService {
                     return;
                 }
                 url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.TID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", phone, value.getOrder_id(), url));
+                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
                 t = SHttpClient.getURLData(url, "");
                 response = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, phone, url));
+                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), response, phone, url));
                 MongoDBUtil.getInstance().sendmark(phone, order_id);
             }
         } catch (Throwable e) {
