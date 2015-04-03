@@ -149,10 +149,6 @@ public class ShopController {
             s.setItemls(itemls);
             shopCategoryls.add(s);
         }
-
-
-
-
         JSONObject jb =  new JSONObject() ;
         JSONObject data =  new JSONObject() ;
         JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
