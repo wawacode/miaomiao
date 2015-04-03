@@ -33,7 +33,7 @@ import com.renren.ntc.sg.service.LoggerUtils;
         List<ShopOrderReport> shopOrderReports = new ArrayList<ShopOrderReport>();
         for(Shop shop : shops){
             long shopId = shop.getId();
-            List<Order> orders = orderDao.getOrder(Dateutils.tranferDate2Str(Dateutils.getDateByCondition(0, 0, 0, 0)), Dateutils.tranferDate2Str(Dateutils.getDateByCondition(0, 23, 59, 59)), SUtils.generOrderTableName(shopId));
+            List<Order> orders = orderDao.getRealOrder(Dateutils.tranferDate2Str(Dateutils.getDateByCondition(0, 0, 0, 0)), Dateutils.tranferDate2Str(Dateutils.getDateByCondition(0, 23, 59, 59)), SUtils.generOrderTableName(shopId),shopId);
             ShopOrderReport shopOrderReport = new ShopOrderReport();
             shopOrderReport.setShopId(shopId);
             shopOrderReport.setShopName(shop.getName());

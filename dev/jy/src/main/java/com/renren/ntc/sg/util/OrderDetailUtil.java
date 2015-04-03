@@ -46,7 +46,7 @@ public class OrderDetailUtil {
 			List<WXPayDetail> wxpDetails = new ArrayList<WXPayDetail>();
 			for(Order order : orders){
 				WXPayDetail  wxpDetail = wShopReport.new WXPayDetail();
-				wxpDetail.setOrderPrice(order.getPrice()/100);
+				wxpDetail.setOrderPrice((float)order.getPrice()/100);
 				String msg = order.getMsg();
 				int wxDiscount = 0;
 				if(StringUtils.isNotBlank(msg)){
@@ -63,8 +63,8 @@ public class OrderDetailUtil {
 						
 					}
 				}
-				wxpDetail.setWxDiscount(wxDiscount/100);
-				wxpDetail.setRealPrice((order.getPrice() - wxDiscount)/100);
+				wxpDetail.setWxDiscount((float)wxDiscount/100);
+				wxpDetail.setRealPrice((float)(order.getPrice() - wxDiscount)/100);
 				wxpDetail.setOrderTimeStr(Dateutils.tranferDate2Str(order.getCreate_time()));
 				wxpDetails.add(wxpDetail);	
 			}
