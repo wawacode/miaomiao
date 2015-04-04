@@ -15,7 +15,10 @@
         <div class="item ">
             <div class="item-text-wrap">收货地址: {{order.address}}</div>
             <div class="item-text-wrap">联系电话: {{order.phone}}</div>
+            <div  class="item-text-wrap" style="margin-top: 10px;color: #808080" ng-if="order.act == 'wx'"><i class="ion-card balanced"></i> 微信支付 <span ng-if="order.dprice > 0">［使用优惠券 {{order.dprice/100.0}} 元］</span></div>
+            <div  class="item-text-wrap" style="margin-top: 10px;color: #808080" ng-if="order.act != 'wx'"><i class="ion-card balanced"></i> 货到付款</div>
             <div  class="item-text-wrap" style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
+
         </div>
         <div style="padding: 15px 9px 15px;" class="order-snapshots">
             <div bindonce class="orderSnapshot" quick-ng-repeat="orderItem in order.items">

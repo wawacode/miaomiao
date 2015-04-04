@@ -36,6 +36,7 @@
                         $scope.info.newitem.saleStatus = 1;
                         $scope.info.newitem.new_pic_url = item.pic_url;
                         $scope.info.newitem.pic_url = item.pic_url;
+                        $scope.info.newitem.price = item.price/100.0;
                     });
 
                 }, function (data, status) {
@@ -101,11 +102,6 @@
                     return;
                 }
 
-                if (!newitem.new_pic_url && !newitem.pic_url) {
-                    MMUtils.showAlert('请添加图片');
-                    return;
-                }
-
                 var options = {'serialNo': newitem.serialNo,
                     name: newitem.name,
                     categoryId: newitem.currentCateId,
@@ -113,7 +109,7 @@
                     score: newitem.score,
                     price: newitem.price * 100,
                     saleStatus: newitem.saleStatus,
-                    pic_url: newitem.pic_url,
+                    pic_url: newitem.pic_url || '',
                     shop_id: $scope.info.shop.id
                 };
 
@@ -142,7 +138,14 @@
                     });
                 }
 
-                if (newitem.hasNewPicture) {
+                if (newitem.hasNewPicture == true) {
+
+                    // if no new pic
+                    if(!newitem.new_pic_url){
+                        MMUtils.showAlert('暂不能上传图片，您可以在添加完商品后继续编辑图片');
+                        addItemInfo(options, newitem);
+                        return;
+                    }
 
                     MMUtils.showLoadingIndicator('正在上传图片,请稍候...', $scope);
                     httpClient.uploadPicForItem(newitem.serialNo, newitem.new_pic_url, $scope.info.shop.id, function (data, status) {
@@ -221,8 +224,11 @@
 
             function onCapturePhoto(fileURI) {
 
-                $scope.info.newitem.new_pic_url = fileURI;
-                $scope.info.newitem.hasNewPicture = true;
+                $timeout(function(){
+                    $scope.info.newitem.new_pic_url = fileURI;
+                    $scope.info.newitem.hasNewPicture = true;
+                });
+
             }
 
             $scope.getPhoto = function () {

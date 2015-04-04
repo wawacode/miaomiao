@@ -20,6 +20,9 @@ public class Refresh2Produdce {
 
 
     public static void main(String[] args) throws IOException {
+    	String shopId = args[0];
+    	shop_id = Long.parseLong(shopId);
+    	System.out.println("load shopId="+shop_id);
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
@@ -29,6 +32,7 @@ public class Refresh2Produdce {
 
             List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
             if (itemls.size() == 0) {
+            	System.out.println("=======done=========");
                 break;
             }
             for (Item item : itemls) {
@@ -38,16 +42,17 @@ public class Refresh2Produdce {
                 p.setPic_url(item.getPic_url());
                 p.setPrice(item.getPrice());
                 p.setName(item.getName());
-                p.setSerialNo(item.getSerialNo());
-                Product pp = pdDao.geProductsByserialNo(item.getSerialNo());
+                String serialNoStr = upacage(item.getSerialNo());
+                p.setSerialNo(serialNoStr);
+                Product pp = pdDao.geProductsByserialNo(serialNoStr);
                 if (null != pp){
                     System.out.println("update into " + p.getSerialNo());
-                    if(p.getPrice() <= pp.getPrice()){
-                    	p.setPrice(pp.getPrice());
-                    }else {
-						System.out.println("商品的价格比product高,serialNo="+item.getSerialNo());
-					}
-                    pdDao.updateInfo(p,item.getSerialNo()) ;
+//                    if(p.getPrice() <= pp.getPrice()){
+//                    	p.setPrice(pp.getPrice());
+//                    }else {
+//						System.out.println("商品的价格比product高,serialNo="+item.getSerialNo());
+//					}
+                    pdDao.updateInfo(p,serialNoStr) ;
                  }else{
                     System.out.println("insert into " + p.getSerialNo());
                     pdDao.insert(p) ;
@@ -55,5 +60,12 @@ public class Refresh2Produdce {
             }
             i = i + offset;
         }
+    }
+    
+    private static String upacage(String serialNo) {
+        while (serialNo.startsWith("0")){
+            serialNo = serialNo.substring(1,serialNo.length());
+        }
+        return serialNo;
     }
 }

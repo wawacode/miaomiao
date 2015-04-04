@@ -161,7 +161,9 @@ public class ItemConsoleController extends BasicConsoleController{
 
     	if(StringUtils.isBlank(picUrl)){
             Product p = productDao.geProduct(serialNo);
-    		picUrl = p.getPic_url();
+            if(p != null){
+            	picUrl = p.getPic_url();
+            }
     	}
     	int onsell = Constants.ITEM_NOT_SALE;
     	if(!StringUtils.isBlank(saleStatus)){
