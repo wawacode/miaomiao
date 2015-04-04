@@ -56,11 +56,10 @@ public class SMSService {
             String mobile = "";
             byte[] t = null;
             String info = "用户下单";
-            String response = "用户下单";
             if("wx".equals(order.getAct())){
-                response = response + ",支付方式：微信支付.";
+                info = info + ",支付方式：微信支付.";
             }else{
-                response = response + ",支付方式：货到付款.";
+                info = info + ",支付方式：货到付款.";
             }
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
