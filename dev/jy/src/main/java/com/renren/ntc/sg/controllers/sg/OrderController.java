@@ -90,12 +90,13 @@ public class OrderController {
                        @Param("act") String act,
                        @Param("coupon_id") int coupon_id,
                        @Param("coupon_code") String coupon_code ) {
-        LoggerUtils.getInstance().log(String.format(" items %s ,act %s ,coupon_id %d ,coupon_code %s ",items,act,coupon_id,coupon_code));
+
         User u = holder.getUser();
         long user_id = 0;
         if (null != u) {
             user_id = u.getId();
         }
+        LoggerUtils.getInstance().log(String.format("user %d items %s ,act %s ,coupon_id %d ,coupon_code %s ",user_id,items,act,coupon_id,coupon_code));
         Shop shop = shopDAO.getShop(shop_id);
         if (null == shop) {
             LoggerUtils.getInstance().log(String.format("can't find shop  %d  ", shop_id));
