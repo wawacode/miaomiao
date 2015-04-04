@@ -250,7 +250,7 @@ public class WXService {
                     return null;
                 }
                 JSONObject ob =(JSONObject) JSONObject.parse(e);
-                access_token =  ob.getString("access_token");
+                 access_token =  ob.getString("access_token");
                 if(!StringUtils.isBlank(access_token) ){
                    JRedisUtil.getInstance().set(ACCESS_TOKEN,access_token);
                    JRedisUtil.getInstance().expire(ACCESS_TOKEN,3600);

@@ -178,14 +178,14 @@ public class SMSService {
                 message = URLEncoder.encode(message, "utf-8");
                 String phone = shop.getOwner_phone();
                 if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
-                    System.out.println(String.format("%s %s sms allready send ", phone, order_id));
+                    LoggerUtils.getInstance().log(String.format("%s %s sms allready send ", phone, order_id));
                     return;
                 }
                 url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.LOCTID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
+                LoggerUtils.getInstance().log(String.format("Send  SMS to boss mobile %s %s ,%s ", phone, order.getOrder_id(), url));
                 t = SHttpClient.getURLData(url, "");
                 String r = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
+                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
                 MongoDBUtil.getInstance().sendmark(phone, order_id);
                 return;
             }
@@ -200,21 +200,20 @@ public class SMSService {
             String detail = form(order.getSnapshot(), p);
             detail = detail.replaceAll("=", "").replaceAll("&", "");
             String message = "#address#=" + vv + "&#status#=" + ro + "&#detail#=" + detail;
-            System.out.println("message " + message);
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板
             if (shop != null) {
                 String phone = shop.getOwner_phone();
                 if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
-                    System.out.println(String.format("%s %s sms allready send ", phone, order_id));
+                    LoggerUtils.getInstance().log(String.format("%s %s sms allready send ", phone, order_id));
                     return;
                 }
                 url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.TID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
+                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
                 t = SHttpClient.getURLData(url, "");
                 response = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), response, phone, url));
+                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), response, phone, url));
                 MongoDBUtil.getInstance().sendmark(phone, order_id);
             }
         } catch (Throwable e) {
