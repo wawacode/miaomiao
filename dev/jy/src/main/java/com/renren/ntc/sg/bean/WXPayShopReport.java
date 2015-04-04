@@ -7,6 +7,7 @@ public class WXPayShopReport {
 	private String shopName;
 	private int orderCount;
 	private String reportDate;
+	private float totalPrice;
 	private List<WXPayDetail> shopOrderFlows;
 
 	public WXPayShopReport() {
@@ -90,5 +91,13 @@ public class WXPayShopReport {
 		public void setOrderTimeStr(String orderTimeStr) {
 			this.orderTimeStr = orderTimeStr;
 		}
+	}
+
+	public float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

@@ -25,6 +25,8 @@ import com.renren.ntc.sg.mail.MailSendServer;
 public class OrderDetailUtil {
 	public static void main(String[] args) {
 		String mailListStr = args[0];
+		String dateStr = args[1];
+		int dateInt = Integer.parseInt(dateStr);
 		String[] mailLists = mailListStr.split(",");
 		RoseAppContext rose = new RoseAppContext();
 		ShopDAO shopDAO = rose.getBean(ShopDAO.class);
@@ -33,8 +35,8 @@ public class OrderDetailUtil {
 		List<WXPayShopReport> wxpayShopReports = new ArrayList<WXPayShopReport>();
 		for(Shop shop : shops){
 			//System.out.println("shopid="+shop.getId()+",name="+shop.getName());
-			String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 0, 0, 0));
-			String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(-1, 23, 0, 0));
+			String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0));
+			String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 23, 0, 0));
 			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
 			int orderSize = orders == null ? 0 : orders.size();
 			WXPayShopReport wShopReport = new WXPayShopReport();
@@ -42,11 +44,13 @@ public class OrderDetailUtil {
 			wShopReport.setShopName(shop.getName());
 			wShopReport.setOrderCount(orderSize);
 			//System.out.println("wShopReport shopid="+wShopReport.getShopId()+",name="+wShopReport.getShopName());
-			wShopReport.setReportDate(Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(-1, 23, 0, 0)));
+			wShopReport.setReportDate(Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(dateInt, 23, 0, 0)));
 			List<WXPayDetail> wxpDetails = new ArrayList<WXPayDetail>();
+			float totalPrice = 0f;
 			for(Order order : orders){
 				WXPayDetail  wxpDetail = wShopReport.new WXPayDetail();
 				wxpDetail.setOrderPrice((float)order.getPrice()/100);
+				totalPrice += wxpDetail.getOrderPrice();
 				String msg = order.getMsg();
 				int wxDiscount = 0;
 				if(StringUtils.isNotBlank(msg)){
@@ -68,6 +72,7 @@ public class OrderDetailUtil {
 				wxpDetail.setOrderTimeStr(Dateutils.tranferDate2Str(order.getCreate_time()));
 				wxpDetails.add(wxpDetail);	
 			}
+			wShopReport.setTotalPrice(totalPrice);
 			wShopReport.setShopOrderFlows(wxpDetails);
 			wxpayShopReports.add(wShopReport);
 			
@@ -81,14 +86,15 @@ public class OrderDetailUtil {
 	private static String getHtmlInfo(List<WXPayShopReport> wxpPayShopReports){
 		String html = "<html><head><title></title></head><body>"
 					 + "<table border='1' cellpadding='1' cellspacing='1' style='width: 1000px;'>"
-					 + "<tbody> <tr> <td> 店铺ID</td> <td> 店铺名称</td> <td> 订单报告日期</td> <td> 微信订单总数</td></td> <td colspan='4' align='center'> 每笔订单详情</td> </tr>";
+					 + "<tbody> <tr> <td> 店铺ID</td> <td> 店铺名称</td> <td> 订单报告日期</td> <td> 微信订单总数</td><td> 微信订单总额</td> <td colspan='4' align='center'> 每笔订单详情</td> </tr>";
 					 
     String orderInfoHtml = "";
 	for(WXPayShopReport wxPayShopReport : wxpPayShopReports){
 		System.out.println("====>"+wxPayShopReport.getShopName());
 		List<WXPayDetail> shopOrderFlows = wxPayShopReport.getShopOrderFlows();
 		int rowspan = shopOrderFlows.size() + 1;
-		orderInfoHtml = orderInfoHtml + "<tr> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getShopId()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getShopName()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getReportDate()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getOrderCount()+"</td>";
+		orderInfoHtml = orderInfoHtml + "<tr> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getShopId()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getShopName()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getReportDate()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getOrderCount()+"</td>"
+				                      +"<td rowspan='"+rowspan+"'>"+wxPayShopReport.getTotalPrice()+"元"+"</td>";
 		orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 下单金额</td> <td> 优惠券金额</td> <td> 最终金额</td> </tr>";
 		for(WXPayDetail wxpayDetail : shopOrderFlows){
 			orderInfoHtml = orderInfoHtml + "<tr><td>"+wxpayDetail.getOrderTimeStr()+"</td><td>"+wxpayDetail.getOrderPrice()+"元"+"</td> <td>"+wxpayDetail.getWxDiscount()+"元"+"</td> <td>"+wxpayDetail.getRealPrice()+"元"+"</td></tr>";
