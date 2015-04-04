@@ -32,6 +32,7 @@ public class Constants {
     public static  final String PRERROR = "{\"code\":1,\"msg\":\"{msg}\"}";
     public static  final String LEAKERROR = "{\"code\":100,\"msg\":\"库存不足\"}";
     public static  final String UNLOGINERROR = "{\"code\":101,\"msg\":\"未登录\"}";
+    public static  final String TMPPAYERROR = "{\"code\":401,\"msg\":\"暂时无法使用微信支付。\"}";
     public static  final String UKERROR = "{\"code\":500,\"msg\":\"服务器异常\"}";
     public static  final String NOMORE = "{\"code\":10,\"msg\":\"您已经领过代金券了，请进入个人中心查看\"}";
     public static  final String DONE = "{\"code\":0,\"msg\":\"done\"}";
