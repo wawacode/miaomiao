@@ -229,11 +229,11 @@ public class WXController {
 
         Device devcie = deviceDAO.getDevByShopId(shop.getId());
         if (null == devcie || SUtils.isOffline(devcie)) {
-            System.out.println("device is null or  printer offline ");
+            LoggerUtils.getInstance().log("device is null or  printer offline ");
             // 发送通知给 用户和 老板     \
-            System.out.println("send push to boss");
+            LoggerUtils.getInstance().log("send push to boss");
             pushService.send2Boss(order_id, shop);
-            System.out.println("send sms to boss");
+            LoggerUtils.getInstance().log("send sms to boss");
             smsService.sendSMS2Boss(order_id, shop);
 //          System.out.println("send sms to user");
 //          smsService.sendSMS2User(order_id, shop);

@@ -90,7 +90,7 @@ public class OrderController {
                        @Param("act") String act,
                        @Param("coupon_id") int coupon_id,
                        @Param("coupon_code") String coupon_code ) {
-        LoggerUtils.getInstance().log(String.format(" items %s ,act %s ",items,act));
+        LoggerUtils.getInstance().log(String.format(" items %s ,act %s ,coupon_id %d ,coupon_code %s ",items,act,coupon_id,coupon_code));
         User u = holder.getUser();
         long user_id = 0;
         if (null != u) {
@@ -359,11 +359,11 @@ public class OrderController {
 
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
             if (null == devcie || SUtils.isOffline(devcie)) {
-                System.out.println("device is null or  printer offline ");
+                LoggerUtils.getInstance().log("device is null or  printer offline ");
                 // 发送通知给 用户和 老板     \
-                System.out.println("send push to boss");
+                LoggerUtils.getInstance().log("send push to boss");
                 pushService.send2Boss(order_id, shop);
-                System.out.println("send sms to boss");
+                LoggerUtils.getInstance().log("send sms to boss");
                 smsService.sendSMS2Boss(order_id, shop);
 
 //              System.out.println("send sms to user");

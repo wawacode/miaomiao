@@ -76,14 +76,14 @@ public class SMSService {
 
                 String phone = catStaffCommit.getPhone();
                 if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
-                    System.out.println(String.format("%s %s sms allready send ", phone, order_id));
+                    LoggerUtils.getInstance().log(String.format("%s %s sms allready send ", phone, order_id));
                     return;
                 }
                 String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.LOCTID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
+                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
                 t = SHttpClient.getURLData(url, "");
                 String r = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
+                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
                 MongoDBUtil.getInstance().sendmark(phone, order_id);
                 }
             }
@@ -101,10 +101,10 @@ public class SMSService {
                 String message = "#user#=" + user + "&#msg#=_" ;
                 message = URLEncoder.encode(message, "utf-8");
                 String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.TMP_TID, phone, message);
-                System.out.println(String.format("Send  SMS mobile %s , %s ", phone,message));
+                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s , %s ", phone,message));
                 t = SHttpClient.getURLData(url, "");
                 String response = SUtils.toString(t);
-                System.out.println(String.format("Post Shop SMS message No. %s : %s  ", response, phone));
+                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s  ", response, phone));
         } catch (Throwable e) {
             e.printStackTrace();
         }
