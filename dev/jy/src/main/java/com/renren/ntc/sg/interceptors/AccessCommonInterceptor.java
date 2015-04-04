@@ -51,16 +51,11 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
 
     @Override
     protected Object before(Invocation inv) throws Exception {
-
-        //ua check
-
-
         String ua = inv.getRequest().getHeader("User-Agent") ;
         String path = inv.getRequest().getRequestURI() ;
         if (path.startsWith("/wx")|| path.startsWith("/console")){
             return true;
         }
-
         if( -1 == ua.indexOf("MicroMessenger")&& !SUtils.isDev()){
            return "r:" + Constants.MBIANLI;
         }
@@ -89,8 +84,8 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
                 String openId = wxService.getOpenId(code);
                 if(!StringUtils.isBlank(openId)){
                     List<User> us   = userDAO.getUserByOpenId(openId);
-                    if (us.size()>1){
-                        u= us.get(0);
+                    if (us.size() > 0){
+                        u = us.get(0);
                     }
                     if(null == u){
                         String userName = SUtils.generName();
