@@ -153,7 +153,7 @@ public class OrderController {
             infos.add(JSON.toJSON(i4v));
             itemls.add(i4v);
 //            sb.append(i4v.getName()).append(" 数量 ").append(i4v.getExt() + " ");
-            sb.append(i4v.getSerialNo()).append(" count ").append(i4v.getExt() + " ");
+//            sb.append(i4v.getSerialNo()).append(" count ").append(i4v.getExt() + " ");
             price += i4v.getPrice() * i4v.getExt();
         }
         String order_id = SUtils.getOrderId();
@@ -216,6 +216,7 @@ public class OrderController {
                 }
             }
             LoggerUtils.getInstance().log(String.format("order  %s get pre_id %d ", order_id, price));
+            sb.append("生活超市若干商品");
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
