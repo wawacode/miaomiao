@@ -218,7 +218,7 @@ public class OrderController {
             String  pre_id =  wxService.getPre_id(u.getWx_open_id(),order_id,price,attach ,sb.toString());
             String  js_id  = wxService.getJS_ticket();
             if ( StringUtils.isBlank(js_id) ||StringUtils.isBlank(pre_id) ) {
-                LoggerUtils.getInstance().log("error order save return "+ js_id + " "+ pre_id  + " " );
+                LoggerUtils.getInstance().log("error order save return "+ js_id + " + "+ pre_id  + " " );
                 return "@" + Constants.UKERROR;
             }
             ordersDAO.updateWXPay(order_id, pre_id, act, SUtils.generOrderTableName(shop_id));

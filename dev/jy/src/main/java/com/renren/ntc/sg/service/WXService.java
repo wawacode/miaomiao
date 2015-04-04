@@ -443,14 +443,12 @@ public class WXService {
             content  = content.replace("{total_fee}",total_fee+"");
             content  = content.replace("{trade_type}",trade_type);
             content  = content.replace("{sign}",sign);
-            System.out.println("send " + content);
             TenpayHttpClient http = new TenpayHttpClient();
-
             http.callHttpPost(URL,content);
             String  res  = http.getResContent();
-            System.out.println( "wx rec " +  res );
+            System.out.println( "send " + content +"wx pay pre_id rec " +  res );
             pre_id = getPrePay(res);
-            if (StringUtils.isBlank(pre_id)){
+            if (!StringUtils.isBlank(pre_id)){
               return pre_id;
             }
         }catch (Exception e){
