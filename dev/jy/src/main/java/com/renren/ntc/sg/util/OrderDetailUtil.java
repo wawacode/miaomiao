@@ -46,11 +46,11 @@ public class OrderDetailUtil {
 			//System.out.println("wShopReport shopid="+wShopReport.getShopId()+",name="+wShopReport.getShopName());
 			wShopReport.setReportDate(Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(dateInt, 23, 0, 0)));
 			List<WXPayDetail> wxpDetails = new ArrayList<WXPayDetail>();
-			float totalPrice = 0f;
+			int totalPrice = 0;
 			for(Order order : orders){
 				WXPayDetail  wxpDetail = wShopReport.new WXPayDetail();
 				wxpDetail.setOrderPrice((float)order.getPrice()/100);
-				totalPrice += wxpDetail.getOrderPrice();
+				totalPrice += order.getPrice();
 				String msg = order.getMsg();
 				int wxDiscount = 0;
 				if(StringUtils.isNotBlank(msg)){
@@ -72,7 +72,7 @@ public class OrderDetailUtil {
 				wxpDetail.setOrderTimeStr(Dateutils.tranferDate2Str(order.getCreate_time()));
 				wxpDetails.add(wxpDetail);	
 			}
-			wShopReport.setTotalPrice(totalPrice);
+			wShopReport.setTotalPrice((float)totalPrice/100);
 			wShopReport.setShopOrderFlows(wxpDetails);
 			wxpayShopReports.add(wShopReport);
 			
