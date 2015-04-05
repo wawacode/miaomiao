@@ -100,9 +100,9 @@ import com.renren.ntc.sg.service.LoggerUtils;
             totalRowSpan +=rowspan;
             orderInfoHtml = orderInfoHtml + "<tr> <td rowspan='"+rowspan+"'>"+shopOrderReport.getShopId()+"</td> <td rowspan='"+rowspan+"'>"+shopOrderReport.getShopName()+"</td> <td rowspan='"+rowspan+"'>"+shopOrderReport.getReportDate()+"</td> <td rowspan='"+rowspan+"'>"+shopOrderReport.getOrderCount()+"</td><td rowspan='"+rowspan+"'>"+shopOrderReport.getTotalPrice()+"</td>";
             if(loopCount == i){
-            	orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 订单号</td> <td> 订单金额(元)</td><td rowspan='$1'>"+allShopTotalPriceStr+"</td></tr>";
+            	orderInfoHtml = orderInfoHtml + "<td nowrap> 订单时间</td> <td align='center'> 订单号</td> <td align='center'> 订单金额(元)</td><td rowspan='$1'>"+allShopTotalPriceStr+"</td></tr>";
             }else {
-            	orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 订单号</td> <td> 订单金额(元)</td></tr>";
+            	orderInfoHtml = orderInfoHtml + "<td nowrap> 订单时间</td> <td align='center'> 订单号</td> <td align='center'> 订单金额(元)</td></tr>";
 			}
             for(ShopOrderFlow shopOrderFlow : shopOrderFlows){
                 orderInfoHtml = orderInfoHtml + "<tr><td>"+shopOrderFlow.getOrderCreateTime()+"</td><td>"+shopOrderFlow.getOrderNo()+"</td> <td>"+shopOrderFlow.getOrderPrice()+"</td> </tr>";

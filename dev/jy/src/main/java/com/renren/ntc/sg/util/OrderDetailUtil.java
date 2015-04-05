@@ -88,7 +88,7 @@ public class OrderDetailUtil {
 	private static String getHtmlInfo(List<WXPayShopReport> wxpPayShopReports,int totalShopOrderPrice){
 		String html = "<html><head><title></title></head><body>"
 					 + "<table border='1' cellpadding='1' cellspacing='1' style='width: 1000px;'>"
-					 + "<tbody> <tr> <td> 店铺ID</td> <td> 店铺名称</td> <td> 订单报告日期</td> <td> 微信订单总数</td><td> 微信订单总额</td> <td colspan='4' align='center'> 每笔订单详情</td><td> 总计(元)</td> </tr>";
+					 + "<tbody> <tr> <td> 店铺ID</td> <td> 店铺名称</td> <td> 订单报告日期</td> <td> 微信订单总数</td><td> 微信订单总额(元)</td> <td colspan='4' align='center'> 每笔订单详情</td><td> 总计(元)</td> </tr>";
 					 
     String orderInfoHtml = "";
     String totalShopOrderPriceStr = (float)totalShopOrderPrice/100+"";
@@ -102,11 +102,11 @@ public class OrderDetailUtil {
 		int rowspan = shopOrderFlows.size() + 1;
 		totalRowSpan +=rowspan;
 		orderInfoHtml = orderInfoHtml + "<tr> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getShopId()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getShopName()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getReportDate()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getOrderCount()+"</td>"
-				                      +"<td rowspan='"+rowspan+"'>"+wxPayShopReport.getTotalPrice()+"元"+"</td>";
+				                      +"<td rowspan='"+rowspan+"'>"+wxPayShopReport.getTotalPrice()+""+"</td>";
 		if(loopCount == i){
-			orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 下单金额(元)</td> <td> 优惠券金额(元)</td> <td> 最终金额(元)</td><td rowspan='$1'>"+totalShopOrderPriceStr+"</td></tr>";
+			orderInfoHtml = orderInfoHtml + "<td nowrap> 订单时间</td> <td align='center'> 下单金额(元)</td> <td align='center'> 优惠券金额(元)</td> <td align='center'> 最终金额(元)</td><td rowspan='$1'>"+totalShopOrderPriceStr+"</td></tr>";
 		}else {
-			orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 下单金额(元)</td> <td> 优惠券金额(元)</td> <td> 最终金额(元)</td> </tr>";
+			orderInfoHtml = orderInfoHtml + "<td nowrap> 订单时间</td> <td align='center'> 下单金额(元)</td> <td align='center'> 优惠券金额(元)</td> <td align='center'> 最终金额(元)</td> </tr>";
 		}
 		
 		for(WXPayDetail wxpayDetail : shopOrderFlows){
