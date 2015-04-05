@@ -95,9 +95,9 @@ public class OrderDetailUtil {
 		int rowspan = shopOrderFlows.size() + 1;
 		orderInfoHtml = orderInfoHtml + "<tr> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getShopId()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getShopName()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getReportDate()+"</td> <td rowspan='"+rowspan+"'>"+wxPayShopReport.getOrderCount()+"</td>"
 				                      +"<td rowspan='"+rowspan+"'>"+wxPayShopReport.getTotalPrice()+"元"+"</td>";
-		orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 下单金额</td> <td> 优惠券金额</td> <td> 最终金额</td> </tr>";
+		orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 下单金额(元)</td> <td> 优惠券金额(元)</td> <td> 最终金额(元)</td> </tr>";
 		for(WXPayDetail wxpayDetail : shopOrderFlows){
-			orderInfoHtml = orderInfoHtml + "<tr><td>"+wxpayDetail.getOrderTimeStr()+"</td><td>"+wxpayDetail.getOrderPrice()+"元"+"</td> <td>"+wxpayDetail.getWxDiscount()+"元"+"</td> <td>"+wxpayDetail.getRealPrice()+"元"+"</td></tr>";
+			orderInfoHtml = orderInfoHtml + "<tr><td>"+wxpayDetail.getOrderTimeStr()+"</td><td>"+wxpayDetail.getOrderPrice()+"</td> <td>"+wxpayDetail.getWxDiscount()+"</td> <td>"+wxpayDetail.getRealPrice()+"</td></tr>";
 		}
 	}
 	orderInfoHtml = orderInfoHtml + "</tbody> </table> </body> </html>";

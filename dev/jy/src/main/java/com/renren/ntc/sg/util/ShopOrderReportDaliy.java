@@ -49,14 +49,14 @@ import com.renren.ntc.sg.service.LoggerUtils;
                     createOrderTime = Dateutils.tranferDate2Str(order.getCreate_time());
                     ShopOrderFlow shopOrderFlow = shopOrderReport.new ShopOrderFlow();
                     shopOrderFlow.setOrderCreateTime(createOrderTime);
-                    shopOrderFlow.setOrderPrice(((float )order.getPrice()/100) +"元");
+                    shopOrderFlow.setOrderPrice(((float )order.getPrice()/100) +"");
                     shopOrderFlow.setOrderNo(order.getOrder_id());
                     shopOrderFlows.add(shopOrderFlow);
                 }
             }
             shopOrderReport.setShopOrderFlows(shopOrderFlows);
             shopOrderReport.setOrderCount(orderCount);
-            shopOrderReport.setTotalPrice(((float )orderTotalPrice/100) +"元");
+            shopOrderReport.setTotalPrice(((float )orderTotalPrice/100) +"");
             shopOrderReports.add(shopOrderReport);
         }
         LoggerUtils.getInstance().log(String.format("shopOrderReports size is %s ",shopOrderReports.size()+""));
@@ -81,14 +81,14 @@ import com.renren.ntc.sg.service.LoggerUtils;
     private static String getHtmlInfo(List<ShopOrderReport> shopOrderReports){
         String html = "<html><head><title></title></head><body>"
                 + "<table border='1' cellpadding='1' cellspacing='1' style='width: 1000px;'>"
-                + "<tbody> <tr> <td> 店铺ID</td> <td> 店铺名称</td> <td> 订单报告日期</td> <td> 订单总数</td> <td> 总的成交额</td> <td colspan='3' align='center'> 每笔订单详情</td> </tr>";
+                + "<tbody> <tr> <td> 店铺ID</td> <td> 店铺名称</td> <td> 订单报告日期</td> <td> 订单总数</td> <td> 总的成交额(元)</td> <td colspan='3' align='center'> 每笔订单详情</td> </tr>";
 
         String orderInfoHtml = "";
         for(ShopOrderReport shopOrderReport : shopOrderReports){
             List<ShopOrderFlow> shopOrderFlows = shopOrderReport.getShopOrderFlows();
             int rowspan = shopOrderFlows.size() + 1;
             orderInfoHtml = orderInfoHtml + "<tr> <td rowspan='"+rowspan+"'>"+shopOrderReport.getShopId()+"</td> <td rowspan='"+rowspan+"'>"+shopOrderReport.getShopName()+"</td> <td rowspan='"+rowspan+"'>"+shopOrderReport.getReportDate()+"</td> <td rowspan='"+rowspan+"'>"+shopOrderReport.getOrderCount()+"</td> <td rowspan='"+rowspan+"'>"+shopOrderReport.getTotalPrice()+"</td>";
-            orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 订单号</td> <td> 订单金额</td> </tr>";
+            orderInfoHtml = orderInfoHtml + "<td> 订单时间</td> <td> 订单号</td> <td> 订单金额(元)</td> </tr>";
             for(ShopOrderFlow shopOrderFlow : shopOrderFlows){
                 orderInfoHtml = orderInfoHtml + "<tr><td>"+shopOrderFlow.getOrderCreateTime()+"</td><td>"+shopOrderFlow.getOrderNo()+"</td> <td>"+shopOrderFlow.getOrderPrice()+"</td> </tr>";
             }
