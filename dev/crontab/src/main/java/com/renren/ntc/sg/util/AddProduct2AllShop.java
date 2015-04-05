@@ -113,6 +113,8 @@ public class AddProduct2AllShop {
                         it.setSerialNo(serialNo);
                         it.setName("");
                         it.setPic_url("");
+                        it.setCategory_id(28);
+                        it.setShop_id(shop_id);
                         //it.set
                     	try {
 							itemDao.insert(SUtils.generTableName(shop_id),it) ;
