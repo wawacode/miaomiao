@@ -110,7 +110,7 @@ public class OrderDetailUtil {
 		}
 		
 		for(WXPayDetail wxpayDetail : shopOrderFlows){
-			orderInfoHtml = orderInfoHtml + "<tr><td>"+wxpayDetail.getOrderTimeStr()+"</td><td>"+wxpayDetail.getOrderPrice()+"</td> <td>"+wxpayDetail.getWxDiscount()+"</td> <td>"+wxpayDetail.getRealPrice()+"</td></tr>";
+			orderInfoHtml = orderInfoHtml + "<tr><td nowrap>"+wxpayDetail.getOrderTimeStr()+"</td><td align='center'>"+wxpayDetail.getOrderPrice()+"</td> <td align='center'>"+wxpayDetail.getWxDiscount()+"</td> <td align='center'>"+wxpayDetail.getRealPrice()+"</td></tr>";
 		}
 	}
 	orderInfoHtml = orderInfoHtml + "</tbody> </table> </body> </html>";

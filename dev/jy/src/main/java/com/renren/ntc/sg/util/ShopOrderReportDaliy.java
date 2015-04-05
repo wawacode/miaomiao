@@ -105,7 +105,7 @@ import com.renren.ntc.sg.service.LoggerUtils;
             	orderInfoHtml = orderInfoHtml + "<td nowrap> 订单时间</td> <td align='center'> 订单号</td> <td align='center'> 订单金额(元)</td></tr>";
 			}
             for(ShopOrderFlow shopOrderFlow : shopOrderFlows){
-                orderInfoHtml = orderInfoHtml + "<tr><td>"+shopOrderFlow.getOrderCreateTime()+"</td><td>"+shopOrderFlow.getOrderNo()+"</td> <td>"+shopOrderFlow.getOrderPrice()+"</td> </tr>";
+                orderInfoHtml = orderInfoHtml + "<tr><td nowrap>"+shopOrderFlow.getOrderCreateTime()+"</td><td align='center'>"+shopOrderFlow.getOrderNo()+"</td> <td align='center'>"+shopOrderFlow.getOrderPrice()+"</td> </tr>";
             }
         }
         orderInfoHtml = orderInfoHtml + "</tbody> </table> </body> </html>";
