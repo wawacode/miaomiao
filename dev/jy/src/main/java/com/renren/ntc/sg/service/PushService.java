@@ -192,7 +192,9 @@ public class PushService {
 		unicast.setPredefinedKeyValue("display_type", "notification");
 		// TODO Set 'production_mode' to 'false' if it's a test device. 
 		unicast.setPredefinedKeyValue("production_mode", "true");
-		unicast.send();
+		if(unicast.send()){
+            LoggerUtils.getInstance().log(String.format("adr fail to send device_token"));
+        }
 	}
 
     public void sendIOSUnicast(String title , String message ,String device_token) throws Exception {
@@ -210,7 +212,9 @@ public class PushService {
         unicast.setPredefinedKeyValue("production_mode", "true");
         // Set customized fields
         unicast.setCustomizedField("test", "helloworld");
-        unicast.send();
+        if(unicast.send()){
+            LoggerUtils.getInstance().log(String.format("ios fail to send device_token"));
+        }
     }
 
 

@@ -171,6 +171,8 @@ public class AllShopConsoleController {
         if(orderls.size() >=  offset){
            inv.addModel("next_f", from  + offset);
         }
+        Shop shop = shopDAO.getShop(shop_id);
+        inv.addModel("shop",shop);
         inv.addModel("orderls",orderls);
         inv.addModel("shops",shopList);
         inv.addModel("curr_shop_d",shop_id);
