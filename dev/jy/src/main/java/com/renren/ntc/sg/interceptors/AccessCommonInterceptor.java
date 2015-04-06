@@ -67,7 +67,6 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
         }
 
         if ( u != null){
-            LoggerUtils.getInstance().log(String.format("acce user_id %d  " ,u.getId()));
             String code = inv.getParameter("code");
             if( !StringUtils.isBlank(code)&& (StringUtils.isBlank(u.getWx_open_id()) || "other".equals(u.getWx_open_id()))){
                 try {

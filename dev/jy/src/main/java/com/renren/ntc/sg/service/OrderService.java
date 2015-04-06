@@ -56,7 +56,7 @@ public class OrderService {
                     int dprice = js.getInteger("discount");
                     o.setDprice((float) dprice / 100);
                 }catch (Exception e){
-                    e.printStackTrace();
+                    LoggerUtils.getInstance().log("error" + e.getMessage());
                 }
             }
             o.setPrice4V(((float) o.getPrice() / 100) + "");
