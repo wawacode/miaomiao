@@ -7,6 +7,7 @@ public class WXPayShopReport {
 	private String shopName;
 	private int orderCount;
 	private String reportDate;
+	private float totalPrice;
 	private List<WXPayDetail> shopOrderFlows;
 
 	public WXPayShopReport() {
@@ -54,32 +55,32 @@ public class WXPayShopReport {
 	}
 
 	public class WXPayDetail {
-		private int orderPrice;
-		private int wxDiscount;
-		private int realPrice;
+		private float orderPrice;
+		private float wxDiscount;
+		private float realPrice;
 		private String orderTimeStr;
 
-		public int getOrderPrice() {
+		public float getOrderPrice() {
 			return orderPrice;
 		}
 
-		public void setOrderPrice(int orderPrice) {
+		public void setOrderPrice(float orderPrice) {
 			this.orderPrice = orderPrice;
 		}
 
-		public int getWxDiscount() {
+		public float getWxDiscount() {
 			return wxDiscount;
 		}
 
-		public void setWxDiscount(int wxDiscount) {
+		public void setWxDiscount(float wxDiscount) {
 			this.wxDiscount = wxDiscount;
 		}
 
-		public int getRealPrice() {
+		public float getRealPrice() {
 			return realPrice;
 		}
 
-		public void setRealPrice(int realPrice) {
+		public void setRealPrice(float realPrice) {
 			this.realPrice = realPrice;
 		}
 
@@ -90,5 +91,13 @@ public class WXPayShopReport {
 		public void setOrderTimeStr(String orderTimeStr) {
 			this.orderTimeStr = orderTimeStr;
 		}
+	}
+
+	public float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

@@ -253,7 +253,7 @@ public class HomeController {
     @Get("log")
     @Post("log")
     public String log( Invocation inv,@Param("msg") String msg) {
-        LoggerUtils.getInstance().log(String.format("user_id  msg %s",msg ));
+        LoggerUtils.getInstance().log(String.format("client send msg %s",msg ));
         return "about";
     }
 

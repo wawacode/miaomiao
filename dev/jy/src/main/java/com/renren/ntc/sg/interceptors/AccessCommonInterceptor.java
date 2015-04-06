@@ -65,6 +65,7 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
         if(null  != uuid) {
             u = userDAO.getUser(SUtils.unwrapper(uuid));
         }
+
         if ( u != null){
             LoggerUtils.getInstance().log(String.format("acce user_id %d  " ,u.getId()));
             String code = inv.getParameter("code");
