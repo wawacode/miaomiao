@@ -201,7 +201,6 @@ public class OrderController {
                 if (!can){
                     return "@json:" + Constants.CANNOTUSETICKET;
                 }
-
                 UserCoupon ticket = ticketService.getTicket(u.getId(), coupon_id, coupon_code);
                 if (ticket != null ){
                     LoggerUtils.getInstance().log(String.format("order_id %s  coupon_id %d price %d",order_id,coupon_id,ticket.getPrice()));
@@ -214,6 +213,8 @@ public class OrderController {
                     //使用代金券
                     attach = attach + "_" + ticket.getId();
                     update(order, ticket.getPrice());
+                }else{
+                    return "@json:" + Constants.CANNOTUSETHISTICKET;
                 }
             }
             LoggerUtils.getInstance().log(String.format("order  %s get pre_id %d ", order_id, price));

@@ -56,6 +56,7 @@ public class Constants {
     public static final String DAYLIMIT = "daylimit_";
     public static final String LUNDER = "_";
     public static final String CANNOTUSETICKET = "{\"code\":12,\"msg\":\"今天已经使用过代金券\"}";;
+    public static final String CANNOTUSETHISTICKET = "{\"code\":15,\"msg\":\"该过代金券暂时无法使用，请选择其他代金券\"}";;
     public static final String ORDER_KEY = "ABC_ORDER_KEY";
     public static final String ORDERDONE = "下单成功";
     public static final String ORDERCONFRIM = "配送中";
