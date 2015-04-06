@@ -31,7 +31,7 @@ public class JRedisUtil {
         config.setMaxActive(50);
         config.setMaxIdle(10);
         config.setMaxWait(10000);
-        pool =  new JedisPool(config,"10.170.239.52") ; ;
+        pool =  new JedisPool(config,"10.170.239.52") ;
     }
     private JRedisUtil() {
 //        jds = new Jedis("10.170.239.52") ;
