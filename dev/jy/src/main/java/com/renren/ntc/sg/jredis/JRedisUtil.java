@@ -25,9 +25,14 @@ public class JRedisUtil {
     static Log logger = LogFactory.getLog(JRedisUtil.class);
 
     private static JRedisUtil instance = new JRedisUtil();
-
-    private static JedisPool  pool =  new JedisPool(new JedisPoolConfig(),"10.170.239.52") ;
-
+    private static JedisPool  pool = null;
+    static {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxActive(50);
+        config.setMaxIdle(10);
+        config.setMaxWait(10000);
+        pool =  new JedisPool(config,"10.170.239.52") ; ;
+    }
     private JRedisUtil() {
 //        jds = new Jedis("10.170.239.52") ;
 //        jds = new Jedis("123.56.145.69");
