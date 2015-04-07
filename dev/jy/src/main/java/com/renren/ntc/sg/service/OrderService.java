@@ -54,7 +54,7 @@ public class OrderService {
                 try {
                     o.setConfirm(js.getString("confirm"));
                     int dprice = js.getInteger("discount");
-                    o.setDprice((float) dprice );
+                    o.setDprice(dprice );
                 }catch (Exception e){
                     LoggerUtils.getInstance().log("error" + e.getMessage());
                 }
