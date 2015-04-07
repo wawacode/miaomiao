@@ -170,6 +170,9 @@ public class WXController {
                 }
 
                 Order order = orderDao.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+                if(done(order)){
+                    return "@"+PAY_REPAY;
+                }
                 orderDao.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generOrderTableName(shop_id));
                 userOrdersDAO.paydone(Constants.ORDER_WAIT_FOR_PRINT,order_id,SUtils.generUserOrderTableName(user_id));
                 if( coupon_id != 0) {
