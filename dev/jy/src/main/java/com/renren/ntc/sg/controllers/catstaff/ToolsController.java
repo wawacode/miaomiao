@@ -35,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Category;
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Product;
@@ -257,9 +259,26 @@ public class ToolsController {
         }
 		return "@同步完成!";
 	}
-	
+
+	@Get("getCategoriesByShopId")
+	@Post("getCategoriesByShopId")
+	public String getCategoriesByShopId(Invocation inv, @Param("shop_id") long shop_id) {
+		List<Item> shopCategoryList = itemDao.getCategoriesByShopId(SUtils.generTableName(shop_id));
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		for (Item item : shopCategoryList) {
+			System.out.println(item.getCategory_id());
+			Category category = categoryDAO.getCategory(item.getCategory_id());
+			if (null != category) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", item.getCategory_id());
+				jo.put("name", category.getName());
+				list.add(jo);
+			}
+		}
+		return "@json:" + JSON.toJSONString(list);
+	}
 	/**2010-2013Excel*/
-	public boolean readXLSX(File file, long shop_id) {
+	private boolean readXLSX(File file, long shop_id) {
 		boolean flag = false;
 		XSSFWorkbook xssfWorkbook = null;
 		try {
@@ -303,7 +322,7 @@ public class ToolsController {
 		return flag;
 	}
 	/**2003-2007 Excel*/
-	public boolean readXLS(File file, long shop_id) {
+	private boolean readXLS(File file, long shop_id) {
 		boolean flag = false;
 		FileInputStream fis = null;
 		try {

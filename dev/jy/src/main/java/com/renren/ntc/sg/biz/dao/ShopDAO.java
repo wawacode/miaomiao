@@ -7,6 +7,7 @@ import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 import net.paoding.rose.jade.annotation.SQLParam;
 
+import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Shop;
 
 @DAO(catalog = "ABC")

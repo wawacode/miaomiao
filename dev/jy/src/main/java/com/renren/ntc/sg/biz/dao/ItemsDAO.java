@@ -148,4 +148,14 @@ public interface ItemsDAO {
      */
     @SQL("delete from ##(:tableName) where  shop_id =:2 and serialNo=:3")
     public void del(@SQLParam("tableName") String tableName, long del_shop_id, String serialNo);
+    
+    /**
+     * 
+     * @param generTableName
+     * @param shop_id
+     * @return
+     */
+    @SQL("SELECT DISTINCT(category_id) from ##(:tableName)")
+	public List<Item> getCategoriesByShopId(@SQLParam("tableName") String generTableName);
+
 }
