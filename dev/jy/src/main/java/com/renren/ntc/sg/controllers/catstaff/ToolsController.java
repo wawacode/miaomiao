@@ -27,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.renren.ntc.sg.bean.Item;
@@ -112,6 +113,97 @@ public class ToolsController {
 		LoggerUtils.getInstance().log(" OK!");
 		return "@文件上传成功,数据已导入!";
 	}
+	
+	/**'
+	 * 1.同步A店某一个分类到B店
+	 * @param inv
+	 * @param from_shop_id
+	 * @param category_id
+	 * @param to_shop_id
+	 * @return
+	 */
+	@Get("mvShopItems")
+	@Post("mvShopItems")
+	public String mvCategory(Invocation inv, @Param("from_shop_id") long from_shop_id, @Param("category_id") int category_id, @Param("to_shop_id") long to_shop_id){
+		int offset = 100;//每次查100条 如果够
+	    for (int i = 0; i < 100000;) {
+            System.out.println("get " + i + " " + offset);
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(from_shop_id), from_shop_id, category_id, i, offset);
+            if (itemls.size() == 0) {
+                break;
+            }
+            for (Item item : itemls) {
+                item.setShop_id(to_shop_id);
+                item.setCount(1000);
+                try {
+                    Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), to_shop_id, item.getSerialNo());
+                    if (null == ii) {
+                        System.out.println("insert " + ">" + i + "<" + item.getSerialNo());
+                        itemDao.insert(SUtils.generTableName(to_shop_id), item);
+                    } else {
+                        System.out.println("update" + item.getSerialNo() + " " + item.getId());
+                        itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
+                    }
+                } catch (IncorrectResultSizeDataAccessException e) {
+                    itemDao.del(SUtils.generTableName(to_shop_id), to_shop_id, item.getSerialNo());
+                    itemDao.insert(SUtils.generTableName(to_shop_id), item);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            i = i + offset;
+	    }
+		return "@同步成功!";
+	}
+	
+	/**
+	 * 2.同步A店商品到主库
+	 * @param inv
+	 * @return
+	 */
+	@Get("refresh2Produdce")
+	@Post("refresh2Produdce")
+	public String refresh2Produdce(Invocation inv, @Param("shop_id") long shop_id) {
+		System.out.println("test controller");
+	    int offset = 1000;
+        int m = 0;
+        for (int i = 0; i < 100000;) {
+
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
+            if (itemls.size() == 0) {
+                break;
+            }
+	        for (Item item : itemls) {
+	            Product p = new Product();
+	            p.setCategory_id(item.getCategory_id());
+	            p.setScore(item.getScore());
+	            p.setPic_url(item.getPic_url());
+	            p.setPrice(item.getPrice());
+	            p.setName(item.getName());
+	            p.setSerialNo(item.getSerialNo());
+	            Product pp = pDao.geProductsByserialNo(p.getSerialNo());
+	            if (pp != null) {
+	            	continue;
+	            }
+	
+	            System.out.println(item.getCategory_id() + "<>" + item.getScore() + "<>" + item.getPic_url() + "<>" + item.getPrice() + "<>" + item.getName()
+	                + "<>" + item.getSerialNo());
+	
+	            System.out.println("insert into " + p.getSerialNo());
+	        	System.out.println(">>>:" + ++m);
+	        	pDao.insert(p);
+	        }
+	
+	        i = i + offset;
+        }
+		return null;
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * 读取文件并保存数据到库
 	 * @param f
