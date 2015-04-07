@@ -42,7 +42,7 @@ public class OrderService {
         for (Order o : orders) {
             Address adr = addressService.getAddress(o.getAddress_id());
             if( null == adr ) {
-                System.out.println(String.format("Miss address drop order %s " ,o.getOrder_id()) );
+                LoggerUtils.getInstance().log(String.format("Miss address drop order %s " ,o.getOrder_id()) );
                 continue;
             }
             o.setPhone(adr.getPhone());
