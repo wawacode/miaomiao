@@ -27,9 +27,7 @@ public class Order {
     }
 
 
-
-
-    private float dprice = 0;
+    private int dprice = 0;
 
     private String confirm ="";
     private String pre_id ="";
@@ -46,11 +44,11 @@ public class Order {
         this.act = act;
     }
 
-    public float getDprice() {
+    public int getDprice() {
         return dprice;
     }
 
-    public void setDprice(float dprice) {
+    public void setDprice(int dprice) {
         this.dprice = dprice;
     }
 
