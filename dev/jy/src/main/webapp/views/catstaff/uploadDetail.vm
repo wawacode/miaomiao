@@ -14,34 +14,31 @@
 <body>
 <div class="container">
 <br/><br/><br/><br/>
-	<h2>成功导入总计:$successNum</h2>
+	<h2>总计:$count条</h2>
+	<h2>成功导入:$successNum条</h2>
 	<table border="1"  cellspacing="0" cellpadding="10">
-		<tr>
+		<tr  align="center">
 			<th>分类</th>
 			<th>数量</th>
 		</tr>
 		#foreach($param in ${saveCategoryNumCN.keySet()})  
-		<tr>
-			<td>$param</td>
-			<td>${saveCategoryNumCN.get($param)}</td>
+		<tr  align="center">
+			<td width="100">$param</td>
+			<td width="100">${saveCategoryNumCN.get($param)}</td>
 		</tr>
 		#end  
 	</table>
-	#if($missingList.size != 0)
-	<h2>未导入条码:$missingList.size()</h2>
-		<table border="1"  cellspacing="0" cellpadding="10">
-		<tr>
-			<th>条形码</th>
+	<h2>未导入:$missingList.size()条</h2>
+	<table border="1"  cellspacing="0" cellpadding="10">
+		<tr  align="center">
+			<th>条码</th>
 		</tr>
 		#foreach($serialNo in $missingList)
-		<tr>
-			<td>$serialNo</td>
+		<tr  align="center">
+			<td width="300">$serialNo</td>
 		</tr>
 		#end
 	</table>
-		
-	     
-	#end
 </div> <!-- /container -->
 </body>
 </html>

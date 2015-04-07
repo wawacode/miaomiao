@@ -8,15 +8,46 @@
     <link rel="shortcut icon" href="/images/favicon.png">
     <title>上传文件</title>
     <!-- Bootstrap core CSS -->
+    <script type="text/javascript" src="../../../js/jquery/dist/jquery.js"></script>
     <link href="../../js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+		$(document).ready(function(){
+		  $("firstShop").change(function(){
+		  	alert("1111");
+		  });
+		});
+		function onchangeShow(oneId){ 
+			$.ajax({ 
+			url : "<%=basePath%>cateJson.whbs", 
+			data : {parentId : oneId}, // 参数 
+			type : "post", 
+			cache : false, 
+			dataType : "json", //返回json数据 
+			error: function(){ 
+			alert('error'); 
+			}, 
+			success:onchangecallback 
+			}); 
+			} 
+		function onchangecallback(data){ 
+			document.all['twoId'].options.length = 0; //清空原有的option 
+			var str=""; 
+			for(var i=0;i<data.length;i++){ 
+			str+="<option value='"+data[i].recordId+"'>"+data[i].title+"</option>" 
+			} 
+			$("#twoId").html(str); 
+		} 
+	</script>
+    
 </head>
 
 <body>
+<!-- 上传文件 -->
 <div class="container">
 <br/><br/><br/><br/>
     <form action="/catstaff/tools/uploadFile" method="post" enctype="multipart/form-data" >
 	        商店ID:
-	   <select name="select" id="shop_id" required>
+	   <select name="shop_id" required>
 	     	#foreach($shop in $list)
 			<option value="$shop.id">$shop.name</option>
 			#end
@@ -25,5 +56,30 @@
         <button class="btn" type="submit">提交</button>
     </form>
 </div> <!-- /container -->
+<hr/>
+<div class="container">
+<br/><br/><br/><br/>
+    <form action="/catstaff/tools/mvShopItems" method="post">
+	        商店:
+	   <select id="firstShop" name="shop_id" required >
+	     	#foreach($shop in $list)
+			<option value="$shop.id">$shop.name</option>
+			#end
+       </select>
+	      分类:<select id="" name="select" id="shop_id" required>
+	     	#foreach($shop in $list)
+			<option value="$shop.id">$shop.name</option>
+			#end
+       </select>
+        	同步到:
+	  <select id="secondShopId" name="select" id="shop_id" required>
+	     	#foreach($shop in $list)
+			<option value="$shop.id">$shop.name</option>
+			#end
+       </select>
+    </form>
+</div> <!-- /container -->
+
+<hr/>
 </body>
 </html>

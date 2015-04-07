@@ -6,7 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import net.paoding.rose.web.Invocation;
@@ -30,9 +35,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.renren.ntc.sg.bean.Category;
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Product;
 import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.CategoryDAO;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
@@ -58,6 +65,9 @@ public class ToolsController {
 	@Autowired
 	ShopDAO shopDAO;
 	
+	@Autowired
+	CategoryDAO categoryDAO;
+	
 	@Get("")
 	@Post("")
 	public String index(Invocation inv) {
@@ -72,16 +82,15 @@ public class ToolsController {
 	 * @param file
 	 * @return
 	 */
+	@SuppressWarnings("resource")
 	@Get("uploadFile")
 	@Post("uploadFile")
 	public String uploadFile(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file) {
 		if(null == file){
 			return "@ 文件不能为空!";
 		}
-		String contentType = file.getContentType();
-		boolean b = valiContentType(contentType);
-		if (!b) {
-			return "@文件类型有误! 支持.txt,.xls,.xlsx 类型文件!";
+		if (!MimeTypeUtils.TEXT_PLAIN.equals(file.getContentType())) {
+			return "@文件类型有误! 只支持.txt类型文件!";
 		}
 		String fileName = getUUIDFileName(shop_id, file.getOriginalFilename());
     	String savePath = inv.getServletContext().getRealPath("/") + CatstaffConstant.SAVE_UPLOAD_FILE_PATH;// 文件保存路径
@@ -92,30 +101,88 @@ public class ToolsController {
 		//删除初始商品
 		itemDao.del(SUtils.generTableName(shop_id), shop_id);
 		//保存数据到数据库
-		if(MimeTypeUtils.TEXT_PLAIN.equals(contentType)){
-			boolean result = readFileAndSaveData(f, shop_id);
-			if(!result){
-				return "@内容格式错误!";
+		BufferedReader br = null;
+		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
+		List<String> missingList = new ArrayList<String>();//丢弃多少项目的统计
+		try {
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "GBK"));
+			String lineTxt = br.readLine();
+			String regex = lineTxt.contains("\t") ? "\t" : lineTxt.contains(",") ? ", ": " ";
+			int count = 0;
+			do {
+				if(!StringUtils.isBlank(lineTxt)){
+					System.out.println(count);
+					count++;//总计
+					String[] arr = lineTxt.split(regex);
+					String serialNo = arr[0].trim();
+					if (serialNo.length() > 24) {
+						missingList.add(serialNo);
+						continue;
+					}
+					Product p = pDao.geProduct(serialNo);
+					Item it = new Item();
+					it.setShop_id(shop_id);
+					it.setSerialNo(serialNo);
+					it.setName(p == null ? serialNo : p.getName());
+					it.setPrice(p == null ? 0 : arr.length == 2 ? Integer.valueOf(arr[1]) : p.getPrice());
+					it.setCount(1000);
+					int category_id = p == null ? 28 : p.getCategory_id();
+					it.setCategory_id(category_id);
+					it.setPic_url(p == null ? "" : p.getPic_url() == null ? "" : p.getPic_url());
+					it.setScore(p == null ? 0 : p.getScore());
+					
+					LoggerUtils.getInstance().log("条形码:\t"+serialNo+" 产品名称:\t"+it.getName()+"\t价格:\t"+it.getPrice());
+					itemDao.insert(SUtils.generTableName(shop_id), it);
+					saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null? 1 : saveCategoryNum.get(category_id) + 1);
+				} 
+			} while ((lineTxt = br.readLine()) != null);
+			//遍历map集合  替换分类为中文名字
+			Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+			for (Map.Entry<Integer,Integer> entry : saveCategoryNum.entrySet()) {
+				Category category =  categoryDAO.getCategory(entry.getKey());
+				if(null != category)
+				    saveCategoryNumCN.put(category.getName(), entry.getValue());
+				else
+					saveCategoryNumCN.put("没有分类", saveCategoryNumCN.get("没有分类") == null ? entry.getValue() :saveCategoryNumCN.get("没有分类") + entry.getValue());
+			}
+			inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+			inv.addModel("missingList", missingList); //丢失
+			inv.addModel("count", count); //总数
+			inv.addModel("successNum", count - missingList.size()); //总数
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				if(null != br){
+					br.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
-		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType)) {
-			boolean result = readXLS(f, shop_id);
-			if(!result){
-				return "@内容格式错误!";
-			}
-		}
-		if (MimeTypeUtils.APPLICATION_EXCEL_2010_2013.equals(contentType)) {
-			boolean result = readXLSX(f, shop_id);
-			if(!result){
-				return "@内容格式错误!";
-			}
-		}
+//		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType)) {
+//			boolean result = readXLS(f, shop_id);
+//			if(!result){
+//				return "@内容格式错误!";
+//			}
+//		}
+//		if (MimeTypeUtils.APPLICATION_EXCEL_2010_2013.equals(contentType)) {
+//			boolean result = readXLSX(f, shop_id);
+//			if(!result){
+//				return "@内容格式错误!";
+//			}
+//		}
 		LoggerUtils.getInstance().log(" OK!");
-		return "@文件上传成功,数据已导入!";
+		return "/views/catstaff/uploadDetail";
 	}
 	
 	/**'
 	 * 1.同步A店某一个分类到B店
+	 * http://127.0.0.1:8080/catstaff/tools/mvShopItems?from_shop_id=1&category_id=15&to_shop_id=10083
 	 * @param inv
 	 * @param from_shop_id
 	 * @param category_id
@@ -199,61 +266,6 @@ public class ToolsController {
 		return null;
 	}
 	
-	
-	
-	
-	
-	
-	/**
-	 * 读取文件并保存数据到库
-	 * @param f
-	 * @return
-	 */
-	private boolean readFileAndSaveData(File f, long shop_id) {
-		boolean flag = false;
-		BufferedReader br = null;
-    	String encoding = "UTF-8";
-    	try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(f), encoding));
-			String lineTxt = null;
-            while ((lineTxt = br.readLine()) != null) {
-            	if(StringUtils.isBlank(lineTxt)){
-            		continue;
-            	}
-            	if(lineTxt.contains(",")){
-            		String[] arr = getValiValue(lineTxt.split(","));//获取有效值
-	            	if(!StringUtils.isBlank(arr[0])){
-	            		saveData(shop_id, arr[0], Integer.valueOf(arr[1]));
-	            	}
-	            	continue;
-            	} else if(lineTxt.contains("\t")){
-            		String[] arr = getValiValue(lineTxt.split("\t"));//获取有效值
-	            	if(!StringUtils.isBlank(arr[0])){
-	            		saveData(shop_id, arr[0], Integer.valueOf(arr[1]));
-	            	}
-	            	continue;
-            	}else{
-            		String serialNo = upacage(lineTxt.trim());
-            		
-	            	if(!StringUtils.isBlank(serialNo)){
-	            		saveData(shop_id, serialNo, 0);
-	            	}
-            	}
-            }
-            flag = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally{
-			try {
-				if(null != br){
-					br.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return flag;
-	}
 	/**2010-2013Excel*/
 	public boolean readXLSX(File file, long shop_id) {
 		boolean flag = false;
@@ -350,7 +362,7 @@ public class ToolsController {
 		it.setShop_id(shop_id);
 		it.setSerialNo(serialNo);
 		it.setName(p == null ? shop_id + "" : p.getName());
-		it.setPrice(price);
+		it.setPrice(price == 0? p.getPrice() : price);
 		it.setCount(1000);
 		it.setCategory_id(p == null ? 28 : p.getCategory_id());
 		it.setPic_url(p == null ? "" : p.getPic_url() == null ? "" : p.getPic_url());
