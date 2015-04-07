@@ -73,6 +73,8 @@ public class ToolsController {
 	public String index(Invocation inv) {
 		List<Shop> list = shopDAO.getAllShopsByNotOnline();
 		inv.addModel("list", list);
+		List<Category> categoryList =  categoryDAO.getCategory();
+		inv.addModel("categoryList", categoryList);
 		return "/views/catstaff/upload";
 	}
 	/**
@@ -82,7 +84,6 @@ public class ToolsController {
 	 * @param file
 	 * @return
 	 */
-	@SuppressWarnings("resource")
 	@Get("uploadFile")
 	@Post("uploadFile")
 	public String uploadFile(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file) {
@@ -231,11 +232,8 @@ public class ToolsController {
 	@Get("refresh2Produdce")
 	@Post("refresh2Produdce")
 	public String refresh2Produdce(Invocation inv, @Param("shop_id") long shop_id) {
-		System.out.println("test controller");
 	    int offset = 1000;
-        int m = 0;
         for (int i = 0; i < 100000;) {
-
             List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
             if (itemls.size() == 0) {
                 break;
@@ -252,18 +250,12 @@ public class ToolsController {
 	            if (pp != null) {
 	            	continue;
 	            }
-	
-	            System.out.println(item.getCategory_id() + "<>" + item.getScore() + "<>" + item.getPic_url() + "<>" + item.getPrice() + "<>" + item.getName()
-	                + "<>" + item.getSerialNo());
-	
 	            System.out.println("insert into " + p.getSerialNo());
-	        	System.out.println(">>>:" + ++m);
 	        	pDao.insert(p);
 	        }
-	
 	        i = i + offset;
         }
-		return null;
+		return "@同步完成!";
 	}
 	
 	/**2010-2013Excel*/
