@@ -65,6 +65,13 @@ public class WXController {
     public  WXController (){
 //        map.put("qrscene_3","18600326217") ;
     }
+
+
+    static final  String PAY_REPAY = "<xml>\n" +
+            "   <return_code><![CDATA[SUCCESS]]></return_code>\n" +
+            "   <return_msg><![CDATA[OK]]></return_msg>\n" +
+            "</xml>" ;
+
     static final String CONTENT ="<xml>\n" +
             "<ToUserName><![CDATA[{toUser}]]></ToUserName>\n" +
             "<FromUserName><![CDATA[{fromUser}]]></FromUserName>\n" +
@@ -164,7 +171,7 @@ public class WXController {
 
                 Order order = orderDao.getOrder(order_id,SUtils.generOrderTableName(shop_id));
                 if(done(order)){
-                    return  "@json:" + Constants.DONE;
+                    return  "@" + PAY_REPAY;
                 }
 
 
@@ -192,7 +199,7 @@ public class WXController {
                 }
             }
         }
-        return "@json:" + Constants.DONE;
+        return "@" + PAY_REPAY;
     }
 
     private boolean done(Order order) {
