@@ -274,15 +274,24 @@
 </script>
 
 <script id="templates/newshop.html" type="text/ng-template">
-    <ion-view view-title="新店开张">
+    <ion-view>
+        <ion-nav-bar class="bar-balanced" align-title="center">
+            <ion-nav-buttons side="left">
+                <button class="button button-clear" ui-sref="tab.tool">
+                    <i class="icon ion-ios7-arrow-back">返回</i>
+                </button>
+            </ion-nav-buttons>
+            <ion-nav-title>
+                新店开张
+            </ion-nav-title>
+        </ion-nav-bar>
         <ion-content padding="true">
             <div ng-show="!info.newShopSuccess">
                 <p>创建地铺出错啦,请联系管理员:</br>{{info.newShopStatus}}</p>
 
             </div>
             <div ng-show="info.newShopSuccess">
-                <p>店铺已经为您准备妥当,请访问:</p>
-
+                <p>店铺已经为您准备妥当,请复制链接在微信打开访问:</p>
                 <p>
                     <a class="icon" ng-href="{{info.newShopURL}}">{{info.newShopURL}}</a>
                 </p>

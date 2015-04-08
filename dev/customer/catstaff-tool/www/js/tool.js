@@ -137,6 +137,7 @@ angular.module('ionic.tool')
                 })
             }
 
+
             navigator.geolocation.getCurrentPosition(function (pos) {
 
                     $ionicLoading.hide();
