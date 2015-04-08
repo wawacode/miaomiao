@@ -338,10 +338,11 @@ public class OrderController {
         LoggerUtils.getInstance().log(String.format("user %s pay_cb shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,msg));
         if ("paydone".equals(msg)){
             // do nothing
-        }else{
-            ordersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generUserOrderTableName(u.getId()));
         }
+//        else{
+//            ordersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generOrderTableName(shop_id));
+//            userOrdersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generUserOrderTableName(u.getId()));
+//        }
         return "@json:"+Constants.DONE;
     }
 

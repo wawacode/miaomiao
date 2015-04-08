@@ -125,6 +125,9 @@ public class CreateShopService {
         List<Item> itl;
 
         do {
+            if (from > 600 ){
+                break;
+            }
             itl = itemDao.getItems(SUtils.generTableName(BASE_SHOP), BASE_SHOP, from, offset);
             for (Item it : itl) {
                 it.setShop_id(shop_id);
