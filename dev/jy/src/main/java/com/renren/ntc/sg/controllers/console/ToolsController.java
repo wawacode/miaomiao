@@ -1,4 +1,4 @@
-package com.renren.ntc.sg.controllers.catstaff;
+package com.renren.ntc.sg.controllers.console;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -21,7 +20,6 @@ import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -77,7 +75,7 @@ public class ToolsController {
 		inv.addModel("list", list);
 		List<Category> categoryList =  categoryDAO.getCategory();
 		inv.addModel("categoryList", categoryList);
-		return "/views/catstaff/upload";
+		return "tools";
 	}
 	/**
 	 * 上传文件 并将文件条码商品入库
@@ -180,7 +178,7 @@ public class ToolsController {
 //			}
 //		}
 		LoggerUtils.getInstance().log(" OK!");
-		return "/views/catstaff/uploadDetail";
+		return "toolsDetail";
 	}
 	
 	/**'
@@ -266,7 +264,6 @@ public class ToolsController {
 		List<Item> shopCategoryList = itemDao.getCategoriesByShopId(SUtils.generTableName(shop_id));
 		List<JSONObject> list = new ArrayList<JSONObject>();
 		for (Item item : shopCategoryList) {
-			System.out.println(item.getCategory_id());
 			Category category = categoryDAO.getCategory(item.getCategory_id());
 			if (null != category) {
 				JSONObject jo = new JSONObject();
@@ -278,6 +275,7 @@ public class ToolsController {
 		return "@json:" + JSON.toJSONString(list);
 	}
 	/**2010-2013Excel*/
+	@SuppressWarnings("unused")
 	private boolean readXLSX(File file, long shop_id) {
 		boolean flag = false;
 		XSSFWorkbook xssfWorkbook = null;
@@ -322,6 +320,7 @@ public class ToolsController {
 		return flag;
 	}
 	/**2003-2007 Excel*/
+	@SuppressWarnings({ "unused", "resource" })
 	private boolean readXLS(File file, long shop_id) {
 		boolean flag = false;
 		FileInputStream fis = null;
@@ -399,6 +398,7 @@ public class ToolsController {
 	 * @param arr
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private String[] getValiValue(String[] arr){
 		String[] tempArr = new String[2];
     	int temp = 0;	//只取前两个有效数据  第一个 为条码 第二个为价格
@@ -421,6 +421,7 @@ public class ToolsController {
 	 * @param contentType
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private boolean valiContentType(String contentType){
 		if(MimeTypeUtils.TEXT_PLAIN.equals(contentType)) 
 			return true;
@@ -441,6 +442,5 @@ public class ToolsController {
 	    }
 	    return serialNo;
 	 }
-	//显示未上线的店
 	
 }
