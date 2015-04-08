@@ -112,7 +112,6 @@ public class ToolsController {
 			int count = 0;
 			do {
 				if(!StringUtils.isBlank(lineTxt)){
-					System.out.println(count);
 					count++;//总计
 					String[] arr = lineTxt.split(regex);
 					String serialNo = arr[0].trim();
