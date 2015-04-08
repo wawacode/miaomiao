@@ -30,7 +30,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
@@ -113,8 +112,11 @@ public class ToolsController {
 			do {
 				if(!StringUtils.isBlank(lineTxt)){
 					count++;//总计
+					if (count % 1000 == 0) {
+						Thread.sleep(100);
+					}
 					String[] arr = lineTxt.split(regex);
-					String serialNo = arr[0].trim();
+					String serialNo = upacage(arr[0].trim());
 					if (serialNo.length() > 24) {
 						missingList.add(serialNo);
 						continue;
@@ -154,6 +156,8 @@ public class ToolsController {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}finally{
 			try {
@@ -202,20 +206,13 @@ public class ToolsController {
             for (Item item : itemls) {
                 item.setShop_id(to_shop_id);
                 item.setCount(1000);
-                try {
-                    Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), to_shop_id, item.getSerialNo());
-                    if (null == ii) {
-                        System.out.println("insert " + ">" + i + "<" + item.getSerialNo());
-                        itemDao.insert(SUtils.generTableName(to_shop_id), item);
-                    } else {
-                        System.out.println("update" + item.getSerialNo() + " " + item.getId());
-                        itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
-                    }
-                } catch (IncorrectResultSizeDataAccessException e) {
-                    itemDao.del(SUtils.generTableName(to_shop_id), to_shop_id, item.getSerialNo());
+                Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), to_shop_id, item.getSerialNo());
+                if (null == ii) {
+                    System.out.println("insert " + ">" + i + "<" + item.getSerialNo());
                     itemDao.insert(SUtils.generTableName(to_shop_id), item);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    System.out.println("update" + item.getSerialNo() + " " + item.getId());
+                    itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
                 }
             }
             i = i + offset;
@@ -244,18 +241,27 @@ public class ToolsController {
 	            p.setPic_url(item.getPic_url());
 	            p.setPrice(item.getPrice());
 	            p.setName(item.getName());
-	            p.setSerialNo(item.getSerialNo());
+	            String serialNoStr = upacage(item.getSerialNo());
+                p.setSerialNo(serialNoStr);
 	            Product pp = pDao.geProductsByserialNo(p.getSerialNo());
-	            if (pp != null) {
-	            	continue;
-	            }
-	            System.out.println("insert into " + p.getSerialNo());
-	        	pDao.insert(p);
+	            if (null != pp){
+                    System.out.println("update into " + p.getSerialNo());
+                    pDao.updateBySerialNo(p,serialNoStr) ;
+                 }else{
+                    System.out.println("insert into " + p.getSerialNo());
+                    pDao.insert(p) ;
+                }
 	        }
 	        i = i + offset;
         }
 		return "@同步完成!";
 	}
+	/**
+	 * ajax 获取商店商品分类
+	 * @param inv
+	 * @param shop_id
+	 * @return
+	 */
 
 	@Get("getCategoriesByShopId")
 	@Post("getCategoriesByShopId")

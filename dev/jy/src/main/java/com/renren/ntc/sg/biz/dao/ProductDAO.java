@@ -54,5 +54,15 @@ public interface ProductDAO {
     
     @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where serialNo= :1 ")
     public Product geProductsByserialNo(String serialNo );
+    
+    /**
+     * zhaoxiufei 通过流水号更新商品信息
+     * @param p
+     * @param serialNo
+     * @return
+     */
+    @SQL("update " + TABLE_NAME + "  set pic_url=:1.pic_url , name=:1.name," +
+            "score=:1.score,category_id=:1.category_id,price=:1.price  where serialNo = :2 ")
+    public int updateBySerialNo(Product p, String serialNo);
 
 }
