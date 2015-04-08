@@ -15,6 +15,7 @@ import android.util.Log;
 
 import org.android.agoo.client.BaseConstants;
 
+import com.umeng.message.UTrack;
 import com.umeng.message.UmengBaseIntentService;
 import com.umeng.message.entity.UMessage;
 
@@ -60,29 +61,38 @@ public class UMengIntentService extends UmengBaseIntentService {
 
     @Override
     protected void onMessage(Context context, Intent intent) {
-        Log.d(TAG, "onMessage - context: " + context);
 
-        // Extract the payload from the message
-        Bundle extras = intent.getExtras();
-        if (extras != null)
-        {
-            // if we are in the foreground, just surface the payload, else post it to the statusbar
-            if (PushPlugin.isInForeground()) {
-                extras.putBoolean("foreground", true);
-                PushPlugin.sendExtras(extras);
-            }
-            else {
-                extras.putBoolean("foreground", false);
+        super.onMessage(context, intent);
+        try {
+            String message = intent.getStringExtra(BaseConstants.MESSAGE_BODY);
+            UMessage msg = new UMessage(new JSONObject(message));
+            UTrack.getInstance(context).trackMsgClick(msg);
 
-                // Send a notification if there is a message
-                if (extras.getString("message") != null && extras.getString("message").length() != 0) {
-                    createNotification(context, extras);
+            // Extract the payload from the message
+            Bundle extras = intent.getExtras();
+            if (extras != null)
+            {
+                // if we are in the foreground, just surface the payload, else post it to the statusbar
+                if (PushPlugin.isInForeground()) {
+                    extras.putBoolean("foreground", true);
+                    PushPlugin.sendExtras(extras);
+                }
+                else {
+                    extras.putBoolean("foreground", false);
+
+                    // Send a notification if there is a message
+                    if (msg != null) {
+                        createNotification(context, extras,msg);
+                    }
                 }
             }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
-    public void createNotification(Context context, Bundle extras)
+    public void createNotification(Context context, Bundle extras, UMessage msg)
     {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         String appName = getAppName(this);
@@ -95,38 +105,21 @@ public class UMengIntentService extends UmengBaseIntentService {
 
         int defaults = Notification.DEFAULT_ALL;
 
-        if (extras.getString("defaults") != null) {
-            try {
-                defaults = Integer.parseInt(extras.getString("defaults"));
-            } catch (NumberFormatException e) {}
-        }
-
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setDefaults(defaults)
                         .setSmallIcon(context.getApplicationInfo().icon)
                         .setWhen(System.currentTimeMillis())
-                        .setContentTitle(extras.getString("title"))
-                        .setTicker(extras.getString("title"))
+                        .setContentTitle(msg.title)
+                        .setTicker(msg.title)
                         .setContentIntent(contentIntent)
                         .setAutoCancel(true);
 
-        String message = extras.getString("message");
-        if (message != null) {
-            mBuilder.setContentText(message);
-        } else {
-            mBuilder.setContentText("<missing message content>");
-        }
-
-        String msgcnt = extras.getString("msgcnt");
-        if (msgcnt != null) {
-            mBuilder.setNumber(Integer.parseInt(msgcnt));
-        }
-
+        mBuilder.setContentText(msg.text);
+        mBuilder.setNumber(1);
         int notId = 0;
-
         try {
-            notId = Integer.parseInt(extras.getString("notId"));
+            notId = Integer.parseInt(msg.msg_id);
         }
         catch(NumberFormatException e) {
             Log.e(TAG, "Number format exception - Error parsing Notification ID: " + e.getMessage());
