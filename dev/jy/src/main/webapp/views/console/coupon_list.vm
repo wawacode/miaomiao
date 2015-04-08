@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"> 喵喵代金券 </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+                <li><a href="/console/coupon/addIndex">+添加代金券</a></li>
+        </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-0 main">
+
+            <h2 class="sub-header">Section title</h2>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>店铺id</th>
+                        <th>名称</th>
+                        <th>价格</th>
+                        <th>有效期开始时间</th>
+                        <th>有效期截止时间</th>
+                        <th>扩展字段</th>
+                        <th>预览图片</th>
+                        <th>图片</th>
+                        <th>上传本地图片操作</th>
+                    </tr>
+                    </thead>
+                    #foreach($coupon in $coupons)
+                    <tr>
+                        <td>${coupon.id}</td>
+                        <td>${coupon.shop_id}</td>
+                        <td class="edit" id="e-name-$coupon.id">$coupon.name</td>
+                        <td class="edit" id="e-price-$coupon.id">$coupon.price</td>
+                        <td class="edit" id="e-start_time-$coupon.id">$date.format('yyyy-MM-dd HH:mm',$coupon.start_time)</td>
+                        <td class="edit" id="e-end_time-$coupon.id">$date.format('yyyy-MM-dd HH:mm',$coupon.end_time)</td>
+                        <td class="edit" id="e-ext-$coupon.id">$coupon.ext</td>
+                        <td ><a href="$coupon.pic_url">预览商品</a></td>
+                        <td class="edit" id="e-pic_url-$coupon.id">#if($coupon.pic_url)<img style="width:60px" src="$coupon.pic_url"/>#end</td>
+                    	<td>
+                    	<form class="form-horizontal" method="post"  enctype="multipart/form-data"  action="/console/coupon/uploadPic">
+                    	<input name="id" style="display:none" value="${coupon.id}">
+                    	<input type="file" id="${item.id}-inputfile" name="pic" onChange="fileChange(this);">
+                    	<button type="submit" class="form-add" data-id="${coupon.id}-inputfile" >提交</button>
+                    	</form>
+                    	</td>
+                    	<td><button type="button" class="btn btn-danger" data-id="${coupon.id}"><a>删除</a></button></td>
+                    </tr>
+                    #end
+                    </tbody>
+                </table>
+                <nav>
+                    <ul class="pager">
+                        #if($previous_f)
+                        <li>
+                          <a href="/console/coupon/list?from=$previous_f&offset=50">Previous</a></li>
+                        #end
+                        #if($next_f)
+                        <li><a href="/console/coupon/list/?from=$next_f&offset=50">Next</a></li>
+                        #end
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('.edit').editable('/console/coupon/edit',{
+    tooltip : 'Click to edit...',
+    callback : function(value, settings) {
+    location.reload() ;
+    }
+    });
+    $('.edit_area').editable('/console/coupon/edit' ,{
+    type : 'textarea',
+    cancel : 'Cancel',
+    submit : 'OK',
+    indicator : '<img src="img/indicator.gif">',
+    tooltip : 'Click to edit...'
+    });
+    });
+    $(".btn").click(function(){
+		var result = confirm("是否确认删除"),
+			oThis = $(this);
+		if(result){
+		$.ajax({
+			type:"POST",url:"/console/coupon/del",
+			data:{id:oThis.data('id')},
+			success:function(data){
+				  alert(data);
+				  location.reload();
+				}
+			});
+		}
+	});
+    $("#query_input").keydown(function(e){
+    var curKey = e.which;
+    if(curKey == 13)
+    {
+      $("#query_form").submit();
+    }
+    });
+    function fileChange(item) {
+            var ss = (item.value).split('.');
+            if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
+                $("#fileName").val(item.value);
+            } else {
+                var obj = document.getElementById("inputfile");
+               obj.outerHTML = obj.outerHTML;
+                $("#inputfile").val("");
+                alert("用户源配置文件格式错误");
+            }
+        }
+    $(".form-add").click(function(){
+		var result = confirm("是否确认提交"),
+		oThis = $(this);
+		if(result){
+			var pic = oThis.data('id');
+			var picVal =$('#'+ pic).val();
+			if(picVal == ''){
+			  alert("请上传图片");
+			  return false;
+			}
+			return true;
+		}
+		return false;
+	});
+</script>
+</body>
+</html>

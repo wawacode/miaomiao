@@ -22,12 +22,6 @@ public class WXHttpClient {
     private static String appId = "wx762f832959951212";
 
 
-    // ceshigongzong hao
-
-//    private static String encodingAesKey = "V8SrMqtqyLWFtfAOyyH8cAq8flXuh0YpCoPLTCwSQsA";
-//    private static String token = "tooooken";
-//    private static String appKey = "ebd5d6bf4c597a617b2420341da1c03d";
-//    private static String appId = "wxd64a39a599e2ce3a";
 
 
 
@@ -134,23 +128,28 @@ public class WXHttpClient {
         order.put("name","我的订单");
         order.put("type","view");
         order.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
-                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Fmyorders&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Forders&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
         sub_button.add(order);
 
-//        JSONObject cuidan   = new JSONObject();
-//        cuidan.put("name","催单");
-//        cuidan.put("type","click");
-//        cuidan.put("key","Vcuidan");
-//        sub_button.add(cuidan);
+        JSONObject coupon   = new JSONObject();
+        coupon.put("name","代金券");
+        coupon.put("type","view");
+        coupon.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
+                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Fmycoupons&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+        sub_button.add(coupon);
 
-        JSONObject findshop  = new JSONObject();
-        findshop.put("name","切换店铺");
-        findshop.put("type","view");
-        findshop.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
-                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Ffindshop&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
-        sub_button.add(findshop) ;
+//        JSONObject findshop  = new JSONObject();
+//        findshop.put("name","切换店铺");
+//        findshop.put("type","view");
+//        findshop.put("url","https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx762f832959951212&redirect_uri=" +
+//                "http%3A%2F%2Fwww.mbianli.com%2Fsg%2Floading%23%2Ffindshop&response_type=code&scope=snsapi_base&state=128#wechat_redirect");
+//        sub_button.add(findshop) ;
+
+        button2.put("sub_button", sub_button);
         buttons.add(button2);
-        button2.put("sub_button",sub_button);
+
+
+
         JSONObject button3 = new JSONObject() ;
         button3.put("name","关于喵喵") ;
         JSONArray sub_button2 =  new JSONArray ();
@@ -176,11 +175,39 @@ public class WXHttpClient {
         buttons.add(button3);
 
         ob.put("button",buttons);
-        byte [] t = WXHttpClient.sendPostRequest(url,ob.toJSONString());
+        byte [] t = sendPostRequest(url, ob.toJSONString());
         String e = new String(t);
         System.out.println("rec data " + e );
 
     }
+
+    public static void getTicket(String access_token ,int qcode){
+        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
+        url = url.replace("{token}",access_token);
+        System.out.println(url);
+        JSONObject  ob = new JSONObject();
+        ob.put("action_name","QR_LIMIT_SCENE") ;
+        JSONObject scene = new JSONObject() ;
+        scene.put("scene_id",qcode);
+        JSONObject s = new JSONObject() ;
+        s.put("scene",scene);
+        ob.put("action_info",s ) ;
+        System.out.println(ob.toJSONString());
+        byte [] t = sendPostRequest(url,ob.toJSONString());
+        String e = new String(t);
+        System.out.println(e );
+        JSONObject o = (JSONObject) JSON.parse(e);
+        String ticket = o.getString("ticket") ;
+        String turl  =    o.getString("url");
+        String ticketUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={ticket}";
+        ticketUrl = ticketUrl.replace("{ticket}",ticket ) ;
+        String fileName = qcode + ".jpg";
+        System.out.println(ticketUrl +  " " + turl);
+        writeFile(ticketUrl,fileName) ;
+    }
+
+
+
 
 
     public static void addkf(String access_token){
@@ -197,7 +224,7 @@ public class WXHttpClient {
     }
 
     public static void writeFile(String strUrl, String fileName) {
-        String dir = "d:\\tick\\";
+        String dir = "d:\\ticket_300\\";
         if(new File(dir + fileName).exists()){
             return ;
         }

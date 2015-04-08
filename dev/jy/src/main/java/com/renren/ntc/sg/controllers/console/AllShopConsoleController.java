@@ -145,7 +145,7 @@ public class AllShopConsoleController {
     
     @Post("orders")
     @Get("orders")
-    public String allShopOrders(Invocation inv,@Param("shop_id") long shop_id){
+    public String allShopOrders(Invocation inv,@Param("shop_id") long shop_id,@Param("from") int from, @Param("offset") int offset){
     	if(shop_id == 0L){
     		shop_id = Constants.DEFAULT_SHOP;
     	}
@@ -154,9 +154,25 @@ public class AllShopConsoleController {
         if(CollectionUtils.isEmpty(shopList)){
         	return "";
         }
-        List<Order> orderls = ordersDAO.get10Orders(shop_id,0,20,SUtils.generOrderTableName(shop_id));
+        if ( 0 == from){
+            from = 0;
+        }
+        if ( 0 == offset){
+            offset = 20 ;
+        }
+        List<Order> orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
         orderls = orderService.forV(orderls);
         orderService.f(orderls);
+        if(from != 0){
+        	int begin = from;
+        	begin = begin - offset;
+           inv.addModel("previous_f", begin< 0?0:begin);
+        }
+        if(orderls.size() >=  offset){
+           inv.addModel("next_f", from  + offset);
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+        inv.addModel("shop",shop);
         inv.addModel("orderls",orderls);
         inv.addModel("shops",shopList);
         inv.addModel("curr_shop_d",shop_id);

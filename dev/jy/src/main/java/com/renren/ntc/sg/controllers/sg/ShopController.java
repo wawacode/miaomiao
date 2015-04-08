@@ -11,6 +11,7 @@ import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
@@ -18,10 +19,16 @@ import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
+import java.util.UUID;
 
 @Path("shop")
 public class ShopController {
@@ -35,6 +42,9 @@ public class ShopController {
 
     @Autowired
     public ShopCategoryDAO shopCategoryDAO;
+
+    @Autowired
+    public WXService wxService ;
 
     @Get("hot")
     public String hot (Invocation inv,@Param("shop_id") long shop_id ){
@@ -118,7 +128,7 @@ public class ShopController {
 
     @Get("category/get")
     @Post("category/get")
-    public String category (Invocation inv,@Param("shop_id") long shop_id){
+    public String category (Invocation inv,@Param("shop_id") long shop_id,@Param("wx_url") String wx_url){
 
         if (0  >= shop_id){
             shop_id = Constants.DEFAULT_SHOP ;
@@ -143,13 +153,53 @@ public class ShopController {
         JSONObject data =  new JSONObject() ;
         JSONObject shopob =  (JSONObject)JSON.toJSON(shop) ;
         JSONArray  jarr  = (JSONArray)JSON.toJSON(shopCategoryls);
+        if(!StringUtils.isBlank(wx_url)){
+            String nonce_str = SUtils.create_nonce_str();
+            String timestamp = SUtils.create_timestamp();
+            String string1;
+            String signature = "";
 
+            String  js_ticket = wxService.getJS_ticket();
+
+            //注意这里参数名必须全部小写，且必须有序
+            string1 = "jsapi_ticket=" + js_ticket +
+                    "&noncestr=" + nonce_str +
+                    "&timestamp=" + timestamp +
+                    "&url=" + wx_url;
+
+            System.out.println("get js config " + string1);
+
+            try
+            {
+                MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+                crypt.reset();
+                crypt.update(string1.getBytes("UTF-8"));
+                signature = SUtils.byteToHex(crypt.digest());
+            }
+            catch (NoSuchAlgorithmException e)
+            {
+                e.printStackTrace();
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                e.printStackTrace();
+            }
+            data.put("url", wx_url);
+            data.put("jsapi_ticket", js_ticket);
+            data.put("nonceStr", nonce_str);
+            data.put("timestamp", timestamp);
+            data.put("signature", signature);
+
+        }
         data.put("shop",shopob);
         data.put("categoryls", jarr) ;
         jb.put("code",0);
         jb.put("data",data);
         return "@" + jb.toJSONString() ;
     }
+
+
+
 
 
     @Get("getitems")

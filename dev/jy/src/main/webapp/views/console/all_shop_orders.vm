@@ -76,6 +76,17 @@
                     #end
                     </tbody>
                 </table>
+                <nav>
+                    <ul class="pager">
+                        #if($previous_f)
+                        <li>
+                            <a href="/console/allshop/orders?shop_id=${shop.id}&from=$previous_f&offset=20">Previous</a></li>
+                        #end
+                        #if($next_f)
+                        <li><a href="/console/allshop/orders?shop_id=${shop.id}&from=$next_f&offset=20">Next</a></li>
+                        #end
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

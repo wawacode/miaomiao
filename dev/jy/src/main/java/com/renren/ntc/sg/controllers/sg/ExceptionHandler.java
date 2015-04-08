@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.sg;
 
+import com.renren.ntc.sg.service.LoggerUtils;
 import net.paoding.rose.web.ControllerErrorHandler;
 import net.paoding.rose.web.Invocation;
 
@@ -14,7 +15,7 @@ public class ExceptionHandler implements ControllerErrorHandler {
 	public Object onError(Invocation inv, Throwable ex) throws Throwable {
 		  inv.getRequest().setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE , null);
           ex.printStackTrace();
-		  logger.error("unknow exception ",ex);
+		  LoggerUtils.getInstance().log("unknow exception  "+ ex.getMessage());
 		  return "@{\"code\":500,\"msg\":\"uk error\"}";
 	}
 

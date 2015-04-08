@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.service;
 
+import com.renren.ntc.sg.bean.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,16 @@ public class LoggerUtils {
     public static LoggerUtils getInstance (){
         return instance;
     }
+
+    public void log (String message, User u){
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd EE hh:mm:ss");
+        if(u!= null){
+        System.out.println(String.format("%s %s,user %d ,%s" ,df.format(new Date()) , message,u.getId(),u.getWx_open_id()));
+        }else{
+        System.out.println(String.format("%s %s,user %d ,%s" ,df.format(new Date()) , message,0,""));
+        }
+    }
+
     public void log (String message){
         DateFormat df=new SimpleDateFormat("yyyy-MM-dd EE hh:mm:ss");
         System.out.println(df.format(new Date())+ " " + message);

@@ -68,4 +68,10 @@ public interface OrdersDAO {
 
     @SQL("update ##(:tableName)   set msg =:2 , update_time=now() where order_id = :1 ")
     public void confirm(String order_id, String msg, @SQLParam("tableName") String tableName);
+
+    @SQL("select price,msg,create_time from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between :3 and :4")
+    List<Order> getShopPayDetail(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime );
+    
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:4 and (status = 1 or status =2) and create_time between :1 and :2 order by create_time")
+    public List<Order> getRealOrder(String beginTime,String endTime,@SQLParam("tableName") String tableName,long  shopId);
 }

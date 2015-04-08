@@ -3,6 +3,7 @@ package com.renren.ntc.sg.controllers.console.api;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.*;
 import com.renren.ntc.sg.biz.dao.*;
 import com.renren.ntc.sg.geo.GeoQueryResult;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @Path("commy")
+@DenyCommonAccess
 public class CommyController {
 
 

@@ -1,6 +1,6 @@
 ;angular.module('miaomiao.console.services', [])
-    .factory('MMPushNotification', ['$rootScope', 'httpClient', 'localStorageService', '$cordovaToast', '$timeout',
-        function ($rootScope, httpClient, localStorageService, $cordovaToast, $timeout) {
+    .factory('MMPushNotification', ['$rootScope', 'httpClient', 'localStorageService', '$cordovaToast', '$timeout','MMUtils',
+        function ($rootScope, httpClient, localStorageService, $cordovaToast, $timeout,MMUtils) {
         return {
             subscribe: function () {
 
@@ -13,11 +13,13 @@
                         chn = 'adr'
                     }
                     httpClient.subscribeForCurrentDevice(user.phone, chn, token, function () {
-                        console.log('注册通知成功，您将会在此应用中收到新订单通知~');
+                        MMUtils.showAlert('注册通知成功，您将会在此应用中收到新订单通知~');
 
                     }, function () {
-
+                        MMUtils.showAlert('注册通知失败，暂不能收到新订单通知，请重新登录~');
                     });
+                }else{
+                    MMUtils.showAlert('注册通知失败,条件不满足:' + 'token is:' + token + ' and phone is:' + user.phone);
                 }
             },
             getDeviceToken:function(){

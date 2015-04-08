@@ -1,60 +1,28 @@
 package com.renren.ntc.sg.util;
 
+import java.io.IOException;
+import java.util.List;
+
+import net.paoding.rose.scanning.context.RoseAppContext;
+
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Product;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
-import net.paoding.rose.scanning.context.RoseAppContext;
-import org.apache.commons.lang.StringUtils;
-
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
 
 public class Refresh2Produdce {
 
-    private static long shop_id = 10073;
+    private static long  shop_id= 10066;
 
     public Refresh2Produdce() throws IOException {
 
     }
 
-    //    public static void main(String[] args) throws IOException {
-    //        RoseAppContext rose = new RoseAppContext();
-    //        ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
-    //        ProductDAO pdDao = rose.getBean(ProductDAO.class);
-    //        int offset = 1000;
-    //        for (int i=0 ;i < 100000 ; ){
-    //
-    //            List<Item> itemls =  itemDao.getItems(SUtils.generTableName(shop_id), shop_id,i, offset);
-    //            if(itemls.size() == 0){
-    //                break;
-    //            }
-    //            for ( Item item :  itemls ){
-    //                String pic = item.getPic_url();
-    //                Product p =  new Product();
-    //                p.setCategory_id(item.getCategory_id());
-    //                p.setScore(item.getScore());
-    //                p.setPic_url(item.getPic_url());
-    //                p.setPrice(item.getPrice());
-    //                p.setName(item.getName());
-    //                p.setSerialNo(item.getSerialNo());
-    //                Product pp = pdDao.geProductsByserialNo(item.getSerialNo());
-    //                if (null != pp){
-    //                    System.out.println("update into " + p.getSerialNo());
-    //                    pdDao.update(p,item.getSerialNo()) ;
-    //                 }else{
-    //                    System.out.println("insert into " + p.getSerialNo());
-    //                    pdDao.insert(p) ;
-    //                }
-    //
-    //            }
-    //            i = i + offset;
-    //        }
-    //    }
 
     public static void main(String[] args) throws IOException {
+    	String shopId = args[0];
+    	shop_id = Long.parseLong(shopId);
+    	System.out.println("load shopId="+shop_id);
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
@@ -64,6 +32,7 @@ public class Refresh2Produdce {
 
             List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
             if (itemls.size() == 0) {
+            	System.out.println("=======done=========");
                 break;
             }
             for (Item item : itemls) {
@@ -73,23 +42,30 @@ public class Refresh2Produdce {
                 p.setPic_url(item.getPic_url());
                 p.setPrice(item.getPrice());
                 p.setName(item.getName());
-                p.setSerialNo(item.getSerialNo());
-
-                Product pp = pdDao.geProductsByserialNo(p.getSerialNo());
-                if (pp != null) {
-                    continue;
+                String serialNoStr = upacage(item.getSerialNo());
+                p.setSerialNo(serialNoStr);
+                Product pp = pdDao.geProductsByserialNo(serialNoStr);
+                if (null != pp){
+                    System.out.println("update into " + p.getSerialNo());
+//                    if(p.getPrice() <= pp.getPrice()){
+//                    	p.setPrice(pp.getPrice());
+//                    }else {
+//						System.out.println("商品的价格比product高,serialNo="+item.getSerialNo());
+//					}
+                    pdDao.updateInfo(p,serialNoStr) ;
+                 }else{
+                    System.out.println("insert into " + p.getSerialNo());
+                    pdDao.insert(p) ;
                 }
-
-                System.out.println(item.getCategory_id() + "<>" + item.getScore() + "<>" + item.getPic_url() + "<>" + item.getPrice() + "<>" + item.getName()
-                        + "<>" + item.getSerialNo());
-
-                System.out.println("insert into " + p.getSerialNo());
-                System.out.println(">>>:" + ++m);
-                pdDao.insert(p);
-
             }
-
             i = i + offset;
         }
+    }
+    
+    private static String upacage(String serialNo) {
+        while (serialNo.startsWith("0")){
+            serialNo = serialNo.substring(1,serialNo.length());
+        }
+        return serialNo;
     }
 }

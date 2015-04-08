@@ -10,10 +10,11 @@
 		</property>
 
 		<!-- 正式服务器 -->
-		<!-- <property name="jdbcUrl" 
-			value="jdbc:mysql://123.57.38.234:3306/sg?characterEncoding=utf8"/>
-		<property name="user" value="test"/>
-		<property name="password" value="test"/> -->
+        <!--<property name="jdbcUrl"
+                  value="jdbc:mysql://10.165.118.1:3306/sg?characterEncoding=utf8"/>
+
+        <property name="user" value="cat_prod_data"/>
+        <property name="password" value="rewq!@#$"/>-->
 
 
 		<!-- 测试服务器 -->
@@ -21,7 +22,7 @@
 			value="jdbc:mysql://123.56.102.224:3306/sg?characterEncoding=utf8" />
 		<property name="user" value="cat_data" />
 		<property name="password" value="rewq!@#$" />
-
+		
 
 		<property name="initialPoolSize" value="3" />
 		<property name="minPoolSize" value="10" />

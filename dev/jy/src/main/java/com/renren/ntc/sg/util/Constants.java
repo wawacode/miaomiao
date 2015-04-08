@@ -32,7 +32,9 @@ public class Constants {
     public static  final String PRERROR = "{\"code\":1,\"msg\":\"{msg}\"}";
     public static  final String LEAKERROR = "{\"code\":100,\"msg\":\"库存不足\"}";
     public static  final String UNLOGINERROR = "{\"code\":101,\"msg\":\"未登录\"}";
+    public static  final String TMPPAYERROR = "{\"code\":401,\"msg\":\"暂时无法使用微信支付。\"}";
     public static  final String UKERROR = "{\"code\":500,\"msg\":\"服务器异常\"}";
+    public static  final String NOMORE = "{\"code\":10,\"msg\":\"您已经领过代金券了，请进入个人中心查看\"}";
     public static  final String DONE = "{\"code\":0,\"msg\":\"done\"}";
 
     public static  final String ALLREADYNEW = "{\"code\":0,\"msg\":\"allready new version\"}";
@@ -40,6 +42,7 @@ public class Constants {
 //    public static final String DOMAIN = "miaomiao.com" ;UK
     public static final String DOMAIN = "127.0.0.1" ;
     public static final String DOMAIN2 = "mbianli.com:8088" ;
+    public static final String MBIANLI = "http://www.mbianli.com" ;
     public static final String DOMAIN3 = "mbianli.com" ;
     public static final String DOMAIN4 = "127.0.0.1:8080" ;
     public static final String COOKIE_KEY_USER ="cat_p" ;
@@ -47,6 +50,20 @@ public class Constants {
     public static final Object DOMAIN_URL = "";
     public static final long OFFLINEFLAG = 1000 * 60 * 10;
     public static final String WXPAY = "wx" ;
+    public static final String TICKETPRE = "ticket_";
+    public static final String COUPONTRADE = "TRADEING";
+    public static final int TRADEPIE = 60;
+    public static final String DAYLIMIT = "daylimit_";
+    public static final String LUNDER = "_";
+    public static final String CANNOTUSETICKET = "{\"code\":12,\"msg\":\"今天已经使用过代金券\"}";;
+    public static final String CANNOTUSETHISTICKET = "{\"code\":15,\"msg\":\"该过代金券暂时无法使用，请选择其他代金券\"}";;
+    public static final String ORDER_KEY = "ABC_ORDER_KEY";
+    public static final String ORDERDONE = "下单成功";
+    public static final String ORDERCONFRIM = "配送中";
+    public static final String REMARK = "{shop_name}即将为您配送，预计30分钟内到达；\n" +
+            "如有疑问请联系：{shop_tel}。";
+    public static final String REMARKCONFRIM = "{shop_name}正在为您配送，预计30分钟内到达；\n" +
+            "如有疑问请联系：{shop_tel}。";;
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";
@@ -69,6 +86,7 @@ public class Constants {
     public static final int ORDER_FINISH = 2;
 
     public static final int  COUPONUNUSED = 0;
+
     public static final int  COUPONUSED = 4;
     
     public static final int SHOP_ANDITED = 1;

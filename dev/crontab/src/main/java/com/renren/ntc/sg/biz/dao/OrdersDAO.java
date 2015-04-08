@@ -68,5 +68,8 @@ public interface OrdersDAO {
 
     @SQL("select "+ FIELDS +" from ##(:tableName)   where address_id =:2 order by create_time desc")
     List<Order> getOrderByAddressId(@SQLParam("tableName") String tableName,long id);
+    
+    @SQL("select price,msg,create_time from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between :3 and :4")
+    List<Order> getShopPayDetail(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime );
 
 }

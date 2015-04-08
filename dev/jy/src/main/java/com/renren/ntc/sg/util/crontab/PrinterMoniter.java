@@ -1,4 +1,4 @@
-package com.renren.ntc.sg.util;
+package com.renren.ntc.sg.util.crontab;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -15,6 +15,9 @@ import com.renren.ntc.sg.mail.MailSendInfo;
 import com.renren.ntc.sg.mail.MailSendServer;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.SHttpClient;
+import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -33,7 +36,7 @@ import java.util.List;
 public class PrinterMoniter {
 
 
-    public  static final String TID = "1015";
+    public  static final String TID = Constants.USER_TID;
     public  static final String MONITERPHONE = "18600326217";
 
 	public static void main(String[] args) {
@@ -47,11 +50,11 @@ public class PrinterMoniter {
       for (Shop  shop: shops){
           Device device   =  deviceDao.getDevByShopId(shop.getId()) ;
           if (null == device ){
-              String  message = "{shop_name} 打印机状态异常";
-              message = message.replace("{shop_name}",shop.getName()) ;
-              toSend(message , TID , MONITERPHONE);
+//              String  message = "{shop_name} 打印机状态异常";
+//              message = message.replace("{shop_name}",shop.getName()) ;
+//              toSend(message , TID , MONITERPHONE);
           }
-          if(ofline(device.getUpdate_time())) {
+          if(offline(device.getUpdate_time(), shop)) {
              String  message = "{shop_name} 打印机离线";
              message = message.replace("{shop_name}",shop.getName()) ;
               toSend(message , TID , MONITERPHONE);
@@ -82,11 +85,16 @@ public class PrinterMoniter {
         send( message , tid , phone);
     }
 
-    private static boolean ofline(Date update_time) {
+    private static boolean offline(Date update_time,Shop shop) {
         long now = System.currentTimeMillis();
         long uptime = update_time.getTime();
         long diff =  ( now - uptime);
-        return diff > (1000*60*5) ;
+        if (diff > (1000*60*5)) {
+            if (shop.getOpen_time()== null || shop.getClose_time()== null){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static  void send ( String msg, String tid ,String phone) {

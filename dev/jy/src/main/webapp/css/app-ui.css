@@ -75,13 +75,33 @@ body {
 
 }
 
-.borderBotton{
+.borderBotton {
 
     border-top: none;
     border-left: none;
     border-right: none;
     border-bottom: solid 1px #eaeaea;
 
+}
+
+.verticalCenter {
+    position: absolute;
+    top: 0;
+    bottom: 0
+}
+
+.baseRedRounded {
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #ef5356;
+    color: #ffffff
+}
+
+.baseGrayRounded {
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #eaeaea;
+    color: #999999
 }
 
 .hidden {
@@ -174,6 +194,21 @@ body {
 
 .bar.bar-light.bar-footer {
     height: 49px !important;
+}
+
+.grayyed {
+    color: lightgray;
+}
+
+.buttonWithHot:after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 5px;
+    background-color: #ef5356;
+    top: 5;
+    left: 22;
 }
 
 /**********************************
@@ -336,12 +371,12 @@ body {
     color: #999999;
 }
 
-.hasOpenShop{
+.hasOpenShop {
     background-color: #ef5356;
     color: #ffffff;
 }
 
-.hasNoOpenShop{
+.hasNoOpenShop {
     background-color: #eaeaea;
     color: #999999;
 }
@@ -443,8 +478,7 @@ ul.rating li i {
     background-color: #ffffff;
 }
 
-
-.communityListSimple{
+.communityListSimple {
 
     padding-top: 8px;
     padding-left: 2px;
@@ -452,6 +486,7 @@ ul.rating li i {
     padding-right: 2px;
     background-color: #ffffff;
 }
+
 /* home page - product list*/
 .homepageContent {
     position: absolute;
@@ -536,6 +571,26 @@ ul.rating li i {
     font-size: 17px !important;
     width: 80% !important;
     height: 37px !important;
+}
+
+.couponLayout {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    z-index: 800;
+}
+
+.couponContent {
+    position: absolute;
+    top: 100;
+    bottom: 100;
+    left: 0;
+    right: 0;
+    text-align: center;
 }
 
 /* product detail*/
@@ -1030,6 +1085,26 @@ ul.rating li i {
     height: 28px;
 }
 
+.couponHint {
+    font-size: 10px;
+    background-color: #ffffff;
+    color: #ef5356;
+    padding: 4px 4px 4px 4px;
+    border-radius: 4px;
+}
+
+.couponHintDark{
+    font-size: 10px;
+    background-color: #ef5356;
+    color: #ffffff;
+    padding: 4px 4px 4px 4px;
+    border-radius: 4px;
+}
+
+.disabledColor{
+    color: #999999;
+}
+
 /* order list*/
 
 .noOrderHint {
@@ -1070,7 +1145,7 @@ ul.rating li i {
     position: relative;
 }
 
-.orderListHeader:before{
+.orderListHeader:before {
     content: "";
     width: 5px;
     height: 100%;
@@ -1091,23 +1166,24 @@ ul.rating li i {
 }
 
 /*.order-items:after {*/
-    /*content: "";*/
-    /*position: absolute;*/
-    /*left: -20;*/
-    /*right: -20;*/
-    /*bottom: 0;*/
-    /*width: 120%;*/
-    /*height: 5px;*/
-    /*background-color: #eaeaea;*/
+/*content: "";*/
+/*position: absolute;*/
+/*left: -20;*/
+/*right: -20;*/
+/*bottom: 0;*/
+/*width: 120%;*/
+/*height: 5px;*/
+/*background-color: #eaeaea;*/
 /*}*/
 
-.orderPayConfirm{
+.orderPayConfirm {
     border: solid 1px #ef5356;
     background-color: #ffffff;
     color: #ef5356;
     border-radius: 2px;
     padding: 2px 4px 2px 4px;
 }
+
 .orderSnapshotHeader {
     display: inline-block;
     border-bottom: solid 1px #eaeaea;
@@ -1153,6 +1229,7 @@ ul.rating li i {
     width: 100%;
     text-align: right;
     margin-top: 10px;
+    position: relative;
 }
 
 .orderSnapshotRemark {
@@ -1166,6 +1243,8 @@ ul.rating li i {
     font-size: 14px;
     font-weight: 100;
     color: #6a6a6a;
+    display: inline-block;
+    padding-right: 80px;
 }
 
 .orderId {
@@ -1178,12 +1257,13 @@ ul.rating li i {
     font-size: 12px;
 }
 
-.orderPayType{
+.orderPayType {
     float: right;
     font-size: 11px;
     /*padding: 3px 5px 3px 5px;*/
     /*border-radius: 4px;*/
 }
+
 .orderStatus {
 
     float: right;

@@ -69,7 +69,10 @@ angular.module('miaomiao.shop')
                         if ($scope.orders.length > 1) {
                             $scope.historyOrder = $scope.orders.slice(1);
                         }
+
                     });
+
+                    $scope.myCouponsCount = dataDetail.coupon_count;
 
                     $sessionStorage.orderAddresses = $scope.addressls;
                     $sessionStorage.orderOrders = $scope.orders;
@@ -177,6 +180,10 @@ angular.module('miaomiao.shop')
             }, function (data, status) {
                 MMUtils.showAlert('确认订单失败,请重试');
             });
+        };
+
+        $scope.goToCouponList = function(){
+
         };
 
         OrderService.orderChangeEventSuccess();

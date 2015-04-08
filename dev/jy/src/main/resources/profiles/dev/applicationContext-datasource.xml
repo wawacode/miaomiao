@@ -11,8 +11,6 @@
         </property>
         <property name="jdbcUrl"
                   value="jdbc:mysql://123.56.102.224:3306/sg?characterEncoding=utf8"/>
-        <!--<property name="jdbcUrl"-->
-                  <!--value="jdbc:mysql://127.0.0.1:3306/sg?characterEncoding=utf8"/>-->
         <property name="user" value="cat_data"/>
         <property name="password" value="rewq!@#$"/>
         <property name="initialPoolSize"  value="3"/>

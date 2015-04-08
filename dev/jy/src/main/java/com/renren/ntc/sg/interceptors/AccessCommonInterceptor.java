@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Interceptor(oncePerRequest = true)
@@ -50,17 +51,26 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
 
     @Override
     protected Object before(Invocation inv) throws Exception {
-    	String path = inv.getRequest().getRequestURI() ;
+        String ua = inv.getRequest().getHeader("User-Agent") ;
+        String path = inv.getRequest().getRequestURI() ;
+        if (path.startsWith("/wx")|| path.startsWith("/console")){
+            return true;
+        }
+        if( -1 == ua.indexOf("MicroMessenger")&& !SUtils.isDev()){
+           return "r:" + Constants.MBIANLI;
+        }
+
         User u = null    ;
         String uuid  = CookieManager.getInstance().getCookie(inv.getRequest(), Constants.COOKIE_KEY_USER);
         if(null  != uuid) {
             u = userDAO.getUser(SUtils.unwrapper(uuid));
         }
+
         if ( u != null){
             String code = inv.getParameter("code");
             if( !StringUtils.isBlank(code)&& (StringUtils.isBlank(u.getWx_open_id()) || "other".equals(u.getWx_open_id()))){
                 try {
-                String openId =wxService.getOpenId(code);
+                String openId = wxService.getOpenId(code);
                 userService.updateOpenId(u.getId(),openId);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -72,11 +82,14 @@ public class AccessCommonInterceptor extends ControllerInterceptorAdapter {
             LoggerUtils.getInstance().log( "get wx code " + code);
             if( !StringUtils.isBlank(code)){
                 String openId = wxService.getOpenId(code);
-                if(StringUtils.isBlank(openId)){
-                    u  = userDAO.getUserByOpenId(openId);
+                if(!StringUtils.isBlank(openId)){
+                    List<User> us   = userDAO.getUserByOpenId(openId);
+                    if (us.size() > 0){
+                        u = us.get(0);
+                    }
                     if(null == u){
                         String userName = SUtils.generName();
-                        u  = userService.createUser(userName , 0,  "pwd", 1 ,"other");
+                        u  = userService.createUser(userName , 0,  "pwd", 1 ,openId);
                     }
                     CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_USER,SUtils.wrapper(u.getId()+"") ,year() , "/");
                     hostHolder.setUser(u);

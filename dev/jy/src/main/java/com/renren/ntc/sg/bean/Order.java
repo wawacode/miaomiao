@@ -26,6 +26,9 @@ public class Order {
         this.confirm = confirm;
     }
 
+
+    private int dprice = 0;
+
     private String confirm ="";
     private String pre_id ="";
     private String msg ="";
@@ -39,6 +42,14 @@ public class Order {
 
     public void setAct(String act) {
         this.act = act;
+    }
+
+    public int getDprice() {
+        return dprice;
+    }
+
+    public void setDprice(int dprice) {
+        this.dprice = dprice;
     }
 
     private String act = "" ;

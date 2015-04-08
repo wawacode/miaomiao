@@ -5,6 +5,8 @@ import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 
+import java.util.List;
+
 /*
 CREATE TABLE `items` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT ,
@@ -31,8 +33,8 @@ public interface UserDAO {
 	@SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where id =:1")
 	public User getUser(long user_id);
 
-    @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where wx_open_id =:1")
-    public User getUserByOpenId(String  wx_open_id );
+    @SQL("select "+ FIELDS +" from " + TABLE_NAME + "  where wx_open_id =:1 order by create_time desc ")
+    public List<User> getUserByOpenId(String  wx_open_id );
 
     @ReturnGeneratedKeys
     @SQL("insert into  "  + TABLE_NAME + " (" + INSERT_FIELDS  +") values (:1.name,:1.phone,:1.enable,:1.type,:1.pwd,:1.wx_open_id)")

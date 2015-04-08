@@ -161,7 +161,9 @@ public class ItemConsoleController extends BasicConsoleController{
 
     	if(StringUtils.isBlank(picUrl)){
             Product p = productDao.geProduct(serialNo);
-    		picUrl = p.getPic_url();
+            if(p != null){
+            	picUrl = p.getPic_url();
+            }
     	}
     	int onsell = Constants.ITEM_NOT_SALE;
     	if(!StringUtils.isBlank(saleStatus)){
@@ -212,9 +214,8 @@ public class ItemConsoleController extends BasicConsoleController{
             return "@json:"+resultJson.toJSONString();
         }
         LoggerUtils.getInstance().log(String.format("ud serialNo %s  %d, %d ,%d ,%d ",serialNo ,count ,score ,price , category_id));
-        if(count != 0 && score !=0 && price !=0 && category_id !=0){
-            updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId),serialNo, itemName, category_id, score, count, price, itemId);
-        }
+
+        updateDbFlag = itemsDAO.updateItemById(SUtils.generTableName(shopId),serialNo, itemName, category_id, score, count, price, itemId);
 
 		if(pic_url != null){
 			updateDbFlag = itemsDAO.updateItemPriceById(SUtils.generTableName(shopId),itemId,pic_url);
