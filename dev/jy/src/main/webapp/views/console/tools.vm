@@ -26,7 +26,7 @@
 			//alert(shop_id);
 		function onchangeShow(shop_id){ 
 			$.ajax({ 
-				url : "/catstaff/tools/getCategoriesByShopId", 
+				url : "/console/tools/getCategoriesByShopId", 
 				data : {shop_id : shop_id}, //参数 
 				type : "post", 
 				cache : false, 
@@ -56,7 +56,7 @@
 <div class="container">
 <br/><br/><br/><br/>
 	<h2>上传扫码文件</h2>
-    <form action="/catstaff/tools/uploadFile" method="post" enctype="multipart/form-data" >
+    <form action="/console/tools/uploadFile" method="post" enctype="multipart/form-data" >
 	        商店ID:
 	   <select name="shop_id" required>
 	     	#foreach($shop in $list)
@@ -71,7 +71,7 @@
 <div class="container">
 <br/>
 	<h2>同步A店分类商品到B商店</h2>
-    <form action="/catstaff/tools/mvShopItems" method="post">
+    <form action="/console/tools/mvShopItems" method="post">
 	        商店:
 	   <select id="firstShop" name="from_shop_id" required >
 	     	#foreach($shop in $list)
@@ -94,7 +94,7 @@
     
     <hr/>
     <h2>同步商店商品到主库</h2>
-   <form action="/catstaff/tools/refresh2Produdce" method="post">
+   <form action="/console/tools/refresh2Produdce" method="post">
      <select id="secondShopId" name="shop_id" required>
 	     	#foreach($shop in $list)
 			<option value="$shop.id">$shop.name</option>
