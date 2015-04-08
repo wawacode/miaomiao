@@ -117,7 +117,7 @@ public class ToolsController {
 					}
 					String[] arr = lineTxt.split(regex);
 					String serialNo = upacage(arr[0].trim());
-					if (serialNo.length() > 24) {
+					if (serialNo.length() < 8 || serialNo.length() > 14) {
 						missingList.add(serialNo);
 						continue;
 					}
