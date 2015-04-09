@@ -27,6 +27,7 @@ public class UpdateWxRefundInfo {
 	}
 	
 	public static void main(String[] args) {
+		long start = System.currentTimeMillis();
 		RoseAppContext rose = new RoseAppContext();
         ShopDAO  shopDao = rose.getBean(ShopDAO.class);
         OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
@@ -37,6 +38,8 @@ public class UpdateWxRefundInfo {
 		for(Shop shop:shops){
 			updateOrderRefund(shop, orderDao, wxservice,beginTimeStr,endTimeStr);
 		}
+		long end = System.currentTimeMillis();
+		System.out.println("updateOrderRefund done cost="+(end - start));
 			
 	}
 	
