@@ -57,7 +57,7 @@ public interface OrdersDAO {
       * @author ZhaoXiuFei
       * @date 2015年4月9日下午3:11:13
      */
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:2 and status = 0 order by create_time desc limit :3,:4 ")
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:2 and (status !=1 and status !=2 ) order by create_time desc limit :3,:4 ")
     List<Order> getUnfinishedOrders(@SQLParam("tableName") String tableName, long shop_id,int from, int offset);
 
     @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
