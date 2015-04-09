@@ -246,7 +246,7 @@ public class ShopConsoleController {
             from = 0;
         }
         if ( 0 == offset){
-            offset = 2 ;
+            offset = 50 ;
         }
         List<Order> orderls = null;
         if ("unfinishedOrder".equals(operation.trim())) {//未完成订单
