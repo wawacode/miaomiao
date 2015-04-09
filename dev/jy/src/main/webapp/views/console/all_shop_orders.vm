@@ -23,7 +23,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"> 喵喵订单聚合列表 </a>
+           
+            <ul class="nav navbar-nav navbar-right">
+             	<li><a class="navbar-brand" href="#"> 喵喵订单聚合列表 </a></li>
+                <li><a href="/console/allshop/orders?operation=order&shop_id=${shop.id}">已完成订单</a></li>
+                <li><a href="/console/allshop/orders?operation=unfinishedOrder&shop_id=${shop.id}">未完成订单</a></li>
+            </ul>
+            
         </div>
     </div>
 </nav>
@@ -31,8 +37,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar" style="padding-top:30px">
+        
             <ul class="nav nav-sidebar">
-
+				
                 <li class="active"><a href="#">    </a></li>
                 #foreach($shop in $shops)
                 <li #if($shop.id == $curr_shop_d ) class="active" #end><a href="/console/allshop/orders?shop_id=${shop.id}"> $shop.name</a></li>
@@ -80,10 +87,10 @@
                     <ul class="pager">
                         #if($previous_f)
                         <li>
-                            <a href="/console/allshop/orders?shop_id=${shop.id}&from=$previous_f&offset=20">Previous</a></li>
+                            <a href="/console/allshop/orders?operation=$operation&shop_id=${shop.id}&from=$previous_f&offset=20">Previous</a></li>
                         #end
                         #if($next_f)
-                        <li><a href="/console/allshop/orders?shop_id=${shop.id}&from=$next_f&offset=20">Next</a></li>
+                        <li><a href="/console/allshop/orders?operation=$operation&shop_id=${shop.id}&from=$next_f&offset=20">Next</a></li>
                         #end
                     </ul>
                 </nav>
