@@ -2,6 +2,7 @@ package com.renren.ntc.sg.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import net.paoding.rose.scanning.context.RoseAppContext;
 
