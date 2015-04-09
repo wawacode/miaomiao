@@ -8,6 +8,7 @@ import com.renren.ntc.sg.util.BootHeplerV2;
 import com.renren.ntc.sg.util.SUtils;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -152,6 +153,7 @@ public class ScheduleTaskV2 {
             String pid =    PrinterHeplerV2.getInstance().getKey(Constants.PID) ;
             String token =    PrinterHeplerV2.getInstance().getKey(Constants.TOKEN) ;
             String ver =  BootHeplerV2.getInstance().getKey(Constants.VER) ;
+            status = URLEncoder.encode(status);
             feed_url = feed_url.replace("{pid}",pid).replace("{status}",status).replace("{ver}",ver).replace("{token}",token) ;
             byte[] b  = SHttpClient.getURLData((feed_url), "catxianguo.com");
             String response = SUtils.toString(b);
