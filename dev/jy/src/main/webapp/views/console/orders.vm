@@ -26,7 +26,10 @@
             <a class="navbar-brand" href="#"> 喵喵-${shop.name} </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-
+			<ul class="nav navbar-nav navbar-right">
+                <li><a href="/console/shop/order?operation=order&shop_id=${shop_id}">已完成订单</a></li>
+                <li><a href="/console/shop/order?operation=unfinishedOrder&shop_id=${shop_id}">未完成订单</a></li>
+            </ul>
             <form class="navbar-form navbar-right" action="/console/order/query">
                 <input name="query" type="text" class="form-control" placeholder="Search...">
             </form>
@@ -66,7 +69,7 @@
                         <td>${order.id}</td>
                         <td class="" id="e-${item.shop_id}-serialNo-$item.id">$order.order_id</td>
                         <td class="" id="e-{$item.shop_id}-name-$item.id">$order.create_time</td>
-                        <td class="" id="e-{$item.shop_id}-status-$item.id"> #if($order.status ==1 ) 下单成功 #end  #if($order.status ==2) 打印完成 #end</td>
+                        <td class="" id="e-{$item.shop_id}-status-$item.id"> #if($order.status ==0 ) 下单失败#end #if($order.status ==1 ) 下单成功 #end  #if($order.status ==2) 打印完成 #end</td>
                         <td class="" id="e-{$item.shop_id}-address-$item.id">${order.address}  ${order.phone}</td>
                         <td class="" id="e-{$item.shop_id}-price-$item.id">${order.price4V}元</td>
                         <td class="" id="e-{$item.shop_id}-msg-$item.order_id">${order.act} - ${order.msg}</td>
@@ -79,10 +82,10 @@
                     <ul class="pager">
                         #if($previous_f)
                         <li>
-                          <a href="/console/shop/order?shop_id=${shop_id}&from=$previous_f&offset=50">Previous</a></li>
+                          <a href="/console/shop/order?operation=$operation&shop_id=${shop_id}&from=$previous_f&offset=50">Previous</a></li>
                         #end
                         #if($next_f)
-                        <li><a href="/console/shop/order?shop_id=${shop_id}&from=$next_f&offset=50">Next</a></li>
+                        <li><a href="/console/shop/order?operation=$operation&shop_id=${shop_id}&from=$next_f&offset=50">Next</a></li>
                         #end
                     </ul>
                 </nav>
