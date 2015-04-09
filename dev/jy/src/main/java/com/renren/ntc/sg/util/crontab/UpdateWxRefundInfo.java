@@ -39,7 +39,7 @@ public class UpdateWxRefundInfo {
 				processUpdateRefund(Dateutils.tranferDate2Str(new Date()));
 				System.out.println("update end time="+Dateutils.tranferDate2Str(new Date()));
 			}
-		}, 0, 3000);	
+		}, 0, 30*60*1000);	
 	}
 	
 	private static void processUpdateRefund(String time){
