@@ -47,10 +47,14 @@ angular.module('ionic.tool', ['ionic', 'LocalStorageModule'])
                     }
                 }
             })
-            .state('newshop', {
+            .state('tabs.newshop', {
                 url: '/newshop',
-                templateUrl: 'templates/newshop.html',
-                controller: 'NewShopCtrl'
+                views: {
+                    'tool-tab': {
+                        templateUrl: 'templates/newshop.html',
+                        controller: 'NewShopCtrl'
+                    }
+                }
             });
 
 

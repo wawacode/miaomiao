@@ -250,14 +250,14 @@ angular.module('ionic.tool')
                     }
                     localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status': $scope.newShopStatus});
 
-                    $state.go('newshop');
+                    $state.go('tabs.newshop');
                 }).
                 error(function (data, status, headers, config) {
                     $ionicLoading.hide();
                     $scope.newShopURL = undefined;
                     $scope.newShopStatus = '创建店铺失败: ' + data;
                     localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status': $scope.newShopStatus});
-                    $state.go('newshop');
+                    $state.go('tabs.newshop');
                 });
         }
     }).controller('MyTabCtrl',function ($scope, $ionicLoading, $compile, $http, $state, localStorageService,MMUtils,serverInfo) {
