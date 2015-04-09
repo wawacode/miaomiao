@@ -73,6 +73,8 @@ public class WXService {
     private static final String  notify_url ="http://www.mbianli.com{p}/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    
+    private static String WX_REFUND_URL = "https://api.mch.weixin.qq.com/pay/refundquery";
 
     
 
@@ -88,6 +90,14 @@ public class WXService {
             "   <spbill_create_ip>{spbill_create_ip}</spbill_create_ip>\n" +
             "   <total_fee>{total_fee}</total_fee>\n" +
             "   <trade_type>JSAPI</trade_type>\n" +
+            "   <sign>{sign}</sign>\n" +
+            "</xml>"  ;
+    
+    private static final String WX_REFUND_XML = "<xml>\n" +
+            "   <appid>{appId}</appid>\n" +
+            "   <mch_id>{mch_id}</mch_id>\n" +
+            "   <nonce_str>{nonce_str}</nonce_str>\n" +
+            "   <out_trade_no>{order_id}</out_trade_no>\n" +
             "   <sign>{sign}</sign>\n" +
             "</xml>"  ;
 
@@ -404,6 +414,7 @@ public class WXService {
         wx.config("http://www.mbianli.com");
         long end = System.currentTimeMillis();
         System.out.println("cos" + (end - now));
+        System.out.println(wx.getWxRefundInfo("C201504071831020027585"));
     }
 
     public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {
@@ -467,6 +478,40 @@ public class WXService {
         }
         return res.substring( s.length() + start ,end);
     }
+    
+    private static String getRefundFee(String res) {
+        String s = "<refund_fee>";
+        String e = "</refund_fee>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+    
+    private static String getRefundStatus(String res) {
+        String s = "<refund_status_0><![CDATA[";
+        String e = "]]></refund_status_0>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+    
+    private static String getisHaveRefundStatus(String res) {
+        String s = "<result_code><![CDATA[";
+        String e = "]]></result_code>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+    
     public static String createSign(SortedMap<String, String> packageParams) {
         StringBuffer sb = new StringBuffer();
         Set es = packageParams.entrySet();
@@ -485,5 +530,40 @@ public class WXService {
         String sign = MD5Util.MD5Encode(sb.toString(), "utf-8")
                 .toUpperCase();
         return sign;
+    }
+    
+    public String getWxRefundInfo(String orderId) {
+    	String result = "";
+        try {
+            SortedMap<String,String> map  = new TreeMap<String,String>();
+            String nonce_str = Sha1Util.getNonceStr();
+            map.put("appid",appId);
+            map.put("mch_id",mch_id);
+            map.put("nonce_str",nonce_str);
+            map.put("out_trade_no", orderId);
+            String sign =  createSign(map).toUpperCase()  ;
+            String content = WX_REFUND_XML.replace("{appId}",appId);
+            content  = content.replace("{mch_id}",mch_id);
+            content  = content.replace("{nonce_str}",nonce_str);
+            content  = content.replace("{order_id}",orderId);
+            content  = content.replace("{sign}",sign);
+            TenpayHttpClient http = new TenpayHttpClient();
+            http.callHttpPost(WX_REFUND_URL,content);
+            result  = http.getResContent();
+            System.out.println("send " + content +"wx refund rec " +  result );
+            if(!StringUtils.isBlank(result)){
+            	String isHaveRefund = getisHaveRefundStatus(result);
+            	if("SUCCESS".equals(isHaveRefund)){
+            		JSONObject refundJson = new JSONObject();
+                	refundJson.put("refund_status", getRefundStatus(result));
+                	refundJson.put("refund_fee", getRefundFee(result));
+                	refundJson.put("result_code", isHaveRefund);
+                	return refundJson.toJSONString();
+            	}
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
     }
 }
