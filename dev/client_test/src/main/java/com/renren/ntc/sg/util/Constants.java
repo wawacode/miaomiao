@@ -29,6 +29,7 @@ public class Constants {
     public static final String MASTER_URL= "MASTER_URL" ;
     public static final String LOOPTIME = "LOOPTIME" ;
     public static final String FEEDBACK_URL = "FEEDBACK_URL";
+    public static final String PRINTER_FEEDBACK_URL = "PRINTER_FEEDBACK_URL";
     public static final String VERCHECK = "VERCHECK";
 
     public static  final String PARATERERROR = "{\"code\":1,\"msg\":\"paramter error\"}";

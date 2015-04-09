@@ -7,6 +7,7 @@ import com.renren.ntc.sg.util.PrinterHeplerV2;
 import com.renren.ntc.sg.util.BootHeplerV2;
 import com.renren.ntc.sg.util.SUtils;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -86,9 +87,17 @@ public class ScheduleTaskV2 {
             if (!isOk(response)){
                 return ;
             }
-             String  data  = ob.getString("data");
+
+            try{
+            String status = getPrinterStatus();
+            printerfb(status);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            String  data  = ob.getString("data");
             LoggerUtils.getInstance().log(" data : " + data);
             JSONArray jarr  = JSONArray.parseArray(data)  ;
+
             for (int i =0 ; i < jarr.size(); i++ ){
                 JSONObject  oo = (JSONObject)  jarr.get(i);
                 //检查是否在成功打印队列中
@@ -136,7 +145,26 @@ public class ScheduleTaskV2 {
          feedback(o,re,"printing");
          return re;
     }
-
+    public boolean printerfb( String status){
+        String feed_url = BootHeplerV2.getInstance().getKey(Constants.PRINTER_FEEDBACK_URL) ;
+        LoggerUtils.getInstance().log(String.format("feed back printerfb ..%s ..",status));
+        try{
+            String pid =    PrinterHeplerV2.getInstance().getKey(Constants.PID) ;
+            String token =    PrinterHeplerV2.getInstance().getKey(Constants.TOKEN) ;
+            String ver =  BootHeplerV2.getInstance().getKey(Constants.VER) ;
+            feed_url = feed_url.replace("{pid}",pid).replace("{status}",status).replace("{ver}",ver).replace("{token}",token) ;
+            byte[] b  = SHttpClient.getURLData((feed_url), "catxianguo.com");
+            String response = SUtils.toString(b);
+            LoggerUtils.getInstance().log(String.format("fb url %s ,res %s " , feed_url, response) ) ;
+            if (!isOk(response)){
+                return  false;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return  false;
+        }
+        return true;
+    }
 
     public boolean feedback(JSONObject  o , boolean re , String msg){
          String feed_url = BootHeplerV2.getInstance().getKey(Constants.FEEDBACK_URL) ;
@@ -156,5 +184,56 @@ public class ScheduleTaskV2 {
               return  false;
         }
         return true;
+    }
+
+
+    public static String getPrinterStatus(){
+        String workstatus = "";
+        try {
+            Process p = Runtime.getRuntime().exec("cmd /c rundll32 printui.dll,PrintUIEntry  /Xg /n miaomiao.printer.usb" +
+                    " /f \"C:\\Program Files\\cat\\webapps\\cli-1\\f.txt\"");
+            p.waitFor();
+
+            File file = new File("C:\\Program Files\\cat\\webapps\\cli-1\\f.txt") ;
+            if(!file.exists()){
+                workstatus = "file miss";
+                return workstatus ;
+            }
+            BufferedReader reader = null;
+            try {
+                String encoding = "utf-16";
+                InputStreamReader read = new InputStreamReader(new FileInputStream(file), encoding);//考虑到编码格式
+                reader = new BufferedReader(read);
+                String tempString = "";
+                while ((tempString = reader.readLine()) != null) {
+                    //"Attributes:	<Local|WorkOffline|>"
+                    workstatus  = getAttributes(tempString);
+                    if(workstatus != null && workstatus.trim().length() != 0){
+                        break ;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                workstatus = e.getMessage();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e1) {
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return workstatus;
+    }
+
+    private static String getAttributes(String tempString) {
+        int start =tempString.indexOf("Attributes:") ;
+        if (-1 == start){
+            return "";
+        }
+        return tempString.substring(start,tempString.length());
     }
 }
