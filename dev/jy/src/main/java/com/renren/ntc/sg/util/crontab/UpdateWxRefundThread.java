@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
@@ -51,7 +52,7 @@ public class UpdateWxRefundThread implements Runnable{
 		String orderTime = Dateutils.tranferDate2Str(order.getCreate_time());
 		String result = wxservice.getWxRefundInfo(order.getOrder_id());
 		if(StringUtils.isBlank(result)){
-			System.out.println("threadname="+name+",shopid="+order.getShop_id()+",orderid="+order.getId()+",create_time="+orderTime+",没有退款");
+			LoggerUtils.getInstance().log("threadname="+name+",shopid="+order.getShop_id()+",orderid="+order.getId()+",create_time="+orderTime+",没有退款");
 			return;
 		}
 		JSONObject resultJson = JSONObject.parseObject(result);
@@ -64,9 +65,9 @@ public class UpdateWxRefundThread implements Runnable{
 		int refundCodeInt = "SUCCESS".equals(refundCode) ? REFUND_SUC_FLAG : REFUND_FAIL_FLAG;
 		int updateFlag = orderDao.updateWXRefund(order.getId(), order.getShop_id(),refundCodeInt, refundInfo.toJSONString(), SUtils.generOrderTableName(order.getShop_id()));
 		if(updateFlag == 1){
-			System.out.println("threadname="+name+",shopid="+order.getShop_id()+",orderid="+order.getId()+",create_time="+orderTime+",refundCode="+refundCodeInt+",refundInfo="+refundInfo.toJSONString()+",update suc");
+			LoggerUtils.getInstance().log("threadname="+name+",shopid="+order.getShop_id()+",orderid="+order.getId()+",create_time="+orderTime+",refundCode="+refundCodeInt+",refundInfo="+refundInfo.toJSONString()+",update suc");
 		}else {
-			System.out.println("threadname="+name+",shopid="+order.getShop_id()+",orderid="+order.getId()+",create_time="+orderTime+",refundCode="+refundCodeInt+",refundInfo="+refundInfo.toJSONString()+",update failed");
+			LoggerUtils.getInstance().log("threadname="+name+",shopid="+order.getShop_id()+",orderid="+order.getId()+",create_time="+orderTime+",refundCode="+refundCodeInt+",refundInfo="+refundInfo.toJSONString()+",update failed");
 		}
 	}
 
