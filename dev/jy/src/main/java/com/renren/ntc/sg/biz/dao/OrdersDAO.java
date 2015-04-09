@@ -46,7 +46,19 @@ public interface OrdersDAO {
 
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3 ")
     List<Order> get10Orders(long shop_id,int from, int offset,@SQLParam("tableName") String tableName);
-
+    
+    /**
+      * 未完成的订单
+      * @param tableName
+      * @param shop_id
+      * @param from
+      * @param offset
+      * @return
+      * @author ZhaoXiuFei
+      * @date 2015年4月9日下午3:11:13
+     */
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:2 and status = 0 order by create_time desc limit :3,:4 ")
+    List<Order> getUnfinishedOrders(@SQLParam("tableName") String tableName, long shop_id,int from, int offset);
 
     @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
     int update(int i, String orderId,@SQLParam("tableName") String tableName);
