@@ -13,6 +13,7 @@ import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.FileUtil;
 import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
@@ -405,57 +406,39 @@ public class WXService {
             "   <sign>{sign}</sign>\n" +
             "</xml>" ;
     public static void  payOk (String fileName)   {
-        File file = new File (fileName);
-        if(file.isFile() && file.exists()){ //判断文件是否存在
-            InputStreamReader read = null  ;
-            try {
-                  read = new InputStreamReader(
-                   new FileInputStream(file),"utf-8");//考虑到编码格式
-            BufferedReader bufferedReader = new BufferedReader(read);
-            String lineTxt = null;
-             while((lineTxt = bufferedReader.readLine()) != null){
-                 String [] t = lineTxt.split("\t");
-                 String serialNo = t[1] ;
-                 String shop_id = t[5];
-                 String queryUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
-                 String content = CODE.replace("{appId}",appId) ;
-                 content = content.replace("{mch_id}",mch_id);
-                 String noce_str =  Sha1Util.getNonceStr();;
-                 content = content.replace("{nonce_str}",noce_str);
-                 content = content.replace("{out_trade_no}",serialNo);
-                 SortedMap<String,String> map =  new TreeMap<String,String>() ;
-                 map.put("appid", appId);
-                 map.put("mch_id", mch_id );
-                 map.put("nonce_str", noce_str );
-                 map.put("out_trade_no", serialNo );
-                 String sign =  createSign(map).toUpperCase() ;
-                 content = content.replace("{sign}",sign);
-                 TenpayHttpClient tp =  new TenpayHttpClient();
-                 tp.callHttpPost(queryUrl,content);
-                 String cc = tp.getResContent();
-                 System.out.print(lineTxt);
-                 if (-1 != cc.indexOf("<trade_state_desc><![CDATA[")){
-                     String pay = getP(cc);
-                     System.out.print( pay + "\n");
-                 }else if (-1 != cc.indexOf("<err_code_des><![")){
-                     String pay = getPERR(cc);
-                     System.out.print( pay + "\n");
-                 }  else{
-                     System.out.println(cc);
-                 }
-                }
-            }catch ( Exception e){
-                e.printStackTrace();
-            }finally {
-                if (null != read) {
-                    try {
-                        read.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+       List<String> orderIdList = FileUtil.readFile(fileName);
+       for(String orderId : orderIdList){
+    	   queryPaySuc(orderId);
+       }
+    }
+    
+    public static void queryPaySuc(String orderId){
+    	 String queryUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
+         String content = CODE.replace("{appId}",appId) ;
+         content = content.replace("{mch_id}",mch_id);
+         String noce_str =  Sha1Util.getNonceStr();;
+         content = content.replace("{nonce_str}",noce_str);
+         content = content.replace("{out_trade_no}",orderId);
+         SortedMap<String,String> map =  new TreeMap<String,String>() ;
+         map.put("appid", appId);
+         map.put("mch_id", mch_id );
+         map.put("nonce_str", noce_str );
+         map.put("out_trade_no", orderId );
+         String sign =  createSign(map).toUpperCase() ;
+         content = content.replace("{sign}",sign);
+         TenpayHttpClient tp =  new TenpayHttpClient();
+         tp.callHttpPost(queryUrl,content);
+         String cc = tp.getResContent();
+         System.out.print(orderId);
+         if (-1 != cc.indexOf("<trade_state_desc><![CDATA[")){
+             String pay = getP(cc);
+             System.out.print( pay + "\n");
+         }else if (-1 != cc.indexOf("<err_code_des><![")){
+             String pay = getPERR(cc);
+             System.out.print( pay + "\n");
+         }  else{
+             System.out.println(cc);
+         }
     }
 
     private static String getPERR(String cc) {
