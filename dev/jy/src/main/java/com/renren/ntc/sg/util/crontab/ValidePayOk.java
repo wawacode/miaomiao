@@ -59,15 +59,21 @@ public class ValidePayOk {
 		JSONObject result = wxservice.queryPaySuc(order.getOrder_id());
 		String tradeState = (String)result.get("trade_state");
 		if(order.getStatus() == 1 || order.getStatus() == 2){
-			if(StringUtils.isBlank(tradeState) || !"SUCCESS".equals(tradeState)){
-				System.out.println("error!!!!! shopId="+order.getShop_id()+",orderId="+order.getId()+",dborder status="+order.getStatus()+",orderTime="+orderTime+",wx result="+result.toJSONString());
+			if(StringUtils.isBlank(tradeState)){
+				System.out.println("tradeState is null!!!!! shopId="+order.getShop_id()+",orderId="+order.getOrder_id()+",dborder status="+order.getStatus()+",orderTime="+orderTime+",wx result="+result.toJSONString());
+			}else if (!"SUCCESS".equals(tradeState)) {
+				System.out.println("error!!!!! shopId="+order.getShop_id()+",orderId="+order.getOrder_id()+",dborder status="+order.getStatus()+",orderTime="+orderTime+",wx result="+result.toJSONString());
+			}else {
+				System.out.println("right!!!!! shopId="+order.getShop_id()+",orderId="+order.getOrder_id()+",dborder status="+order.getStatus()+",orderTime="+orderTime+",wx result="+result.toJSONString());
 			}
 		}else if(order.getStatus() == 0){
-			if(StringUtils.isBlank(tradeState) || "SUCCESS".equals(tradeState)){
-				System.out.println("error!!!!! shopId="+order.getShop_id()+",orderId="+order.getId()+",dborder status="+order.getStatus()+",orderTime="+orderTime+",wx result="+result.toJSONString());
+			if(StringUtils.isBlank(tradeState)){
+				System.out.println("status=0error!!!!! shopId="+order.getShop_id()+",orderId="+order.getOrder_id()+",dborder status="+order.getStatus()+",orderTime="+orderTime+",wx result="+result.toJSONString());
+			}else {
+				System.out.println("status=0andtradeStatenotnull------!!!!! shopId="+order.getShop_id()+",orderId="+order.getOrder_id()+",dborder status="+order.getStatus()+",orderTime="+orderTime+",wx result="+result.toJSONString());
 			}
 		}else {
-			
+			System.out.println("pppppp!!!!! shopId="+order.getShop_id()+",orderId="+order.getOrder_id()+",dborder status="+order.getStatus()+",orderTime="+orderTime+",wx result="+result.toJSONString());
 		}
 		
 	}
