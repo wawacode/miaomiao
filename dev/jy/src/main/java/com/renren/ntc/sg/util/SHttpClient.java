@@ -14,7 +14,7 @@ import java.net.URLConnection;
 public class SHttpClient {
 	private static final int CONN_TIMEOUT = 10000;
 	private static final int READ_TIMEOUT = 10000;
-	private static final int RETRY = 1;
+	private static final int RETRY = 2;
 
 	public static Logger logger = LoggerFactory.getLogger(SHttpClient.class);
 
