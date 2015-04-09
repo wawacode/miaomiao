@@ -397,6 +397,90 @@ public class WXService {
     }
 
 
+    private static  String CODE = "<xml>\n" +
+            "   <appid>{appId}</appid>\n" +
+            "   <mch_id>{mch_id}</mch_id>\n" +
+            "   <nonce_str>{nonce_str}</nonce_str>\n" +
+            "   <out_trade_no>{out_trade_no}</out_trade_no>\n" +
+            "   <sign>{sign}</sign>\n" +
+            "</xml>" ;
+    public static void  payOk (String fileName)   {
+        File file = new File (fileName);
+        if(file.isFile() && file.exists()){ //判断文件是否存在
+            InputStreamReader read = null  ;
+            try {
+                  read = new InputStreamReader(
+                   new FileInputStream(file),"utf-8");//考虑到编码格式
+            BufferedReader bufferedReader = new BufferedReader(read);
+            String lineTxt = null;
+             while((lineTxt = bufferedReader.readLine()) != null){
+                 String [] t = lineTxt.split("\t");
+                 String serialNo = t[1] ;
+                 String shop_id = t[5];
+                 String queryUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
+                 String content = CODE.replace("{appId}",appId) ;
+                 content = content.replace("{mch_id}",mch_id);
+                 String noce_str =  Sha1Util.getNonceStr();;
+                 content = content.replace("{nonce_str}",noce_str);
+                 content = content.replace("{out_trade_no}",serialNo);
+                 SortedMap<String,String> map =  new TreeMap<String,String>() ;
+                 map.put("appid", appId);
+                 map.put("mch_id", mch_id );
+                 map.put("nonce_str", noce_str );
+                 map.put("out_trade_no", serialNo );
+                 String sign =  createSign(map).toUpperCase() ;
+                 content = content.replace("{sign}",sign);
+                 TenpayHttpClient tp =  new TenpayHttpClient();
+                 tp.callHttpPost(queryUrl,content);
+                 String cc = tp.getResContent();
+                 System.out.print(lineTxt);
+                 if (-1 != cc.indexOf("<trade_state_desc><![CDATA[")){
+                     String pay = getP(cc);
+                     System.out.print( pay + "\n");
+                 }else if (-1 != cc.indexOf("<err_code_des><![")){
+                     String pay = getPERR(cc);
+                     System.out.print( pay + "\n");
+                 }  else{
+                     System.out.println(cc);
+                 }
+                }
+            }catch ( Exception e){
+                e.printStackTrace();
+            }finally {
+                if (null != read) {
+                    try {
+                        read.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private static String getPERR(String cc) {
+        String s = "<err_code_des><![CDATA[";
+        String e = "]]></err_code_des>";
+        int start = cc.indexOf(s);
+        int end = cc.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return cc.substring( s.length() + start ,end);
+    }
+
+    private static String getP(String cc) {
+        String s = "<trade_state_desc><![CDATA";
+        String e = "]]></trade_state_desc>";
+        int start = cc.indexOf(s);
+        int end = cc.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return cc.substring( s.length() + start ,end);
+    }
+
+
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new  RoseAppContext();
         WXService wx =  rose.getBean(WXService.class);
@@ -404,6 +488,7 @@ public class WXService {
         wx.config("http://www.mbianli.com");
         long end = System.currentTimeMillis();
         System.out.println("cos" + (end - now));
+//        payOk("d:\\downloads\\mm.txt");
     }
 
     public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {

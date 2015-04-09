@@ -24,6 +24,7 @@
  */
 
 #import "PushPlugin.h"
+#import "UMessage.h"
 
 @implementation PushPlugin
 
@@ -149,6 +150,9 @@
                         stringByReplacingOccurrencesOfString:@">" withString:@""]
                        stringByReplacingOccurrencesOfString: @" " withString: @""];
     [results setValue:token forKey:@"deviceToken"];
+    
+
+    [UMessage registerDeviceToken:deviceToken];
 
     #if !TARGET_IPHONE_SIMULATOR
         // Get Bundle Info for Remote Registration (handy if you have more than one app)

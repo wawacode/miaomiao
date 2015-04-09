@@ -1,0 +1,304 @@
+<html ng-app="ionic.tool">
+<head>
+    <meta charset="utf-8">
+    <title>喵喵工具</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
+    <link href="css/tool.css" rel="stylesheet">
+
+    <script type="text/javascript" src="lib/ionic/js/ionic.bundle.min.js"></script>
+    <script type="text/javascript" src="lib/angular-local-storage.min.js"></script>
+    <!-- google maps javascript -->
+
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=1.5&ak=8827ee39511568ac0705d037d67b2624"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/tool.js"></script>
+    <script src="js/HttpClient.js"></script>
+    <script src="js/Utils.js"></script>
+
+</head>
+
+<body>
+
+<ion-nav-bar class="bar-balanced">
+    <!--<ion-nav-back-button class="button-icon ion-arrow-left-c">-->
+    <!--</ion-nav-back-button>-->
+</ion-nav-bar>
+
+<ion-nav-view></ion-nav-view>
+
+<script id="templates/loadingIndicator.html" type="text/ng-template">
+    <div class="loadingIndicatorIcon ion-loading-c"></div>
+    <br />
+    <span>{{LoadingMessage}}</span>
+</script>
+
+<script id="templates/sign-in.html" type="text/ng-template">
+    <ion-view view-title="喵喵地推人员工具">
+
+        <ion-content class="padding">
+            <div class="list">
+
+                <div class="item item-input">
+                    <span class="input-label"><span class="necessary">*</span>姓名</span>
+                    <input type="text" ng-model="user.name" placeholder="张三">
+                </div>
+                <div class="item item-input">
+                    <span class="input-label"><span class="necessary">*</span>手机:</span>
+                    <input type="text" ng-model="user.phone" placeholder="130***">
+                </div>
+                <div class="item item-input">
+                    <span class="input-label"><span class="necessary">*</span>密码:</span>
+                    <input type="password" ng-model="user.password">
+                </div>
+            </div>
+            <div class="padding">
+                <button class="button button-block button-balanced" ng-click="signIn(user)">
+                    登陆
+                </button>
+                <p class="text-center assertive">
+                    {{signStatasMessage}}
+                </p>
+
+                <p class="text-center">
+                    <a href="#/forgot-password">需要帮助</a>
+                </p>
+
+            </div>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="templates/forgot-password.html" type="text/ng-template">
+    <ion-view view-title="Forgot Password">
+        <ion-content padding="true">
+            <p>
+                找团队帮忙.
+            </p>
+
+            <p>
+                Return to <a href="#/sign-in">登陆</a>.
+            </p>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="templates/tabs.html" type="text/ng-template">
+    <ion-view>
+        <ion-tabs class="tabs-icon-top tabs-light">
+
+            <ion-tab title="推广工具" icon="ion-settings" class="tab-item-balanced" href="#/tab/tool">
+                <ion-nav-view name="tool-tab"></ion-nav-view>
+            </ion-tab>
+
+            <ion-tab title="我的推广" icon="ion-android-contacts" class="tab-item-balanced" href="#/tab/my">
+                <ion-nav-view name="my-tab"></ion-nav-view>
+            </ion-tab>
+
+            <ion-tab title="退出" icon="ion-log-out" class="tab-item-balanced" href="#/sign-in">
+            </ion-tab>
+
+        </ion-tabs>
+    </ion-view>
+</script>
+
+
+<script id="templates/tool.html" type="text/ng-template">
+    <ion-view view-title="喵喵工具">
+        <ion-content>
+
+            <div class="list">
+                <div class="item item-divider">
+                    新店铺信息
+                </div>
+                <div class="item item-body">
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>店铺名称:</span>
+                        <input type="text" ng-model="info.shop_name" required placeholder="超市/便利店名称">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>店铺电话:</span>
+                        <input type="text" ng-model="info.shop_tel" required placeholder="座机/手机">
+                    </label>
+                    <div class="item">
+                        <div class="list">
+                            <span class="input-label"><span class="necessary">*</span>营业时间</span>
+
+                            <div class="list" style="">
+                                <div class="item item-input" style="border: none;">
+                                    <span class="input-label" style="max-width: 80px">24小时营业:</span>
+
+                                    <div class="checkbox">
+                                        <input type="checkbox" style="padding: 5px;width: 25px;height: 25px" ng-model="info.isFullTimeOpen">
+                                    </div>
+                                </div>
+
+                                <div class="item item-input item-button-right" style="border: none;"
+                                     ng-show="!info.isFullTimeOpen">
+                                    <span class="input-label" style="max-width: 100px">开店时间:</span>
+
+                                    <div>
+                                        <select ng-model="info.new_open_time.hours"
+                                                ng-options="o for o in allHours">
+                                        </select>
+                                        <select ng-model="info.new_open_time.minutes"
+                                                ng-options="o for o in allMinutes">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="item item-input" style="border: none;"
+                                     ng-show="!info.isFullTimeOpen">
+                                    <span class="input-label" style="max-width: 100px">打烊时间:</span>
+                                    <select ng-model="info.new_close_time.hours"
+                                            ng-options="o for o in allHours">
+                                    </select>
+                                    <select ng-model="info.new_close_time.minutes"
+                                            ng-options="o for o in allMinutes">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>起送价格:</span>
+                        <input type="text" ng-model="info.shop_basePrice" placeholder="30" required>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>店长电话:</span>
+                        <input type="text" ng-model="info.shop_owner_phone" required placeholder="老板电话，一般为手机">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>店铺地址:</span>
+                        <input type="text" ng-model="info.shop_address" placeholder="北京市海淀区某某地址">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label"><span class="necessary">*</span>服务范围:</span>
+                        <input type="text" ng-model="info.shop_serveArea" placeholder="服务的周边小区名称">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">打印机ID:</span>
+                        <input type="text" ng-model="info.shop_print" required placeholder="例如,CATDTE_a96edcfb">
+                    </label>
+
+                </div>
+                <div class="item">
+                    <div id="map" data-tap-disabled="true">
+                    </div>
+
+                    <label class="item">
+                        <span><span class="necessary">*</span>定位经度:</span>
+                        <label type="text">{{info.shop_lat}}</label>
+                    </label>
+                    <label class="item">
+                        <span><span class="necessary">*</span>定位纬度:</span>
+                        <label type="text">{{info.shop_lng}}</label>
+                    </label>
+
+                    <div style="font-weight: bold;text-align: center">
+                        <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate assertive"> (点我)重新定位 </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="padding error" ng-show="submitHasError">
+                <label type="text">{{error_message}}</label>
+            </div>
+
+            <div class="padding">
+                <button class="button button-block button-positive" ng-click="submit()">
+                    提交
+                </button>
+            </div>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="templates/my.html" type="text/ng-template">
+    <ion-view view-title="我的推广">
+        <ion-content padding="false">
+
+            <ion-refresher refreshing-icon='ion-loading-c' on-refresh="doRefresh()">
+            </ion-refresher>
+
+            <div class="list card">
+                <div class="item item-divider">
+                    <i class="icon ion-person"></i>&nbsp;我的信息
+                </div>
+                <div class="item item-body">
+
+                    <label class="item item-input">
+                        <span class="input-label">姓名:</span>
+                        <input type="text" ng-model="user.name" required>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">电话:</span>
+                        <input type="tel" ng-model="user.phone" required>
+                    </label>
+                </div>
+            </div>
+
+            <ul class="list card">
+                <div class="item item-divider">
+                    <i class="icon ion-navicon-round"></i>&nbsp;我推广的店铺(共{{myCustomersInfo.length}}家)
+                </div>
+
+                <li ng-repeat="item in myCustomersInfo"
+                    href=""
+                    class="item item-body" style="padding: 2px">
+                    <div class="list card">
+                        <div class="item">
+                            <h2><i class="icon ion-ios7-cart"></i>&nbsp;{{ item.shop_name }}</h2>
+
+                            <p><i class="icon ion-ios7-telephone"></i>&nbsp;{{ item.shop_tel }}</p>
+
+                            <p><i class="icon ion-ios7-location"></i>&nbsp;{{ item.shop_address }}</p>
+
+                            <p><i class="icon ion-ios7-time"></i>&nbsp;{{ item.create_time | date:'medium' }}</p>
+
+                            <p><i class="icon ion-ios7-printer"></i>&nbsp;{{ item.shop_print }}</p>
+
+                            <p><i class="icon ion-link"></i>&nbsp;{{ item.shop_online_url }}</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="templates/newshop.html" type="text/ng-template">
+    <ion-view>
+        <ion-nav-bar class="bar-balanced" align-title="center">
+            <ion-nav-buttons side="left">
+                <button class="button button-clear" ui-sref="tabs.tool">
+                    <i class="icon ion-ios7-arrow-back">返回</i>
+                </button>
+            </ion-nav-buttons>
+            <ion-nav-title>
+                新店开张
+            </ion-nav-title>
+        </ion-nav-bar>
+        <ion-content padding="true">
+            <div ng-show="!info.newShopSuccess">
+                <p>创建地铺出错啦,请联系管理员:</br>{{info.newShopStatus}}</p>
+
+            </div>
+            <div ng-show="info.newShopSuccess">
+                <p>店铺已经为您准备妥当,请复制链接在微信打开访问:</p>
+                <p>
+                    <a class="icon" ng-href="{{info.newShopURL}}">{{info.newShopURL}}</a>
+                </p>
+            </div>
+        </ion-content>
+    </ion-view>
+</script>
+
+</body>
+</html>

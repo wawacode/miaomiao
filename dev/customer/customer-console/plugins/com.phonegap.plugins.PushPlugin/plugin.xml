@@ -4,7 +4,7 @@
     xmlns:amazon="http://schemas.android.com/apk/lib/com.amazon.device.ads"
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     id="com.phonegap.plugins.PushPlugin"
-    version="2.4.0">
+    version="2.5.0">
 
   <name>PushPlugin</name>
 	<author>Bob Easterday</author>
@@ -45,8 +45,13 @@
             <uses-permission android:name="android.permission.WAKE_LOCK" />
             <uses-permission android:name="android.permission.VIBRATE" />
             <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-		</config-file>
+            <!--【可选】如果需要设置前台是否显示通知，需要设置这个权限-->
+            <uses-permission android:name="android.permission.GET_TASKS" />
+
+
+        </config-file>
 
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 
@@ -54,32 +59,53 @@
                     android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
                     android:exported="false" >
             </receiver>
-            <receiver android:name="com.umeng.message.RegistrationReceiver" >
+            <receiver
+                    android:name="com.umeng.message.SystemReceiver"
+                    android:process=":push" >
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                </intent-filter>
                 <intent-filter>
                     <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 </intent-filter>
                 <intent-filter>
                     <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
                     <data android:scheme="package" />
                 </intent-filter>
-
             </receiver>
-            <receiver android:name="com.umeng.message.UmengBroadcastReceiver" >
+            <receiver
+                    android:name="com.umeng.message.MessageReceiver"
+                    android:process=":push" >
                 <intent-filter>
                     <action android:name="org.agoo.android.intent.action.RECEIVE" />
                 </intent-filter>
+            </receiver>
+
+            <receiver
+                    android:name="com.umeng.message.ElectionReceiver"
+                    android:process=":push" >
+                <intent-filter>
+                    <action android:name="org.agoo.android.intent.action.ELECTION_RESULT_V4" />
+                    <category android:name="umeng" />
+                </intent-filter>
+            </receiver>
+            <receiver
+                    android:name="com.umeng.message.RegistrationReceiver"
+                    android:exported="false" >
                 <intent-filter>
                     <action android:name="$PACKAGE_NAME.intent.action.COMMAND" />
                 </intent-filter>
+            </receiver>
+            <receiver android:name="com.umeng.message.BootBroadcastReceiver" >
                 <intent-filter>
-                    <action android:name="org.agoo.android.intent.action.RE_ELECTION_V2" />
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
                 </intent-filter>
             </receiver>
+
             <service
                     android:name="com.umeng.message.UmengService"
                     android:exported="true"
-                    android:process=":umengService_v1" >
+                    android:process=":push" >
                 <intent-filter>
                     <action android:name="$PACKAGE_NAME.intent.action.START" />
                 </intent-filter>
@@ -87,17 +113,11 @@
                     <action android:name="$PACKAGE_NAME.intent.action.COCKROACH" />
                 </intent-filter>
                 <intent-filter>
-                    <action android:name="org.agoo.android.intent.action.PING" />
+                    <action android:name="org.agoo.android.intent.action.PING_V4" />
+                    <category android:name="umeng" />
                 </intent-filter>
             </service>
-            <service
-                    android:name="org.android.agoo.service.ElectionService"
-                    android:exported="true"
-                    android:process=":umengService_v1" >
-                <intent-filter>
-                    <action android:name="org.agoo.android.intent.action.ELECTION_V2" />
-                </intent-filter>
-            </service>
+
             <!-- self made service , when get callback, commuacate to js-->
             <service android:name="com.plugin.umeng.UMengIntentService" />
             <!-- V1.3.0添加的service，负责下载通知的资源 -->
@@ -120,8 +140,14 @@
 
 		</config-file>
 
-		<source-file src="src/android/libs/com.umeng.message.lib.jar" target-dir="libs/" />
-		<source-file src="src/android/com/plugin/umeng/UMengIntentService.java" target-dir="src/com/plugin/umeng/" />
+		<source-file src="src/android/libs/com.umeng.message.lib_v2.0.0.jar" target-dir="libs/" />
+
+        <source-file src="src/android/libs/armeabi/libcocklogic.so" target-dir="libs/armeabi/" />
+        <source-file src="src/android/libs/armeabi/libtnet-1.1.5.so" target-dir="libs/armeabi/" />
+        <source-file src="src/android/libs/x86/libcocklogic.so" target-dir="libs/x86/" />
+        <source-file src="src/android/libs/x86/libtnet-1.1.5.so" target-dir="libs/x86/" />
+
+        <source-file src="src/android/com/plugin/umeng/UMengIntentService.java" target-dir="src/com/plugin/umeng/" />
 		<source-file src="src/android/com/plugin/umeng/PushHandlerActivity.java" target-dir="src/com/plugin/umeng/" />
 		<source-file src="src/android/com/plugin/umeng/PushPlugin.java" target-dir="src/com/plugin/umeng/" />
 		<source-file src="src/android/com/plugin/android-support-v4.jar" target-dir="libs/" />
@@ -139,9 +165,11 @@
 
 		<source-file src="src/ios/AppDelegate+notification.m" />
 		<source-file src="src/ios/PushPlugin.m" />
+        <source-file src="src/ios/libUMessage_Sdk_1.1.0.a" framework="true" />
 
 		<header-file src="src/ios/AppDelegate+notification.h" />
 		<header-file src="src/ios/PushPlugin.h" />
+        <header-file src="src/ios/UMessage.h" />
 
 	</platform>
 

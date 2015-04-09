@@ -1,0 +1,8 @@
+{
+    "com.phonegap.plugins.PushPlugin": {
+        "source": {
+            "type": "local",
+            "path": "../../../../git_src/PushPlugin"
+        }
+    }
+}
