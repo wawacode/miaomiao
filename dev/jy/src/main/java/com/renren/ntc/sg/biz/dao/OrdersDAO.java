@@ -74,4 +74,7 @@ public interface OrdersDAO {
     
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:4 and (status = 1 or status =2) and create_time between :1 and :2 order by create_time")
     public List<Order> getRealOrder(String beginTime,String endTime,@SQLParam("tableName") String tableName,long  shopId);
+    
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' order by create_time desc")
+    List<Order> getAllWxOrders(@SQLParam("tableName") String tableName,long shopId);
 }

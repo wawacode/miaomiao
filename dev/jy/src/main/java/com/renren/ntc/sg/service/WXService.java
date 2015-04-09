@@ -412,7 +412,7 @@ public class WXService {
        }
     }
     
-    public static void queryPaySuc(String orderId){
+    public static JSONObject queryPaySuc(String orderId){
     	 String queryUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
          String content = CODE.replace("{appId}",appId) ;
          content = content.replace("{mch_id}",mch_id);
@@ -429,16 +429,28 @@ public class WXService {
          TenpayHttpClient tp =  new TenpayHttpClient();
          tp.callHttpPost(queryUrl,content);
          String cc = tp.getResContent();
-         System.out.print(orderId);
+         JSONObject result = new JSONObject();
+         if(StringUtils.isBlank(cc)){
+        	 return result;
+         }
+         System.out.println(cc);
          if (-1 != cc.indexOf("<trade_state_desc><![CDATA[")){
              String pay = getP(cc);
-             System.out.print( pay + "\n");
-         }else if (-1 != cc.indexOf("<err_code_des><![")){
-             String pay = getPERR(cc);
-             System.out.print( pay + "\n");
-         }  else{
-             System.out.println(cc);
+             result.put("trade_state_desc", pay);
+             //System.out.print( pay + "\n");
          }
+         if (-1 != cc.indexOf("<err_code_des><![")){
+             String pay = getPERR(cc);
+             result.put("err_code_des", pay);
+            // System.out.print( pay + "\n");
+         }
+         if (-1 != cc.indexOf("<trade_state><![")) {
+        	 String pay = getTradeState(cc);
+             result.put("trade_state", pay);
+            // System.out.print( pay + "\n");
+		}
+        System.out.println(result.toJSONString());
+        return result;
     }
 
     private static String getPERR(String cc) {
@@ -453,8 +465,19 @@ public class WXService {
     }
 
     private static String getP(String cc) {
-        String s = "<trade_state_desc><![CDATA";
+        String s = "<trade_state_desc><![CDATA[";
         String e = "]]></trade_state_desc>";
+        int start = cc.indexOf(s);
+        int end = cc.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return cc.substring( s.length() + start ,end);
+    }
+    
+    private static String getTradeState(String cc) {
+        String s = "<trade_state><![CDATA[";
+        String e = "]]></trade_state>";
         int start = cc.indexOf(s);
         int end = cc.indexOf(e);
         if (-1 == start ||  -1 == end){
