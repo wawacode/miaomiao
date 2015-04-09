@@ -73,7 +73,7 @@ public class AllShopConsoleController {
             from = 0;
         }
         if ( 0 == offset){
-            offset = 10 ;
+            offset = 100; //2015-04-09 update 100 by ZhaoXiuFei
         }
 
         List<Shop> shopls  =  shopDAO.getAllShops(from,offset);
