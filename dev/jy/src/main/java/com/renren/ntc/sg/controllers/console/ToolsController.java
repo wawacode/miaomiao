@@ -117,10 +117,10 @@ public class ToolsController {
 					}
 					String[] arr = lineTxt.split(regex);
 					String serialNo = upacage(arr[0].trim());
-					if (serialNo.length() > 24) {
-                        missingList.add(serialNo);
-                        continue;
-                    }
+					if (serialNo.length() < 8 || serialNo.length() > 14) {
+						missingList.add(serialNo);
+						continue;
+					}
 					Product p = pDao.geProduct(serialNo);
 					Item it = new Item();
 					it.setShop_id(shop_id);
