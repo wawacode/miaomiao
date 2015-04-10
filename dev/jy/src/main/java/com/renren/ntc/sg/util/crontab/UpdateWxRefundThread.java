@@ -13,7 +13,6 @@ import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Dateutils;
-import com.renren.ntc.sg.util.OrderDetailUtil;
 import com.renren.ntc.sg.util.SUtils;
 
 public class UpdateWxRefundThread implements Runnable{
@@ -30,7 +29,7 @@ public class UpdateWxRefundThread implements Runnable{
 	}
 	@Override
 	public void run() {
-		while(OrderDetailUtil.isRun){
+		while(true){
 			process();
 		}
 		
@@ -42,7 +41,7 @@ public class UpdateWxRefundThread implements Runnable{
 	            if (order == null) {
 	                return;
 	            }
-	            updateOrderRefund(order, orderDao, wxservice,name);
+	            //updateOrderRefund(order, orderDao, wxservice,name);
 	        } catch (Exception e) {
 	           e.printStackTrace();
 	        }

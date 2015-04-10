@@ -25,7 +25,7 @@ import com.renren.ntc.sg.util.crontab.UpdateWxRefundInfo;
  *
  */
 public class OrderDetailUtil {
-	public static boolean isRun = true;
+	//public static boolean isRun = true;
 	public static void main(String[] args) {
 		String mailListStr = args[0];
 		String dateStr = args[1];
@@ -92,7 +92,7 @@ public class OrderDetailUtil {
 		MailSendServer mailSendServer = com.renren.ntc.sg.mail.MailSendServer.getServer("smtp.163.com", 25, "lee_yeah1@163.com", "Lee1qaz2wsx",
 	              "lee_yeah1@163.com");
 		  mailSendServer.sendTextInfo(new MailSendInfo("喵喵微信支付每日订单详情",getHtmlInfo(wxpayShopReports,totalShopOrderPrice), mailLists, new String[0]),false);
-		  isRun = false;
+		  //isRun = false;
 	}
 	
 	private static String getHtmlInfo(List<WXPayShopReport> wxpPayShopReports,int totalShopOrderPrice){
