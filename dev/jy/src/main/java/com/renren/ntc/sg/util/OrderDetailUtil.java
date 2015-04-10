@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.paoding.rose.scanning.context.RoseAppContext;
@@ -17,12 +18,14 @@ import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.mail.MailSendInfo;
 import com.renren.ntc.sg.mail.MailSendServer;
+import com.renren.ntc.sg.util.crontab.UpdateWxRefundInfo;
 /**
  * 打印微信每日订单
  * @author chunhai.li
  *
  */
 public class OrderDetailUtil {
+	public static boolean isRun = true;
 	public static void main(String[] args) {
 		String mailListStr = args[0];
 		String dateStr = args[1];
@@ -31,6 +34,10 @@ public class OrderDetailUtil {
 		RoseAppContext rose = new RoseAppContext();
 		ShopDAO shopDAO = rose.getBean(ShopDAO.class);
 		OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
+		System.out.println("update start time="+Dateutils.tranferDate2Str(new Date()));
+		UpdateWxRefundInfo updateWxRefundInfo = new UpdateWxRefundInfo();
+		updateWxRefundInfo.processUpdateRefund(Dateutils.tranferDate2Str(new Date()));
+		System.out.println("update end time="+Dateutils.tranferDate2Str(new Date()));
 		List<Shop> shops = shopDAO.getAllShopsByAudit(1);
 		List<WXPayShopReport> wxpayShopReports = new ArrayList<WXPayShopReport>();
 		int totalShopOrderPrice = 0;
@@ -85,6 +92,7 @@ public class OrderDetailUtil {
 		MailSendServer mailSendServer = com.renren.ntc.sg.mail.MailSendServer.getServer("smtp.163.com", 25, "lee_yeah1@163.com", "Lee1qaz2wsx",
 	              "lee_yeah1@163.com");
 		  mailSendServer.sendTextInfo(new MailSendInfo("喵喵微信支付每日订单详情",getHtmlInfo(wxpayShopReports,totalShopOrderPrice), mailLists, new String[0]),false);
+		  isRun = false;
 	}
 	
 	private static String getHtmlInfo(List<WXPayShopReport> wxpPayShopReports,int totalShopOrderPrice){

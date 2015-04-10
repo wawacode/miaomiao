@@ -42,7 +42,7 @@ public class UpdateWxRefundInfo {
 		}, 0, 30*60*1000);	
 	}
 	
-	private static void processUpdateRefund(String time){
+	public static void processUpdateRefund(String time){
 		long start = System.currentTimeMillis();
 		RoseAppContext rose = new RoseAppContext();
         ShopDAO  shopDao = rose.getBean(ShopDAO.class);
