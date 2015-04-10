@@ -71,4 +71,13 @@ public interface UserOrdersDAO {
 
     @SQL("update ##(:tableName)   set msg =:2 , update_time=now()  where order_id = :1 ")
     public void confirm(String order_id, String msg, @SQLParam("tableName") String tableName);
+    
+    @SQL("update ##(:tableName) set order_info =:2 ,set order_status =:3, update_time=now() where order_id = :1 ")
+    public int updateOrderStatus(String order_id, String orderInfo,int orderStatus, @SQLParam("tableName") String tableName);
+    
+    @SQL("update ##(:tableName) set order_status =:2, update_time=now() where order_id = :1 ")
+    public int updateOrderStatus(String order_id,int orderStatus, @SQLParam("tableName") String tableName);
+    
+    @SQL("update ##(:tableName) set order_info =:2 ,update_time=now() where order_id = :1 ")
+    public int updateOrderInfo(String order_id,String orderInfo, @SQLParam("tableName") String tableName);
 }

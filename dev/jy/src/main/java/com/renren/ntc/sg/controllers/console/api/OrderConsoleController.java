@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.renren.ntc.sg.service.LoggerUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
@@ -16,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
-import com.renren.ntc.sg.annotations.LoginRequired;
-import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.ShopCategory;
@@ -25,7 +22,10 @@ import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
+import com.renren.ntc.sg.constant.OrderStatus;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.Dateutils;
@@ -50,6 +50,9 @@ public class OrderConsoleController extends BasicConsoleController{
     
     @Autowired
     private ShopCategoryDAO shopCategoryDAO ;
+    
+    @Autowired
+    public UserOrdersDAO userOrdersDAO;
 
 	public  OrderConsoleController(){
        
@@ -149,5 +152,60 @@ public class OrderConsoleController extends BasicConsoleController{
         resultJson.put("shop",shop);
         resultJson.put("orderls",orderls);
         return "@json:"+getDataResult(0, resultJson);
+    }
+    /**
+     * 店家点击确认配送
+     * @param inv
+     * @param shop_id
+     * @param order_id
+     * @param confirm
+     * @return
+     */
+    @Get("order_deliveries")
+    @Post("order_deliveries")
+    public String order_deliveries(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
+        }
+        //LoggerUtils.getInstance().log(String.format("user %s order_cancel shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
+        JSONObject result =  new JSONObject() ;
+        JSONObject data =  new JSONObject() ;
+        if ("done".equals(confirm)){
+        	Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        	 JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+             orderInfo.put("order_msg", "老板点击订单配送");
+            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.DELIVERIES.getCode(), SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.DELIVERIES.getCode(), SUtils.generUserOrderTableName(shop_id));
+            o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            data.put("order", o);       
+        }
+        result.put("data",data);
+        result.put("code",0);
+        return "@json:"+result.toJSONString();
+    }
+    
+    @Get("order_cancel")
+    @Post("order_cancel")
+    public String order_cancel(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
+    	Shop shop = isExistShop(shop_id);
+        if(shop == null){
+        	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
+        }
+        //LoggerUtils.getInstance().log(String.format("user %s order_cancel shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
+        JSONObject result =  new JSONObject() ;
+        JSONObject data =  new JSONObject() ;
+        if ("done".equals(confirm)){
+        	Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+            orderInfo.put("order_msg", "商家点击无法配送");
+            ordersDAO.updateOrderStatus(order_id, OrderStatus.BOSSCANCLE.getCode(), SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, OrderStatus.BOSSCANCLE.getCode(), SUtils.generUserOrderTableName(shop_id));
+            o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            data.put("order", o);       
+        }
+        result.put("data",data);
+        result.put("code",0);
+        return "@json:"+result.toJSONString();
     }
 }

@@ -52,7 +52,7 @@ public interface OrdersDAO {
     @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
     int update(int i, String orderId,@SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where order_id =:1 ")
+    @SQL("select "+ ALL_FIELDS +" from ##(:tableName)  where order_id =:1 ")
     public Order getOrder(String orderId,@SQLParam("tableName") String tableName);
     
     @SQL("select "+ FIELDS +" from ##(:tableName)  where create_time between :1 and :2")
@@ -84,4 +84,14 @@ public interface OrdersDAO {
     
      @SQL("update ##(:tableName)  set order_status =:3 , order_info =:4 where id = :1 and shop_id=:2")
     public int updateWXRefund(long order_id, long shopId, int refundStatus,String refundInfo,@SQLParam("tableName") String tableName);
+     
+     @SQL("update ##(:tableName) set order_info =:2 ,set order_status =:3, update_time=now() where order_id = :1 ")
+     public int updateOrderStatus(String order_id, String orderInfo,int orderStatus, @SQLParam("tableName") String tableName);
+     
+     @SQL("update ##(:tableName) set order_status =:2, update_time=now() where order_id = :1 ")
+     public int updateOrderStatus(String order_id,int orderStatus, @SQLParam("tableName") String tableName);
+     
+     @SQL("update ##(:tableName) set order_info =:2 ,update_time=now() where order_id = :1 ")
+     public int updateOrderInfo(String order_id,String orderInfo, @SQLParam("tableName") String tableName);
+
 }

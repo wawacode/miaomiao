@@ -8,6 +8,7 @@ import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.constant.OrderStatus;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
@@ -98,5 +99,50 @@ public class OrderService {
         String order_key =  SUtils.generOrders(order_id,shop_id);
         JRedisUtil.getInstance().sadd(Constants.ORDER_KEY,order_key);
 
+    }
+    
+    public JSONObject getJson(String msg){
+    	JSONObject om = new JSONObject();
+        try{
+           om = (JSONObject) JSON.parse(msg);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (null == om)  {
+           om = new JSONObject();
+        }
+        return om;
+    }
+    
+    public  List<Order> assembly(List<Order> orders) {
+        List<Order> oo =   new ArrayList<Order>();
+        int first = 0 ;
+        for (Order o : orders) {
+            Address adr = addressService.getAddress(o.getAddress_id());
+            if( null == adr ) {
+                LoggerUtils.getInstance().log(String.format("Miss address drop order %s " ,o.getOrder_id()) );
+                continue;
+            }
+            o.setPhone(adr.getPhone());
+            o.setAddress(adr.getAddress());
+            o.setStatus4V(toStr(o.getStatus(), first));
+            String msg = o.getMsg();
+            JSONObject js = (JSONObject) JSON.parse(msg);
+            if (null != js){
+                try {
+                    o.setConfirm(js.getString("confirm"));
+                    int dprice = js.getInteger("discount");
+                    o.setDprice(dprice );
+                }catch (Exception e){
+                    LoggerUtils.getInstance().log("error" + e.getMessage());
+                }
+            }
+            o.setPrice4V(((float) o.getPrice() / 100) + "");
+            Shop shop = shopDAO.getShop(o.getShop_id());
+            o.setShop_name4V(shop.getName());
+            oo.add(o);
+            first ++;
+        }
+        return oo;
     }
 }
