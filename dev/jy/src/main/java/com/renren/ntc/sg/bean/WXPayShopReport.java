@@ -59,6 +59,10 @@ public class WXPayShopReport {
 		private float wxDiscount;
 		private float realPrice;
 		private String orderTimeStr;
+		private String orderId;
+		private String refundDes;//退款状态
+		private float refundPrice;
+		private String refundStatus;//是否申请退款
 
 		public float getOrderPrice() {
 			return orderPrice;
@@ -90,6 +94,38 @@ public class WXPayShopReport {
 
 		public void setOrderTimeStr(String orderTimeStr) {
 			this.orderTimeStr = orderTimeStr;
+		}
+
+		public String getOrderId() {
+			return orderId;
+		}
+
+		public void setOrderId(String orderId) {
+			this.orderId = orderId;
+		}
+
+		public String getRefundDes() {
+			return refundDes;
+		}
+
+		public void setRefundDes(String refundDes) {
+			this.refundDes = refundDes;
+		}
+
+		public float getRefundPrice() {
+			return refundPrice;
+		}
+
+		public void setRefundPrice(float refundPrice) {
+			this.refundPrice = refundPrice;
+		}
+
+		public String getRefundStatus() {
+			return refundStatus;
+		}
+
+		public void setRefundStatus(String refundStatus) {
+			this.refundStatus = refundStatus;
 		}
 	}
 

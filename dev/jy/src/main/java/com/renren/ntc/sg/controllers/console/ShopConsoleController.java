@@ -1,6 +1,5 @@
 package com.renren.ntc.sg.controllers.console;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +32,6 @@ import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
-import com.renren.ntc.sg.constant.CatstaffConstant;
 import com.renren.ntc.sg.constant.SgConstant;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
@@ -252,7 +250,7 @@ public class ShopConsoleController {
         if ("unfinishedOrder".equals(operation.trim())) {//未完成订单
         	orderls = ordersDAO.getUnfinishedOrders(SUtils.generOrderTableName(shop_id), shop_id, from, offset);
         	inv.addModel("operation","unfinishedOrder");
-		}else if ("order".equals(operation.trim())){//已完成订单
+		}else if ("order".equals(operation)){//已完成订单
 			orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
 			inv.addModel("operation","order");
 		}else{
@@ -495,20 +493,17 @@ public class ShopConsoleController {
     		LoggerUtils.getInstance().log(String.format("uploadPic format is wrong,serialNo=%s",serialNo));
 			return "@error";
 		}
-    	//inv.getServletContext();
     	String savePicPath = SgConstant.SAVE_PIC_PATH.replace("{shop_id}", String.valueOf(shopId));
-    	//boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
-		//if(!isSuc){
-		//	return "@error" ;
-		//}
+    	boolean isSuc = new FileUploadUtils().uploadFile(pic, savePicPath,picName);
+		if(!isSuc){
+			return "@error" ;
+		}
 		String imageUrl = SgConstant.REMOTE_FILE_PATH_PRE.replace("{shop_id}", String.valueOf(shopId));
-		//String picUrl = imageUrl.concat(picName);
-		//int flag = itemsDAO.updateByItemId(SUtils.generTableName(shopId), picUrl, itemId);
-		//if (flag != 1) {
-        //    return "@error";
-        //}
-    	String savePath = inv.getServletContext().getRealPath("/") + CatstaffConstant.SAVE_UPLOAD_FILE_PATH;// 路径要变
-    	File f = FileUploadUtils.uploadFile2(pic, picName, savePath);
+		String picUrl = imageUrl.concat(picName);
+		int flag = itemsDAO.updateByItemId(SUtils.generTableName(shopId), picUrl, itemId);
+		if (flag != 1) {
+            return "@error";
+        }
     	return "r:/console/shop?shop_id="+shopId+"&category_id="+categoryId;
 	}
 

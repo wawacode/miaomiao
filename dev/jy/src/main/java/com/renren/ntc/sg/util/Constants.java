@@ -90,4 +90,6 @@ public class Constants {
     public static final int  COUPONUSED = 4;
     
     public static final int SHOP_ANDITED = 1;
+    
+	public static final int REFUND_SUC_FLAG=3;
 }
