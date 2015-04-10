@@ -1,7 +1,31 @@
 package com.renren.ntc.sg.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Formatter;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.UUID;
+
+import net.paoding.rose.scanning.context.RoseAppContext;
+
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
@@ -14,23 +38,9 @@ import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.FileUtil;
-import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
 import com.renren.ntc.sg.util.wx.Sha1Util;
-import net.paoding.rose.scanning.context.RoseAppContext;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
 
 @Service
 public class WXService {
@@ -74,6 +84,8 @@ public class WXService {
     private static final String  notify_url ="http://www.mbianli.com{p}/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    
+    private static String WX_REFUND_URL = "https://api.mch.weixin.qq.com/pay/refundquery";
 
     
 
@@ -92,6 +104,13 @@ public class WXService {
             "   <sign>{sign}</sign>\n" +
             "</xml>"  ;
 
+    private static final String WX_REFUND_XML = "<xml>\n" +
+            " <appid>{appId}</appid>\n" +
+            " <mch_id>{mch_id}</mch_id>\n" +
+            " <nonce_str>{nonce_str}</nonce_str>\n" +
+            " <out_trade_no>{order_id}</out_trade_no>\n" +
+            " <sign>{sign}</sign>\n" +
+            "</xml>" ;
 
     public  String  getOpenId (String code ){
         String openId = null;
@@ -612,5 +631,38 @@ public class WXService {
             e.printStackTrace();
         }
         return "";
+    }
+    
+    private static String getisHaveRefundStatus(String res) {
+        String s = "<result_code><![CDATA[";
+        String e = "]]></result_code>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start || -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+    
+    private static String getRefundStatus(String res) {
+        String s = "<refund_status_0><![CDATA[";
+        String e = "]]></refund_status_0>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start || -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+
+    private static String getRefundFee(String res) {
+        String s = "<refund_fee>";
+        String e = "</refund_fee>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start || -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
     }
 }
