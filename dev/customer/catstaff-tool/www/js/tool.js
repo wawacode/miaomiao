@@ -242,21 +242,19 @@ angular.module('ionic.tool')
                 success(function (data, status, headers, config) {
                     $ionicLoading.hide();
                     if (data.code != 0) {
-                        $scope.newShopURL = undefined;
                         $scope.newShopStatus = '创建店铺失败: ' + data.msg;
+                        localStorageService.set('MMMETA_shopInfo', {'status': $scope.newShopStatus});
                     } else {
                         $scope.newShopURL = data.url;
                         $scope.newShopStatus = '创建店铺成功';
+                        localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status': $scope.newShopStatus});
                     }
-                    localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status': $scope.newShopStatus});
-
                     $state.go('tabs.newshop');
                 }).
                 error(function (data, status, headers, config) {
                     $ionicLoading.hide();
-                    $scope.newShopURL = undefined;
                     $scope.newShopStatus = '创建店铺失败: ' + data;
-                    localStorageService.set('MMMETA_shopInfo', {'url': $scope.newShopURL, 'status': $scope.newShopStatus});
+                    localStorageService.set('MMMETA_shopInfo', {'status': $scope.newShopStatus});
                     $state.go('tabs.newshop');
                 });
         }
