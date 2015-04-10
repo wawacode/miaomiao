@@ -37,8 +37,8 @@ public class Order {
     private String snapshot="" ;
     private int status    ;
     private String info ;
-    private int refundStatus;
-    private String refund_info;
+    private int order_status;
+    private String order_info;
 
     public String getAct() {
         return act;
@@ -236,20 +236,20 @@ public class Order {
         this.update_time = update_time;
     }
 
-	public int getRefundStatus() {
-		return refundStatus;
+	public int getOrder_status() {
+		return order_status;
 	}
 
-	public void setRefundStatus(int refundStatus) {
-		this.refundStatus = refundStatus;
+	public void setOrder_status(int order_status) {
+		this.order_status = order_status;
 	}
 
-	public String getRefund_info() {
-		return refund_info;
+	public String getOrder_info() {
+		return order_info;
 	}
 
-	public void setRefund_info(String refund_info) {
-		this.refund_info = refund_info;
+	public void setOrder_info(String order_info) {
+		this.order_info = order_info;
 	}
 
 

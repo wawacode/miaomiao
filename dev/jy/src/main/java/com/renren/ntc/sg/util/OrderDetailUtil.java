@@ -2,7 +2,6 @@ package com.renren.ntc.sg.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import net.paoding.rose.scanning.context.RoseAppContext;
 
@@ -126,10 +125,10 @@ public class OrderDetailUtil {
 	return html + orderInfoHtml;
 	}
 	private static void processWxRefund(Order order,WXPayDetail wxpDetail){
-		if(order.getRefundStatus() == Constants.REFUND_SUC_FLAG){
-			if(StringUtils.isNotBlank(order.getRefund_info())){
+		if(order.getOrder_status() == Constants.REFUND_SUC_FLAG){
+			if(StringUtils.isNotBlank(order.getOrder_info())){
 				JSONObject refundInfojson = new JSONObject();
-				JSONObject dbRefundJson = (JSONObject) refundInfojson.parse(order.getRefund_info());
+				JSONObject dbRefundJson = (JSONObject) refundInfojson.parse(order.getOrder_info());
 				String refundFee = (String)dbRefundJson.get("refund_fee");
 				String refundStatus = (String)dbRefundJson.get("refund_status");
 				if(StringUtils.isNotBlank(refundFee) && NumberUtils.isNumber(refundFee)){
