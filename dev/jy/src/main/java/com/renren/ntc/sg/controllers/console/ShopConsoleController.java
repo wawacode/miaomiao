@@ -47,7 +47,6 @@ import com.renren.ntc.sg.util.SUtils;
  * 
  * Regist
  */
-
 @DenyCommonAccess
 @LoginRequired
 @Path("shop")
@@ -229,9 +228,12 @@ public class ShopConsoleController {
     @Post("order")
     @Get("order")
     @AuthorizeCheck
-    public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("from") int from, @Param("offset") int offset){
+    public String order(Invocation inv,@Param("operation") String operation, @Param("shop_id") long shop_id, @Param("from") int from, @Param("offset") int offset){
+        if (StringUtils.isBlank(operation)){
+        	operation = "order";//默认查询已完成订单
+        }
         if (0  >= shop_id){
-            shop_id = Constants.DEFAULT_SHOP ;
+        	shop_id = Constants.DEFAULT_SHOP ;
         }
         Shop shop = shopDAO.getShop(shop_id);
 
@@ -246,7 +248,17 @@ public class ShopConsoleController {
         if ( 0 == offset){
             offset = 50 ;
         }
-        List<Order> orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
+        List<Order> orderls = null;
+        if ("unfinishedOrder".equals(operation.trim())) {//未完成订单
+        	orderls = ordersDAO.getUnfinishedOrders(SUtils.generOrderTableName(shop_id), shop_id, from, offset);
+        	inv.addModel("operation","unfinishedOrder");
+		}else if ("order".equals(operation.trim())){//已完成订单
+			orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
+			inv.addModel("operation","order");
+		}else{
+			 LoggerUtils.getInstance().log("operation can't be empty!");
+			 return "@error";
+		}
         int base = from ;
         if(from != 0){
             from = base - offset;
@@ -261,7 +273,7 @@ public class ShopConsoleController {
         inv.addModel("orderls",orderls);
         return "orders";
     }
-
+    
     private void f(List<Order> orderls) {
         for ( Order o : orderls){
         JSONArray j  = (JSONArray) JSON.parse(o.getInfo());

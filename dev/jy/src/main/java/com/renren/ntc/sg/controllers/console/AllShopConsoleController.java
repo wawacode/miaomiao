@@ -73,7 +73,7 @@ public class AllShopConsoleController {
             from = 0;
         }
         if ( 0 == offset){
-            offset = 10 ;
+            offset = 100; //2015-04-09 update 100 by ZhaoXiuFei
         }
 
         List<Shop> shopls  =  shopDAO.getAllShops(from,offset);
@@ -145,10 +145,13 @@ public class AllShopConsoleController {
     
     @Post("orders")
     @Get("orders")
-    public String allShopOrders(Invocation inv,@Param("shop_id") long shop_id,@Param("from") int from, @Param("offset") int offset){
+    public String allShopOrders(Invocation inv,@Param("operation") String operation, @Param("shop_id") long shop_id,@Param("from") int from, @Param("offset") int offset){
     	if(shop_id == 0L){
     		shop_id = Constants.DEFAULT_SHOP;
     	}
+    	if (StringUtils.isBlank(operation)){
+        	operation = "order";//默认查询已完成订单
+        }
     	//查询全部审核的店的id
     	List<Shop> shopList = shopDAO.getAllShopsByAudit(Constants.SHOP_ANDITED);
         if(CollectionUtils.isEmpty(shopList)){
@@ -160,7 +163,18 @@ public class AllShopConsoleController {
         if ( 0 == offset){
             offset = 20 ;
         }
-        List<Order> orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
+        List<Order> orderls = null;
+        if ("unfinishedOrder".equals(operation.trim())) {//未完成订单
+        	orderls = ordersDAO.getUnfinishedOrders(SUtils.generOrderTableName(shop_id), shop_id, from, offset);
+        	inv.addModel("operation","unfinishedOrder");
+		}else if ("order".equals(operation.trim())){//已完成订单
+			orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
+			inv.addModel("operation","order");
+		}else{
+			 LoggerUtils.getInstance().log("operation can't be empty!");
+			 return "@error";
+		}
+       // List<Order> orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
         orderls = orderService.forV(orderls);
         orderService.f(orderls);
         if(from != 0){
