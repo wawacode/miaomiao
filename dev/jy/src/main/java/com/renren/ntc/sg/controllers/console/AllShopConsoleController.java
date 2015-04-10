@@ -167,7 +167,7 @@ public class AllShopConsoleController {
         if ("unfinishedOrder".equals(operation.trim())) {//未完成订单
         	orderls = ordersDAO.getUnfinishedOrders(SUtils.generOrderTableName(shop_id), shop_id, from, offset);
         	inv.addModel("operation","unfinishedOrder");
-		}else if ("order".equals(operation.trim())){//已完成订单
+		}else if ("order".equals(operation)){//已完成订单
 			orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
 			inv.addModel("operation","order");
 		}else{
