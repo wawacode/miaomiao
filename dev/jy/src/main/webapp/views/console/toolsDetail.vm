@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <title>上传成功</title>
+    <!-- Bootstrap core CSS -->
+    <link href="../../js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+<br/><br/><br/><br/>
+	<h2>总计:$count条</h2>
+	<h2>成功导入:$successNum条</h2>
+	<table border="1"  cellspacing="0" cellpadding="10">
+		<tr  align="center">
+			<th>分类</th>
+			<th>数量</th>
+		</tr>
+		#foreach($param in ${saveCategoryNumCN.keySet()})  
+		<tr  align="center">
+			<td width="100">$param</td>
+			<td width="100">${saveCategoryNumCN.get($param)}</td>
+		</tr>
+		#end  
+	</table>
+	<h2>未导入:$missingList.size()条</h2>
+	<table border="1"  cellspacing="0" cellpadding="10">
+		<tr  align="center">
+			<th>条码</th>
+		</tr>
+		#foreach($serialNo in $missingList)
+		<tr  align="center">
+			<td width="300">$serialNo</td>
+		</tr>
+		#end
+	</table>
+</div> <!-- /container -->
+</body>
+</html>

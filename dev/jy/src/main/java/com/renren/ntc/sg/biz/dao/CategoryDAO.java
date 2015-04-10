@@ -28,6 +28,14 @@ public interface CategoryDAO {
     
     @SQL("insert into " + TABLE_NAME + "(" + INSERT_FIELDS +" ) values"  + " (:1.type,:1.name)")
 	public int insert(Category o);
+    
+    /**
+     * zhaoxiufei
+     * @param category_id
+     * @return
+     */
+    @SQL("select * from " + TABLE_NAME +" where id =:1")
+    public Category getCategory(int category_id) ;
 
 
 

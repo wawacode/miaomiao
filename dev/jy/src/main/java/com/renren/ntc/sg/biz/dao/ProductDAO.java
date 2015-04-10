@@ -2,6 +2,7 @@ package com.renren.ntc.sg.biz.dao;
 
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.bean.Product;
+
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.SQL;
 import net.paoding.rose.jade.annotation.SQLParam;
@@ -50,5 +51,18 @@ public interface ProductDAO {
     
     @SQL("update  " + TABLE_NAME + " set ##(:key) = :3  where id =:1")
     public int update(long id, @SQLParam("key") String key, String value);
+    
+    @SQL("select "+ FIELDS +" from " + TABLE_NAME + " where serialNo= :1 ")
+    public Product geProductsByserialNo(String serialNo );
+    
+    /**
+     * zhaoxiufei 通过流水号更新商品信息
+     * @param p
+     * @param serialNo
+     * @return
+     */
+    @SQL("update " + TABLE_NAME + "  set pic_url=:1.pic_url , name=:1.name," +
+            "score=:1.score,category_id=:1.category_id,price=:1.price  where serialNo = :2 ")
+    public int updateBySerialNo(Product p, String serialNo);
 
 }

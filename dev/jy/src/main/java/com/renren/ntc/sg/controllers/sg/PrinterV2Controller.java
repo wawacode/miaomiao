@@ -109,6 +109,13 @@ public class PrinterV2Controller {
         return "@" + jb.toJSONString();
     }
 
+    @Get("p/fb")
+    @Post("p/fb")
+    public String fb(Invocation inv, @Param("pid") long pid, @Param("token") String token, @Param("status") String status) {
+        LoggerUtils.getInstance().log(String.format("pid %d  token %s ,status %s ",pid,token,status));
+        return "@"  + Constants.DONE;
+    }
+
     @Get("fb")
     @Post("fb")
     public String fb(Invocation inv, @Param("pid") long pid, @Param("token") String token, @Param("orderId") String order_id, @Param("re") String re, @Param("msg") String msg) {

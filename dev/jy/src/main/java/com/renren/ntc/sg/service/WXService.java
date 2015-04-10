@@ -13,6 +13,7 @@ import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.FileUtil;
 import com.renren.ntc.sg.util.MD5Utils;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
@@ -397,6 +398,95 @@ public class WXService {
     }
 
 
+    private static  String CODE = "<xml>\n" +
+            "   <appid>{appId}</appid>\n" +
+            "   <mch_id>{mch_id}</mch_id>\n" +
+            "   <nonce_str>{nonce_str}</nonce_str>\n" +
+            "   <out_trade_no>{out_trade_no}</out_trade_no>\n" +
+            "   <sign>{sign}</sign>\n" +
+            "</xml>" ;
+    public static void  payOk (String fileName)   {
+       List<String> orderIdList = FileUtil.readFile(fileName);
+       for(String orderId : orderIdList){
+    	   queryPaySuc(orderId);
+       }
+    }
+    
+    public static JSONObject queryPaySuc(String orderId){
+    	 String queryUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
+         String content = CODE.replace("{appId}",appId) ;
+         content = content.replace("{mch_id}",mch_id);
+         String noce_str =  Sha1Util.getNonceStr();;
+         content = content.replace("{nonce_str}",noce_str);
+         content = content.replace("{out_trade_no}",orderId);
+         SortedMap<String,String> map =  new TreeMap<String,String>() ;
+         map.put("appid", appId);
+         map.put("mch_id", mch_id );
+         map.put("nonce_str", noce_str );
+         map.put("out_trade_no", orderId );
+         String sign =  createSign(map).toUpperCase() ;
+         content = content.replace("{sign}",sign);
+         TenpayHttpClient tp =  new TenpayHttpClient();
+         tp.callHttpPost(queryUrl,content);
+         String cc = tp.getResContent();
+         JSONObject result = new JSONObject();
+         if(StringUtils.isBlank(cc)){
+        	 return result;
+         }
+         System.out.println(cc);
+         if (-1 != cc.indexOf("<trade_state_desc><![CDATA[")){
+             String pay = getP(cc);
+             result.put("trade_state_desc", pay);
+             //System.out.print( pay + "\n");
+         }
+         if (-1 != cc.indexOf("<err_code_des><![")){
+             String pay = getPERR(cc);
+             result.put("err_code_des", pay);
+            // System.out.print( pay + "\n");
+         }
+         if (-1 != cc.indexOf("<trade_state><![")) {
+        	 String pay = getTradeState(cc);
+             result.put("trade_state", pay);
+            // System.out.print( pay + "\n");
+		}
+        System.out.println(result.toJSONString());
+        return result;
+    }
+
+    private static String getPERR(String cc) {
+        String s = "<err_code_des><![CDATA[";
+        String e = "]]></err_code_des>";
+        int start = cc.indexOf(s);
+        int end = cc.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return cc.substring( s.length() + start ,end);
+    }
+
+    private static String getP(String cc) {
+        String s = "<trade_state_desc><![CDATA[";
+        String e = "]]></trade_state_desc>";
+        int start = cc.indexOf(s);
+        int end = cc.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return cc.substring( s.length() + start ,end);
+    }
+    
+    private static String getTradeState(String cc) {
+        String s = "<trade_state><![CDATA[";
+        String e = "]]></trade_state>";
+        int start = cc.indexOf(s);
+        int end = cc.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return cc.substring( s.length() + start ,end);
+    }
+
+
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new  RoseAppContext();
         WXService wx =  rose.getBean(WXService.class);
@@ -404,6 +494,7 @@ public class WXService {
         wx.config("http://www.mbianli.com");
         long end = System.currentTimeMillis();
         System.out.println("cos" + (end - now));
+//        payOk("d:\\downloads\\mm.txt");
     }
 
     public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {

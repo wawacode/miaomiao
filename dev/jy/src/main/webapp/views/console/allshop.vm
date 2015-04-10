@@ -102,11 +102,11 @@
                 <nav>
                     <ul class="pager">
                         #if($previous_f)
-                        <li>
-                            <a href="/console/allshop?from=$previous_f&offset=10">Previous</a></li>
+                        <li>							##//2015-04-09 update offset value 100 by ZhaoXiuFei
+                            <a href="/console/allshop?from=$previous_f&offset=100">Previous</a></li>
                         #end
-                        #if($next_f)
-                        <li><a href="/console/allshop?from=$next_f&offset=10">Next</a></li>
+                        #if($next_f)					##//2015-04-09 update offset value 100 by ZhaoXiuFei
+                        <li><a href="/console/allshop?from=$next_f&offset=100">Next</a></li>
                         #end
                     </ul>
                 </nav>

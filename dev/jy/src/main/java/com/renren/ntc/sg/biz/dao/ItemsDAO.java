@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.biz.dao;
 
 import com.renren.ntc.sg.bean.Item;
+
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
@@ -61,7 +62,7 @@ public interface ItemsDAO {
     public  List<Item> hot(@SQLParam("tableName") String tableName, long shop_id, int flag, int offset);
 
 
-    @SQL("select "+ FIELDS +" from  ##(:tableName)   where  shop_id=:2 and name like :3 limit 0 , 20")
+    @SQL("select "+ FIELDS +" from  ##(:tableName)   where count > 0 and onsell= 1 and shop_id=:2 and name like :3 limit 0 , 20")
     public  List<Item> search(@SQLParam("tableName") String tableName, long shop_id, String key);
 
 
@@ -118,5 +119,43 @@ public interface ItemsDAO {
 
     @SQL("update ##(:tableName) set  pic_url=:3 where id =:2")
     public int updateItemPriceById(@SQLParam("tableName") String tableName,long itemId,String pic_url);
+    
+    /**
+     * zhaoxiufei
+     * @param tableName
+     * @param to_shop_id
+     * @param serialNo
+     * @return
+     */
+    @SQL("select " + FIELDS + " from ##(:tableName)   where shop_id=:2 and serialNo =:3")
+    public Item getItem(@SQLParam("tableName") String tableName, long to_shop_id, String serialNo);
+    
+    /**
+     * zhaoxiufei
+     * @param tableName
+     * @param items
+     * @param serialNo
+     * @return
+     */
+    @SQL("update  ##(:tableName) set pic_url=:2.pic_url,name=:2.name,category_id=:2.category_id,price=:2.price,score=:2.score,shop_id=:2.shop_id where serialNo =:3")
+    public int updateforSerialNo(@SQLParam("tableName") String tableName, Item items, String serialNo);
+  
+    /**
+     * zhaoxiufei
+     * @param tableName
+     * @param del_shop_id
+     * @param serialNo
+     */
+    @SQL("delete from ##(:tableName) where  shop_id =:2 and serialNo=:3")
+    public void del(@SQLParam("tableName") String tableName, long del_shop_id, String serialNo);
+    
+    /**
+     * 
+     * @param generTableName
+     * @param shop_id
+     * @return
+     */
+    @SQL("SELECT DISTINCT(category_id) from ##(:tableName)")
+	public List<Item> getCategoriesByShopId(@SQLParam("tableName") String generTableName);
 
 }
