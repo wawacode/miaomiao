@@ -16,7 +16,7 @@ import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
 
 public class UpdateWxRefundThread implements Runnable{
-	private static final int REFUND_SUC_FLAG = 1;
+	private static final int REFUND_SUC_FLAG = 3;
 	private static final int REFUND_FAIL_FLAG = 0;
 	private static RoseAppContext rose = new RoseAppContext();
 	private static OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
