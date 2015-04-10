@@ -232,6 +232,4 @@ public class Order {
         this.update_time = update_time;
     }
 
-
-
 }

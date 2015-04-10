@@ -317,7 +317,6 @@ public class OrderController {
             om.put("confirm","done");
             ordersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(shop_id));
             userOrdersDAO.confirm(order_id,om.toJSONString(),SUtils.generUserOrderTableName(u.getId()));
-
         }
         return "@json:"+Constants.DONE;
     }
