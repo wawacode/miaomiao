@@ -158,6 +158,14 @@
             }, number);
         };
 
+        $scope.confirmShip = function(order){
+          //todo:
+        };
+
+        $scope.cannotShip = function(order){
+            //todo:
+        };
+
         $scope.showOrderDetail = function (order) {
 
             $scope.order = order;

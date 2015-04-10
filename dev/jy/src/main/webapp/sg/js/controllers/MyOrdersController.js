@@ -182,6 +182,58 @@ angular.module('miaomiao.shop')
             });
         };
 
+        $scope.cancelOrder = function (order) {
+
+            MMUtils.showLoadingIndicator('正在申请退款...', $scope);
+            httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
+
+                $ionicLoading.hide();
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    MMUtils.showAlert('申请退款失败,请重试:' + data.msg);
+                    return;
+                }
+
+                function confirmOrders(userOrders) {
+                    if (userOrders && userOrders.length) {
+                        for (var i = 0; i < userOrders.length; i++) {
+                            if (userOrders[i].order_id == order.order_id) {
+                                order.refunded = true;
+                                userOrders[i] = order;
+                            }
+                        }
+                    }
+                }
+
+                $timeout(function () {
+                    confirmOrders($scope.latestOrder);
+                    confirmOrders($scope.historyOrder);
+                });
+
+            }, function (data, status) {
+                MMUtils.showAlert('申请退款失败,请重试');
+            });
+        };
+
+        $scope.remindShipping = function (order) {
+
+            MMUtils.showLoadingIndicator('正在提醒店家发货...', $scope);
+            httpClient.remindShippingMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
+
+                $ionicLoading.hide();
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    MMUtils.showAlert('提醒发货失败,请重试:' + data.msg);
+                    return;
+                }
+
+            }, function (data, status) {
+                MMUtils.showAlert('提醒发货失败,请重试');
+            });
+        };
+
         $scope.goToCouponList = function(){
 
         };

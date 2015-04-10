@@ -12,13 +12,21 @@
         <div class="item item-divider">
             订单时间: {{order.create_time | date:'yyyy-M-d,h:mm:ss a'}}
         </div>
-        <div class="item ">
+        <div class="item item-icon-right">
             <div class="item-text-wrap">收货地址: {{order.address}}</div>
             <div class="item-text-wrap">联系电话: {{order.phone}}</div>
-            <div  class="item-text-wrap" style="margin-top: 10px;color: #808080" ng-if="order.act == 'wx'"><i class="ion-card balanced"></i> 微信支付 <span ng-if="order.dprice > 0">［使用优惠券 {{order.dprice/100.0}} 元］</span></div>
-            <div  class="item-text-wrap" style="margin-top: 10px;color: #808080" ng-if="order.act != 'wx'"><i class="ion-card balanced"></i> 货到付款</div>
-            <div  class="item-text-wrap" style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
-
+            <a class="icon balanced ion-ios7-telephone"
+                    ng-click="callNumber(order.phone)">
+            </a>
+        </div>
+        <div class="item">
+            <div class="item-text-wrap" style="margin-top: 10px;color: #808080" ng-if="order.act == 'wx'"><i
+                    class="ion-card balanced"></i>支付方式:微信支付 <span
+                    ng-if="order.dprice > 0">［使用优惠券 {{order.dprice/100.0}} 元］</span></div>
+            <div class="item-text-wrap" style="margin-top: 10px;color: #808080" ng-if="order.act != 'wx'"><i
+                    class="ion-card balanced"></i>支付方式:货到付款
+            </div>
+            <div class="item-text-wrap" style="margin-top: 10px;color: #808080">买家留言: {{order.remarks}}</div>
         </div>
         <div style="padding: 15px 9px 15px;" class="order-snapshots">
             <div bindonce class="orderSnapshot" quick-ng-repeat="orderItem in order.items">
@@ -38,11 +46,21 @@
                         <span style="color: red;padding-right: 8px">￥ {{order.items | getTotolPrice }}
                         </span>
             </div>
-            <label class="item-input-inset" style="text-align: center">
-                <button class="button button-balanced button-full"
-                        ng-click="callNumber(order.phone)">打电话
-                </button>
-            </label>
+
+            <div class="item-input-inset" style="text-align: center">
+                <div class="row">
+                    <div class="col">
+                        <button class="button button-block button-balanced" ng-click="confirmShip(order)"
+                                style="margin-right: 10px">确认配送
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button class="button button-block button-assertive" ng-click="cannotShip(order)">
+                            无法配送
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </ion-content>
 </ion-modal-view>>
