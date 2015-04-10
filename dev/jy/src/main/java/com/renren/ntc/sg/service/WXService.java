@@ -578,4 +578,39 @@ public class WXService {
                 .toUpperCase();
         return sign;
     }
+    
+    public String getWxRefundInfo(String orderId) {
+    	String result = "";
+        try {
+            SortedMap<String,String> map  = new TreeMap<String,String>();
+            String nonce_str = Sha1Util.getNonceStr();
+            map.put("appid",appId);
+            map.put("mch_id",mch_id);
+            map.put("nonce_str",nonce_str);
+            map.put("out_trade_no", orderId);
+            String sign =  createSign(map).toUpperCase()  ;
+            String content = WX_REFUND_XML.replace("{appId}",appId);
+            content  = content.replace("{mch_id}",mch_id);
+            content  = content.replace("{nonce_str}",nonce_str);
+            content  = content.replace("{order_id}",orderId);
+            content  = content.replace("{sign}",sign);
+            TenpayHttpClient http = new TenpayHttpClient();
+            http.callHttpPost(WX_REFUND_URL,content);
+            result  = http.getResContent();
+            System.out.println("send " + content +"wx refund rec " +  result );
+            if(!StringUtils.isBlank(result)){
+            	String isHaveRefund = getisHaveRefundStatus(result);
+            	if("SUCCESS".equals(isHaveRefund)){
+            		JSONObject refundJson = new JSONObject();
+                	refundJson.put("refund_status", getRefundStatus(result));
+                	refundJson.put("refund_fee", getRefundFee(result));
+                	refundJson.put("result_code", isHaveRefund);
+                	return refundJson.toJSONString();
+            	}
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
 }
