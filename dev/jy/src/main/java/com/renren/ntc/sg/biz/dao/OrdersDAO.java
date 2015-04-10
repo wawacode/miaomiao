@@ -80,4 +80,7 @@ public interface OrdersDAO {
 
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:2 and (status !=1 and status !=2 ) order by create_time desc limit :3,:4 ")
     List<Order> getUnfinishedOrders(@SQLParam("tableName") String tableName, long shop_id,int from, int offset);
+    
+     @SQL("update ##(:tableName)  set order_status =:3 , order_info =:4 where id = :1 and shop_id=:2")
+    public int updateWXRefund(long order_id, long shopId, int refundStatus,String refundInfo,@SQLParam("tableName") String tableName);
 }

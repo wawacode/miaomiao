@@ -35,6 +35,8 @@ public class Order {
     private String snapshot="" ;
     private int status    ;
     private String info ;
+    private int order_status;
+    private String order_info;
 
     public String getAct() {
         return act;
@@ -231,6 +233,22 @@ public class Order {
     public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
+
+	public int getOrder_status() {
+		return order_status;
+	}
+
+	public void setOrder_status(int order_status) {
+		this.order_status = order_status;
+	}
+
+	public String getOrder_info() {
+		return order_info;
+	}
+
+	public void setOrder_info(String order_info) {
+		this.order_info = order_info;
+	}
 
 
 
