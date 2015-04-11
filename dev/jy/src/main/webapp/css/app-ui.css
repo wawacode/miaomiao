@@ -1184,6 +1184,15 @@ ul.rating li i {
     padding: 2px 4px 2px 4px;
 }
 
+
+.orderPayConfirmDisabled {
+    border: solid 1px #eaeaea;
+    background-color: #ffffff;
+    color: #eaeaea;
+    border-radius: 2px;
+    padding: 2px 4px 2px 4px;
+}
+
 .orderSnapshotHeader {
     display: inline-block;
     border-bottom: solid 1px #eaeaea;
