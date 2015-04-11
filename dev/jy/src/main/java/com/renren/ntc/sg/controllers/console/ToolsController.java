@@ -194,6 +194,13 @@ public class ToolsController {
 	@Get("mvShopItems")
 	@Post("mvShopItems")
 	public String mvCategory(Invocation inv, @Param("from_shop_id") long from_shop_id, @Param("category_id") int category_id, @Param("to_shop_id") long to_shop_id){
+		if(0 == from_shop_id){
+			return "@ from_shop_id 不能为空";
+		}else if(0 == category_id){
+			return "@ category_id 不能为空";
+		}else if(0 == to_shop_id){
+			return "@ to_shop_id 不能为空";
+		}
 		int offset = 100;//每次查100条 如果够
 	    for (int i = 0; i < 100000;) {
             System.out.println("get " + i + " " + offset);
@@ -226,6 +233,10 @@ public class ToolsController {
 	@Get("refresh2Produdce")
 	@Post("refresh2Produdce")
 	public String refresh2Produdce(Invocation inv, @Param("shop_id") long shop_id) {
+		if(0 == shop_id){
+			return "@ shop_id 不能为空";
+		}
+		
 	    int offset = 1000;
         for (int i = 0; i < 100000;) {
             List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
