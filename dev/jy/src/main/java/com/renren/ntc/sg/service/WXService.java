@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +38,7 @@ import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.FileUtil;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
@@ -355,6 +357,32 @@ public class WXService {
         String  turl  = TEMPLATEAPI.replace("{token}", access_token);
         byte[] tt = sendPostRequest(turl, respone);
         MongoDBUtil.getInstance().sendmark("wx_xx", "pay_done_"+order_id);
+        String re = new String(tt);
+        System.out.println(tt);
+    }
+    //用户点击取消订单
+    public void cancelOrdersendWX2User(String order_id, Shop shop) {
+
+//        if (MongoDBUtil.getInstance().haveSend("wx_xx","pay_done_"+order_id)) {
+//            System.out.println(String.format("%s %s sms allready send ", "wx_xx", order_id));
+//            return;
+//        }
+        Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop.getId()));
+        if (null == order){
+            return ;
+        }
+        User user = userDao.getUser(order.getUser_id());
+
+        String remark = Constants.REFUND_MSG.replace("{shop_name}", shop.getName());
+        remark = remark.replace("{order_time}", Dateutils.tranferDate2Str(order.getCreate_time()))
+        		.replace("{order_id}", order_id);
+
+        String respone = orderStatus(Constants.REFUND_ORDER_SUC, user.getWx_open_id(),
+                Constants.REFUND_ORDER_SUC, order_id, remark);
+        String access_token = getAccessToken();
+        String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+        byte[] tt = sendPostRequest(turl, respone);
+       // MongoDBUtil.getInstance().sendmark("wx_xx", "pay_done_"+order_id);
         String re = new String(tt);
         System.out.println(tt);
     }

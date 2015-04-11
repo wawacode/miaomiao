@@ -26,7 +26,7 @@ CREATE TABLE `items` (
 
 @DAO(catalog = "ABC")
 public interface UserOrdersDAO {
-    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time" ;
+    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time,order_info,order_status" ;
     static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks,act ,info,snapshot,status,price" ;
 
 	@SQL("select "+ FIELDS +" from ##(:tableName)   where user_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
@@ -72,12 +72,12 @@ public interface UserOrdersDAO {
     @SQL("update ##(:tableName)   set msg =:2 , update_time=now()  where order_id = :1 ")
     public void confirm(String order_id, String msg, @SQLParam("tableName") String tableName);
     
-    @SQL("update ##(:tableName) set order_info =:2 ,set order_status =:3, update_time=now() where order_id = :1 ")
+    @SQL("update ##(:tableName) set order_info =:2 ,order_status =:3, update_time=now() where order_id = :1 ")
     public int updateOrderStatus(String order_id, String orderInfo,int orderStatus, @SQLParam("tableName") String tableName);
     
-    @SQL("update ##(:tableName) set order_status =:2, update_time=now() where order_id = :1 ")
+    @SQL("update ##(:tableName) set order_status =:2,update_time=now() where order_id = :1 ")
     public int updateOrderStatus(String order_id,int orderStatus, @SQLParam("tableName") String tableName);
     
-    @SQL("update ##(:tableName) set order_info =:2 ,update_time=now() where order_id = :1 ")
+    @SQL("update ##(:tableName) set order_info =:2 , update_time=now() where order_id = :1 ")
     public int updateOrderInfo(String order_id,String orderInfo, @SQLParam("tableName") String tableName);
 }

@@ -13,6 +13,8 @@ import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.SUtils;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,6 +85,17 @@ public class OrderService {
             sb.append(";<br/>");
         }
          o.setInfo(sb.toString());
+        }
+    }
+    
+    public void transferStatusInfo(List<Order> orderls) {
+        for ( Order o : orderls){
+        JSONObject orderInfo  = (JSONObject) JSON.parse(o.getOrder_info());
+         String remindOrderFlag = (String)orderInfo.get("remind_order");
+         if(StringUtils.isNotBlank(remindOrderFlag) && "1".equals(remindOrderFlag)){
+        	 
+         }
+         //if(Or)
         }
     }
 

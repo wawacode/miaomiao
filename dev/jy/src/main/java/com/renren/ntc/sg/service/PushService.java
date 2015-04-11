@@ -218,10 +218,84 @@ public class PushService {
     }
 
 
+    public void sendCancel2BossandLoc(String order_id, Shop shop) {
+    	try {
+
+//           Order order = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
+//            String v = null;
+//            String url;
+//            byte[] t = null;
+//            String response = "用户下单";
+//            long adr_id = order.getAddress_id();
+//            Address adrs = addressDAO.getAddress(adr_id);
+//            float p = (float) order.getPrice() / 100;
+//            String pre = "您有新订单了,";
+//            if("wx".equals(order.getAct())){
+//                pre = pre + "支付方式：微信支付,";
+//            }else{
+//                pre = pre + "支付方式：货到付款,";
+//            }
+//
+//            String message = pre + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
+//                    " 总额：" +  p ;
+    		String message = "订单有取消";
+            if (shop != null) {
+                List<CatStaffCommit> catcommitls = catStaffCommitDao.getbyShopid(shop.getId());
+                for (CatStaffCommit catcommit : catcommitls ){
+                    List<PushToken> pushTokens = pushTokenDao.getPushToken(catcommit.getPhone());
+                    for (PushToken pushToken  : pushTokens)  {
+                        if(pushToken ==  null){
+                            LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
+                            return ;
+                        }
+                        send(pushToken, message);
+                    }
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
 
 
+    public void sendRemind2locPushandLoc(String order_id, Shop shop) {
+        try {
 
-
+//            Order order = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
+//            String v = null;
+//            String url;
+//            byte[] t = null;
+//            String response = "用户下单";
+//            long adr_id = order.getAddress_id();
+//            Address adrs = addressDAO.getAddress(adr_id);
+//            float p = (float) order.getPrice() / 100;
+//            String pre = "您有新订单了,";
+//            if("wx".equals(order.getAct())){
+//                pre = pre + "支付方式：微信支付,";
+//            }else{
+//                pre = pre + "支付方式：货到付款,";
+//            }
+//
+//            String message = pre + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
+//                    " 总额：" +  p ;
+        	String message = "有加急订单";
+            if (shop != null) {
+                List<CatStaffCommit> catcommitls = catStaffCommitDao.getbyShopid(shop.getId());
+                for (CatStaffCommit catcommit : catcommitls ){
+                    List<PushToken> pushTokens = pushTokenDao.getPushToken(catcommit.getPhone());
+                    for (PushToken pushToken  : pushTokens)  {
+                        if(pushToken ==  null){
+                            LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
+                            return ;
+                        }
+                        send(pushToken, message);
+                    }
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
 	
 	public static void main(String[] args) {
 		// TODO set your appkey and master secret here

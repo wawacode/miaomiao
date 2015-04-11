@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.controllers.sg;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -40,6 +41,7 @@ import com.renren.ntc.sg.service.SMSService;
 import com.renren.ntc.sg.service.TicketService;
 import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.Sha1Util;
 
@@ -338,14 +340,15 @@ public class OrderController {
 //            userOrdersDAO.confirm(order_id,om.toJSONString(),SUtils.generUserOrderTableName(u.getId()));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "用户点击订单确认");
+            orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
             ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.CONFIREMED.getCode(), SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(), SUtils.generUserOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(), SUtils.generUserOrderTableName(u.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o);       
         }
         result.put("data",data);
         result.put("code",0);
-        wxService.sendWX2User(order_id,shop_id);//发送微信消息给用户
+        //wxService.sendWX2User(order_id,shop_id);//发送微信消息给用户
         return "@json:"+result.toJSONString();
     }
     /**
@@ -375,13 +378,18 @@ public class OrderController {
             Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "用户取消订单");
+            orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
             ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CANCLE.getCode(), SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CANCLE.getCode(), SUtils.generUserOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CANCLE.getCode(), SUtils.generUserOrderTableName(u.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o);       
         }
         result.put("data",data);
         result.put("code",0);
+//        smsService.sendSMSCancelOrder2LocPushkf(order_id, shop);
+//        wxService.cancelOrdersendWX2User(order_id, shop);
+//        smsService.sendCancelSMS2Boss(order_id, shop);
+//        pushService.sendCancel2BossandLoc(order_id, shop);
         /**
          * 3.1.客服端退单短信提示“用户地址：xxxxxx，联系电话：xxxxxx，2015-xx-xx xx：xx：xx申请退单，店铺名xxx联系电话：xxxxxx”；×---需求：#短信#退单短信2客服
           3.2.用户端微信公众号反馈；×---需求：#公众号消息#退单成功消息2用户
@@ -417,13 +425,17 @@ public class OrderController {
             Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("remind_order", "1");
+            orderInfo.put("remind_time", Dateutils.tranferDate2Str(new Date()));
             ordersDAO.updateOrderInfo(order_id, orderInfo.toJSONString(), SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateOrderInfo(order_id, orderInfo.toJSONString(), SUtils.generUserOrderTableName(shop_id));
+            userOrdersDAO.updateOrderInfo(order_id, orderInfo.toJSONString(), SUtils.generUserOrderTableName(u.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id)); 
             data.put("order", o);       
         }
         result.put("data",data);
         result.put("code",0);
+//        smsService.sendRemindSMS2Boss(order_id, shop);
+//        smsService.sendSMSRemind2LocPushkf(order_id, shop);
+//        pushService.sendRemind2locPushandLoc(order_id, shop);
         /**
          * 2.商户端短信提示催单“【加急】地址：xxxxxx，联系电话：xxxxxx，2015-xx-xx xx：xx：xx的订单用户加急。”；×---需求：#短信#商户端催单短信
      3.商户端APP订单推送提示”有加急订单“，同时订单详情【加急】标识；×---需求：#商户APP#催单提示

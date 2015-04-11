@@ -18,15 +18,21 @@ import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.bean.ShopCategory;
+import com.renren.ntc.sg.bean.User;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopCategoryDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.UserDAO;
 import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
 import com.renren.ntc.sg.constant.OrderStatus;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
+import com.renren.ntc.sg.service.PushService;
+import com.renren.ntc.sg.service.SMSService;
+import com.renren.ntc.sg.service.TicketService;
+import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
@@ -53,6 +59,18 @@ public class OrderConsoleController extends BasicConsoleController{
     
     @Autowired
     public UserOrdersDAO userOrdersDAO;
+    
+    @Autowired
+    public SMSService smsService;
+
+    @Autowired
+    public WXService wxService;
+
+    @Autowired
+    public PushService pushService;
+    
+    @Autowired
+    public UserDAO userDAO;
 
 	public  OrderConsoleController(){
        
@@ -161,8 +179,8 @@ public class OrderConsoleController extends BasicConsoleController{
      * @param confirm
      * @return
      */
-    @Get("order_deliveries")
-    @Post("order_deliveries")
+    @Get("order_confirm")
+    @Post("order_confirm")
     public String order_deliveries(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
@@ -175,8 +193,10 @@ public class OrderConsoleController extends BasicConsoleController{
         	Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
         	 JSONObject orderInfo = orderService.getJson(o.getOrder_info());
              orderInfo.put("order_msg", "老板点击订单配送");
+             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
             ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.DELIVERIES.getCode(), SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.DELIVERIES.getCode(), SUtils.generUserOrderTableName(shop_id));
+            User user = userDAO.getUser(o.getUser_id());
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.DELIVERIES.getCode(), SUtils.generUserOrderTableName(user.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o);       
         }
@@ -199,13 +219,19 @@ public class OrderConsoleController extends BasicConsoleController{
         	Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "商家点击无法配送");
-            ordersDAO.updateOrderStatus(order_id, OrderStatus.BOSSCANCLE.getCode(), SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateOrderStatus(order_id, OrderStatus.BOSSCANCLE.getCode(), SUtils.generUserOrderTableName(shop_id));
+            orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
+            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.BOSSCANCLE.getCode(), SUtils.generOrderTableName(shop_id));
+            User user = userDAO.getUser(o.getUser_id());
+            userOrdersDAO.updateOrderStatus(order_id,orderInfo.toJSONString(), OrderStatus.BOSSCANCLE.getCode(), SUtils.generUserOrderTableName(user.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o);       
         }
         result.put("data",data);
         result.put("code",0);
+//        smsService.sendSMSCancelOrder2LocPushkf(order_id, shop);
+//        wxService.cancelOrdersendWX2User(order_id, shop);
+//        smsService.sendCancelSMS2Boss(order_id, shop);
+//        pushService.sendCancel2BossandLoc(order_id, shop);
         return "@json:"+result.toJSONString();
     }
 }

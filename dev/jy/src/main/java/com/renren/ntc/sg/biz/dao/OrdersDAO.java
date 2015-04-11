@@ -85,7 +85,7 @@ public interface OrdersDAO {
      @SQL("update ##(:tableName)  set order_status =:3 , order_info =:4 where id = :1 and shop_id=:2")
     public int updateWXRefund(long order_id, long shopId, int refundStatus,String refundInfo,@SQLParam("tableName") String tableName);
      
-     @SQL("update ##(:tableName) set order_info =:2 ,set order_status =:3, update_time=now() where order_id = :1 ")
+     @SQL("update ##(:tableName) set order_info =:2 ,order_status =:3, update_time=now() where order_id = :1 ")
      public int updateOrderStatus(String order_id, String orderInfo,int orderStatus, @SQLParam("tableName") String tableName);
      
      @SQL("update ##(:tableName) set order_status =:2, update_time=now() where order_id = :1 ")

@@ -93,4 +93,16 @@ public class Constants {
     
 	public static final int REFUND_SUC_FLAG=3;
 	
+	public static final String REFUND_ORDER_SUC = "退单成功";
+	
+	public static final String REFUND_MSG = "您在{order_time}下的订单（{order_id}） 申请退单成功，店铺名：{shop_name}\n" +
+            "如有疑问请联系客服。";
+	
+	public static final String CANCEL_SMS_2_KF_SMS= "用户地址：{address}，联系电话：{phone}，{cancel_time}申请退单，店铺名{shop_name}联系电话：{tel}";
+	
+	public static final String CANCEL_SMS_2_BOSS_SMS="{cancel_time}订单已取消，用户地址：{address}，电话：{phone}";
+	
+	public static final String REMIND_ORDER_SMS_2_BOSS = "【加急】地址：{address}，联系电话：{phone}，{create_time}的订单用户加急。";
+	
+	public static final String REMIND_ORDER_SMS_2_KF = "【加急】用户地址：{address}，联系电话：{phone}，{create_time}的订单用户加急，店铺名{shop_name}联系电话：{tel}";
 }
