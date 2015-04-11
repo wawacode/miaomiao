@@ -106,7 +106,7 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
             },
 
             remindShippingMyOrders:function (shopId, orderId,msg, success, fail) {
-                doPost('order/order_remindShipping?shop_id=' + shopId,
+                doPost('order/order_remindShopping?shop_id=' + shopId,
                     {'order_id': orderId,'confirm':msg},
                     success, fail);
             },

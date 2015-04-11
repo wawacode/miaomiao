@@ -12,6 +12,40 @@ angular.module('miaomiao.shop')
             $state.go('productList');
         };
 
+        var StatsEnum = $scope.StatsEnum = {
+            'created': 0,
+            'toBeConfirmed': 1,
+            'inShipping':2,
+            'canceledByUser':3,
+            'canceledByShop':4,
+            'confirmedByUser':5
+        };
+
+        function updateOrderStatus(order){
+            // two fileds need to set here
+            // 1. can use cancel order,2, can push order
+
+            order.canCancelOrder = false;
+            order.canRemindShipping = false;
+
+            if(order.order_status == StatsEnum.toBeConfirmed ||
+                order.order_status == StatsEnum.inShipping ||
+                order.order_status == StatsEnum.created){
+
+                var creationTime = new Date(order.create_time),
+                    nowtime = new Date(),
+                    timeeplise = nowtime.getTime()-creationTime.getTime(); // mini secs
+
+                if(timeeplise/1000 >= 2 * 60){ // 60 minutes
+                    order.canCancelOrder = true;
+                }
+
+                if(timeeplise/1000 >= 1 * 60){ // 20 minutes
+                    order.canRemindShipping = true;
+                }
+            }
+        }
+
         function transformOrderData(orders) {
             if (!orders) return;
             for (var i = 0; i < orders.length; i++) {
@@ -19,8 +53,9 @@ angular.module('miaomiao.shop')
                 try {
                     order.items = JSON.parse(order.snapshot);
                 } catch (e) {
-
                 }
+                //update order status by
+                updateOrderStatus(order);
             }
         }
 
@@ -148,6 +183,17 @@ angular.module('miaomiao.shop')
             }
         };
 
+        function updateOrderAction(userOrders, updatingOrder) {
+            if (userOrders && userOrders.length) {
+                for (var i = 0; i < userOrders.length; i++) {
+                    if (userOrders[i].order_id == updatingOrder.order_id) {
+                        userOrders[i] = updatingOrder;
+                        updateOrderStatus(updatingOrder);
+                    }
+                }
+            }
+        }
+
         $scope.confirmOrder = function (order) {
 
             MMUtils.showLoadingIndicator('正在确认订单...', $scope);
@@ -161,20 +207,9 @@ angular.module('miaomiao.shop')
                     return;
                 }
 
-                function confirmOrders(userOrders) {
-                    if (userOrders && userOrders.length) {
-                        for (var i = 0; i < userOrders.length; i++) {
-                            if (userOrders[i].order_id == order.order_id) {
-                                order.confirm = true;
-                                userOrders[i] = order;
-                            }
-                        }
-                    }
-                }
-
                 $timeout(function () {
-                    confirmOrders($scope.latestOrder);
-                    confirmOrders($scope.historyOrder);
+                    updateOrderAction($scope.latestOrder);
+                    updateOrderAction($scope.historyOrder);
                 });
 
             }, function (data, status) {
@@ -184,42 +219,35 @@ angular.module('miaomiao.shop')
 
         $scope.cancelOrder = function (order) {
 
-            MMUtils.showLoadingIndicator('正在申请退款...', $scope);
-            httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
+            if(!order.canCancelOrder)return;
+
+            MMUtils.showLoadingIndicator('正在取消订单...', $scope);
+            httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'cancel', function (data, status) {
 
                 $ionicLoading.hide();
 
                 var code = data.code, dataDetail = data.data;
                 if (code != 0) {
-                    MMUtils.showAlert('申请退款失败,请重试:' + data.msg);
+                    MMUtils.showAlert('取消订单失败,请重试:' + data.msg);
                     return;
                 }
 
-                function confirmOrders(userOrders) {
-                    if (userOrders && userOrders.length) {
-                        for (var i = 0; i < userOrders.length; i++) {
-                            if (userOrders[i].order_id == order.order_id) {
-                                order.refunded = true;
-                                userOrders[i] = order;
-                            }
-                        }
-                    }
-                }
-
                 $timeout(function () {
-                    confirmOrders($scope.latestOrder);
-                    confirmOrders($scope.historyOrder);
+                    updateOrderAction($scope.latestOrder);
+                    updateOrderAction($scope.historyOrder);
                 });
 
             }, function (data, status) {
-                MMUtils.showAlert('申请退款失败,请重试');
+                MMUtils.showAlert('取消订单失败,请重试');
             });
         };
 
         $scope.remindShipping = function (order) {
 
+            if(!order.canRemindShipping)return;
+
             MMUtils.showLoadingIndicator('正在提醒店家发货...', $scope);
-            httpClient.remindShippingMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
+            httpClient.remindShippingMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'remind', function (data, status) {
 
                 $ionicLoading.hide();
 
