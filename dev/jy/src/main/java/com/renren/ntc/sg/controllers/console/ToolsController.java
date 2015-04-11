@@ -42,9 +42,7 @@ import com.renren.ntc.sg.biz.dao.CategoryDAO;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
-import com.renren.ntc.sg.constant.CatstaffConstant;
 import com.renren.ntc.sg.service.LoggerUtils;
-import com.renren.ntc.sg.util.FileUploadUtils;
 import com.renren.ntc.sg.util.MimeTypeUtils;
 import com.renren.ntc.sg.util.SUtils;
 /**
@@ -92,12 +90,12 @@ public class ToolsController {
 		if (!MimeTypeUtils.TEXT_PLAIN.equals(file.getContentType())) {
 			return "@文件类型有误! 只支持.txt类型文件!";
 		}
-		String fileName = getUUIDFileName(shop_id, file.getOriginalFilename());
-    	String savePath = inv.getServletContext().getRealPath("/") + CatstaffConstant.SAVE_UPLOAD_FILE_PATH;// 文件保存路径
-		File f = FileUploadUtils.uploadFile2(file, fileName, savePath);
-		if(null == f){
-			return "@文件上传失败!";
-    	}
+		//String fileName = getUUIDFileName(shop_id, file.getOriginalFilename());
+    	//String savePath = inv.getServletContext().getRealPath("/") + CatstaffConstant.SAVE_UPLOAD_FILE_PATH;// 文件保存路径
+		//File f = FileUploadUtils.uploadFile2(file, fileName, savePath);
+		//if(null == f){
+		//	return "@文件上传失败!";
+    	//}
 		//删除初始商品
 		itemDao.del(SUtils.generTableName(shop_id), shop_id);
 		//保存数据到数据库
@@ -105,7 +103,7 @@ public class ToolsController {
 		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
 		List<String> missingList = new ArrayList<String>();//丢弃多少项目的统计
 		try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "GBK"));
+			br = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
 			String lineTxt = br.readLine();
 			String regex = lineTxt.contains("\t") ? "\t" : lineTxt.contains(",") ? ", ": " ";
 			int count = 0;

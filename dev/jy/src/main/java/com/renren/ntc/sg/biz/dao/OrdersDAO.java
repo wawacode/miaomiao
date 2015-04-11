@@ -29,7 +29,8 @@ CREATE TABLE `items` (
 public interface OrdersDAO {
     static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time" ;
     static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks ,act, info,snapshot,status,price" ;
-
+    static final String ALL_FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time,order_status,order_info" ;
+    
     @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
     public List<Order> getOrderByShop(long shop_id, int start, int offset,@SQLParam("tableName") String tableName);
 
@@ -51,7 +52,7 @@ public interface OrdersDAO {
     @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
     int update(int i, String orderId,@SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where order_id =:1 ")
+    @SQL("select "+ ALL_FIELDS +" from ##(:tableName)  where order_id =:1 ")
     public Order getOrder(String orderId,@SQLParam("tableName") String tableName);
     
     @SQL("select "+ FIELDS +" from ##(:tableName)  where create_time between :1 and :2")
@@ -69,7 +70,7 @@ public interface OrdersDAO {
     @SQL("update ##(:tableName)   set msg =:2 , update_time=now() where order_id = :1 ")
     public void confirm(String order_id, String msg, @SQLParam("tableName") String tableName);
 
-    @SQL("select price,msg,create_time from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between :3 and :4")
+    @SQL("select "+ ALL_FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between :3 and :4")
     List<Order> getShopPayDetail(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime );
     
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:4 and (status = 1 or status =2) and create_time between :1 and :2 order by create_time")
@@ -80,4 +81,17 @@ public interface OrdersDAO {
 
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:2 and (status !=1 and status !=2 ) order by create_time desc limit :3,:4 ")
     List<Order> getUnfinishedOrders(@SQLParam("tableName") String tableName, long shop_id,int from, int offset);
+    
+     @SQL("update ##(:tableName)  set order_status =:3 , order_info =:4 where id = :1 and shop_id=:2")
+    public int updateWXRefund(long order_id, long shopId, int refundStatus,String refundInfo,@SQLParam("tableName") String tableName);
+     
+     @SQL("update ##(:tableName) set order_info =:2 ,order_status =:3, update_time=now() where order_id = :1 ")
+     public int updateOrderStatus(String order_id, String orderInfo,int orderStatus, @SQLParam("tableName") String tableName);
+     
+     @SQL("update ##(:tableName) set order_status =:2, update_time=now() where order_id = :1 ")
+     public int updateOrderStatus(String order_id,int orderStatus, @SQLParam("tableName") String tableName);
+     
+     @SQL("update ##(:tableName) set order_info =:2 ,update_time=now() where order_id = :1 ")
+     public int updateOrderInfo(String order_id,String orderInfo, @SQLParam("tableName") String tableName);
+
 }
