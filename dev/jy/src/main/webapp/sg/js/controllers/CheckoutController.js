@@ -59,6 +59,7 @@ angular.module('miaomiao.shop')
                 var code = data.code, dataDetail = data.data;
                 if (code == 500) {
                     MMUtils.showAlert('加载数据失败:' + data.msg);
+                    $scope.info.showAddNewAddress = true;
                     return;
                 } else if (code == 100) {
                     MMUtils.showAlert('部分商品不足，您可以购买部分商品:' + data.msg);

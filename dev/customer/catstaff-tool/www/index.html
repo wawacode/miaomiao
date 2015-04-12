@@ -263,7 +263,8 @@
 
                             <p><i class="icon ion-ios7-printer"></i>&nbsp;{{ item.shop_print }}</p>
 
-                            <p><i class="icon ion-link"></i>&nbsp;{{ item.shop_online_url }}</p>
+                            <a ng-href="item.shop_online_url"><i class="icon ion-link"></i>&nbsp;{{ item.shop_online_url }}</a>
+
                         </div>
                     </div>
                 </li>
@@ -286,11 +287,12 @@
             </ion-nav-title>
         </ion-nav-bar>
         <ion-content padding="true">
-            <div ng-show="!info.newShopSuccess">
-                <p>创建地铺出错啦,请联系管理员:</br>{{info.newShopStatus}}</p>
-
+            <div ng-if="!info.newShopSuccess">
+                <p>创建地铺出错啦,请联系管理员:</br>
+                    {{info.newShopStatus}}
+                </p>
             </div>
-            <div ng-show="info.newShopSuccess">
+            <div ng-if="info.newShopSuccess">
                 <p>店铺已经为您准备妥当,请复制链接在微信打开访问:</p>
                 <p>
                     <a class="icon" ng-href="{{info.newShopURL}}">{{info.newShopURL}}</a>

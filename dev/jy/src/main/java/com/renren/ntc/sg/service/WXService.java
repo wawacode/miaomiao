@@ -1,7 +1,31 @@
 package com.renren.ntc.sg.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Formatter;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.UUID;
+
+import net.paoding.rose.scanning.context.RoseAppContext;
+
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
@@ -13,23 +37,10 @@ import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
-import com.renren.ntc.sg.util.MD5Utils;
+import com.renren.ntc.sg.util.FileUtil;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
 import com.renren.ntc.sg.util.wx.Sha1Util;
-import net.paoding.rose.scanning.context.RoseAppContext;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
 
 @Service
 public class WXService {
@@ -73,6 +84,8 @@ public class WXService {
     private static final String  notify_url ="http://www.mbianli.com{p}/wx/cb";
     private static final  String  trade_type = "JSAPI";
     private static String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    
+    private static String WX_REFUND_URL = "https://api.mch.weixin.qq.com/pay/refundquery";
 
     
 
@@ -91,6 +104,13 @@ public class WXService {
             "   <sign>{sign}</sign>\n" +
             "</xml>"  ;
 
+    private static final String WX_REFUND_XML = "<xml>\n" +
+            " <appid>{appId}</appid>\n" +
+            " <mch_id>{mch_id}</mch_id>\n" +
+            " <nonce_str>{nonce_str}</nonce_str>\n" +
+            " <out_trade_no>{order_id}</out_trade_no>\n" +
+            " <sign>{sign}</sign>\n" +
+            "</xml>" ;
 
     public  String  getOpenId (String code ){
         String openId = null;
@@ -212,22 +232,15 @@ public class WXService {
         JSONObject firstob = new JSONObject();
         firstob.put("value",first);
         firstob.put("color","#173177");
-
-
         JSONObject OrderSn = new JSONObject();
         OrderSn.put("value",order_id);
         OrderSn.put("color","#173177");
-
         JSONObject OrderStatus = new JSONObject();
-
         OrderStatus.put("value",paydone);
         OrderStatus.put("color","#173177");
-
-
         JSONObject remarkob = new JSONObject();
         remarkob.put("value",remark);
         remarkob.put("color","#173177");
-
         data.put("first",firstob);
         data.put("OrderSn",OrderSn);
         data.put("OrderStatus",OrderStatus);
@@ -405,57 +418,51 @@ public class WXService {
             "   <sign>{sign}</sign>\n" +
             "</xml>" ;
     public static void  payOk (String fileName)   {
-        File file = new File (fileName);
-        if(file.isFile() && file.exists()){ //判断文件是否存在
-            InputStreamReader read = null  ;
-            try {
-                  read = new InputStreamReader(
-                   new FileInputStream(file),"utf-8");//考虑到编码格式
-            BufferedReader bufferedReader = new BufferedReader(read);
-            String lineTxt = null;
-             while((lineTxt = bufferedReader.readLine()) != null){
-                 String [] t = lineTxt.split("\t");
-                 String serialNo = t[1] ;
-                 String shop_id = t[5];
-                 String queryUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
-                 String content = CODE.replace("{appId}",appId) ;
-                 content = content.replace("{mch_id}",mch_id);
-                 String noce_str =  Sha1Util.getNonceStr();;
-                 content = content.replace("{nonce_str}",noce_str);
-                 content = content.replace("{out_trade_no}",serialNo);
-                 SortedMap<String,String> map =  new TreeMap<String,String>() ;
-                 map.put("appid", appId);
-                 map.put("mch_id", mch_id );
-                 map.put("nonce_str", noce_str );
-                 map.put("out_trade_no", serialNo );
-                 String sign =  createSign(map).toUpperCase() ;
-                 content = content.replace("{sign}",sign);
-                 TenpayHttpClient tp =  new TenpayHttpClient();
-                 tp.callHttpPost(queryUrl,content);
-                 String cc = tp.getResContent();
-                 System.out.print(lineTxt);
-                 if (-1 != cc.indexOf("<trade_state_desc><![CDATA[")){
-                     String pay = getP(cc);
-                     System.out.print( pay + "\n");
-                 }else if (-1 != cc.indexOf("<err_code_des><![")){
-                     String pay = getPERR(cc);
-                     System.out.print( pay + "\n");
-                 }  else{
-                     System.out.println(cc);
-                 }
-                }
-            }catch ( Exception e){
-                e.printStackTrace();
-            }finally {
-                if (null != read) {
-                    try {
-                        read.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+       List<String> orderIdList = FileUtil.readFile(fileName);
+       for(String orderId : orderIdList){
+    	   queryPaySuc(orderId);
+       }
+    }
+    
+    public static JSONObject queryPaySuc(String orderId){
+    	 String queryUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
+         String content = CODE.replace("{appId}",appId) ;
+         content = content.replace("{mch_id}",mch_id);
+         String noce_str =  Sha1Util.getNonceStr();;
+         content = content.replace("{nonce_str}",noce_str);
+         content = content.replace("{out_trade_no}",orderId);
+         SortedMap<String,String> map =  new TreeMap<String,String>() ;
+         map.put("appid", appId);
+         map.put("mch_id", mch_id );
+         map.put("nonce_str", noce_str );
+         map.put("out_trade_no", orderId );
+         String sign =  createSign(map).toUpperCase() ;
+         content = content.replace("{sign}",sign);
+         TenpayHttpClient tp =  new TenpayHttpClient();
+         tp.callHttpPost(queryUrl,content);
+         String cc = tp.getResContent();
+         JSONObject result = new JSONObject();
+         if(StringUtils.isBlank(cc)){
+        	 return result;
+         }
+         System.out.println(cc);
+         if (-1 != cc.indexOf("<trade_state_desc><![CDATA[")){
+             String pay = getP(cc);
+             result.put("trade_state_desc", pay);
+             //System.out.print( pay + "\n");
+         }
+         if (-1 != cc.indexOf("<err_code_des><![")){
+             String pay = getPERR(cc);
+             result.put("err_code_des", pay);
+            // System.out.print( pay + "\n");
+         }
+         if (-1 != cc.indexOf("<trade_state><![")) {
+        	 String pay = getTradeState(cc);
+             result.put("trade_state", pay);
+            // System.out.print( pay + "\n");
+		}
+        System.out.println(result.toJSONString());
+        return result;
     }
 
     private static String getPERR(String cc) {
@@ -470,8 +477,19 @@ public class WXService {
     }
 
     private static String getP(String cc) {
-        String s = "<trade_state_desc><![CDATA";
+        String s = "<trade_state_desc><![CDATA[";
         String e = "]]></trade_state_desc>";
+        int start = cc.indexOf(s);
+        int end = cc.indexOf(e);
+        if (-1 == start ||  -1 == end){
+            return "" ;
+        }
+        return cc.substring( s.length() + start ,end);
+    }
+    
+    private static String getTradeState(String cc) {
+        String s = "<trade_state><![CDATA[";
+        String e = "]]></trade_state>";
         int start = cc.indexOf(s);
         int end = cc.indexOf(e);
         if (-1 == start ||  -1 == end){
@@ -489,6 +507,7 @@ public class WXService {
         long end = System.currentTimeMillis();
         System.out.println("cos" + (end - now));
 //        payOk("d:\\downloads\\mm.txt");
+        System.out.println(wx.getWxRefundInfo("C201504071831020027585"));
     }
 
     public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {
@@ -570,5 +589,73 @@ public class WXService {
         String sign = MD5Util.MD5Encode(sb.toString(), "utf-8")
                 .toUpperCase();
         return sign;
+    }
+    
+    public String getWxRefundInfo(String orderId) {
+    	String result = "";
+        try {
+            SortedMap<String,String> map  = new TreeMap<String,String>();
+            String nonce_str = Sha1Util.getNonceStr();
+            map.put("appid",appId);
+            map.put("mch_id",mch_id);
+            map.put("nonce_str",nonce_str);
+            map.put("out_trade_no", orderId);
+            String sign =  createSign(map).toUpperCase()  ;
+            String content = WX_REFUND_XML.replace("{appId}",appId);
+            content  = content.replace("{mch_id}",mch_id);
+            content  = content.replace("{nonce_str}",nonce_str);
+            content  = content.replace("{order_id}",orderId);
+            content  = content.replace("{sign}",sign);
+            TenpayHttpClient http = new TenpayHttpClient();
+            http.callHttpPost(WX_REFUND_URL,content);
+            result  = http.getResContent();
+            System.out.println("send " + content +"wx refund rec " +  result );
+            if(!StringUtils.isBlank(result)){
+            	String isHaveRefund = getisHaveRefundStatus(result);
+            	if("SUCCESS".equals(isHaveRefund)){
+            		JSONObject refundJson = new JSONObject();
+                	refundJson.put("refund_status", getRefundStatus(result));
+                	refundJson.put("refund_fee", getRefundFee(result));
+                	refundJson.put("result_code", isHaveRefund);
+                	return refundJson.toJSONString();
+            	}
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+    
+    private static String getisHaveRefundStatus(String res) {
+        String s = "<result_code><![CDATA[";
+        String e = "]]></result_code>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start || -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+    
+    private static String getRefundStatus(String res) {
+        String s = "<refund_status_0><![CDATA[";
+        String e = "]]></refund_status_0>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start || -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
+    }
+
+    private static String getRefundFee(String res) {
+        String s = "<refund_fee>";
+        String e = "</refund_fee>";
+        int start = res.indexOf(s);
+        int end = res.indexOf(e);
+        if (-1 == start || -1 == end){
+            return "" ;
+        }
+        return res.substring( s.length() + start ,end);
     }
 }

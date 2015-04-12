@@ -1,0 +1,33 @@
+<ion-view title="编辑小区信息">
+    <ion-nav-bar class="bar-mmiao">
+        <ion-nav-buttons side="left">
+            <button class="button button-clear" ui-sref="tab.shop-edit">
+                <i class="icon ion-ios7-arrow-back">返回</i>
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-title>
+            编辑小区信息
+        </ion-nav-title>
+    </ion-nav-bar>
+    <ion-content padding="false"
+                 has-tabs="true"
+                 has-header="true"
+                 scroll="true"
+                 has-bouncing="true">
+        <div class="list">
+
+            <div class="item" ng-if="info.communityList && info.communityList.length == 0">
+                 没有绑定小区
+            </div>
+
+            <a class="item item-icon-right" ng-repeat="community in info.communityList">
+                {{community.name}}
+                <i class="icon ion-ios7-trash-outline assertive" ng-click="removeCommunity($index)"></i>
+            </a>
+
+            <label class="item item-input-inset" style="text-align: center">
+                <button class="button button-full button-balanced" ng-click="addNewCommunity()">添加新小区</button>
+            </label>
+        </div>
+    </ion-content>
+</ion-view>

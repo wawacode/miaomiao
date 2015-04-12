@@ -145,11 +145,11 @@ public class LoginController extends BasicConsoleController {
         }
 
         Shop shop = shopDAO.getShopbyOwner_id(u.getId());
-        if (null == shop) {
-            result.put("code", -3);
-            result.put("msg", "没有可用店铺");
-            return "@json:" + result.toJSONString();
-        }
+//        if (null == shop) {
+//            result.put("code", -3);
+//            result.put("msg", "没有可用店铺");
+//            return "@json:" + result.toJSONString();
+//        }
         String token = SUtils.wrapper(u.getId() + "");
         CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER, token);
         JSONObject resultJson = new JSONObject();
