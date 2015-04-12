@@ -297,7 +297,8 @@
             <div ng-if="info.newShopSuccess">
                 <p>店铺已经为您准备妥当,请复制链接在微信打开访问:</p>
                 <p>
-                    <a class="icon" ng-href="{{info.newShopURL}}">{{info.newShopURL}}</a>
+                    <!--<a class="icon" ng-href="{{info.newShopURL}}">{{info.newShopURL}}</a>-->
+                    <input type="text" ng-model="info.newShopURL" required>
                 </p>
             </div>
         </ion-content>
