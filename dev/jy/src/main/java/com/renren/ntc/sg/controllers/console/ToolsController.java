@@ -32,7 +32,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Category;
 import com.renren.ntc.sg.bean.Item;
@@ -227,22 +226,7 @@ public class ToolsController {
 		inv.addModel("count", count); //总数
 		return "toolsDetail";
 	}
-	/**
-	  * 商品种类数字到中文的转换
-	  * @param saveCategoryNum
-	  * @param saveCategoryNumCN
-	  * @author ZhaoXiuFei
-	  * @date 2015年4月12日上午11:55:41
-	 */
-	private void converterCN(Map<Integer, Integer> saveCategoryNum, Map<String, Integer> saveCategoryNumCN) {
-		for (Map.Entry<Integer,Integer> entry : saveCategoryNum.entrySet()) {
-			Category category =  categoryDAO.getCategory(entry.getKey());
-			if(null != category)
-			    saveCategoryNumCN.put(category.getName(), entry.getValue());
-			else
-				saveCategoryNumCN.put("没有分类", saveCategoryNumCN.get("没有分类") == null ? entry.getValue() :saveCategoryNumCN.get("没有分类") + entry.getValue());
-		}
-	}
+	
 	/**
 	  * 把A店商品同步到B店
 	  * @param inv
@@ -372,6 +356,22 @@ public class ToolsController {
 		jo.put("category", clist);
 		jo.put("shop", newShopList);
 		return "@json:" + jo.toJSONString();
+	}
+	/**
+	  * 商品种类数字到中文的转换
+	  * @param saveCategoryNum
+	  * @param saveCategoryNumCN
+	  * @author ZhaoXiuFei
+	  * @date 2015年4月12日上午11:55:41
+	 */
+	private void converterCN(Map<Integer, Integer> saveCategoryNum, Map<String, Integer> saveCategoryNumCN) {
+		for (Map.Entry<Integer,Integer> entry : saveCategoryNum.entrySet()) {
+			Category category =  categoryDAO.getCategory(entry.getKey());
+			if(null != category)
+			    saveCategoryNumCN.put(category.getName(), entry.getValue());
+			else
+				saveCategoryNumCN.put("没有分类", saveCategoryNumCN.get("没有分类") == null ? entry.getValue() :saveCategoryNumCN.get("没有分类") + entry.getValue());
+		}
 	}
 	/**2010-2013Excel*/
 	@SuppressWarnings("unused")
