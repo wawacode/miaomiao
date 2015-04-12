@@ -253,17 +253,19 @@
                     class="item item-body" style="padding: 2px">
                     <div class="list card">
                         <div class="item">
-                            <h2><i class="icon ion-ios7-cart"></i>&nbsp;{{ item.shop_name }}</h2>
+                            <h2><i class="icon ion-ios7-cart"></i>&nbsp;店铺名称：{{ item.shop_name }}</h2>
 
-                            <p><i class="icon ion-ios7-telephone"></i>&nbsp;{{ item.shop_tel }}</p>
+                            <p><i class="icon ion-ios7-telephone"></i>&nbsp;店铺电话：{{ item.shop_tel }}</p>
 
-                            <p><i class="icon ion-ios7-location"></i>&nbsp;{{ item.shop_address }}</p>
+                            <p><i class="icon ion-ios7-location"></i>&nbsp;店铺地址：{{ item.shop_address }}</p>
 
-                            <p><i class="icon ion-ios7-time"></i>&nbsp;{{ item.create_time | date:'medium' }}</p>
+                            <p><i class="icon ion-ios7-time"></i>&nbsp;开店时间：{{ item.create_time | date:'medium' }}</p>
 
-                            <p><i class="icon ion-ios7-printer"></i>&nbsp;{{ item.shop_print }}</p>
+                            <p><i class="icon ion-ios7-printer"></i>&nbsp;打印机ID：{{ item.shop_print }}</p>
 
-                            <a ng-href="item.shop_online_url"><i class="icon ion-link"></i>&nbsp;{{ item.shop_online_url }}</a>
+                            <p><i class="icon ion-link"></i>&nbsp;网店地址(复制地址在微信里打开)：</p>
+
+                            <input type="text" ng-model="item.shop_online_url " required>
 
                         </div>
                     </div>
