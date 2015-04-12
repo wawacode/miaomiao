@@ -48,15 +48,12 @@ public class UpdateWxRefundInfo {
 //		}, 0, 30*60*1000);	
 	}
 	
-	public static void processUpdateRefund(String time){
+	public static void processUpdateRefund(String beginTimeStr,String endTimeStr){
 		long start = System.currentTimeMillis();
 		RoseAppContext rose = new RoseAppContext();
 		WXService wxservice = rose.getBean(WXService.class);
         ShopDAO  shopDao = rose.getBean(ShopDAO.class);
         OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
-        String day = Dateutils.tranferDefaultDate2Str(new Date());
-		String beginTimeStr = day + " "+"00:00:00";
-		String endTimeStr = day + " "+"23:59:59";
 		List<Shop> shops = shopDao.getAllShopsByAudit(1);
 		for(Shop shop:shops){
 			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
@@ -70,7 +67,7 @@ public class UpdateWxRefundInfo {
 			}
 		}
 		long end = System.currentTimeMillis();
-		System.out.println("time ="+time+",updateOrderRefund done cost="+(end - start));
+		System.out.println("time ="+Dateutils.tranferDate2Str(new Date())+",updateOrderRefund done cost="+(end - start));
 	}
 	
 	private static void updateOrderRefund(Order order,OrdersDAO orderDao,WXService wxservice){

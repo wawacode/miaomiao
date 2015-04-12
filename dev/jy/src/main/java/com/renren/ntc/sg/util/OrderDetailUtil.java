@@ -34,17 +34,17 @@ public class OrderDetailUtil {
 		RoseAppContext rose = new RoseAppContext();
 		ShopDAO shopDAO = rose.getBean(ShopDAO.class);
 		OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
+		String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0));
+		String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 23, 59, 59));
 		System.out.println("update start time="+Dateutils.tranferDate2Str(new Date()));
 		UpdateWxRefundInfo updateWxRefundInfo = new UpdateWxRefundInfo();
-		updateWxRefundInfo.processUpdateRefund(Dateutils.tranferDate2Str(new Date()));
+		updateWxRefundInfo.processUpdateRefund(beginTimeStr,endTimeStr);
 		System.out.println("update end time="+Dateutils.tranferDate2Str(new Date()));
 		List<Shop> shops = shopDAO.getAllShopsByAudit(1);
 		List<WXPayShopReport> wxpayShopReports = new ArrayList<WXPayShopReport>();
 		int totalShopOrderPrice = 0;
 		for(Shop shop : shops){
 			//System.out.println("shopid="+shop.getId()+",name="+shop.getName());
-			String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0));
-			String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 23, 59, 59));
 			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
 			int orderSize = orders == null ? 0 : orders.size();
 			WXPayShopReport wShopReport = new WXPayShopReport();
