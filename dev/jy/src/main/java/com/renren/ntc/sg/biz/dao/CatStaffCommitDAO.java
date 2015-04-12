@@ -43,7 +43,7 @@ public interface CatStaffCommitDAO {
 	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  id =:1 ")
 	public CatStaffCommit getCatStaffCommit(long id );
 
-    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where phone =:1 and pwd = :2  limit :3,:4")
+    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where phone =:1 and pwd = :2 order by create_time desc limit :3,:4")
     public List<CatStaffCommit> getCatStaffCommit(String staff_phone, String staff_pwd, int from, int offset);
 
     @SQL("update " +  TABLE_NAME   + " set shop_info =:3 ,shop_id= :2  where id = :1")
