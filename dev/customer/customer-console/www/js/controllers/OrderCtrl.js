@@ -160,10 +160,33 @@
 
         $scope.confirmShip = function(order){
           //todo:
+            httpClient.orderCanbeShipByShop($scope.info.shop.id, order.order_id, function (data, status) {
+
+                var code = data.code, dataDetail = data.data;
+                if (!code == 0) {
+                    MMUtils.showAlert('确认配送失败');
+                }
+                MMUtils.showAlert('确认配送成功');
+
+            }, function (data, status) {
+                MMUtils.showAlert('确认配送失败');
+            });
         };
 
         $scope.cannotShip = function(order){
+
             //todo:
+            httpClient.orderCanNotbeShipByS hop($scope.info.shop.id, order.order_id, function (data, status) {
+
+                var code = data.code, dataDetail = data.data;
+                if (!code == 0) {
+                    MMUtils.showAlert('取消配送失败');
+                }
+                MMUtils.showAlert('取消配送成功');
+
+            }, function (data, status) {
+                MMUtils.showAlert('取消配送失败');
+            });
         };
 
         $scope.showOrderDetail = function (order) {

@@ -719,7 +719,7 @@
 <script id="templates/snapshotOrder.html" type="text/ng-template">
     <div class="orderSnapshotHeader">
         <div class="orderId" bo-text="$index + 1 + '. ' + order.shop_name4V"></div>
-        <div ng-if="order.act == 'wx'">
+        <div>
             <div class="orderPayType balanced" ng-if="order.order_status == StatsEnum.confirmedByUser">
                 交易成功
             </div>
@@ -729,17 +729,19 @@
             <div class="orderPayType balanced" ng-if="order.order_status == StatsEnum.inShipping">
                 正在配送...
             </div>
-            <div class="orderPayType assertive" ng-if="order.order_status == StatsEnum.canceledByUser ||
-                                                        order.order_status == StatsEnum.canceledByShop ||
-                                                        order.order_status == StatsEnum.canceledByCatStaff">
+            <div class="orderPayType assertive" ng-if="order.order_status == StatsEnum.canceledByUser">
                 订单取消
             </div>
-        </div>
-        <div ng-if="order.act != 'wx'">
-            <div class="orderPayType balanced">
-                货到付款
+            <div class="orderPayType assertive" ng-if=" order.order_status == StatsEnum.canceledByShop ||
+                                                        order.order_status == StatsEnum.canceledByCatStaff">
+                无法配送，请联系喵喵客服
             </div>
         </div>
+        <!--<div ng-if="order.act != 'wx'">-->
+            <!--<div class="orderPayType balanced">-->
+                <!--货到付款-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
     <div class="orderSnapshot" bindonce quick-ng-repeat="orderItem in order.items">
         <div class="prod_icon" back-img="{{orderItem.pic_url}}"></div>

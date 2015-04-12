@@ -35,15 +35,21 @@ angular.module('miaomiao.shop')
             if(order.order_status == StatsEnum.toBeConfirmed ||
                 order.order_status == StatsEnum.inShipping){
 
-                if(timeeplise/1000 >= 1 * 60){ // 20 minutes
+                if(timeeplise/1000 >= 20 * 60){ // 20 minutes
                     order.canRemindShipping = true;
                 }
             }
-
-            if(order.order_status == StatsEnum.toBeConfirmed ||
+            // canceled by user/shop/catstaff user can apply for refund
+            if(order.order_status == StatsEnum.canceledByShop ||
+                order.order_status == StatsEnum.canceledByCatStaff||
                 order.order_status == StatsEnum.confirmedByUser){
+                order.canCancelOrder = true;
+            }
 
-                if(timeeplise/1000 >= 2 * 60){ // 60 minutes
+            // order create/confired by shop, user can apply for refund after 60 minutes
+            if(order.order_status == StatsEnum.toBeConfirmed ||
+                order.order_status == StatsEnum.inShipping){
+                if(timeeplise/1000 >= 60 * 60){ // 60 minutes
                     order.canCancelOrder = true;
                 }
             }
@@ -225,7 +231,7 @@ angular.module('miaomiao.shop')
             if(!order.canCancelOrder)return;
 
             MMUtils.showLoadingIndicator('正在取消订单...', $scope);
-            httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'cancel', function (data, status) {
+            httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
 
                 $ionicLoading.hide();
 
@@ -250,7 +256,7 @@ angular.module('miaomiao.shop')
             if(!order.canRemindShipping)return;
 
             MMUtils.showLoadingIndicator('正在提醒店家发货...', $scope);
-            httpClient.remindShippingMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'remind', function (data, status) {
+            httpClient.remindShippingMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
 
                 $ionicLoading.hide();
 
