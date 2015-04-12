@@ -161,6 +161,12 @@ public class HomeController {
     {
         inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
 
+        if (from < 0 ){
+            from = 0;
+        }
+        if (offset<= 0) {
+            offset =20;
+        }
         if (!legal(staff_phone, staff_name, staff_pwd)) {
         return "@" + Constants.PARATERERROR;
     }
