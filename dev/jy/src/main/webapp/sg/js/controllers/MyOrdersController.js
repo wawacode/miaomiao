@@ -13,12 +13,12 @@ angular.module('miaomiao.shop')
         };
 
         var StatsEnum = $scope.StatsEnum = {
-            'created': 0,
-            'toBeConfirmed': 1,
-            'inShipping':2,
-            'canceledByUser':3,
-            'canceledByShop':4,
-            'confirmedByUser':5
+            'toBeConfirmed': 0,
+            'inShipping':1,
+            'canceledByUser':2,
+            'canceledByShop':3,
+            'confirmedByUser':4,
+            'canceledByCatStaff':5
         };
 
         function updateOrderStatus(order){
@@ -28,20 +28,23 @@ angular.module('miaomiao.shop')
             order.canCancelOrder = false;
             order.canRemindShipping = false;
 
+            var creationTime = new Date(order.create_time),
+                nowtime = new Date(),
+                timeeplise = nowtime.getTime()-creationTime.getTime(); // mini secs
+
             if(order.order_status == StatsEnum.toBeConfirmed ||
-                order.order_status == StatsEnum.inShipping ||
-                order.order_status == StatsEnum.created){
-
-                var creationTime = new Date(order.create_time),
-                    nowtime = new Date(),
-                    timeeplise = nowtime.getTime()-creationTime.getTime(); // mini secs
-
-                if(timeeplise/1000 >= 2 * 60){ // 60 minutes
-                    order.canCancelOrder = true;
-                }
+                order.order_status == StatsEnum.inShipping){
 
                 if(timeeplise/1000 >= 1 * 60){ // 20 minutes
                     order.canRemindShipping = true;
+                }
+            }
+
+            if(order.order_status == StatsEnum.toBeConfirmed ||
+                order.order_status == StatsEnum.confirmedByUser){
+
+                if(timeeplise/1000 >= 2 * 60){ // 60 minutes
+                    order.canCancelOrder = true;
                 }
             }
         }

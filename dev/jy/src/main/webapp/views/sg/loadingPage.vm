@@ -729,7 +729,9 @@
             <div class="orderPayType balanced" ng-if="order.order_status == StatsEnum.inShipping">
                 正在配送...
             </div>
-            <div class="orderPayType assertive" ng-if="order.order_status == StatsEnum.canceledByUser || order.order_status == StatsEnum.canceledByShop">
+            <div class="orderPayType assertive" ng-if="order.order_status == StatsEnum.canceledByUser ||
+                                                        order.order_status == StatsEnum.canceledByShop ||
+                                                        order.order_status == StatsEnum.canceledByCatStaff">
                 订单取消
             </div>
         </div>
