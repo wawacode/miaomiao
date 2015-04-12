@@ -15,7 +15,7 @@
 <div class="container">
 <br/><br/><br/><br/>
 	<h2>总计:$count条</h2>
-	<h2>成功导入:$successNum条</h2>
+	#if($successNum)<h2>成功导入:$successNum条</h2>#end
 	<table border="1"  cellspacing="0" cellpadding="10">
 		<tr  align="center">
 			<th>分类</th>
@@ -28,6 +28,8 @@
 		</tr>
 		#end  
 	</table>
+	<a href="/console/tools">返回</a>
+	#if($missingList.size())
 	<h2>未导入:$missingList.size()条</h2>
 	<table border="1"  cellspacing="0" cellpadding="10">
 		<tr  align="center">
@@ -39,6 +41,9 @@
 		</tr>
 		#end
 	</table>
+	#end
+	
+	
 </div> <!-- /container -->
 </body>
 </html>

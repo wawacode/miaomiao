@@ -25,6 +25,7 @@ import com.renren.ntc.sg.util.SUtils;
  * @author ZhaoXiuFei
  * @date 2015年4月10日下午2:08:03
  */
+@SuppressWarnings("static-access")
 @Path("registerUser")
 public class RegisterUserController {
 
@@ -54,7 +55,6 @@ public class RegisterUserController {
 		return "allRegistUser";
 	}
 
-	@SuppressWarnings("static-access")
 	@Post("update")
 	@Get("update")
 	public String update(Invocation inv, @Param("id") String str_id, @Param("value") String value) {
@@ -77,7 +77,6 @@ public class RegisterUserController {
 		return "@" + Constants.DONE;
 	}
 
-	@SuppressWarnings("static-access")
 	@Post("del")
 	@Get("del")
 	public String del(Invocation inv, @Param("user_id") String user_id, @Param("from") int from, @Param("offset") int offset) {
@@ -89,6 +88,7 @@ public class RegisterUserController {
 		registUserDAO.del(registUserDAO.TABLE_NAME, id);
 		return new StringBuilder("r:/console/registerUser?from=").append(from).append("&offset=").append(offset).toString();
 	}
+	
 	@Post("advSearch")
 	@Get("advSearch")
 	public String advSearch(Invocation inv, @Param("key") String key, @Param("from") int from, @Param("offset") int offset) {

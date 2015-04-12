@@ -36,16 +36,61 @@
                     success: onchangecallback
                 });
             }
-
+            
             function onchangecallback(data) {
                 var category = $('#category_id');
                 category.length = 0;//清空原有的option
-                var str = "";
-                for (var i = 0; i < data.length; i++) {
-                    str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                var c_str = "";
+                var categoryData = data.category;
+                for (var i = 0; i < categoryData.length; i++) {
+                    c_str += "<option value='" + categoryData[i].id + "'>" + categoryData[i].name + "</option>"
                 }
-                $("#category_id").html(str);
+                $("#category_id").html(c_str);
+                var to_shop_id  = $("#f1_to_shop_id");
+                to_shop_id.length = 0;//清空原有的option
+                var s_str = ""
+                var shopData = data.shop;
+                for (var i = 0; i < shopData.length; i++) {
+                    s_str += "<option value='" + shopData[i].id + "'>" + shopData[i].name + "</option>"
+                }
+                $("#f1_to_shop_id").html(s_str);
             }
+            
+            var f2_firstShop_id = null;
+            $('#f2_firstShop option:selected', this).each(function () {
+                f2_firstShop_id = this.value;
+                onchangeShow2(f2_firstShop_id);
+            });
+            $('#f2_firstShop').change(function () {
+                $('option:selected', this).each(function () {
+                    f2_firstShop_id = this.value;
+                    onchangeShow2(f2_firstShop_id);
+                });
+            });
+            function onchangeShow2(shop_id) {
+                $.ajax({
+                    url: "/console/tools/getCategoriesByShopId",
+                    data: {shop_id: shop_id}, //参数
+                    type: "post",
+                    cache: false,
+                    dataType: "json", //返回json数据
+                    error: function () {
+                        alert('error');
+                    },
+                    success: onchangecallback2
+                });
+            }
+            function onchangecallback2(data) {
+                var to_shop_id  = $("#f2_to_shop_id");
+                to_shop_id.length = 0;//清空原有的option
+                var s_str = ""
+                var shopData = data.shop;
+                for (var i = 0; i < shopData.length; i++) {
+                    s_str += "<option value='" + shopData[i].id + "'>" + shopData[i].name + "</option>"
+                }
+                $("#f2_to_shop_id").html(s_str);
+            }
+            
         });
     </script>
     <script type="text/javascript">
@@ -147,14 +192,14 @@
 <!-- 上传文件 -->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-4 col-md-offset-4">
             <h1 style="text-align:center">内部工具</h1>
             <div style="margin: 20px;padding:10px">
                 <h3>上传扫码文件</h3>
                 <form id="Form1" action="/console/tools/uploadFile" method="post" enctype="multipart/form-data"
                       onsubmit="return submitForm1();">
                     <div class="form-group">
-                        <label for="exampleInputFile">商店ID:</label>
+                        <label for="exampleInputFile">商店:</label>
                         <select name="shop_id" required>
                             #foreach($shop in $list)
                             <option value="$shop.id">$shop.name</option>
@@ -168,40 +213,64 @@
                     <button type="submit" class="btn btn-success">提交</button>
                 </form>
             </div>
-
+			<hr/>
             <div style="margin: 20px;padding:10px">
-                <h2>同步A店分类商品到B商店</h2>
+                <h3>同步A店某一分类商品到B商店</h3>
                 <form action="/console/tools/mvShopItems" method="post" onsubmit="return submitForm();">
-                    	商店:
-                    <select id="firstShop" name="from_shop_id" required>
-                        #foreach($shop in $list)
-                        <option value="$shop.id">$shop.name</option>
-                        #end
-                    </select>
-                  	  分类:
-                <select id="category_id" name="category_id" required>
-                    #foreach($category in $categoryList)
-                    <option value="$category.id">$category.name</option>
-                    #end
-                </select>
-                   	 同步到:
-                    <select id="secondShopId" name="to_shop_id" required>
-                        #foreach($shop in $list)
-                        <option value="$shop.id">$shop.name</option>
-                        #end
-                    </select>
-                    <button class="btn" type="submit">确定</button>
+                    <div class="form-group">
+                        <label for="exampleInputFile">商&nbsp;&nbsp;&nbsp;店:</label>
+	                    <select id="firstShop" name="from_shop_id" required>
+	                        #foreach($shop in $list)
+	                        <option value="$shop.id">$shop.name</option>
+	                        #end
+	                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputFile">分&nbsp;&nbsp;&nbsp;类:</label>
+		                <select id="category_id" name="category_id" required>
+		                    #foreach($category in $categoryList)
+		                    <option value="$category.id">$category.name</option>
+		                    #end
+		                </select>
+	                </div>
+	                <div class="form-group">
+                        <label for="exampleInputFile">同步到:</label>
+	                    <select id="f1_to_shop_id" name="to_shop_id" required></select>
+                    </div>
+                    <button class="btn btn-success" type="submit">确定</button>
                 </form>
             </div>
-
+			<hr/>
             <div style="margin: 20px;padding:10px">
-                <h2>同步商店商品到主库</h2>
+                <h3>同步商店商品到主库</h3>
                 <form action="/console/tools/refresh2Produdce" method="post" onsubmit="return  submitForm();">
-                    <select id="secondShopId" name="shop_id" required>
-                        #foreach($shop in $list)
-                        <option value="$shop.id">$shop.name</option>
-                        #end
-                    </select>
+                    <div class="form-group">
+                        <label for="exampleInputFile">商店:</label>
+	                    <select id="secondShopId" name="shop_id" required>
+	                        #foreach($shop in $list)
+	                        <option value="$shop.id">$shop.name</option>
+	                        #end
+	                    </select>
+                    </div>
+                    <button class="btn btn-success" type="submit">确定</button>
+                </form>
+            </div>
+            <hr/>
+            <div style="margin: 20px;padding:10px">
+                <h3>同步A店商品到B商店</h3>
+                <form action="/console/tools/copyShopAllItems" method="post" onsubmit="return submitForm();">
+                    <div class="form-group">
+                        <label for="exampleInputFile">商&nbsp;&nbsp;&nbsp;店:</label>
+	                    <select id="f2_firstShop" name="from_shop_id" required>
+	                        #foreach($shop in $list)
+	                        <option value="$shop.id">$shop.name</option>
+	                        #end
+	                    </select>
+                    </div>
+                   	<div class="form-group">
+                        <label for="exampleInputFile">同步到:</label>
+	                    <select id="f2_to_shop_id" name="to_shop_id" required></select>
+                    </div>
                     <button class="btn btn-success" type="submit">确定</button>
                 </form>
             </div>

@@ -138,13 +138,7 @@ public class ToolsController {
 			} while ((lineTxt = br.readLine()) != null);
 			//遍历map集合  替换分类为中文名字
 			Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
-			for (Map.Entry<Integer,Integer> entry : saveCategoryNum.entrySet()) {
-				Category category =  categoryDAO.getCategory(entry.getKey());
-				if(null != category)
-				    saveCategoryNumCN.put(category.getName(), entry.getValue());
-				else
-					saveCategoryNumCN.put("没有分类", saveCategoryNumCN.get("没有分类") == null ? entry.getValue() :saveCategoryNumCN.get("没有分类") + entry.getValue());
-			}
+			converterCN(saveCategoryNum, saveCategoryNumCN);
 			inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
 			inv.addModel("missingList", missingList); //丢失
 			inv.addModel("count", count); //总数
@@ -201,6 +195,8 @@ public class ToolsController {
 		}else if(0 == to_shop_id){
 			return "@ to_shop_id 不能为空";
 		}
+		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
+		int count = 0;
 		int offset = 100;//每次查100条 如果够
 	    for (int i = 0; i < 100000;) {
             System.out.println("get " + i + " " + offset);
@@ -219,10 +215,77 @@ public class ToolsController {
                     System.out.println("update" + item.getSerialNo() + " " + item.getId());
                     itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
                 }
+                count++;
+                saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
             }
             i = i + offset;
 	    }
-		return "@同步成功!";
+		//遍历map集合  替换分类为中文名字
+		Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+		converterCN(saveCategoryNum, saveCategoryNumCN);
+		inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+		inv.addModel("count", count); //总数
+		return "toolsDetail";
+	}
+	/**
+	  * 商品种类数字到中文的转换
+	  * @param saveCategoryNum
+	  * @param saveCategoryNumCN
+	  * @author ZhaoXiuFei
+	  * @date 2015年4月12日上午11:55:41
+	 */
+	private void converterCN(Map<Integer, Integer> saveCategoryNum, Map<String, Integer> saveCategoryNumCN) {
+		for (Map.Entry<Integer,Integer> entry : saveCategoryNum.entrySet()) {
+			Category category =  categoryDAO.getCategory(entry.getKey());
+			if(null != category)
+			    saveCategoryNumCN.put(category.getName(), entry.getValue());
+			else
+				saveCategoryNumCN.put("没有分类", saveCategoryNumCN.get("没有分类") == null ? entry.getValue() :saveCategoryNumCN.get("没有分类") + entry.getValue());
+		}
+	}
+	/**
+	  * 把A店商品同步到B店
+	  * @param inv
+	  * @return
+	  * @author ZhaoXiuFei
+	  * @date 2015年4月12日上午10:50:49
+	 */
+	@Get("copyShopAllItems")
+	@Post("copyShopAllItems")
+	public String copyShopAllItems(Invocation inv, @Param("from_shop_id") String from_shop_id, @Param("to_shop_id") String to_shop_id) {
+		System.out.println("test controller");
+		if(StringUtils.isBlank(from_shop_id)){
+			return "@ from_shop_id 不能为空";
+		}
+		if(StringUtils.isBlank(from_shop_id)){
+			return "@ to_shop_id 不能为空";
+		}
+		long toShopId = Long.valueOf(to_shop_id);
+		//删除原来已有商品 
+		itemDao.del(SUtils.generTableName(toShopId), toShopId);
+		
+		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
+		int offset = 100;
+		long fromShopId = Long.valueOf(from_shop_id);
+		int count = 0;
+	    for (int i = 0; i < 100000;) {
+	    	List<Item> itemls = itemDao.getItems(SUtils.generTableName(fromShopId),fromShopId, i, offset);
+	    	if (itemls.size() == 0) {
+	                break;
+	         }
+	        for (Item item : itemls) {
+	        	count++;
+	        	itemDao.insert(SUtils.generTableName(toShopId), item);//插入新数据
+	        	saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
+	        }
+	    	i = i+offset;
+	    }
+		//遍历map集合  替换分类为中文名字
+		Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+		converterCN(saveCategoryNum, saveCategoryNumCN);
+		inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+		inv.addModel("count", count); //总数
+		return "toolsDetail";
 	}
 	
 	/**
@@ -236,7 +299,8 @@ public class ToolsController {
 		if(0 == shop_id){
 			return "@ shop_id 不能为空";
 		}
-		
+		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
+		int count = 0;
 	    int offset = 1000;
         for (int i = 0; i < 100000;) {
             List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
@@ -260,10 +324,17 @@ public class ToolsController {
                     System.out.println("insert into " + p.getSerialNo());
                     pDao.insert(p) ;
                 }
+	            count++;
+	            saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
 	        }
 	        i = i + offset;
         }
-		return "@同步完成!";
+      //遍历map集合  替换分类为中文名字
+  		Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+  		converterCN(saveCategoryNum, saveCategoryNumCN);
+  		inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+  		inv.addModel("count", count); //总数
+		return "toolsDetail";
 	}
 	/**
 	 * ajax 获取商店商品分类
@@ -275,18 +346,32 @@ public class ToolsController {
 	@Get("getCategoriesByShopId")
 	@Post("getCategoriesByShopId")
 	public String getCategoriesByShopId(Invocation inv, @Param("shop_id") long shop_id) {
+		if(0 == shop_id){
+			return "@ shop_id 不能为空";
+		}
 		List<Item> shopCategoryList = itemDao.getCategoriesByShopId(SUtils.generTableName(shop_id));
-		List<JSONObject> list = new ArrayList<JSONObject>();
+		List<JSONObject> clist = new ArrayList<JSONObject>();
 		for (Item item : shopCategoryList) {
 			Category category = categoryDAO.getCategory(item.getCategory_id());
 			if (null != category) {
 				JSONObject jo = new JSONObject();
 				jo.put("id", item.getCategory_id());
 				jo.put("name", category.getName());
-				list.add(jo);
+				clist.add(jo);
 			}
 		}
-		return "@json:" + JSON.toJSONString(list);
+		List<Shop> slist = shopDAO.getAllShopsByNotOnline();
+		List<Shop> newShopList = new ArrayList<Shop>(slist.size()-1);
+		
+		for (Shop s : slist) {
+			if (s.getId() != shop_id) {
+				newShopList.add(s);
+			}
+		}
+		JSONObject jo = new JSONObject();
+		jo.put("category", clist);
+		jo.put("shop", newShopList);
+		return "@json:" + jo.toJSONString();
 	}
 	/**2010-2013Excel*/
 	@SuppressWarnings("unused")
@@ -401,6 +486,7 @@ public class ToolsController {
 	 * @author zhiaoxiufei
 	 * @return shop_id + "_" + fileName + UUID + suffix
 	 */
+	@SuppressWarnings("unused")
 	private String getUUIDFileName(long shop_id, String originFileName) {
 		int index = originFileName.lastIndexOf(".");
 		String fileName = originFileName.substring(0, index);
