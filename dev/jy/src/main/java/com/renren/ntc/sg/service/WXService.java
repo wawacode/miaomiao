@@ -538,11 +538,11 @@ public class WXService {
         RoseAppContext rose = new  RoseAppContext();
         WXService wx =  rose.getBean(WXService.class);
         long now = System.currentTimeMillis();
-        wx.config("http://www.mbianli.com");
+        //wx.config("http://www.mbianli.com");
         long end = System.currentTimeMillis();
         System.out.println("cos" + (end - now));
 //        payOk("d:\\downloads\\mm.txt");
-        System.out.println(wx.getWxRefundInfo("C201504071831020027585"));
+        System.out.println(wx.getWxRefundInfo("C201504112109030106794"));
     }
 
     public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {

@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.controllers.console;
 
+import java.util.Date;
 import java.util.List;
 
 import net.paoding.rose.web.Invocation;
@@ -10,6 +11,7 @@ import net.paoding.rose.web.annotation.rest.Post;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.util.LongField;
 import org.apache.velocity.tools.generic.DateTool;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,12 +21,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.annotations.LoginRequired;
 import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.OrderDetail;
 import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.bean.User;
 import com.renren.ntc.sg.biz.dao.CategoryDAO;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.UserDAO;
+import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
+import com.renren.ntc.sg.constant.OrderStatus;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
@@ -63,6 +70,12 @@ public class AllShopConsoleController {
 
     @Autowired
     OrderService orderService ;
+    
+    @Autowired
+    UserDAO userDAO;
+    
+    @Autowired
+    UserOrdersDAO userOrdersDAO;
 
     @Post("")
     @Get("")
@@ -176,7 +189,7 @@ public class AllShopConsoleController {
 		}
        // List<Order> orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
         orderls = orderService.forV(orderls);
-        orderService.f(orderls);
+       List<OrderDetail> orderDetails = orderService.setOrderDetail(orderls);
         if(from != 0){
         	int begin = from;
         	begin = begin - offset;
@@ -187,10 +200,43 @@ public class AllShopConsoleController {
         }
         Shop shop = shopDAO.getShop(shop_id);
         inv.addModel("shop",shop);
-        inv.addModel("orderls",orderls);
+        inv.addModel("orderls",orderDetails);
         inv.addModel("shops",shopList);
         inv.addModel("curr_shop_d",shop_id);
         return "all_shop_orders";
     }
+    
+    @Get("order_cancel")
+    @Post("order_cancel")
+    public String order_cancel(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id) {
+        if(StringUtils.isBlank(order_id) || shop_id ==0  ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+        //Order order = ordersDAO.getOrder( order_id ,SUtils.generOrderTableName(shop_id));
+        if ( null == shop ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        long userId = o.getUser_id();
+        LoggerUtils.getInstance().log(String.format("kf %s order_cancel shop  %d  order %s", userId ,shop_id , order_id));
+        JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+        orderInfo.put("order_msg", "客服取消订单");
+        orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
+        ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.KFCANCEL.getCode(), SUtils.generOrderTableName(shop_id));
+        userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.KFCANCEL.getCode(), SUtils.generUserOrderTableName(userId));
+//        smsService.sendSMSCancelOrder2LocPushkf(order_id, shop);
+//        wxService.cancelOrdersendWX2User(order_id, shop);
+//        smsService.sendCancelSMS2Boss(order_id, shop);
+//        pushService.sendCancel2BossandLoc(order_id, shop);
+        /**
+         * 3.1.客服端退单短信提示“用户地址：xxxxxx，联系电话：xxxxxx，2015-xx-xx xx：xx：xx申请退单，店铺名xxx联系电话：xxxxxx”；×---需求：#短信#退单短信2客服
+          3.2.用户端微信公众号反馈；×---需求：#公众号消息#退单成功消息2用户
+          3.3.商家端短信反馈”2015-xx-xx xx：xx：xx订单已取消，用户地址：xxxxx，电话：xxxxxxx“；×---需求：#短信#退单短信2商户
+          3.4.商家端APP订单推送提示“有订单已取消“，同时订单详情【已取消】标识；×---需求：#商户APP#退单提示
+         */
+        return "@退单成功";
 
+ }
+    
 }

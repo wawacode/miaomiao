@@ -62,23 +62,31 @@
                         <th>状态</th>
                         <th>地址</th>
                         <th>总价</th>
-                        <th>是否是微信支付</th>
-                        <th>订单快照</th>
+                        <th >是否是微信支付</th>
+                        <th nowrap>订单快照</th>
+                        <th >催单描述</th>
+                        <th nowrap>催单时间</th>
+                        <th >订单状态</th>
+                        <th nowrap>退单操作</th>
 
                     </tr>
                     </thead>
                     #foreach($order in $orderls)
                     <tr>
-                    	<td>${order.shop_id}</td>
-                    	<td>${order.shop_name4V}</td>
-                        <td>${order.id}</td>
-                        <td class="" id="e-${item.shop_id}-serialNo-$item.id">$order.order_id</td>
-                        <td class="" id="e-{$item.shop_id}-name-$item.id">$order.create_time</td>
-                        <td class="" id="e-{$item.shop_id}-status-$item.id"> #if($order.status ==1 ) 下单成功 #end  #if($order.status ==2) 打印完成 #end #if($order.status !=1 && $order.status !=2) 待支付#end</td>
-                        <td class="" id="e-{$item.shop_id}-address-$item.id">${order.address}  ${order.phone}</td>
-                        <td class="" id="e-{$item.shop_id}-price-$item.id">${order.price4V}元</td>
-                        <td class="" id="e-{$item.shop_id}-msg-$item.order_id">${order.act} - ${order.msg}</td>
-                        <td class="" id="e-{$item.category_id}-category_id-$item.id">$order.info</td>
+                    	<td>${order.order.shop_id}</td>
+                    	<td>${order.order.shop_name4V}</td>
+                        <td>${order.order.id}</td>
+                        <td class="" id="e-${item.shop_id}-serialNo-$item.id">$order.order.order_id</td>
+                        <td class="" id="e-{$item.shop_id}-name-$item.id">$order.order.create_time</td>
+                        <td class="" id="e-{$item.shop_id}-status-$item.id"> #if($order.order.status ==1 ) 下单成功 #end  #if($order.order.status ==2) 打印完成 #end #if($order.order.status !=1 && $order.order.status !=2) 待支付#end</td>
+                        <td class="" id="e-{$item.shop_id}-address-$item.id">${order.order.address}  ${order.order.phone}</td>
+                        <td class="" id="e-{$item.shop_id}-price-$item.id">${order.order.price4V}元</td>
+                        <td class="" id="e-{$item.shop_id}-msg-$item.order_id">${order.order.act} - ${order.order.msg}</td>
+                        <td class="" id="e-{$item.category_id}-category_id-$item.id">$order.order.info</td>
+                        <td class="" nowrap>$order.remindDes</td>
+                        <td class="">$order.remindTime</td>
+                        <td class="" nowrap>$order.orderStatusDes</td>
+                        <td class="" nowrap>#if($order.showCancel) <button type="button" class="btn btn-danger" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}"><a>退单</a></button>#elseif($order.order.order_status ==4) #else 已经退单#end</td>
                     </tr>
                     #end
                     </tbody>
@@ -122,12 +130,12 @@
     });
     });
     $(".btn").click(function(){
-		var result = confirm("是否确认删除"),
+		var result = confirm("是否已经微信退款给用户了？"),
 			oThis = $(this);
 		if(result){
 		$.ajax({
-			type:"POST",url:"/console/shop/del",
-			data:{id:oThis.data('id'),shop_id:oThis.data('shopid')},
+			type:"POST",url:"/console/allshop/order_cancel",
+			data:{order_id:oThis.data('orderid'),shop_id:oThis.data('shopid')},
 			success:function(data){
 				  alert(data);
 				  location.reload();

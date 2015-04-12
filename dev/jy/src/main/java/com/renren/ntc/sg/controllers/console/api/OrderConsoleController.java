@@ -220,9 +220,9 @@ public class OrderConsoleController extends BasicConsoleController{
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "商家点击无法配送");
             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
-            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.BOSSCANCLE.getCode(), SUtils.generOrderTableName(shop_id));
+            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.BOSSCANCEL.getCode(), SUtils.generOrderTableName(shop_id));
             User user = userDAO.getUser(o.getUser_id());
-            userOrdersDAO.updateOrderStatus(order_id,orderInfo.toJSONString(), OrderStatus.BOSSCANCLE.getCode(), SUtils.generUserOrderTableName(user.getId()));
+            userOrdersDAO.updateOrderStatus(order_id,orderInfo.toJSONString(), OrderStatus.BOSSCANCEL.getCode(), SUtils.generUserOrderTableName(user.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o);       
         }

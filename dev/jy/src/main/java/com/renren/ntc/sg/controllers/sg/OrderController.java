@@ -379,8 +379,8 @@ public class OrderController {
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "用户取消订单");
             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
-            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CANCLE.getCode(), SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CANCLE.getCode(), SUtils.generUserOrderTableName(u.getId()));
+            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.USERCANCEL.getCode(), SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.USERCANCEL.getCode(), SUtils.generUserOrderTableName(u.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o);       
         }
