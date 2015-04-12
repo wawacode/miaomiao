@@ -105,4 +105,7 @@ public class Constants {
 	public static final String REMIND_ORDER_SMS_2_BOSS = "【加急】地址：{address}，联系电话：{phone}，{create_time}的订单用户加急。";
 	
 	public static final String REMIND_ORDER_SMS_2_KF = "【加急】用户地址：{address}，联系电话：{phone}，{create_time}的订单用户加急，店铺名{shop_name}联系电话：{tel}";
+	
+	public static final String REMIND_ORDER = "1";
+	
 }

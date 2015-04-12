@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.annotations.LoginRequired;
 import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.OrderDetail;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.CategoryDAO;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
@@ -176,7 +177,7 @@ public class AllShopConsoleController {
 		}
        // List<Order> orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
         orderls = orderService.forV(orderls);
-        orderService.f(orderls);
+       List<OrderDetail> orderDetails = orderService.setOrderDetail(orderls);
         if(from != 0){
         	int begin = from;
         	begin = begin - offset;
@@ -187,7 +188,7 @@ public class AllShopConsoleController {
         }
         Shop shop = shopDAO.getShop(shop_id);
         inv.addModel("shop",shop);
-        inv.addModel("orderls",orderls);
+        inv.addModel("orderls",orderDetails);
         inv.addModel("shops",shopList);
         inv.addModel("curr_shop_d",shop_id);
         return "all_shop_orders";

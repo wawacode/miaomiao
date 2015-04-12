@@ -1,25 +1,24 @@
 package com.renren.ntc.sg.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.renren.ntc.sg.bean.Address;
-import com.renren.ntc.sg.bean.Order;
-import com.renren.ntc.sg.bean.Shop;
-import com.renren.ntc.sg.biz.dao.AddressDAO;
-import com.renren.ntc.sg.biz.dao.ShopDAO;
-import com.renren.ntc.sg.constant.OrderStatus;
-import com.renren.ntc.sg.jredis.JRedisUtil;
-import com.renren.ntc.sg.mongo.MongoDBUtil;
-import com.renren.ntc.sg.util.Constants;
-import com.renren.ntc.sg.util.SUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.bean.Address;
+import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.OrderDetail;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.constant.OrderStatus;
+import com.renren.ntc.sg.jredis.JRedisUtil;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.SUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -88,15 +87,61 @@ public class OrderService {
         }
     }
     
-    public void transferStatusInfo(List<Order> orderls) {
+    public List<OrderDetail> setOrderDetail(List<Order> orderls) {
+    	List<OrderDetail> orderDetails = new ArrayList<OrderDetail>();
         for ( Order o : orderls){
-        JSONObject orderInfo  = (JSONObject) JSON.parse(o.getOrder_info());
-         String remindOrderFlag = (String)orderInfo.get("remind_order");
-         if(StringUtils.isNotBlank(remindOrderFlag) && "1".equals(remindOrderFlag)){
-        	 
-         }
-         //if(Or)
+        JSONArray j  = (JSONArray) JSON.parse(o.getInfo());
+        StringBuffer sb = new StringBuffer();
+        for (int k=0 ; k<j.size() ; k++){
+            JSONObject jb = (JSONObject) j.get(k);
+            sb.append(jb.getString("name"));
+            sb.append("数量");
+            sb.append(jb.getString("count"));
+            sb.append("单价");
+            sb.append(jb.getFloat("price")/100);
+            sb.append(";<br/>");
         }
+         o.setInfo(sb.toString());
+         OrderDetail orderDetail = new OrderDetail();
+         orderDetail.setOrder(o);
+         transferStatusInfo(orderDetail);
+         orderDetails.add(orderDetail);
+        }
+        return orderDetails;
+    }
+    
+    public void transferStatusInfo(OrderDetail orderDetail) {
+    	JSONObject orderInfo  = (JSONObject) JSON.parse(orderDetail.getOrder().getOrder_info());
+        if(orderInfo !=null){
+        	String remindOrderFlag = (String)orderInfo.get("remind_order");
+            String remindOrderTime = (String)orderInfo.get("remind_time");
+            if(StringUtils.isNotBlank(remindOrderFlag) && Constants.REMIND_ORDER.equals(remindOrderFlag)){
+           	 	orderDetail.setRemindDes("有");
+            }else {
+            	orderDetail.setRemindDes("无");
+			}
+            if(StringUtils.isNotBlank(remindOrderTime)){
+           	 	orderDetail.setRemindTime(remindOrderTime);
+            }else {
+            	orderDetail.setRemindTime("");
+			}
+        }else {
+			orderDetail.setRemindDes("无");
+			orderDetail.setRemindTime("");
+		}
+        String orderStatus = OrderStatus.getOrderStatusByCode(orderDetail.getOrder().getOrder_status());
+        if(StringUtils.isBlank(orderStatus)){
+        	orderDetail.setOrderStatusDes("空");
+        }else {
+			orderDetail.setOrderStatusDes(orderStatus);
+		}
+        // 只有确认订单和客服点击退单后才不用显示退单的按钮
+        if(orderDetail.getOrder().getOrder_status() == OrderStatus.CONFIREMED.getCode()||
+        		orderDetail.getOrder().getOrder_status() == OrderStatus.KFCANCEL.getCode()){
+        	orderDetail.setShowCancel(false);
+        }else {
+			orderDetail.setShowCancel(true);
+		}
     }
 
 
