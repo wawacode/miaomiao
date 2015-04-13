@@ -118,15 +118,15 @@ public class T_WXHttpClient {
         JSONObject button  = new JSONObject();
         button.put("type","view");
         button.put("name","测试入口");
-        button.put("url","http://www.mbianli.com:8088/catstaff/test" );
+        button.put("url","http://www.mbianli.com:8088/sg/loading" );
         buttons.add(button);
 
 
-        JSONObject button2  = new JSONObject();
-        button2.put("type","view");
-        button2.put("name","开店工具");
-        button2.put("url","http://www.mbianli.com/catstaff/test" );
-        buttons.add(button2);
+//        JSONObject button2  = new JSONObject();
+//        button2.put("type","view");
+//        button2.put("name","");
+//        button2.put("url","http://www.mbianli.com/sg/loading" );
+//        buttons.add(button2);
 
 
         ob.put("button",buttons);
