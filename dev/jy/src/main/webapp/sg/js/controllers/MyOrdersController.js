@@ -250,11 +250,14 @@ angular.module('miaomiao.shop')
                             MMUtils.showAlert('取消订单失败,请重试:' + data.msg);
                             return;
                         }
+
                         order.order_status = dataDetail.order.order_status;
                         $timeout(function () {
                             updateOrderAction($scope.latestOrder,order);
                             updateOrderAction($scope.historyOrder,order);
                         });
+
+                        MMUtils.showAlert('您已经取消订单，微信支付用户喵喵客服会联系您退款');
 
                     }, function (data, status) {
                         MMUtils.showAlert('取消订单失败,请重试');

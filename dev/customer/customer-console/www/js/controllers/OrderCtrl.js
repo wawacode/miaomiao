@@ -159,14 +159,14 @@
         };
 
         $scope.confirmShip = function(order){
-          //todo:
+
             httpClient.orderCanbeShipByShop($scope.info.shop.id, order.order_id, function (data, status) {
 
                 var code = data.code, dataDetail = data.data;
                 if (!code == 0) {
                     MMUtils.showAlert('确认配送失败');
                 }
-                MMUtils.showAlert('确认配送成功');
+                MMUtils.showAlert('客户已经收到您的消息，请您及时配送');
 
             }, function (data, status) {
                 MMUtils.showAlert('确认配送失败');
@@ -175,17 +175,29 @@
 
         $scope.cannotShip = function(order){
 
-            //todo:
-            httpClient.orderCanNotbeShipByS hop($scope.info.shop.id, order.order_id, function (data, status) {
+            // A confirm dialog
+            var confirmPopup = $ionicPopup.confirm({
+                title: '无法配送',
+                template: '您确定无法配送此单？您需要跟客户电话联系'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    window.plugins.CallNumber.callNumber(function () {
+                        httpClient.orderCanNotbeShipByShop($scope.info.shop.id, order.order_id, function (data, status) {
 
-                var code = data.code, dataDetail = data.data;
-                if (!code == 0) {
-                    MMUtils.showAlert('取消配送失败');
+                            var code = data.code, dataDetail = data.data;
+                            if (!code == 0) {
+                                MMUtils.showAlert('取消配送失败, 请联系客服');
+                            }
+                            MMUtils.showAlert('取消配送成功');
+
+                        }, function (data, status) {
+                            MMUtils.showAlert('取消配送失败, 请联系客服');
+                        });
+                    }, function () {
+                        MMUtils.showAlert('您没有拨打电话，不能为您取消配送，如有疑问请联系客服');
+                    }, order.phone);
                 }
-                MMUtils.showAlert('取消配送成功');
-
-            }, function (data, status) {
-                MMUtils.showAlert('取消配送失败');
             });
         };
 
