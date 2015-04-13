@@ -47,7 +47,7 @@
                         </span>
             </div>
 
-            <div class="item-input-inset" style="text-align: center">
+            <div class="item-input-inset" style="text-align: center" ng-if="order.order_status == StatsEnum.toBeConfirmed">
                 <div class="row">
                     <div class="col">
                         <button class="button button-block button-balanced" ng-click="confirmShip(order)"
