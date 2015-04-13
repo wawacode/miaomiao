@@ -1,14 +1,14 @@
 package com.renren.ntc.sg.biz.dao;
 
-import com.renren.ntc.sg.bean.CatStaffCommit;
-import com.renren.ntc.sg.bean.Catstaff;
+import java.util.Date;
+import java.util.List;
+
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
 import net.paoding.rose.jade.annotation.SQLParam;
 
-import java.util.Date;
-import java.util.List;
+import com.renren.ntc.sg.bean.Catstaff;
 
 /*
 CREATE TABLE `items` (
@@ -52,7 +52,6 @@ public interface CatStaffDAO {
     public int updatePwd(String phone, String new_pwd);
 
     /**
-     * 分页用户数据
      *
      * @param key
      * @param from
@@ -63,7 +62,6 @@ public interface CatStaffDAO {
     public List<Catstaff> getCatStaff(String key, int from, int offset);
 
     /**
-     * 更新
      * @param key
      * @param value
      * @param date
@@ -74,7 +72,6 @@ public interface CatStaffDAO {
     public int update(@SQLParam("key") String key, String value, Date date, long id);
 
     /**
-     * 删除
      *
      * @param user_id
      * @return

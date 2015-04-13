@@ -1,6 +1,5 @@
 package com.renren.ntc.sg.biz.dao;
 
-import com.renren.ntc.sg.bean.CatStaffCommit;
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
@@ -8,6 +7,8 @@ import net.paoding.rose.jade.annotation.SQLParam;
 
 import java.util.Date;
 import java.util.List;
+
+import com.renren.ntc.sg.bean.CatStaffCommit;
 
 /*
 CREATE TABLE `items` (
@@ -60,7 +61,6 @@ public interface CatStaffCommitDAO {
     public List<Long> getShop_ids(String phone);
 
     /**
-     * 分页数据和查询 根据name phone shop_name shop_address 查询
      *
      * @param key
      * @param from
@@ -71,7 +71,6 @@ public interface CatStaffCommitDAO {
     public List<CatStaffCommit> getCatStaffCommit(String key, int from, int offset);
 
     /**
-     * 更新
      *
      * @param key
      * @param value
@@ -83,7 +82,6 @@ public interface CatStaffCommitDAO {
     public int update(@SQLParam("key") String key, String value, Date date, long id);
 
     /**
-     * 删除
      *
      * @param user_id
      * @return

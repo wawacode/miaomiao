@@ -202,11 +202,13 @@ public class ToolsController {
         }
         Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
         int count = 0;
+        boolean flag = true;
+        int from = 0;
         int offset = 100;//每次查100条 如果够
-        for (int i = 0; i < 100000; ) {
-            System.out.println("get " + i + " " + offset);
-            List<Item> itemls = itemDao.getItems(SUtils.generTableName(from_shop_id), from_shop_id, category_id, i, offset);
+        do {
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(from_shop_id), from_shop_id, category_id, from, offset);
             if (itemls.size() == 0) {
+                flag = false;
                 break;
             }
             for (Item item : itemls) {
@@ -214,17 +216,22 @@ public class ToolsController {
                 item.setCount(1000);
                 Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), to_shop_id, item.getSerialNo());
                 if (null == ii) {
-                    System.out.println("insert " + ">" + i + "<" + item.getSerialNo());
                     itemDao.insert(SUtils.generTableName(to_shop_id), item);
                 } else {
-                    System.out.println("update" + item.getSerialNo() + " " + item.getId());
                     itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
                 }
                 count++;
                 saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null ? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
             }
-            i = i + offset;
-        }
+            from = from + offset;
+            if (count % 1000 == 0) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } while (flag);
         //遍历map集合  替换分类为中文名字
         Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
         converterCN(saveCategoryNum, saveCategoryNumCN);
@@ -258,12 +265,16 @@ public class ToolsController {
         itemDao.del(SUtils.generTableName(toShopId), toShopId);
 
         Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
-        int offset = 100;
+
         long fromShopId = Long.valueOf(from_shop_id);
+        int from = 0;
+        int offset = 100;
         int count = 0;
-        for (int i = 0; i < 100000; ) {
-            List<Item> itemls = itemDao.getItems(SUtils.generTableName(fromShopId), fromShopId, i, offset);
+        boolean flag = true;
+        do {
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(fromShopId), fromShopId, from, offset);
             if (itemls.size() == 0) {
+                flag = false;
                 break;
             }
             for (Item item : itemls) {
@@ -271,14 +282,21 @@ public class ToolsController {
                 itemDao.insert(SUtils.generTableName(toShopId), item);//插入新数据
                 saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null ? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
             }
-            i = i + offset;
-        }
+            from = from + offset;
+            if (count % 1000 == 0) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } while (flag);
         //遍历map集合  替换分类为中文名字
         Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
         converterCN(saveCategoryNum, saveCategoryNumCN);
         inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
         inv.addModel("shop_id", to_shop_id);
-
+        inv.addModel("count", count); //总数
         return "toolsDetail";
     }
 
@@ -296,10 +314,13 @@ public class ToolsController {
         }
         Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
         int count = 0;
-        int offset = 1000;
-        for (int i = 0; i < 100000; ) {
-            List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
+        int from = 0;
+        int offset = 500;
+        boolean flag = true;
+        do {
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, from, offset);
             if (itemls.size() == 0) {
+                flag = false;
                 break;
             }
             for (Item item : itemls) {
@@ -322,8 +343,15 @@ public class ToolsController {
                 count++;
                 saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null ? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
             }
-            i = i + offset;
-        }
+            from = from + offset;
+            if (count % 1000 == 0) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } while (flag);
         //遍历map集合  替换分类为中文名字
         Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
         converterCN(saveCategoryNum, saveCategoryNumCN);
