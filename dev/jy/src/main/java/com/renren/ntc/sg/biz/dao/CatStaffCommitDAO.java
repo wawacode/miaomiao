@@ -1,11 +1,12 @@
 package com.renren.ntc.sg.biz.dao;
 
 import com.renren.ntc.sg.bean.CatStaffCommit;
-import com.renren.ntc.sg.bean.Ver;
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.ReturnGeneratedKeys;
 import net.paoding.rose.jade.annotation.SQL;
+import net.paoding.rose.jade.annotation.SQLParam;
 
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -27,32 +28,66 @@ CREATE TABLE `items` (
 
 @DAO(catalog = "ABC")
 public interface CatStaffCommitDAO {
-    static final String TABLE_NAME= "catstaff_commit";
+    static final String TABLE_NAME = "catstaff_commit";
     static final String FIELDS = "id,name ,phone,pwd ,shop_id,shop_info,shop_serveArea," +
-            "shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,create_time,update_time " ;
+            "shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,create_time,update_time ";
     static final String INSERT_FIELDS = "name ,phone,pwd ,shop_serveArea,shop_name," +
-            "shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng" ;
+            "shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng";
 
     @ReturnGeneratedKeys
-    @SQL("insert into " +  TABLE_NAME+ " (" +  INSERT_FIELDS +" ) values (:1.name ,:1.phone,:1.pwd ," +
+    @SQL("insert into " + TABLE_NAME + " (" + INSERT_FIELDS + " ) values (:1.name ,:1.phone,:1.pwd ," +
             ":1.shop_serveArea,:1.shop_name,:1.shop_owner_phone,:1.shop_address,:1.shop_tel," +
             ":1.shop_print,:1.shop_lat,:1.shop_lng) ")
-    public long insert (CatStaffCommit o );
+    public long insert(CatStaffCommit o);
 
 
-	@SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  id =:1 ")
-	public CatStaffCommit getCatStaffCommit(long id );
+    @SQL("select " + FIELDS + " from " + TABLE_NAME + " where  id =:1 ")
+    public CatStaffCommit getCatStaffCommit(long id);
+
 
     @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where phone =:1 and pwd = :2 order by create_time desc limit :3,:4")
     public List<CatStaffCommit> getCatStaffCommit(String staff_phone, String staff_pwd, int from, int offset);
 
-    @SQL("update " +  TABLE_NAME   + " set shop_info =:3 ,shop_id= :2  where id = :1")
-    public int  update(long id,long shop_id,String shop_info);
 
-    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where  shop_id =:1 ")
+    @SQL("update " + TABLE_NAME + " set shop_info =:3 ,shop_id= :2  where id = :1")
+    public int update(long id, long shop_id, String shop_info);
+
+    @SQL("select " + FIELDS + " from " + TABLE_NAME + " where  shop_id =:1 ")
     public List<CatStaffCommit> getbyShopid(long shop_id);
 
 
     @SQL("select shop_id from " + TABLE_NAME + " where  phone =:1 ")
-    public List <Long> getShop_ids(String phone);
+    public List<Long> getShop_ids(String phone);
+
+    /**
+     * 分页数据和查询 根据name phone shop_name shop_address 查询
+     *
+     * @param key
+     * @param from
+     * @param offset
+     * @return
+     */
+    @SQL("select " + FIELDS + " from " + TABLE_NAME + " where  name like :1 or phone like :1 or shop_name like :1 or shop_address like :1 order by id asc limit :2 , :3")
+    public List<CatStaffCommit> getCatStaffCommit(String key, int from, int offset);
+
+    /**
+     * 更新
+     *
+     * @param key
+     * @param value
+     * @param date
+     * @param id
+     * @return
+     */
+    @SQL("update " + TABLE_NAME + " set ##(:key) = :2, update_time = :3 where id =:4")
+    public int update(@SQLParam("key") String key, String value, Date date, long id);
+
+    /**
+     * 删除
+     *
+     * @param user_id
+     * @return
+     */
+    @SQL("DELETE FROM  " + TABLE_NAME + "  WHERE id=:1")
+    public int del(long user_id);
 }
