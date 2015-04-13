@@ -24,8 +24,8 @@ public class MissPicShop {
         // 读取第一章表格内容
         itemDao.del(SUtils.generTableName(shop_id),shop_id);
         int offset = 1000;
-        for (int i = 1 ; i < Integer.MAX_VALUE; ){
-                List<Product> pl = pdDao.geProducts(0,i,offset);
+        for (int i = 0 ; i < Integer.MAX_VALUE; ){
+                List<Product> pl = pdDao.geProducts(28,i,offset);
                if (pl.size() == 0){
                    break;
                }
