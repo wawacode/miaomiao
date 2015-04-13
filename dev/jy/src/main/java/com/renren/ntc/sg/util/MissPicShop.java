@@ -36,11 +36,10 @@ public class MissPicShop {
                        it.setCount(1000);
                        it.setName(p.getName());
                        it.setSerialNo(p.getSerialNo());
-                       it.setCategory_id(p.getCategory_id());
+                       it.setCategory_id(28);
                        it.setScore(p.getScore());
                        System.out.println("insert into " + it.getSerialNo());
-//                       itemDao.insert(SUtils.generTableName(shop_id),it);
-
+                       itemDao.insert(SUtils.generTableName(shop_id),it);
                    }
                }
         }
