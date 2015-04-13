@@ -36,7 +36,7 @@ angular.module('miaomiao.shop')
             if(order.order_status == StatsEnum.toBeConfirmed ||
                 order.order_status == StatsEnum.inShipping){
 
-                if(timeeplise/1000 >= 20 * 60){ // 20 minutes
+                if(timeeplise/1000 >= 1 * 60){ // 20 minutes
                     order.canRemindShipping = true;
                 }
             }
@@ -44,7 +44,7 @@ angular.module('miaomiao.shop')
             // order create/confired by shop, user can apply for refund after 60 minutes
             if(order.order_status == StatsEnum.toBeConfirmed ||
                 order.order_status == StatsEnum.inShipping){
-                if(timeeplise/1000 >= 60 * 60){ // 60 minutes
+                if(timeeplise/1000 >= 1 * 60){ // 60 minutes
                     order.canCancelOrder = true;
                 }
             }
@@ -52,7 +52,8 @@ angular.module('miaomiao.shop')
             // canceled by user/shop/catstaff ,user can do nothing
             if(order.order_status == StatsEnum.canceledByShop ||
                 order.order_status == StatsEnum.canceledByCatStaff||
-                order.order_status == StatsEnum.confirmedByUser){
+                order.order_status == StatsEnum.confirmedByUser ||
+                order.order_status == StatsEnum.canceledByUser){
                 order.canShowAction = false;
             }
         }
@@ -217,10 +218,10 @@ angular.module('miaomiao.shop')
                     MMUtils.showAlert('确认订单失败,请重试:' + data.msg);
                     return;
                 }
-                var updateOrder = dataDetail.order;
+                order.order_status = dataDetail.order.order_status;
                 $timeout(function () {
-                    updateOrderAction($scope.latestOrder,updateOrder);
-                    updateOrderAction($scope.historyOrder,updateOrder);
+                    updateOrderAction($scope.latestOrder,order);
+                    updateOrderAction($scope.historyOrder,order);
                 });
 
             }, function (data, status) {
@@ -249,10 +250,10 @@ angular.module('miaomiao.shop')
                             MMUtils.showAlert('取消订单失败,请重试:' + data.msg);
                             return;
                         }
-                        var updateOrder = dataDetail.order;
+                        order.order_status = dataDetail.order.order_status;
                         $timeout(function () {
-                            updateOrderAction($scope.latestOrder,updateOrder);
-                            updateOrderAction($scope.historyOrder,updateOrder);
+                            updateOrderAction($scope.latestOrder,order);
+                            updateOrderAction($scope.historyOrder,order);
                         });
 
                     }, function (data, status) {
@@ -276,6 +277,8 @@ angular.module('miaomiao.shop')
                     MMUtils.showAlert('提醒发货失败,请重试:' + data.msg);
                     return;
                 }
+
+                MMUtils.showAlert('商家已经收到通知，正在为您发货啦～');
 
             }, function (data, status) {
                 MMUtils.showAlert('提醒发货失败,请重试');
