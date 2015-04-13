@@ -27,6 +27,7 @@ angular.module('miaomiao.shop')
 
             order.canCancelOrder = false;
             order.canRemindShipping = false;
+            order.canShowAction = true;
 
             var creationTime = new Date(order.create_time),
                 nowtime = new Date(),
@@ -39,12 +40,6 @@ angular.module('miaomiao.shop')
                     order.canRemindShipping = true;
                 }
             }
-            // canceled by user/shop/catstaff user can apply for refund
-            if(order.order_status == StatsEnum.canceledByShop ||
-                order.order_status == StatsEnum.canceledByCatStaff||
-                order.order_status == StatsEnum.confirmedByUser){
-                order.canCancelOrder = true;
-            }
 
             // order create/confired by shop, user can apply for refund after 60 minutes
             if(order.order_status == StatsEnum.toBeConfirmed ||
@@ -52,6 +47,13 @@ angular.module('miaomiao.shop')
                 if(timeeplise/1000 >= 60 * 60){ // 60 minutes
                     order.canCancelOrder = true;
                 }
+            }
+
+            // canceled by user/shop/catstaff ,user can do nothing
+            if(order.order_status == StatsEnum.canceledByShop ||
+                order.order_status == StatsEnum.canceledByCatStaff||
+                order.order_status == StatsEnum.confirmedByUser){
+                order.canShowAction = false;
             }
         }
 
@@ -215,10 +217,10 @@ angular.module('miaomiao.shop')
                     MMUtils.showAlert('确认订单失败,请重试:' + data.msg);
                     return;
                 }
-
+                var updateOrder = dataDetail.order;
                 $timeout(function () {
-                    updateOrderAction($scope.latestOrder);
-                    updateOrderAction($scope.historyOrder);
+                    updateOrderAction($scope.latestOrder,updateOrder);
+                    updateOrderAction($scope.historyOrder,updateOrder);
                 });
 
             }, function (data, status) {
@@ -230,24 +232,33 @@ angular.module('miaomiao.shop')
 
             if(!order.canCancelOrder)return;
 
-            MMUtils.showLoadingIndicator('正在取消订单...', $scope);
-            httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
+            // A confirm dialog
+            var confirmPopup = $ionicPopup.confirm({
+                title: '取消订单',
+                template: '确定要取消订单？微信支付用户可以退款～'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    MMUtils.showLoadingIndicator('正在取消订单...', $scope);
+                    httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
 
-                $ionicLoading.hide();
+                        $ionicLoading.hide();
 
-                var code = data.code, dataDetail = data.data;
-                if (code != 0) {
-                    MMUtils.showAlert('取消订单失败,请重试:' + data.msg);
-                    return;
+                        var code = data.code, dataDetail = data.data;
+                        if (code != 0) {
+                            MMUtils.showAlert('取消订单失败,请重试:' + data.msg);
+                            return;
+                        }
+                        var updateOrder = dataDetail.order;
+                        $timeout(function () {
+                            updateOrderAction($scope.latestOrder,updateOrder);
+                            updateOrderAction($scope.historyOrder,updateOrder);
+                        });
+
+                    }, function (data, status) {
+                        MMUtils.showAlert('取消订单失败,请重试');
+                    });
                 }
-
-                $timeout(function () {
-                    updateOrderAction($scope.latestOrder);
-                    updateOrderAction($scope.historyOrder);
-                });
-
-            }, function (data, status) {
-                MMUtils.showAlert('取消订单失败,请重试');
             });
         };
 
