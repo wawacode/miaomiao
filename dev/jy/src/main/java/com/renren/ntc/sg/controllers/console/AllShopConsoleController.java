@@ -37,8 +37,8 @@ import com.renren.ntc.sg.util.SUtils;
  * Regist
  */
 
-//@DenyCommonAccess
-//@LoginRequired
+@DenyCommonAccess
+@LoginRequired
 @Path("allshop")
 public class AllShopConsoleController {
 
