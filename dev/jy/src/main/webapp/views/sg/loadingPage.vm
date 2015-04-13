@@ -770,7 +770,8 @@
             <div class="" ng-class="{'orderPayConfirm':order.canRemindShipping,'orderPayConfirmDisabled':!order.canRemindShipping}" ng-click="remindShipping(order)">提醒店家发货</div>
         </div>
         <div class="" style="display: inline-block;margin-left:10px;font-size: 11px">
-            <div class="" ng-class="{'orderPayConfirm':order.order_status == StatsEnum.toBeConfirmed,'orderPayConfirmDisabled':order.order_status != StatsEnum.toBeConfirmed}"
+            <div class="" ng-class="{'orderPayConfirm':order.order_status == StatsEnum.toBeConfirmed || order.order_status == StatsEnum.inShipping,
+            'orderPayConfirmDisabled':order.order_status != StatsEnum.toBeConfirmed && order.order_status != StatsEnum.inShipping }"
                  ng-click="confirmOrder(order)">确认收货</div>
         </div>
     </div>
