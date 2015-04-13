@@ -32,6 +32,7 @@ public class MissPicShop {
                    if(StringUtils.isBlank(p.getPic_url())){
                        Item it  = new Item();
                        it.setPrice(p.getPrice());
+                       it.setPic_url(p.getPic_url());
                        it.setShop_id(shop_id);
                        it.setCount(1000);
                        it.setName(p.getName());
