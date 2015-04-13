@@ -232,22 +232,15 @@ public class WXService {
         JSONObject firstob = new JSONObject();
         firstob.put("value",first);
         firstob.put("color","#173177");
-
-
         JSONObject OrderSn = new JSONObject();
         OrderSn.put("value",order_id);
         OrderSn.put("color","#173177");
-
         JSONObject OrderStatus = new JSONObject();
-
         OrderStatus.put("value",paydone);
         OrderStatus.put("color","#173177");
-
-
         JSONObject remarkob = new JSONObject();
         remarkob.put("value",remark);
         remarkob.put("color","#173177");
-
         data.put("first",firstob);
         data.put("OrderSn",OrderSn);
         data.put("OrderStatus",OrderStatus);

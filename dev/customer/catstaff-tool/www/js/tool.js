@@ -283,6 +283,7 @@ angular.module('ionic.tool')
                         item.shop_online_url = serverInfo.host + '/sg/loading#/shop?shop_id=' + item.shop_id;
                     }
                     // save code
+                    $scope.myCustomersInfo = customInfo;
                     localStorageService.set('MMTOOL_METADATA_customersInfo', customInfo);
 
                     $scope.$broadcast('scroll.refreshComplete');

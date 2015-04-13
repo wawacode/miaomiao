@@ -162,10 +162,16 @@ public class HomeController {
     {
         inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
 
+        if (from < 0 ){
+            from = 0;
+        }
+        if (offset<= 0) {
+            offset =20;
+        }
         if (!legal(staff_phone, staff_name, staff_pwd)) {
         return "@" + Constants.PARATERERROR;
     }
-        List<CatStaffCommit>  catls =  catStaffCommitDAO.getCatStaffCommit(staff_name ,staff_pwd,from ,offset);
+        List<CatStaffCommit>  catls =  catStaffCommitDAO.getCatStaffCommit(staff_phone,staff_pwd,from ,offset);
 
         JSONArray jarr = (JSONArray) JSON.toJSON(catls);
 
