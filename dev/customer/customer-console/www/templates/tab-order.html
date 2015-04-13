@@ -27,12 +27,12 @@
                     <div style="font-size: 14px;" class="item-text-wrap"><i class="ion-ios7-telephone balanced"></i> 联系电话: <span style="color: #808080;" bo-text="order.phone"></span></div>
                     <div style="margin-top: 10px;font-size: 14px" class="item-text-wrap assertive" ng-if="order.act == 'wx'"><i class="ion-card balanced"></i> 支付方式:微信支付<span ng-if="order.dprice">［使用优惠券 {{order.dprice/100.0}} 元］</span></div>
                     <div style="margin-top: 10px;font-size: 14px" class="item-text-wrap assertive" ng-if=" order.act != 'wx'"><i class="ion-card balanced"></i> 支付方式:货到付款</div>
-                    <div style="margin-top: 10px;font-size: 14px" class="item-text-wrap balanced"><i class="ion-ios7-alarm balanced"></i> 订单状态:
+                    <div style="margin-top: 10px;font-size: 14px" class="item-text-wrap assertive"><i class="ion-ios7-alarm balanced"></i> 订单状态:
                         <span ng-if=" StatsEnum.toBeConfirmed == order.order_status">待配送</span>
                         <span ng-if=" StatsEnum.inShipping == order.order_status">店家确认配送</span>
                         <span ng-if=" StatsEnum.canceledByUser == order.order_status">用户取消订单</span>
                         <span ng-if=" StatsEnum.canceledByShop == order.order_status">店家无法配送</span>
-                        <span ng-if=" StatsEnum.confirmedByUser == order.order_status">用户确认收货</span>
+                        <span ng-if=" StatsEnum.confirmedByUser == order.order_status">用户确认收货(订单完成)</span>
                         <span ng-if=" StatsEnum.canceledByCatStaff == order.order_status">喵喵客服取消订单</span>
                     </div>
                     <div style="margin-top: 10px;color: #808080;font-size: 14px" class="item-text-wrap" bo-text="'买家留言: '+ order.remarks"></div>
