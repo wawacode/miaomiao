@@ -77,6 +77,7 @@ public class HomeController {
         if (!legal(staff_phone, staff_name, staff_pwd)) {
             return "@" + Constants.PARATERERROR;
         }
+        base_price = base_price * 100;
 
 //        System.out.println(String.format("%s,%s ,%s, %s,%s, %s",staff_phone,staff_name,staff_pwd,shop_name,shop_tel,sho p_print)+","+shop_lat+","+shop_lng);
         if(StringUtils.isBlank(shop_print)){
