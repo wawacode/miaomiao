@@ -6,6 +6,15 @@
         $scope.info.notification_order_count = 1;
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
+        var StatsEnum = $scope.StatsEnum = {
+            'toBeConfirmed': 0,
+            'inShipping':1,
+            'canceledByUser':2,
+            'canceledByShop':3,
+            'confirmedByUser':4,
+            'canceledByCatStaff':5
+        };
+
         function transformOrderData(orders) {
             if (!orders) return;
             for (var i = 0; i < orders.length; i++) {
@@ -158,6 +167,18 @@
             }, number);
         };
 
+        function updateOrderAction(userOrders, updatingOrder) {
+            if (userOrders && userOrders.length) {
+                for (var i = 0; i < userOrders.length; i++) {
+                    if (userOrders[i].order_id == updatingOrder.order_id) {
+                        $timeout(function(){
+                            userOrders[i] = updatingOrder;
+                        });
+                    }
+                }
+            }
+        }
+
         $scope.confirmShip = function(order){
 
             httpClient.orderCanbeShipByShop($scope.info.shop.id, order.order_id, function (data, status) {
@@ -167,6 +188,9 @@
                     MMUtils.showAlert('确认配送失败');
                 }
                 MMUtils.showAlert('客户已经收到您的消息，请您及时配送');
+
+                order.order_status = dataDetail.order.order_status;
+                updateOrderAction($scope.info.orders,order);
 
             }, function (data, status) {
                 MMUtils.showAlert('确认配送失败');
@@ -178,7 +202,7 @@
             // A confirm dialog
             var confirmPopup = $ionicPopup.confirm({
                 title: '无法配送',
-                template: '您确定无法配送此单？您需要跟客户电话联系'
+                template: '如果您确定无法配送此单，您需要跟客户电话联系，为您拨打电话？'
             });
             confirmPopup.then(function(res) {
                 if(res) {
@@ -186,16 +210,16 @@
                         httpClient.orderCanNotbeShipByShop($scope.info.shop.id, order.order_id, function (data, status) {
 
                             var code = data.code, dataDetail = data.data;
-                            if (!code == 0) {
-                                MMUtils.showAlert('取消配送失败, 请联系客服');
+                            if (code == 0) {
+                                order.order_status = dataDetail.order.order_status;
+                                updateOrderAction($scope.info.orders,order);
                             }
-                            MMUtils.showAlert('取消配送成功');
-
                         }, function (data, status) {
-                            MMUtils.showAlert('取消配送失败, 请联系客服');
                         });
+
                     }, function () {
-                        MMUtils.showAlert('您没有拨打电话，不能为您取消配送，如有疑问请联系客服');
+                        $scope.closeModal();
+                        MMUtils.showAlert('您没有拨打电话，不能为您取消配送，如有疑问请联系喵喵客服');
                     }, order.phone);
                 }
             });
