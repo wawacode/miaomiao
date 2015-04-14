@@ -97,6 +97,9 @@
             else if (notification.event == "message") {
 
                 var title = '喵喵商家推送', text = '您有新的订单，请到我的订单下查看';
+
+                $window.alert('android get notif:' + JSON.stringify(notification));
+
                 if (notification.payload &&
                     notification.payload.body &&
                     notification.payload.body.body) {
@@ -107,9 +110,37 @@
                 $cordovaDialogs.alert(text, title).then(function () {
                     // callback success
                     $state.go('tab.order', null, {reload: true});
-                    $timeout(function () {
-                        MMPushNotification.newOrderNotificationReceived({count: 1});
-                    }, 100);
+
+                    var setNewOrderStatus = function(){
+                        $timeout(function () {
+                            MMPushNotification.newOrderNotificationReceived({count: 1});
+                        }, 100);
+                    };
+
+                    var setRemindOrderStatus = function(order_id){
+                        $timeout(function () {
+                            MMPushNotification.remindOrderNotificationReceived({orderId: order_id});
+                        }, 100);
+                    };
+
+                    if(notification.payload &&
+                        notification.payload.body &&
+                        notification.payload.body.extra){
+
+                        if(notification.payload.body.extra.type == 'remind_order'){
+                            setRemindOrderStatus(notification.payload.body.extra.data.order_id);
+                        }else if(notification.payload.body.extra.type == 'cancel_order'){
+                            // do nothing
+                        }else if(notification.payload.body.extra.type == 'confirm_order'){
+                            // do nothing
+                        }else{
+                            // default is new order
+                            setNewOrderStatus();
+                        }
+                    }else{
+                        setNewOrderStatus();
+                    }
+
                 });
 
                 $scope.$apply(function () {
@@ -131,11 +162,38 @@
             console.log("handle iOS: the notification is:" + JSON.stringify(notification));
 
             var inappHanlder = function () {
+
                 $state.go('tab.order', null, {reload: true});
-                $timeout(function () {
-                    MMPushNotification.newOrderNotificationReceived({count: 1});
-                }, 100);
-            }
+
+                // notification is faltted
+                var setNewOrderStatus = function(){
+                    $timeout(function () {
+                        MMPushNotification.newOrderNotificationReceived({count: 1});
+                    }, 100);
+                };
+
+                var setRemindOrderStatus = function(order_id){
+                    $timeout(function () {
+                        MMPushNotification.remindOrderNotificationReceived({orderId: order_id});
+                    }, 100);
+                };
+
+                if(notification.type){
+
+                    if(notification.type == 'remind_order'){
+                        setRemindOrderStatus(notification.data.order_id);
+                    }else if(notification.type == 'cancel_order'){
+                        // do nothing
+                    }else if(notification.type == 'confirm_order'){
+                        // do nothing
+                    }else{
+                        // default is new order
+                        setNewOrderStatus();
+                    }
+                }else{
+                    setNewOrderStatus();
+                }
+            };
 
             if (notification.foreground == "1") {
                 // Play custom audio if a sound specified.
