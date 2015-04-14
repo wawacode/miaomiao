@@ -46,7 +46,7 @@ public class FixedPic {
                     String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + fname;
                     if(new File(PATH + fname).exists()){
                          System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-//                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
+                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                         continue;
                     }
                     if(!StringUtils.isBlank(pic)&&-1 == pic.indexOf("cat/images")) {
