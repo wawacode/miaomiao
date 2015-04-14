@@ -69,6 +69,7 @@ public class FixedPic {
                     String url = URL.replace("{key}", serialNo) ;
                     byte [] ss =  SHttpClient.getURLData(url, "s.1" +
                             "688.com");
+                    System.out.println("get" + url + "  reponse " + ss.toString());
                     if (null == ss){
                         continue;
                     }
