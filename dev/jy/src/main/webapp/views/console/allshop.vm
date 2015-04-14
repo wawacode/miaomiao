@@ -30,7 +30,9 @@
             <a class="navbar-brand" href="#"> Cat </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/console/allshop">所有店铺</a></li>
+            </ul>
             <form class="navbar-form navbar-right" action="/console/allshop/query" method="post">
                 <input name="query" type="text" class="form-control" placeholder="Search...">
             </form>
