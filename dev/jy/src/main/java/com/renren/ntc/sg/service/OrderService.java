@@ -142,6 +142,12 @@ public class OrderService {
         }else {
 			orderDetail.setShowCancel(true);
 		}
+        
+        if(orderDetail.getOrder().getOrder_status() == OrderStatus.TOCONFIREMED.getCode()){
+        	orderDetail.setShowConfirm(true);
+        }else {
+			orderDetail.setShowConfirm(false);
+		}
     }
 
 

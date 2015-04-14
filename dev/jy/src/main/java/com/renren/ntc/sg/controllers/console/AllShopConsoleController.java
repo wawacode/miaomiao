@@ -11,19 +11,15 @@ import net.paoding.rose.web.annotation.rest.Post;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.util.LongField;
 import org.apache.velocity.tools.generic.DateTool;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.annotations.DenyCommonAccess;
 import com.renren.ntc.sg.annotations.LoginRequired;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.OrderDetail;
 import com.renren.ntc.sg.bean.Shop;
-import com.renren.ntc.sg.bean.User;
 import com.renren.ntc.sg.biz.dao.CategoryDAO;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
@@ -35,6 +31,8 @@ import com.renren.ntc.sg.constant.OrderStatus;
 import com.renren.ntc.sg.interceptors.access.RegistHostHolder;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.OrderService;
+import com.renren.ntc.sg.service.SMSService;
+import com.renren.ntc.sg.service.WXService;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.SUtils;
@@ -76,6 +74,12 @@ public class AllShopConsoleController {
     
     @Autowired
     UserOrdersDAO userOrdersDAO;
+    
+    @Autowired
+    SMSService smsService;
+    
+    @Autowired
+    WXService wxService;
 
     @Post("")
     @Get("")
@@ -213,7 +217,6 @@ public class AllShopConsoleController {
             return "@json:"+Constants.PARATERERROR;
         }
         Shop shop = shopDAO.getShop(shop_id);
-        //Order order = ordersDAO.getOrder( order_id ,SUtils.generOrderTableName(shop_id));
         if ( null == shop ){
             return "@json:"+Constants.PARATERERROR;
         }
@@ -221,22 +224,47 @@ public class AllShopConsoleController {
         long userId = o.getUser_id();
         LoggerUtils.getInstance().log(String.format("kf %s order_cancel shop  %d  order %s", userId ,shop_id , order_id));
         JSONObject orderInfo = orderService.getJson(o.getOrder_info());
-        orderInfo.put("order_msg", "客服取消订单");
+        orderInfo.put("order_msg", "kf cancel order");
         orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
         ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.KFCANCEL.getCode(), SUtils.generOrderTableName(shop_id));
         userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.KFCANCEL.getCode(), SUtils.generUserOrderTableName(userId));
-//        smsService.sendSMSCancelOrder2LocPushkf(order_id, shop);
-//        wxService.cancelOrdersendWX2User(order_id, shop);
-//        smsService.sendCancelSMS2Boss(order_id, shop);
-//        pushService.sendCancel2BossandLoc(order_id, shop);
-        /**
-         * 3.1.客服端退单短信提示“用户地址：xxxxxx，联系电话：xxxxxx，2015-xx-xx xx：xx：xx申请退单，店铺名xxx联系电话：xxxxxx”；×---需求：#短信#退单短信2客服
-          3.2.用户端微信公众号反馈；×---需求：#公众号消息#退单成功消息2用户
-          3.3.商家端短信反馈”2015-xx-xx xx：xx：xx订单已取消，用户地址：xxxxx，电话：xxxxxxx“；×---需求：#短信#退单短信2商户
-          3.4.商家端APP订单推送提示“有订单已取消“，同时订单详情【已取消】标识；×---需求：#商户APP#退单提示
-         */
+        //给用户发|微信公众号：“很抱歉商家xxx无法配送您的订单xxxx，退款xx元将在3-5个工作日返还到您原支付账户，请注意查收，如有问题请联系喵喵客服4008816807。”
+        wxService.cancelOrdersendWX2User(o, shop);
         return "@退单成功";
 
  }
     
+    @Get("order_comfirm")
+    @Post("order_comfirm")
+    public String order_comfirm(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id) {
+        if(StringUtils.isBlank(order_id) || shop_id ==0  ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+        if ( null == shop ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        long userId = o.getUser_id();
+        LoggerUtils.getInstance().log(String.format("kf %s order_comfirm shop  %d  order %s", userId ,shop_id , order_id));
+        JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+        orderInfo.put("order_msg", "kf comfirm order");
+        orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
+        ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.DELIVERIES.getCode(), SUtils.generOrderTableName(shop_id));
+        userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.DELIVERIES.getCode(), SUtils.generUserOrderTableName(userId));
+        wxService.sendWX2User(order_id,shop_id);//发送微信消息给用户
+        return "@订单确认成功";
+
+ }
+    
+    @Post("query")
+    @Get("query")
+    public String del(Invocation inv, @Param("query") String text) {
+
+        if (StringUtils.isBlank(text)) text = "";
+        List<Shop> shopls = shopDAO.getShops(SUtils.wrap(text.trim()));
+        inv.addModel("shopls", shopls);
+        return "allshop";
+    }
+
 }

@@ -64,6 +64,7 @@ public class Constants {
             "如有疑问请联系：{shop_tel}。";
     public static final String REMARKCONFRIM = "{shop_name}正在为您配送，预计30分钟内到达；\n" +
             "如有疑问请联系：{shop_tel}。";;
+    public static final String NEI_HOST = "10.173.3.200" ;
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";
@@ -95,8 +96,7 @@ public class Constants {
 	
 	public static final String REFUND_ORDER_SUC = "退单成功";
 	
-	public static final String REFUND_MSG = "您在{order_time}下的订单（{order_id}） 申请退单成功，店铺名：{shop_name}\n" +
-            "如有疑问请联系客服。";
+	public static final String REFUND_MSG = "很抱歉商家{shop_name}无法配送您的订单{order_id}，退款{refund_price}将在3-5个工作日返还到您原支付账户，请注意查收，如有问题请联系喵喵客服4008816807。";
 	
 	public static final String CANCEL_SMS_2_KF_SMS= "用户地址：{address}，联系电话：{phone}，{cancel_time}申请退单，店铺名{shop_name}联系电话：{tel}";
 	
@@ -107,5 +107,27 @@ public class Constants {
 	public static final String REMIND_ORDER_SMS_2_KF = "【加急】用户地址：{address}，联系电话：{phone}，{create_time}的订单用户加急，店铺名{shop_name}联系电话：{tel}";
 	
 	public static final String REMIND_ORDER = "1";
+	
+	public static final String CANCEL_ORDER_2_BOSS_SMS_MSG = "#order_id#={order_id}&#address#={address}&#phone#={phone}&#create_time#={create_time}";
+	
+	public static final String CANCEL_ORDER_2_BOSS_SMS_MSG_TEMP_ID = "2363";
+	
+	public static final String USER_CANCEL_ORDER_2_KF_SMS_MSG = "#shop_name#={shop_name}&#shop_tel#={shop_tel}&#address#={address}&#phone#={phone}&#create_time#={create_time}&#order_id#={order_id}";
+	
+	public static final String USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID = "2362";
+	
+	public static final String REMIND_ORDER_SMS_MSG = "#shop_name#={shop_name}&#shop_tel#={shop_tel}&#address#={address}&#phone#={phone}&#create_time#={create_time}&#order_id#={order_id}";
+	
+	public static final String REMIND_ORDER_SMS_MSG_TEMP_ID = "2361";
+	
+	public static final String KF_CLICK_CANCEL_ORDER_2_USER_MSG = "#shop_name#={shop_name}&#shop_tel#={shop_tel}&#order_id#={order_id}";
+	
+	public static final String KF_CLICK_CANCEL_ORDER_2_USER_MSG_TEMP_ID = "2364";
+	
+	public static final String REMIND_ORDER_PUSH_MSG = "【喵喵生活】用户催单:店铺{shop_name},{shop_tel} 配送地址{address},{phone},下单时间{create_time},订单号{order_id}的订单用户要求加急";
+	
+	public static final String CANCEL_ORDER_2_BOSS_LOC_PUSH_MSG = "【喵喵生活】订单号{order_id}订单已取消，用户地址：{address},联系电话{phone},下单时间{create_time}";
+	
+	public static final String USER_CANCEL_ORDER_2_PUSH_MSG = "【喵喵生活】用户要求退单:店铺{shop_name},{shop_tel}配送地址{address},{phone},下单时间 {create_time},订单号{order_id},的订单用户要求退单";
 	
 }

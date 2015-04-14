@@ -1,19 +1,26 @@
 package com.renren.ntc.sg.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.renren.ntc.sg.bean.*;
-import com.renren.ntc.sg.biz.dao.*;
-import com.renren.ntc.sg.mongo.MongoDBUtil;
-import com.renren.ntc.sg.umeng.push.android.*;
-import com.renren.ntc.sg.umeng.push.ios.IOSUnicast;
-import com.renren.ntc.sg.util.Constants;
-import com.renren.ntc.sg.util.SHttpClient;
-import com.renren.ntc.sg.util.SUtils;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.URLEncoder;
-import java.util.List;
+import com.renren.ntc.sg.bean.Address;
+import com.renren.ntc.sg.bean.CatStaffCommit;
+import com.renren.ntc.sg.bean.Catstaff;
+import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.PushToken;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.AddressDAO;
+import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
+import com.renren.ntc.sg.biz.dao.CatStaffDAO;
+import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.PushTokenDAO;
+import com.renren.ntc.sg.umeng.push.android.AndroidUnicast;
+import com.renren.ntc.sg.umeng.push.ios.IOSUnicast;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.Dateutils;
+import com.renren.ntc.sg.util.SUtils;
 
 
 @Service
@@ -137,19 +144,7 @@ public class PushService {
             }
             String message = pre + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
                     " 总额：" +  p ;
-            if (shop != null) {
-                List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
-                for (Catstaff  catstaff : catstaffls ){
-                    List<PushToken> pushTokens = pushTokenDao.getPushToken(catstaff.getPhone());
-                    for (PushToken pushToken  : pushTokens){
-                        if(pushToken ==  null){
-                            LoggerUtils.getInstance().log(String.format("miss push token  %s ", catstaff.getPhone()));
-                            return ;
-                        }
-                        send(pushToken, message);
-                    }
-                }
-            }
+            pushKf(shop, message);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -218,85 +213,132 @@ public class PushService {
     }
 
 
-    public void sendCancel2BossandLoc(String order_id, Shop shop) {
+    public void sendCancel2Loc(Order order, Shop shop) {
     	try {
-
-//           Order order = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
-//            String v = null;
-//            String url;
-//            byte[] t = null;
-//            String response = "用户下单";
-//            long adr_id = order.getAddress_id();
-//            Address adrs = addressDAO.getAddress(adr_id);
-//            float p = (float) order.getPrice() / 100;
-//            String pre = "您有新订单了,";
-//            if("wx".equals(order.getAct())){
-//                pre = pre + "支付方式：微信支付,";
-//            }else{
-//                pre = pre + "支付方式：货到付款,";
-//            }
-//
-//            String message = pre + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
-//                    " 总额：" +  p ;
-    		String message = "订单有取消";
-            if (shop != null) {
-                List<CatStaffCommit> catcommitls = catStaffCommitDao.getbyShopid(shop.getId());
-                for (CatStaffCommit catcommit : catcommitls ){
-                    List<PushToken> pushTokens = pushTokenDao.getPushToken(catcommit.getPhone());
-                    for (PushToken pushToken  : pushTokens)  {
-                        if(pushToken ==  null){
-                            LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
-                            return ;
-                        }
-                        send(pushToken, message);
-                    }
-                }
-            }
+    		String message = getCancelPushMsg2LocOrBoss(order);
+            pushLoc(shop, message);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void sendUserCancel2KF(Order order, Shop shop) {
+    	try {
+    		String message = getUserCancelPushMsg2KF(order, shop);
+            pushKf(shop, message);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
 
-    public void sendRemind2locPushandLoc(String order_id, Shop shop) {
+    public void sendRemind2Loc(Order order, Shop shop) {
         try {
-
-//            Order order = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
-//            String v = null;
-//            String url;
-//            byte[] t = null;
-//            String response = "用户下单";
-//            long adr_id = order.getAddress_id();
-//            Address adrs = addressDAO.getAddress(adr_id);
-//            float p = (float) order.getPrice() / 100;
-//            String pre = "您有新订单了,";
-//            if("wx".equals(order.getAct())){
-//                pre = pre + "支付方式：微信支付,";
-//            }else{
-//                pre = pre + "支付方式：货到付款,";
-//            }
-//
-//            String message = pre + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
-//                    " 总额：" +  p ;
-        	String message = "有加急订单";
-            if (shop != null) {
-                List<CatStaffCommit> catcommitls = catStaffCommitDao.getbyShopid(shop.getId());
-                for (CatStaffCommit catcommit : catcommitls ){
-                    List<PushToken> pushTokens = pushTokenDao.getPushToken(catcommit.getPhone());
-                    for (PushToken pushToken  : pushTokens)  {
-                        if(pushToken ==  null){
-                            LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
-                            return ;
-                        }
-                        send(pushToken, message);
-                    }
-                }
-            }
+        	String message = getRemindMsg(order, shop);
+            pushLoc(shop, message);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void sendRemind2Kf(Order order, Shop shop) {
+        try {
+        	String message = getRemindMsg(order, shop);
+            pushKf(shop, message);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void sendCancel2Boss(Order o, Shop shop) {
+        try {
+        	String message = getUserCancelPushMsg2Boss(o,shop);
+        	pushBoss(shop, message);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void sendRemindOrder2Boss(Order order, Shop shop) {
+        try {
+        	String message = getRemindMsg(order, shop);
+            pushBoss(shop, message);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 	
+    private void pushLoc(Shop shop,String message){
+    	if (shop != null) {
+            List<CatStaffCommit> catcommitls = catStaffCommitDao.getbyShopid(shop.getId());
+            for (CatStaffCommit catcommit : catcommitls ){
+                List<PushToken> pushTokens = pushTokenDao.getPushToken(catcommit.getPhone());
+                for (PushToken pushToken  : pushTokens)  {
+                    if(pushToken ==  null){
+                        LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
+                        return ;
+                    }
+                    send(pushToken, message);
+                }
+            }
+        }
+    }
+    
+    private void pushKf(Shop shop,String message){
+    	 if (shop != null) {
+             List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
+             for (Catstaff  catstaff : catstaffls ){
+                 List<PushToken> pushTokens = pushTokenDao.getPushToken(catstaff.getPhone());
+                 for (PushToken pushToken  : pushTokens){
+                     if(pushToken ==  null){
+                         LoggerUtils.getInstance().log(String.format("miss push token  %s ", catstaff.getPhone()));
+                         return ;
+                     }
+                     send(pushToken, message);
+                 }
+             }
+         }
+    }
+    
+    private void pushBoss(Shop shop,String message){
+    	if (shop != null) {
+            String phone = shop.getTel();
+            List <PushToken> pushTokens = pushTokenDao.getPushToken(phone);
+            for (PushToken pushToken   : pushTokens )   {
+                if(pushToken ==  null){
+                    LoggerUtils.getInstance().log(String.format("miss push token  %s ", phone));
+                    return ;
+                }
+                send(pushToken, message);
+            }
+        }
+    }
+   
+    private String getRemindMsg(Order order,Shop shop){
+    	long adr_id = order.getAddress_id();
+        Address adrs = addressDAO.getAddress(adr_id);
+        String message = Constants.REMIND_ORDER_PUSH_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());    		
+        return message;
+    } 
+    
+    private String getCancelPushMsg2LocOrBoss(Order order){
+    	long adr_id = order.getAddress_id();
+        Address adrs = addressDAO.getAddress(adr_id);
+        String message = Constants.CANCEL_ORDER_2_BOSS_LOC_PUSH_MSG.replace("{order_id}", order.getOrder_id()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time()));
+        return message;
+    }
+    
+    private String getUserCancelPushMsg2Boss(Order order,Shop shop){
+    	return getUserCancelPushMsg2KF(order, shop);
+    }
+    
+    private String getUserCancelPushMsg2KF(Order order,Shop shop){
+    	long adr_id = order.getAddress_id();
+        Address adrs = addressDAO.getAddress(adr_id);
+        String message = Constants.USER_CANCEL_ORDER_2_PUSH_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());
+        return message;
+    }
+    
 	public static void main(String[] args) {
 		// TODO set your appkey and master secret here
 		PushService demo = new PushService();
