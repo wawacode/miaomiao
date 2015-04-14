@@ -31,7 +31,8 @@
     </table>
     <a href="/console/tools">返回</a>
     #if($shop_id)
-        <a href="http://www.mbianli.com:8080/sg/loading#/shop?shop_id=$shop_id">进入店铺</a>
+##        <a href="/console/tools/login?shop_id=$shop_id">进入店铺</a>
+        <a href="/console/login">进入店铺</a>
     #end
     #if($missingList.size())
         <h2>未导入:$missingList.size()条</h2>

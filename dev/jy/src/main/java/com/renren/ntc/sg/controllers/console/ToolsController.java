@@ -369,7 +369,6 @@ public class ToolsController {
      * @param shop_id
      * @return
      */
-
     @Get("getCategoriesByShopId")
     @Post("getCategoriesByShopId")
     public String getCategoriesByShopId(Invocation inv, @Param("shop_id") long shop_id) {
@@ -399,6 +398,24 @@ public class ToolsController {
         jo.put("category", clist);
         jo.put("shop", newShopList);
         return "@json:" + jo.toJSONString();
+    }
+
+    //This is test mthod!
+    @Get("login")
+    @Post("login")
+    public String login(Invocation inv, @Param("shop_id") String shop_id) {
+        System.out.println("ToolsController.java.ToolsController---->" + 406);
+        long id = 0;
+
+        if (StringUtils.isBlank(shop_id)) return "@shop_id is null!";
+        else id = Long.valueOf(shop_id);
+
+        Shop shop = shopDAO.getShop(id);
+        String pwd = shop.getTel();
+        String phone = shop.getTel();
+        String origURL = "127.0.0.1";
+
+        return "r:/console/login/valid?phone=" + phone + "&pwd=" + pwd + "&origURL=" + origURL + "";
     }
 
     /**

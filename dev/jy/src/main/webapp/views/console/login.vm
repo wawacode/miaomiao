@@ -17,7 +17,7 @@
 
 <div class="container">
 
-    <form class="form-signin" role="form" action="/console/login/valid">
+    <form class="form-signin" role="form" action="/console/login/valid" method="post">
         <h2 class="form-signin-heading">请登录</h2>
         <p>$msg</p>
         <input type="phone" name="phone" class="form-control" placeholder="注册手机号" required autofocus>
