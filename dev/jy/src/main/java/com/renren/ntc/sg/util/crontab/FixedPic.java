@@ -91,7 +91,7 @@ public class FixedPic {
                                 return ;
                             }
                             writeFile (value,fname);
-                            if (new File(PATH d+fname).exists()){
+                            if (new File(PATH +fname).exists()){
                                 System.out.println("update " + item.getSerialNo() +" " +  pic_url);
 //                                itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                                 continue;
