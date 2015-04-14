@@ -4,5 +4,11 @@
             "type": "local",
             "path": "../../../../git_src/PushPlugin"
         }
+    },
+    "org.apache.cordova.console": {
+        "source": {
+            "type": "registry",
+            "id": "org.apache.cordova.console"
+        }
     }
 }
