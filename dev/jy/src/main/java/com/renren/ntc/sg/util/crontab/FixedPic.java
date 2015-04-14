@@ -50,7 +50,7 @@ public class FixedPic {
 //                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                         continue;
                     }
-                    if( -1 == pic.indexOf("cat/images")) {
+                    if( !StringUtils.isBlank(pic)&&-1 == pic.indexOf("cat/images")) {
                         try{
                             writeFile (pic,fname);
                             if (new File(PATH +fname).exists()){
