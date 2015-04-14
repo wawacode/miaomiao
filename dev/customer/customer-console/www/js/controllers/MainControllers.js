@@ -128,7 +128,7 @@
                         notification.payload.body.extra){
 
                         if(notification.payload.body.extra.type == 'remind_order'){
-                            setRemindOrderStatus(notification.payload.body.extra.data.order_id);
+                            setRemindOrderStatus(notification.payload.body.extra.order_id);
                         }else if(notification.payload.body.extra.type == 'cancel_order'){
                             // do nothing
                         }else if(notification.payload.body.extra.type == 'confirm_order'){
@@ -181,7 +181,7 @@
                 if(notification.type){
 
                     if(notification.type == 'remind_order'){
-                        setRemindOrderStatus(notification.data.order_id);
+                        setRemindOrderStatus(notification.order_id);
                     }else if(notification.type == 'cancel_order'){
                         // do nothing
                     }else if(notification.type == 'confirm_order'){
