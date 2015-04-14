@@ -107,13 +107,12 @@ public class SMSService {
     }
     
     public void sendSMS2KF(String order_id, Shop shop) {
-        //短信通知 地推人员
+        //短信通知 客服
         try {
             if (SUtils.isDev()) {
                 return;
             }
             Order order = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
-            String mobile = "";
             byte[] t = null;
             String info = "用户下单";
             if("wx".equals(order.getAct())){
@@ -130,22 +129,17 @@ public class SMSService {
             String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
-            for ( Catstaff catstaff : catstaffls)   {
-            if (catstaff != null) {
-                String phone = catstaff.getPhone();
-                if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
-                    LoggerUtils.getInstance().log(String.format("%s %s sms allready send ", phone, order_id));
-                    return;
-                }
-                String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message);
-                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                String r = SUtils.toString(t);
-                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
-                MongoDBUtil.getInstance().sendmark(phone, order_id);  
-              }
+            String phone = Constants.KF_PHONE;
+            if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
+                LoggerUtils.getInstance().log(String.format("%s %s sms allready send ", phone, order_id));
+                return;
             }
+            String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message);
+            LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
+            t = SHttpClient.getURLData(url, "");
+            String r = SUtils.toString(t);
+            LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
+            MongoDBUtil.getInstance().sendmark(phone, order_id);  
         } catch (Throwable t) {
             t.printStackTrace();
         }
