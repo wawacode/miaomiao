@@ -8,7 +8,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
 import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +22,7 @@ import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,6 @@ import com.renren.ntc.sg.controllers.wx.client.TenpayHttpClient;
 import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
-import com.renren.ntc.sg.util.Dateutils;
 import com.renren.ntc.sg.util.FileUtil;
 import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.MD5Util;
@@ -360,29 +359,43 @@ public class WXService {
         String re = new String(tt);
         System.out.println(tt);
     }
-    //用户点击取消订单
-    public void cancelOrdersendWX2User(String order_id, Shop shop) {
-
-//        if (MongoDBUtil.getInstance().haveSend("wx_xx","pay_done_"+order_id)) {
-//            System.out.println(String.format("%s %s sms allready send ", "wx_xx", order_id));
-//            return;
-//        }
-        Order order = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop.getId()));
-        if (null == order){
+    //客服点击退单之后 发微信消息给用户退款成功
+    public void cancelOrdersendWX2User(Order order, Shop shop) {
+    	if (null == order){
             return ;
         }
+    	String order_id = order.getOrder_id();
         User user = userDao.getUser(order.getUser_id());
 
         String remark = Constants.REFUND_MSG.replace("{shop_name}", shop.getName());
-        remark = remark.replace("{order_time}", Dateutils.tranferDate2Str(order.getCreate_time()))
+        int price = order.getPrice();
+        String msg = order.getMsg();
+        int wxDiscount = 0;
+        if(StringUtils.isNotBlank(msg)){
+        	JSONObject msgInfo = (JSONObject) JSON.parse(msg);
+        	if(msgInfo != null){
+        		Integer disCountInt = (Integer)msgInfo.get("discount");
+				if(disCountInt == null){
+					wxDiscount = 0;
+				}else {
+					if(NumberUtils.isNumber(String.valueOf(disCountInt))){
+						wxDiscount = disCountInt;
+					}else {
+						wxDiscount = 0;
+					}
+					
+				}
+        	}
+        }
+        String refundPrice = (float)(price - wxDiscount)/100+"元";
+        remark = remark.replace("{refund_price}", refundPrice)
         		.replace("{order_id}", order_id);
-
         String respone = orderStatus(Constants.REFUND_ORDER_SUC, user.getWx_open_id(),
                 Constants.REFUND_ORDER_SUC, order_id, remark);
         String access_token = getAccessToken();
         String  turl  = TEMPLATEAPI.replace("{token}", access_token);
         byte[] tt = sendPostRequest(turl, respone);
-       // MongoDBUtil.getInstance().sendmark("wx_xx", "pay_done_"+order_id);
+       //MongoDBUtil.getInstance().sendmark("wx_xx", "pay_done_"+order_id);
         String re = new String(tt);
         System.out.println(tt);
     }

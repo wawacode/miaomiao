@@ -6,6 +6,7 @@ public class OrderDetail{
 	private boolean isShowCancel;
 	private String orderStatusDes;
 	private Order order;
+	private boolean isShowConfirm;
 	public String getRemindDes() {
 		return remindDes;
 	}
@@ -35,5 +36,11 @@ public class OrderDetail{
 	}
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+	public boolean isShowConfirm() {
+		return isShowConfirm;
+	}
+	public void setShowConfirm(boolean isShowConfirm) {
+		this.isShowConfirm = isShowConfirm;
 	}
 }

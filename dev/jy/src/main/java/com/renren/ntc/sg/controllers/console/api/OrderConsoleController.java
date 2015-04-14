@@ -186,7 +186,7 @@ public class OrderConsoleController extends BasicConsoleController{
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
-        //LoggerUtils.getInstance().log(String.format("user %s order_cancel shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
+        LoggerUtils.getInstance().log(String.format("boss order_confirm shop  %d  order %s  msg %s ",shop_id , order_id,confirm));
         JSONObject result =  new JSONObject() ;
         JSONObject data =  new JSONObject() ;
         if ("done".equals(confirm)){
@@ -202,9 +202,17 @@ public class OrderConsoleController extends BasicConsoleController{
         }
         result.put("data",data);
         result.put("code",0);
+        wxService.sendWX2User(order_id,shop_id);//发送微信消息给用户
         return "@json:"+result.toJSONString();
     }
-    
+    /**
+     * 商家点击无法配送 （给用户和客服发短信 给客服和地推发推送）
+     * @param inv
+     * @param shop_id
+     * @param order_id
+     * @param confirm
+     * @return
+     */
     @Get("order_cancel")
     @Post("order_cancel")
     public String order_cancel(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
@@ -212,13 +220,15 @@ public class OrderConsoleController extends BasicConsoleController{
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
         }
-        //LoggerUtils.getInstance().log(String.format("user %s order_cancel shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
+        LoggerUtils.getInstance().log(String.format("boss order_cancel shop  %d  order %s  msg %s ",shop_id , order_id,confirm));
         JSONObject result =  new JSONObject() ;
         JSONObject data =  new JSONObject() ;
+        Order o = null;
         if ("done".equals(confirm)){
-        	Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        	o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
-            orderInfo.put("order_msg", "商家点击无法配送");
+            orderInfo.put("order_msg", "boss cancel order");
+            orderInfo.put("cancel_info", OrderStatus.BOSSCANCEL.getCode());
             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
             ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.BOSSCANCEL.getCode(), SUtils.generOrderTableName(shop_id));
             User user = userDAO.getUser(o.getUser_id());
@@ -228,10 +238,6 @@ public class OrderConsoleController extends BasicConsoleController{
         }
         result.put("data",data);
         result.put("code",0);
-//        smsService.sendSMSCancelOrder2LocPushkf(order_id, shop);
-//        wxService.cancelOrdersendWX2User(order_id, shop);
-//        smsService.sendCancelSMS2Boss(order_id, shop);
-//        pushService.sendCancel2BossandLoc(order_id, shop);
         return "@json:"+result.toJSONString();
     }
 }
