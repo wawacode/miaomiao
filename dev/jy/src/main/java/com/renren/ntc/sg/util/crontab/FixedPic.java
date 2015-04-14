@@ -18,9 +18,7 @@ import java.util.regex.Pattern;
 
 public class FixedPic {
 
-    private static String URL ="http://s.1688.com/selloffer/offer_search.htm?keywords={key}";
-
-    private static long  shop_id= 10086;
+    private static long  shop_id= 10073;
 
 
     private static String PATH = "/home/root/webimg2/";
@@ -64,45 +62,6 @@ public class FixedPic {
                             e.printStackTrace();
                         }
                         continue ;
-                    }
-
-                    String url = URL.replace("{key}", serialNo) ;
-                    byte [] ss =  SHttpClient.getURLData(url, "s.1" +
-                            "688.com");
-                    System.out.println("get" + url + "  reponse " + ss.toString());
-                    if (null == ss){
-                        continue;
-                    }
-                    String html = SUtils.toString(ss);
-
-
-                    html = repare(html);
-                    if(-1 !=  html.indexOf("noresult-hd")){
-                        continue;
-                    }
-                    String pat = "<div class=\"su-photo220\"><a  gotoDetail=\".*?\" target=\"_blank\"  href=\".*?\" offer-stat=\"pic\" class=\".*?\"><img class=\".*?\" border=\"0\" alt=\".*?\" src=\"(.*?)\"></img></a></div>";
-                    Pattern pattern = Pattern.compile(pat);
-                    Matcher matchers = pattern.matcher(html);
-                    while (matchers.find()) {
-                        int count = matchers.groupCount();
-                        for (int k = 1; k <= count; k++) {
-                            String value = matchers.group(k).trim();
-                            System.out.println( " " + value);
-                            try{
-                            if (value == null){
-                                return ;
-                            }
-                            writeFile (value,fname);
-                            if (new File(PATH +fname).exists()){
-                                System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-//                                itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
-                                continue;
-                               }
-                            }
-                            catch(Throwable e){
-                                    e.printStackTrace();
-                            }
-                        }
                     }
                 }
             }
