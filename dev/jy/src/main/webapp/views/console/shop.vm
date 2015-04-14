@@ -35,8 +35,8 @@
                 <li><a href="/console/product">产品总表</a></li>
                 <li><a href="/console/registerUser">注册用户管理</a></li>
                 <li><a href="/console/tools">内部工具</a></li>
-                <li><a href="/console/catStaffCommit">喵喵员工</a></li>
-                <li><a href="/console/catStaff">推广店铺</a></li>
+                <li><a href="/console/catStaff">喵喵员工</a></li>
+                <li><a href="/console/catStaffCommit">推广店铺</a></li>
             </ul>
             <form id="query_form" class="navbar-form navbar-right" action="/console/shop/query">
                 <input id="query_input" name="query" type="text" class="form-control" placeholder="Search...">
