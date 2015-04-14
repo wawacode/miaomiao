@@ -76,7 +76,7 @@ public class ToolsController {
     }
 
     /**
-     * 上传文件 并将文件条码商品入库
+     * 首次上传扫码文件
      *
      * @param inv
      * @param shop_id
@@ -92,15 +92,57 @@ public class ToolsController {
         if (!MimeTypeUtils.TEXT_PLAIN.equals(file.getContentType())) {
             return "@文件类型有误! 只支持.txt类型文件!";
         }
-        //String fileName = getUUIDFileName(shop_id, file.getOriginalFilename());
-        //String savePath = inv.getServletContext().getRealPath("/") + CatstaffConstant.SAVE_UPLOAD_FILE_PATH;// 文件保存路径
-        //File f = FileUploadUtils.uploadFile2(file, fileName, savePath);
-        //if(null == f){
-        //	return "@文件上传失败!";
-        //}
         //删除初始商品
         itemDao.del(SUtils.generTableName(shop_id), shop_id);
         //保存数据到数据库
+        saveToDB(inv, shop_id, file);
+//		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType)) {
+//			boolean result = readXLS(f, shop_id);
+//			if(!result){
+//				return "@内容格式错误!";
+//			}
+//		}
+//		if (MimeTypeUtils.APPLICATION_EXCEL_2010_2013.equals(contentType)) {
+//			boolean result = readXLSX(f, shop_id);
+//			if(!result){
+//				return "@内容格式错误!";
+//			}
+//		}
+        LoggerUtils.getInstance().log(" OK!");
+        return "toolsDetail";
+    }
+
+    /**
+     * 续传条码文件
+     *
+     * @param inv
+     * @param shop_id
+     * @param file
+     * @return
+     */
+    @Get("replenish")
+    @Post("replenish")
+    public String replenish(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file) {
+        if (null == file) {
+            return "@ 文件不能为空!";
+        }
+        if (!MimeTypeUtils.TEXT_PLAIN.equals(file.getContentType())) {
+            return "@文件类型有误! 只支持.txt类型文件!";
+        }
+        //保存数据到数据库
+        saveToDB(inv, shop_id, file);
+        LoggerUtils.getInstance().log(" OK!");
+        return "toolsDetail";
+    }
+
+    /**
+     * 保存数据到数据库
+     *
+     * @param inv
+     * @param shop_id
+     * @param file
+     */
+    private void saveToDB(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file) {
         BufferedReader br = null;
         Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
         List<String> missingList = new ArrayList<String>();//丢弃多少项目的统计
@@ -121,6 +163,15 @@ public class ToolsController {
                         missingList.add(serialNo);
                         continue;
                     }
+                    //去商店对应商品库查询
+                    Item item = itemDao.getItem(SUtils.generTableName(shop_id), shop_id, serialNo);
+                    //有的话continue
+                    if (null != item) {
+                        int category_id = item.getCategory_id();
+                        saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
+                        continue;
+                    }
+
                     Product p = pDao.geProduct(serialNo);
                     Item it = new Item();
                     it.setShop_id(shop_id);
@@ -163,20 +214,6 @@ public class ToolsController {
                 e.printStackTrace();
             }
         }
-//		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType)) {
-//			boolean result = readXLS(f, shop_id);
-//			if(!result){
-//				return "@内容格式错误!";
-//			}
-//		}
-//		if (MimeTypeUtils.APPLICATION_EXCEL_2010_2013.equals(contentType)) {
-//			boolean result = readXLSX(f, shop_id);
-//			if(!result){
-//				return "@内容格式错误!";
-//			}
-//		}
-        LoggerUtils.getInstance().log(" OK!");
-        return "toolsDetail";
     }
 
     /**

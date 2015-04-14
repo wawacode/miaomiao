@@ -165,9 +165,9 @@
         })();
     </script>
     <script type="text/javascript">
-        function submitForm1() {
+        function submitForm1(id) {
             var flag = false;
-            if ($("form input[name='file']").val()) {
+            if ($(id).val()) {
                 flag = true;
             }
             if (flag) {
@@ -197,10 +197,10 @@
             <h1 style="text-align:center">内部工具</h1>
 
             <div style="margin: 20px;padding:10px">
-                <h3>上传扫码文件</h3>
+                <h3>首次上传扫码文件</h3>
 
                 <form id="Form1" action="/console/tools/uploadFile" method="post" enctype="multipart/form-data"
-                      onsubmit="return submitForm1();">
+                      onsubmit="return submitForm1('#uploadFile1');">
                     <div class="form-group">
                         <label for="exampleInputFile">商店:</label>
                         <select name="shop_id" required>
@@ -211,7 +211,28 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputFile">文件:</label>
-                        <input type="file" name="file" required style="display:inline-block">
+                        <input id="uploadFile1" type="file" name="file" required style="display:inline-block">
+                    </div>
+                    <button type="submit" class="btn btn-success">提交</button>
+                </form>
+            </div>
+            <hr/>
+            <div style="margin: 20px;padding:10px">
+                <h3>补充扫码文件</h3>
+
+                <form id="Form1" action="/console/tools/replenish" method="post" enctype="multipart/form-data"
+                      onsubmit="return submitForm1('#uploadFile2');">
+                    <div class="form-group">
+                        <label for="exampleInputFile">商店:</label>
+                        <select name="shop_id" required>
+                            #foreach($shop in $list)
+                                <option value="$shop.id">$shop.name</option>
+                            #end
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputFile">文件:</label>
+                        <input id="uploadFile2" type="file" name="file" required style="display:inline-block">
                     </div>
                     <button type="submit" class="btn btn-success">提交</button>
                 </form>
