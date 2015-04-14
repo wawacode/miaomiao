@@ -25,6 +25,7 @@ public class FixedPic2 {
     }
 
     public static void main(String[] args) throws IOException {
+
         RoseAppContext rose = new RoseAppContext();
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
@@ -34,7 +35,8 @@ public class FixedPic2 {
         for (File ff : file)  {
             try{
                 System.out.println(ff.getName());
-            String serialNo = ff.getName().split(".")[0];
+            String[] ss = ff.getName().split("\\.");
+            String serialNo = ss[0];
             String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + ff.getName();
             System.out.println("update " + serialNo+" " +  pic_url);
             }catch ( Exception e){
@@ -93,7 +95,6 @@ public class FixedPic2 {
         // html = html.replaceAll(" +", "");
         html = html.replaceAll("\\t*", "");
         html = html.replaceAll("\\n|\\r", "");
-//        System.out.println(html);
         return html;
     }
 
