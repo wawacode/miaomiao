@@ -263,15 +263,24 @@
             var orderId = data && data.orderId;
             // update order status
             var userOrders = $scope.info.orders;
+
             if (userOrders && userOrders.length) {
                 for (var i = 0; i < userOrders.length; i++) {
                     if (userOrders[i].order_id == orderId) {
-                        $timeout(function(){
-                            userOrders[i].remindShip = true;
-                        });
+                        userOrders[i].remindShip = true;
                     }
                 }
             }
+            $timeout(function(){
+                $scope.info.orders = userOrders;
+            });
+
+        });
+
+        MMPushNotification.onOrderStatusChangeNotificationReceived($scope, function (message) {
+            console.log(message);
+           // just reload data
+            initData();
         });
 
 
