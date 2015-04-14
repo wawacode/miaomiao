@@ -29,24 +29,10 @@ public class FixedPic2 {
         ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         int offset = 100;
-        for (int i=0 ;i < 10000 ; ){
-            List<Item> itemls =  itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
-            if(itemls.size() == 0){
-                break;
-            }
-            for ( Item item :  itemls ){
-                System.out.println("get" +item.getSerialNo());
-                String pic = item.getPic_url();
-                    String fname = item.getSerialNo()+".jpg";
-                    String serialNo = item.getSerialNo();
-                    String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + fname;
-                    if(new File(PATH + fname).exists()){
-                         System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-//                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
-                        continue;
-                    }
-            }
-            i = i + offset;
+        File f = new File(PATH );
+        File file[]  = f.listFiles();
+        for (File ff : file)  {
+            System.out.println(ff.getName());
         }
     }
 
