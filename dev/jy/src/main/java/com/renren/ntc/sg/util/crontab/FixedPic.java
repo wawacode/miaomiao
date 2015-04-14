@@ -23,7 +23,7 @@ public class FixedPic {
     private static long  shop_id= 10086;
 
 
-    private static String PATH = "d:\\webimg2\\";
+    private static String PATH = "/home/q/webimg2/";
 
     public FixedPic() throws IOException {
 
@@ -108,7 +108,7 @@ public class FixedPic {
 
 
     public static void writeFile(String strUrl, String fileName) throws Throwable {
-        String dir = "d:\\webimg2\\";
+        String dir = PATH;
         if(new File(dir + fileName).exists()){
             return ;
         }
