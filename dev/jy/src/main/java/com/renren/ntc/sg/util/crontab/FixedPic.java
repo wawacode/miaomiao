@@ -40,6 +40,7 @@ public class FixedPic {
                 break;
             }
             for ( Item item :  itemls ){
+                System.out.println("get" +item.getSerialNo());
                 String pic = item.getPic_url();
                 if (StringUtils.isBlank(pic)|| -1 == pic.indexOf("cat/images")){
                     String fname = item.getSerialNo()+".jpg";
@@ -50,7 +51,7 @@ public class FixedPic {
 //                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                         continue;
                     }
-                    if( !StringUtils.isBlank(pic)&&-1 == pic.indexOf("cat/images")) {
+                    if(!StringUtils.isBlank(pic)&&-1 == pic.indexOf("cat/images")) {
                         try{
                             writeFile (pic,fname);
                             if (new File(PATH +fname).exists()){
