@@ -209,7 +209,7 @@ public class PushService {
         unicast.setPredefinedKeyValue("badge", 1);
         unicast.setPredefinedKeyValue("sound", "chime");
         // TODO set 'production_mode' to 'true' if your app is under production mode
-        unicast.setPredefinedKeyValue("production_mode", "true");
+        unicast.setPredefinedKeyValue("production_mode", "false");
         // Set customized fields
         unicast.setCustomizedField("test", "helloworld");
         if(StringUtils.isNotBlank(extra)){
