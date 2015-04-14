@@ -35,7 +35,7 @@ public class FixedPic2 {
             String serialNo = ff.getName().split(".")[0];
             String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + ff.getName();
             System.out.println("update " + serialNo+" " +  pic_url);
-            itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,serialNo);
+//            itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,serialNo);
         }
     }
 
