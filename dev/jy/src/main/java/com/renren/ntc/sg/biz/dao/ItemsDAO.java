@@ -152,7 +152,6 @@ public interface ItemsDAO {
     /**
      * 
      * @param generTableName
-     * @param shop_id
      * @return
      */
     @SQL("SELECT DISTINCT(category_id) from ##(:tableName)")

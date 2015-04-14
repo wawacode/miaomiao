@@ -44,121 +44,125 @@ import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.util.MimeTypeUtils;
 import com.renren.ntc.sg.util.SUtils;
+
 /**
  * 地推人员工具
- * @author zhaoxiufei
  *
+ * @author zhaoxiufei
  */
 @Path("tools")
 public class ToolsController {
 
-	@Autowired
-	ProductDAO pDao;
-	
-	@Autowired
-	ItemsDAO itemDao;
-	
-	@Autowired
-	ShopDAO shopDAO;
-	
-	@Autowired
-	CategoryDAO categoryDAO;
-	
-	@Get("")
-	@Post("")
-	public String index(Invocation inv) {
-		List<Shop> list = shopDAO.getAllShopsByNotOnline();
-		inv.addModel("list", list);
-		List<Category> categoryList =  categoryDAO.getCategory();
-		inv.addModel("categoryList", categoryList);
-		return "tools";
-	}
-	/**
-	 * 上传文件 并将文件条码商品入库
-	 * @param inv
-	 * @param shop_id
-	 * @param file
-	 * @return
-	 */
-	@Get("uploadFile")
-	@Post("uploadFile")
-	public String uploadFile(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file) {
-		if(null == file){
-			return "@ 文件不能为空!";
-		}
-		if (!MimeTypeUtils.TEXT_PLAIN.equals(file.getContentType())) {
-			return "@文件类型有误! 只支持.txt类型文件!";
-		}
-		//String fileName = getUUIDFileName(shop_id, file.getOriginalFilename());
-    	//String savePath = inv.getServletContext().getRealPath("/") + CatstaffConstant.SAVE_UPLOAD_FILE_PATH;// 文件保存路径
-		//File f = FileUploadUtils.uploadFile2(file, fileName, savePath);
-		//if(null == f){
-		//	return "@文件上传失败!";
-    	//}
-		//删除初始商品
-		itemDao.del(SUtils.generTableName(shop_id), shop_id);
-		//保存数据到数据库
-		BufferedReader br = null;
-		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
-		List<String> missingList = new ArrayList<String>();//丢弃多少项目的统计
-		try {
-			br = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
-			String lineTxt = br.readLine();
-			String regex = lineTxt.contains("\t") ? "\t" : lineTxt.contains(",") ? ", ": " ";
-			int count = 0;
-			do {
-				if(!StringUtils.isBlank(lineTxt)){
-					count++;//总计
-					if (count % 1000 == 0) {
-						Thread.sleep(100);
-					}
-					String[] arr = lineTxt.split(regex);
-					String serialNo = upacage(arr[0].trim());
-					if (serialNo.length() < 8 || serialNo.length() > 14) {
-						missingList.add(serialNo);
-						continue;
-					}
-					Product p = pDao.geProduct(serialNo);
-					Item it = new Item();
-					it.setShop_id(shop_id);
-					it.setSerialNo(serialNo);
-					it.setName(p == null ? serialNo : p.getName());
-					it.setPrice(p == null ? 0 : arr.length == 2 ? Integer.valueOf(arr[1]) : p.getPrice());
-					it.setCount(1000);
-					int category_id = p == null ? 28 : p.getCategory_id();
-					it.setCategory_id(category_id);
-					it.setPic_url(p == null ? "" : p.getPic_url() == null ? "" : p.getPic_url());
-					it.setScore(p == null ? 0 : p.getScore());
-					
-					LoggerUtils.getInstance().log("条形码:\t"+serialNo+" 产品名称:\t"+it.getName()+"\t价格:\t"+it.getPrice());
-					itemDao.insert(SUtils.generTableName(shop_id), it);
-					saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null? 1 : saveCategoryNum.get(category_id) + 1);
-				} 
-			} while ((lineTxt = br.readLine()) != null);
-			//遍历map集合  替换分类为中文名字
-			Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
-			converterCN(saveCategoryNum, saveCategoryNumCN);
-			inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
-			inv.addModel("missingList", missingList); //丢失
-			inv.addModel("count", count); //总数
-			inv.addModel("successNum", count - missingList.size()); //总数
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}finally{
-			try {
-				if(null != br){
-					br.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+    @Autowired
+    ProductDAO pDao;
+
+    @Autowired
+    ItemsDAO itemDao;
+
+    @Autowired
+    ShopDAO shopDAO;
+
+    @Autowired
+    CategoryDAO categoryDAO;
+
+    @Get("")
+    @Post("")
+    public String index(Invocation inv) {
+        List<Shop> list = shopDAO.getAllShopsByNotOnline();
+        inv.addModel("list", list);
+        List<Category> categoryList = categoryDAO.getCategory();
+        inv.addModel("categoryList", categoryList);
+        return "tools";
+    }
+
+    /**
+     * 上传文件 并将文件条码商品入库
+     *
+     * @param inv
+     * @param shop_id
+     * @param file
+     * @return
+     */
+    @Get("uploadFile")
+    @Post("uploadFile")
+    public String uploadFile(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file) {
+        if (null == file) {
+            return "@ 文件不能为空!";
+        }
+        if (!MimeTypeUtils.TEXT_PLAIN.equals(file.getContentType())) {
+            return "@文件类型有误! 只支持.txt类型文件!";
+        }
+        //String fileName = getUUIDFileName(shop_id, file.getOriginalFilename());
+        //String savePath = inv.getServletContext().getRealPath("/") + CatstaffConstant.SAVE_UPLOAD_FILE_PATH;// 文件保存路径
+        //File f = FileUploadUtils.uploadFile2(file, fileName, savePath);
+        //if(null == f){
+        //	return "@文件上传失败!";
+        //}
+        //删除初始商品
+        itemDao.del(SUtils.generTableName(shop_id), shop_id);
+        //保存数据到数据库
+        BufferedReader br = null;
+        Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
+        List<String> missingList = new ArrayList<String>();//丢弃多少项目的统计
+        try {
+            br = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
+            String lineTxt = br.readLine();
+            String regex = lineTxt.contains("\t") ? "\t" : lineTxt.contains(",") ? ", " : " ";
+            int count = 0;
+            do {
+                if (!StringUtils.isBlank(lineTxt)) {
+                    count++;//总计
+                    if (count % 1000 == 0) {
+                        Thread.sleep(100);
+                    }
+                    String[] arr = lineTxt.split(regex);
+                    String serialNo = upacage(arr[0].trim());
+                    if (serialNo.length() < 8 || serialNo.length() > 14) {
+                        missingList.add(serialNo);
+                        continue;
+                    }
+                    Product p = pDao.geProduct(serialNo);
+                    Item it = new Item();
+                    it.setShop_id(shop_id);
+                    it.setSerialNo(serialNo);
+                    it.setName(p == null ? serialNo : p.getName());
+                    it.setPrice(p == null ? 0 : arr.length == 2 ? Integer.valueOf(arr[1]) : p.getPrice());
+                    it.setCount(1000);
+                    int category_id = p == null ? 28 : p.getCategory_id();
+                    it.setCategory_id(category_id);
+                    it.setPic_url(p == null ? "" : p.getPic_url() == null ? "" : p.getPic_url());
+                    it.setScore(p == null ? 0 : p.getScore());
+
+                    LoggerUtils.getInstance().log("条形码:\t" + serialNo + " 产品名称:\t" + it.getName() + "\t价格:\t" + it.getPrice());
+                    itemDao.insert(SUtils.generTableName(shop_id), it);
+                    saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
+                }
+            } while ((lineTxt = br.readLine()) != null);
+            //遍历map集合  替换分类为中文名字
+            Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+            converterCN(saveCategoryNum, saveCategoryNumCN);
+            inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+            inv.addModel("missingList", missingList); //丢失
+            inv.addModel("count", count); //总数
+            inv.addModel("successNum", count - missingList.size()); //总数
+            inv.addModel("shop_id", shop_id);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != br) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 //		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType)) {
 //			boolean result = readXLS(f, shop_id);
 //			if(!result){
@@ -171,36 +175,40 @@ public class ToolsController {
 //				return "@内容格式错误!";
 //			}
 //		}
-		LoggerUtils.getInstance().log(" OK!");
-		return "toolsDetail";
-	}
-	
-	/**'
-	 * 1.同步A店某一个分类到B店
-	 * http://127.0.0.1:8080/catstaff/tools/mvShopItems?from_shop_id=1&category_id=15&to_shop_id=10083
-	 * @param inv
-	 * @param from_shop_id
-	 * @param category_id
-	 * @param to_shop_id
-	 * @return
-	 */
-	@Get("mvShopItems")
-	@Post("mvShopItems")
-	public String mvCategory(Invocation inv, @Param("from_shop_id") long from_shop_id, @Param("category_id") int category_id, @Param("to_shop_id") long to_shop_id){
-		if(0 == from_shop_id){
-			return "@ from_shop_id 不能为空";
-		}else if(0 == category_id){
-			return "@ category_id 不能为空";
-		}else if(0 == to_shop_id){
-			return "@ to_shop_id 不能为空";
-		}
-		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
-		int count = 0;
-		int offset = 100;//每次查100条 如果够
-	    for (int i = 0; i < 100000;) {
-            System.out.println("get " + i + " " + offset);
-            List<Item> itemls = itemDao.getItems(SUtils.generTableName(from_shop_id), from_shop_id, category_id, i, offset);
+        LoggerUtils.getInstance().log(" OK!");
+        return "toolsDetail";
+    }
+
+    /**
+     * '
+     * 1.同步A店某一个分类到B店
+     * http://127.0.0.1:8080/catstaff/tools/mvShopItems?from_shop_id=1&category_id=15&to_shop_id=10083
+     *
+     * @param inv
+     * @param from_shop_id
+     * @param category_id
+     * @param to_shop_id
+     * @return
+     */
+    @Get("mvShopItems")
+    @Post("mvShopItems")
+    public String mvCategory(Invocation inv, @Param("from_shop_id") long from_shop_id, @Param("category_id") int category_id, @Param("to_shop_id") long to_shop_id) {
+        if (0 == from_shop_id) {
+            return "@ from_shop_id 不能为空";
+        } else if (0 == category_id) {
+            return "@ category_id 不能为空";
+        } else if (0 == to_shop_id) {
+            return "@ to_shop_id 不能为空";
+        }
+        Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
+        int count = 0;
+        boolean flag = true;
+        int from = 0;
+        int offset = 100;//每次查100条 如果够
+        do {
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(from_shop_id), from_shop_id, category_id, from, offset);
             if (itemls.size() == 0) {
+                flag = false;
                 break;
             }
             for (Item item : itemls) {
@@ -208,340 +216,392 @@ public class ToolsController {
                 item.setCount(1000);
                 Item ii = itemDao.getItem(SUtils.generTableName(to_shop_id), to_shop_id, item.getSerialNo());
                 if (null == ii) {
-                    System.out.println("insert " + ">" + i + "<" + item.getSerialNo());
                     itemDao.insert(SUtils.generTableName(to_shop_id), item);
                 } else {
-                    System.out.println("update" + item.getSerialNo() + " " + item.getId());
                     itemDao.updateforSerialNo(SUtils.generTableName(to_shop_id), item, item.getSerialNo());
                 }
                 count++;
-                saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
+                saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null ? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
             }
-            i = i + offset;
-	    }
-		//遍历map集合  替换分类为中文名字
-		Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
-		converterCN(saveCategoryNum, saveCategoryNumCN);
-		inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
-		inv.addModel("count", count); //总数
-		return "toolsDetail";
-	}
-	
-	/**
-	  * 把A店商品同步到B店
-	  * @param inv
-	  * @return
-	  * @author ZhaoXiuFei
-	  * @date 2015年4月12日上午10:50:49
-	 */
-	@Get("copyShopAllItems")
-	@Post("copyShopAllItems")
-	public String copyShopAllItems(Invocation inv, @Param("from_shop_id") String from_shop_id, @Param("to_shop_id") String to_shop_id) {
-		System.out.println("test controller");
-		if(StringUtils.isBlank(from_shop_id)){
-			return "@ from_shop_id 不能为空";
-		}
-		if(StringUtils.isBlank(from_shop_id)){
-			return "@ to_shop_id 不能为空";
-		}
-		long toShopId = Long.valueOf(to_shop_id);
-		//删除原来已有商品 
-		itemDao.del(SUtils.generTableName(toShopId), toShopId);
-		
-		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
-		int offset = 100;
-		long fromShopId = Long.valueOf(from_shop_id);
-		int count = 0;
-	    for (int i = 0; i < 100000;) {
-	    	List<Item> itemls = itemDao.getItems(SUtils.generTableName(fromShopId),fromShopId, i, offset);
-	    	if (itemls.size() == 0) {
-	                break;
-	         }
-	        for (Item item : itemls) {
-	        	count++;
-	        	itemDao.insert(SUtils.generTableName(toShopId), item);//插入新数据
-	        	saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
-	        }
-	    	i = i+offset;
-	    }
-		//遍历map集合  替换分类为中文名字
-		Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
-		converterCN(saveCategoryNum, saveCategoryNumCN);
-		inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
-		inv.addModel("count", count); //总数
-		return "toolsDetail";
-	}
-	
-	/**
-	 * 2.同步A店商品到主库
-	 * @param inv
-	 * @return
-	 */
-	@Get("refresh2Produdce")
-	@Post("refresh2Produdce")
-	public String refresh2Produdce(Invocation inv, @Param("shop_id") long shop_id) {
-		if(0 == shop_id){
-			return "@ shop_id 不能为空";
-		}
-		Map<Integer,Integer>  saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
-		int count = 0;
-	    int offset = 1000;
-        for (int i = 0; i < 100000;) {
-            List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
+            from = from + offset;
+            if (count % 1000 == 0) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } while (flag);
+        //遍历map集合  替换分类为中文名字
+        Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+        converterCN(saveCategoryNum, saveCategoryNumCN);
+        inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+        inv.addModel("count", count); //总数
+        inv.addModel("shop_id", to_shop_id);
+
+        return "toolsDetail";
+    }
+
+    /**
+     * 把A店商品同步到B店
+     *
+     * @param inv
+     * @return
+     * @author ZhaoXiuFei
+     * @date 2015年4月12日上午10:50:49
+     */
+    @Get("copyShopAllItems")
+    @Post("copyShopAllItems")
+    public String copyShopAllItems(Invocation inv, @Param("from_shop_id") String from_shop_id, @Param("to_shop_id") String to_shop_id) {
+        System.out.println("test controller");
+        if (StringUtils.isBlank(from_shop_id)) {
+            return "@ from_shop_id 不能为空";
+        }
+        if (StringUtils.isBlank(from_shop_id)) {
+            return "@ to_shop_id 不能为空";
+        }
+        long toShopId = Long.valueOf(to_shop_id);
+        //删除原来已有商品
+        itemDao.del(SUtils.generTableName(toShopId), toShopId);
+
+        Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
+
+        long fromShopId = Long.valueOf(from_shop_id);
+        int from = 0;
+        int offset = 100;
+        int count = 0;
+        boolean flag = true;
+        do {
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(fromShopId), fromShopId, from, offset);
             if (itemls.size() == 0) {
+                flag = false;
                 break;
             }
-	        for (Item item : itemls) {
-	            Product p = new Product();
-	            p.setCategory_id(item.getCategory_id());
-	            p.setScore(item.getScore());
-	            p.setPic_url(item.getPic_url());
-	            p.setPrice(item.getPrice());
-	            p.setName(item.getName());
-	            String serialNoStr = upacage(item.getSerialNo());
-                p.setSerialNo(serialNoStr);
-	            Product pp = pDao.geProductsByserialNo(p.getSerialNo());
-	            if (null != pp){
-                    System.out.println("update into " + p.getSerialNo());
-                    pDao.updateBySerialNo(p,serialNoStr) ;
-                 }else{
-                    System.out.println("insert into " + p.getSerialNo());
-                    pDao.insert(p) ;
+            for (Item item : itemls) {
+                count++;
+                itemDao.insert(SUtils.generTableName(toShopId), item);//插入新数据
+                saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null ? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
+            }
+            from = from + offset;
+            if (count % 1000 == 0) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-	            count++;
-	            saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
-	        }
-	        i = i + offset;
-        }
-      //遍历map集合  替换分类为中文名字
-  		Map<String, Integer>  saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
-  		converterCN(saveCategoryNum, saveCategoryNumCN);
-  		inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
-  		inv.addModel("count", count); //总数
-		return "toolsDetail";
-	}
-	/**
-	 * ajax 获取商店商品分类
-	 * @param inv
-	 * @param shop_id
-	 * @return
-	 */
+            }
+        } while (flag);
+        //遍历map集合  替换分类为中文名字
+        Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+        converterCN(saveCategoryNum, saveCategoryNumCN);
+        inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+        inv.addModel("shop_id", to_shop_id);
+        inv.addModel("count", count); //总数
+        return "toolsDetail";
+    }
 
-	@Get("getCategoriesByShopId")
-	@Post("getCategoriesByShopId")
-	public String getCategoriesByShopId(Invocation inv, @Param("shop_id") long shop_id) {
-		if(0 == shop_id){
-			return "@ shop_id 不能为空";
-		}
-		List<Item> shopCategoryList = itemDao.getCategoriesByShopId(SUtils.generTableName(shop_id));
-		List<JSONObject> clist = new ArrayList<JSONObject>();
-		for (Item item : shopCategoryList) {
-			Category category = categoryDAO.getCategory(item.getCategory_id());
-			if (null != category) {
-				JSONObject jo = new JSONObject();
-				jo.put("id", item.getCategory_id());
-				jo.put("name", category.getName());
-				clist.add(jo);
-			}
-		}
-		List<Shop> slist = shopDAO.getAllShopsByNotOnline();
-		List<Shop> newShopList = new ArrayList<Shop>(slist.size()-1);
-		
-		for (Shop s : slist) {
-			if (s.getId() != shop_id) {
-				newShopList.add(s);
-			}
-		}
-		JSONObject jo = new JSONObject();
-		jo.put("category", clist);
-		jo.put("shop", newShopList);
-		return "@json:" + jo.toJSONString();
-	}
-	/**
-	  * 商品种类数字到中文的转换
-	  * @param saveCategoryNum
-	  * @param saveCategoryNumCN
-	  * @author ZhaoXiuFei
-	  * @date 2015年4月12日上午11:55:41
-	 */
-	private void converterCN(Map<Integer, Integer> saveCategoryNum, Map<String, Integer> saveCategoryNumCN) {
-		for (Map.Entry<Integer,Integer> entry : saveCategoryNum.entrySet()) {
-			Category category =  categoryDAO.getCategory(entry.getKey());
-			if(null != category)
-			    saveCategoryNumCN.put(category.getName(), entry.getValue());
-			else
-				saveCategoryNumCN.put("没有分类", saveCategoryNumCN.get("没有分类") == null ? entry.getValue() :saveCategoryNumCN.get("没有分类") + entry.getValue());
-		}
-	}
-	/**2010-2013Excel*/
-	@SuppressWarnings("unused")
-	private boolean readXLSX(File file, long shop_id) {
-		boolean flag = false;
-		XSSFWorkbook xssfWorkbook = null;
-		try {
-			xssfWorkbook = new XSSFWorkbook(file);
-			XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
-			int firstRowIndex = xssfSheet.getFirstRowNum();// 第一行
-			int lastRowIndex = xssfSheet.getLastRowNum();// 最后一行
-			for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {// 遍历第一个有效行和最后一行之间的值
-				XSSFRow xssfRow = xssfSheet.getRow(rIndex);// 获取一行
-				if (null != xssfRow) {
-					XSSFCell serialNoCell = xssfRow.getCell(0);// 获取一个单元格
-					XSSFCell priceCell = xssfRow.getCell(1);// 获取第2个单元格
-					if (null != serialNoCell) {
-						int price = 0;
-						if (null != priceCell) {
-							price = Integer.valueOf(priceCell.toString());
-						}
-						String serialNo = upacage(serialNoCell.toString().trim());
-						if (serialNo.toString().length() <= 24) {
-							saveData(shop_id, serialNo, price);
-						}
-					}
-				}
-			}
-			flag = true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InvalidFormatException e) {
-			e.printStackTrace();
-		} finally {
-			if (null != xssfWorkbook) {
-				try {
-					xssfWorkbook.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return flag;
-	}
-	/**2003-2007 Excel*/
-	@SuppressWarnings({ "unused", "resource" })
-	private boolean readXLS(File file, long shop_id) {
-		boolean flag = false;
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(file);
-			HSSFWorkbook wb = new HSSFWorkbook(fis);
-			HSSFSheet sh = wb.getSheetAt(0);// 获取第一个工作空间
-			for (int rIndex = sh.getFirstRowNum(); rIndex <= sh.getLastRowNum(); rIndex++) {// 遍历第一个有效行和最后一行之间的值
-				HSSFRow row = sh.getRow(rIndex);// 获取一行
-				if (row != null) {
-					HSSFCell serialNoCell = row.getCell(0);// 获取第1个单元格
-					HSSFCell priceCell = row.getCell(1);// 获取第2个单元格
-					if (null != serialNoCell) {
-						int price = 0;
-						if (null != priceCell) {
-							price = Integer.valueOf(priceCell.toString());
-						}
-						String serialNo = upacage(serialNoCell.toString().trim());
-						if (serialNo.toString().length() <= 24) {// 跟数据库长度有关
-							saveData(shop_id, serialNo, price);
-						}
-					}
-				}
-			}
-			flag = true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (null != fis) {
-				try {
-					fis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return flag;
-	}
-	/**
-	 * 保存数据到库
-	 * @param serialNo
-	 * @param price
-	 */
-	private void saveData(long shop_id, String serialNo, int price) {
-		Product p = pDao.geProduct(serialNo);
-		Item it = new Item();
-		it.setShop_id(shop_id);
-		it.setSerialNo(serialNo);
-		it.setName(p == null ? shop_id + "" : p.getName());
-		it.setPrice(price == 0? p.getPrice() : price);
-		it.setCount(1000);
-		it.setCategory_id(p == null ? 28 : p.getCategory_id());
-		it.setPic_url(p == null ? "" : p.getPic_url() == null ? "" : p.getPic_url());
-		it.setScore(p == null ? 0 : p.getScore());
-		LoggerUtils.getInstance().log(" 产品名称:\t"+it.getName()+"\t价格:\t"+it.getPrice());
-		itemDao.insert(SUtils.generTableName(shop_id), it);
-	}
-	
-	/**
-	 * 获取UUID文件名
-	 * @param originFileName
-	 * @author zhiaoxiufei
-	 * @return shop_id + "_" + fileName + UUID + suffix
-	 */
-	@SuppressWarnings("unused")
-	private String getUUIDFileName(long shop_id, String originFileName) {
-		int index = originFileName.lastIndexOf(".");
-		String fileName = originFileName.substring(0, index);
-		String suffix = originFileName.substring(index,  originFileName.length());
-		return fileName = shop_id + "_" + fileName + UUID.randomUUID().toString().replace("-", "") + suffix;
-	}
-	/**
-	 * 返回有效数值 [0] 条码  [1]价格
-	 * @param arr
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	private String[] getValiValue(String[] arr){
-		String[] tempArr = new String[2];
-    	int temp = 0;	//只取前两个有效数据  第一个 为条码 第二个为价格
-    	for (int i = 0; i < arr.length; i++) {
-			if(!StringUtils.isBlank(arr[i]) && temp == 0){
-				tempArr[0] =  upacage(arr[i].trim());//去除空白和开头的0
-				temp = 1;
-				continue;
-			}
-			if(!StringUtils.isBlank(arr[i]) && temp == 1){
-				tempArr[1] = arr[i].trim();
-				temp = 0;
-				break;
-			}
-		}
-		return tempArr;
-	}
-	/**
-	 *上传支持的文件类型
-	 * @param contentType
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	private boolean valiContentType(String contentType){
-		if(MimeTypeUtils.TEXT_PLAIN.equals(contentType)) 
-			return true;
-		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType))
-			return true;
-		if (MimeTypeUtils.APPLICATION_EXCEL_2010_2013.equals(contentType))
-			return true;
-		return false;
-	}
-	/**
-	 * 去掉开头的0
-	 * @param serialNo
-	 * @return
-	 */
-	private String upacage(String serialNo) {
-	    while (serialNo.startsWith("0")) {
-	         serialNo = serialNo.substring(1, serialNo.length());
-	    }
-	    return serialNo;
-	 }
-	
+    /**
+     * 2.同步A店商品到主库
+     *
+     * @param inv
+     * @return
+     */
+    @Get("refresh2Product")
+    @Post("refresh2Product")
+    public String refresh2Product(Invocation inv, @Param("shop_id") long shop_id) {
+        if (0 == shop_id) {
+            return "@ shop_id 不能为空";
+        }
+        Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
+        int count = 0;
+        int from = 0;
+        int offset = 500;
+        boolean flag = true;
+        do {
+            List<Item> itemls = itemDao.getItems(SUtils.generTableName(shop_id), shop_id, from, offset);
+            if (itemls.size() == 0) {
+                flag = false;
+                break;
+            }
+            for (Item item : itemls) {
+                Product p = new Product();
+                p.setCategory_id(item.getCategory_id());
+                p.setScore(item.getScore());
+                p.setPic_url(item.getPic_url());
+                p.setPrice(item.getPrice());
+                p.setName(item.getName());
+                String serialNoStr = upacage(item.getSerialNo());
+                p.setSerialNo(serialNoStr);
+                Product pp = pDao.geProductsByserialNo(p.getSerialNo());
+                if (null != pp) {
+                    System.out.println("update into " + p.getSerialNo());
+                    pDao.updateBySerialNo(p, serialNoStr);
+                } else {
+                    System.out.println("insert into " + p.getSerialNo());
+                    pDao.insert(p);
+                }
+                count++;
+                saveCategoryNum.put(item.getCategory_id(), saveCategoryNum.get(item.getCategory_id()) == null ? 1 : saveCategoryNum.get(item.getCategory_id()) + 1);
+            }
+            from = from + offset;
+            if (count % 1000 == 0) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } while (flag);
+        //遍历map集合  替换分类为中文名字
+        Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+        converterCN(saveCategoryNum, saveCategoryNumCN);
+        inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+        inv.addModel("count", count); //总数
+        inv.addModel("shop_id", shop_id);
+
+        return "toolsDetail";
+    }
+
+    /**
+     * ajax 获取商店商品分类
+     *
+     * @param inv
+     * @param shop_id
+     * @return
+     */
+
+    @Get("getCategoriesByShopId")
+    @Post("getCategoriesByShopId")
+    public String getCategoriesByShopId(Invocation inv, @Param("shop_id") long shop_id) {
+        if (0 == shop_id) {
+            return "@ shop_id 不能为空";
+        }
+        List<Item> shopCategoryList = itemDao.getCategoriesByShopId(SUtils.generTableName(shop_id));
+        List<JSONObject> clist = new ArrayList<JSONObject>();
+        for (Item item : shopCategoryList) {
+            Category category = categoryDAO.getCategory(item.getCategory_id());
+            if (null != category) {
+                JSONObject jo = new JSONObject();
+                jo.put("id", item.getCategory_id());
+                jo.put("name", category.getName());
+                clist.add(jo);
+            }
+        }
+        List<Shop> slist = shopDAO.getAllShopsByNotOnline();
+        List<Shop> newShopList = new ArrayList<Shop>(slist.size() - 1);
+
+        for (Shop s : slist) {
+            if (s.getId() != shop_id) {
+                newShopList.add(s);
+            }
+        }
+        JSONObject jo = new JSONObject();
+        jo.put("category", clist);
+        jo.put("shop", newShopList);
+        return "@json:" + jo.toJSONString();
+    }
+
+    /**
+     * 商品种类数字到中文的转换
+     *
+     * @param saveCategoryNum
+     * @param saveCategoryNumCN
+     * @author ZhaoXiuFei
+     * @date 2015年4月12日上午11:55:41
+     */
+    private void converterCN(Map<Integer, Integer> saveCategoryNum, Map<String, Integer> saveCategoryNumCN) {
+        for (Map.Entry<Integer, Integer> entry : saveCategoryNum.entrySet()) {
+            Category category = categoryDAO.getCategory(entry.getKey());
+            if (null != category)
+                saveCategoryNumCN.put(category.getName(), entry.getValue());
+            else
+                saveCategoryNumCN.put("没有分类", saveCategoryNumCN.get("没有分类") == null ? entry.getValue() : saveCategoryNumCN.get("没有分类") + entry.getValue());
+        }
+    }
+
+    /**
+     * 2010-2013Excel
+     */
+    @SuppressWarnings("unused")
+    private boolean readXLSX(File file, long shop_id) {
+        boolean flag = false;
+        XSSFWorkbook xssfWorkbook = null;
+        try {
+            xssfWorkbook = new XSSFWorkbook(file);
+            XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
+            int firstRowIndex = xssfSheet.getFirstRowNum();// 第一行
+            int lastRowIndex = xssfSheet.getLastRowNum();// 最后一行
+            for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {// 遍历第一个有效行和最后一行之间的值
+                XSSFRow xssfRow = xssfSheet.getRow(rIndex);// 获取一行
+                if (null != xssfRow) {
+                    XSSFCell serialNoCell = xssfRow.getCell(0);// 获取一个单元格
+                    XSSFCell priceCell = xssfRow.getCell(1);// 获取第2个单元格
+                    if (null != serialNoCell) {
+                        int price = 0;
+                        if (null != priceCell) {
+                            price = Integer.valueOf(priceCell.toString());
+                        }
+                        String serialNo = upacage(serialNoCell.toString().trim());
+                        if (serialNo.toString().length() <= 24) {
+                            saveData(shop_id, serialNo, price);
+                        }
+                    }
+                }
+            }
+            flag = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        } finally {
+            if (null != xssfWorkbook) {
+                try {
+                    xssfWorkbook.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * 2003-2007 Excel
+     */
+    @SuppressWarnings({"unused", "resource"})
+    private boolean readXLS(File file, long shop_id) {
+        boolean flag = false;
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            HSSFWorkbook wb = new HSSFWorkbook(fis);
+            HSSFSheet sh = wb.getSheetAt(0);// 获取第一个工作空间
+            for (int rIndex = sh.getFirstRowNum(); rIndex <= sh.getLastRowNum(); rIndex++) {// 遍历第一个有效行和最后一行之间的值
+                HSSFRow row = sh.getRow(rIndex);// 获取一行
+                if (row != null) {
+                    HSSFCell serialNoCell = row.getCell(0);// 获取第1个单元格
+                    HSSFCell priceCell = row.getCell(1);// 获取第2个单元格
+                    if (null != serialNoCell) {
+                        int price = 0;
+                        if (null != priceCell) {
+                            price = Integer.valueOf(priceCell.toString());
+                        }
+                        String serialNo = upacage(serialNoCell.toString().trim());
+                        if (serialNo.toString().length() <= 24) {// 跟数据库长度有关
+                            saveData(shop_id, serialNo, price);
+                        }
+                    }
+                }
+            }
+            flag = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (null != fis) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * 保存数据到库
+     *
+     * @param serialNo
+     * @param price
+     */
+    private void saveData(long shop_id, String serialNo, int price) {
+        Product p = pDao.geProduct(serialNo);
+        Item it = new Item();
+        it.setShop_id(shop_id);
+        it.setSerialNo(serialNo);
+        it.setName(p == null ? shop_id + "" : p.getName());
+        it.setPrice(price == 0 ? p.getPrice() : price);
+        it.setCount(1000);
+        it.setCategory_id(p == null ? 28 : p.getCategory_id());
+        it.setPic_url(p == null ? "" : p.getPic_url() == null ? "" : p.getPic_url());
+        it.setScore(p == null ? 0 : p.getScore());
+        LoggerUtils.getInstance().log(" 产品名称:\t" + it.getName() + "\t价格:\t" + it.getPrice());
+        itemDao.insert(SUtils.generTableName(shop_id), it);
+    }
+
+    /**
+     * 获取UUID文件名
+     *
+     * @param originFileName
+     * @return shop_id + "_" + fileName + UUID + suffix
+     * @author zhiaoxiufei
+     */
+    @SuppressWarnings("unused")
+    private String getUUIDFileName(long shop_id, String originFileName) {
+        int index = originFileName.lastIndexOf(".");
+        String fileName = originFileName.substring(0, index);
+        String suffix = originFileName.substring(index, originFileName.length());
+        return fileName = shop_id + "_" + fileName + UUID.randomUUID().toString().replace("-", "") + suffix;
+    }
+
+    /**
+     * 返回有效数值 [0] 条码  [1]价格
+     *
+     * @param arr
+     * @return
+     */
+    @SuppressWarnings("unused")
+    private String[] getValiValue(String[] arr) {
+        String[] tempArr = new String[2];
+        int temp = 0;    //只取前两个有效数据  第一个 为条码 第二个为价格
+        for (int i = 0; i < arr.length; i++) {
+            if (!StringUtils.isBlank(arr[i]) && temp == 0) {
+                tempArr[0] = upacage(arr[i].trim());//去除空白和开头的0
+                temp = 1;
+                continue;
+            }
+            if (!StringUtils.isBlank(arr[i]) && temp == 1) {
+                tempArr[1] = arr[i].trim();
+                temp = 0;
+                break;
+            }
+        }
+        return tempArr;
+    }
+
+    /**
+     * 上传支持的文件类型
+     *
+     * @param contentType
+     * @return
+     */
+    @SuppressWarnings("unused")
+    private boolean valiContentType(String contentType) {
+        if (MimeTypeUtils.TEXT_PLAIN.equals(contentType))
+            return true;
+        if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType))
+            return true;
+        if (MimeTypeUtils.APPLICATION_EXCEL_2010_2013.equals(contentType))
+            return true;
+        return false;
+    }
+
+    /**
+     * 去掉开头的0
+     *
+     * @param serialNo
+     * @return
+     */
+    private String upacage(String serialNo) {
+        while (serialNo.startsWith("0")) {
+            serialNo = serialNo.substring(1, serialNo.length());
+        }
+        return serialNo;
+    }
+
 }
 
