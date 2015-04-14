@@ -32,6 +32,7 @@ import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
 import com.renren.ntc.sg.constant.OrderStatus;
+import com.renren.ntc.sg.constant.PushType;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.AddressService;
 import com.renren.ntc.sg.service.LoggerUtils;
@@ -387,8 +388,11 @@ public class OrderController {
         result.put("code",0);
         if(o != null){
         	//给客服和老板推送
-            pushService.sendUserCancel2KF(o, shop);
-            pushService.sendCancel2Boss(o, shop);
+        	JSONObject orderInfo = new JSONObject();
+        	orderInfo.put("orderId", o.getOrder_id());
+        	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), orderInfo, "");
+            pushService.sendUserCancel2KF(o, shop,extra);
+            pushService.sendCancel2Boss(o, shop,extra);
         } 
         return "@json:"+result.toJSONString();
     }
@@ -429,8 +433,11 @@ public class OrderController {
         result.put("code",0);
         if(o != null){
         	// 给老板和客服发推送
-            pushService.sendRemind2Kf(o, shop);
-            pushService.sendRemindOrder2Boss(o, shop);
+        	JSONObject orderInfo = new JSONObject();
+        	orderInfo.put("orderId", o.getOrder_id());
+        	String extra = pushService.getPushExtra(PushType.REMIND_ORDER.getType(), orderInfo, "");
+            pushService.sendRemind2Kf(o, shop,extra);
+            pushService.sendRemindOrder2Boss(o, shop,extra);
         }
         return "@json:"+result.toJSONString();
     }

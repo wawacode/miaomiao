@@ -2,9 +2,11 @@ package com.renren.ntc.sg.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Address;
 import com.renren.ntc.sg.bean.CatStaffCommit;
 import com.renren.ntc.sg.bean.Catstaff;
@@ -81,7 +83,7 @@ public class PushService {
                         LoggerUtils.getInstance().log(String.format("miss push token  %s ", phone));
                         return ;
                     }
-                    send(pushToken, message);
+                    send(pushToken, message,"");
                 }
             }
         } catch (Throwable e) {
@@ -119,7 +121,7 @@ public class PushService {
                             LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
                             return ;
                         }
-                        send(pushToken, message);
+                        send(pushToken, message,"");
                     }
                 }
             }
@@ -144,24 +146,24 @@ public class PushService {
             }
             String message = pre + shop.getName() + " "+ adrs.getAddress() + " " + adrs.getPhone()  +
                     " 总额：" +  p ;
-            pushKf(shop, message);
+            pushKf(shop, message,"");
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
 
-    public  void send(PushToken pushToken,String message){
+    public  void send(PushToken pushToken,String message,String extra){
         this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
         String phone = pushToken.getOwner_phone();
          if (null != pushToken) {
              try {
                  if ("iOS".equals(pushToken.getChn())) {
                      LoggerUtils.getInstance().log(pushToken.getOwner_phone() + " " + pushToken.getDevice_token() + " send ios");
-                     sendIOSUnicast(phone, message, pushToken.getDevice_token());
+                     sendIOSUnicast(phone, message, pushToken.getDevice_token(),extra);
                  } else {
                      LoggerUtils.getInstance().log(phone + " " + pushToken.getDevice_token() + " send adr ");
-                     sendAndroidUnicast(phone, message, pushToken.getDevice_token());
+                     sendAndroidUnicast(phone, message, pushToken.getDevice_token(),extra);
                  }
              } catch (Exception e) {
                  e.printStackTrace();
@@ -171,7 +173,7 @@ public class PushService {
     }
 
 	
-	public void sendAndroidUnicast(String title , String message ,String device_token) throws Exception {
+	public void sendAndroidUnicast(String title , String message ,String device_token,String extra) throws Exception {
 
         this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
 		AndroidUnicast unicast = new AndroidUnicast();
@@ -187,12 +189,15 @@ public class PushService {
 		unicast.setPredefinedKeyValue("display_type", "notification");
 		// TODO Set 'production_mode' to 'false' if it's a test device. 
 		unicast.setPredefinedKeyValue("production_mode", "true");
+		if(StringUtils.isNotBlank(extra)){
+			unicast.setExtraField("ext", extra);
+		}
 		if(unicast.send()){
             LoggerUtils.getInstance().log(String.format("adr fail to send device_token"));
         }
 	}
 
-    public void sendIOSUnicast(String title , String message ,String device_token) throws Exception {
+    public void sendIOSUnicast(String title , String message ,String device_token,String extra) throws Exception {
         this.timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
         IOSUnicast unicast = new IOSUnicast();
         unicast.setAppMasterSecret(iOS_appMasterSecret);
@@ -207,68 +212,71 @@ public class PushService {
         unicast.setPredefinedKeyValue("production_mode", "true");
         // Set customized fields
         unicast.setCustomizedField("test", "helloworld");
+        if(StringUtils.isNotBlank(extra)){
+        	unicast.setCustomizedField("ext", extra);
+        }
         if(unicast.send()){
             LoggerUtils.getInstance().log(String.format("ios fail to send device_token"));
         }
     }
 
 
-    public void sendCancel2Loc(Order order, Shop shop) {
+    public void sendCancel2Loc(Order order, Shop shop,String extra) {
     	try {
     		String message = getCancelPushMsg2LocOrBoss(order);
-            pushLoc(shop, message);
+            pushLoc(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
     
-    public void sendUserCancel2KF(Order order, Shop shop) {
+    public void sendUserCancel2KF(Order order, Shop shop,String extra) {
     	try {
     		String message = getUserCancelPushMsg2KF(order, shop);
-            pushKf(shop, message);
+            pushKf(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
 
-    public void sendRemind2Loc(Order order, Shop shop) {
+    public void sendRemind2Loc(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
-            pushLoc(shop, message);
+            pushLoc(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
     
-    public void sendRemind2Kf(Order order, Shop shop) {
+    public void sendRemind2Kf(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
-            pushKf(shop, message);
+            pushKf(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
     
-    public void sendCancel2Boss(Order o, Shop shop) {
+    public void sendCancel2Boss(Order o, Shop shop,String extra) {
         try {
         	String message = getUserCancelPushMsg2Boss(o,shop);
-        	pushBoss(shop, message);
+        	pushBoss(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
     
-    public void sendRemindOrder2Boss(Order order, Shop shop) {
+    public void sendRemindOrder2Boss(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
-            pushBoss(shop, message);
+            pushBoss(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 	
-    private void pushLoc(Shop shop,String message){
+    private void pushLoc(Shop shop,String message,String extra){
     	if (shop != null) {
             List<CatStaffCommit> catcommitls = catStaffCommitDao.getbyShopid(shop.getId());
             for (CatStaffCommit catcommit : catcommitls ){
@@ -278,13 +286,13 @@ public class PushService {
                         LoggerUtils.getInstance().log(String.format("miss push token  %s ", catcommit.getPhone()));
                         return ;
                     }
-                    send(pushToken, message);
+                    send(pushToken, message,extra);
                 }
             }
         }
     }
     
-    private void pushKf(Shop shop,String message){
+    private void pushKf(Shop shop,String message,String extra){
     	 if (shop != null) {
              List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
              for (Catstaff  catstaff : catstaffls ){
@@ -294,13 +302,13 @@ public class PushService {
                          LoggerUtils.getInstance().log(String.format("miss push token  %s ", catstaff.getPhone()));
                          return ;
                      }
-                     send(pushToken, message);
+                     send(pushToken, message,extra);
                  }
              }
          }
     }
     
-    private void pushBoss(Shop shop,String message){
+    private void pushBoss(Shop shop,String message,String extra){
     	if (shop != null) {
             String phone = shop.getTel();
             List <PushToken> pushTokens = pushTokenDao.getPushToken(phone);
@@ -309,7 +317,7 @@ public class PushService {
                     LoggerUtils.getInstance().log(String.format("miss push token  %s ", phone));
                     return ;
                 }
-                send(pushToken, message);
+                send(pushToken, message,extra);
             }
         }
     }
@@ -337,6 +345,21 @@ public class PushService {
         Address adrs = addressDAO.getAddress(adr_id);
         String message = Constants.USER_CANCEL_ORDER_2_PUSH_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());
         return message;
+    }
+    
+    public String getPushExtra(String type,JSONObject data,String msg){
+    	JSONObject extraJson = new JSONObject();
+    	if(StringUtils.isNotBlank(type)){
+    		extraJson.put("type", type);
+    	}
+    	if(data != null){
+    		extraJson.put("data", data);
+    	}
+    	if(StringUtils.isNotBlank(msg)){
+    		extraJson.put("msg", msg);
+    	}
+    	return extraJson.toJSONString();
+    	
     }
     
 	public static void main(String[] args) {
