@@ -43,7 +43,7 @@ public class FixedPic {
                 if (StringUtils.isBlank(pic)|| -1 == pic.indexOf("cat/images")){
                     String fname = item.getSerialNo()+".jpg";
                     String serialNo = item.getSerialNo();
-                    String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + fname;
+                    String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + fname;
                     if(new File(PATH + fname).exists()){
                          System.out.println("update " + item.getSerialNo() +" " +  pic_url);
 //                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
