@@ -36,8 +36,8 @@
                         <span ng-if=" StatsEnum.canceledByCatStaff == order.order_status">喵喵客服取消订单</span>
                     </div>
                     <div style="margin-top: 10px;color: #808080;font-size: 14px" class="item-text-wrap" bo-text="'买家留言: '+ order.remarks"></div>
-                    <span class="badge badge-assertive" style="right: 12px" ng-if="!order.readed">未读</span>
-                    <span class="badge badge-balanced" style="right: 12px" ng-if="order.readed">已读</span>
+                    <span class="badge badge-assertive" style="right: 12px" ng-if="order.remindShip">用户催单</span>
+                    <!--<span class="badge badge-balanced" style="right: 12px" ng-if="order.readed">已读</span>-->
                 </div>
             </div>
             <ion-infinite-scroll
