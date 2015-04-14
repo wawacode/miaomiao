@@ -252,6 +252,7 @@ public class AllShopConsoleController {
         orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
         ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.DELIVERIES.getCode(), SUtils.generOrderTableName(shop_id));
         userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.DELIVERIES.getCode(), SUtils.generUserOrderTableName(userId));
+        wxService.sendWX2User(order_id,shop_id);//发送微信消息给用户
         return "@订单确认成功";
 
  }
