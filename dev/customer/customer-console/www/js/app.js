@@ -6,7 +6,6 @@ angular.module('miaomiao.console', [
         'LocalStorageModule',
         'ngStorage',
         'pasvaz.bindonce',
-
         'QuickList',
         'angular-datepicker',
         'miaomiao.console.controllers',
@@ -16,8 +15,8 @@ angular.module('miaomiao.console', [
     ])
 
     // for server config
-    .constant('serverInfo', {host: 'http://www.mbianli.com', context: '/console/api/'})
-//    .constant('serverInfo', {host: 'http://127.0.0.1:8010', context: '/console/api/'})
+//    .constant('serverInfo', {host: 'http://www.mbianli.com', context: '/console/api/'})
+    .constant('serverInfo', {host: 'http://127.0.0.1:8010', context: '/console/api/'})
 
     // for http post requests
     .config(function ($httpProvider, $provide) {

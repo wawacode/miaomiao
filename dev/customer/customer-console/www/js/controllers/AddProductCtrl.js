@@ -1,8 +1,9 @@
-;angular.module('miaomiao.console.controllers')
+;
+angular.module('miaomiao.console.controllers')
     .controller('AddProductCtrl', ['$scope', '$ionicPopup', '$ionicModal',
-        'httpClient', 'localStorageService', '$timeout', '$ionicLoading', 'Camera', 'MMUtils',
+        'httpClient', 'localStorageService', '$timeout', '$ionicLoading', 'Camera', 'MMUtils', '$ionicActionSheet',
 
-        function ($scope, $ionicPopup, $ionicModal, httpClient, localStorageService, $timeout, $ionicLoading, Camera, MMUtils) {
+        function ($scope, $ionicPopup, $ionicModal, httpClient, localStorageService, $timeout, $ionicLoading, Camera, MMUtils, $ionicActionSheet) {
 
             $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || [];
             $scope.info.hasProductInfo = false;
@@ -36,7 +37,7 @@
                         $scope.info.newitem.saleStatus = 1;
                         $scope.info.newitem.new_pic_url = item.pic_url;
                         $scope.info.newitem.pic_url = item.pic_url;
-                        $scope.info.newitem.price = item.price/100.0;
+                        $scope.info.newitem.price = item.price / 100.0;
                     });
 
                 }, function (data, status) {
@@ -67,19 +68,56 @@
                 }
             };
 
-
             $scope.AddItem = function () {
 
-                $scope.info.newitem = {};
-                $scope.info.hasProductInfo = false;
+                $ionicActionSheet.show({
+                    buttons: [
+                        { text: '添加商品' },
+                        { text: '添加分类' }
+                    ],
+                    destructiveText: '删除分类',
+                    cancelText: '取消',
+                    cancel: function () {
 
-                $ionicModal.fromTemplateUrl('templates/product-addnew.html', {
-                    scope: $scope,
-                    animation: 'slide-in-up'
-                }).then(function (modal) {
-                        $scope.modal = modal;
-                        $scope.openModal();
-                    });
+                    },
+                    buttonClicked: function (index) {
+                        if (index == 0) {
+                            $scope.info.newitem = {};
+                            $scope.info.hasProductInfo = false;
+
+                            $ionicModal.fromTemplateUrl('templates/product-addnew.html', {
+                                scope: $scope,
+                                animation: 'slide-in-up'
+                            }).then(function (modal) {
+                                    $scope.modal = modal;
+                                    $scope.openModal();
+                                });
+                        } else if (index == 1) {
+                            // add category
+
+                            $ionicModal.fromTemplateUrl('templates/category-addnew.html', {
+                                scope: $scope,
+                                animation: 'slide-in-up'
+                            }).then(function (modal) {
+                                    $scope.addCateModal = modal;
+                                    $scope.addCateModal.show();
+                                });
+                        }
+                        return true;
+                    },
+                    destructiveButtonClicked: function () {
+
+                        $ionicModal.fromTemplateUrl('templates/category-delete.html', {
+                            scope: $scope,
+                            animation: 'slide-in-up'
+                        }).then(function (modal) {
+                                $scope.deleteCateModal = modal;
+                                $scope.deleteCateModal.show();
+                        });
+
+                        return true;
+                    }
+                });
             };
 
 
@@ -141,7 +179,7 @@
                 if (newitem.hasNewPicture == true) {
 
                     // if no new pic
-                    if(!newitem.new_pic_url){
+                    if (!newitem.new_pic_url) {
                         MMUtils.showAlert('暂不能上传图片，您可以在添加完商品后继续编辑图片');
                         addItemInfo(options, newitem);
                         return;
@@ -199,6 +237,12 @@
             };
 
             $scope.closeModal = function () {
+                if ($scope.modal)$scope.modal.hide();
+                if ($scope.addCateModal)$scope.addCateModal.hide();
+                if ($scope.deleteCateModal)$scope.deleteCateModal.hide();
+            };
+
+            $scope.closeModal = function () {
                 $scope.modal.hide();
             };
 
@@ -224,7 +268,7 @@
 
             function onCapturePhoto(fileURI) {
 
-                $timeout(function(){
+                $timeout(function () {
                     $scope.info.newitem.new_pic_url = fileURI;
                     $scope.info.newitem.hasNewPicture = true;
                 });
@@ -241,6 +285,65 @@
                     destinationType: navigator.camera.DestinationType.FILE_URI,
                     saveToPhotoAlbum: false
                 });
-            }
+            };
+
+
+            $scope.removeCategory = function(index){
+                //TODO:api call
+
+                var confirmPopup = $ionicPopup.confirm({
+                    title: '删除分类',
+                    template: '确定要删除此分类？'
+                });
+                confirmPopup.then(function(res) {
+                    if(res) {
+                        var category = $scope.info.categorySummary[index];
+
+                        MMUtils.showLoadingIndicator('正在删除分类,请稍候...', $scope);
+                        httpClient.deleteCategory($scope.info.shop.id, category.category_id, function (data, status) {
+
+                            $ionicLoading.hide();
+                            var code = data.code, dataDetail = data.data;
+                            if (code != 0) {
+                                MMUtils.showAlert('删除分类失败:' + data.msg);
+                                return;
+                            }
+                            $scope.deleteCateModal.hide();
+                            $scope.refreshAll();
+
+                        }, function (data, status) {
+
+                            $ionicLoading.hide();
+                            MMUtils.showAlert('删除分类失败');
+                            $scope.deleteCateModal.hide();
+
+                        });
+                    }
+                });
+
+            };
+
+            $scope.addNewCategory = function(newCategory){
+
+                MMUtils.showLoadingIndicator('正在添加分类,请稍候...', $scope);
+
+                httpClient.addCategory($scope.info.shop.id, -1, 0, newCategory, function (data, status) {
+
+                    $ionicLoading.hide();
+                    
+                    var code = data.code, dataDetail = data.data;
+                    if (code != 0) {
+                        MMUtils.showAlert('添加分类失败:' + data.msg);
+                        return;
+                    }
+                    $scope.addCateModal.hide();
+                    $scope.refreshAll();
+
+                }, function (data, status) {
+                    $ionicLoading.hide();
+                    MMUtils.showAlert('添加分类失败');
+                    $scope.addCateModal.hide();
+                });
+            };
         }
     ]);
