@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Address;
 import com.renren.ntc.sg.bean.CatStaffCommit;
@@ -190,7 +191,19 @@ public class PushService {
 		// TODO Set 'production_mode' to 'false' if it's a test device. 
 		unicast.setPredefinedKeyValue("production_mode", "true");
 		if(StringUtils.isNotBlank(extra)){
-			unicast.setExtraField("ext", extra);
+			JSONObject ext  = JSON.parseObject(extra);
+			String type = ext.getString("type");
+			if(StringUtils.isNotBlank(type)){
+				unicast.setExtraField("type", type);
+			}
+			String orderId = ext.getString("orderId");
+			if(StringUtils.isNotBlank(orderId)){
+				unicast.setExtraField("order_id", orderId);
+			}
+			String msg = ext.getString("msg");
+			if(StringUtils.isNotBlank(msg)){
+				unicast.setExtraField("msg", msg);
+			}
 		}
 		if(unicast.send()){
             LoggerUtils.getInstance().log(String.format("adr fail to send device_token"));
@@ -213,7 +226,19 @@ public class PushService {
         // Set customized fields
         unicast.setCustomizedField("test", "helloworld");
         if(StringUtils.isNotBlank(extra)){
-        	unicast.setCustomizedField("ext", extra);
+        	JSONObject ext  = JSON.parseObject(extra);
+			String type = ext.getString("type");
+			if(StringUtils.isNotBlank(type)){
+				unicast.setCustomizedField("type", type);
+			}
+			String orderId = ext.getString("orderId");
+			if(StringUtils.isNotBlank(orderId)){
+				unicast.setCustomizedField("order_id", orderId);
+			}
+			String msg = ext.getString("msg");
+			if(StringUtils.isNotBlank(msg)){
+				unicast.setCustomizedField("msg", msg);
+			}
         }
         if(unicast.send()){
             LoggerUtils.getInstance().log(String.format("ios fail to send device_token"));
