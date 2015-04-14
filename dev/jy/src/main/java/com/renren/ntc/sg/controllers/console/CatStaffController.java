@@ -33,19 +33,9 @@ public class CatStaffController {
     @Get("")
     public String index(Invocation inv, @Param("value") String value, @Param("from") int from, @Param("offset") int offset) {
 
-        //value = URLDecoder.decode(value,"utf-8")
-
-        System.out.println("CatStaffController.java.CatStaffController.index---->" + 57);
-
         if (0 == from) from = 0;
         if (0 == offset) offset = 50;
         if (StringUtils.isBlank(value)) value = "";
-        try {
-            value = URLDecoder.decode(value, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        //
         List<Catstaff> catStaffs = catStaffDAO.getCatStaff(SUtils.wrap(value.trim()), from, offset);
 
         if (from != 0) {
