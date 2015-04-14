@@ -35,14 +35,16 @@ public class FixedPic2 {
         for (File ff : file)  {
             try{
                 System.out.println(ff.getName());
-            String[] ss = ff.getName().split("\\.");
-            String serialNo = ss[0];
-            String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + ff.getName();
-            System.out.println("update " + serialNo+" " +  pic_url);
+                String[] ss = ff.getName().split("\\.");
+                String serialNo = ss[0];
+                String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + ff.getName();
+                System.out.println("update " + serialNo+" " +  pic_url);
+                itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,serialNo);
+
             }catch ( Exception e){
                 e.printStackTrace();
             }
-//            itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,serialNo);
+
         }
     }
 
