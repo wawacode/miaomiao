@@ -23,7 +23,7 @@ public class FixedPic {
     private static long  shop_id= 10086;
 
 
-    private static String PATH = "/home/q/webimg2/";
+    private static String PATH = "/home/root/webimg2/";
 
     public FixedPic() throws IOException {
 
@@ -87,9 +87,11 @@ public class FixedPic {
                             String value = matchers.group(k).trim();
                             System.out.println( " " + value);
                             try{
-
+                            if (value == null){
+                                return ;
+                            }
                             writeFile (value,fname);
-                            if (new File("/home/root/webimg2/"+fname).exists()){
+                            if (new File(PATH d+fname).exists()){
                                 System.out.println("update " + item.getSerialNo() +" " +  pic_url);
 //                                itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                                 continue;
