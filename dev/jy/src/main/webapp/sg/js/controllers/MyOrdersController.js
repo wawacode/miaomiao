@@ -13,12 +13,12 @@ angular.module('miaomiao.shop')
         };
 
         var StatsEnum = $scope.StatsEnum = {
-            'created': 0,
-            'toBeConfirmed': 1,
-            'inShipping':2,
-            'canceledByUser':3,
-            'canceledByShop':4,
-            'confirmedByUser':5
+            'toBeConfirmed': 0,
+            'inShipping':1,
+            'canceledByUser':2,
+            'canceledByShop':3,
+            'confirmedByUser':4,
+            'canceledByCatStaff':5
         };
 
         function updateOrderStatus(order){
@@ -27,22 +27,34 @@ angular.module('miaomiao.shop')
 
             order.canCancelOrder = false;
             order.canRemindShipping = false;
+            order.canShowAction = true;
+
+            var creationTime = new Date(order.create_time),
+                nowtime = new Date(),
+                timeeplise = nowtime.getTime()-creationTime.getTime(); // mini secs
 
             if(order.order_status == StatsEnum.toBeConfirmed ||
-                order.order_status == StatsEnum.inShipping ||
-                order.order_status == StatsEnum.created){
-
-                var creationTime = new Date(order.create_time),
-                    nowtime = new Date(),
-                    timeeplise = nowtime.getTime()-creationTime.getTime(); // mini secs
-
-                if(timeeplise/1000 >= 2 * 60){ // 60 minutes
-                    order.canCancelOrder = true;
-                }
+                order.order_status == StatsEnum.inShipping){
 
                 if(timeeplise/1000 >= 1 * 60){ // 20 minutes
                     order.canRemindShipping = true;
                 }
+            }
+
+            // order create/confired by shop, user can apply for refund after 60 minutes
+            if(order.order_status == StatsEnum.toBeConfirmed ||
+                order.order_status == StatsEnum.inShipping){
+                if(timeeplise/1000 >= 1 * 60){ // 60 minutes
+                    order.canCancelOrder = true;
+                }
+            }
+
+            // canceled by user/shop/catstaff ,user can do nothing
+            if(order.order_status == StatsEnum.canceledByShop ||
+                order.order_status == StatsEnum.canceledByCatStaff||
+                order.order_status == StatsEnum.confirmedByUser ||
+                order.order_status == StatsEnum.canceledByUser){
+                order.canShowAction = false;
             }
         }
 
@@ -206,10 +218,10 @@ angular.module('miaomiao.shop')
                     MMUtils.showAlert('确认订单失败,请重试:' + data.msg);
                     return;
                 }
-
+                order.order_status = dataDetail.order.order_status;
                 $timeout(function () {
-                    updateOrderAction($scope.latestOrder);
-                    updateOrderAction($scope.historyOrder);
+                    updateOrderAction($scope.latestOrder,order);
+                    updateOrderAction($scope.historyOrder,order);
                 });
 
             }, function (data, status) {
@@ -221,24 +233,36 @@ angular.module('miaomiao.shop')
 
             if(!order.canCancelOrder)return;
 
-            MMUtils.showLoadingIndicator('正在取消订单...', $scope);
-            httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'cancel', function (data, status) {
+            // A confirm dialog
+            var confirmPopup = $ionicPopup.confirm({
+                title: '取消订单',
+                template: '确定要取消订单？微信支付用户可以退款～'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    MMUtils.showLoadingIndicator('正在取消订单...', $scope);
+                    httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
 
-                $ionicLoading.hide();
+                        $ionicLoading.hide();
 
-                var code = data.code, dataDetail = data.data;
-                if (code != 0) {
-                    MMUtils.showAlert('取消订单失败,请重试:' + data.msg);
-                    return;
+                        var code = data.code, dataDetail = data.data;
+                        if (code != 0) {
+                            MMUtils.showAlert('取消订单失败,请重试:' + data.msg);
+                            return;
+                        }
+
+                        order.order_status = dataDetail.order.order_status;
+                        $timeout(function () {
+                            updateOrderAction($scope.latestOrder,order);
+                            updateOrderAction($scope.historyOrder,order);
+                        });
+
+                        MMUtils.showAlert('您已经取消订单，微信支付用户喵喵客服会联系您退款');
+
+                    }, function (data, status) {
+                        MMUtils.showAlert('取消订单失败,请重试');
+                    });
                 }
-
-                $timeout(function () {
-                    updateOrderAction($scope.latestOrder);
-                    updateOrderAction($scope.historyOrder);
-                });
-
-            }, function (data, status) {
-                MMUtils.showAlert('取消订单失败,请重试');
             });
         };
 
@@ -247,7 +271,7 @@ angular.module('miaomiao.shop')
             if(!order.canRemindShipping)return;
 
             MMUtils.showLoadingIndicator('正在提醒店家发货...', $scope);
-            httpClient.remindShippingMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'remind', function (data, status) {
+            httpClient.remindShippingMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
 
                 $ionicLoading.hide();
 
@@ -256,6 +280,8 @@ angular.module('miaomiao.shop')
                     MMUtils.showAlert('提醒发货失败,请重试:' + data.msg);
                     return;
                 }
+
+                MMUtils.showAlert('商家已经收到通知，正在为您发货啦～');
 
             }, function (data, status) {
                 MMUtils.showAlert('提醒发货失败,请重试');

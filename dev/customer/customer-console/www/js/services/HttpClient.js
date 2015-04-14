@@ -80,6 +80,16 @@
                 doGet('order/read', 'shop_id=' + shopId + '&order_id=' + order_id, success, fail);
             },
 
+            orderCanbeShipByShop: function (shopId, order_id, success, fail) {
+
+                doGet('order/order_confirm', 'shop_id=' + shopId + '&order_id=' + order_id + '&confirm=done', success, fail);
+            },
+
+            orderCanNotbeShipByShop: function (shopId, order_id, success, fail) {
+
+                doGet('order/order_cancel', 'shop_id=' + shopId + '&order_id=' + order_id + '&confirm=done', success, fail);
+            },
+
             getMoreMyOrders: function (shopId, from, offset, success, fail) {
 
                 doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);

@@ -19,7 +19,7 @@ public class Dateutils {
 		now.set(Calendar.HOUR_OF_DAY, hour);
 		now.set(Calendar.MINUTE, minute);
 		now.set(Calendar.SECOND, seconds);
-		now.set(Calendar.MILLISECOND, 0);
+		now.set(Calendar.MILLISECOND, 59);
 		return now.getTime();
 	}
 	

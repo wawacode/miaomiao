@@ -41,7 +41,7 @@ public class UpdateWxRefundThread implements Runnable{
 	            if (order == null) {
 	                return;
 	            }
-	            updateOrderRefund(order, orderDao, wxservice,name);
+	            //updateOrderRefund(order, orderDao, wxservice,name);
 	        } catch (Exception e) {
 	           e.printStackTrace();
 	        }

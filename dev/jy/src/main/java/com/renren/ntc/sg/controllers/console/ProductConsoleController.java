@@ -147,35 +147,35 @@ public class ProductConsoleController {
         return  "@"+Constants.DONE ;
     }
     
-    @Post("uploadPic")
-	public String addItemPic(Invocation inv, @Param("id") long proId,
-									  @Param("serialNo") String serialNo,
-									  @Param("categoryId") int categoryId,
-									  @Param("pic") MultipartFile pic) {
-    	if(pic == null){
-    		LoggerUtils.getInstance().log(String.format("product uploadPic is null,serialNo=%s",serialNo));
-    		return "@error" ;
-    	}
-    	String picName = pic.getOriginalFilename();
-    	String[] picNameArr = pic.getOriginalFilename().split("\\.");
-    	if(pic!=null && picNameArr.length ==2){
-    		picName = serialNo+"."+picNameArr[1];
-    	}else {
-    		LoggerUtils.getInstance().log(String.format("product uploadPic format is wrong,serialNo=%s",serialNo));
-			return "@error";
-		}
-    	boolean isSuc = new FileUploadUtils().uploadFile(pic, SgConstant.SAVE_PRODUCT_PIC_PATH,picName);
-		if(!isSuc){
-			return "@error" ;
-		}
-		String picUrl = SgConstant.REMOTE_PRODCUT_FILE_PATH_PRE.concat(picName);
-		int flag = productDAO.updateByProId(picUrl, proId);
-		if (flag != 1) {
-            return "@error";
-        }
-		return "r:/console/product?category_id="+categoryId;
-	}
-    
+//    @Post("uploadPic")
+//	public String addItemPic(Invocation inv, @Param("id") long proId,
+//									  @Param("serialNo") String serialNo,
+//									  @Param("categoryId") int categoryId,
+//									  @Param("pic") MultipartFile pic) {
+//    	if(pic == null){
+//    		LoggerUtils.getInstance().log(String.format("product uploadPic is null,serialNo=%s",serialNo));
+//    		return "@error" ;
+//    	}
+//    	String picName = pic.getOriginalFilename();
+//    	String[] picNameArr = pic.getOriginalFilename().split("\\.");
+//    	if(pic!=null && picNameArr.length ==2){
+//    		picName = serialNo+"."+picNameArr[1];
+//    	}else {
+//    		LoggerUtils.getInstance().log(String.format("product uploadPic format is wrong,serialNo=%s",serialNo));
+//			return "@error";
+//		}
+//    	boolean isSuc = new FileUploadUtils().uploadFile(pic, SgConstant.SAVE_PRODUCT_PIC_PATH,picName);
+//		if(!isSuc){
+//			return "@error" ;
+//		}
+//		String picUrl = SgConstant.REMOTE_PRODCUT_FILE_PATH_PRE.concat(picName);
+//		int flag = productDAO.updateByProId(picUrl, proId);
+//		if (flag != 1) {
+//            return "@error";
+//        }
+//		return "r:/console/product?category_id="+categoryId;
+//	}
+//
     @Post("add")
 	public String add(Invocation inv, @Param("serialNo") String serialNo,
 									  @Param("name") String name,
