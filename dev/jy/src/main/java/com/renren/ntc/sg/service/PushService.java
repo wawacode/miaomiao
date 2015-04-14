@@ -347,13 +347,13 @@ public class PushService {
         return message;
     }
     
-    public String getPushExtra(String type,JSONObject data,String msg){
+    public String getPushExtra(String type,String orderId,String msg){
     	JSONObject extraJson = new JSONObject();
     	if(StringUtils.isNotBlank(type)){
     		extraJson.put("type", type);
     	}
-    	if(data != null){
-    		extraJson.put("data", data);
+    	if(StringUtils.isNotBlank(orderId)){
+    		extraJson.put("orderId", orderId);
     	}
     	if(StringUtils.isNotBlank(msg)){
     		extraJson.put("msg", msg);

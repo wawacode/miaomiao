@@ -388,9 +388,7 @@ public class OrderController {
         result.put("code",0);
         if(o != null){
         	//给客服和老板推送
-        	JSONObject orderInfo = new JSONObject();
-        	orderInfo.put("orderId", o.getOrder_id());
-        	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), orderInfo, "");
+        	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), o.getOrder_id(), "");
             pushService.sendUserCancel2KF(o, shop,extra);
             pushService.sendCancel2Boss(o, shop,extra);
         } 
@@ -433,9 +431,7 @@ public class OrderController {
         result.put("code",0);
         if(o != null){
         	// 给老板和客服发推送
-        	JSONObject orderInfo = new JSONObject();
-        	orderInfo.put("orderId", o.getOrder_id());
-        	String extra = pushService.getPushExtra(PushType.REMIND_ORDER.getType(), orderInfo, "");
+        	String extra = pushService.getPushExtra(PushType.REMIND_ORDER.getType(), o.getOrder_id(), "");
             pushService.sendRemind2Kf(o, shop,extra);
             pushService.sendRemindOrder2Boss(o, shop,extra);
         }
