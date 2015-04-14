@@ -257,6 +257,23 @@
 
         });
 
+        MMPushNotification.onRemindOrderNotificationReceived($scope, function (message) {
+            console.log(message);
+            var data = message.data;
+            var orderId = data && data.orderId;
+            // update order status
+            var userOrders = $scope.info.orders;
+            if (userOrders && userOrders.length) {
+                for (var i = 0; i < userOrders.length; i++) {
+                    if (userOrders[i].order_id == orderId) {
+                        $timeout(function(){
+                            userOrders[i].remindShip = true;
+                        });
+                    }
+                }
+            }
+        });
+
 
     })
     .controller('orderTabCtrl', function ($scope, $timeout, MMPushNotification, $cordovaPush) {
