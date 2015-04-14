@@ -205,6 +205,7 @@ public class PushService {
 				unicast.setExtraField("msg", msg);
 			}
 		}
+		System.out.println("adr===>"+extra);
 		if(unicast.send()){
             LoggerUtils.getInstance().log(String.format("adr fail to send device_token"));
         }
