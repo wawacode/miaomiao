@@ -32,7 +32,10 @@ public class FixedPic2 {
         File f = new File(PATH );
         File file[]  = f.listFiles();
         for (File ff : file)  {
-            System.out.println(ff.getName());
+            String serialNo = ff.getName().split(".")[0];
+            String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + ff.getName();
+            System.out.println("update " + serialNo+" " +  pic_url);
+            itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,serialNo);
         }
     }
 
