@@ -13,32 +13,42 @@
 
 <body>
 <div class="container">
-<br/><br/><br/><br/>
-	<h2>总计:$count条</h2>
-	<h2>成功导入:$successNum条</h2>
-	<table border="1"  cellspacing="0" cellpadding="10">
-		<tr  align="center">
-			<th>分类</th>
-			<th>数量</th>
-		</tr>
-		#foreach($param in ${saveCategoryNumCN.keySet()})  
-		<tr  align="center">
-			<td width="100">$param</td>
-			<td width="100">${saveCategoryNumCN.get($param)}</td>
-		</tr>
-		#end  
-	</table>
-	<h2>未导入:$missingList.size()条</h2>
-	<table border="1"  cellspacing="0" cellpadding="10">
-		<tr  align="center">
-			<th>条码</th>
-		</tr>
-		#foreach($serialNo in $missingList)
-		<tr  align="center">
-			<td width="300">$serialNo</td>
-		</tr>
-		#end
-	</table>
-</div> <!-- /container -->
+    <br/><br/><br/><br/>
+
+    <h2>总计:$count条</h2>
+    #if($successNum)<h2>成功导入:$successNum条</h2>#end
+    <table border="1" cellspacing="0" cellpadding="10">
+        <tr align="center">
+            <th>分类</th>
+            <th>数量</th>
+        </tr>
+        #foreach($param in ${saveCategoryNumCN.keySet()})
+            <tr align="center">
+                <td width="100">$param</td>
+                <td width="100">${saveCategoryNumCN.get($param)}</td>
+            </tr>
+        #end
+    </table>
+    <a href="/console/tools">返回</a>
+    #if($shop_id)
+        <a href="http://www.mbianli.com:8080/sg/loading#/shop?shop_id=$shop_id">进入店铺</a>
+    #end
+    #if($missingList.size())
+        <h2>未导入:$missingList.size()条</h2>
+        <table border="1" cellspacing="0" cellpadding="10">
+            <tr align="center">
+                <th>条码</th>
+            </tr>
+            #foreach($serialNo in $missingList)
+                <tr align="center">
+                    <td width="300">$serialNo</td>
+                </tr>
+            #end
+        </table>
+    #end
+
+
+</div>
+<!-- /container-->
 </body>
 </html>

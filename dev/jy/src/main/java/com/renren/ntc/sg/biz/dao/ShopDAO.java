@@ -12,66 +12,77 @@ import com.renren.ntc.sg.bean.Shop;
 
 @DAO(catalog = "ABC")
 public interface ShopDAO {
-    static final String TABLE_NAME= "shop";
-    static final String FIELDS = "id, owner_user_id,base_price, name,open_time,close_time,shop_address,tel,owner_phone,head_url,shop_url,lng,lat,create_time,audit,status,shop_info,remark,ext" ;
-    static final String INSERT_FIELDS = "owner_user_id,base_price,open_time,close_time,name,shop_address,tel,owner_phone,head_url,shop_url,shop_info,lng,lat" ;
+    static final String TABLE_NAME = "shop";
+    static final String FIELDS = "id, owner_user_id,base_price, name,open_time,close_time,shop_address,tel,owner_phone,head_url,shop_url,lng,lat,create_time,audit,status,shop_info,remark,ext";
+    static final String INSERT_FIELDS = "owner_user_id,base_price,open_time,close_time,name,shop_address,tel,owner_phone,head_url,shop_url,shop_info,lng,lat";
     static final String SHOP_NAME_FIELDS = "id,name";
     static final int SHOP_NOT_ONLINE = 0;
-	@SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where  lat < :1 and lat > :2 and lng < :3 and lng > :4")
-	public List<Shop> getShop(double lat2, double lng1, double lng2);
-	
-	@SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where  id = :1 ")
-	public Shop getShop(long id);
+
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where  lat < :1 and lat > :2 and lng < :3 and lng > :4")
+    public List<Shop> getShop(double lat2, double lng1, double lng2);
+
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where  id = :1 ")
+    public Shop getShop(long id);
 
 
-    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where  owner_user_id = :1 ")
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where  owner_user_id = :1 ")
     public Shop getShopbyOwner_id(long id);
 
     @ReturnGeneratedKeys
-	@SQL("insert into " + TABLE_NAME + "(" + INSERT_FIELDS +" ) values"  + " (:1.owner_user_id,:1.base_price," +
+    @SQL("insert into " + TABLE_NAME + "(" + INSERT_FIELDS + " ) values" + " (:1.owner_user_id,:1.base_price," +
             ":1.open_time,:1.close_time,:1.name," +
             ":1.shop_address,:1.tel,:1.owner_phone,:1.head_url,:1.shop_url,:1.shop_info,:1.lng,:1.lat)")
-	public int insert(Shop o);
+    public int insert(Shop o);
 
 
     @SQL("update " + TABLE_NAME + "set  audit =1 where id = :1")
-    public int audit(long  shop_id);
+    public int audit(long shop_id);
 
-    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where audit = 1  limit :1,:2")
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where audit = 1  limit :1,:2")
     public List<Shop> getAuditedShops(int from, int offset);
 
-    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where audit = 1 and id in (:1)")
-    public List<Shop> getAuditedShops(List<Long> ids );
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where audit = 1 and id in (:1)")
+    public List<Shop> getAuditedShops(List<Long> ids);
 
-    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " limit :1,:2")
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " limit :1,:2")
     public List<Shop> getAllShops(int from, int offset);
-    
-    @SQL("select " + SHOP_NAME_FIELDS   + "  from "  + TABLE_NAME + " where audit = :1")
+
+    @SQL("select " + SHOP_NAME_FIELDS + "  from " + TABLE_NAME + " where audit = :1")
     public List<Shop> getAllShopsByAudit(int audit);
 
-    @SQL("select " + FIELDS   + "  from "  + TABLE_NAME + " where audit = :1")
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where audit = :1")
     public List<Shop> getAllShopsAllFieldsByAudit(int audit);
-    
+
     @SQL("update " + TABLE_NAME + " set ##(:key) = :3  where id =:1")
     public int update(long id, @SQLParam("key") String key, String value);
-    
+
     @SQL("update " + TABLE_NAME + " set name = :2,tel = :3,open_time = :4" +
             ",close_time = :5" +
             ",shop_address = :6," +
             "shop_info = :7,status = :8,base_price = :9,owner_phone = :10 where id =:1")
-    public int updateShopDetail(long id, String name, String tel,String open_time,String close_time,
-                                String shop_address,String shopInfo,int status,int basePrice,String ownerPhone);
+    public int updateShopDetail(long id, String name, String tel, String open_time, String close_time,
+                                String shop_address, String shopInfo, int status, int basePrice, String ownerPhone);
 
 
-    @SQL("select " +FIELDS  + "  from "  + TABLE_NAME + " where id in (:shop_ids)")
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where id in (:shop_ids)")
     public List<Shop> getShops(@SQLParam("shop_ids") List<Long> shop_ids);
-    
-    
+
+
     /**
      * 获取未上线的商店 id name
-     * zhaoxiufei 
+     * zhaoxiufei
+     *
      * @return
      */
-    @SQL("select " + SHOP_NAME_FIELDS   + "  from "  + TABLE_NAME + " where audit ="+SHOP_NOT_ONLINE)
+    @SQL("select " + SHOP_NAME_FIELDS + "  from " + TABLE_NAME + " where audit =" + SHOP_NOT_ONLINE)
     public List<Shop> getAllShopsByNotOnline();
+
+    /**
+     * advQuery
+     * zhaoxiufei
+     *
+     * @return
+     */
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where  name like :1  or tel like :1")
+    public List<Shop> getShops(String text);
 }

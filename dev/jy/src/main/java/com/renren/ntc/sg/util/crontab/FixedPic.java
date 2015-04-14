@@ -1,8 +1,10 @@
-package com.renren.ntc.sg.util;
+package com.renren.ntc.sg.util.crontab;
 
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
+import com.renren.ntc.sg.util.SHttpClient;
+import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.lang.StringUtils;
 
@@ -18,13 +20,14 @@ public class FixedPic {
 
     private static String URL ="http://s.1688.com/selloffer/offer_search.htm?keywords={key}";
 
-    private static long  shop_id= 10030;
+    private static long  shop_id= 10086;
+
+
+    private static String PATH = "/home/root/webimg2/";
 
     public FixedPic() throws IOException {
 
     }
-
-
 
     public static void main(String[] args) throws IOException {
         RoseAppContext rose = new RoseAppContext();
@@ -41,17 +44,18 @@ public class FixedPic {
                 if (StringUtils.isBlank(pic)|| -1 == pic.indexOf("cat/images")){
                     String fname = item.getSerialNo()+".jpg";
                     String serialNo = item.getSerialNo();
-                    String pic_url = "http://www.mbianli.com/cat/images/" + fname;
-                    if(new File("D:\\webimg2\\"+fname).exists()){
-                        itemDao.update(SUtils.generTableName(shop_id),item.getSerialNo(),item.getName(),pic_url);
+                    String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + fname;
+                    if(new File(PATH + fname).exists()){
+                         System.out.println("update " + item.getSerialNo() +" " +  pic_url);
+//                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                         continue;
                     }
                     if( -1 == pic.indexOf("cat/images")) {
                         try{
                             writeFile (pic,fname);
-                            if (new File("D:\\webimg2\\"+fname).exists()){
+                            if (new File(PATH +fname).exists()){
                                 System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-                                itemDao.update(SUtils.generTableName(shop_id),item.getSerialNo(),item.getName(),pic_url);
+//                                itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                                 continue;
                             }
                         }
@@ -71,11 +75,9 @@ public class FixedPic {
 
 
                     html = repare(html);
-//                    System.out.println(item.getSerialNo() + " "+ html);
                     if(-1 !=  html.indexOf("noresult-hd")){
                         continue;
                     }
-//                    System.out.println( "sys to " + html);
                     String pat = "<div class=\"su-photo220\"><a  gotoDetail=\".*?\" target=\"_blank\"  href=\".*?\" offer-stat=\"pic\" class=\".*?\"><img class=\".*?\" border=\"0\" alt=\".*?\" src=\"(.*?)\"></img></a></div>";
                     Pattern pattern = Pattern.compile(pat);
                     Matcher matchers = pattern.matcher(html);
@@ -85,12 +87,13 @@ public class FixedPic {
                             String value = matchers.group(k).trim();
                             System.out.println( " " + value);
                             try{
-
+                            if (value == null){
+                                return ;
+                            }
                             writeFile (value,fname);
-
-                            if (new File("D:\\webimg2\\"+fname).exists()){
+                            if (new File(PATH +fname).exists()){
                                 System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-                                itemDao.update(SUtils.generTableName(shop_id),item.getSerialNo(),item.getName(),pic_url);
+//                                itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                                 continue;
                                }
                             }
@@ -107,7 +110,7 @@ public class FixedPic {
 
 
     public static void writeFile(String strUrl, String fileName) throws Throwable {
-        String dir = "d:\\webimg2\\";
+        String dir = PATH;
         if(new File(dir + fileName).exists()){
             return ;
         }

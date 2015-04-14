@@ -64,6 +64,7 @@ public class Constants {
             "如有疑问请联系：{shop_tel}。";
     public static final String REMARKCONFRIM = "{shop_name}正在为您配送，预计30分钟内到达；\n" +
             "如有疑问请联系：{shop_tel}。";;
+    public static final String NEI_HOST = "10.173.3.200" ;
     public static String SMSURL = "http://v.juhe.cn/sms/send";
     public static String APPKEY = "99209217f5a5a1ed2416e5e6d2af87fd";
     public static String TID = "777";

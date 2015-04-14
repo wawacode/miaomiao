@@ -256,4 +256,14 @@ public class AllShopConsoleController {
 
  }
     
+    @Post("query")
+    @Get("query")
+    public String del(Invocation inv, @Param("query") String text) {
+
+        if (StringUtils.isBlank(text)) text = "";
+        List<Shop> shopls = shopDAO.getShops(SUtils.wrap(text.trim()));
+        inv.addModel("shopls", shopls);
+        return "allshop";
+    }
+
 }
