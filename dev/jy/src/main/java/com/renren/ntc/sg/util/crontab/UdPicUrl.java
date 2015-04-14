@@ -3,7 +3,6 @@ package com.renren.ntc.sg.util.crontab;
 import com.renren.ntc.sg.bean.Item;
 import com.renren.ntc.sg.biz.dao.ItemsDAO;
 import com.renren.ntc.sg.biz.dao.ProductDAO;
-import com.renren.ntc.sg.util.SHttpClient;
 import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.lang.StringUtils;
@@ -12,18 +11,16 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
-public class FixedPic {
+public class UdPicUrl {
 
     private static long  shop_id= 10073;
 
 
     private static String PATH = "/home/root/webimg2/";
 
-    public FixedPic() throws IOException {
+    public UdPicUrl() throws IOException {
 
     }
 
@@ -46,22 +43,8 @@ public class FixedPic {
                     String pic_url = "http://www.mbianli.com/cat/images/shop_" + shop_id + "/" + fname;
                     if(new File(PATH + fname).exists()){
                          System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-//                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
+                        itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
                         continue;
-                    }
-                    if(!StringUtils.isBlank(pic)&&-1 == pic.indexOf("cat/images")) {
-                        try{
-                            writeFile (pic,fname);
-                            if (new File(PATH +fname).exists()){
-                                System.out.println("update " + item.getSerialNo() +" " +  pic_url);
-//                                itemDao.updateforSerialNo(SUtils.generTableName(shop_id),pic_url,item.getSerialNo());
-                                continue;
-                            }
-                        }
-                        catch(Throwable e){
-                            e.printStackTrace();
-                        }
-                        continue ;
                     }
                 }
             }
