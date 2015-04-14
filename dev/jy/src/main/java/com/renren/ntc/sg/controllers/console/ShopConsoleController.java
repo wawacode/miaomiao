@@ -504,7 +504,7 @@ public class ShopConsoleController {
 		if (flag != 1) {
             return "@error";
         }
-    	return "r:/console/shop?shop_id="+shopId+"&category_id="+categoryId;
+    	return "@" + Constants.DONE;
 	}
 
     //注册的时候ajax校验用户名，违禁词和嫌疑词不让注册
