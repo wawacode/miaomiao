@@ -76,7 +76,7 @@ public interface ItemsDAO {
     public int update(@SQLParam("tableName") String tableName, String serialNo, @SQLParam("key") String key, long value);
 
     @SQL("update  ##(:tableName) set pic_url=:2 where serialNo =:3")
-    public  int updateforSerialNo(@SQLParam("tableName") String tableName,String key, String value);
+    public  int updateforSerialNo(@SQLParam("tableName") String tableName,String pic_url, String serialNo);
 
     @SQL("delete from ##(:tableName) where shop_id =:2")
     void del(@SQLParam("tableName") String tableName, long shop_id);
