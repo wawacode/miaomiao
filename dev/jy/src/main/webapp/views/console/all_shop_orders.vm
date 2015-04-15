@@ -69,7 +69,7 @@
                         <th >订单状态</th>
                         <th nowrap>配送操作</th>
                         <th nowrap>退单操作</th>
-                        <th nowrap>驳回操作(老板或者用户误点取消订单可以回退到原来的状态)</th>
+                        <th nowrap>驳回操作</th>
                     </tr>
                     </thead>
                     #foreach($order in $orderls)
