@@ -487,7 +487,7 @@ public class ShopConsoleController {
     	}
     	String picName = pic.getOriginalFilename();
     	String[] picNameArr = pic.getOriginalFilename().split("\\.");
-    	if(pic!=null && picNameArr.length ==2){
+    	if(pic  != null && picNameArr.length == 2){
     		picName = serialNo+"."+picNameArr[1];
     	}else {
     		LoggerUtils.getInstance().log(String.format("uploadPic format is wrong,serialNo=%s",serialNo));
@@ -504,7 +504,7 @@ public class ShopConsoleController {
 		if (flag != 1) {
             return "@error";
         }
-    	return "r:/console/shop?shop_id="+shopId+"&category_id="+categoryId;
+    	return "@" + Constants.DONE;
 	}
 
     //注册的时候ajax校验用户名，违禁词和嫌疑词不让注册
