@@ -487,7 +487,7 @@ public class ShopConsoleController {
     	}
     	String picName = pic.getOriginalFilename();
     	String[] picNameArr = pic.getOriginalFilename().split("\\.");
-    	if(pic!=null && picNameArr.length ==2){
+    	if(pic  != null && picNameArr.length == 2){
     		picName = serialNo+"."+picNameArr[1];
     	}else {
     		LoggerUtils.getInstance().log(String.format("uploadPic format is wrong,serialNo=%s",serialNo));

@@ -100,7 +100,6 @@ public class  PrinterController {
         }
         deviceDAO.update(pid, status);
 
-
         return "@" + Constants.DONE;
     }
 
