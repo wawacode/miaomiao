@@ -135,7 +135,7 @@ public class SMSService {
                 LoggerUtils.getInstance().log(String.format("%s %s sms allready send ", phone, order_id));
                 return;
             }
-            String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message);
+            String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.LOCTID, phone, message);
             LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
             t = SHttpClient.getURLData(url, "");
             String r = SUtils.toString(t);
