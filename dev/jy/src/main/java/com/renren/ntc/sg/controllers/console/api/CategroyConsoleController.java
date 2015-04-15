@@ -67,6 +67,7 @@ public class CategroyConsoleController extends BasicConsoleController{
     @Get("del")
     public String category(Invocation inv,  @Param("shop_id") long  shop_id,
                            @Param("category_id") int category_id){
+        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
         if( 0 == shop_id){
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",shop_id));
             return "@" + Constants.PARATERERROR ;
@@ -89,6 +90,7 @@ public class CategroyConsoleController extends BasicConsoleController{
                           @Param("categoryId") int category_id,
                           @Param("scorce") int score,
                           @Param("categoryName") String categoryName){
+        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
         if( 0 == shop_id){
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",shop_id));
             return "@" + Constants.PARATERERROR ;
@@ -97,10 +99,7 @@ public class CategroyConsoleController extends BasicConsoleController{
             LoggerUtils.getInstance().log(String.format("cate_add categoryName is null %d ",shop_id));
             return "@" + Constants.PARATERERROR ;
         }
-        if ( 0 == category_id ) {
-            LoggerUtils.getInstance().log(String.format("str_id is null %d ",category_id));
-            return "@" + Constants.PARATERERROR ;
-        }
+
         if (category_id == 0 ){
            category_id = shopCategoryDAO.max(shop_id) + 1 ;
         }

@@ -309,7 +309,7 @@ angular.module('miaomiao.console.controllers')
                                 return;
                             }
                             $scope.deleteCateModal.hide();
-                            $scope.refreshAll();
+                            $scope.info.refreshAll();
 
                         }, function (data, status) {
 
@@ -327,7 +327,7 @@ angular.module('miaomiao.console.controllers')
 
                 MMUtils.showLoadingIndicator('正在添加分类,请稍候...', $scope);
 
-                httpClient.addCategory($scope.info.shop.id, -1, 0, newCategory, function (data, status) {
+                httpClient.addCategory($scope.info.shop.id, 0, 0, newCategory, function (data, status) {
 
                     $ionicLoading.hide();
                     
@@ -337,7 +337,8 @@ angular.module('miaomiao.console.controllers')
                         return;
                     }
                     $scope.addCateModal.hide();
-                    $scope.refreshAll();
+
+                    $scope.info.refreshAll();
 
                 }, function (data, status) {
                     $ionicLoading.hide();

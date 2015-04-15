@@ -177,7 +177,8 @@
             },
 
             addCategory:function(shop_id,c_id,scorce,c_name,success, fail){
-                doGet('cate/add', 'shopId=' + shop_id + '&categoryId=' + c_id + '&scorce='+ scorce + '&categoryName=' + c_name , success, fail);
+
+                doPost('cate/add', {'shopId': shop_id, 'categoryId': c_id, 'scorce': scorce , 'categoryName':c_name}, success, fail);
             },
 
             deleteCategory:function(shop_id,c_id,success, fail){
