@@ -35,9 +35,18 @@
                 });
             },
 
-            onNewOrderNotificationReceived: function ($scope, handler) {
-                console.log('we watch new orders and listening for notifications');
-                $scope.$on('MMEVENT_NewOrderNotificationReceived', function (event, message) {
+            remindOrderNotificationReceived:function (data) {
+                console.log('we have seen remind orders and sent broadcast');
+                $timeout(function () {
+                    $rootScope.$broadcast('MMEVENT_RemindOrderNotificationReceived', {
+                        data: data
+                    });
+                });
+            },
+
+            onRemindOrderNotificationReceived: function ($scope, handler) {
+                console.log('we watch remind orders and listening for notifications');
+                $scope.$on('MMEVENT_RemindOrderNotificationReceived', function (event, message) {
                     handler(message);
                 });
             }

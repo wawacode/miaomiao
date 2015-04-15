@@ -12,6 +12,52 @@ angular.module('miaomiao.shop')
             $state.go('productList');
         };
 
+        var StatsEnum = $scope.StatsEnum = {
+            'toBeConfirmed': 0,
+            'inShipping':1,
+            'canceledByUser':2,
+            'canceledByShop':3,
+            'confirmedByUser':4,
+            'canceledByCatStaff':5
+        };
+
+        function updateOrderStatus(order){
+            // two fileds need to set here
+            // 1. can use cancel order,2, can push order
+
+            order.canCancelOrder = false;
+            order.canRemindShipping = false;
+            order.canShowAction = true;
+
+            var creationTime = new Date(order.create_time),
+                nowtime = new Date(),
+                timeeplise = nowtime.getTime()-creationTime.getTime(); // mini secs
+
+            if(order.order_status == StatsEnum.toBeConfirmed ||
+                order.order_status == StatsEnum.inShipping){
+
+                if(timeeplise/1000 >= 1 * 60){ // 20 minutes
+                    order.canRemindShipping = true;
+                }
+            }
+
+            // order create/confired by shop, user can apply for refund after 60 minutes
+            if(order.order_status == StatsEnum.toBeConfirmed ||
+                order.order_status == StatsEnum.inShipping){
+                if(timeeplise/1000 >= 1 * 60){ // 60 minutes
+                    order.canCancelOrder = true;
+                }
+            }
+
+            // canceled by user/shop/catstaff ,user can do nothing
+            if(order.order_status == StatsEnum.canceledByShop ||
+                order.order_status == StatsEnum.canceledByCatStaff||
+                order.order_status == StatsEnum.confirmedByUser ||
+                order.order_status == StatsEnum.canceledByUser){
+                order.canShowAction = false;
+            }
+        }
+
         function transformOrderData(orders) {
             if (!orders) return;
             for (var i = 0; i < orders.length; i++) {
@@ -19,8 +65,9 @@ angular.module('miaomiao.shop')
                 try {
                     order.items = JSON.parse(order.snapshot);
                 } catch (e) {
-
                 }
+                //update order status by
+                updateOrderStatus(order);
             }
         }
 
@@ -148,6 +195,17 @@ angular.module('miaomiao.shop')
             }
         };
 
+        function updateOrderAction(userOrders, updatingOrder) {
+            if (userOrders && userOrders.length) {
+                for (var i = 0; i < userOrders.length; i++) {
+                    if (userOrders[i].order_id == updatingOrder.order_id) {
+                        userOrders[i] = updatingOrder;
+                        updateOrderStatus(updatingOrder);
+                    }
+                }
+            }
+        }
+
         $scope.confirmOrder = function (order) {
 
             MMUtils.showLoadingIndicator('正在确认订单...', $scope);
@@ -160,25 +218,73 @@ angular.module('miaomiao.shop')
                     MMUtils.showAlert('确认订单失败,请重试:' + data.msg);
                     return;
                 }
-
-                function confirmOrders(userOrders) {
-                    if (userOrders && userOrders.length) {
-                        for (var i = 0; i < userOrders.length; i++) {
-                            if (userOrders[i].order_id == order.order_id) {
-                                order.confirm = true;
-                                userOrders[i] = order;
-                            }
-                        }
-                    }
-                }
-
+                order.order_status = dataDetail.order.order_status;
                 $timeout(function () {
-                    confirmOrders($scope.latestOrder);
-                    confirmOrders($scope.historyOrder);
+                    updateOrderAction($scope.latestOrder,order);
+                    updateOrderAction($scope.historyOrder,order);
                 });
 
             }, function (data, status) {
                 MMUtils.showAlert('确认订单失败,请重试');
+            });
+        };
+
+        $scope.cancelOrder = function (order) {
+
+            if(!order.canCancelOrder)return;
+
+            // A confirm dialog
+            var confirmPopup = $ionicPopup.confirm({
+                title: '取消订单',
+                template: '确定要取消订单？微信支付用户可以退款～'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    MMUtils.showLoadingIndicator('正在取消订单...', $scope);
+                    httpClient.cancelMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
+
+                        $ionicLoading.hide();
+
+                        var code = data.code, dataDetail = data.data;
+                        if (code != 0) {
+                            MMUtils.showAlert('取消订单失败,请重试:' + data.msg);
+                            return;
+                        }
+
+                        order.order_status = dataDetail.order.order_status;
+                        $timeout(function () {
+                            updateOrderAction($scope.latestOrder,order);
+                            updateOrderAction($scope.historyOrder,order);
+                        });
+
+                        MMUtils.showAlert('您已经取消订单，微信支付用户喵喵客服会联系您退款');
+
+                    }, function (data, status) {
+                        MMUtils.showAlert('取消订单失败,请重试');
+                    });
+                }
+            });
+        };
+
+        $scope.remindShipping = function (order) {
+
+            if(!order.canRemindShipping)return;
+
+            MMUtils.showLoadingIndicator('正在提醒店家发货...', $scope);
+            httpClient.remindShippingMyOrders(order.shop_id || $scope.shop.id, order.order_id, 'done', function (data, status) {
+
+                $ionicLoading.hide();
+
+                var code = data.code, dataDetail = data.data;
+                if (code != 0) {
+                    MMUtils.showAlert('提醒发货失败,请重试:' + data.msg);
+                    return;
+                }
+
+                MMUtils.showAlert('商家已经收到通知，正在为您发货啦～');
+
+            }, function (data, status) {
+                MMUtils.showAlert('提醒发货失败,请重试');
             });
         };
 

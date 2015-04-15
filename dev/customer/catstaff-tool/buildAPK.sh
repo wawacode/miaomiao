@@ -1,3 +1,5 @@
+ionic prepare android
+
 rm -fr CatStaffTool.apk
 rm -fr www/build/CatStaffTool.apk
 

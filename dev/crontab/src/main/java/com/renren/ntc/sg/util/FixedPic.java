@@ -32,7 +32,6 @@ public class FixedPic {
         ProductDAO pdDao = rose.getBean(ProductDAO.class);
         int offset = 100;
         for (int i=0 ;i < 10000 ; ){
-
             List<Item> itemls =  itemDao.getItems(SUtils.generTableName(shop_id), shop_id, i, offset);
             if(itemls.size() == 0){
                 break;
@@ -48,7 +47,6 @@ public class FixedPic {
                         continue;
                     }
                     if( -1 == pic.indexOf("cat/images")) {
-
                         try{
                             writeFile (pic,fname);
                             if (new File("D:\\webimg2\\"+fname).exists()){
