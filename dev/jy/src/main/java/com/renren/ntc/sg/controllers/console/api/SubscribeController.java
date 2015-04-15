@@ -34,7 +34,7 @@ public class SubscribeController {
         pushtoken.setDevice_token(device_token);
         pushtoken.setChn(chn);
         pushtokenDao.insertPushToken(pushtoken) ;
-        return "@json;" + Constants.DONE;
+        return "@json:" + Constants.DONE;
     }
 
 }

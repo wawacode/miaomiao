@@ -21,6 +21,13 @@
             </label>
             <label class="item item-input item-select">
                 <div class="input-label assertive">
+                    分类:
+                </div>
+                <select ng-model="editingItem.category_id" ng-options="o.category_id as o.name for o in info.categorySummary">
+                </select>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label assertive">
                     销售状态:
                 </div>
                 <select ng-model="editingItem.onsell"

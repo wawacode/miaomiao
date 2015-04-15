@@ -7,6 +7,7 @@ public class OrderDetail{
 	private String orderStatusDes;
 	private Order order;
 	private boolean isShowConfirm;
+	private boolean isShowRejected;//驳回 用户误点击退单或者是老板误点击无法配送 都会返回到最原始的状态
 	public String getRemindDes() {
 		return remindDes;
 	}
@@ -42,5 +43,11 @@ public class OrderDetail{
 	}
 	public void setShowConfirm(boolean isShowConfirm) {
 		this.isShowConfirm = isShowConfirm;
+	}
+	public boolean isShowRejected() {
+		return isShowRejected;
+	}
+	public void setShowRejected(boolean isShowRejected) {
+		this.isShowRejected = isShowRejected;
 	}
 }

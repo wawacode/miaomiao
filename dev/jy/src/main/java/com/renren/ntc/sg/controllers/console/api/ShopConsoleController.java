@@ -36,7 +36,7 @@ import com.renren.ntc.sg.util.SUtils;
 
 @DenyCommonAccess
 @Path("shop")
-public class ShopConsoleController extends BasicConsoleController{
+public class  ShopConsoleController extends BasicConsoleController{
 
 	@Autowired
 	private ShopDAO shopDAO;

@@ -113,6 +113,7 @@ public class OrderService {
     public void transferStatusInfo(OrderDetail orderDetail) {
     	JSONObject orderInfo  = (JSONObject) JSON.parse(orderDetail.getOrder().getOrder_info());
         if(orderInfo !=null){
+        	//展示是否有催单以及催单的时间
         	String remindOrderFlag = (String)orderInfo.get("remind_order");
             String remindOrderTime = (String)orderInfo.get("remind_time");
             if(StringUtils.isNotBlank(remindOrderFlag) && Constants.REMIND_ORDER.equals(remindOrderFlag)){
@@ -142,12 +143,20 @@ public class OrderService {
         }else {
 			orderDetail.setShowCancel(true);
 		}
-        
+        //只有待确认的订单才会展示 确认配送的按钮 （老板忘点击了 客服帮点）
         if(orderDetail.getOrder().getOrder_status() == OrderStatus.TOCONFIREMED.getCode()){
         	orderDetail.setShowConfirm(true);
         }else {
 			orderDetail.setShowConfirm(false);
 		}
+        //只有用户点击取消订单或者是老板点击无法配送 才会展示驳回的按钮
+        if(orderDetail.getOrder().getOrder_status() == OrderStatus.BOSSCANCEL.getCode() ||
+        		orderDetail.getOrder().getOrder_status() == OrderStatus.USERCANCEL.getCode()){
+        	orderDetail.setShowRejected(true);
+        }else {
+			orderDetail.setShowRejected(false);
+		}
+        
     }
 
 

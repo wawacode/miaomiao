@@ -46,15 +46,15 @@ public class CategroyConsoleController extends BasicConsoleController{
                            @Param("value") String value){
         if( null == str_id){
             LoggerUtils.getInstance().log(String.format("str_id is null %s ",str_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
         String[] keys = str_id.split("-");
         if(keys.length != 4){
             LoggerUtils.getInstance().log(String.format("str_id is null %s ",str_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
         if ( null == value ) {
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
         long shop_id =  Long.valueOf(keys[1]);
         String  key = keys[2];
@@ -67,21 +67,17 @@ public class CategroyConsoleController extends BasicConsoleController{
     @Get("del")
     public String category(Invocation inv,  @Param("shop_id") long  shop_id,
                            @Param("category_id") int category_id){
+        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
         if( 0 == shop_id){
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",shop_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
         if ( 0 == category_id ) {
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",category_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR;
         }
         int result = shopCategoryDAO.del(shop_id,category_id) ;
-        if(result == SgConstant.PROCESS_DB_SUC){
-            return  "@"+SgConstant.DEL_SHOP_CAT_SUC_RESULT;
-        }else {
-            return  "@"+SgConstant.DEL_SHOP_CAT_FAILED_RESULT;
-        }
-
+            return  "@"+Constants.DONE  ;
     }
 
     @Post("add")
@@ -89,50 +85,26 @@ public class CategroyConsoleController extends BasicConsoleController{
                           @Param("categoryId") int category_id,
                           @Param("scorce") int score,
                           @Param("categoryName") String categoryName){
+        inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
         if( 0 == shop_id){
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",shop_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
         if(StringUtils.isBlank(categoryName)){
             LoggerUtils.getInstance().log(String.format("cate_add categoryName is null %d ",shop_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
-        if ( 0 == category_id ) {
-            LoggerUtils.getInstance().log(String.format("str_id is null %d ",category_id));
-            return "@error" ;
+
+        if (category_id == 0 ){
+           category_id = shopCategoryDAO.max(shop_id) + 1 ;
         }
-        boolean isInWholeCats = false;
-        List<Category> cats = categoryDAO.getCategory();
-        for(Category category : cats){
-            if(category.getId() == category_id){
-                isInWholeCats = true;
-                break;
-            }
-        }
-        if(!isInWholeCats){
-            Category category = new Category();
-            category.setName(categoryName);
-            category.setType(0);
-            categoryDAO.insert(category);
-        }
+
         ShopCategory shopCate = new ShopCategory();
         shopCate.setCategory_id(category_id);
         shopCate.setShop_id(shop_id);
         shopCate.setScore(score);
         shopCate.setName(categoryName);
-        boolean isExistShopCats = false;
-        List<ShopCategory> shopCats = shopCategoryDAO.getCategory(shop_id);
-        for(ShopCategory shopCategory : shopCats){
-            if(shopCategory.getCategory_id() == category_id){
-                isExistShopCats = true;
-                break;
-            }
-        }
-        if(!isExistShopCats){
-            shopCategoryDAO.insert(shopCate);
-            return  "@"+SgConstant.ADD_CAT_SUC_RESULT;
-        }else {
-            return  "@"+SgConstant.ADD_CAT_EXIST_RESULT;
-        }
+        shopCategoryDAO.insert(shopCate);
+        return  "@"+Constants.DONE  ;
     }
 }

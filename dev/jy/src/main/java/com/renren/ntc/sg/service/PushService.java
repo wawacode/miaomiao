@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Address;
 import com.renren.ntc.sg.bean.CatStaffCommit;
@@ -159,10 +160,10 @@ public class PushService {
          if (null != pushToken) {
              try {
                  if ("iOS".equals(pushToken.getChn())) {
-                     LoggerUtils.getInstance().log(pushToken.getOwner_phone() + " " + pushToken.getDevice_token() + " send ios");
+                     LoggerUtils.getInstance().log(pushToken.getOwner_phone() + " " + pushToken.getDevice_token() + " "+extra+" send ios");
                      sendIOSUnicast(phone, message, pushToken.getDevice_token(),extra);
                  } else {
-                     LoggerUtils.getInstance().log(phone + " " + pushToken.getDevice_token() + " send adr ");
+                     LoggerUtils.getInstance().log(phone + " " + pushToken.getDevice_token() + " "+extra+" send adr ");
                      sendAndroidUnicast(phone, message, pushToken.getDevice_token(),extra);
                  }
              } catch (Exception e) {
@@ -190,7 +191,19 @@ public class PushService {
 		// TODO Set 'production_mode' to 'false' if it's a test device. 
 		unicast.setPredefinedKeyValue("production_mode", "true");
 		if(StringUtils.isNotBlank(extra)){
-			unicast.setExtraField("ext", extra);
+			JSONObject ext  = JSON.parseObject(extra);
+			String type = ext.getString("type");
+			if(StringUtils.isNotBlank(type)){
+				unicast.setExtraField("type", type);
+			}
+			String orderId = ext.getString("orderId");
+			if(StringUtils.isNotBlank(orderId)){
+				unicast.setExtraField("order_id", orderId);
+			}
+			String msg = ext.getString("msg");
+			if(StringUtils.isNotBlank(msg)){
+				unicast.setExtraField("msg", msg);
+			}
 		}
 		if(unicast.send()){
             LoggerUtils.getInstance().log(String.format("adr fail to send device_token"));
@@ -209,11 +222,23 @@ public class PushService {
         unicast.setPredefinedKeyValue("badge", 1);
         unicast.setPredefinedKeyValue("sound", "chime");
         // TODO set 'production_mode' to 'true' if your app is under production mode
-        unicast.setPredefinedKeyValue("production_mode", "true");
+        unicast.setPredefinedKeyValue("production_mode", "false");
         // Set customized fields
         unicast.setCustomizedField("test", "helloworld");
         if(StringUtils.isNotBlank(extra)){
-        	unicast.setCustomizedField("ext", extra);
+        	JSONObject ext  = JSON.parseObject(extra);
+			String type = ext.getString("type");
+			if(StringUtils.isNotBlank(type)){
+				unicast.setCustomizedField("type", type);
+			}
+			String orderId = ext.getString("orderId");
+			if(StringUtils.isNotBlank(orderId)){
+				unicast.setCustomizedField("order_id", orderId);
+			}
+			String msg = ext.getString("msg");
+			if(StringUtils.isNotBlank(msg)){
+				unicast.setCustomizedField("msg", msg);
+			}
         }
         if(unicast.send()){
             LoggerUtils.getInstance().log(String.format("ios fail to send device_token"));
@@ -233,6 +258,7 @@ public class PushService {
     public void sendUserCancel2KF(Order order, Shop shop,String extra) {
     	try {
     		String message = getUserCancelPushMsg2KF(order, shop);
+    		LoggerUtils.getInstance().log(String.format("push user cancel msg 2 kf order id =%s,shopId=%d,message=%s,extra=%s", order.getOrder_id(),shop.getId(),message,extra));
             pushKf(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -252,6 +278,7 @@ public class PushService {
     public void sendRemind2Kf(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
+        	LoggerUtils.getInstance().log(String.format("push remind msg 2 kf order id =%s,shopId=%d,message=%s,extra=%s", order.getOrder_id(),shop.getId(),message,extra));
             pushKf(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -261,6 +288,7 @@ public class PushService {
     public void sendCancel2Boss(Order o, Shop shop,String extra) {
         try {
         	String message = getUserCancelPushMsg2Boss(o,shop);
+        	LoggerUtils.getInstance().log(String.format("push user cancel msg 2 boss order id =%s,shopid=%d,message=%s,extra=%s,shop_tel", o.getOrder_id(),shop.getId(),message,extra,StringUtils.isBlank(shop.getTel())?"":shop.getTel()));
         	pushBoss(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -270,6 +298,7 @@ public class PushService {
     public void sendRemindOrder2Boss(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
+        	LoggerUtils.getInstance().log(String.format("push remind msg 2 boss order id =%s,shopid=%d,message=%s,extra=%s,shop_tel", order.getOrder_id(),shop.getId(),message,extra,StringUtils.isBlank(shop.getTel())?"":shop.getTel()));
             pushBoss(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -347,13 +376,13 @@ public class PushService {
         return message;
     }
     
-    public String getPushExtra(String type,JSONObject data,String msg){
+    public String getPushExtra(String type,String orderId,String msg){
     	JSONObject extraJson = new JSONObject();
     	if(StringUtils.isNotBlank(type)){
     		extraJson.put("type", type);
     	}
-    	if(data != null){
-    		extraJson.put("data", data);
+    	if(StringUtils.isNotBlank(orderId)){
+    		extraJson.put("orderId", orderId);
     	}
     	if(StringUtils.isNotBlank(msg)){
     		extraJson.put("msg", msg);
