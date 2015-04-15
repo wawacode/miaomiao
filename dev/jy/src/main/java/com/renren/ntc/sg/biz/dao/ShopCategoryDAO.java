@@ -26,4 +26,6 @@ public interface ShopCategoryDAO {
     @SQL("delete from   " + TABLE_NAME + "  where id =:2")
     public int  del(long shop_id, long category_id);
 
+    @SQL("select max(category_id)  from "  + TABLE_NAME + " where  shop_id =:1  ")
+    public int max(long shop_id);
 }
