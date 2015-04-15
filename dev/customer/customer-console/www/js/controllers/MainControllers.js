@@ -84,6 +84,25 @@
             });
         };
 
+
+        var setNewOrderStatus = function(){
+            $timeout(function () {
+                MMPushNotification.newOrderNotificationReceived({count: 1});
+            }, 100);
+        };
+
+        var setRemindOrderStatus = function(order_id){
+            $timeout(function () {
+                MMPushNotification.remindOrderNotificationReceived({orderId: order_id});
+            }, 100);
+        };
+
+        var setChangeOrderStatus = function(order_id){
+            $timeout(function () {
+                MMPushNotification.orderStatusChangeNotificationReceived({orderId: order_id});
+            }, 100);
+        };
+
         // Android Notification Received Handler
         function handleAndroid(notification) {
             // ** NOTE: ** You could add code for when app is in foreground or not, or coming from coldstart here too
@@ -98,8 +117,6 @@
 
                 var title = '喵喵商家推送', text = '您有新的订单，请到我的订单下查看';
 
-                $window.alert('android get notif:' + JSON.stringify(notification));
-
                 if (notification.payload &&
                     notification.payload.body &&
                     notification.payload.body.body) {
@@ -111,28 +128,16 @@
                     // callback success
                     $state.go('tab.order', null, {reload: true});
 
-                    var setNewOrderStatus = function(){
-                        $timeout(function () {
-                            MMPushNotification.newOrderNotificationReceived({count: 1});
-                        }, 100);
-                    };
-
-                    var setRemindOrderStatus = function(order_id){
-                        $timeout(function () {
-                            MMPushNotification.remindOrderNotificationReceived({orderId: order_id});
-                        }, 100);
-                    };
-
                     if(notification.payload &&
                         notification.payload.body &&
                         notification.payload.body.extra){
 
                         if(notification.payload.body.extra.type == 'remind_order'){
-                            setRemindOrderStatus(notification.payload.body.extra.data.order_id);
+                            setRemindOrderStatus(notification.payload.body.extra.order_id);
                         }else if(notification.payload.body.extra.type == 'cancel_order'){
-                            // do nothing
+                            setChangeOrderStatus();
                         }else if(notification.payload.body.extra.type == 'confirm_order'){
-                            // do nothing
+                            setChangeOrderStatus();
                         }else{
                             // default is new order
                             setNewOrderStatus();
@@ -165,27 +170,14 @@
 
                 $state.go('tab.order', null, {reload: true});
 
-                // notification is faltted
-                var setNewOrderStatus = function(){
-                    $timeout(function () {
-                        MMPushNotification.newOrderNotificationReceived({count: 1});
-                    }, 100);
-                };
-
-                var setRemindOrderStatus = function(order_id){
-                    $timeout(function () {
-                        MMPushNotification.remindOrderNotificationReceived({orderId: order_id});
-                    }, 100);
-                };
-
                 if(notification.type){
 
                     if(notification.type == 'remind_order'){
-                        setRemindOrderStatus(notification.data.order_id);
+                        setRemindOrderStatus(notification.order_id);
                     }else if(notification.type == 'cancel_order'){
-                        // do nothing
+                        setChangeOrderStatus();
                     }else if(notification.type == 'confirm_order'){
-                        // do nothing
+                        setChangeOrderStatus();
                     }else{
                         // default is new order
                         setNewOrderStatus();

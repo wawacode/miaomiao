@@ -1,0 +1,22 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-mmiao">
+        <h1 class="title">删除分类</h1>
+        <button class="button button-clear button-primary" ng-click="deleteCateModal.hide()">取消</button>
+    </ion-header-bar>
+    <ion-content padding="true"
+                 has-tabs="false"
+                 has-header="true"
+                 scroll="true"
+                 has-bouncing="true">
+        <div class="list">
+            <div class="item item-stacked-label item-icon-right">
+                <span class="input-label assertive">已有分类:</span>
+            </div>
+            <a class="item item-icon-right" ng-repeat="cate in info.categorySummary">
+                {{cate.name}}
+                <i class="icon ion-ios7-trash-outline assertive" ng-click="removeCategory($index)"></i>
+            </a>
+        </div>
+    </ion-content>
+</ion-modal-view>>
+

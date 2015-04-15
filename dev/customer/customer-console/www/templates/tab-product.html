@@ -26,7 +26,7 @@
                              overflow-scroll="false">
                     <div class="shop-categray-list" style="width: 100%;">
                         <ul style="margin: 0.0em;padding: 0px;">
-                            <li bindonce quick-ng-repeat="category in info.categorySummary" class="shop-categray"
+                            <li quick-ng-repeat="category in info.categorySummary" class="shop-categray"
                                 ng-class="{'shop-categray-selected': $index == selectedIndex }"
                                 ng-click="selectCategory($index)">
                                 <div class="shop-categray-item-decorate shop-categray-item-decorate-show"

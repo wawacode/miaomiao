@@ -41,7 +41,7 @@
         initData();
 
         // listeners
-        $scope.refreshAll = function () {
+        $scope.info.refreshAll  = $scope.refreshAll = function () {
             initData();
         };
 

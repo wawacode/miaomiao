@@ -11,6 +11,8 @@ import net.paoding.rose.web.annotation.rest.Post;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.poi.poifs.crypt.dsig.facets.Office2010SignatureFacet;
 import org.apache.velocity.tools.generic.DateTool;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -255,7 +257,50 @@ public class AllShopConsoleController {
         wxService.sendWX2User(order_id,shop_id);//发送微信消息给用户
         return "@订单确认成功";
 
- }
+    }
+    /**
+     * 此操作只作用于老板误点击无法配送或者是用户误点击取消订单 状态回回到之前的操作的状态
+     * @param inv
+     * @param shop_id
+     * @param order_id
+     * @return
+     */
+    @Get("order_reject")
+    @Post("order_reject")
+    public String order_reject(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id) {
+        if(StringUtils.isBlank(order_id) || shop_id ==0  ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+        if ( null == shop ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        long userId = o.getUser_id();
+        LoggerUtils.getInstance().log(String.format("kf %s order_reject shop  %d  order %s", userId ,shop_id , order_id));
+        JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+        orderInfo.put("order_msg", "kf order_reject");
+        orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
+        int reverCode = OrderStatus.TOCONFIREMED.getCode();
+        try {
+			Integer preStatusCode = (Integer)orderInfo.get("rever_status");
+			if(OrderStatus.USERCANCEL.getCode() == o.getOrder_status()){
+				if(preStatusCode != null){
+			    	reverCode = preStatusCode;
+			    	if(reverCode != OrderStatus.TOCONFIREMED.getCode() && reverCode != OrderStatus.DELIVERIES.getCode()){
+			    		reverCode = OrderStatus.TOCONFIREMED.getCode();
+			    	}
+			    }
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        LoggerUtils.getInstance().log(String.format("kf %s order_reject shop  %d  order %s backtostatus %d", userId ,shop_id , order_id,reverCode));
+        ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), reverCode, SUtils.generOrderTableName(shop_id));
+        userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), reverCode, SUtils.generUserOrderTableName(userId));
+        return "@订单状态驳回成功";
+
+    }
     
     @Post("query")
     @Get("query")

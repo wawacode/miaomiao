@@ -234,7 +234,7 @@ public class ItemConsoleController extends BasicConsoleController{
 				}
 				updateDbFlag = itemsDAO.updateSaleStatus(SUtils.generTableName(shopId),itemId,saleStatusInt);
 	   }
-
+        // error code s
 		if(updateDbFlag == 1){
             JSONObject resultJson = new JSONObject();
 			resultJson.put("code", 0);
