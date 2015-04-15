@@ -99,6 +99,18 @@ angular.module('miaomiao.shop').factory('httpClient', ['$http', function ($http)
                     success, fail);
             },
 
+            cancelMyOrders:function (shopId, orderId,msg, success, fail) {
+                doPost('order/order_cancel?shop_id=' + shopId,
+                    {'order_id': orderId,'confirm':msg},
+                    success, fail);
+            },
+
+            remindShippingMyOrders:function (shopId, orderId,msg, success, fail) {
+                doPost('order/order_remindShopping?shop_id=' + shopId,
+                    {'order_id': orderId,'confirm':msg},
+                    success, fail);
+            },
+
             getJsapi_ticket:function(success, fail){
 
                 doGet('/wx/wxpay/getjtk','', success, fail);
