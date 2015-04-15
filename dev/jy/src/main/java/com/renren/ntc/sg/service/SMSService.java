@@ -1,5 +1,6 @@
 package com.renren.ntc.sg.service;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -300,8 +301,6 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
-            
-            byte[] t = null;
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());
@@ -311,11 +310,7 @@ public class SMSService {
             for ( Catstaff catstaff : catstaffls)   {
             if (catstaff != null) {
                 String phone = catstaff.getPhone();
-                String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message);
-                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                String r = SUtils.toString(t);
-                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
+                sendSms(Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
                 }
             }
         } catch (Throwable t) {
@@ -339,11 +334,7 @@ public class SMSService {
             for ( Catstaff catstaff : catstaffls)   {
             if (catstaff != null) {
                 String phone = catstaff.getPhone();
-                String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message);
-                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                String r = SUtils.toString(t);
-                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
+                sendSms(Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
                 }
             }
         } catch (Throwable t) {
@@ -359,10 +350,6 @@ public class SMSService {
             if(order == null){
             	return;
             }
-            String url;
-            byte[] t = null;
-
-            String response = "";
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.CANCEL_ORDER_2_BOSS_SMS_MSG.replace("{order_id}", order.getOrder_id()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time()));
@@ -371,11 +358,7 @@ public class SMSService {
             //短信通知 老板
             if (shop != null) {
                 String phone = shop.getOwner_phone();
-                url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.CANCEL_ORDER_2_BOSS_SMS_MSG_TEMP_ID, phone, message);
-                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                response = SUtils.toString(t);
-                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), response, phone, url));
+                sendSms(Constants.CANCEL_ORDER_2_BOSS_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
             }
         } catch (Throwable e) {
             e.printStackTrace();
@@ -389,9 +372,6 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
-            String url;
-            byte[] t = null;
-            String response = "";
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.REMIND_ORDER_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());    		
@@ -400,11 +380,7 @@ public class SMSService {
             //短信通知 老板
             if (shop != null) {
                 String phone = shop.getOwner_phone();
-                url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message);
-                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                response = SUtils.toString(t);
-                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), response, phone, url));
+                sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
             }
         } catch (Throwable e) {
             e.printStackTrace();
@@ -420,7 +396,6 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
-            byte[] t = null;
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.REMIND_ORDER_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());    		
@@ -430,14 +405,10 @@ public class SMSService {
             for ( Catstaff catstaff : catstaffls)   {
             if (catstaff != null) {
                 String phone = catstaff.getPhone();
-                String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message);
-                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                String r = SUtils.toString(t);
-                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
+                sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
                 }
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
     }
@@ -450,10 +421,6 @@ public class SMSService {
             if(order == null){
             	return;
             }
-            String url;
-            byte[] t = null;
-
-            String response = "";
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.KF_CLICK_CANCEL_ORDER_2_USER_MSG.replace("{order_id}", order.getOrder_id()).replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel());
@@ -462,14 +429,39 @@ public class SMSService {
             //短信通知 老板
             if (shop != null) {
                 String phone = adrs.getPhone();
-                url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.KF_CLICK_CANCEL_ORDER_2_USER_MSG_TEMP_ID, phone, message);
-                LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
-                t = SHttpClient.getURLData(url, "");
-                response = SUtils.toString(t);
-                LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), response, phone, url));
+                sendSms(Constants.KF_CLICK_CANCEL_ORDER_2_USER_MSG_TEMP_ID, phone, message, order.getOrder_id());
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    /*
+     *  用户点击确认收货发短信给老板
+     */
+    public void sendConfirmSMS2Boss(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            String message = Constants.USER_CONFIRM_MSG_2_BOSS.replace("{date}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id()).replace("{price}", (order.getPrice()/100)+"");    		
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            //短信通知 老板
+            if (shop != null) {
+                String phone = shop.getOwner_phone();
+                sendSms(Constants.USER_CONFIRM_MSG_2_BOSS_TEMP_ID, phone, message, order.getOrder_id());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void sendSms(String smsTempId,String phone,String message,String orderId) throws IOException{
+    	 String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, smsTempId, phone, message);
+         LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, orderId, url));
+         byte[] t = SHttpClient.getURLData(url, "");
+         String response = SUtils.toString(t);
+         LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", orderId, response, phone, url));
     }
 }

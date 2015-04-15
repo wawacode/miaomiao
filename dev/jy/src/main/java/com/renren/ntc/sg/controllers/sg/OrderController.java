@@ -331,8 +331,9 @@ public class OrderController {
         LoggerUtils.getInstance().log(String.format("user %s order_confirm shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
         JSONObject result =  new JSONObject() ;
         JSONObject data =  new JSONObject() ;
+        Order o = null;
         if ("done".equals(confirm)){
-            Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
 //            String msg = o.getMsg();
 //            JSONObject om = orderService.getJson(msg);
 //            om.put("confirm","done");
@@ -348,6 +349,7 @@ public class OrderController {
         }
         result.put("data",data);
         result.put("code",0);
+        smsService.sendConfirmSMS2Boss(o, shop);
         return "@json:"+result.toJSONString();
     }
     /**
@@ -377,7 +379,7 @@ public class OrderController {
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "user cancel order");
-            orderInfo.put("cancel_info", OrderStatus.USERCANCEL.getCode());
+            orderInfo.put("rever_status", o.getOrder_status());//rever_status : 用户申请退单点击错了，想回退（在后台点击回退的时候会根据这个状态来回滚用户点击退单之前的状态）
             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
             ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.USERCANCEL.getCode(), SUtils.generOrderTableName(shop_id));
             userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.USERCANCEL.getCode(), SUtils.generUserOrderTableName(u.getId()));
@@ -388,9 +390,7 @@ public class OrderController {
         result.put("code",0);
         if(o != null){
         	//给客服和老板推送
-        	JSONObject orderInfo = new JSONObject();
-        	orderInfo.put("orderId", o.getOrder_id());
-        	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), orderInfo, "");
+        	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), o.getOrder_id(), "");
             pushService.sendUserCancel2KF(o, shop,extra);
             pushService.sendCancel2Boss(o, shop,extra);
         } 
@@ -433,9 +433,7 @@ public class OrderController {
         result.put("code",0);
         if(o != null){
         	// 给老板和客服发推送
-        	JSONObject orderInfo = new JSONObject();
-        	orderInfo.put("orderId", o.getOrder_id());
-        	String extra = pushService.getPushExtra(PushType.REMIND_ORDER.getType(), orderInfo, "");
+        	String extra = pushService.getPushExtra(PushType.REMIND_ORDER.getType(), o.getOrder_id(), "");
             pushService.sendRemind2Kf(o, shop,extra);
             pushService.sendRemindOrder2Boss(o, shop,extra);
         }

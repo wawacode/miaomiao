@@ -132,4 +132,8 @@ public class Constants {
 	
 	public static final String KF_PHONE = "18515282916";
 	
+	public static final String USER_CONFIRM_MSG_2_BOSS = "#date#={date}&#order_id#={order_id}&#price#={price}";
+	
+	public static final String USER_CONFIRM_MSG_2_BOSS_TEMP_ID = "2397";
+	
 }

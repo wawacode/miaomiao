@@ -69,6 +69,7 @@
                         <th >订单状态</th>
                         <th nowrap>配送操作</th>
                         <th nowrap>退单操作</th>
+                        <th nowrap>驳回操作</th>
                     </tr>
                     </thead>
                     #foreach($order in $orderls)
@@ -87,7 +88,8 @@
                         <td class="">$order.remindTime</td>
                         <td class="" nowrap>$order.orderStatusDes</td>
                         <td class="" nowrap>#if($order.showConfirm) <button type="button" class="btn btn-success" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">确认配送</button>#else #end</td>
-                        <td class="" nowrap>#if($order.showCancel) <button type="button" class="btn btn-danger" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">退单</button>#elseif($order.order.order_status ==4) #else 已经退单#end</td>    
+                        <td class="" nowrap>#if($order.showCancel) <button type="button" class="btn btn-danger" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">退单</button>#elseif($order.order.order_status ==4) #else 已经退单#end</td>
+                        <td class="" nowrap>#if($order.showRejected) <button type="button" class="btn btn-warning" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">驳回</button>#else #end</td>        
                     </tr>
                     #end
                     </tbody>
@@ -131,7 +133,7 @@
     });
     });
     $(".btn-danger").click(function(){
-		var result = confirm("是否已经微信退款给用户了？"),
+		var result = confirm("是否点击退单了？"),
 			oThis = $(this);
 		if(result){
 		$.ajax({
@@ -150,6 +152,20 @@
 		if(result){
 		$.ajax({
 			type:"POST",url:"/console/allshop/order_comfirm",
+			data:{order_id:oThis.data('orderid'),shop_id:oThis.data('shopid')},
+			success:function(data){
+				  alert(data);
+				  location.reload();
+				}
+			});
+		}
+	});
+	 $(".btn-warning").click(function(){
+		var result = confirm("是否要驳回？（此操作只作用于老板误点击无法配送或者是用户误点击取消订单）"),
+			oThis = $(this);
+		if(result){
+		$.ajax({
+			type:"POST",url:"/console/allshop/order_reject",
 			data:{order_id:oThis.data('orderid'),shop_id:oThis.data('shopid')},
 			success:function(data){
 				  alert(data);

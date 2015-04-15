@@ -10,75 +10,75 @@
                     "/*": [
                         {
                             "xml": "<feature name=\"PushPlugin\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
-                            "count": 4
+                            "count": 5
                         },
                         {
                             "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
-                            "count": 4
+                            "count": 5
                         },
                         {
                             "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
-                            "count": 2
+                            "count": 3
                         },
                         {
                             "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
-                            "count": 4
+                            "count": 5
                         },
                         {
                             "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
-                            "count": 4
+                            "count": 5
                         },
                         {
                             "xml": "<feature name=\"File\"><param name=\"ios-package\" value=\"CDVFile\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 4
+                            "count": 5
                         },
                         {
                             "xml": "<feature name=\"Media\"><param name=\"ios-package\" value=\"CDVSound\" /></feature>",
-                            "count": 4
+                            "count": 5
                         },
                         {
                             "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<feature name=\"StatusBar\"><param name=\"ios-package\" value=\"CDVStatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<preference name=\"StatusBarOverlaysWebView\" value=\"true\" />",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<preference name=\"StatusBarStyle\" value=\"lightcontent\" />",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"IonicKeyboard\" /></feature>",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<feature name=\"BarcodeScanner\"><param name=\"ios-package\" value=\"CDVBarcodeScanner\" /></feature>",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<feature name=\"Camera\"><param name=\"ios-package\" value=\"CDVCamera\" /></feature>",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<preference name=\"CameraUsesGeolocation\" value=\"false\" />",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<feature name=\"FileTransfer\"><param name=\"ios-package\" value=\"CDVFileTransfer\" /></feature>",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<feature name=\"CallNumber\"><param name=\"ios-package\" value=\"CallNumber\" /></feature>",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<feature name=\"DatePicker\"><param name=\"ios-package\" value=\"DatePicker\" /></feature>",
-                            "count": 3
+                            "count": 4
                         }
                     ]
                 }
@@ -92,7 +92,7 @@
                         },
                         {
                             "xml": false,
-                            "count": 2
+                            "count": 4
                         }
                     ],
                     "AudioToolbox.framework": [
@@ -102,7 +102,7 @@
                         },
                         {
                             "xml": true,
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "AssetsLibrary.framework": [
@@ -112,7 +112,7 @@
                         },
                         {
                             "xml": false,
-                            "count": 4
+                            "count": 8
                         }
                     ],
                     "MobileCoreServices.framework": [
@@ -122,7 +122,7 @@
                         },
                         {
                             "xml": false,
-                            "count": 2
+                            "count": 4
                         }
                     ],
                     "CoreGraphics.framework": [
@@ -132,7 +132,7 @@
                         },
                         {
                             "xml": false,
-                            "count": 3
+                            "count": 6
                         }
                     ],
                     "libiconv.dylib": [
@@ -142,7 +142,7 @@
                         },
                         {
                             "xml": false,
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "AVFoundation.framework": [
@@ -152,7 +152,7 @@
                         },
                         {
                             "xml": false,
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "CoreVideo.framework": [
@@ -162,7 +162,7 @@
                         },
                         {
                             "xml": false,
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "ImageIO.framework": [
@@ -172,7 +172,7 @@
                         },
                         {
                             "xml": true,
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "CoreLocation.framework": [
@@ -182,7 +182,7 @@
                         },
                         {
                             "xml": false,
-                            "count": 1
+                            "count": 2
                         }
                     ]
                 }
@@ -192,7 +192,7 @@
                     "NSLocationWhenInUseUsageDescription": [
                         {
                             "xml": "<string />",
-                            "count": 3
+                            "count": 4
                         }
                     ]
                 }
@@ -240,6 +240,9 @@
             "PACKAGE_NAME": "com.miaomiao.bconsole"
         },
         "org.apache.cordova.statusbar": {
+            "PACKAGE_NAME": "com.miaomiao.bconsole"
+        },
+        "org.apache.cordova.console": {
             "PACKAGE_NAME": "com.miaomiao.bconsole"
         }
     },
