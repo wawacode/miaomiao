@@ -186,7 +186,8 @@ public class PushService {
 		unicast.setPredefinedKeyValue("ticker", "Android unicast ticker");
 		unicast.setPredefinedKeyValue("title",  "喵喵生活");
 		unicast.setPredefinedKeyValue("text",   message);
-		unicast.setPredefinedKeyValue("after_open", "go_app");
+		unicast.setPredefinedKeyValue("after_open", "go_activity");
+		unicast.setPredefinedKeyValue("activity", "com.miaomiao.bconsole.MainActivity");
 		unicast.setPredefinedKeyValue("display_type", "notification");
 		// TODO Set 'production_mode' to 'false' if it's a test device. 
 		unicast.setPredefinedKeyValue("production_mode", "true");
