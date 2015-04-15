@@ -258,7 +258,7 @@ public class PushService {
     public void sendUserCancel2KF(Order order, Shop shop,String extra) {
     	try {
     		String message = getUserCancelPushMsg2KF(order, shop);
-    		LoggerUtils.getInstance().log(String.format("push user cancel msg 2 kf order id =%s,shopId=%l,message=%s,extra=%s", order.getOrder_id(),shop.getId(),message,extra));
+    		LoggerUtils.getInstance().log(String.format("push user cancel msg 2 kf order id =%s,shopId=%d,message=%s,extra=%s", order.getOrder_id(),shop.getId(),message,extra));
             pushKf(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -278,7 +278,7 @@ public class PushService {
     public void sendRemind2Kf(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
-        	LoggerUtils.getInstance().log(String.format("push remind msg 2 kf order id =%s,shopId=%l,message=%s,extra=%s", order.getOrder_id(),shop.getId(),message,extra));
+        	LoggerUtils.getInstance().log(String.format("push remind msg 2 kf order id =%s,shopId=%d,message=%s,extra=%s", order.getOrder_id(),shop.getId(),message,extra));
             pushKf(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -288,7 +288,7 @@ public class PushService {
     public void sendCancel2Boss(Order o, Shop shop,String extra) {
         try {
         	String message = getUserCancelPushMsg2Boss(o,shop);
-        	LoggerUtils.getInstance().log(String.format("push user cancel msg 2 boss order id =%s,shopid=%l,message=%s,extra=%s,shop_tel", o.getOrder_id(),shop.getId(),message,extra,StringUtils.isBlank(shop.getTel())?"":shop.getTel()));
+        	LoggerUtils.getInstance().log(String.format("push user cancel msg 2 boss order id =%s,shopid=%d,message=%s,extra=%s,shop_tel", o.getOrder_id(),shop.getId(),message,extra,StringUtils.isBlank(shop.getTel())?"":shop.getTel()));
         	pushBoss(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -298,7 +298,7 @@ public class PushService {
     public void sendRemindOrder2Boss(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
-        	LoggerUtils.getInstance().log(String.format("push remind msg 2 boss order id =%s,shopid=%l,message=%s,extra=%s,shop_tel", order.getOrder_id(),shop.getId(),message,extra,StringUtils.isBlank(shop.getTel())?"":shop.getTel()));
+        	LoggerUtils.getInstance().log(String.format("push remind msg 2 boss order id =%s,shopid=%d,message=%s,extra=%s,shop_tel", order.getOrder_id(),shop.getId(),message,extra,StringUtils.isBlank(shop.getTel())?"":shop.getTel()));
             pushBoss(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
