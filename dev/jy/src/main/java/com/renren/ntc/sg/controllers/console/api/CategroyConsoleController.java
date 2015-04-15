@@ -91,15 +91,15 @@ public class CategroyConsoleController extends BasicConsoleController{
                           @Param("categoryName") String categoryName){
         if( 0 == shop_id){
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",shop_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
         if(StringUtils.isBlank(categoryName)){
             LoggerUtils.getInstance().log(String.format("cate_add categoryName is null %d ",shop_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
         if ( 0 == category_id ) {
             LoggerUtils.getInstance().log(String.format("str_id is null %d ",category_id));
-            return "@error" ;
+            return "@" + Constants.PARATERERROR ;
         }
         boolean isInWholeCats = false;
         List<Category> cats = categoryDAO.getCategory();
@@ -128,11 +128,7 @@ public class CategroyConsoleController extends BasicConsoleController{
                 break;
             }
         }
-        if(!isExistShopCats){
             shopCategoryDAO.insert(shopCate);
-            return  "@"+SgConstant.ADD_CAT_SUC_RESULT;
-        }else {
-            return  "@"+SgConstant.ADD_CAT_EXIST_RESULT;
-        }
+            return  "@"+Constants.DONE  ;
     }
 }
