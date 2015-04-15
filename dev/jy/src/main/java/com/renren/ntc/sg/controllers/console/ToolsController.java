@@ -364,18 +364,25 @@ public class ToolsController {
                 break;
             }
             for (Item item : itemls) {
-                Product p = new Product();
+                Product p = null;
+                Product pp = pDao.geProductsByserialNo(item.getSerialNo());
+
+                if (null != pp) {
+                    p = pp;
+                } else {
+                    p = new Product();
+                }
+
+                int price = item.getPrice() > p.getPrice() ? item.getPrice() : p.getPrice();//更改价格时 保留最高值的那个
                 p.setCategory_id(item.getCategory_id());
                 p.setScore(item.getScore());
                 p.setPic_url(item.getPic_url());
-                p.setPrice(item.getPrice());
+                p.setPrice(price);
                 p.setName(item.getName());
-                String serialNoStr = upacage(item.getSerialNo());
-                p.setSerialNo(serialNoStr);
-                Product pp = pDao.geProductsByserialNo(p.getSerialNo());
+                p.setSerialNo(item.getSerialNo());
                 if (null != pp) {
                     System.out.println("update into " + p.getSerialNo());
-                    pDao.updateBySerialNo(p, serialNoStr);
+                    pDao.updateBySerialNo(p, item.getSerialNo());
                 } else {
                     System.out.println("insert into " + p.getSerialNo());
                     pDao.insert(p);
