@@ -189,7 +189,7 @@ public class ToolsController {
             }else {
                 successNum = count - missingList.size();
             }
-            inv.addModel("successNum", successNum); //成功总数
+            inv.addModel("successNum", count - missingList.size()); //成功总数
             inv.addModel("shop_id", shop_id);
 
 
