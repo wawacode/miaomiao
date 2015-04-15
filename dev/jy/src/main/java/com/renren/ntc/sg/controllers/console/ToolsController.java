@@ -184,12 +184,13 @@ public class ToolsController {
             inv.addModel("missingList", missingList); //丢失
             inv.addModel("count", count); //总数
             int successNum = 0;
+            int temp = count;
             if (isReplenish){
                 count = seriNoNum;//是否续传
             }else {
                 successNum = count - missingList.size();
             }
-            inv.addModel("successNum", count - missingList.size()); //成功总数
+            inv.addModel("successNum", temp - missingList.size()); //成功总数
             inv.addModel("shop_id", shop_id);
 
 
