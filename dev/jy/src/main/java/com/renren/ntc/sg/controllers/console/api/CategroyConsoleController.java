@@ -76,12 +76,7 @@ public class CategroyConsoleController extends BasicConsoleController{
             return "@" + Constants.PARATERERROR;
         }
         int result = shopCategoryDAO.del(shop_id,category_id) ;
-        if(result == SgConstant.PROCESS_DB_SUC){
             return  "@"+Constants.DONE  ;
-        }else {
-            return  "@"+Constants.DONE  ;
-        }
-
     }
 
     @Post("add")
