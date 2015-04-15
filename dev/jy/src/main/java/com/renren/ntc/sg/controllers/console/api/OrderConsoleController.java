@@ -192,7 +192,7 @@ public class OrderConsoleController extends BasicConsoleController{
         if ("done".equals(confirm)){
         	Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
         	 JSONObject orderInfo = orderService.getJson(o.getOrder_info());
-             orderInfo.put("order_msg", "老板点击订单配送");
+             orderInfo.put("order_msg", "boss click order");
              orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
             ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.DELIVERIES.getCode(), SUtils.generOrderTableName(shop_id));
             User user = userDAO.getUser(o.getUser_id());

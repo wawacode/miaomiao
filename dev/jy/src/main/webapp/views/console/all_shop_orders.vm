@@ -84,7 +84,7 @@
                         <td class="" id="e-{$item.shop_id}-price-$item.id">${order.order.price4V}元</td>
                         <td class="" id="e-{$item.shop_id}-msg-$item.order_id">${order.order.act} - ${order.order.msg}</td>
                         <td class="" id="e-{$item.category_id}-category_id-$item.id">$order.order.info</td>
-                        <td class="" nowrap>$order.remindDes</td>
+                        <td class="" nowrap><p class="text-danger">$order.remindDes</p></td>
                         <td class="">$order.remindTime</td>
                         <td class="" nowrap>$order.orderStatusDes</td>
                         <td class="" nowrap>#if($order.showConfirm) <button type="button" class="btn btn-success" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">确认配送</button>#else #end</td>
