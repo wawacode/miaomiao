@@ -23,7 +23,7 @@ public interface ShopCategoryDAO {
     @SQL("update  " + TABLE_NAME + "  set ##(:key) = :3  where id =:1")
     public int  update(long item_id,  @SQLParam("key") String key, String value);
 
-    @SQL("delete from   " + TABLE_NAME + "  where id =:2")
+    @SQL("delete  from   " + TABLE_NAME + "  where shop_id=:1 and category_id =:2")
     public int  del(long shop_id, long category_id);
 
     @SQL("select max(category_id)  from "  + TABLE_NAME + " where  shop_id =:1  ")
