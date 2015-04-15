@@ -6,6 +6,15 @@
         $scope.info.notification_order_count = 1;
         $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
 
+        var StatsEnum = $scope.StatsEnum = {
+            'toBeConfirmed': 0,
+            'inShipping':1,
+            'canceledByUser':2,
+            'canceledByShop':3,
+            'confirmedByUser':4,
+            'canceledByCatStaff':5
+        };
+
         function transformOrderData(orders) {
             if (!orders) return;
             for (var i = 0; i < orders.length; i++) {
@@ -158,6 +167,64 @@
             }, number);
         };
 
+        function updateOrderAction(userOrders, updatingOrder) {
+            if (userOrders && userOrders.length) {
+                for (var i = 0; i < userOrders.length; i++) {
+                    if (userOrders[i].order_id == updatingOrder.order_id) {
+                        $timeout(function(){
+                            userOrders[i] = updatingOrder;
+                        });
+                    }
+                }
+            }
+        }
+
+        $scope.confirmShip = function(order){
+
+            httpClient.orderCanbeShipByShop($scope.info.shop.id, order.order_id, function (data, status) {
+
+                var code = data.code, dataDetail = data.data;
+                if (!code == 0) {
+                    MMUtils.showAlert('确认配送失败');
+                }
+                MMUtils.showAlert('客户已经收到您的消息，请您及时配送');
+
+                order.order_status = dataDetail.order.order_status;
+                updateOrderAction($scope.info.orders,order);
+
+            }, function (data, status) {
+                MMUtils.showAlert('确认配送失败');
+            });
+        };
+
+        $scope.cannotShip = function(order){
+
+            // A confirm dialog
+            var confirmPopup = $ionicPopup.confirm({
+                title: '无法配送',
+                template: '如果您确定无法配送此单，您需要跟客户电话联系，为您拨打电话？'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    window.plugins.CallNumber.callNumber(function () {
+                        httpClient.orderCanNotbeShipByShop($scope.info.shop.id, order.order_id, function (data, status) {
+
+                            var code = data.code, dataDetail = data.data;
+                            if (code == 0) {
+                                order.order_status = dataDetail.order.order_status;
+                                updateOrderAction($scope.info.orders,order);
+                            }
+                        }, function (data, status) {
+                        });
+
+                    }, function () {
+                        $scope.closeModal();
+                        MMUtils.showAlert('您没有拨打电话，不能为您取消配送，如有疑问请联系喵喵客服');
+                    }, order.phone);
+                }
+            });
+        };
+
         $scope.showOrderDetail = function (order) {
 
             $scope.order = order;
@@ -188,6 +255,32 @@
             $scope.info.shop = localStorageService.get('MMCONSOLE_METADATA_DEFAULT_SHOP') || {};
             initData();
 
+        });
+
+        MMPushNotification.onRemindOrderNotificationReceived($scope, function (message) {
+            console.log(message);
+            var data = message.data;
+            var orderId = data && data.orderId;
+            // update order status
+            var userOrders = $scope.info.orders;
+
+            if (userOrders && userOrders.length) {
+                for (var i = 0; i < userOrders.length; i++) {
+                    if (userOrders[i].order_id == orderId) {
+                        userOrders[i].remindShip = true;
+                    }
+                }
+            }
+            $timeout(function(){
+                $scope.info.orders = userOrders;
+            });
+
+        });
+
+        MMPushNotification.onOrderStatusChangeNotificationReceived($scope, function (message) {
+            console.log(message);
+           // just reload data
+            initData();
         });
 
 

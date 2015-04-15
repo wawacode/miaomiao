@@ -20,7 +20,8 @@ public class DeleteShopItems {
 | 10080 |                    测试-219-勿动 |
 	 */
 	
-    private static long shop[] = { 10067,10069, 10070,10071,10072,10075,10076,10077,10078,10079,10080};
+//    private static long shop[] = { 10067,10069, 10070,10071,10072,10075,10076,10077,10078,10079,10080};
+    private static long shop[]  = {10104};
     public static void main(String[] args) {
         deleteAllItems();
     }

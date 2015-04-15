@@ -250,6 +250,4 @@ public class Order {
 		this.order_info = order_info;
 	}
 
-
-
 }

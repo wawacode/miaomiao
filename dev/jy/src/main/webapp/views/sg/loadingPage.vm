@@ -719,17 +719,25 @@
 <script id="templates/snapshotOrder.html" type="text/ng-template">
     <div class="orderSnapshotHeader">
         <div class="orderId" bo-text="$index + 1 + '. ' + order.shop_name4V"></div>
-        <div ng-if="order.act == 'wx'">
-            <div class="orderPayType balanced" ng-if="order.confirm">
-                交易成功
+        <div>
+            <div class="orderPayType balanced" ng-if="order.act == 'wx' && order.order_status == StatsEnum.toBeConfirmed">
+                微信支付
             </div>
-            <div class="orderPayType" ng-if="!order.confirm">
-                <div class="orderPayConfirm" ng-click="confirmOrder(order)">确认收货</div>
-            </div>
-        </div>
-        <div ng-if="order.act != 'wx'">
-            <div class="orderPayType balanced">
+            <div class="orderPayType balanced" ng-if="order.act != 'wx' && order.order_status == StatsEnum.toBeConfirmed">
                 货到付款
+            </div>
+            <div class="orderPayType balanced" ng-if="order.order_status == StatsEnum.inShipping">
+                正在配送...
+            </div>
+            <div class="orderPayType baseRedColor" ng-if="order.order_status == StatsEnum.canceledByUser ||
+                                                        order.order_status == StatsEnum.canceledByCatStaff">
+                订单取消
+            </div>
+            <div class="orderPayType baseRedColor" ng-if=" order.order_status == StatsEnum.canceledByShop ">
+                无法配送，请联系喵喵客服
+            </div>
+            <div class="orderPayType balanced" ng-if="order.order_status == StatsEnum.confirmedByUser">
+                交易成功
             </div>
         </div>
     </div>
@@ -753,6 +761,17 @@
         <div class="orderDate">{{order.create_time | date:'yyyy-MM-dd H:mm'}}</div>
         <div class="orderSnapshotCountNumber">共计: {{order.items | getTotolCount }} 件 </div>
         <div style="position: absolute;right: 0;color: red;padding-right: 8px;display: inline-block">￥ {{order.items | getTotolPrice }}</div>
+    </div>
+    <div class="orderSnapshotRemark" style="display: inline-block;text-align: right" ng-if="order.canShowAction">
+        <div class="" style="display: inline-block;font-size: 11px" >
+            <div class="" ng-class="{'orderPayConfirm':order.canCancelOrder,'orderPayConfirmDisabled':!order.canCancelOrder}" ng-click="cancelOrder(order)">取消订单</div>
+        </div>
+        <div class="" style="display: inline-block;margin-left:10px;font-size: 11px">
+            <div class="" ng-class="{'orderPayConfirm':order.canRemindShipping,'orderPayConfirmDisabled':!order.canRemindShipping}" ng-click="remindShipping(order)">提醒店家发货</div>
+        </div>
+        <div class="" style="display: inline-block;margin-left:10px;font-size: 11px">
+            <div class="orderPayConfirm" ng-click="confirmOrder(order)">确认收货</div>
+        </div>
     </div>
 
 </script>

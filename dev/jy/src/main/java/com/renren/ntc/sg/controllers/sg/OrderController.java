@@ -1,29 +1,50 @@
 package com.renren.ntc.sg.controllers.sg;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.renren.ntc.sg.bean.*;
-import com.renren.ntc.sg.biz.dao.*;
-import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
-import com.renren.ntc.sg.jredis.JRedisUtil;
-import com.renren.ntc.sg.mongo.MongoDBUtil;
-import com.renren.ntc.sg.service.*;
-import com.renren.ntc.sg.util.Constants;
-import com.renren.ntc.sg.util.SHttpClient;
-import com.renren.ntc.sg.util.SUtils;
-import com.renren.ntc.sg.util.wx.MD5Util;
-import com.renren.ntc.sg.util.wx.Sha1Util;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.net.URLEncoder;
-import java.util.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.bean.Address;
+import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.bean.Item;
+import com.renren.ntc.sg.bean.Item4V;
+import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.bean.User;
+import com.renren.ntc.sg.bean.UserCoupon;
+import com.renren.ntc.sg.biz.dao.DeviceDAO;
+import com.renren.ntc.sg.biz.dao.ItemsDAO;
+import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
+import com.renren.ntc.sg.constant.OrderStatus;
+import com.renren.ntc.sg.constant.PushType;
+import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
+import com.renren.ntc.sg.service.AddressService;
+import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.service.OrderService;
+import com.renren.ntc.sg.service.PushService;
+import com.renren.ntc.sg.service.SMSService;
+import com.renren.ntc.sg.service.TicketService;
+import com.renren.ntc.sg.service.WXService;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.Dateutils;
+import com.renren.ntc.sg.util.SUtils;
+import com.renren.ntc.sg.util.wx.Sha1Util;
 
 @Path("order")
 public class OrderController {
@@ -288,7 +309,14 @@ public class OrderController {
 
         return false;
     }
-
+/**
+ * 用户点击确认收货
+ * @param inv
+ * @param shop_id
+ * @param order_id
+ * @param confirm
+ * @return
+ */
     @Get("order_confirm")
     @Post("order_confirm")
     public String order_confirm(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
@@ -297,29 +325,119 @@ public class OrderController {
             return "@json:"+Constants.PARATERERROR;
         }
         Shop shop = shopDAO.getShop(shop_id);
-        Order order = ordersDAO.getOrder( order_id ,SUtils.generOrderTableName(shop_id));
         if ( null == shop ){
             return "@json:"+Constants.PARATERERROR;
         }
         LoggerUtils.getInstance().log(String.format("user %s order_confirm shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
+        JSONObject result =  new JSONObject() ;
+        JSONObject data =  new JSONObject() ;
+        Order o = null;
         if ("done".equals(confirm)){
-            Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
-            String msg = o.getMsg();
-            JSONObject om = new JSONObject();
-            try{
-               om = (JSONObject) JSON.parse(msg);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            if (null == om)  {
-               om = new JSONObject();
-            }
-            om.put("confirm","done");
-            ordersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.confirm(order_id,om.toJSONString(),SUtils.generUserOrderTableName(u.getId()));
-
+            o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+//            String msg = o.getMsg();
+//            JSONObject om = orderService.getJson(msg);
+//            om.put("confirm","done");
+//            ordersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(shop_id));
+//            userOrdersDAO.confirm(order_id,om.toJSONString(),SUtils.generUserOrderTableName(u.getId()));
+            JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+            orderInfo.put("order_msg", "user order confirm");
+            orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
+            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.CONFIREMED.getCode(), SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(), SUtils.generUserOrderTableName(u.getId()));
+            o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            data.put("order", o);       
         }
-        return "@json:"+Constants.DONE;
+        result.put("data",data);
+        result.put("code",0);
+        smsService.sendConfirmSMS2Boss(o, shop);
+        return "@json:"+result.toJSONString();
+    }
+    /**
+     * 用户取消订单
+     * @param inv
+     * @param shop_id
+     * @param order_id
+     * @param confirm
+     * @return
+     */
+    @Get("order_cancel")
+    @Post("order_cancel")
+    public String order_cancel(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
+        User u = holder.getUser();
+        if(StringUtils.isBlank(order_id) || shop_id ==0  ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+        if ( null == shop ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        LoggerUtils.getInstance().log(String.format("user %s order_cancel shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
+        JSONObject result =  new JSONObject() ;
+        JSONObject data =  new JSONObject() ;
+        Order o = null;
+        if ("done".equals(confirm)){
+            o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+            orderInfo.put("order_msg", "user cancel order");
+            orderInfo.put("rever_status", o.getOrder_status());//rever_status : 用户申请退单点击错了，想回退（在后台点击回退的时候会根据这个状态来回滚用户点击退单之前的状态）
+            orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
+            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.USERCANCEL.getCode(), SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.USERCANCEL.getCode(), SUtils.generUserOrderTableName(u.getId()));
+            o= ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            data.put("order", o);       
+        }
+        result.put("data",data);
+        result.put("code",0);
+        if(o != null){
+        	//给客服和老板推送
+        	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), o.getOrder_id(), "");
+            pushService.sendUserCancel2KF(o, shop,extra);
+            pushService.sendCancel2Boss(o, shop,extra);
+        } 
+        return "@json:"+result.toJSONString();
+    }
+    /**
+     * 用户催单
+     * @param inv
+     * @param shop_id
+     * @param order_id
+     * @param confirm
+     * @return
+     */
+    @Get("order_remindShopping")
+    @Post("order_remindShopping")
+    public String order_remindShopping(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
+        User u = holder.getUser();
+        if(StringUtils.isBlank(order_id) || shop_id ==0  ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+        if ( null == shop ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        LoggerUtils.getInstance().log(String.format("user %s order_remindShopping shop  %d  order %s  msg %s ", u.getId() ,shop_id , order_id,confirm));
+        JSONObject result =  new JSONObject() ;
+        JSONObject data =  new JSONObject() ;
+        Order o = null;
+        if ("done".equals(confirm)){
+            o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+            orderInfo.put("remind_order", "1");
+            orderInfo.put("remind_time", Dateutils.tranferDate2Str(new Date()));
+            ordersDAO.updateOrderInfo(order_id, orderInfo.toJSONString(), SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateOrderInfo(order_id, orderInfo.toJSONString(), SUtils.generUserOrderTableName(u.getId()));
+            o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id)); 
+            data.put("order", o);       
+        }
+        result.put("data",data);
+        result.put("code",0);
+        if(o != null){
+        	// 给老板和客服发推送
+        	String extra = pushService.getPushExtra(PushType.REMIND_ORDER.getType(), o.getOrder_id(), "");
+            pushService.sendRemind2Kf(o, shop,extra);
+            pushService.sendRemindOrder2Boss(o, shop,extra);
+        }
+        return "@json:"+result.toJSONString();
     }
 
 
@@ -348,7 +466,8 @@ public class OrderController {
 
     private void sendInfo(User u ,Shop shop ,String order_id){
 
-            smsService.sendSMS2LocPush(order_id, shop);
+            //smsService.sendSMS2LocPush(order_id, shop);
+    	    smsService.sendSMS2KF(order_id, shop);
             pushService.send2locPush(order_id, shop);
             pushService.send2kf(order_id, shop);
             // 发送wx 通知

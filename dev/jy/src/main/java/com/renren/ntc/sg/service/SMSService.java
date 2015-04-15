@@ -1,19 +1,31 @@
 package com.renren.ntc.sg.service;
 
-import com.alibaba.fastjson.JSON;
-import com.renren.ntc.sg.bean.*;
-import com.renren.ntc.sg.biz.dao.*;
-import com.renren.ntc.sg.mongo.MongoDBUtil;
-import com.renren.ntc.sg.util.ConfigProperties;
-import com.renren.ntc.sg.util.Constants;
-import com.renren.ntc.sg.util.SHttpClient;
-import com.renren.ntc.sg.util.SUtils;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.URLEncoder;
-import java.util.List;
+import com.alibaba.fastjson.JSON;
+import com.renren.ntc.sg.bean.Address;
+import com.renren.ntc.sg.bean.CatStaffCommit;
+import com.renren.ntc.sg.bean.Catstaff;
+import com.renren.ntc.sg.bean.Device;
+import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.Shop;
+import com.renren.ntc.sg.biz.dao.AddressDAO;
+import com.renren.ntc.sg.biz.dao.CatStaffCommitDAO;
+import com.renren.ntc.sg.biz.dao.CatStaffDAO;
+import com.renren.ntc.sg.biz.dao.DeviceDAO;
+import com.renren.ntc.sg.biz.dao.OrdersDAO;
+import com.renren.ntc.sg.biz.dao.UserDAO;
+import com.renren.ntc.sg.mongo.MongoDBUtil;
+import com.renren.ntc.sg.util.Constants;
+import com.renren.ntc.sg.util.Dateutils;
+import com.renren.ntc.sg.util.SHttpClient;
+import com.renren.ntc.sg.util.SUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,6 +57,9 @@ public class SMSService {
 
     @Autowired
     public CatStaffCommitDAO catStaffCommitDao;
+    
+    @Autowired
+    public CatStaffDAO catStaffDao;
 
     public void sendSMS2LocPush(String order_id, Shop shop) {
         //短信通知 地推人员
@@ -87,6 +102,45 @@ public class SMSService {
                 MongoDBUtil.getInstance().sendmark(phone, order_id);
                 }
             }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+    
+    public void sendSMS2KF(String order_id, Shop shop) {
+        //短信通知 客服
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            Order order = ordersDAO.getOrder(order_id, SUtils.generOrderTableName(shop.getId()));
+            byte[] t = null;
+            String info = "用户下单";
+            if("wx".equals(order.getAct())){
+                info = info + ",支付方式：微信支付.";
+            }else{
+                info = info + ",支付方式：货到付款.";
+            }
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String vv = shop.getName() + " " + shop.getTel() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
+            vv = vv.replaceAll("=", "").replaceAll("&", "");
+            String ro = info.replace("=", "").replace("&", "");
+            float p = (float) order.getPrice() / 100;
+            String message = "#address#=" + vv + "&#status#=" + ro + "&#price#=" + p;
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            String phone = Constants.KF_PHONE;
+            if (MongoDBUtil.getInstance().haveSend(phone, order_id)) {
+                LoggerUtils.getInstance().log(String.format("%s %s sms allready send ", phone, order_id));
+                return;
+            }
+            String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message);
+            LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
+            t = SHttpClient.getURLData(url, "");
+            String r = SUtils.toString(t);
+            LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", order.getOrder_id(), r, phone, url));
+            MongoDBUtil.getInstance().sendmark(phone, order_id);  
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -240,5 +294,174 @@ public class SMSService {
         sb.append(sum);
         sb.append(" 元");
         return sb.toString();
+    }
+    
+    public void sendSMSUserCancelOrder2kf(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String message = Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
+            for ( Catstaff catstaff : catstaffls)   {
+            if (catstaff != null) {
+                String phone = catstaff.getPhone();
+                sendSms(Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
+                }
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+    
+    public void sendSMSBossCancelOrder2kf(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            
+            byte[] t = null;
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String message = Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getId()+"");
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
+            for ( Catstaff catstaff : catstaffls)   {
+            if (catstaff != null) {
+                String phone = catstaff.getPhone();
+                sendSms(Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
+                }
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+    
+    public void sendCancelSMS2Boss(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            if(order == null){
+            	return;
+            }
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String message = Constants.CANCEL_ORDER_2_BOSS_SMS_MSG.replace("{order_id}", order.getOrder_id()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time()));
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            //短信通知 老板
+            if (shop != null) {
+                String phone = shop.getOwner_phone();
+                sendSms(Constants.CANCEL_ORDER_2_BOSS_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+     * 催单发短信给老板
+     */
+    public void sendRemindSMS2Boss(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String message = Constants.REMIND_ORDER_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());    		
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            //短信通知 老板
+            if (shop != null) {
+                String phone = shop.getOwner_phone();
+                sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 发催单短信给客服
+     * @param order_id
+     * @param shop
+     */
+    public void sendSMSRemind2kf(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String message = Constants.REMIND_ORDER_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());    		
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
+            for ( Catstaff catstaff : catstaffls)   {
+            if (catstaff != null) {
+                String phone = catstaff.getPhone();
+                sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
+                }
+            }
+        } catch (Exception t) {
+            t.printStackTrace();
+        }
+    }
+    //商家端点击无法配送或者客服在编辑后台点击退单发短信给用户
+    public void sendCancelSMS2User(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            if(order == null){
+            	return;
+            }
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String message = Constants.KF_CLICK_CANCEL_ORDER_2_USER_MSG.replace("{order_id}", order.getOrder_id()).replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel());
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            //短信通知 老板
+            if (shop != null) {
+                String phone = adrs.getPhone();
+                sendSms(Constants.KF_CLICK_CANCEL_ORDER_2_USER_MSG_TEMP_ID, phone, message, order.getOrder_id());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /*
+     *  用户点击确认收货发短信给老板
+     */
+    public void sendConfirmSMS2Boss(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            String message = Constants.USER_CONFIRM_MSG_2_BOSS.replace("{date}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id()).replace("{price}", (order.getPrice()/100)+"");    		
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            //短信通知 老板
+            if (shop != null) {
+                String phone = shop.getOwner_phone();
+                sendSms(Constants.USER_CONFIRM_MSG_2_BOSS_TEMP_ID, phone, message, order.getOrder_id());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void sendSms(String smsTempId,String phone,String message,String orderId) throws IOException{
+    	 String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, smsTempId, phone, message);
+         LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, orderId, url));
+         byte[] t = SHttpClient.getURLData(url, "");
+         String response = SUtils.toString(t);
+         LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", orderId, response, phone, url));
     }
 }

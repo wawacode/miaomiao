@@ -80,6 +80,16 @@
                 doGet('order/read', 'shop_id=' + shopId + '&order_id=' + order_id, success, fail);
             },
 
+            orderCanbeShipByShop: function (shopId, order_id, success, fail) {
+
+                doGet('order/order_confirm', 'shop_id=' + shopId + '&order_id=' + order_id + '&confirm=done', success, fail);
+            },
+
+            orderCanNotbeShipByShop: function (shopId, order_id, success, fail) {
+
+                doGet('order/order_cancel', 'shop_id=' + shopId + '&order_id=' + order_id + '&confirm=done', success, fail);
+            },
+
             getMoreMyOrders: function (shopId, from, offset, success, fail) {
 
                 doGet('order/list', 'shop_id=' + shopId + '&from=' + from + "&offset=" + offset, success, fail);
@@ -164,6 +174,15 @@
 
             deleteCommunity:function(shop_id,c_id,success, fail){
                 doGet('commy/del_link', 'shop_id=' + shop_id + '&c_id=' + c_id, success, fail);
+            },
+
+            addCategory:function(shop_id,c_id,scorce,c_name,success, fail){
+
+                doPost('cate/add', {'shopId': shop_id, 'categoryId': c_id, 'scorce': scorce , 'categoryName':c_name}, success, fail);
+            },
+
+            deleteCategory:function(shop_id,c_id,success, fail){
+                doGet('cate/del', 'shop_id=' + shop_id + '&category_id=' + c_id, success, fail);
             }
 
         };

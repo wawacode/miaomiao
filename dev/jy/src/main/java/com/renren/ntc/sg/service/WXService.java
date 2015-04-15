@@ -22,6 +22,7 @@ import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -351,6 +352,46 @@ public class WXService {
         String re = new String(tt);
         System.out.println(tt);
     }
+    //客服点击退单之后 发微信消息给用户退款成功
+    public void cancelOrdersendWX2User(Order order, Shop shop) {
+    	if (null == order){
+            return ;
+        }
+    	String order_id = order.getOrder_id();
+        User user = userDao.getUser(order.getUser_id());
+
+        String remark = Constants.REFUND_MSG.replace("{shop_name}", shop.getName());
+        int price = order.getPrice();
+        String msg = order.getMsg();
+        int wxDiscount = 0;
+        if(StringUtils.isNotBlank(msg)){
+        	JSONObject msgInfo = (JSONObject) JSON.parse(msg);
+        	if(msgInfo != null){
+        		Integer disCountInt = (Integer)msgInfo.get("discount");
+				if(disCountInt == null){
+					wxDiscount = 0;
+				}else {
+					if(NumberUtils.isNumber(String.valueOf(disCountInt))){
+						wxDiscount = disCountInt;
+					}else {
+						wxDiscount = 0;
+					}
+					
+				}
+        	}
+        }
+        String refundPrice = (float)(price - wxDiscount)/100+"元";
+        remark = remark.replace("{refund_price}", refundPrice)
+        		.replace("{order_id}", order_id);
+        String respone = orderStatus(Constants.REFUND_ORDER_SUC, user.getWx_open_id(),
+                Constants.REFUND_ORDER_SUC, order_id, remark);
+        String access_token = getAccessToken();
+        String  turl  = TEMPLATEAPI.replace("{token}", access_token);
+        byte[] tt = sendPostRequest(turl, respone);
+       //MongoDBUtil.getInstance().sendmark("wx_xx", "pay_done_"+order_id);
+        String re = new String(tt);
+        System.out.println(tt);
+    }
 	private static String _GetCookie() {
 		return "2";
     }
@@ -503,11 +544,11 @@ public class WXService {
         RoseAppContext rose = new  RoseAppContext();
         WXService wx =  rose.getBean(WXService.class);
         long now = System.currentTimeMillis();
-        wx.config("http://www.mbianli.com");
+        //wx.config("http://www.mbianli.com");
         long end = System.currentTimeMillis();
         System.out.println("cos" + (end - now));
 //        payOk("d:\\downloads\\mm.txt");
-        System.out.println(wx.getWxRefundInfo("C201504071831020027585"));
+        System.out.println(wx.getWxRefundInfo("C2015040511215140916767"));
     }
 
     public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {

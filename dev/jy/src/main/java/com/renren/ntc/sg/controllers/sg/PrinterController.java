@@ -76,60 +76,8 @@ public class  PrinterController {
     @Post("fb")
     public String fb(Invocation inv, @Param("pid") long pid, @Param("token") String token, @Param("orderId") String orderId, @Param("re") String re, @Param("msg") String msg) {
         // 验证
-        LoggerUtils.getInstance().log(String.format("fb request param  %d ,%s  ,re: %s , msg : %s ", pid, token, re, msg));
-        if (0 > pid) {
-            LoggerUtils.getInstance().log(String.format("error param pid <0  %d ,%s", pid, token));
-            return "@" + Constants.PARATERERROR;
-        }
-        Device dev = deviceDAO.getDev(pid);
-        if (null == dev) {
-            LoggerUtils.getInstance().log(String.format("error param  dev = null %d ,%s", pid, token));
-            return "@" + Constants.PARATERERROR;
-        }
-        if (!dev.getToken().equals(token)) {
-            LoggerUtils.getInstance().log(String.format("token illegal error param  %d ,%s ,%s ", pid, token, dev.getToken()));
-            return "@" + Constants.PARATERERROR;
-        }
-        int r = 0;
-        if ("true".equals(re)) {
-            r = swpOrderDAO.update(3, orderId);
-        }
-        if (r != 1) {
-            LoggerUtils.getInstance().log(String.format("update order %s  pid  %d  token %s", orderId, pid, token));
-        }
-        //发邮件
+        LoggerUtils.getInstance().log(String.format("fb request param  %d ,%s  ,re: %s , msg : %s  order_id %s ", pid, token, re, msg,orderId));
 
-        try {
-            OrderInfo value = swpOrderDAO.getOrder(orderId);
-            String v = null;
-            String url;
-            String mobile = "";
-            byte[] t = null;
-            String response = "Done";
-            String vv = getAdress(value.getInfo());
-            String orde = getOrs(value.getInfo());
-            orde = orde.replaceAll("=", "").replaceAll("&", "").replaceAll("\\*", "");
-            vv = vv.replaceAll("=", "").replaceAll("&", "");
-            String ro = response.replace("=", "").replace("&", "");
-            String message = "#address#=" + vv + "&#status#=" + ro + "&#orderDetail#=" + orde;
-            message = SUtils.span(message);
-            message = URLEncoder.encode(message,"utf-8");
-            url = forURL(SMSURL, APPKEY, TID, "18612274066", message);
-            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-            t = SHttpClient.getURLData(url, "");
-            response = SUtils.toString(t);
-            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-
-            url = forURL(SMSURL, APPKEY, TID, "18600326217", message);
-            System.out.println(String.format("Send  SMS mobile %s %s ,%s ", mobile, value.getOrder_id(), url));
-
-            t = SHttpClient.getURLData(url, "");
-
-            response = SUtils.toString(t);
-            System.out.println(String.format("Post Shop SMS message No. %s : %s , %s  %s ", value.getOrder_id(), response, mobile, url));
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
         return "@" + Constants.DONE;
     }
 
@@ -151,7 +99,6 @@ public class  PrinterController {
             return "@" + Constants.PARATERERROR;
         }
         deviceDAO.update(pid, status);
-
 
         return "@" + Constants.DONE;
     }

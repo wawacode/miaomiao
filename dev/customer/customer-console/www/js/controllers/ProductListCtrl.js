@@ -125,6 +125,12 @@
             var currentCategory = $scope.category;
             if(!currentCategory)return;
 
+            if(item.category_id != currentCategory.category_id){
+                // change category,just reload data
+                $scope.info.refreshAll();
+                return;
+            }
+
             var index = currentCategory.itemls.indexOf(item);
             if (index != -1) {
                 // do more update
