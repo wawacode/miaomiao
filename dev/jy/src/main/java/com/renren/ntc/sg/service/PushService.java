@@ -160,10 +160,10 @@ public class PushService {
          if (null != pushToken) {
              try {
                  if ("iOS".equals(pushToken.getChn())) {
-                     LoggerUtils.getInstance().log(pushToken.getOwner_phone() + " " + pushToken.getDevice_token() + " send ios");
+                     LoggerUtils.getInstance().log(pushToken.getOwner_phone() + " " + pushToken.getDevice_token() + " "+extra+" send ios");
                      sendIOSUnicast(phone, message, pushToken.getDevice_token(),extra);
                  } else {
-                     LoggerUtils.getInstance().log(phone + " " + pushToken.getDevice_token() + " send adr ");
+                     LoggerUtils.getInstance().log(phone + " " + pushToken.getDevice_token() + " "+extra+" send adr ");
                      sendAndroidUnicast(phone, message, pushToken.getDevice_token(),extra);
                  }
              } catch (Exception e) {
@@ -205,7 +205,6 @@ public class PushService {
 				unicast.setExtraField("msg", msg);
 			}
 		}
-		System.out.println("adr===>"+extra);
 		if(unicast.send()){
             LoggerUtils.getInstance().log(String.format("adr fail to send device_token"));
         }
@@ -259,6 +258,7 @@ public class PushService {
     public void sendUserCancel2KF(Order order, Shop shop,String extra) {
     	try {
     		String message = getUserCancelPushMsg2KF(order, shop);
+    		LoggerUtils.getInstance().log(String.format("push user cancel msg 2 kf order id =%s,shopId=%l,message=%s,extra=%s", order.getOrder_id(),shop.getId(),message,extra));
             pushKf(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -278,6 +278,7 @@ public class PushService {
     public void sendRemind2Kf(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
+        	LoggerUtils.getInstance().log(String.format("push remind msg 2 kf order id =%s,shopId=%l,message=%s,extra=%s", order.getOrder_id(),shop.getId(),message,extra));
             pushKf(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -287,6 +288,7 @@ public class PushService {
     public void sendCancel2Boss(Order o, Shop shop,String extra) {
         try {
         	String message = getUserCancelPushMsg2Boss(o,shop);
+        	LoggerUtils.getInstance().log(String.format("push user cancel msg 2 boss order id =%s,shopid=%l,message=%s,extra=%s,shop_tel", o.getOrder_id(),shop.getId(),message,extra,StringUtils.isBlank(shop.getTel())?"":shop.getTel()));
         	pushBoss(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -296,6 +298,7 @@ public class PushService {
     public void sendRemindOrder2Boss(Order order, Shop shop,String extra) {
         try {
         	String message = getRemindMsg(order, shop);
+        	LoggerUtils.getInstance().log(String.format("push remind msg 2 boss order id =%s,shopid=%l,message=%s,extra=%s,shop_tel", order.getOrder_id(),shop.getId(),message,extra,StringUtils.isBlank(shop.getTel())?"":shop.getTel()));
             pushBoss(shop, message,extra);
         } catch (Throwable e) {
             e.printStackTrace();

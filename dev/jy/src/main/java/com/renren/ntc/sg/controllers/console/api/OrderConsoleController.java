@@ -228,7 +228,6 @@ public class OrderConsoleController extends BasicConsoleController{
         	o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "boss cancel order");
-            orderInfo.put("cancel_info", OrderStatus.BOSSCANCEL.getCode());
             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
             ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.BOSSCANCEL.getCode(), SUtils.generOrderTableName(shop_id));
             User user = userDAO.getUser(o.getUser_id());
