@@ -1,10 +1,7 @@
 package com.renren.ntc.sg.controllers.console;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
@@ -95,7 +92,15 @@ public class ShopConsoleController {
             shop_id = Constants.DEFAULT_SHOP ;
         }
         Shop shop = shopDAO.getShop(shop_id);
-
+        String path = inv.getRequest().getRequestURI() ;
+        Map  pm = inv.getRequest().getParameterMap();
+        Set<String> s =  pm.keySet();
+        StringBuffer sb  = new StringBuffer();
+        for (String str : s){
+               String value =  inv.getParameter(str);
+               sb.append(str).append("=").append(value).append("&");
+        }
+        path = path + "?" + sb.toString();
         if(null == shop){
             LoggerUtils.getInstance().log(String.format("can't find shop  %d  " ,shop_id) );
             shop = shopDAO.getShop( Constants.DEFAULT_SHOP);
@@ -133,6 +138,7 @@ public class ShopConsoleController {
             it.setTest(tt + "");
         }
         inv.addModel("itemls", itemls);
+        inv.addModel("current_path",path);
         inv.addModel("categoryls",categoryls);
         inv.addModel("curr_cate_id",category_id);
         return "shop";
@@ -480,7 +486,8 @@ public class ShopConsoleController {
 									  @Param("serialNo") String serialNo,
 									  @Param("shop_id") long shopId,
 									  @Param("categoryId") int categoryId,
-									  @Param("pic") MultipartFile pic) {
+									  @Param("pic") MultipartFile pic,
+                                      @Param("path") String path) {
     	if(pic == null){
     		LoggerUtils.getInstance().log(String.format("uploadPic is null,serialNo=%s",serialNo));
     		return "@error" ;
@@ -504,7 +511,7 @@ public class ShopConsoleController {
 		if (flag != 1) {
             return "@error";
         }
-    	return "@" + Constants.DONE;
+    	return "r:" + path;
 	}
 
     //注册的时候ajax校验用户名，违禁词和嫌疑词不让注册
