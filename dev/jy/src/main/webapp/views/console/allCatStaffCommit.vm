@@ -52,6 +52,8 @@
                         <th>商店名称</th>
                         <th>商店电话</th>
                         <th>店主电话</th>
+                        <th>导入条码数</th>
+                        <th>成功条码数</th>
                         <th>商店地址</th>
                         <th>服务范围</th>
                         <th>创建时间</th>
@@ -68,6 +70,8 @@
                             <td class="edit" id="${catStaffCommt.id}-shop_name">$catStaffCommt.shop_name</td>
                             <td class="edit" id="${catStaffCommt.id}-shop_tel">$catStaffCommt.shop_tel</td>
                             <td class="edit" id="${catStaffCommt.id}-shop_owner_phone">$catStaffCommt.shop_owner_phone</td>
+                            <td >$catStaffCommt.serialNo_num</td>
+                            <td >$catStaffCommt.success_num</td>
                             <td class="edit" id="${catStaffCommt.id}-shop_address">$catStaffCommt.shop_address</td>
                             <td class="edit" id="${catStaffCommt.id}-shop_serveArea">$catStaffCommt.shop_serveArea</td>
                             <td>$catStaffCommt.create_time</td>

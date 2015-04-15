@@ -1,24 +1,16 @@
 package com.renren.ntc.sg.controllers.console;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.alibaba.fastjson.JSONObject;
+import com.renren.ntc.sg.bean.*;
+import com.renren.ntc.sg.biz.dao.*;
+import com.renren.ntc.sg.service.LoggerUtils;
+import com.renren.ntc.sg.util.MimeTypeUtils;
+import com.renren.ntc.sg.util.SUtils;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -32,18 +24,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.fastjson.JSONObject;
-import com.renren.ntc.sg.bean.Category;
-import com.renren.ntc.sg.bean.Item;
-import com.renren.ntc.sg.bean.Product;
-import com.renren.ntc.sg.bean.Shop;
-import com.renren.ntc.sg.biz.dao.CategoryDAO;
-import com.renren.ntc.sg.biz.dao.ItemsDAO;
-import com.renren.ntc.sg.biz.dao.ProductDAO;
-import com.renren.ntc.sg.biz.dao.ShopDAO;
-import com.renren.ntc.sg.service.LoggerUtils;
-import com.renren.ntc.sg.util.MimeTypeUtils;
-import com.renren.ntc.sg.util.SUtils;
+import java.io.*;
+import java.util.*;
 
 /**
  * 地推人员工具
@@ -64,6 +46,9 @@ public class ToolsController {
 
     @Autowired
     CategoryDAO categoryDAO;
+
+    @Autowired
+    CatStaffCommitDAO catStaffCommitDAO;
 
     @Get("")
     @Post("")
@@ -95,7 +80,7 @@ public class ToolsController {
         //删除初始商品
         itemDao.del(SUtils.generTableName(shop_id), shop_id);
         //保存数据到数据库
-        saveToDB(inv, shop_id, file);
+        saveToDB(inv, shop_id, file,false);
 //		if (MimeTypeUtils.APPLICATION_EXCEL_2003_2007.equals(contentType)) {
 //			boolean result = readXLS(f, shop_id);
 //			if(!result){
@@ -130,7 +115,7 @@ public class ToolsController {
             return "@文件类型有误! 只支持.txt类型文件!";
         }
         //保存数据到数据库
-        saveToDB(inv, shop_id, file);
+        saveToDB(inv, shop_id, file,true);
         LoggerUtils.getInstance().log(" OK!");
         return "toolsDetail";
     }
@@ -142,7 +127,7 @@ public class ToolsController {
      * @param shop_id
      * @param file
      */
-    private void saveToDB(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file) {
+    private void saveToDB(Invocation inv, @Param("shop_id") long shop_id, @Param("file") MultipartFile file,boolean isReplenish) {
         BufferedReader br = null;
         Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
         List<String> missingList = new ArrayList<String>();//丢弃多少项目的统计
@@ -151,6 +136,7 @@ public class ToolsController {
             String lineTxt = br.readLine();
             String regex = lineTxt.contains("\t") ? "\t" : lineTxt.contains(",") ? ", " : " ";
             int count = 0;
+            int seriNoNum = 0;//续传条码插入数量计数
             do {
                 if (!StringUtils.isBlank(lineTxt)) {
                     count++;//总计
@@ -171,6 +157,7 @@ public class ToolsController {
                         saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
                         continue;
                     }
+                    //serialNoNum successNum
 
                     Product p = pDao.geProduct(serialNo);
                     Item it = new Item();
@@ -187,6 +174,7 @@ public class ToolsController {
                     LoggerUtils.getInstance().log("条形码:\t" + serialNo + " 产品名称:\t" + it.getName() + "\t价格:\t" + it.getPrice());
                     itemDao.insert(SUtils.generTableName(shop_id), it);
                     saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
+                    seriNoNum ++;
                 }
             } while ((lineTxt = br.readLine()) != null);
             //遍历map集合  替换分类为中文名字
@@ -195,8 +183,20 @@ public class ToolsController {
             inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
             inv.addModel("missingList", missingList); //丢失
             inv.addModel("count", count); //总数
-            inv.addModel("successNum", count - missingList.size()); //总数
+            int successNum = 0;
+            if (isReplenish){
+                count = seriNoNum;//是否续传
+            }else {
+                successNum = count - missingList.size();
+            }
+            inv.addModel("successNum", successNum); //成功总数
             inv.addModel("shop_id", shop_id);
+
+
+            //保存扫码数量 和 成功数量
+            CatStaffCommit catStaffCommit = catStaffCommitDAO.getbyShopId(shop_id);
+            catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + successNum);
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -214,6 +214,7 @@ public class ToolsController {
                 e.printStackTrace();
             }
         }
+
     }
 
     /**

@@ -31,9 +31,9 @@ CREATE TABLE `items` (
 public interface CatStaffCommitDAO {
     static final String TABLE_NAME = "catstaff_commit";
     static final String FIELDS = "id,name ,phone,pwd ,shop_id,shop_info,shop_serveArea," +
-            "shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,create_time,update_time ";
+            "shop_name,shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,create_time,update_time ,serialNo_num, success_num";
     static final String INSERT_FIELDS = "name ,phone,pwd ,shop_serveArea,shop_name," +
-            "shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng";
+            "shop_owner_phone,shop_address,shop_tel,shop_print,shop_lat,shop_lng,serialNo_num, success_num";
 
     @ReturnGeneratedKeys
     @SQL("insert into " + TABLE_NAME + " (" + INSERT_FIELDS + " ) values (:1.name ,:1.phone,:1.pwd ," +
@@ -46,7 +46,7 @@ public interface CatStaffCommitDAO {
     public CatStaffCommit getCatStaffCommit(long id);
 
 
-    @SQL("select " +  FIELDS +" from " + TABLE_NAME + " where phone =:1 and pwd = :2 order by create_time desc limit :3,:4")
+    @SQL("select " + FIELDS + " from " + TABLE_NAME + " where phone =:1 and pwd = :2 order by create_time desc limit :3,:4")
     public List<CatStaffCommit> getCatStaffCommit(String staff_phone, String staff_pwd, int from, int offset);
 
 
@@ -61,7 +61,6 @@ public interface CatStaffCommitDAO {
     public List<Long> getShop_ids(String phone);
 
     /**
-     *
      * @param key
      * @param from
      * @param offset
@@ -71,7 +70,6 @@ public interface CatStaffCommitDAO {
     public List<CatStaffCommit> getCatStaffCommit(String key, int from, int offset);
 
     /**
-     *
      * @param key
      * @param value
      * @param date
@@ -82,10 +80,21 @@ public interface CatStaffCommitDAO {
     public int update(@SQLParam("key") String key, String value, Date date, long id);
 
     /**
-     *
+     * @param serialNoNum
+     * @param successNum
+     * @param shop_id
+     * @return
+     */
+    @SQL("update " + TABLE_NAME + " set serialNo_num = :2, success_num = :3 where shop_id =:1")
+    public int update(long shop_id, int serialNoNum, int successNum);
+
+    /**
      * @param user_id
      * @return
      */
     @SQL("DELETE FROM  " + TABLE_NAME + "  WHERE id=:1")
     public int del(long user_id);
+
+    @SQL("select " + FIELDS + " from " + TABLE_NAME + " where  shop_id =:1 ")
+    public CatStaffCommit getbyShopId(long shop_id);
 }

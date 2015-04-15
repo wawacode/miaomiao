@@ -11,32 +11,48 @@ import java.util.Date;
  */
 public class CatStaffCommit {
 
-    private long  id;
-    private String  name;
-    private String  phone;
+    private long id;
+    private String name;
+    private String phone;
     private String pwd;
     private String shop_name;
 
 
-
-    private String shop_serveArea ;
+    private String shop_serveArea;
     private String shop_owner_phone;
     private String shop_tel;
 
 
-
-    private long  shop_id;
+    private long shop_id;
     private String shop_print;
 
     private String shop_address;
-    private double  shop_lat;
-    private double  shop_lng;
-
+    private double shop_lat;
+    private double shop_lng;
 
 
     private String shop_info;
-    private Date create_time ;
-    private Date update_time ;
+    private Date create_time;
+    private Date update_time;
+
+    private int serialNo_num;
+    private int success_num;
+
+    public int getSuccess_num() {
+        return success_num;
+    }
+
+    public void setSuccess_num(int success_num) {
+        this.success_num = success_num;
+    }
+
+    public int getSerialNo_num() {
+        return serialNo_num;
+    }
+
+    public void setSerialNo_num(int serialNo_num) {
+        this.serialNo_num = serialNo_num;
+    }
 
     public String getShop_serveArea() {
         return shop_serveArea;
@@ -45,6 +61,7 @@ public class CatStaffCommit {
     public void setShop_serveArea(String shop_serveArea) {
         this.shop_serveArea = shop_serveArea;
     }
+
     public long getShop_id() {
         return shop_id;
     }
