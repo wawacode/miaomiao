@@ -346,7 +346,13 @@ public class OrderController {
             userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(), SUtils.generUserOrderTableName(u.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o); 
-            smsService.sendConfirmSMS2Boss(o, shop);
+            String wxAct = o.getAct();
+            if(StringUtils.isNotBlank(wxAct) && wxAct.equals("wx")){
+            	LoggerUtils.getInstance().log("user confirm order id="+o.getOrder_id()+",is wx send!!!");
+            	 smsService.sendConfirmSMS2Boss(o, shop);
+            }else {
+				LoggerUtils.getInstance().log("user confirm order id="+o.getOrder_id()+",is not wx dont send!!");
+			}
         }
         result.put("data",data);
         result.put("code",0);
