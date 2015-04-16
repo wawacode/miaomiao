@@ -223,7 +223,7 @@ public class SMSService {
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
             //节约成本  有打印机的情况不要发那么多字的短信
             if (null != devcie && !SUtils.isOffline(devcie)) {
-                String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
+                String vv = " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
                 vv = vv.replaceAll("=", "").replaceAll("&", "");
                 String ro = response.replace("=", "").replace("&", "");
                 float p = (float) order.getPrice() / 100;
