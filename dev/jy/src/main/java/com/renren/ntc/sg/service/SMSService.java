@@ -443,7 +443,7 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
-            String message = Constants.USER_CONFIRM_MSG_2_BOSS.replace("{date}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id()).replace("{price}", (order.getPrice()/100)+"");    		
+            String message = Constants.USER_CONFIRM_MSG_2_BOSS.replace("{date}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id()).replace("{price}", ((float)order.getPrice()/100)+"");    		
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板
