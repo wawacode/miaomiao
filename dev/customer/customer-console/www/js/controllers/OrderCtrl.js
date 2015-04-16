@@ -181,7 +181,11 @@
 
         $scope.confirmShip = function(order){
 
+            MMUtils.showLoadingIndicator('正在确认,请稍候...', $scope);
+
             httpClient.orderCanbeShipByShop($scope.info.shop.id, order.order_id, function (data, status) {
+
+                $ionicLoading.hide();
 
                 var code = data.code, dataDetail = data.data;
                 if (!code == 0) {
@@ -193,6 +197,7 @@
                 updateOrderAction($scope.info.orders,order);
 
             }, function (data, status) {
+                $ionicLoading.hide();
                 MMUtils.showAlert('确认配送失败');
             });
         };

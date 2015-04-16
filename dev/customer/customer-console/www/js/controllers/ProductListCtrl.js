@@ -253,7 +253,13 @@
                 }
 
                 $scope.closeModal();
+
                 // update some fileds
+                for(var prop in dataDetail.item){
+                    if(dataDetail.item && dataDetail.item.hasOwnProperty(prop)){
+                        item[prop] = dataDetail.item[prop];
+                    }
+                }
                 $scope.updateItemFromCurrentCategory(item);
 
             }, function (data, status) {
