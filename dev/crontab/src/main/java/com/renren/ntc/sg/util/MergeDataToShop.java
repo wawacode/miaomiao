@@ -48,7 +48,7 @@ public class MergeDataToShop {
                     		   if(StringUtils.isBlank(item.getPic_url()) || item.getPrice() ==0){
                     			   count = 0;
                     		   }
-                    		   itemDao.updateBaseInfo(SUtils.generTableName(toShopId), item.getSerialNo(), name, item.getPic_url(), item.getPrice(), count);
+                    		   itemDao.updateItemsBaseInfo(SUtils.generTableName(toShopId), item.getSerialNo(), name, item.getPic_url(), item.getPrice(), count,item.getCategory_id());
                     		   System.out.println("update shopId="+toShopId+"--"+JSON.toJSONString(item));
                     	   }else {
                     		   System.out.println("count is no zero shopId="+toShopId+"--"+JSON.toJSONString(toMergtItem));
@@ -59,6 +59,7 @@ public class MergeDataToShop {
                     		 count =0;
                     	 }
                     	 item.setCount(count);
+                    	 item.setShop_id(toShopId);
                          itemDao.insertItemsBaseInfo(SUtils.generTableName(toShopId), item);
                          System.out.println("insert to shopId="+toShopId+"--"+JSON.toJSONString(item));
                     }

@@ -174,4 +174,7 @@ public interface ItemsDAO {
     @SQL("insert into ##(:tableName) (" + INSERT_FIELDS_ITEMS_BASE + ")" + " value (:2.serialNo,:2.shop_id,:2.name,"
             + ":2.category_id,:2.score,:2.pic_url,:2.count)")
     public int insertItemsBaseInfo(@SQLParam("tableName") String tableName, Item item);
+    
+    @SQL("update  ##(:tableName) set name = :3 , pic_url=:4 , price=:5,count=:6,category_id=:7 where serialNo =:2")
+    public int updateItemsBaseInfo(@SQLParam("tableName") String tableName, String serialNo, String name, String pic_url,int price,int count,int cateId);
 }
