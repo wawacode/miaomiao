@@ -178,6 +178,7 @@
                 }
                 return flag;
             }
+            return flag;
         }
         function submitForm() {
             if (confirm("确认同步?")) {

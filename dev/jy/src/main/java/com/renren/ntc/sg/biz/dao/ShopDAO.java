@@ -85,4 +85,11 @@ public interface ShopDAO {
      */
     @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where  name like :1  or tel like :1")
     public List<Shop> getShops(String text);
+
+    /**
+     * zhaoxiufei
+     * @return
+     */
+    @SQL("")
+    public List<Shop> getAllShops();
 }

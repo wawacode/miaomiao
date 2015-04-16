@@ -51,12 +51,23 @@ public class ToolsController {
     CatStaffCommitDAO catStaffCommitDAO;
 
     @Get("")
-    @Post("")
+    @Post("") //bd
     public String index(Invocation inv) {
         List<Shop> list = shopDAO.getAllShopsByNotOnline();
         inv.addModel("list", list);
         List<Category> categoryList = categoryDAO.getCategory();
         inv.addModel("categoryList", categoryList);
+        LoggerUtils.getInstance().log(" OK ");
+        return "tools_bd";
+    }
+    @Get("synch")
+    @Post("synch")
+    public String index2(Invocation inv) {
+        List<Shop> list = shopDAO.getAllShops();
+        inv.addModel("list", list);
+        List<Category> categoryList = categoryDAO.getCategory();
+        inv.addModel("categoryList", categoryList);
+        LoggerUtils.getInstance().log(" OK ");
         return "tools";
     }
 
@@ -136,10 +147,8 @@ public class ToolsController {
             String lineTxt = br.readLine();
             String regex = lineTxt.contains("\t") ? "\t" : lineTxt.contains(",") ? ", " : " ";
             int count = 0;
-            int seriNoNum = 0;//续传条码插入数量计数
             do {
                 if (!StringUtils.isBlank(lineTxt)) {
-                    count++;//总计
                     if (count % 1000 == 0) {
                         Thread.sleep(100);
                     }
@@ -178,7 +187,7 @@ public class ToolsController {
 
                     itemDao.insert(SUtils.generTableName(shop_id), it);
                     saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
-                    seriNoNum++;
+                    count++;//总计
                 }
             } while ((lineTxt = br.readLine()) != null);
             //遍历map集合  替换分类为中文名字
@@ -189,15 +198,9 @@ public class ToolsController {
             inv.addModel("count", count); //总数
             inv.addModel("successNum", count - missingList.size()); //成功总数
             inv.addModel("shop_id", shop_id);
-            int successNum = 0;
-            if (isReplenish) {
-                count = seriNoNum;//是否续传
-            } else {
-                successNum = count - missingList.size();
-            }
             //保存扫码数量 和 成功数量
             CatStaffCommit catStaffCommit = catStaffCommitDAO.getbyShopId(shop_id);
-            catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + successNum);
+            catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + count - missingList.size());
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -216,7 +219,7 @@ public class ToolsController {
                 e.printStackTrace();
             }
         }
-
+        LoggerUtils.getInstance().log(" OK ");
     }
 
     /**
@@ -278,7 +281,7 @@ public class ToolsController {
         inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
         inv.addModel("count", count); //总数
         inv.addModel("shop_id", to_shop_id);
-
+        LoggerUtils.getInstance().log(" OK ");
         return "toolsDetail";
     }
 
@@ -337,6 +340,7 @@ public class ToolsController {
         inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
         inv.addModel("shop_id", to_shop_id);
         inv.addModel("count", count); //总数
+        LoggerUtils.getInstance().log(" OK ");
         return "toolsDetail";
     }
 
@@ -405,7 +409,7 @@ public class ToolsController {
         inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
         inv.addModel("count", count); //总数
         inv.addModel("shop_id", shop_id);
-
+        LoggerUtils.getInstance().log(" OK ");
         return "toolsDetail";
     }
 

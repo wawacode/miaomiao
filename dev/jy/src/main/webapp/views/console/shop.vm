@@ -37,7 +37,8 @@
                 <li><a href="/console/allshop/orders">所有店铺订单</a></li>
                 <li><a href="/console/product">产品总表</a></li>
                 <li><a href="/console/registerUser">注册用户管理</a></li>
-                <li><a href="/console/tools">内部工具</a></li>
+                <li><a href="/console/tools">BD工具</a></li>
+                <li><a href="/console/tools/synch">内部工具</a></li>
                 <li><a href="/console/catStaff">喵喵员工</a></li>
                 <li><a href="/console/catStaffCommit">推广店铺</a></li>
             </ul>
