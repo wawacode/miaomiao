@@ -130,7 +130,7 @@ public class Constants {
 	
 	public static final String USER_CANCEL_ORDER_2_PUSH_MSG = "【喵喵生活】用户要求退单:店铺{shop_name},{shop_tel}配送地址{address},{phone},下单时间 {create_time},订单号{order_id},的订单用户要求退单";
 	
-	public static final String KF_PHONE = "18515282916";
+	public static final String KF_PHONE = "15010229352";
 	
 	public static final String USER_CONFIRM_MSG_2_BOSS = "#date#={date}&#order_id#={order_id}&#price#={price}";
 	
