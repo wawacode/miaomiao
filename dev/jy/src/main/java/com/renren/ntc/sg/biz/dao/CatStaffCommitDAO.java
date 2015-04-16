@@ -38,7 +38,7 @@ public interface CatStaffCommitDAO {
     @ReturnGeneratedKeys
     @SQL("insert into " + TABLE_NAME + " (" + INSERT_FIELDS + " ) values (:1.name ,:1.phone,:1.pwd ," +
             ":1.shop_serveArea,:1.shop_name,:1.shop_owner_phone,:1.shop_address,:1.shop_tel," +
-            ":1.shop_print,:1.shop_lat,:1.shop_lng) ")
+            ":1.shop_print,:1.shop_lat,:1.shop_lng,:1.serialNo_num,:1.success_num) ")
     public long insert(CatStaffCommit o);
 
 

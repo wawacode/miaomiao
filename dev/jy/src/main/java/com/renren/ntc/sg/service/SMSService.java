@@ -388,7 +388,6 @@ public class SMSService {
     }
     /**
      * 发催单短信给客服
-     * @param order_id
      * @param shop
      */
     public void sendSMSRemind2kf(Order order, Shop shop) {

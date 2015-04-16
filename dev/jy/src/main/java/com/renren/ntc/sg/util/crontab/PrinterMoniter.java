@@ -50,14 +50,13 @@ public class PrinterMoniter {
       for (Shop  shop: shops){
           Device device   =  deviceDao.getDevByShopId(shop.getId()) ;
           if (null == device ){
-//              String  message = "{shop_name} 打印机状态异常";
-//              message = message.replace("{shop_name}",shop.getName()) ;
-//              toSend(message , TID , MONITERPHONE);
+              return ;
           }
-          if(offline(device.getUpdate_time(), shop)) {
+          long  now = System.currentTimeMillis();
+          if(offline(device.getUpdate_time(), shop)&& SUtils.online(now,shop)) {
              String  message = "{shop_name} 打印机离线";
              message = message.replace("{shop_name}",shop.getName()) ;
-              toSend(message , TID , MONITERPHONE);
+             toSend(message , TID , MONITERPHONE);
 
           }
        }
