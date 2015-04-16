@@ -281,21 +281,27 @@
                     <div class="panel-body text-center">
                         <h4 class="text-center"> <i class="icon-android"></i> 喵喵商家版Android下载 </h4>
                         <p>
-                            <a href="/www/build/mmconsole.apk" id="copy-button" data-clipboard-text="/www/build/mmconsole.apk"
+                            <a href="/www/build/mmconsole-0414.apk" id="copy-button" data-clipboard-text="/www/build/mmconsole.apk"
                                title="点此查看链接" style="word-wrap: break-word;">点此查看链接</a>
                             或者微信扫描下方二维码,选择在浏览器中打开
                         </p>
                         <img class="media-object" style="max-width: 200px;margin-top: 10px" src="/images/mm-console-android-apk.png"/>
+
                     </div>
 
-
                     <div class="panel-body text-center">
-                        <h4 class="text-center"> <i class="icon-android"></i> 喵喵地推人员工具Android下载 </h4>
+                        <h4 class="text-center"> <i class="icon-android"></i> 喵喵BD人员工具Android下载 </h4>
                         <p>
                             <a href="/tool/www/build/CatStaffTool.apk"
                                title="点此查看链接" style="word-wrap: break-word;">点此查看链接</a>
                                 请选择在浏览器中打开
                         </p>
+
+                        <h4 class="text-center"> <i class="icon-apple"></i> 喵喵BD人员工具iOS </h4>
+                        <p>
+                            <a href="tool/www/index.html" title="点此查看链接" style="word-wrap: break-word;">点此链接</a>
+                        </p>
+
                     </div>
 
                 </div>

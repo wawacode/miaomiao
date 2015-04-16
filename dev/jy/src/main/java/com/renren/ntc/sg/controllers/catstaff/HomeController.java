@@ -133,7 +133,7 @@ public class HomeController {
         area.put("shop_serveArea", shop_serveArea);
         area.put("open_time",openShopTime);
         area.put("close_time",closeShopTime);
-        area.put("base_price",base_price) ;
+        area.put("base_price",base_price * 100) ;
         catStaffCommit.setShop_serveArea(area.toJSONString());
         catStaffCommit.setShop_lat(shop_lat);
         catStaffCommit.setShop_lng(shop_lng);
