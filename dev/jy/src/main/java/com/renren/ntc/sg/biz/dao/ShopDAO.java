@@ -76,6 +76,14 @@ public interface ShopDAO {
      */
     @SQL("select " + SHOP_NAME_FIELDS + "  from " + TABLE_NAME + " where audit =" + SHOP_NOT_ONLINE)
     public List<Shop> getAllShopsByNotOnline();
+    /**
+     * 获取未上线的商店 id name
+     * zhaoxiufei
+     *
+     * @return
+     */
+    @SQL("select " + SHOP_NAME_FIELDS + "  from " + TABLE_NAME + " where audit =" + SHOP_NOT_ONLINE +" and id = :1")
+    public Shop getShopByNotOnline(long shop_id);
 
     /**
      * advQuery

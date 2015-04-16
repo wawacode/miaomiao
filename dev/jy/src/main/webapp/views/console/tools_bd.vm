@@ -9,7 +9,7 @@
     <title>内部工具</title>
     <!-- Bootstrap core CSS -->
     <script type="text/javascript" src="../../../js/jquery/dist/jquery.js"></script>
-    <link href="../../js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function () {
             var shop_id = null;

@@ -51,8 +51,34 @@ public class ToolsController {
     CatStaffCommitDAO catStaffCommitDAO;
 
     @Get("")
-    @Post("") //bd
-    public String index(Invocation inv) {
+    @Post("")
+    public String login(Invocation inv) {
+        System.out.println("ToolsController.java.ToolsController---->" + 56);
+        return "db_login";
+    }
+
+    @Get("login/valid")
+    @Post("login/valid")
+    public String valid(Invocation inv, @Param("phone") String phone, @Param("pwd") String pwd) {
+        List<CatStaffCommit> u = catStaffCommitDAO.getCatStaffCommit(phone, pwd);//只能操作自己建立的店铺
+        if (0 == u.size()) {
+            inv.addModel("msg", "用户名字或密码不正确");
+            return "db_login";
+        }
+        List<Shop> list = new ArrayList<Shop>();
+        for (int i = 0; i < u.size(); i++) {
+            Shop shop = shopDAO.getShopByNotOnline(u.get(i).getShop_id());
+            if (null != shop) {
+                list.add(shop);
+            }
+        }
+        inv.addModel("list", list);
+        return "tools_bd";
+    }
+
+    @Get("db")
+    @Post("db") //bd 所有未上线的
+    public String db(Invocation inv) {
         List<Shop> list = shopDAO.getAllShopsByNotOnline();
         inv.addModel("list", list);
         List<Category> categoryList = categoryDAO.getCategory();
@@ -60,9 +86,10 @@ public class ToolsController {
         LoggerUtils.getInstance().log(" OK ");
         return "tools_bd";
     }
+
     @Get("synch")
-    @Post("synch")
-    public String index2(Invocation inv) {
+    @Post("synch")//本人 所有店铺
+    public String synch(Invocation inv) {
         List<Shop> list = shopDAO.getAllShops();
         inv.addModel("list", list);
         List<Category> categoryList = categoryDAO.getCategory();
@@ -156,6 +183,7 @@ public class ToolsController {
                     String serialNo = upacage(arr[0].trim());
                     if (serialNo.length() < 8 || serialNo.length() > 14) {
                         missingList.add(serialNo);
+                        count++;//总计
                         continue;
                     }
                     //去商店对应商品库查询
@@ -166,8 +194,6 @@ public class ToolsController {
                         saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
                         continue;
                     }
-                    //serialNoNum successNum
-
                     Product p = pDao.geProduct(serialNo);
                     Item it = new Item();
                     it.setShop_id(shop_id);
@@ -187,7 +213,6 @@ public class ToolsController {
 
                     itemDao.insert(SUtils.generTableName(shop_id), it);
                     saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
-                    count++;//总计
                 }
             } while ((lineTxt = br.readLine()) != null);
             //遍历map集合  替换分类为中文名字

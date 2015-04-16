@@ -97,4 +97,7 @@ public interface CatStaffCommitDAO {
 
     @SQL("select " + FIELDS + " from " + TABLE_NAME + " where  shop_id =:1 ")
     public CatStaffCommit getbyShopId(long shop_id);
+
+    @SQL("select " + FIELDS + " from " + TABLE_NAME + " where phone =:1 and pwd = :2 ")
+    public List<CatStaffCommit> getCatStaffCommit(String staff_phone, String staff_pwd);
 }
