@@ -222,8 +222,8 @@ public class WXController {
     }
 
     private void sendInfo( Shop shop ,String order_id){
-        //smsService.sendSMS2LocPush(order_id, shop);
-    	smsService.sendSMS2KF(order_id, shop);
+        smsService.sendSMS2LocPush(order_id, shop);
+    	//smsService.sendSMS2KF(order_id, shop);
         pushService.send2locPush(order_id, shop);
         pushService.send2kf(order_id, shop);
         // 发送短信通知
