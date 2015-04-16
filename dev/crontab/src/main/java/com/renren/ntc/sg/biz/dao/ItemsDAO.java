@@ -28,11 +28,13 @@ public interface ItemsDAO {
 
     static final String TABLE_NAME = "items";
 
-    static final String FIELDS = "id,serialNo, shop_id,name,category_id,category_sub_id,score ,price,price_new ,count,pic_url,create_time,update_time";
+    static final String FIELDS = "id,serialNo, shop_id,name,category_id,category_sub_id,score ,price,price_new ,count,pic_url,create_time,update_time,onsell";
 
     static final String INSERT_FIELDS = "serialNo,shop_id,name,category_id,category_sub_id,score, price,price_new,count,pic_url";
     
     static final String INSERT_FIELDS_BASE = "serialNo,shop_id,name,category_id,score,pic_url";
+    
+    static final String INSERT_FIELDS_ITEMS_BASE = "serialNo,shop_id,name,category_id,score,pic_url,count";
 
     /**
      * description: 获取商品数量
@@ -165,4 +167,11 @@ public interface ItemsDAO {
     
     @SQL("update  ##(:tableName) set name = :3 , pic_url=:4 , price=:5,count=:6 where serialNo =:2")
     public int updateBaseInfo(@SQLParam("tableName") String tableName, String serialNo, String name, String pic_url,int price,int count);
+    
+    @SQL("select " + FIELDS + " from  ##(:tableName)   where shop_id =:2 order by create_time desc limit :3,:4")
+    public List<Item> getOrignItems(@SQLParam("tableName") String tableName, long shop_id, int from, int offset);
+    
+    @SQL("insert into ##(:tableName) (" + INSERT_FIELDS_ITEMS_BASE + ")" + " value (:2.serialNo,:2.shop_id,:2.name,"
+            + ":2.category_id,:2.score,:2.pic_url,:2.count)")
+    public int insertItemsBaseInfo(@SQLParam("tableName") String tableName, Item item);
 }
