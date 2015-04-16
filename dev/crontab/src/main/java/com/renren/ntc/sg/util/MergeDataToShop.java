@@ -40,7 +40,14 @@ public class MergeDataToShop {
             			continue;
             		}
                      //线上马特
-                     Item toMergtItem = itemDao.getItem(SUtils.generTableName(toShopId), item.getSerialNo(),toShopId);
+                     Item toMergtItem;
+					try {
+						toMergtItem = itemDao.getItem(SUtils.generTableName(toShopId), item.getSerialNo(),toShopId);
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("error shopid="+toShopId+",serialNo="+item.getSerialNo());
+						continue;
+					}
                     if (toMergtItem != null) {
                     	   if( toMergtItem.getCount() == 0 || toMergtItem.getOnsell() ==0){
                     		   String name = StringUtils.isBlank(item.getName()) ? "":item.getName();
