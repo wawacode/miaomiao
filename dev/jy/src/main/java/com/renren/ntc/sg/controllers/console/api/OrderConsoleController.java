@@ -198,11 +198,11 @@ public class OrderConsoleController extends BasicConsoleController{
             User user = userDAO.getUser(o.getUser_id());
             userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.DELIVERIES.getCode(), SUtils.generUserOrderTableName(user.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
-            data.put("order", o);       
+            data.put("order", o);   
+            wxService.sendWX2User(order_id,shop_id);//发送微信消息给用户
         }
         result.put("data",data);
         result.put("code",0);
-        wxService.sendWX2User(order_id,shop_id);//发送微信消息给用户
         return "@json:"+result.toJSONString();
     }
     /**
