@@ -15,12 +15,12 @@
             var shop_id = null;
             $('#firstShop option:selected', this).each(function () {
                 shop_id = this.value;
-                onchangeShow(shop_id);
+                //onchangeShow(shop_id);
             });
             $('#firstShop').change(function () {
                 $('option:selected', this).each(function () {
                     shop_id = this.value;
-                    onchangeShow(shop_id);
+                    //onchangeShow(shop_id);
                 });
             });
             function onchangeShow(shop_id) {
@@ -59,12 +59,12 @@
             var f2_firstShop_id = null;
             $('#f2_firstShop option:selected', this).each(function () {
                 f2_firstShop_id = this.value;
-                onchangeShow2(f2_firstShop_id);
+                //onchangeShow2(f2_firstShop_id);
             });
             $('#f2_firstShop').change(function () {
                 $('option:selected', this).each(function () {
                     f2_firstShop_id = this.value;
-                    onchangeShow2(f2_firstShop_id);
+                   // onchangeShow2(f2_firstShop_id);
                 });
             });
             function onchangeShow2(shop_id) {
@@ -205,7 +205,7 @@
                     <div class="form-group">
                         <label for="exampleInputFile">商店:</label>
                         <select name="shop_id" required>
-                            #foreach($shop in $list)
+                            #foreach($shop in $notOnlineList)
                                 <option value="$shop.id">$shop.name</option>
                             #end
                         </select>
@@ -226,7 +226,7 @@
                     <div class="form-group">
                         <label for="exampleInputFile">商店:</label>
                         <select name="shop_id" required>
-                            #foreach($shop in $list)
+                            #foreach($shop in $allShops)
                                 <option value="$shop.id">$shop.name</option>
                             #end
                         </select>
@@ -236,6 +236,21 @@
                         <input id="uploadFile2" type="file" name="file" required style="display:inline-block">
                     </div>
                     <button type="submit" class="btn btn-success">提交</button>
+                </form>
+            </div>
+            <div style="margin: 20px;padding:10px">
+                <h3>上线哈哈镜</h3>
+
+                <form action="/console/tools/mvhhj" method="post" onsubmit="return submitForm();">
+                    <div class="form-group">
+                        <label for="exampleInputFile">商店:</label>
+                        <select name="to_shop_id" required>
+                            #foreach($shop in $allShops)
+                                <option value="$shop.id">$shop.name</option>
+                            #end
+                        </select>
+                    </div>
+                    <button class="btn btn-success" type="submit">确定</button>
                 </form>
             </div>
         </div>

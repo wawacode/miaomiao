@@ -65,14 +65,23 @@ public class ToolsController {
             inv.addModel("msg", "用户名字或密码不正确");
             return "db_login";
         }
-        List<Shop> list = new ArrayList<Shop>();
+        List<Shop> notOnlineList = new ArrayList<Shop>();//未上线店
+        List<Shop> allShops = new ArrayList<Shop>();
         for (int i = 0; i < u.size(); i++) {
-            Shop shop = shopDAO.getShopByNotOnline(u.get(i).getShop_id());
-            if (null != shop) {
-                list.add(shop);
+            long shop_id = u.get(i).getShop_id();
+            Shop notOnlineShop = shopDAO.getShopByNotOnline(shop_id);//未上线
+            Shop shop = shopDAO.getShopById(shop_id);//所有店
+            shopDAO.getShopById(shop_id);
+            if (null != notOnlineShop ) {
+                notOnlineList.add(notOnlineShop);
+            }
+            if (null != shop){
+                allShops.add(shop);
             }
         }
-        inv.addModel("list", list);
+        inv.addModel("notOnlineList", notOnlineList);
+        inv.addModel("allShops", allShops);
+        LoggerUtils.getInstance().log(" OK ");
         return "tools_bd";
     }
 
@@ -308,6 +317,19 @@ public class ToolsController {
         inv.addModel("shop_id", to_shop_id);
         LoggerUtils.getInstance().log(" OK ");
         return "toolsDetail";
+    }
+
+    @Get("mvhhj")
+    @Post("mvhhj")// 上架哈哈镜
+    public String mvhhj(Invocation inv, @Param("to_shop_id") long to_shop_id) {
+        System.out.println("ToolsController.java.ToolsController---->" + 316);
+        if (0 == to_shop_id) {
+            return "@to_shop_id is null !";
+        }
+        long from_shop_id = 10085;
+        int category_id = 15;
+
+        return "r:/console/tools/mvShopItems?from_shop_id=" + from_shop_id + "&category_id=" + category_id + "&to_shop_id=" + to_shop_id;
     }
 
     /**

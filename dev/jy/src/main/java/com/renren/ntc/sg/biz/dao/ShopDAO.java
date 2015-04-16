@@ -86,6 +86,15 @@ public interface ShopDAO {
     public Shop getShopByNotOnline(long shop_id);
 
     /**
+     * 获取商店 id name
+     * zhaoxiufei
+     *
+     * @return
+     */
+    @SQL("select " + SHOP_NAME_FIELDS + "  from " + TABLE_NAME + " where id = :1")
+    public Shop getShopById(long shop_id);
+
+    /**
      * advQuery
      * zhaoxiufei
      *
@@ -98,6 +107,6 @@ public interface ShopDAO {
      * zhaoxiufei
      * @return
      */
-    @SQL("")
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME)
     public List<Shop> getAllShops();
 }
