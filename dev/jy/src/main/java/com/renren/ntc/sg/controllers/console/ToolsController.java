@@ -90,6 +90,7 @@ public class ToolsController {
     public String db(Invocation inv) {
         List<Shop> list = shopDAO.getAllShopsByNotOnline();
         inv.addModel("notOnlineList", list);
+        inv.addModel("allShops", list);
         List<Category> categoryList = categoryDAO.getCategory();
         inv.addModel("categoryList", categoryList);
         LoggerUtils.getInstance().log(" OK ");
