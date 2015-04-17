@@ -463,4 +463,25 @@ public class SMSService {
          String response = SUtils.toString(t);
          LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", orderId, response, phone, url));
     }
+
+    public void sendNotificationSMS2kf(Order order ,Shop shop,String info) {
+
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            String message = Constants.KF_NOTIFICATIONS.replace("{shop_name}",shop.getName())
+                    .replace("{tel}",shop.getTel()).replace("{order_id}", order.getOrder_id())
+                    .replace("{info}",info);
+
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            //短信通知 老板
+            String phone = Constants.KF_PHONE;
+            sendSms(Constants.KF_NOTIFICATION_TEMP_ID, phone, message, order.getOrder_id());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
