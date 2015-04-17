@@ -28,6 +28,7 @@ public class SUtils {
 
     private static String key = "210f760a89db30aa72ca258a3483cc7f";
     public  static String appId = "wx762f832959951212";
+    private static Object today;
 
 
     public static String byteToHex(final byte[] hash) {
@@ -428,5 +429,10 @@ public class SUtils {
         String sign = MD5Util.MD5Encode(sb.toString(), "utf-8")
                 .toUpperCase();
         return sign;
+    }
+
+    public static String  getToday() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(new Date());
     }
 }

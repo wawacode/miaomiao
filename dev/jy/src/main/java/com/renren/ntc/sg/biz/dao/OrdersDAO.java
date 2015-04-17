@@ -93,4 +93,6 @@ public interface OrdersDAO {
      @SQL("update ##(:tableName) set order_info =:2 ,update_time=now() where order_id = :1 ")
      public int updateOrderInfo(String order_id,String orderInfo, @SQLParam("tableName") String tableName);
 
+    @SQL("select " + FIELDS + " from ##(:tableName) where (status = 1 or status= 2) and shop_id=:2 and create_time > date_sub(now(), interval 1 hour);")
+     List<Order> getOrderbyTime(@SQLParam("tableName") String tableName, long shop_id);
 }
