@@ -334,11 +334,6 @@ public class OrderController {
         Order o = null;
         if ("done".equals(confirm)){
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
-//            String msg = o.getMsg();
-//            JSONObject om = orderService.getJson(msg);
-//            om.put("confirm","done");
-//            ordersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(shop_id));
-//            userOrdersDAO.confirm(order_id,om.toJSONString(),SUtils.generUserOrderTableName(u.getId()));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "user order confirm");
             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
