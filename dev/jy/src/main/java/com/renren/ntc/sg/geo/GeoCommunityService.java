@@ -251,8 +251,9 @@ public class GeoCommunityService {
         RoseAppContext rose = new RoseAppContext();
         CommunityDAO communityDao = rose.getBean(CommunityDAO.class);
         int limit = 1000;
-        GeoCommunityService geoService = new GeoCommunityService();
 
+        GeoCommunityService geoService = new GeoCommunityService();
+        System.out.println("222");s
         ShopLocation shop_location = new ShopLocation();
         Community c = communityDao.get(118891);
         shop_location.setLatitude(c.getLat());
