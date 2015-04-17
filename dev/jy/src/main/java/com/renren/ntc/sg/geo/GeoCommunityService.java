@@ -253,7 +253,7 @@ public class GeoCommunityService {
         int limit = 1000;
 
         GeoCommunityService geoService = new GeoCommunityService();
-        System.out.println("222");s
+        System.out.println("222");
         ShopLocation shop_location = new ShopLocation();
         Community c = communityDao.get(118891);
         shop_location.setLatitude(c.getLat());
