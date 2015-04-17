@@ -464,10 +464,23 @@ public class SMSService {
          LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", orderId, response, phone, url));
     }
 
-    public void sendNotificationSMS2kf(Order order ,Shop shop,String info) {
+    public void sendNotificationSMS2kf(Order order ,Shop shop,String type) {
 
         try {
             if (SUtils.isDev()) {
+                return;
+            }
+            String info;
+            if ("send".equals(type)) {
+                info =  "未确认配送";
+            }else{
+                info =  "未确认收货";
+            }
+
+            String phone = Constants.KF_PHONE;
+            String  DATE = SUtils.getToday();
+            if (MongoDBUtil.getInstance().haveSend(phone, order.getOrder_id() + DATE + info)) {
+                LoggerUtils.getInstance().log(String.format("%s %s notification sms allready send ", phone, order.getOrder_id()));
                 return;
             }
             String message = Constants.KF_NOTIFICATIONS.replace("{shop_name}",shop.getName())
@@ -476,8 +489,6 @@ public class SMSService {
 
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            //短信通知 老板
-            String phone = Constants.KF_PHONE;
             sendSms(Constants.KF_NOTIFICATION_TEMP_ID, phone, message, order.getOrder_id());
         } catch (Exception e) {
             e.printStackTrace();

@@ -28,7 +28,6 @@ public class OrderMoniter {
         OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
         SMSService sms = rose.getBean(SMSService.class);
         ShopDAO shopDao = rose.getBean(ShopDAO.class);
-        System.out.println("22222222");
 
         long now = System.currentTimeMillis();
         for (long shop_id = 1 ; shop_id <1000 ;shop_id ++){
@@ -39,15 +38,15 @@ public class OrderMoniter {
                 if (o.getOrder_status() == OrderStatus.TOCONFIREMED.getCode() ){
                     if(needPackage(now, order_time)){
                         Shop shop = shopDao.getShop(o.getShop_id());
-                        sms.sendNotificationSMS2kf(o,shop,"未确认配送");
-                        return;
+                        sms.sendNotificationSMS2kf(o,shop,"send");
+                        continue;
                     }
                 }
                 if (o.getOrder_status() <= OrderStatus.DELIVERIES.getCode() ){
                     if(needConfirm(now, order_time)) {
                         Shop shop = shopDao.getShop(o.getShop_id());
-                        sms.sendNotificationSMS2kf(o,shop,"未确认收货");
-                        return;
+                        sms.sendNotificationSMS2kf(o,shop,"confirm");
+                        continue;
                     }
                 }
             }
