@@ -389,12 +389,19 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
+            String phone = Constants.KF_PHONE;
+            String key = order.getOrder_id() + "SMSRemind2kf";
+            if (MongoDBUtil.getInstance().haveSend( Constants.KF_PHONE,key)) {
+                LoggerUtils.getInstance().log(String.format("%s %s notification sms allready send ", phone, order.getOrder_id()));
+                return;
+            }
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.REMIND_ORDER_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());    		
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, Constants.KF_PHONE, message, order.getOrder_id());
+            sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
+            MongoDBUtil.getInstance().sendmark(phone, key);
         } catch (Exception t) {
             t.printStackTrace();
         }
