@@ -28,10 +28,10 @@ public class OrderMoniter {
         OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
         SMSService sms = rose.getBean(SMSService.class);
         ShopDAO shopDao = rose.getBean(ShopDAO.class);
-
+        System.out.println("22222222");
 
         long now = System.currentTimeMillis();
-        for (long shop_id = 0 ; shop_id <1000 ;shop_id ++){
+        for (long shop_id = 1 ; shop_id <1000 ;shop_id ++){
            List<Order> ol  = orderDao.getOrderbyTime(SUtils.generOrderTableName(shop_id),shop_id);
             for (Order o  :ol){
                 System.out.println(String.format("Get %s ,%s , %s" ,o.getOrder_id() , o.getStatus(), o.getOrder_status()));
