@@ -232,14 +232,14 @@ public class ToolsController {
             inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功的
             inv.addModel("missingList", missingList); //丢失
             inv.addModel("count", count); //总数
-            inv.addModel("successNum", count - missingList.size()); //成功总数
+            //inv.addModel("successNum", count - missingList.size()); //成功总数
             inv.addModel("shop_id", shop_id);
             //保存扫码数量 和 成功数量
             CatStaffCommit catStaffCommit = catStaffCommitDAO.getbyShopId(shop_id);
             if (isReplenish) {
-                catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + count - missingList.size());
+                catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + count);
             } else {
-                catStaffCommitDAO.update(shop_id, count, count - missingList.size());
+                catStaffCommitDAO.update(shop_id, count, count);
             }
 
         } catch (UnsupportedEncodingException e) {

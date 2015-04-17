@@ -16,7 +16,6 @@
     <br/><br/><br/><br/>
 
     <h2>总计:$count条</h2>
-    #if($successNum)<h2>成功导入:$successNum条</h2>#end
     <table border="1" cellspacing="0" cellpadding="10">
         <tr align="center">
             <th>分类</th>
