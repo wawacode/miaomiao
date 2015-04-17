@@ -89,7 +89,7 @@ public class ToolsController {
     @Post("db") //bd 所有未上线的
     public String db(Invocation inv) {
         List<Shop> list = shopDAO.getAllShopsByNotOnline();
-        inv.addModel("list", list);
+        inv.addModel("notOnlineList", list);
         List<Category> categoryList = categoryDAO.getCategory();
         inv.addModel("categoryList", categoryList);
         LoggerUtils.getInstance().log(" OK ");
