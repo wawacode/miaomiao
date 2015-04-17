@@ -306,13 +306,7 @@ public class SMSService {
             String message = Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
-            for ( Catstaff catstaff : catstaffls)   {
-            if (catstaff != null) {
-                String phone = catstaff.getPhone();
-                sendSms(Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
-                }
-            }
+            sendSms(Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, Constants.KF_PHONE, message, order.getOrder_id());
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -400,13 +394,7 @@ public class SMSService {
             String message = Constants.REMIND_ORDER_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());    		
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
-            for ( Catstaff catstaff : catstaffls)   {
-            if (catstaff != null) {
-                String phone = catstaff.getPhone();
-                sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
-                }
-            }
+            sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, Constants.KF_PHONE, message, order.getOrder_id());
         } catch (Exception t) {
             t.printStackTrace();
         }

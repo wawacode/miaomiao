@@ -389,6 +389,7 @@ public class OrderController {
             if(o != null){
             	//给客服和老板推送
             	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), o.getOrder_id(), "");
+            	smsService.sendSMSUserCancelOrder2kf(o, shop);
                 pushService.sendUserCancel2KF(o, shop,extra);
                 pushService.sendCancel2Boss(o, shop,extra);
             } 
@@ -432,6 +433,7 @@ public class OrderController {
             if(o != null){
             	// 给老板和客服发推送
             	String extra = pushService.getPushExtra(PushType.REMIND_ORDER.getType(), o.getOrder_id(), "");
+            	smsService.sendSMSRemind2kf(o, shop);
                 pushService.sendRemind2Kf(o, shop,extra);
                 pushService.sendRemindOrder2Boss(o, shop,extra);
             }
