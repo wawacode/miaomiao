@@ -266,7 +266,7 @@ public class GeoCommunityService {
                 shop_location.setLongitude(c.getLng());
                 shop_location.setShop_id(c.getId());
                 System.out.println(JSON.toJSON(shop_location).toString());
-//                System.out.println(geoService.updateLocation(shop_location));
+                System.out.println(geoService.updateLocation(shop_location));
             }
             i = +limit;
         }
