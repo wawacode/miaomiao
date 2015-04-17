@@ -50,6 +50,9 @@ public class ToolsController {
     @Autowired
     CatStaffCommitDAO catStaffCommitDAO;
 
+    @Autowired
+    ShopInfoTempDAO shopInfoTempDAO;
+
     @Get("")
     @Post("")
     public String login(Invocation inv) {
@@ -546,22 +549,36 @@ public class ToolsController {
         return "@json:" + jo.toJSONString();
     }
 
-    //This is test mthod!
-    @Get("login")
-    @Post("login")
-    public String login(Invocation inv, @Param("shop_id") String shop_id) {
-        System.out.println("ToolsController.java.ToolsController---->" + 406);
-        long id = 0;
+    @Get("shopInfo")
+    @Post("shopInfo")
+    public String shopInfo(Invocation inv, @Param("shop_id") String shopid) {
+        System.out.println("ToolsController.java.ToolsController---->" + 552);
+        if (StringUtils.isBlank(shopid)) {
+            System.out.println("shop_id is null.ToolsController.shopInfo---->" + 557);
+            return "@shop_id is null!   ToolsController.shopInfo";
+        }
+        long shop_id = Long.valueOf(shopid);
+        String tabName = SUtils.generTableName(shop_id);
+        List<ShopInfoTemp> categorys = shopInfoTempDAO.getAllShopInfoTemp(tabName);
+        Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
 
-        if (StringUtils.isBlank(shop_id)) return "@shop_id is null!";
-        else id = Long.valueOf(shop_id);
+        for (ShopInfoTemp s : categorys) {
+            saveCategoryNum.put(s.getCategory_id(), s.getCounts());
+        }
+        //遍历map集合  替换分类为中文名字
+        Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+        converterCN(saveCategoryNum, saveCategoryNumCN);
+        inv.addModel("saveCategoryNumCN", saveCategoryNumCN);
+        int count = itemDao.getItemsCount(tabName);
+        inv.addModel("count", count);
+        int notPicUrlAndPriceIsZeroCount = itemDao.getItemsNotPicUrlAndPriceIsZeroCount(tabName);
+        inv.addModel("notPicUrlAndPriceIsZeroCount", notPicUrlAndPriceIsZeroCount);
+        int notPicUrlCount = itemDao.getItemsNotPicUrl(tabName);
+        inv.addModel("notPicUrlCount", notPicUrlCount);
+        int priceIszeroCount = itemDao.getItemsPriceIsZeroCount(tabName);
+        inv.addModel("priceIszeroCount", priceIszeroCount);
 
-        Shop shop = shopDAO.getShop(id);
-        String pwd = shop.getTel();
-        String phone = shop.getTel();
-        String origURL = "127.0.0.1";
-
-        return "r:/console/login/valid?phone=" + phone + "&pwd=" + pwd + "&origURL=" + origURL + "";
+        return "shopInfo";
     }
 
     /**
