@@ -173,7 +173,7 @@
                                 <a href="/console/login">店铺后台 </a></td>
                             <td>
                                 <form action="/console/tools/uploadFile" method="post" enctype="multipart/form-data"
-                                      onsubmit="return submitForm("确认上传?");">
+                                      onsubmit="return submitForm('确认上传?');">
                                     <input type="hidden" name="shop_id" value="${shop.id}"/>
 
                                     <div class="form-group">
@@ -184,7 +184,7 @@
                             </td>
                             <td>
                                 <form action="/console/tools/replenish" method="post" enctype="multipart/form-data"
-                                      onsubmit="return submitForm("确认上传?");">
+                                      onsubmit="return submitForm('确认上传?');">
                                     <input type="hidden" name="shop_id" value="${shop.id}"/>
 
                                     <div class="form-group">
@@ -194,7 +194,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form action="/console/tools/refresh2Product" method="post" onsubmit="return  submitForm("确认同步?");">
+                                <form action="/console/tools/refresh2Product" method="post" onsubmit="return  submitForm('确认同步?');">
                                     <input type="hidden" name="shop_id" value="${shop.id}"/>
                                     <button class="btn btn-success" type="submit">确定</button>
                                 </form>
