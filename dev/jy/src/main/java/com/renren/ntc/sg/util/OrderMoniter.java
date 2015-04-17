@@ -34,6 +34,7 @@ public class OrderMoniter {
         for (long shop_id = 0 ; shop_id <1000 ;shop_id ++){
            List<Order> ol  = orderDao.getOrderbyTime(SUtils.generOrderTableName(shop_id),shop_id);
             for (Order o  :ol){
+                System.out.println(String.format("Get %s ,%s , %s" ,o.getOrder_id() , o.getStatus(), o.getOrder_status()));
                 long order_time = o.getCreate_time().getTime();
                 if (o.getOrder_status() == OrderStatus.TOCONFIREMED.getCode() ){
                     if(needPackage(now, order_time)){
