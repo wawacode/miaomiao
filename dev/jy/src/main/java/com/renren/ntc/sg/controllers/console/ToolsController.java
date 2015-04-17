@@ -74,7 +74,6 @@ public class ToolsController {
             long shop_id = u.get(i).getShop_id();
             Shop notOnlineShop = shopDAO.getShopByNotOnline(shop_id);//未上线
             Shop shop = shopDAO.getShopById(shop_id);//所有店
-            shopDAO.getShopById(shop_id);
             if (null != notOnlineShop) {
                 notOnlineList.add(notOnlineShop);
             }
