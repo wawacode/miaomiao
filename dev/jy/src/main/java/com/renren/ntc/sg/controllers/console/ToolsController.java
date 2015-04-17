@@ -72,10 +72,10 @@ public class ToolsController {
             Shop notOnlineShop = shopDAO.getShopByNotOnline(shop_id);//未上线
             Shop shop = shopDAO.getShopById(shop_id);//所有店
             shopDAO.getShopById(shop_id);
-            if (null != notOnlineShop ) {
+            if (null != notOnlineShop) {
                 notOnlineList.add(notOnlineShop);
             }
-            if (null != shop){
+            if (null != shop) {
                 allShops.add(shop);
             }
         }
@@ -200,7 +200,7 @@ public class ToolsController {
                     //有的话continue
                     if (null != item) {
                         int category_id = item.getCategory_id();
-                        System.out.println("本店已有此商品:" + serialNo);
+                        System.out.println("当前count:"+count+"-->本店已有此商品:" + serialNo);
                         //saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
                         continue;
                     }
@@ -236,7 +236,11 @@ public class ToolsController {
             inv.addModel("shop_id", shop_id);
             //保存扫码数量 和 成功数量
             CatStaffCommit catStaffCommit = catStaffCommitDAO.getbyShopId(shop_id);
-            catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + count - missingList.size());
+            if (isReplenish) {
+                catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + count - missingList.size());
+            } else {
+                catStaffCommitDAO.update(shop_id, count, count - missingList.size());
+            }
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -465,6 +469,7 @@ public class ToolsController {
     /**
      * ajax 获取商店商品分类
      * bd使用
+     *
      * @param inv
      * @param shop_id
      * @return
@@ -499,9 +504,11 @@ public class ToolsController {
         jo.put("shop", newShopList);
         return "@json:" + jo.toJSONString();
     }
+
     /**
      * ajax 获取商店商品分类
      * 本人操作 显示所有店
+     *
      * @param inv
      * @param shop_id
      * @return
