@@ -193,7 +193,6 @@ public class ToolsController {
                     String serialNo = upacage(arr[0].trim());
                     if (serialNo.length() < 8 || serialNo.length() > 14) {
                         missingList.add(serialNo);
-                        count++;//总计
                         continue;
                     }
                     //去商店对应商品库查询
@@ -201,7 +200,8 @@ public class ToolsController {
                     //有的话continue
                     if (null != item) {
                         int category_id = item.getCategory_id();
-                        saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
+                        System.out.println("本店已有此商品:" + serialNo);
+                        //saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
                         continue;
                     }
                     Product p = pDao.geProduct(serialNo);
@@ -223,12 +223,13 @@ public class ToolsController {
 
                     itemDao.insert(SUtils.generTableName(shop_id), it);
                     saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
+                    count++;//总计
                 }
             } while ((lineTxt = br.readLine()) != null);
             //遍历map集合  替换分类为中文名字
             Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
             converterCN(saveCategoryNum, saveCategoryNumCN);
-            inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+            inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功的
             inv.addModel("missingList", missingList); //丢失
             inv.addModel("count", count); //总数
             inv.addModel("successNum", count - missingList.size()); //成功总数
