@@ -252,8 +252,11 @@ public class GeoCommunityService {
         CommunityDAO communityDao = rose.getBean(CommunityDAO.class);
         int limit = 1000;
         GeoCommunityService geoService = new GeoCommunityService();
-        for (int i = 0; i < 1; ) {
+        for (int i = 0; i < 100000; ) {
             List<Community> cls = communityDao.get(i, limit);
+            if(cls == null || cls.size() == 0){
+                break;
+            }
             for (Community c : cls) {
                 ShopLocation shop_location = new ShopLocation();
                 System.out.println(c.getId());
