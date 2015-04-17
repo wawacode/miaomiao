@@ -250,7 +250,7 @@ public class GeoCommunityService {
     public static void main(String[] args) {
         RoseAppContext rose = new RoseAppContext();
         CommunityDAO communityDao = rose.getBean(CommunityDAO.class);
-        int limit = 1;
+        int limit = 1000;
         GeoCommunityService geoService = new GeoCommunityService();
         for (int i = 0; i < 1; ) {
             List<Community> cls = communityDao.get(i, limit);
@@ -268,15 +268,15 @@ public class GeoCommunityService {
             i = +limit;
         }
 
-        ShopLocation shopL = new ShopLocation();
-        shopL.setShop_id(10);
-        shopL.setLatitude(39.888679504395);
-        shopL.setLongitude(116.652297973633);
-        List<GeoQueryResult> ls = geoService.queryNearUser(shopL, 10 * 1000);
-        for (GeoQueryResult geo : ls) {
-            System.out.println(String.format("find community %d  , lng %f , lat %f ", geo.getShopLocation().getShop_id(), geo.getShopLocation().getLongitude(), geo.getShopLocation().getLatitude()));
-        }
-        geoService.removeLocation(6164);
+//        ShopLocation shopL = new ShopLocation();
+//        shopL.setShop_id(10);
+//        shopL.setLatitude(39.888679504395);
+//        shopL.setLongitude(116.652297973633);
+//        List<GeoQueryResult> ls = geoService.queryNearUser(shopL, 10 * 1000);
+//        for (GeoQueryResult geo : ls) {
+//            System.out.println(String.format("find community %d  , lng %f , lat %f ", geo.getShopLocation().getShop_id(), geo.getShopLocation().getLongitude(), geo.getShopLocation().getLatitude()));
+//        }
+//        geoService.removeLocation(6164);
     }
 
 }
