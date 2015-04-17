@@ -29,9 +29,9 @@
             </tr>
         #end
     </table>
-    <a href="/console/tools">返回</a>
+    <a href="/console/tools">返回</a><br/>
     #if($shop_id)
-##        <a href="/console/tools/login?shop_id=$shop_id">进入店铺</a>
+        <a href="/console/tools/login?shop_id=$shop_id">进入店铺</a><br/>
         <a href="/console/login">进入店铺</a>
     #end
     #if($missingList.size())

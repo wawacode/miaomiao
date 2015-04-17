@@ -98,7 +98,7 @@ public class ToolsController {
     }
 
     @Get("synch")
-    @Post("synch")//本人 所有店铺
+    @Post("synch")//TODO 本人操作 所有店铺
     public String synch(Invocation inv) {
         List<Shop> list = shopDAO.getAllShops();
         inv.addModel("list", list);
@@ -463,7 +463,7 @@ public class ToolsController {
 
     /**
      * ajax 获取商店商品分类
-     *
+     * bd使用
      * @param inv
      * @param shop_id
      * @return
@@ -486,6 +486,43 @@ public class ToolsController {
             }
         }
         List<Shop> slist = shopDAO.getAllShopsByNotOnline();
+        List<Shop> newShopList = new ArrayList<Shop>(slist.size() - 1);
+
+        for (Shop s : slist) {
+            if (s.getId() != shop_id) {
+                newShopList.add(s);
+            }
+        }
+        JSONObject jo = new JSONObject();
+        jo.put("category", clist);
+        jo.put("shop", newShopList);
+        return "@json:" + jo.toJSONString();
+    }
+    /**
+     * ajax 获取商店商品分类
+     * 本人操作 显示所有店
+     * @param inv
+     * @param shop_id
+     * @return
+     */
+    @Get("getCategoriesByShopId2")
+    @Post("getCategoriesByShopId2")
+    public String getCategoriesByShopId2(Invocation inv, @Param("shop_id") long shop_id) {
+        if (0 == shop_id) {
+            return "@ shop_id 不能为空";
+        }
+        List<Item> shopCategoryList = itemDao.getCategoriesByShopId(SUtils.generTableName(shop_id));
+        List<JSONObject> clist = new ArrayList<JSONObject>();
+        for (Item item : shopCategoryList) {
+            Category category = categoryDAO.getCategory(item.getCategory_id());
+            if (null != category) {
+                JSONObject jo = new JSONObject();
+                jo.put("id", item.getCategory_id());
+                jo.put("name", category.getName());
+                clist.add(jo);
+            }
+        }
+        List<Shop> slist = shopDAO.getAllShops();
         List<Shop> newShopList = new ArrayList<Shop>(slist.size() - 1);
 
         for (Shop s : slist) {
