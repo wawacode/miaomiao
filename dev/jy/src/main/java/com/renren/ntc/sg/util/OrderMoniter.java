@@ -31,7 +31,8 @@ public class OrderMoniter {
 
         long now = System.currentTimeMillis();
         for (long shop_id = 1 ; shop_id <1000 ;shop_id ++){
-           List<Order> ol  = orderDao.getOrderbyTime(SUtils.generOrderTableName(shop_id),shop_id);
+            List<Order> ol  = orderDao.getOrderbyTime(SUtils.generOrderTableName(shop_id),shop_id);
+            System.out.println(String.format("get shop %d  orders  %d" ,shop_id,ol.size()));
             for (Order o  :ol){
                 System.out.println(String.format("Get %s ,%s , %s" ,o.getOrder_id() , o.getStatus(), o.getOrder_status()));
                 long order_time = o.getCreate_time().getTime();
