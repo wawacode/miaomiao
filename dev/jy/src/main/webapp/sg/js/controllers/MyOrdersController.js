@@ -36,7 +36,7 @@ angular.module('miaomiao.shop')
             if(order.order_status == StatsEnum.toBeConfirmed ||
                 order.order_status == StatsEnum.inShipping){
 
-                if(timeeplise/1000 >= 1 * 60){ // 20 minutes
+                if(timeeplise/1000 >= 20 * 60){ // 20 minutes
                     order.canRemindShipping = true;
                 }
             }
@@ -44,7 +44,7 @@ angular.module('miaomiao.shop')
             // order create/confired by shop, user can apply for refund after 60 minutes
             if(order.order_status == StatsEnum.toBeConfirmed ||
                 order.order_status == StatsEnum.inShipping){
-                if(timeeplise/1000 >= 1 * 60){ // 60 minutes
+                if(timeeplise/1000 >= 60 * 60){ // 60 minutes
                     order.canCancelOrder = true;
                 }
             }

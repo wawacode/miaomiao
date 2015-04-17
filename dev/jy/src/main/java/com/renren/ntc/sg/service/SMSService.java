@@ -135,7 +135,7 @@ public class SMSService {
                 LoggerUtils.getInstance().log(String.format("%s %s sms allready send ", phone, order_id));
                 return;
             }
-            String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message);
+            String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, Constants.LOCTID, phone, message);
             LoggerUtils.getInstance().log(String.format("Send  SMS mobile %s %s ,%s ", phone, order.getOrder_id(), url));
             t = SHttpClient.getURLData(url, "");
             String r = SUtils.toString(t);
@@ -223,7 +223,7 @@ public class SMSService {
             Device devcie = deviceDAO.getDevByShopId(shop.getId());
             //节约成本  有打印机的情况不要发那么多字的短信
             if (null != devcie && !SUtils.isOffline(devcie)) {
-                String vv = shop.getName() + " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
+                String vv = " " + adrs.getAddress() + " " + adrs.getPhone() + " " + order.getOrder_id();
                 vv = vv.replaceAll("=", "").replaceAll("&", "");
                 String ro = response.replace("=", "").replace("&", "");
                 float p = (float) order.getPrice() / 100;
@@ -388,7 +388,6 @@ public class SMSService {
     }
     /**
      * 发催单短信给客服
-     * @param order_id
      * @param shop
      */
     public void sendSMSRemind2kf(Order order, Shop shop) {
@@ -444,7 +443,7 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
-            String message = Constants.USER_CONFIRM_MSG_2_BOSS.replace("{date}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id()).replace("{price}", (order.getPrice()/100)+"");    		
+            String message = Constants.USER_CONFIRM_MSG_2_BOSS.replace("{date}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id()).replace("{price}", ((float)order.getPrice()/100)+"");    		
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板

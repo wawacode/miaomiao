@@ -89,7 +89,7 @@ public abstract class AndroidNotification extends UmengNotification {
 			payloadJson.put("extra", extraJson);
 		}
 		extraJson.put(key, value);
-		System.out.println("adr payload=>"+rootJson);
+		//System.out.println("adr payload=>"+rootJson);
 		return true;
 	}
 	
