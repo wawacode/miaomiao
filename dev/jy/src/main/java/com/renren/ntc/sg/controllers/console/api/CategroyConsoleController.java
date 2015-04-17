@@ -80,6 +80,7 @@ public class CategroyConsoleController extends BasicConsoleController{
             return  "@"+Constants.DONE  ;
     }
 
+    @Get("add")
     @Post("add")
     public String addcate(Invocation inv,  @Param("shopId") long  shop_id,
                           @Param("categoryId") int category_id,
