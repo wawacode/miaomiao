@@ -479,7 +479,8 @@ public class SMSService {
 
             String phone = Constants.KF_PHONE;
             String  DATE = SUtils.getToday();
-            if (MongoDBUtil.getInstance().haveSend(phone, order.getOrder_id() + DATE + info)) {
+            String key = order.getOrder_id() + DATE + type;
+            if (MongoDBUtil.getInstance().haveSend(phone, key)) {
                 LoggerUtils.getInstance().log(String.format("%s %s notification sms allready send ", phone, order.getOrder_id()));
                 return;
             }
@@ -490,6 +491,7 @@ public class SMSService {
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             sendSms(Constants.KF_NOTIFICATION_TEMP_ID, phone, message, order.getOrder_id());
+            MongoDBUtil.getInstance().sendmark(phone, key);
         } catch (Exception e) {
             e.printStackTrace();
         }
