@@ -131,7 +131,7 @@
                         <th>店铺名字</th>
                         <th>店铺电话</th>
                         <th>店长电话</th>
-                        <th>商品统计</th>
+                        <th>商品详情</th>
                         <th>创建时间</th>
                         <th>经度</th>
                         <th>纬度</th>
@@ -154,15 +154,15 @@
                             <td class="edit" id="e-${shop.id}-name">$shop.name</td>
                             <td class="edit" id="e-${shop.id}-tel">$shop.tel</td>
                             <td class="edit" id="e-${shop.id}-owner_phone">$shop.owner_phone</td>
-                            <td><a href="/sg/shop?shop_id=${shop.id}">访问店铺 </a></td>
+                            <td><a href="/console/tools/shopInfo?shop_id=${shop.id}">商品详情</a></td>
                             <td class="edit" id="e-${shop.id}-create_time">$shop.create_time</td>
                             <td class="edit" id="e-${shop.id}-lng">$shop.lng</td>
                             <td class="edit" id="e-${shop.id}-lat">$shop.lat</td>
-                            <td class="edit" id="e-${shop.id}-open_time">#if (! $shop.open_time) #else
-                                $date.format('HH:mm',$shop.open_time) #end
+                            <td class="edit" id="e-${shop.id}-open_time">
+                                $date.format('HH:mm',$shop.open_time)
                             </td>
-                            <td class="edit" id="e-${shop.id}-close_time">#if (! $shop.close_time) #else
-                                $date.format('HH:mm',$shop.close_time) #end
+                            <td class="edit" id="e-${shop.id}-close_time">
+                                $date.format('HH:mm',$shop.close_time)
                             </td>
                             <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
                             <td class="edit" id="e-${shop.id}-shop_info">$shop.shop_info</td>
