@@ -158,10 +158,10 @@
                             <td class="edit" id="e-${shop.id}-create_time">$shop.create_time</td>
                             <td class="edit" id="e-${shop.id}-lng">$shop.lng</td>
                             <td class="edit" id="e-${shop.id}-lat">$shop.lat</td>
-                            <td class="edit" id="e-${shop.id}-open_time">
+                            <td class="" id="e-${shop.id}-open_time">
                                 $date.format('HH:mm',$shop.open_time)
                             </td>
-                            <td class="edit" id="e-${shop.id}-close_time">
+                            <td class="" id="e-${shop.id}-close_time">
                                 $date.format('HH:mm',$shop.close_time)
                             </td>
                             <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
