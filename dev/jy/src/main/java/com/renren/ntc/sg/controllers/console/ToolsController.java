@@ -184,8 +184,10 @@ public class ToolsController {
             String lineTxt = br.readLine();
             String regex = lineTxt.contains("\t") ? "\t" : lineTxt.contains(",") ? ", " : " ";
             int count = 0;
+            int successNum = 0;
             do {
                 if (!StringUtils.isBlank(lineTxt)) {
+                    count++;
                     if (count % 1000 == 0) {
                         Thread.sleep(100);
                     }
@@ -200,7 +202,7 @@ public class ToolsController {
                     //有的话continue
                     if (null != item) {
                         int category_id = item.getCategory_id();
-                        System.out.println("当前count:"+count+"-->本店已有此商品:" + serialNo);
+                        System.out.println("当前count:" + count + "-->本店已有此商品:" + serialNo);
                         //saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
                         continue;
                     }
@@ -223,7 +225,7 @@ public class ToolsController {
 
                     itemDao.insert(SUtils.generTableName(shop_id), it);
                     saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
-                    count++;//总计
+                    successNum++;//总计
                 }
             } while ((lineTxt = br.readLine()) != null);
             //遍历map集合  替换分类为中文名字
@@ -237,9 +239,9 @@ public class ToolsController {
             //保存扫码数量 和 成功数量
             CatStaffCommit catStaffCommit = catStaffCommitDAO.getbyShopId(shop_id);
             if (isReplenish) {
-                catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + count);
+                catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + successNum);
             } else {
-                catStaffCommitDAO.update(shop_id, count, count);
+                catStaffCommitDAO.update(shop_id, count, successNum);
             }
 
         } catch (UnsupportedEncodingException e) {
