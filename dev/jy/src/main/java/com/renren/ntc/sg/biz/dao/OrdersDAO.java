@@ -2,7 +2,6 @@ package com.renren.ntc.sg.biz.dao;
 
 import java.util.List;
 
-import com.sun.xml.internal.bind.v2.model.annotation.FieldLocatable;
 import net.paoding.rose.jade.annotation.DAO;
 import net.paoding.rose.jade.annotation.SQL;
 import net.paoding.rose.jade.annotation.SQLParam;
