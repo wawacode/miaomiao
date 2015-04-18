@@ -109,4 +109,7 @@ public interface ShopDAO {
      */
     @SQL("select " + FIELDS + "  from " + TABLE_NAME)
     public List<Shop> getAllShops();
+    
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where audit = :1")
+    public List<Shop> getAllShopsInfoByAudit(int audit);
 }

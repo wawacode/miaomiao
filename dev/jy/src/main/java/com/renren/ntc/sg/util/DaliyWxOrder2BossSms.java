@@ -28,7 +28,7 @@ public class DaliyWxOrder2BossSms {
 		String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0));
 		String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 23, 59, 59));
 		String now = Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0));
-		List<Shop> shops = shopDAO.getAllShopsByAudit(1);
+		List<Shop> shops = shopDAO.getAllShopsInfoByAudit(1);
 		for(Shop shop : shops){
 			List<Order> orders = orderDao.getUserConfirmShopDetailByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
 			int orderCount = orders.size();
