@@ -99,7 +99,7 @@ public interface OrdersDAO {
     @SQL("update ##(:tableName) set order_info =:2 ,order_status =:3, update_time=now(),user_confirm_time =:4 where order_id = :1 ")
     public int updateOrderStatus(String order_id, String orderInfo,int orderStatus,String userConfirmTime, @SQLParam("tableName") String tableName);
     
-    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and (order_status = 4 and user_confirm_time between :3 and :4) or (order_status=5 and create_time between :3 and :4) ")
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and ((order_status = 4 and user_confirm_time between :3 and :4) or (order_status=5 and create_time between :3 and :4)) ")
     List<Order> getShopPayDetailByWXCondition(@SQLParam("tableName") String tableName,long shopId,String confirmBeginTime,String confirmEndTime);
     
     @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and order_status = 4 and user_confirm_time between :3 and :4 ")
