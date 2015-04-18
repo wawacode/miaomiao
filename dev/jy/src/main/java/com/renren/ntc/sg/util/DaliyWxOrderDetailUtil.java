@@ -151,10 +151,10 @@ public class DaliyWxOrderDetailUtil {
 			wxpDetail.setTodayClickConfirm(true);
 			Date confirmTime = order.getUser_confirm_time();
 			String userConfirmTimeStr = "";
-			if(confirmTime == null){
+			if(confirmTime != null){
 				userConfirmTimeStr = Dateutils.tranferDate2Str(confirmTime);
 			}
-			System.out.println(JSON.toJSONString(order));
+			//System.out.println(JSON.toJSONString(order));
 			wxpDetail.setClickConfirmTime(userConfirmTimeStr);
 			wxpDetail.setKfCancel(false);
 		}else {
