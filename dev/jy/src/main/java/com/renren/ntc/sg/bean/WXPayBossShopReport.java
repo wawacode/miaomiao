@@ -5,9 +5,11 @@ import java.util.List;
 public class WXPayBossShopReport {
 	private long shopId;
 	private String shopName;
-	private int orderCount;
+	private int orderConfirmCount;
+	private int orderCancelCount;
 	private String reportDate;
-	private float totalPrice;
+	private float totalConfirmPrice;
+	private float totalCancelPrice;
 	private List<WXPayDetail> shopOrderFlows;
 
 	public WXPayBossShopReport() {
@@ -28,14 +30,6 @@ public class WXPayBossShopReport {
 
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
-	}
-
-	public int getOrderCount() {
-		return orderCount;
-	}
-
-	public void setOrderCount(int orderCount) {
-		this.orderCount = orderCount;
 	}
 
 	public String getReportDate() {
@@ -128,12 +122,35 @@ public class WXPayBossShopReport {
 			this.isKfCancel = isKfCancel;
 		}
 	}
-
-	public float getTotalPrice() {
-		return totalPrice;
+	public float getTotalConfirmPrice() {
+		return totalConfirmPrice;
 	}
 
-	public void setTotalPrice(float totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setTotalConfirmPrice(float totalConfirmPrice) {
+		this.totalConfirmPrice = totalConfirmPrice;
+	}
+
+	public float getTotalCancelPrice() {
+		return totalCancelPrice;
+	}
+
+	public void setTotalCancelPrice(float totalCancelPrice) {
+		this.totalCancelPrice = totalCancelPrice;
+	}
+
+	public int getOrderConfirmCount() {
+		return orderConfirmCount;
+	}
+
+	public void setOrderConfirmCount(int orderConfirmCount) {
+		this.orderConfirmCount = orderConfirmCount;
+	}
+
+	public int getOrderCancelCount() {
+		return orderCancelCount;
+	}
+
+	public void setOrderCancelCount(int orderCancelCount) {
+		this.orderCancelCount = orderCancelCount;
 	}
 }
