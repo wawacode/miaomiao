@@ -333,20 +333,21 @@ public class OrderController {
         JSONObject data =  new JSONObject() ;
         Order o = null;
         if ("done".equals(confirm)){
+        	String userConfirmTime = Dateutils.tranferDate2Str(new Date());
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "user order confirm");
-            orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
-            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.CONFIREMED.getCode(), SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(), SUtils.generUserOrderTableName(u.getId()));
+            orderInfo.put("operator_time", userConfirmTime);
+            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.CONFIREMED.getCode(),userConfirmTime, SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(),userConfirmTime, SUtils.generUserOrderTableName(u.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o); 
             String wxAct = o.getAct();
             if(StringUtils.isNotBlank(wxAct) && wxAct.equals("wx")){
-            	LoggerUtils.getInstance().log("user confirm order id="+o.getOrder_id()+",is wx send!!!");
+            	LoggerUtils.getInstance().log("user confirm shop id="+shop_id+",order id="+o.getOrder_id()+",is wx send!!!");
             	 smsService.sendConfirmSMS2Boss(o, shop);
             }else {
-				LoggerUtils.getInstance().log("user confirm order id="+o.getOrder_id()+",is not wx dont send!!");
+				LoggerUtils.getInstance().log("user confirm shop id="+shop_id+",order id="+o.getOrder_id()+",is not wx dont send!!");
 			}
         }
         result.put("data",data);

@@ -80,4 +80,7 @@ public interface UserOrdersDAO {
     
     @SQL("update ##(:tableName) set order_info =:2 , update_time=now() where order_id = :1 ")
     public int updateOrderInfo(String order_id,String orderInfo, @SQLParam("tableName") String tableName);
+    
+    @SQL("update ##(:tableName) set order_info =:2 ,order_status =:3, update_time=now(),user_confirm_time =:4 where order_id = :1 ")
+    public int updateOrderStatus(String order_id, String orderInfo,int orderStatus,String user_confirm_time,@SQLParam("tableName") String tableName);
 }

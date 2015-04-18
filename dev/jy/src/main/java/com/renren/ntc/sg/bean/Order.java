@@ -70,6 +70,7 @@ public class Order {
     private String  price4V  ;
     private Date create_time ;
     private Date update_time   ;
+    private Date user_confirm_time;
 
     public String getShop_name4V() {
         return shop_name4V;
@@ -248,6 +249,14 @@ public class Order {
 
 	public void setOrder_info(String order_info) {
 		this.order_info = order_info;
+	}
+
+	public Date getUser_confirm_time() {
+		return user_confirm_time;
+	}
+
+	public void setUser_confirm_time(Date user_confirm_time) {
+		this.user_confirm_time = user_confirm_time;
 	}
 
 }

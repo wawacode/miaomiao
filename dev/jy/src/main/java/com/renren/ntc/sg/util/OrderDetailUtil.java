@@ -98,7 +98,7 @@ public class OrderDetailUtil {
 	private static String getHtmlInfo(List<WXPayShopReport> wxpPayShopReports,int totalShopOrderPrice){
 		String html = "<html><head><title></title></head><body>"
 					 + "<table border='1' cellpadding='1' cellspacing='1' style='width: 1000px;'>"
-					 + "<tbody> <tr> <td nowrap> 店铺ID</td> <td nowrap> 店铺名称</td> <td nowrap> 订单报告日期</td> <td nowrap> 微信订单总数</td><td nowrap> 微信订单总额(元)</td> <td colspan='8' 90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E> 每笔订单详情</td><td> 总计(元)</td> </tr>";
+					 + "<tbody> <tr> <td nowrap> 店铺ID</td> <td nowrap> 店铺名称</td> <td nowrap> 订单报告日期</td> <td nowrap> 微信订单总数</td><td nowrap> 微信订单总额(元)</td> <td colspan='8'> 每笔订单详情</td><td> 总计(元)</td> </tr>";
 					 
     String orderInfoHtml = "";
     String totalShopOrderPriceStr = (float)totalShopOrderPrice/100+"";
