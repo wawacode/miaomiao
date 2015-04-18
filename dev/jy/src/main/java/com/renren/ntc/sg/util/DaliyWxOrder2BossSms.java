@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.util;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import net.paoding.rose.scanning.context.RoseAppContext;
@@ -36,9 +37,11 @@ public class DaliyWxOrder2BossSms {
 			for(Order order : orders){
 				totalPrice += order.getPrice();
 			}
-			String message = Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS.replace("{date}", now).replace("{count}", orderCount+"").replace("{total}", ((float)totalPrice/100)+"");
 			try {
-				sMSService.sendSmsInfo(Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID, shop.getOwner_phone(), message, "send wx total pay to boss shopid="+shop.getId());
+			 String message = Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS.replace("{date}", now).replace("{count}", orderCount+"").replace("{total}", ((float)totalPrice/100)+"");
+			 message = SUtils.span(message);
+	         message = URLEncoder.encode(message, "utf-8");
+		     sMSService.sendSmsInfo(Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID, shop.getOwner_phone(), message, "send wx total pay to boss shopid="+shop.getId());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
