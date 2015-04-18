@@ -38,7 +38,7 @@ public class DaliyWxOrder2BossSms {
 			}
 			String message = Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS.replace("{date}", now).replace("{count}", orderCount+"").replace("{total}", ((float)totalPrice/100)+"");
 			try {
-				sMSService.sendSmsInfo(Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID, shop.getOwner_phone(), message, "send wx total pay to boss ");
+				sMSService.sendSmsInfo(Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID, shop.getOwner_phone(), message, "send wx total pay to boss shopid="+shop.getId());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
