@@ -125,11 +125,11 @@ public class LoginController extends BasicConsoleController {
                 List<Long> shop_ids = catstaffCommitDao.getShop_ids(c.getPhone());
                 List<Shop> shops = shopDAO.getShops(shop_ids);
 
-                if (null == shops || shops.size() == 0) {
-                    result.put("code", -3);
-                    result.put("msg", "没有可用店铺");
-                    return "@json:" + result.toJSONString();
-                }
+//                if (null == shops || shops.size() == 0) {
+//                    result.put("code", -3);
+//                    result.put("msg", "没有可用店铺");
+//                    return "@json:" + result.toJSONString();
+//                }
                 CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER,
                         SUtils.wrapper(SUtils.getStaffKey(c.getId())));
                 JSONObject resultJson = new JSONObject();
