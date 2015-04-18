@@ -365,6 +365,7 @@ public class OrderController {
     @Post("order_cancel")
     public String order_cancel(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
         User u = holder.getUser();
+
         if(StringUtils.isBlank(order_id) || shop_id ==0  ){
             return "@json:"+Constants.PARATERERROR;
         }
@@ -389,7 +390,8 @@ public class OrderController {
             if(o != null){
             	//给客服和老板推送
             	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), o.getOrder_id(), "");
-            	smsService.sendSMSUserCancelOrder2kf(o, shop);
+                System.out.println("send sms to kf ");
+                smsService.sendSMSUserCancelOrder2kf(o, shop);
                 pushService.sendUserCancel2KF(o, shop,extra);
                 pushService.sendCancel2Boss(o, shop,extra);
             } 
