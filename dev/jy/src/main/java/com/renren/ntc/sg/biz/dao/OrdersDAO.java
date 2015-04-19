@@ -104,4 +104,7 @@ public interface OrdersDAO {
     
     @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and order_status = 4 and user_confirm_time between :3 and :4 ")
     List<Order> getUserConfirmShopDetailByWXCondition(@SQLParam("tableName") String tableName,long shopId,String confirmBeginTime,String confirmEndTime);
+    
+    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:2 and (status !=1 and status !=2 ) and act = 'wx' and create_time between :3 and :4")
+    List<Order> getWxUnfinishedOrders(@SQLParam("tableName") String tableName, long shop_id,String beginTime, String endTime);
 }
