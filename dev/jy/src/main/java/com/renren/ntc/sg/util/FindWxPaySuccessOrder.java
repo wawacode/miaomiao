@@ -19,12 +19,12 @@ public class FindWxPaySuccessOrder {
 		OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
 		List<Shop> shops = shopDAO.getAllShopsByAudit(1);
 		for(Shop shop : shops){
-			List<Order> orders = orderDao.getWxUnfinishedOrders(SUtils.generOrderTableName(shop.getId()), shop.getId(), "2015-04-19 15:00:00", "2015-04-19 17:00:00");
+			List<Order> orders = orderDao.getWxUnfinishedOrders(SUtils.generOrderTableName(shop.getId()), shop.getId(), "2015-04-19 14:00:00", "2015-04-19 18:00:00");
 			for(Order order : orders){
-			 JSONObject result = XService.queryPaySuc(order.getId()+"");
+			 JSONObject result = XService.queryPaySuc(order.getOrder_id());
 			 if(result !=null){
 				String tradeState =  (String)result.get("trade_state");
-				System.out.println("shop_id="+shop.getId()+"shop_name="+shop.getName()+"orderID="+order.getId()+",result="+tradeState);
+				System.out.println("shop_id="+shop.getId()+",shop_name="+shop.getName()+",orderID="+order.getId()+",orderTime="+Dateutils.tranferDate2Str(order.getCreate_time())+",result="+tradeState);
 			 }
 			}
 		}
