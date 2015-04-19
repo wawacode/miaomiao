@@ -110,6 +110,7 @@ public class LoginController extends BasicConsoleController {
         result.put("origURL", origURL);
         RegistUser u = userDAO.getUser(phone, pwd);
         if (null == u) {
+            System.out.println(String.format("get catstaffDao  %s %s",phone,pwd));
             Catstaff c = catstaffDao.getCatStaff(phone, pwd);
             if (null != c) {
                 if(ifkf(c)){
