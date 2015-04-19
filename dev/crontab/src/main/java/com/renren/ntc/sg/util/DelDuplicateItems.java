@@ -11,7 +11,7 @@ class DelDuplicateItems {
 	public static void main(String[] args) {
 		    //long shopId = 10070L;
 		    //long[] shopIdArr = new long[]{10067L,10068L,10069L,10070L,10071L,10072L,10075L,10076L,10077L,10078L,10079L,10080L};
-		long[] shopIdArr = new long[]{10074L};
+		long[] shopIdArr = new long[]{10063L};
 		    RoseAppContext rose = new RoseAppContext();
 	        ItemsDAO itemDao = rose.getBean(ItemsDAO.class);
 	        //ShopDAO shopDAO =rose.getBean(ShopDAO.class);

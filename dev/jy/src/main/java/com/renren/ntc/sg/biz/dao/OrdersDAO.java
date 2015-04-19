@@ -27,7 +27,7 @@ CREATE TABLE `items` (
 
 @DAO(catalog = "ABC")
 public interface OrdersDAO {
-    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time,order_status,order_info" ;
+    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time,order_status,order_info,user_confirm_time" ;
     static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks ,act, info,snapshot,status,price" ;
     
     @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
@@ -93,4 +93,15 @@ public interface OrdersDAO {
      @SQL("update ##(:tableName) set order_info =:2 ,update_time=now() where order_id = :1 ")
      public int updateOrderInfo(String order_id,String orderInfo, @SQLParam("tableName") String tableName);
 
+    @SQL("select " + FIELDS + " from ##(:tableName) where (status = 1 or status= 2) and shop_id=:2 and create_time > date_sub(now(), interval 1 hour);")
+     List<Order> getOrderbyTime(@SQLParam("tableName") String tableName, long shop_id);
+    
+    @SQL("update ##(:tableName) set order_info =:2 ,order_status =:3, update_time=now(),user_confirm_time =:4 where order_id = :1 ")
+    public int updateOrderStatus(String order_id, String orderInfo,int orderStatus,String userConfirmTime, @SQLParam("tableName") String tableName);
+    
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and ((order_status = 4 and user_confirm_time between :3 and :4) or (order_status=5 and create_time between :3 and :4)) ")
+    List<Order> getShopPayDetailByWXCondition(@SQLParam("tableName") String tableName,long shopId,String confirmBeginTime,String confirmEndTime);
+    
+    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and order_status = 4 and user_confirm_time between :3 and :4 ")
+    List<Order> getUserConfirmShopDetailByWXCondition(@SQLParam("tableName") String tableName,long shopId,String confirmBeginTime,String confirmEndTime);
 }

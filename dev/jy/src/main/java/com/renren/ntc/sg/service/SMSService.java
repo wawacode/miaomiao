@@ -21,6 +21,7 @@ import com.renren.ntc.sg.biz.dao.CatStaffDAO;
 import com.renren.ntc.sg.biz.dao.DeviceDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.UserDAO;
+import com.renren.ntc.sg.jredis.JRedisUtil;
 import com.renren.ntc.sg.mongo.MongoDBUtil;
 import com.renren.ntc.sg.util.Constants;
 import com.renren.ntc.sg.util.Dateutils;
@@ -298,21 +299,15 @@ public class SMSService {
     
     public void sendSMSUserCancelOrder2kf(Order order, Shop shop) {
         try {
-            if (SUtils.isDev()) {
-                return;
-            }
+//            if (SUtils.isDev()) {
+//                return;
+//            }
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
-            for ( Catstaff catstaff : catstaffls)   {
-            if (catstaff != null) {
-                String phone = catstaff.getPhone();
-                sendSms(Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
-                }
-            }
+            sendSms(Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG_TEMP_ID, Constants.KF_PHONE, message, order.getOrder_id());
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -395,18 +390,20 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
+            String phone = Constants.KF_PHONE;
+            String key = phone+"_"+order.getOrder_id() + "_srm2kf";
+            if (JRedisUtil.getInstance().isExist(key)) {
+                LoggerUtils.getInstance().log(String.format("%s %s notification sms allready send ", phone, order.getOrder_id()));
+                return;
+            }
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.REMIND_ORDER_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());    		
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
-            List<Catstaff> catstaffls = catStaffDao.getCatStaffbyType(2);
-            for ( Catstaff catstaff : catstaffls)   {
-            if (catstaff != null) {
-                String phone = catstaff.getPhone();
-                sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
-                }
-            }
+            sendSms(Constants.REMIND_ORDER_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
+            String result = JRedisUtil.getInstance().setex(key, Constants.USER_REMIND_KF_REDIS_EXPIRE_TIME, "1");
+            LoggerUtils.getInstance().log(String.format("%s %s notification sms send set redis result is %s", phone, order.getOrder_id(),result));
         } catch (Exception t) {
             t.printStackTrace();
         }
@@ -443,7 +440,7 @@ public class SMSService {
             if (SUtils.isDev()) {
                 return;
             }
-            String message = Constants.USER_CONFIRM_MSG_2_BOSS.replace("{date}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id()).replace("{price}", (order.getPrice()/100)+"");    		
+            String message = Constants.USER_CONFIRM_MSG_2_BOSS.replace("{date}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id()).replace("{price}", ((float)order.getPrice()/100)+"");    		
             message = SUtils.span(message);
             message = URLEncoder.encode(message, "utf-8");
             //短信通知 老板
@@ -462,5 +459,74 @@ public class SMSService {
          byte[] t = SHttpClient.getURLData(url, "");
          String response = SUtils.toString(t);
          LoggerUtils.getInstance().log(String.format("Post Shop SMS message No. %s : %s , %s  %s ", orderId, response, phone, url));
+    }
+    
+    public void sendSmsInfo(String smsTempId,String phone,String message,String desc) throws IOException{
+   	 String url = SUtils.forURL(Constants.SMSURL, Constants.APPKEY, smsTempId, phone, message);
+        LoggerUtils.getInstance().log(String.format("Send %s SMS mobile %s ,%s ",desc, phone, url));
+        byte[] t = SHttpClient.getURLData(url, "");
+        String response = SUtils.toString(t);
+        LoggerUtils.getInstance().log(String.format("Post %s SMS message : %s , %s  %s ", desc,response, phone, url));
+   }
+
+    public void sendNotificationSMS2kf(Order order ,Shop shop,String type) {
+
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            String info;
+            if ("send".equals(type)) {
+                info =  "未确认配送";
+            }else{
+                info =  "未确认收货";
+            }
+
+            String phone = Constants.KF_PHONE;
+            String  DATE = SUtils.getToday();
+            String key = order.getOrder_id() + DATE + type;
+            if (MongoDBUtil.getInstance().haveSend(phone, key)) {
+                LoggerUtils.getInstance().log(String.format("%s %s notification sms allready send ", phone, order.getOrder_id()));
+                return;
+            }
+            String message = Constants.KF_NOTIFICATIONS.replace("{shop_name}",shop.getName())
+                    .replace("{tel}",shop.getTel()).replace("{order_id}", order.getOrder_id())
+                    .replace("{info}",info);
+
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            sendSms(Constants.KF_NOTIFICATION_TEMP_ID, phone, message, order.getOrder_id());
+            MongoDBUtil.getInstance().sendmark(phone, key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    /**
+     * 给老板发每日微信用户点击确认收货的短信
+     * @param order
+     * @param shop
+     */
+    public void sendBossWxPay(Order order, Shop shop) {
+        try {
+            if (SUtils.isDev()) {
+                return;
+            }
+            if(order == null){
+            	return;
+            }
+            long adr_id = order.getAddress_id();
+            Address adrs = addressDAO.getAddress(adr_id);
+            String message = Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS.replace("{date}", order.getOrder_id()).replace("{count}", adrs.getAddress()).replace("{total}", adrs.getPhone());
+            message = SUtils.span(message);
+            message = URLEncoder.encode(message, "utf-8");
+            //短信通知 老板
+            if (shop != null) {
+                String phone = shop.getOwner_phone();
+                sendSms(Constants.CANCEL_ORDER_2_BOSS_SMS_MSG_TEMP_ID, phone, message, order.getOrder_id());
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 }

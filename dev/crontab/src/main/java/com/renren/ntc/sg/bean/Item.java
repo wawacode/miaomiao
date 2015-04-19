@@ -51,6 +51,7 @@ public class Item {
     private  int  price_new;
     private  Date  create_time  ;
     private  Date  update_time  ;
+    private int onsell;
 
     public String getSerialNo() {
         return serialNo;
@@ -165,6 +166,14 @@ public class Item {
     public void setCount(int count) {
         this.count = count;
     }
+
+	public int getOnsell() {
+		return onsell;
+	}
+
+	public void setOnsell(int onsell) {
+		this.onsell = onsell;
+	}
 
 
 

@@ -49,11 +49,12 @@
                         <th>用户名字</th>
                         <th>用户电话</th>
                         <th>密码</th>
+                        <th>商店ID</th>
                         <th>商店名称</th>
                         <th>商店电话</th>
                         <th>店主电话</th>
-                        <th>导入条码数</th>
-                        <th>成功条码数</th>
+                        <th>扫码条码数</th>
+                        <th>成功条码数(去重)</th>
                         <th>商店地址</th>
                         <th>服务范围</th>
                         <th>创建时间</th>
@@ -67,6 +68,7 @@
                             <td class="edit" id="${catStaffCommt.id}-name">$catStaffCommt.name</td>
                             <td class="edit" id="${catStaffCommt.id}-phone">$catStaffCommt.phone</td>
                             <td class="edit" id="${catStaffCommt.id}-pwd">$catStaffCommt.pwd</td>
+                            <td>$catStaffCommt.shop_id</td>
                             <td class="edit" id="${catStaffCommt.id}-shop_name">$catStaffCommt.shop_name</td>
                             <td class="edit" id="${catStaffCommt.id}-shop_tel">$catStaffCommt.shop_tel</td>
                             <td class="edit" id="${catStaffCommt.id}-shop_owner_phone">$catStaffCommt.shop_owner_phone</td>

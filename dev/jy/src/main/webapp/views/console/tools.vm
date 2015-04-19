@@ -9,7 +9,7 @@
     <title>内部工具</title>
     <!-- Bootstrap core CSS -->
     <script type="text/javascript" src="../../../js/jquery/dist/jquery.js"></script>
-    <link href="../../js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function () {
             var shop_id = null;
@@ -25,7 +25,7 @@
             });
             function onchangeShow(shop_id) {
                 $.ajax({
-                    url: "/console/tools/getCategoriesByShopId",
+                    url: "/console/tools/getCategoriesByShopId2",// 本人操作 显示所有店
                     data: {shop_id: shop_id}, //参数
                     type: "post",
                     cache: false,
@@ -69,7 +69,7 @@
             });
             function onchangeShow2(shop_id) {
                 $.ajax({
-                    url: "/console/tools/getCategoriesByShopId",
+                    url: "/console/tools/getCategoriesByShopId2",// 本人操作 显示所有店
                     data: {shop_id: shop_id}, //参数
                     type: "post",
                     cache: false,
@@ -178,6 +178,7 @@
                 }
                 return flag;
             }
+            return flag;
         }
         function submitForm() {
             if (confirm("确认同步?")) {

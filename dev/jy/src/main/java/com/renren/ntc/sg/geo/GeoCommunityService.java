@@ -250,33 +250,44 @@ public class GeoCommunityService {
     public static void main(String[] args) {
         RoseAppContext rose = new RoseAppContext();
         CommunityDAO communityDao = rose.getBean(CommunityDAO.class);
-        int limit = 1;
-        GeoCommunityService geoService = new GeoCommunityService();
-        for (int i = 0; i < 1; ) {
-            List<Community> cls = communityDao.get(i, limit);
-            for (Community c : cls) {
-                ShopLocation shop_location = new ShopLocation();
-                System.out.println(c.getId());
-                System.out.println(c.getLat());
-                System.out.println(c.getLng());
-                shop_location.setLatitude(c.getLat());
-                shop_location.setLongitude(c.getLng());
-                shop_location.setShop_id(c.getId());
-                System.out.println(JSON.toJSON(shop_location).toString());
-//                System.out.println(geoService.updateLocation(shop_location));
-            }
-            i = +limit;
-        }
+        int limit = 1000;
 
-        ShopLocation shopL = new ShopLocation();
-        shopL.setShop_id(10);
-        shopL.setLatitude(39.888679504395);
-        shopL.setLongitude(116.652297973633);
-        List<GeoQueryResult> ls = geoService.queryNearUser(shopL, 10 * 1000);
-        for (GeoQueryResult geo : ls) {
-            System.out.println(String.format("find community %d  , lng %f , lat %f ", geo.getShopLocation().getShop_id(), geo.getShopLocation().getLongitude(), geo.getShopLocation().getLatitude()));
-        }
-        geoService.removeLocation(6164);
+        GeoCommunityService geoService = new GeoCommunityService();
+        System.out.println("222");
+        ShopLocation shop_location = new ShopLocation();
+        Community c = communityDao.get(118891);
+        shop_location.setLatitude(c.getLat());
+        shop_location.setLongitude(c.getLng());
+        shop_location.setShop_id(c.getId());
+        System.out.println(geoService.updateLocation(shop_location));
+//        for (int i = 0; i < 100000; ) {
+//            List<Community> cls = communityDao.get(i, limit);
+//            if(cls == null || cls.size() == 0){
+//                break;
+//            }
+//            for (Community c : cls) {
+//                ShopLocation shop_location = new ShopLocation();
+//                System.out.println(c.getId());
+//                System.out.println(c.getLat());
+//                System.out.println(c.getLng());
+//                shop_location.setLatitude(c.getLat());
+//                shop_location.setLongitude(c.getLng());
+//                shop_location.setShop_id(c.getId());
+//                System.out.println(JSON.toJSON(shop_location).toString());
+//                System.out.println(geoService.updateLocation(shop_location));
+//            }
+//            i = +limit;
+//        }
+
+//        ShopLocation shopL = new ShopLocation();
+//        shopL.setShop_id(10);
+//        shopL.setLatitude(39.888679504395);
+//        shopL.setLongitude(116.652297973633);
+//        List<GeoQueryResult> ls = geoService.queryNearUser(shopL, 10 * 1000);
+//        for (GeoQueryResult geo : ls) {
+//            System.out.println(String.format("find community %d  , lng %f , lat %f ", geo.getShopLocation().getShop_id(), geo.getShopLocation().getLongitude(), geo.getShopLocation().getLatitude()));
+//        }
+//        geoService.removeLocation(6164);
     }
 
 }

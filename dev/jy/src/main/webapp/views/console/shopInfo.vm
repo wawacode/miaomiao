@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/console.css" rel="stylesheet">
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"> Cat </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid" style="width: 150%">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-0 col-md-8 col-md-offset-0 main" style="padding-top:60px">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>分类</th>
+                        <th>数量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        #foreach($param in ${saveCategoryNumCN.keySet()})
+                        <tr  >
+                            <td >$param</td>
+                            <td >${saveCategoryNumCN.get($param)}</td>
+                        </tr>
+                        #end
+                    <tr>
+                        <td>总计</td>
+                        <td>$count</td>
+                    </tr>
+                    <tr>
+                        <td>没有图片</td>
+                        <td>$notPicUrlCount</td>
+                    </tr>
+                    <tr>
+                        <td>价格为零数量</td>
+                        <td>$priceIszeroCount</td>
+                    </tr>
+                    <tr>
+                        <td>没有图片和价格为零数量</td>
+                        <td>$notPicUrlAndPriceIsZeroCount</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

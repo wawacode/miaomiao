@@ -11,8 +11,88 @@
     <!-- Bootstrap core CSS -->
     <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/console.css" rel="stylesheet">
-
+    <!-- Bootstrap core CSS -->
+    <script type="text/javascript" src="../../../js/jquery/dist/jquery.js"></script>
     <script type="text/javascript">
+        (function () {
+            $.extend($.fn, {
+                mask: function (msg, maskDivClass) {
+                    this.unmask();
+                    // 参数
+                    var op = {
+                        opacity: 0.8,
+                        z: 10000,
+                        bgcolor: '#ccc'
+                    };
+                    var original = $(document.body);
+                    var position = {top: 0, left: 0};
+                    if (this[0] && this[0] !== window.document) {
+                        original = this;
+                        position = original.position();
+                    }
+                    // 创建一个 Mask 层，追加到对象中
+                    var maskDiv = $('<div class="maskdivgen">&nbsp;</div>');
+                    maskDiv.appendTo(original);
+                    var maskWidth = original.outerWidth();
+                    if (!maskWidth) {
+                        maskWidth = original.width();
+                    }
+                    var maskHeight = original.outerHeight();
+                    if (!maskHeight) {
+                        maskHeight = original.height();
+                    }
+                    maskDiv.css({
+                        position: 'absolute',
+                        top: position.top,
+                        left: position.left,
+                        'z-index': op.z,
+                        width: maskWidth,
+                        height: maskHeight,
+                        'background-color': op.bgcolor,
+                        opacity: 0
+                    });
+                    if (maskDivClass) {
+                        maskDiv.addClass(maskDivClass);
+                    }
+                    if (msg) {
+                        var msgDiv = $('<div style="position:absolute;border:#6593cf 1px solid; padding:2px;background:#ccca"><div style="line-height:24px;border:#a3bad9 1px solid;background:white;padding:2px 10px 2px 10px">' + msg + '</div></div>');
+                        msgDiv.appendTo(maskDiv);
+                        var widthspace = (maskDiv.width() - msgDiv.width());
+                        var heightspace = (maskDiv.height() - msgDiv.height());
+                        msgDiv.css({
+                            cursor: 'wait',
+                            top: (heightspace / 2 - 2),
+                            left: (widthspace / 2 - 2)
+                        });
+                    }
+                    maskDiv.fadeIn('fast', function () {
+                        // 淡入淡出效果
+                        $(this).fadeTo('slow', op.opacity);
+                    })
+                    return maskDiv;
+                },
+                unmask: function () {
+                    var original = $(document.body);
+                    if (this[0] && this[0] !== window.document) {
+                        original = $(this[0]);
+                    }
+                    original.find("> div.maskdivgen").fadeOut('slow', 0, function () {
+                        $(this).remove();
+                    });
+                }
+            });
+        })();
+    </script>
+    <script type="text/javascript">
+        function submitForm(text) {
+            if (confirm(text)) {
+                $(document).mask('正在操作');
+                alert();
+            } else {
+                return false;
+            }
+            return true;
+        }
     </script>
 </head>
 
@@ -51,6 +131,7 @@
                         <th>店铺名字</th>
                         <th>店铺电话</th>
                         <th>店长电话</th>
+                        <th>商品详情</th>
                         <th>创建时间</th>
                         <th>经度</th>
                         <th>纬度</th>
@@ -62,44 +143,76 @@
                         <th>店铺备注</th>
                         <th>店铺已上线(0:下线 1:上线)</th>
                         <th>店铺操作</th>
+                        <th>上传条码</th>
+                        <th>续传条码</th>
+                        <th>同步回总库</th>
                     </tr>
                     </thead>
                     #foreach($shop in $shopls)
-                    <tr>
-                        <td>$shop.id</td>
-                        <td class="edit" id="e-${shop.id}-name">$shop.name</td>
-                        <td class="edit" id="e-${shop.id}-tel">$shop.tel</td>
-                        <td class="edit" id="e-${shop.id}-owner_phone">$shop.owner_phone</td>
-                        <td class="edit" id="e-${shop.id}-create_time">$shop.create_time</td>
-                        <td class="edit" id="e-${shop.id}-lng">$shop.lng</td>
-                        <td class="edit" id="e-${shop.id}-lat">$shop.lat</td>
-                        <td class="edit" id="e-${shop.id}-open_time">#if (! $shop.open_time) #else
-                            $date.format('HH:mm',$shop.open_time) #end
-                        </td>
-                        <td class="edit" id="e-${shop.id}-close_time">#if (! $shop.close_time) #else
-                            $date.format('HH:mm',$shop.close_time) #end
-                        </td>
-                        <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
-                        <td class="edit" id="e-${shop.id}-shop_info">$shop.shop_info</td>
-                        <td class="button" id="e-${shop.id}-bind">
-                            <button type="button" class="e-bindButton btn btn-success" data-shopid="${shop.id}" data-shopname="${shop.name}">绑定小区</button>
-                        </td>
-                        <td class="edit" id="e-${shop.id}-remark">$shop.remark</td>
-                        <td class="edit" id="e-${shop.id}-audit">$shop.audit</td>
-                        <td><a href="/sg/shop?shop_id=${shop.id}">访问店铺 </a><br/>
-                            <a href="/console/login">店铺后台 </a></td>
-                    </tr>
+                        <tr>
+                            <td>$shop.id</td>
+                            <td class="edit" id="e-${shop.id}-name">$shop.name</td>
+                            <td class="edit" id="e-${shop.id}-tel">$shop.tel</td>
+                            <td class="edit" id="e-${shop.id}-owner_phone">$shop.owner_phone</td>
+                            <td><a href="/console/tools/shopInfo?shop_id=${shop.id}">商品详情</a></td>
+                            <td class="edit" id="e-${shop.id}-create_time">$shop.create_time</td>
+                            <td class="edit" id="e-${shop.id}-lng">$shop.lng</td>
+                            <td class="edit" id="e-${shop.id}-lat">$shop.lat</td>
+                            <td class="" id="e-${shop.id}-open_time">
+                                $date.format('HH:mm',$shop.open_time)
+                            </td>
+                            <td class="" id="e-${shop.id}-close_time">
+                                $date.format('HH:mm',$shop.close_time)
+                            </td>
+                            <td class="edit" id="e-${shop.id}-shop_address">$shop.shop_address</td>
+                            <td class="edit" id="e-${shop.id}-shop_info">$shop.shop_info</td>
+                            <td class="button" id="e-${shop.id}-bind">
+                                <button type="button" class="e-bindButton btn btn-success" data-shopid="${shop.id}" data-shopname="${shop.name}">绑定小区</button>
+                            </td>
+                            <td class="edit" id="e-${shop.id}-remark">$shop.remark</td>
+                            <td class="edit" id="e-${shop.id}-audit">$shop.audit</td>
+                            <td><a href="/sg/shop?shop_id=${shop.id}">访问店铺 </a><br/>
+                                <a href="/console/login">店铺后台 </a></td>
+                            <td>
+                                <form action="/console/tools/uploadFile" method="post" enctype="multipart/form-data"
+                                      onsubmit="return submitForm('确认上传?');">
+                                    <input type="hidden" name="shop_id" value="${shop.id}"/>
+
+                                    <div class="form-group">
+                                        <input id="uploadFile1" type="file" name="file" required style="display:inline-block">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">提交</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/console/tools/replenish" method="post" enctype="multipart/form-data"
+                                      onsubmit="return submitForm('确认上传?');">
+                                    <input type="hidden" name="shop_id" value="${shop.id}"/>
+
+                                    <div class="form-group">
+                                        <input id="uploadFile2" type="file" name="file" required style="display:inline-block">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">提交</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/console/tools/refresh2Product" method="post" onsubmit="return  submitForm('确认同步?');">
+                                    <input type="hidden" name="shop_id" value="${shop.id}"/>
+                                    <button class="btn btn-success" type="submit">确定</button>
+                                </form>
+                            </td>
+                        </tr>
                     #end
                     </tbody>
                 </table>
                 <nav>
                     <ul class="pager">
                         #if($previous_f)
-                        <li>							##//2015-04-09 update offset value 100 by ZhaoXiuFei
-                            <a href="/console/allshop?from=$previous_f&offset=100">Previous</a></li>
+                            <li>                            ##//2015-04-09 update offset value 100 by ZhaoXiuFei
+                                <a href="/console/allshop?from=$previous_f&offset=100">Previous</a></li>
                         #end
-                        #if($next_f)					##//2015-04-09 update offset value 100 by ZhaoXiuFei
-                        <li><a href="/console/allshop?from=$next_f&offset=100">Next</a></li>
+                        #if($next_f)                    ##//2015-04-09 update offset value 100 by ZhaoXiuFei
+                            <li><a href="/console/allshop?from=$next_f&offset=100">Next</a></li>
                         #end
                     </ul>
                 </nav>
@@ -122,6 +235,7 @@
         <div id="autocomplete-sugg">
         </div>
         <h2 style="background-color: #eaeaea;font-size: 20px;margin-top: 20px">已经绑定的小区<span id="gettingCommunityStatus"></span></h2>
+
         <div style=";max-height: 200px;overflow: auto" id="alreadyBindCommunity"></div>
     </div>
 </div>
@@ -151,18 +265,18 @@
             tooltip: 'Click to edit...'
         });
 
-        function generate_community_item(name,id){
-           return '<div id="COMMUNITY'+ id + '" class="row" style="margin: 10px;border-bottom: solid 1px #eaeaea"><span class="col-md-4">'+ name +
-                    '</span><span class="col-md-2" style="padding-left: 30px"><button type="button" class="unbindButton btn btn-danger" data-communityid="'+ id + '">解除绑定</button>' +
-            '</span></div>';
+        function generate_community_item(name, id) {
+            return '<div id="COMMUNITY' + id + '" class="row" style="margin: 10px;border-bottom: solid 1px #eaeaea"><span class="col-md-4">' + name +
+                    '</span><span class="col-md-2" style="padding-left: 30px"><button type="button" class="unbindButton btn btn-danger" data-communityid="' + id + '">解除绑定</button>' +
+                    '</span></div>';
         }
 
-        function bindUnbindButton(){
+        function bindUnbindButton() {
 
             $('.unbindButton').unbind('click');
-            $('.unbindButton').click(function(){
-                $.post('/console/api/commy/del_link',{'shop_id':curShop,'c_id':$(this).data('communityid')},function(resp){
-                    if(resp.code !=0){
+            $('.unbindButton').click(function () {
+                $.post('/console/api/commy/del_link', {'shop_id': curShop, 'c_id': $(this).data('communityid')}, function (resp) {
+                    if (resp.code != 0) {
                         window.alert('解除绑定失败');
                         return;
                     }
@@ -173,16 +287,17 @@
                 });
             });
         }
-        var curShop = null,curShopName = null;
 
-        function refreshBindCommunity(){
+        var curShop = null, curShopName = null;
+
+        function refreshBindCommunity() {
             $('#alreadyBindCommunity').empty();
             $('#gettingCommunityStatus').text('(加载小区列表...)');
-            $.post('/console/api/commy/get_links',{'shop_id':curShop},function(resp){
+            $.post('/console/api/commy/get_links', {'shop_id': curShop}, function (resp) {
                 var commu = resp;
-                for(var  i=0;i< commu.length;i++){
+                for (var i = 0; i < commu.length; i++) {
                     $('#alreadyBindCommunity').append(
-                        generate_community_item(commu[i].name,commu[i].id)
+                            generate_community_item(commu[i].name, commu[i].id)
                     )
                 }
 
@@ -192,7 +307,7 @@
             });
         }
 
-        $('.e-bindButton').click(function(){
+        $('.e-bindButton').click(function () {
             curShop = $(this).data('shopid');
             curShopName = $(this).data('shopname');
 
@@ -206,16 +321,16 @@
 
         var curCommu = null;
         $('#autocomplete').autocomplete({
-            paramName:'key',
+            paramName: 'key',
             serviceUrl: '/sg/commy/search',
             minChars: 0,
             noSuggestionNotice: '没有匹配的小区',
             appendTo: '#autocomplete-sugg',
-            transformResult: function(response) {
+            transformResult: function (response) {
                 response = JSON.parse(response);
                 return {
-                    suggestions: $.map(response.data.communitys, function(dataItem) {
-                        return { value: dataItem.name, data: dataItem.id };
+                    suggestions: $.map(response.data.communitys, function (dataItem) {
+                        return {value: dataItem.name, data: dataItem.id};
                     })
                 };
             },
@@ -225,20 +340,19 @@
             }
         });
 
-        $('#performBind').click(function(){
-            $.post('/console/api/commy/add_link',{'shop_id':curShop,'c_id':curCommu.data},function(resp){
-                if(resp.code !=0){
+        $('#performBind').click(function () {
+            $.post('/console/api/commy/add_link', {'shop_id': curShop, 'c_id': curCommu.data}, function (resp) {
+                if (resp.code != 0) {
                     window.alert('绑定失败');
                     return;
                 }
                 window.alert('绑定成功');
                 $('#alreadyBindCommunity').prepend(
-                        generate_community_item(curCommu.value,curCommu.data)
+                        generate_community_item(curCommu.value, curCommu.data)
                 );
                 bindUnbindButton();
             });
         });
-
     });
 </script>
 </body>

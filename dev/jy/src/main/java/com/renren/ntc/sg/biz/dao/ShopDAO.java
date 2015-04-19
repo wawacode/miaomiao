@@ -76,6 +76,23 @@ public interface ShopDAO {
      */
     @SQL("select " + SHOP_NAME_FIELDS + "  from " + TABLE_NAME + " where audit =" + SHOP_NOT_ONLINE)
     public List<Shop> getAllShopsByNotOnline();
+    /**
+     * 获取未上线的商店 id name
+     * zhaoxiufei
+     *
+     * @return
+     */
+    @SQL("select " + SHOP_NAME_FIELDS + "  from " + TABLE_NAME + " where audit =" + SHOP_NOT_ONLINE +" and id = :1")
+    public Shop getShopByNotOnline(long shop_id);
+
+    /**
+     * 获取商店 id name
+     * zhaoxiufei
+     *
+     * @return
+     */
+    @SQL("select " + SHOP_NAME_FIELDS + "  from " + TABLE_NAME + " where id = :1")
+    public Shop getShopById(long shop_id);
 
     /**
      * advQuery
@@ -85,4 +102,14 @@ public interface ShopDAO {
      */
     @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where  name like :1  or tel like :1")
     public List<Shop> getShops(String text);
+
+    /**
+     * zhaoxiufei
+     * @return
+     */
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME)
+    public List<Shop> getAllShops();
+    
+    @SQL("select " + FIELDS + "  from " + TABLE_NAME + " where audit = :1")
+    public List<Shop> getAllShopsInfoByAudit(int audit);
 }

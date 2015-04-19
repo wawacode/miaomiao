@@ -333,20 +333,22 @@ public class OrderController {
         JSONObject data =  new JSONObject() ;
         Order o = null;
         if ("done".equals(confirm)){
+        	String userConfirmTime = Dateutils.tranferDate2Str(new Date());
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
-//            String msg = o.getMsg();
-//            JSONObject om = orderService.getJson(msg);
-//            om.put("confirm","done");
-//            ordersDAO.confirm(order_id,om.toJSONString(),SUtils.generOrderTableName(shop_id));
-//            userOrdersDAO.confirm(order_id,om.toJSONString(),SUtils.generUserOrderTableName(u.getId()));
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "user order confirm");
-            orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
-            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.CONFIREMED.getCode(), SUtils.generOrderTableName(shop_id));
-            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(), SUtils.generUserOrderTableName(u.getId()));
+            orderInfo.put("operator_time", userConfirmTime);
+            ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(),OrderStatus.CONFIREMED.getCode(),userConfirmTime, SUtils.generOrderTableName(shop_id));
+            userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(),userConfirmTime, SUtils.generUserOrderTableName(u.getId()));
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
             data.put("order", o); 
-            smsService.sendConfirmSMS2Boss(o, shop);
+            String wxAct = o.getAct();
+            if(StringUtils.isNotBlank(wxAct) && wxAct.equals("wx")){
+            	LoggerUtils.getInstance().log("user confirm shop id="+shop_id+",order id="+o.getOrder_id()+",is wx send!!!");
+            	 smsService.sendConfirmSMS2Boss(o, shop);
+            }else {
+				LoggerUtils.getInstance().log("user confirm shop id="+shop_id+",order id="+o.getOrder_id()+",is not wx dont send!!");
+			}
         }
         result.put("data",data);
         result.put("code",0);
@@ -364,6 +366,7 @@ public class OrderController {
     @Post("order_cancel")
     public String order_cancel(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id , @Param("confirm") String confirm ) {
         User u = holder.getUser();
+
         if(StringUtils.isBlank(order_id) || shop_id ==0  ){
             return "@json:"+Constants.PARATERERROR;
         }
@@ -388,6 +391,8 @@ public class OrderController {
             if(o != null){
             	//给客服和老板推送
             	String extra = pushService.getPushExtra(PushType.CANCEL_ORDER.getType(), o.getOrder_id(), "");
+                System.out.println("send sms to kf ");
+                smsService.sendSMSUserCancelOrder2kf(o, shop);
                 pushService.sendUserCancel2KF(o, shop,extra);
                 pushService.sendCancel2Boss(o, shop,extra);
             } 
@@ -431,6 +436,7 @@ public class OrderController {
             if(o != null){
             	// 给老板和客服发推送
             	String extra = pushService.getPushExtra(PushType.REMIND_ORDER.getType(), o.getOrder_id(), "");
+            	smsService.sendSMSRemind2kf(o, shop);
                 pushService.sendRemind2Kf(o, shop,extra);
                 pushService.sendRemindOrder2Boss(o, shop,extra);
             }
@@ -466,8 +472,8 @@ public class OrderController {
 
     private void sendInfo(User u ,Shop shop ,String order_id){
 
-            //smsService.sendSMS2LocPush(order_id, shop);
-    	    smsService.sendSMS2KF(order_id, shop);
+            smsService.sendSMS2LocPush(order_id, shop);
+    	    //smsService.sendSMS2KF(order_id, shop);
             pushService.send2locPush(order_id, shop);
             pushService.send2kf(order_id, shop);
             // 发送wx 通知

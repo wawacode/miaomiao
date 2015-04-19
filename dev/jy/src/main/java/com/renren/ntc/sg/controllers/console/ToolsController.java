@@ -50,13 +50,63 @@ public class ToolsController {
     @Autowired
     CatStaffCommitDAO catStaffCommitDAO;
 
+    @Autowired
+    ShopInfoTempDAO shopInfoTempDAO;
+
     @Get("")
     @Post("")
-    public String index(Invocation inv) {
+    public String login(Invocation inv) {
+        System.out.println("ToolsController.java.ToolsController---->" + 56);
+        return "db_login";
+    }
+
+    @Get("login/valid")
+    @Post("login/valid")
+    public String valid(Invocation inv, @Param("phone") String phone, @Param("pwd") String pwd) {
+        List<CatStaffCommit> u = catStaffCommitDAO.getCatStaffCommit(phone, pwd);//只能操作自己建立的店铺
+        if (0 == u.size()) {
+            inv.addModel("msg", "用户名字或密码不正确");
+            return "db_login";
+        }
+        List<Shop> notOnlineList = new ArrayList<Shop>();//未上线店
+        List<Shop> allShops = new ArrayList<Shop>();
+        for (int i = 0; i < u.size(); i++) {
+            long shop_id = u.get(i).getShop_id();
+            Shop notOnlineShop = shopDAO.getShopByNotOnline(shop_id);//未上线
+            Shop shop = shopDAO.getShopById(shop_id);//所有店
+            if (null != notOnlineShop) {
+                notOnlineList.add(notOnlineShop);
+            }
+            if (null != shop) {
+                allShops.add(shop);
+            }
+        }
+        inv.addModel("notOnlineList", notOnlineList);
+        inv.addModel("allShops", allShops);
+        LoggerUtils.getInstance().log(" OK ");
+        return "tools_bd";
+    }
+
+    @Get("db")
+    @Post("db") //bd 所有未上线的
+    public String db(Invocation inv) {
         List<Shop> list = shopDAO.getAllShopsByNotOnline();
+        inv.addModel("notOnlineList", list);
+        inv.addModel("allShops", list);
+        List<Category> categoryList = categoryDAO.getCategory();
+        inv.addModel("categoryList", categoryList);
+        LoggerUtils.getInstance().log(" OK ");
+        return "tools_bd";
+    }
+
+    @Get("synch")
+    @Post("synch")//TODO 本人操作 所有店铺
+    public String synch(Invocation inv) {
+        List<Shop> list = shopDAO.getAllShops();
         inv.addModel("list", list);
         List<Category> categoryList = categoryDAO.getCategory();
         inv.addModel("categoryList", categoryList);
+        LoggerUtils.getInstance().log(" OK ");
         return "tools";
     }
 
@@ -136,10 +186,10 @@ public class ToolsController {
             String lineTxt = br.readLine();
             String regex = lineTxt.contains("\t") ? "\t" : lineTxt.contains(",") ? ", " : " ";
             int count = 0;
-            int seriNoNum = 0;//续传条码插入数量计数
+            int successNum = 0;
             do {
                 if (!StringUtils.isBlank(lineTxt)) {
-                    count++;//总计
+                    count++;
                     if (count % 1000 == 0) {
                         Thread.sleep(100);
                     }
@@ -154,11 +204,10 @@ public class ToolsController {
                     //有的话continue
                     if (null != item) {
                         int category_id = item.getCategory_id();
-                        saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
+                        System.out.println("当前count:" + count + "-->本店已有此商品:" + serialNo);
+                        //saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
                         continue;
                     }
-                    //serialNoNum successNum
-
                     Product p = pDao.geProduct(serialNo);
                     Item it = new Item();
                     it.setShop_id(shop_id);
@@ -178,26 +227,24 @@ public class ToolsController {
 
                     itemDao.insert(SUtils.generTableName(shop_id), it);
                     saveCategoryNum.put(category_id, saveCategoryNum.get(category_id) == null ? 1 : saveCategoryNum.get(category_id) + 1);
-                    seriNoNum++;
+                    successNum++;//总计
                 }
             } while ((lineTxt = br.readLine()) != null);
             //遍历map集合  替换分类为中文名字
             Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
             converterCN(saveCategoryNum, saveCategoryNumCN);
-            inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
+            inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功的
             inv.addModel("missingList", missingList); //丢失
             inv.addModel("count", count); //总数
-            inv.addModel("successNum", count - missingList.size()); //成功总数
+            //inv.addModel("successNum", count - missingList.size()); //成功总数
             inv.addModel("shop_id", shop_id);
-            int successNum = 0;
-            if (isReplenish) {
-                count = seriNoNum;//是否续传
-            } else {
-                successNum = count - missingList.size();
-            }
             //保存扫码数量 和 成功数量
             CatStaffCommit catStaffCommit = catStaffCommitDAO.getbyShopId(shop_id);
-            catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + successNum);
+            if (isReplenish) {
+                catStaffCommitDAO.update(shop_id, catStaffCommit.getSerialNo_num() + count, catStaffCommit.getSuccess_num() + successNum);
+            } else {
+                catStaffCommitDAO.update(shop_id, count, successNum);
+            }
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -216,7 +263,7 @@ public class ToolsController {
                 e.printStackTrace();
             }
         }
-
+        LoggerUtils.getInstance().log(" OK ");
     }
 
     /**
@@ -278,8 +325,21 @@ public class ToolsController {
         inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
         inv.addModel("count", count); //总数
         inv.addModel("shop_id", to_shop_id);
-
+        LoggerUtils.getInstance().log(" OK ");
         return "toolsDetail";
+    }
+
+    @Get("mvhhj")
+    @Post("mvhhj")// 上架哈哈镜
+    public String mvhhj(Invocation inv, @Param("to_shop_id") long to_shop_id) {
+        System.out.println("ToolsController.java.ToolsController---->" + 316);
+        if (0 == to_shop_id) {
+            return "@to_shop_id is null !";
+        }
+        long from_shop_id = 10113;
+        int category_id = 15;
+
+        return "r:/console/tools/mvShopItems?from_shop_id=" + from_shop_id + "&category_id=" + category_id + "&to_shop_id=" + to_shop_id;
     }
 
     /**
@@ -337,6 +397,7 @@ public class ToolsController {
         inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
         inv.addModel("shop_id", to_shop_id);
         inv.addModel("count", count); //总数
+        LoggerUtils.getInstance().log(" OK ");
         return "toolsDetail";
     }
 
@@ -405,12 +466,13 @@ public class ToolsController {
         inv.addModel("saveCategoryNumCN", saveCategoryNumCN); //成功
         inv.addModel("count", count); //总数
         inv.addModel("shop_id", shop_id);
-
+        LoggerUtils.getInstance().log(" OK ");
         return "toolsDetail";
     }
 
     /**
      * ajax 获取商店商品分类
+     * bd使用
      *
      * @param inv
      * @param shop_id
@@ -447,22 +509,75 @@ public class ToolsController {
         return "@json:" + jo.toJSONString();
     }
 
-    //This is test mthod!
-    @Get("login")
-    @Post("login")
-    public String login(Invocation inv, @Param("shop_id") String shop_id) {
-        System.out.println("ToolsController.java.ToolsController---->" + 406);
-        long id = 0;
+    /**
+     * ajax 获取商店商品分类
+     * 本人操作 显示所有店
+     *
+     * @param inv
+     * @param shop_id
+     * @return
+     */
+    @Get("getCategoriesByShopId2")
+    @Post("getCategoriesByShopId2")
+    public String getCategoriesByShopId2(Invocation inv, @Param("shop_id") long shop_id) {
+        if (0 == shop_id) {
+            return "@ shop_id 不能为空";
+        }
+        List<Item> shopCategoryList = itemDao.getCategoriesByShopId(SUtils.generTableName(shop_id));
+        List<JSONObject> clist = new ArrayList<JSONObject>();
+        for (Item item : shopCategoryList) {
+            Category category = categoryDAO.getCategory(item.getCategory_id());
+            if (null != category) {
+                JSONObject jo = new JSONObject();
+                jo.put("id", item.getCategory_id());
+                jo.put("name", category.getName());
+                clist.add(jo);
+            }
+        }
+        List<Shop> slist = shopDAO.getAllShops();
+        List<Shop> newShopList = new ArrayList<Shop>(slist.size() - 1);
 
-        if (StringUtils.isBlank(shop_id)) return "@shop_id is null!";
-        else id = Long.valueOf(shop_id);
+        for (Shop s : slist) {
+            if (s.getId() != shop_id) {
+                newShopList.add(s);
+            }
+        }
+        JSONObject jo = new JSONObject();
+        jo.put("category", clist);
+        jo.put("shop", newShopList);
+        return "@json:" + jo.toJSONString();
+    }
 
-        Shop shop = shopDAO.getShop(id);
-        String pwd = shop.getTel();
-        String phone = shop.getTel();
-        String origURL = "127.0.0.1";
+    @Get("shopInfo")
+    @Post("shopInfo")
+    public String shopInfo(Invocation inv, @Param("shop_id") String shopid) {
+        System.out.println("ToolsController.java.ToolsController---->" + 552);
+        if (StringUtils.isBlank(shopid)) {
+            System.out.println("shop_id is null.ToolsController.shopInfo---->" + 557);
+            return "@shop_id is null!   ToolsController.shopInfo";
+        }
+        long shop_id = Long.valueOf(shopid);
+        String tabName = SUtils.generTableName(shop_id);
+        List<ShopInfoTemp> categorys = shopInfoTempDAO.getAllShopInfoTemp(tabName);
+        Map<Integer, Integer> saveCategoryNum = new HashMap<Integer, Integer>();//每个分类导入多少商品
 
-        return "r:/console/login/valid?phone=" + phone + "&pwd=" + pwd + "&origURL=" + origURL + "";
+        for (ShopInfoTemp s : categorys) {
+            saveCategoryNum.put(s.getCategory_id(), s.getCounts());
+        }
+        //遍历map集合  替换分类为中文名字
+        Map<String, Integer> saveCategoryNumCN = new HashMap<String, Integer>();//每个分类导入多少商品
+        converterCN(saveCategoryNum, saveCategoryNumCN);
+        inv.addModel("saveCategoryNumCN", saveCategoryNumCN);
+        int count = itemDao.getItemsCount(tabName);
+        inv.addModel("count", count);
+        int notPicUrlAndPriceIsZeroCount = itemDao.getItemsNotPicUrlAndPriceIsZeroCount(tabName);
+        inv.addModel("notPicUrlAndPriceIsZeroCount", notPicUrlAndPriceIsZeroCount);
+        int notPicUrlCount = itemDao.getItemsNotPicUrl(tabName);
+        inv.addModel("notPicUrlCount", notPicUrlCount);
+        int priceIszeroCount = itemDao.getItemsPriceIsZeroCount(tabName);
+        inv.addModel("priceIszeroCount", priceIszeroCount);
+
+        return "shopInfo";
     }
 
     /**

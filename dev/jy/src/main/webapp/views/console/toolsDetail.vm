@@ -16,7 +16,6 @@
     <br/><br/><br/><br/>
 
     <h2>总计:$count条</h2>
-    #if($successNum)<h2>成功导入:$successNum条</h2>#end
     <table border="1" cellspacing="0" cellpadding="10">
         <tr align="center">
             <th>分类</th>
@@ -29,9 +28,9 @@
             </tr>
         #end
     </table>
-    <a href="/console/tools">返回</a>
+    <a href="/console/tools">返回</a><br/>
     #if($shop_id)
-##        <a href="/console/tools/login?shop_id=$shop_id">进入店铺</a>
+##        <a href="/console/tools/login?shop_id=$shop_id">进入店铺</a><br/>
         <a href="/console/login">进入店铺</a>
     #end
     #if($missingList.size())

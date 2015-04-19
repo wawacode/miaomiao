@@ -39,7 +39,7 @@ public class MongoDBUtil {
     private MongoDBUtil() {
         try {
             m = new Mongo(Constants.NEI_HOST, 27017);
-//            m = new Mongo(Constants.HOST, 27017);
+//            m = new Mongo(Constants.HOST, 27017);//TODO 千万别提交 zhaoxiufei 2015-04-15
             db = m.getDB(Constants.DBNAME);
             boolean result = db.authenticate("sg", "qwer$#@!".toCharArray());
             System.out.println("re " + result);
