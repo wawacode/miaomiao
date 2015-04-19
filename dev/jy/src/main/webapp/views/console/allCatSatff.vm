@@ -29,16 +29,22 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="/console/catStaff/add">添加员工</a></li>
                 <li><a href="/console/catStaff">查看所有</a></li>
+
+                <li>
+                    <form class="navbar-form navbar-right" action="/console/catStaff" method="post">
+                        <input name="value" type="text" class="form-control" placeholder="Search...">
+                    </form>
+                </li>
             </ul>
-            <form class="navbar-form navbar-right" action="/console/catStaff" method="post">
-                <input name="value" type="text" class="form-control" placeholder="Search...">
-            </form>
+
+
         </div>
     </div>
 </nav>
 
-<div class="container-fluid" style="width: 150%">
+<div class="container-fluid" style="width: 100%">
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main" style="padding-top:60px">
             <div class="table-responsive">

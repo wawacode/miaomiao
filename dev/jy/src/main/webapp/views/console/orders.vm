@@ -39,15 +39,6 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!--<div class="col-sm-3 col-md-2 sidebar">-->
-            <!--<ul class="nav nav-sidebar">-->
-
-                <!--<li class="active"><a href="#">    </a></li>-->
-                <!--#foreach($category in $categoryls)-->
-                <!--<li #if($category.category_id == $curr_cate_id ) class="active" #end><a href="/console/shop?shop_id=${shop.id}&category_id=${category.category_id}"> $category.name</a></li>-->
-                <!--#end-->
-            <!--</ul>-->
-        <!--</div>-->
         <div class="col-sm-9 col-sm-offset-3 col-md-12 col-md-offset-0 main"  style="padding-top:60px">
             <div class="table-responsive" >
                 <table class="table table-striped" >
@@ -61,7 +52,6 @@
                         <th>总价</th>
                         <th>是否是微信支付</th>
                         <th>订单快照</th>
-
                     </tr>
                     </thead>
                     #foreach($order in $orderls)
