@@ -136,7 +136,7 @@ public class LoginController extends BasicConsoleController {
                         SUtils.wrapper(SUtils.getStaffKey(c.getId())));
                 JSONObject resultJson = new JSONObject();
                 JSONArray s = (JSONArray) JSON.toJSON(shops);
-                resultJson.put("shop", shops);
+                resultJson.put("shop", s);
                 resultJson.put("token", SUtils.wrapper(SUtils.getStaffKey(c.getId())));
                 return "@json:" + getDataResult(0, resultJson);
             }
