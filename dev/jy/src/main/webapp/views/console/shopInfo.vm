@@ -30,7 +30,7 @@
     </div>
 </nav>
 
-<div class="container-fluid" style="width: 150%">
+<div class="container" style="width: 100%">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-0 col-md-8 col-md-offset-0 main" style="padding-top:60px">
             <div class="table-responsive">

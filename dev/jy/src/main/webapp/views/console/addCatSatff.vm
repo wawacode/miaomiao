@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title> 喵喵-!</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/js/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"> Cat </a>
+        </div>
+    </div>
+</nav>
+<div class="container" style="padding-top:150px; width:500px ">
+    <form class="form-horizontal" method="post" action="/console/catStaff/insert">
+        <h2 class="form-signin-heading">添加员工账户</h2>
+
+        <h4 style="color: #953b39">#if($message)$message #end </h4>
+
+        <div class="form-group">
+            <input type="text" name="name" class="form-control" placeholder="姓名" required>
+        </div>
+        <div class="form-group">
+            <input type="text" name="phone" class="form-control" placeholder="电话" required>
+        </div>
+        <div class="form-group">
+            <input type="password" name="pwd" class="form-control" placeholder="密码" required>
+        </div>
+        <div class="form-group">
+            <input type="password" name="cpwd" class="form-control" placeholder="确认密码" required>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="add">添加</button>
+    </form>
+</div>
+<!-- /container -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+    function fileChange(item) {
+        var ss = (item.value).split('.');
+        if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
+            $("#fileName").val(item.value);
+        } else {
+            var obj = document.getElementById("inputfile");
+            obj.outerHTML = obj.outerHTML;
+            $("#inputfile").val("");
+            alert("用户源配置文件格式错误");
+        }
+    }
+</script>
+</body>
+</html>
