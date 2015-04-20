@@ -69,7 +69,8 @@ public class OrdersController {
         orderls = orderService.forV(orderls);
         inv.addModel("shop_id", 1);
         inv.addModel("orderls", orderls);
+        inv.addModel("shops", shopList);
         System.out.println(orderls.size() + "OrdersController.java.OrdersController.OK---->" + 88);
-        return "orders";
+        return "all_shop_orders";
     }
 }
