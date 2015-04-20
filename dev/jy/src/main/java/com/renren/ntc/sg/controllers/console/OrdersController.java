@@ -1,6 +1,7 @@
 package com.renren.ntc.sg.controllers.console;
 
 import com.renren.ntc.sg.bean.Order;
+import com.renren.ntc.sg.bean.OrderDetail;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
@@ -67,9 +68,11 @@ public class OrdersController {
         }
 
         orderls = orderService.forV(orderls);
+        List<OrderDetail> orderDetails = orderService.setOrderDetail(orderls);
         inv.addModel("shop_id", 1);
-        inv.addModel("orderls", orderls);
+        inv.addModel("curr_shop_d",1);
+        inv.addModel("orderls", orderDetails);
         System.out.println(orderls.size() + "OrdersController.java.OrdersController.OK---->" + 88);
-        return "orders";
+        return "all_shop_orders";
     }
 }
