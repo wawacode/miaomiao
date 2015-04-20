@@ -191,6 +191,9 @@ public class OrderConsoleController extends BasicConsoleController{
         JSONObject data =  new JSONObject() ;
         if ("done".equals(confirm)){
         	Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        	if(o.getOrder_status() == OrderStatus.USERCANCEL.getCode() || o.getOrder_status() == OrderStatus.KFCANCEL.getCode()){
+        		return "@json:" + getActionResult(1, "用户或者客服已经点击取消订单,请刷新订单列表");
+        	}
         	 JSONObject orderInfo = orderService.getJson(o.getOrder_info());
              orderInfo.put("order_msg", "boss click order");
              orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
@@ -226,6 +229,9 @@ public class OrderConsoleController extends BasicConsoleController{
         Order o = null;
         if ("done".equals(confirm)){
         	o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        	if(o.getOrder_status() == OrderStatus.CONFIREMED.getCode() || o.getOrder_status() == OrderStatus.KFCANCEL.getCode()){
+        		return "@json:" + getActionResult(1, "当前订单的状态是用户确认收货或者是客服取消订单，请刷新订单列表");
+        	}
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "boss cancel order");
             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
