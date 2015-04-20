@@ -144,7 +144,7 @@ public class OrderConsoleController extends BasicConsoleController{
     
     @Post("list")
     @Get("list")
-    public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("from") int from, @Param("offset") int offset){
+    public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("order_status") int order_status ,@Param("from") int from, @Param("offset") int offset){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
@@ -191,6 +191,11 @@ public class OrderConsoleController extends BasicConsoleController{
         JSONObject data =  new JSONObject() ;
         if ("done".equals(confirm)){
         	Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+			if (o.getOrder_status() == OrderStatus.USERCANCEL.getCode()
+					|| o.getOrder_status() == OrderStatus.KFCANCEL.getCode()
+					|| o.getOrder_status() == OrderStatus.CONFIREMED.getCode()) {
+				return "@json:" + getActionResult(1, "订单状态已终止,请刷新订单列表");
+			}
         	 JSONObject orderInfo = orderService.getJson(o.getOrder_info());
              orderInfo.put("order_msg", "boss click order");
              orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
@@ -226,6 +231,9 @@ public class OrderConsoleController extends BasicConsoleController{
         Order o = null;
         if ("done".equals(confirm)){
         	o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        	if(o.getOrder_status() == OrderStatus.CONFIREMED.getCode() || o.getOrder_status() == OrderStatus.KFCANCEL.getCode() || o.getOrder_status() == OrderStatus.USERCANCEL.getCode()){
+        		return "@json:" + getActionResult(1, "当前订单的状态是用户确认收货或者是客服取消订单或者是用户点击取消订单，请刷新订单列表");
+        	}
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "boss cancel order");
             orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));

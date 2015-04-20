@@ -33,6 +33,7 @@ import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.biz.dao.UserOrdersDAO;
 import com.renren.ntc.sg.constant.OrderStatus;
 import com.renren.ntc.sg.constant.PushType;
+import com.renren.ntc.sg.controllers.console.api.BasicConsoleController;
 import com.renren.ntc.sg.interceptors.access.NtcHostHolder;
 import com.renren.ntc.sg.service.AddressService;
 import com.renren.ntc.sg.service.LoggerUtils;
@@ -47,7 +48,7 @@ import com.renren.ntc.sg.util.SUtils;
 import com.renren.ntc.sg.util.wx.Sha1Util;
 
 @Path("order")
-public class OrderController {
+public class OrderController extends BasicConsoleController{
 
     private static int DEFAULT_SHOP_ID = 1;
     @Autowired
@@ -164,13 +165,13 @@ public class OrderController {
             i4v.setPrice(item.getPrice());
             i4v.setShop_id(item.getShop_id());
 
-            if (item.getCount() < count) {
-                //库存剩余
-                i4v.setExt(item.getCount());
-                i4v.setCount(count);
-                i4v.setInfo("只剩这些了,正在通知店家补货");
-                ok = false;
-            }
+//            if (item.getCount() < count) {
+//                //库存剩余
+//                i4v.setExt(item.getCount());
+//                i4v.setCount(count);
+//                i4v.setInfo("只剩这些了,正在通知店家补货");
+//                ok = false;
+//            }
             infos.add(JSON.toJSON(i4v));
             itemls.add(i4v);
             price += i4v.getPrice() * i4v.getExt();
@@ -335,6 +336,9 @@ public class OrderController {
         if ("done".equals(confirm)){
         	String userConfirmTime = Dateutils.tranferDate2Str(new Date());
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            if(o.getOrder_status() == OrderStatus.BOSSCANCEL.getCode() || o.getOrder_status() == OrderStatus.KFCANCEL.getCode()){
+            	return "@json:" + getActionResult(1, "订单当前的状态是老板点击无法配送或者是客服取消订单，请刷新订单列表");
+            }
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "user order confirm");
             orderInfo.put("operator_time", userConfirmTime);
@@ -380,6 +384,9 @@ public class OrderController {
         Order o = null;
         if ("done".equals(confirm)){
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            if(o.getOrder_status() == OrderStatus.KFCANCEL.getCode() || o.getOrder_status() == OrderStatus.BOSSCANCEL.getCode()){
+            	return "@json:" + getActionResult(1, "订单当前的状态是客服取消订单或者老板点击无法配送，请刷新订单列表");
+            }
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "user cancel order");
             orderInfo.put("rever_status", o.getOrder_status());//rever_status : 用户申请退单点击错了，想回退（在后台点击回退的时候会根据这个状态来回滚用户点击退单之前的状态）
@@ -426,6 +433,9 @@ public class OrderController {
         Order o = null;
         if ("done".equals(confirm)){
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+            if(o.getOrder_status() == OrderStatus.KFCANCEL.getCode() || o.getOrder_status() == OrderStatus.BOSSCANCEL.getCode()){
+            	return "@json:" + getActionResult(1, "订单当前的状态是老板点击无法配送或者是客服取消订单，请刷新订单列表");
+            }
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("remind_order", "1");
             orderInfo.put("remind_time", Dateutils.tranferDate2Str(new Date()));
