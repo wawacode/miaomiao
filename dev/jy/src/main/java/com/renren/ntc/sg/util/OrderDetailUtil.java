@@ -16,6 +16,7 @@ import com.renren.ntc.sg.bean.WXPayShopReport;
 import com.renren.ntc.sg.bean.WXPayShopReport.WXPayDetail;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.constant.ShopInfo;
 import com.renren.ntc.sg.mail.MailSendInfo;
 import com.renren.ntc.sg.mail.MailSendServer;
 import com.renren.ntc.sg.util.crontab.UpdateWxRefundInfo;
@@ -44,6 +45,9 @@ public class OrderDetailUtil {
 		List<WXPayShopReport> wxpayShopReports = new ArrayList<WXPayShopReport>();
 		int totalShopOrderPrice = 0;
 		for(Shop shop : shops){
+			if(ShopInfo.isExistReport(shop.getId())){
+            	continue;
+            }
 			//System.out.println("shopid="+shop.getId()+",name="+shop.getName());
 			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
 			int orderSize = orders == null ? 0 : orders.size();
