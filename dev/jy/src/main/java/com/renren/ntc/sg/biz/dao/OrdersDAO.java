@@ -27,70 +27,83 @@ CREATE TABLE `items` (
 
 @DAO(catalog = "ABC")
 public interface OrdersDAO {
-    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time,order_status,order_info" ;
-    static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks ,act, info,snapshot,status,price" ;
-    
-    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
-    public List<Order> getOrderByShop(long shop_id, int start, int offset,@SQLParam("tableName") String tableName);
+    static final String FIELDS = "id, order_id,readed,shop_id,user_id,address_id,remarks ,act,msg,info ,snapshot,status,price,create_time,update_time,order_status,order_info";
+    static final String INSERT_FIELDS = " order_id,readed,shop_id,user_id,address_id,remarks ,act, info,snapshot,status,price";
+
+    @SQL("select " + FIELDS + " from ##(:tableName)   where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3")
+    public List<Order> getOrderByShop(long shop_id, int start, int offset, @SQLParam("tableName") String tableName);
 
 
     @SQL("insert into  ##(:tableName) (" + INSERT_FIELDS + ") values(:1.order_id,:1.readed,:1.shop_id," +
             ":1.user_id,:1.address_id,:1.remarks,:1.act ,:1.info,:1.snapshot,:1.status,:1.price)  ")
-    public int  insertUpdate(Order o,@SQLParam("tableName") String tableName);
+    public int insertUpdate(Order o, @SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and status = 1 ")
-    public List<Order> getOrder2Print(long shop_id,@SQLParam("tableName") String tableName);
+    @SQL("select " + FIELDS + " from ##(:tableName)  where shop_id =:1 and status = 1 ")
+    public List<Order> getOrder2Print(long shop_id, @SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and status = 2 ")
-    public List<Order> getFinalOrder(long shop_id,@SQLParam("tableName") String tableName);
+    @SQL("select " + FIELDS + " from ##(:tableName)  where shop_id =:1 and status = 2 ")
+    public List<Order> getFinalOrder(long shop_id, @SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3 ")
-    List<Order> get10Orders(long shop_id,int from, int offset,@SQLParam("tableName") String tableName);
+    @SQL("select " + FIELDS + " from ##(:tableName)  where shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :2,:3 ")
+    List<Order> get10Orders(long shop_id, int from, int offset, @SQLParam("tableName") String tableName);
 
 
     @SQL("update ##(:tableName)   set status=:1 where order_id = :2 ")
-    int update(int i, String orderId,@SQLParam("tableName") String tableName);
+    int update(int i, String orderId, @SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where order_id =:1 ")
-    public Order getOrder(String orderId,@SQLParam("tableName") String tableName);
-    
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where create_time between :1 and :2")
-    public List<Order> getOrder(String beginTime,String endTime,@SQLParam("tableName") String tableName);
+    @SQL("select " + FIELDS + " from ##(:tableName)  where order_id =:1 ")
+    public Order getOrder(String orderId, @SQLParam("tableName") String tableName);
+
+    @SQL("select " + FIELDS + " from ##(:tableName)  where create_time between :1 and :2")
+    public List<Order> getOrder(String beginTime, String endTime, @SQLParam("tableName") String tableName);
 
     @SQL("update ##(:tableName)   set readed=1 where order_id=:2")
-    public int  read(@SQLParam("tableName") String tableName, String order_id);
+    public int read(@SQLParam("tableName") String tableName, String order_id);
 
     @SQL("update ##(:tableName)  set status=:1 where order_id = :2 ")
-    public void paydone(int status, String order_id,@SQLParam("tableName") String tableName);
+    public void paydone(int status, String order_id, @SQLParam("tableName") String tableName);
 
     @SQL("update ##(:tableName)  set pre_id =:2 , act =:3 where order_id = :1 ")
-    public void updateWXPay(String order_id, String pre_id, String act,@SQLParam("tableName") String tableName);
+    public void updateWXPay(String order_id, String pre_id, String act, @SQLParam("tableName") String tableName);
 
     @SQL("update ##(:tableName)   set msg =:2 , update_time=now() where order_id = :1 ")
     public void confirm(String order_id, String msg, @SQLParam("tableName") String tableName);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between :3 and :4")
-    List<Order> getShopPayDetail(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime );
-    
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:4 and (status = 1 or status =2) and create_time between :1 and :2 order by create_time")
-    public List<Order> getRealOrder(String beginTime,String endTime,@SQLParam("tableName") String tableName,long  shopId);
-    
-    @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' order by create_time desc")
-    List<Order> getAllWxOrders(@SQLParam("tableName") String tableName,long shopId);
+    @SQL("select " + FIELDS + " from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between :3 and :4")
+    List<Order> getShopPayDetail(@SQLParam("tableName") String tableName, long shopId, String beginTime, String endTime);
 
-    @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:2 and (status !=1 and status !=2 ) order by create_time desc limit :3,:4 ")
-    List<Order> getUnfinishedOrders(@SQLParam("tableName") String tableName, long shop_id,int from, int offset);
-    
-     @SQL("update ##(:tableName)  set order_status =:3 , order_info =:4 where id = :1 and shop_id=:2")
-    public int updateWXRefund(long order_id, long shopId, int refundStatus,String refundInfo,@SQLParam("tableName") String tableName);
-     
-     @SQL("update ##(:tableName) set order_info =:2 ,order_status =:3, update_time=now() where order_id = :1 ")
-     public int updateOrderStatus(String order_id, String orderInfo,int orderStatus, @SQLParam("tableName") String tableName);
-     
-     @SQL("update ##(:tableName) set order_status =:2, update_time=now() where order_id = :1 ")
-     public int updateOrderStatus(String order_id,int orderStatus, @SQLParam("tableName") String tableName);
-     
-     @SQL("update ##(:tableName) set order_info =:2 ,update_time=now() where order_id = :1 ")
-     public int updateOrderInfo(String order_id,String orderInfo, @SQLParam("tableName") String tableName);
+    @SQL("select " + FIELDS + " from ##(:tableName)  where shop_id =:4 and (status = 1 or status =2) and create_time between :1 and :2 order by create_time")
+    public List<Order> getRealOrder(String beginTime, String endTime, @SQLParam("tableName") String tableName, long shopId);
+
+    @SQL("select " + FIELDS + " from ##(:tableName)   where shop_id =:2 and act = 'wx' order by create_time desc")
+    List<Order> getAllWxOrders(@SQLParam("tableName") String tableName, long shopId);
+
+    @SQL("select " + FIELDS + " from ##(:tableName)  where shop_id =:2 and (status !=1 and status !=2 ) order by create_time desc limit :3,:4 ")
+    List<Order> getUnfinishedOrders(@SQLParam("tableName") String tableName, long shop_id, int from, int offset);
+
+    @SQL("update ##(:tableName)  set order_status =:3 , order_info =:4 where id = :1 and shop_id=:2")
+    public int updateWXRefund(long order_id, long shopId, int refundStatus, String refundInfo, @SQLParam("tableName") String tableName);
+
+    @SQL("update ##(:tableName) set order_info =:2 ,order_status =:3, update_time=now() where order_id = :1 ")
+    public int updateOrderStatus(String order_id, String orderInfo, int orderStatus, @SQLParam("tableName") String tableName);
+
+    @SQL("update ##(:tableName) set order_status =:2, update_time=now() where order_id = :1 ")
+    public int updateOrderStatus(String order_id, int orderStatus, @SQLParam("tableName") String tableName);
+
+    @SQL("update ##(:tableName) set order_info =:2 ,update_time=now() where order_id = :1 ")
+    public int updateOrderInfo(String order_id, String orderInfo, @SQLParam("tableName") String tableName);
+
+    /**
+     * ∏ﬂº∂≤È—Ø
+     *
+     * @param tableName
+     * @param phone
+     * @return
+     */
+    @SQL("select " + FIELDS + " from ##(:tableName)   where address_id in ( SELECT address_id FROM address WHERE phone = :2) order by create_time desc")
+    public List<Order> getByPhone(@SQLParam("tableName") String tableName, String phone);
+
+    @SQL("select " + FIELDS + " from ##(:tableName)   where order_id = :2")
+    public Order getByOrderId(@SQLParam("tableName") String tableName, String order_id);
 
 }
