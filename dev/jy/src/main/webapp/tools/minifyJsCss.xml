@@ -21,14 +21,14 @@
 
     <target name="js.minify">
         <apply executable="java" parallel="false">
-            <fileset dir="${src}/sg/js" includes="controllers/*.js,services/*.js" excludes="compress/**/*.js"/>
+            <fileset dir="${src}\sg\js" includes="controllers\*.js,services\*.js" excludes="compress\**\*.js"/>
             <arg line="-jar"/>
-            <arg path="yuicompressor-2.4.8.jar"/>
+            <arg path="yuicompressor-2.4.7.jar"/>
             <srcfile/>
             <arg line="--nomunge"/>
             <arg line="--preserve-semi"/>
             <arg line="-o"/>
-            <mapper type="glob" from="*.js" to="${src}/sg/js/compress/*-min.js"/>
+            <mapper type="glob" from="*.js" to="${src}\sg\js\compress\*-min.js"/>
             <targetfile/>
         </apply>
     </target>
