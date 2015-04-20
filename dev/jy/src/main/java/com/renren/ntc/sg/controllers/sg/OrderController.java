@@ -463,10 +463,6 @@ public class OrderController {
         if ("paydone".equals(msg)){
             // do nothing
         }
-//        else{
-//            ordersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generOrderTableName(shop_id));
-//            userOrdersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generUserOrderTableName(u.getId()));
-//        }
         return "@json:"+Constants.DONE;
     }
 
