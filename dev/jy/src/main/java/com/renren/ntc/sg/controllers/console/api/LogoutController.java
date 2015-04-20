@@ -59,7 +59,7 @@ public class LogoutController extends BasicConsoleController{
     @Post ("")
 	public String loginout(Invocation inv, @Param("device_token") String device_token ) {
         RegistUser user  =  hostHolder.getUser();
-        if (null != user){
+        if (null == user){
             return "@json:" + Constants.DONE;
         }
         CookieManager.getInstance().clearCookie(inv.getResponse(),Constants.COOKIE_KEY_REGISTUSER,0,"/"

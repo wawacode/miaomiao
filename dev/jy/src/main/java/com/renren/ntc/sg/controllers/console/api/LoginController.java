@@ -89,6 +89,7 @@ public class LoginController extends BasicConsoleController {
     @Post("valid")
     public String Login(Invocation inv, @Param("phone") String phone, @Param("pwd") String pwd, @Param("origURL") String origURL) {
 
+        System.out.println(String.format("%s ,%s ",phone,pwd));
         inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
         result.put("code", -1);
@@ -109,6 +110,7 @@ public class LoginController extends BasicConsoleController {
         result.put("origURL", origURL);
         RegistUser u = userDAO.getUser(phone, pwd);
         if (null == u) {
+            System.out.println(String.format("get catstaffDao  %s %s",phone,pwd));
             Catstaff c = catstaffDao.getCatStaff(phone, pwd);
             if (null != c) {
                 if(ifkf(c)){
@@ -134,7 +136,7 @@ public class LoginController extends BasicConsoleController {
                         SUtils.wrapper(SUtils.getStaffKey(c.getId())));
                 JSONObject resultJson = new JSONObject();
                 JSONArray s = (JSONArray) JSON.toJSON(shops);
-                resultJson.put("shop", shops);
+                resultJson.put("shop", s);
                 resultJson.put("token", SUtils.wrapper(SUtils.getStaffKey(c.getId())));
                 return "@json:" + getDataResult(0, resultJson);
             }

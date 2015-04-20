@@ -141,10 +141,42 @@ public class OrderConsoleController extends BasicConsoleController{
         result.put("code",0);
         return "@json:" + result.toJSONString();
 	}
-    
+
+    @Post("listbyType")
+    @Get("listbyType")
+    public String V2order(Invocation inv, @Param("shop_id") long shop_id, @Param("order_status") int order_status ,@Param("from") int from, @Param("offset") int offset){
+        Shop shop = isExistShop(shop_id);
+        if(shop == null){
+            return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
+        }
+
+        if ( 0 == from){
+            from = 0;
+        }
+        if ( 0 == offset){
+            offset = 50 ;
+        }
+
+        List<Order> orderls = ordersDAO.get10OrdersByType(shop_id,order_status,from,offset,SUtils.generOrderTableName(shop_id));
+        JSONObject resultJson = new JSONObject();
+        if(from != 0){
+            int begin = from;
+            begin = begin - offset;
+            resultJson.put("previous_f", begin< 0?0:begin);
+        }
+        if(orderls.size() >=  offset){
+            resultJson.put("next_f", from  + offset);
+        }
+        orderls = orderService.forV(orderls);
+        resultJson.put("shop",shop);
+        resultJson.put("orderls",orderls);
+        return "@json:"+getDataResult(0, resultJson);
+    }
+
+
     @Post("list")
     @Get("list")
-    public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("from") int from, @Param("offset") int offset){
+    public String order(Invocation inv, @Param("shop_id") long shop_id,@Param("from") int from, @Param("offset") int offset){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
@@ -156,6 +188,7 @@ public class OrderConsoleController extends BasicConsoleController{
         if ( 0 == offset){
             offset = 50 ;
         }
+
         List<Order> orderls = ordersDAO.get10Orders(shop_id,from,offset,SUtils.generOrderTableName(shop_id));
         JSONObject resultJson = new JSONObject();
         if(from != 0){
@@ -194,7 +227,7 @@ public class OrderConsoleController extends BasicConsoleController{
 			if (o.getOrder_status() == OrderStatus.USERCANCEL.getCode()
 					|| o.getOrder_status() == OrderStatus.KFCANCEL.getCode()
 					|| o.getOrder_status() == OrderStatus.CONFIREMED.getCode()) {
-				return "@json:" + getActionResult(1, "用户或者客服已经点击取消订单或者是用户点击确认收货,请刷新订单列表");
+				return "@json:" + getActionResult(1, "订单状态已终止,请刷新订单列表");
 			}
         	 JSONObject orderInfo = orderService.getJson(o.getOrder_info());
              orderInfo.put("order_msg", "boss click order");

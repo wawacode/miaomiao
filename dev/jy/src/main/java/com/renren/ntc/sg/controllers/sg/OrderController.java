@@ -165,13 +165,13 @@ public class OrderController extends BasicConsoleController{
             i4v.setPrice(item.getPrice());
             i4v.setShop_id(item.getShop_id());
 
-            if (item.getCount() < count) {
-                //库存剩余
-                i4v.setExt(item.getCount());
-                i4v.setCount(count);
-                i4v.setInfo("只剩这些了,正在通知店家补货");
-                ok = false;
-            }
+//            if (item.getCount() < count) {
+//                //库存剩余
+//                i4v.setExt(item.getCount());
+//                i4v.setCount(count);
+//                i4v.setInfo("只剩这些了,正在通知店家补货");
+//                ok = false;
+//            }
             infos.add(JSON.toJSON(i4v));
             itemls.add(i4v);
             price += i4v.getPrice() * i4v.getExt();
@@ -473,10 +473,6 @@ public class OrderController extends BasicConsoleController{
         if ("paydone".equals(msg)){
             // do nothing
         }
-//        else{
-//            ordersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generOrderTableName(shop_id));
-//            userOrdersDAO.paydone(Constants.ORDER_PAY_FAIL,order_id,SUtils.generUserOrderTableName(u.getId()));
-//        }
         return "@json:"+Constants.DONE;
     }
 

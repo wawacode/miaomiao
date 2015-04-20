@@ -51,6 +51,29 @@ public class CatStaffController {
         return "allCatSatff";
     }
 
+    @Get("add")
+    @Post("add")
+    public String add(Invocation inv) {
+        return "addCatSatff";
+    }
+
+    @Get("insert")
+    @Post("insert")
+    public String insert(Invocation inv,
+                         @Param("name") String name,
+                         @Param("phone") String phone,
+                         @Param("pwd") String pwd,
+                         @Param("cpwd") String cpwd) {
+        System.out.println("CatStaffController.java.CatStaffController---->" + 63);
+        if (!pwd.equals(cpwd)) {
+            inv.addModel("message", "两次密码不一致!");
+            return "addCatSatff";
+        }
+        Catstaff catstaff = new Catstaff(name, phone, pwd, 0);
+        catStaffDAO.insert(catstaff);
+        return "r:/console/catStaff";
+    }
+
     @Post("update")
     @Get("update")
     public String update(Invocation inv, @Param("id") String str_id, @Param("value") String value) {

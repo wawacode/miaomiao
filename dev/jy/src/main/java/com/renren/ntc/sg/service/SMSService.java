@@ -299,9 +299,9 @@ public class SMSService {
     
     public void sendSMSUserCancelOrder2kf(Order order, Shop shop) {
         try {
-//            if (SUtils.isDev()) {
-//                return;
-//            }
+            if (SUtils.isDev()) {
+                return;
+            }
             long adr_id = order.getAddress_id();
             Address adrs = addressDAO.getAddress(adr_id);
             String message = Constants.USER_CANCEL_ORDER_2_KF_SMS_MSG.replace("{shop_name}", shop.getName()).replace("{shop_tel}", shop.getTel()).replace("{address}", adrs.getAddress()).replace("{phone}", adrs.getPhone()).replace("{create_time}", Dateutils.tranferDate2Str(order.getCreate_time())).replace("{order_id}", order.getOrder_id());

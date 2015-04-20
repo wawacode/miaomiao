@@ -30,8 +30,8 @@
                 <li><a href="/console/shop/order?operation=order&shop_id=${shop_id}">已完成订单</a></li>
                 <li><a href="/console/shop/order?operation=unfinishedOrder&shop_id=${shop_id}">未完成订单</a></li>
             </ul>
-            <form class="navbar-form navbar-right" action="/console/order/query">
-                <input name="query" type="text" class="form-control" placeholder="Search...">
+            <form class="navbar-form navbar-right" action="/console/orders/advQuery">
+                <input name="value" type="text" class="form-control" placeholder="Search...">
             </form>
         </div>
     </div>
@@ -39,18 +39,9 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!--<div class="col-sm-3 col-md-2 sidebar">-->
-            <!--<ul class="nav nav-sidebar">-->
-
-                <!--<li class="active"><a href="#">    </a></li>-->
-                <!--#foreach($category in $categoryls)-->
-                <!--<li #if($category.category_id == $curr_cate_id ) class="active" #end><a href="/console/shop?shop_id=${shop.id}&category_id=${category.category_id}"> $category.name</a></li>-->
-                <!--#end-->
-            <!--</ul>-->
-        <!--</div>-->
-        <div class="col-sm-9 col-sm-offset-3 col-md-12 col-md-offset-0 main"  style="padding-top:60px">
-            <div class="table-responsive" >
-                <table class="table table-striped" >
+        <div class="col-sm-9 col-sm-offset-3 col-md-12 col-md-offset-0 main" style="padding-top:60px">
+            <div class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>id</th>
@@ -61,31 +52,30 @@
                         <th>总价</th>
                         <th>是否是微信支付</th>
                         <th>订单快照</th>
-
                     </tr>
                     </thead>
                     #foreach($order in $orderls)
-                    <tr>
-                        <td>${order.id}</td>
-                        <td class="" id="e-${item.shop_id}-serialNo-$item.id">$order.order_id</td>
-                        <td class="" id="e-{$item.shop_id}-name-$item.id">$order.create_time</td>
-                        <td class="" id="e-{$item.shop_id}-status-$item.id">#if($order.status ==1 ) 下单成功 #end #if($order.status ==2) 打印完成 #end #if($order.status !=1 && $order.status !=2) 待支付#end </td>
-                        <td class="" id="e-{$item.shop_id}-address-$item.id">${order.address}  ${order.phone}</td>
-                        <td class="" id="e-{$item.shop_id}-price-$item.id">${order.price4V}元</td>
-                        <td class="" id="e-{$item.shop_id}-msg-$item.order_id">${order.act} - ${order.msg}</td>
-                        <td class="" id="e-{$item.category_id}-category_id-$item.id">$order.info</td>
-                    </tr>
+                        <tr>
+                            <td>${order.id}</td>
+                            <td class="" id="e-${item.shop_id}-serialNo-$item.id">$order.order_id</td>
+                            <td class="" id="e-{$item.shop_id}-name-$item.id">$order.create_time</td>
+                            <td class="" id="e-{$item.shop_id}-status-$item.id">#if($order.status ==1 ) 下单成功 #end #if($order.status ==2) 打印完成 #end #if($order.status !=1 && $order.status !=2) 待支付#end </td>
+                            <td class="" id="e-{$item.shop_id}-address-$item.id">${order.address}  ${order.phone}</td>
+                            <td class="" id="e-{$item.shop_id}-price-$item.id">${order.price4V}元</td>
+                            <td class="" id="e-{$item.shop_id}-msg-$item.order_id">${order.act} - ${order.msg}</td>
+                            <td class="" id="e-{$item.category_id}-category_id-$item.id">$order.info</td>
+                        </tr>
                     #end
                     </tbody>
                 </table>
                 <nav>
                     <ul class="pager">
                         #if($previous_f)
-                        <li>
-                          <a href="/console/shop/order?operation=$operation&shop_id=${shop_id}&from=$previous_f&offset=50">Previous</a></li>
+                            <li>
+                                <a href="/console/shop/order?operation=$operation&shop_id=${shop_id}&from=$previous_f&offset=50">Previous</a></li>
                         #end
                         #if($next_f)
-                        <li><a href="/console/shop/order?operation=$operation&shop_id=${shop_id}&from=$next_f&offset=50">Next</a></li>
+                            <li><a href="/console/shop/order?operation=$operation&shop_id=${shop_id}&from=$next_f&offset=50">Next</a></li>
                         #end
                     </ul>
                 </nav>
@@ -101,20 +91,20 @@
 <script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-    $('.edit').editable('/console/shop/ud',{
-    tooltip : 'Click to edit...',
-    callback : function(value, settings) {
-    location.reload() ;
-    }
-    });
-    $('.edit_area').editable('/console/shop/ud' ,{
-    type : 'textarea',
-    cancel : 'Cancel',
-    submit : 'OK',
-    indicator : '<img src="img/indicator.gif">',
-    tooltip : 'Click to edit...'
-    });
+    $(document).ready(function () {
+        $('.edit').editable('/console/shop/ud', {
+            tooltip: 'Click to edit...',
+            callback: function (value, settings) {
+                location.reload();
+            }
+        });
+        $('.edit_area').editable('/console/shop/ud', {
+            type: 'textarea',
+            cancel: 'Cancel',
+            submit: 'OK',
+            indicator: '<img src="img/indicator.gif">',
+            tooltip: 'Click to edit...'
+        });
     });
 </script>
 </body>
