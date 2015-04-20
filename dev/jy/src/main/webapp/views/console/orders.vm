@@ -35,6 +35,9 @@
                     </form>
                 </li>
             </ul>
+            <form class="navbar-form navbar-right" action="/console/allshop/query" method="post">
+                <input name="query" type="text" class="form-control" placeholder="Search...">
+            </form>
         </div>
     </div>
 </nav>
