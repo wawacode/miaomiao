@@ -29,7 +29,7 @@
                 <li><a href="/console/allshop/orders?operation=order&shop_id=${shop.id}">已完成订单</a></li>
                 <li><a href="/console/allshop/orders?operation=unfinishedOrder&shop_id=${shop.id}">未完成订单</a></li>
                 <li>
-                    <form class="navbar-form navbar-right" action="/console/order/advQuery">
+                    <form class="navbar-form navbar-right" action="/console/orders/advQuery">
                         <input name="value" type="text" class="form-control" placeholder="Search...">
                     </form>
                 </li>
