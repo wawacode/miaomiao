@@ -119,4 +119,8 @@ public interface OrdersDAO {
     
     @SQL("select "+ FIELDS +" from ##(:tableName)  where shop_id =:2 and (status !=1 and status !=2 ) and act = 'wx' and create_time between :3 and :4")
     List<Order> getWxUnfinishedOrders(@SQLParam("tableName") String tableName, long shop_id,String beginTime, String endTime);
+
+    @SQL("select " + FIELDS + " from ##(:tableName)  where order_status=:2 and shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :3,:4 ")
+    List<Order> get10OrdersByType(long shop_id,int type, int from, int offset, @SQLParam("tableName") String tableName);
+
 }
