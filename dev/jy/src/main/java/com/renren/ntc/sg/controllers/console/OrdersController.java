@@ -70,6 +70,7 @@ public class OrdersController {
         orderls = orderService.forV(orderls);
         List<OrderDetail> orderDetails = orderService.setOrderDetail(orderls);
         inv.addModel("shop_id", 1);
+        inv.addModel("shops",shopList);
         inv.addModel("orderls", orderDetails);
         System.out.println(orderls.size() + "OrdersController.java.OrdersController.OK---->" + 88);
         return "all_shop_orders";
