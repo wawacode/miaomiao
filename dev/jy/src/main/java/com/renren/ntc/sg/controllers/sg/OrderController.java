@@ -384,8 +384,8 @@ public class OrderController extends BasicConsoleController{
         Order o = null;
         if ("done".equals(confirm)){
             o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
-            if(o.getOrder_status() == OrderStatus.KFCANCEL.getCode()){
-            	return "@json:" + getActionResult(1, "订单当前的状态是客服取消订单，请刷新订单列表");
+            if(o.getOrder_status() == OrderStatus.KFCANCEL.getCode() || o.getOrder_status() == OrderStatus.BOSSCANCEL.getCode()){
+            	return "@json:" + getActionResult(1, "订单当前的状态是客服取消订单或者老板点击无法配送，请刷新订单列表");
             }
             JSONObject orderInfo = orderService.getJson(o.getOrder_info());
             orderInfo.put("order_msg", "user cancel order");
