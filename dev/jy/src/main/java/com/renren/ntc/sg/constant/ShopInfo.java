@@ -11,4 +11,7 @@ public class ShopInfo {
 		NOT_REPORT_MAP.put(10045L, 0);//方舟苑
 		NOT_REPORT_MAP.put(10091L, 0);//立水桥
 	}
+	public static boolean isExistReport(long shopId){
+		return NOT_REPORT_MAP.containsKey(shopId);
+	}
 }

@@ -9,7 +9,6 @@ import net.paoding.rose.scanning.context.RoseAppContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
