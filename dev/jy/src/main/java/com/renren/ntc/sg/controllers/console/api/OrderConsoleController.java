@@ -144,7 +144,7 @@ public class OrderConsoleController extends BasicConsoleController{
     
     @Post("list")
     @Get("list")
-    public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("from") int from, @Param("offset") int offset){
+    public String order(Invocation inv, @Param("shop_id") long shop_id, @Param("order_status") int order_status ,@Param("from") int from, @Param("offset") int offset){
     	Shop shop = isExistShop(shop_id);
         if(shop == null){
         	return "@json:" + getActionResult(1, Constants.SHOP_NO_EXIST);
@@ -194,7 +194,7 @@ public class OrderConsoleController extends BasicConsoleController{
 			if (o.getOrder_status() == OrderStatus.USERCANCEL.getCode()
 					|| o.getOrder_status() == OrderStatus.KFCANCEL.getCode()
 					|| o.getOrder_status() == OrderStatus.CONFIREMED.getCode()) {
-				return "@json:" + getActionResult(1, "用户或者客服已经点击取消订单或者是用户点击确认收货,请刷新订单列表");
+				return "@json:" + getActionResult(1, "订单状态已终止,请刷新订单列表");
 			}
         	 JSONObject orderInfo = orderService.getJson(o.getOrder_info());
              orderInfo.put("order_msg", "boss click order");
