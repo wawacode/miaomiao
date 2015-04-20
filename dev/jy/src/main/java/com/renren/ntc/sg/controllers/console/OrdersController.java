@@ -45,7 +45,7 @@ public class OrdersController {
     public String index(Invocation inv, @Param("value") String value) {
         System.out.println("OrdersController.java.OrdersController---->" + 13);
         if (StringUtils.isBlank(value)) {
-            return "";
+            return "@ value is null !";
         }
         List<Order> orderls = new ArrayList<Order>();
 
