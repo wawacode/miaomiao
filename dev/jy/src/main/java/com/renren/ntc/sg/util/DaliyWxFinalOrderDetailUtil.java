@@ -95,6 +95,7 @@ public class DaliyWxFinalOrderDetailUtil {
 			}
 			totalWxOrderPrice += totalPrice;
 			totalKfCancelPrice += kfCancelPrice;
+			wShopReport.setWxTotalPrice((float)totalPrice/100);
 			wShopReport.setRealPayPrice((float)(totalPrice - kfCancelPrice)/100);
 			wShopReport.setTotalConfirmPrice((float)totalConfirmPrice/100);
 			wShopReport.setTotalCancelPrice((float)kfCancelPrice/100);
@@ -113,11 +114,11 @@ public class DaliyWxFinalOrderDetailUtil {
 	private static String getHtmlInfo(List<WXFinalPayBossShopReport> wxpPayShopReports,int totalWxOrderPrice,int totalCancelPrice){
 		String html = "<html><head><title></title></head><body>"
 					 + "<table border='1' cellpadding='1' cellspacing='1' style='width: 1000px;'>"
-					 + "<tbody> <tr> <td nowrap> 店铺ID</td> <td nowrap> 店铺名称</td> <td nowrap> 订单报告日期</td> <td nowrap> 微信订单总额(元)</td><td nowrap> 微信用户确认订单总额(元)</td><td nowrap> 微信客服取消订单总额</td><td nowrap> 打款总额(元)</td> <td colspan='7'> 每笔订单详情</td><td> 用户点击确认总计(元)</td><td> 客服点击取消总计(元)</td> </tr>";
+					 + "<tbody> <tr> <td nowrap> 店铺ID</td> <td nowrap> 店铺名称</td><td nowrap> 老板姓名</td> <td nowrap> 订单报告日期</td> <td nowrap> 微信订单总额(元)</td><td nowrap> 微信用户确认订单总额(元)</td><td nowrap> 微信客服取消订单总额</td><td nowrap> 打款总额(元)</td> <td colspan='7'> 每笔订单详情</td><td> 微信订单总计(元)</td><td> 打款总计(元)</td> </tr>";
 					 
     String orderInfoHtml = "";
     String totalWxOrderPriceStr = (float)totalWxOrderPrice/100+"";
-    String totalCancelPriceStr = (float)totalCancelPrice/100+"";
+    String totalRealPayPriceStr = (float)(totalWxOrderPrice-totalCancelPrice)/100+"";
     int loopCount =1;
     int i=0;
     int totalRowSpan=0;
@@ -127,12 +128,12 @@ public class DaliyWxFinalOrderDetailUtil {
 		List<WXPayDetail> shopOrderFlows = wxPayShopReport.getShopOrderFlows();
 		int rowspan = shopOrderFlows.size() + 1;
 		totalRowSpan +=rowspan;
-		orderInfoHtml = orderInfoHtml + "<tr> <td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getShopId()+"</td> <td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getShopName()+"</td> <td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getReportDate()+"</td> <td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getWxTotalPrice()+"</td>"
+		orderInfoHtml = orderInfoHtml + "<tr> <td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getShopId()+"</td> <td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getShopName()+"</td><td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getBossName()+"</td> <td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getReportDate()+"</td> <td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getWxTotalPrice()+"</td>"
 				                      +"<td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getTotalConfirmPrice()+""+"</td>"
 		                              +"<td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getTotalCancelPrice()+""+"</td>"
 		                              +"<td nowrap rowspan='"+rowspan+"'>"+wxPayShopReport.getRealPayPrice()+""+"</td>";
 		if(loopCount == i){
-			orderInfoHtml = orderInfoHtml + "<td nowrap> 订单时间</td> <td align='center'> 订单号</td> <td nowrap align='center'> 下单金额(元)</td> <td nowrap align='center'> 优惠券金额(元)</td> <td nowrap align='center'> 最终金额(元)</td><td nowrap align='center'> 用户点击确认收货的时间</td><td nowrap align='center'> 客服点击退单</td><td nowrap rowspan='$1'>"+totalWxOrderPriceStr+"</td><td nowrap rowspan='$1'>"+totalCancelPriceStr+"</td></tr>";
+			orderInfoHtml = orderInfoHtml + "<td nowrap> 订单时间</td> <td align='center'> 订单号</td> <td nowrap align='center'> 下单金额(元)</td> <td nowrap align='center'> 优惠券金额(元)</td> <td nowrap align='center'> 最终金额(元)</td><td nowrap align='center'> 用户点击确认收货的时间</td><td nowrap align='center'> 客服点击退单</td><td nowrap rowspan='$1'>"+totalWxOrderPriceStr+"</td><td nowrap rowspan='$1'>"+totalRealPayPriceStr+"</td></tr>";
 		}else {
 			orderInfoHtml = orderInfoHtml + "<td nowrap> 订单时间</td> <td align='center'> 订单号</td> <td nowrap align='center'> 下单金额(元)</td> <td nowrap align='center'> 优惠券金额(元)</td> <td nowrap align='center'> 最终金额(元)</td><td nowrap align='center'> 用户点击确认收货的时间</td><td nowrap align='center'> 客服点击退单</td></tr>";
 		}
