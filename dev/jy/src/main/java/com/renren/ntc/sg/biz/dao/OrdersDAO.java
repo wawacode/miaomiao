@@ -94,7 +94,6 @@ public interface OrdersDAO {
     public int updateOrderInfo(String order_id, String orderInfo, @SQLParam("tableName") String tableName);
 
     /**
-     * ∏ﬂº∂≤È—Ø
      *
      * @param tableName
      * @param phone

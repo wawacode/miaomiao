@@ -2,8 +2,8 @@ package com.renren.ntc.sg.bean;
 
 /**
  * Created by ZhaoXiuFei on 2015/4/17 15:16.
+ * å•†åº—å•†å“åˆ†ç±»æ±‡æ€»
  */
-// ÉÌµêÉÌÆ··ÖÀà»ã×Ü
 public class ShopInfoTemp {
     private int category_id;
     private int counts;
