@@ -145,6 +145,6 @@ public class Constants {
     
     public static final String SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS = "#date#={date}&#count#={count}&#total#={total}";
     
-    public static final String SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID = "2457";
+    public static final String SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID = "2484";
 	
 }
