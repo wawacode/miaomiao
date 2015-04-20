@@ -99,7 +99,7 @@ public interface OrdersDAO {
      * @param phone
      * @return
      */
-    @SQL("select " + FIELDS + " from ##(:tableName)   where address_id in ( SELECT address_id FROM address WHERE phone = :2) order by create_time desc")
+    @SQL("select " + FIELDS + " from ##(:tableName)   where address_id in ( SELECT id FROM address WHERE phone = :2) order by create_time desc")
     public List<Order> getByPhone(@SQLParam("tableName") String tableName, String phone);
 
     @SQL("select " + FIELDS + " from ##(:tableName)   where order_id = :2")

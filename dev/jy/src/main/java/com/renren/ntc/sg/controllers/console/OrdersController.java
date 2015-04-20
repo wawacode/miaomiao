@@ -1,6 +1,5 @@
 package com.renren.ntc.sg.controllers.console;
 
-import com.alibaba.fastjson.JSON;
 import com.renren.ntc.sg.bean.Order;
 import com.renren.ntc.sg.bean.Shop;
 import com.renren.ntc.sg.biz.dao.AddressDAO;
@@ -38,12 +37,11 @@ public class OrdersController {
     OrdersDAO ordersDAO;
 
     @Autowired
-    OrderService orderService ;
+    OrderService orderService;
 
     @Get("advQuery")
     @Post("advQuery")
     public String index(Invocation inv, @Param("value") String value) {
-        System.out.println("OrdersController.java.OrdersController---->" + 13);
         if (StringUtils.isBlank(value)) {
             return "@ value is null !";
         }
@@ -53,7 +51,6 @@ public class OrdersController {
 //        查询全部审核的店的id
         List<Shop> shopList = shopDAO.getAllShopsByAudit(Constants.SHOP_ANDITED);
         for (Shop s : shopList) {
-            System.out.println("OrdersController.java.OrdersController.index---->" + s.getId());
             //先按 orders_id 查询  有值 直接返回 到页面
             Order o = ordersDAO.getByOrderId(SUtils.generOrderTableName(s.getId()), v);
             if (null != o) {
@@ -63,14 +60,16 @@ public class OrdersController {
             // 否则按电话查询
             List<Order> orders = ordersDAO.getByPhone(SUtils.generOrderTableName(s.getId()), v);
             if (!CollectionUtils.isEmpty(orders)) {
+                System.out.println(SUtils.generOrderTableName(s.getId()));
                 orderls.addAll(orders);
 //                break;   有可能在多个店买东西
             }
         }
-        orderls = orderService.forV(orderls);
-        System.out.println("OrdersController.java.OrdersController.index---->" + 65);
 
+        orderls = orderService.forV(orderls);
+        inv.addModel("shop_id", 1);
         inv.addModel("orderls", orderls);
+        System.out.println(orderls.size() + "OrdersController.java.OrdersController.OK---->" + 88);
         return "orders";
     }
 }
