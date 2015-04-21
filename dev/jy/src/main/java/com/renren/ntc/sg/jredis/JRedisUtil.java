@@ -176,4 +176,26 @@ public class JRedisUtil {
         }
         return  value;
     }
+    
+    public boolean isExist(String redisKey) {
+        Jedis j = pool.getResource();
+        boolean isExist = false;
+        try {
+            isExist = j.exists(redisKey);
+        }finally {
+            pool.returnBrokenResource(j);
+        }
+        return  isExist;
+    }
+    
+    public String setex(String redisKey,int expireSecond,String value) {
+        Jedis j = pool.getResource();
+        String result = "";
+        try {
+            result = j.setex(redisKey, expireSecond, value);
+        }finally {
+            pool.returnBrokenResource(j);
+        }
+        return  result;
+    }
 }

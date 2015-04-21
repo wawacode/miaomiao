@@ -16,6 +16,7 @@ import com.renren.ntc.sg.bean.WXPayShopReport;
 import com.renren.ntc.sg.bean.WXPayShopReport.WXPayDetail;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.constant.ShopInfo;
 import com.renren.ntc.sg.mail.MailSendInfo;
 import com.renren.ntc.sg.mail.MailSendServer;
 import com.renren.ntc.sg.util.crontab.UpdateWxRefundInfo;
@@ -44,6 +45,9 @@ public class OrderDetailUtil {
 		List<WXPayShopReport> wxpayShopReports = new ArrayList<WXPayShopReport>();
 		int totalShopOrderPrice = 0;
 		for(Shop shop : shops){
+			if(ShopInfo.isExistReport(shop.getId())){
+            	continue;
+            }
 			//System.out.println("shopid="+shop.getId()+",name="+shop.getName());
 			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
 			int orderSize = orders == null ? 0 : orders.size();
@@ -98,7 +102,7 @@ public class OrderDetailUtil {
 	private static String getHtmlInfo(List<WXPayShopReport> wxpPayShopReports,int totalShopOrderPrice){
 		String html = "<html><head><title></title></head><body>"
 					 + "<table border='1' cellpadding='1' cellspacing='1' style='width: 1000px;'>"
-					 + "<tbody> <tr> <td nowrap> 店铺ID</td> <td nowrap> 店铺名称</td> <td nowrap> 订单报告日期</td> <td nowrap> 微信订单总数</td><td nowrap> 微信订单总额(元)</td> <td colspan='8' 90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E90:72:40:DE:46:2E> 每笔订单详情</td><td> 总计(元)</td> </tr>";
+					 + "<tbody> <tr> <td nowrap> 店铺ID</td> <td nowrap> 店铺名称</td> <td nowrap> 订单报告日期</td> <td nowrap> 微信订单总数</td><td nowrap> 微信订单总额(元)</td> <td colspan='8'> 每笔订单详情</td><td> 总计(元)</td> </tr>";
 					 
     String orderInfoHtml = "";
     String totalShopOrderPriceStr = (float)totalShopOrderPrice/100+"";

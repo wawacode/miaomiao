@@ -55,7 +55,7 @@ public class CliController {
            jb.put("url",v.getUrl());
            return "@" + jb.toJSONString();
        }
-        return "@" +Constants.ALLREADYNEW;
+        return "@json:" + Constants.ALLREADYNEW;
     }
 
 

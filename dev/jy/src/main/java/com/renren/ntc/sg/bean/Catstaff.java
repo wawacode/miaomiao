@@ -22,6 +22,8 @@ public class Catstaff extends RegistUser {
     private Date create_time ;
     private Date update_time ;
 
+    public Catstaff() {
+    }
 
     public long getId() {
         return id;
@@ -79,6 +81,10 @@ public class Catstaff extends RegistUser {
         this.update_time = update_time;
     }
 
-
-
+    public Catstaff(String name, String phone, String pwd, int type) {
+        this.name = name;
+        this.phone = phone;
+        this.pwd = pwd;
+        this.type = type;
+    }
 }

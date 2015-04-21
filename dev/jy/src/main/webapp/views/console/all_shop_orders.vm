@@ -23,13 +23,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-           
+
             <ul class="nav navbar-nav navbar-right">
-             	<li><a class="navbar-brand" href="#"> 喵喵订单聚合列表 </a></li>
+                <li><a class="navbar-brand" href="#"> 喵喵订单聚合列表 </a></li>
                 <li><a href="/console/allshop/orders?operation=order&shop_id=${shop.id}">已完成订单</a></li>
                 <li><a href="/console/allshop/orders?operation=unfinishedOrder&shop_id=${shop.id}">未完成订单</a></li>
+                <li>
+                    <form class="navbar-form navbar-right" action="/console/orders/advQuery">
+                        <input name="value" type="text" class="form-control" placeholder="Search...">
+                    </form>
+                </li>
             </ul>
-            
+
         </div>
     </div>
 </nav>
@@ -37,12 +42,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar" style="padding-top:30px">
-        
+
             <ul class="nav nav-sidebar">
-				
-                <li class="active"><a href="#">    </a></li>
+
+                <li class="active"><a href="#"> </a></li>
                 #foreach($shop in $shops)
-                <li #if($shop.id == $curr_shop_d ) class="active" #end><a href="/console/allshop/orders?shop_id=${shop.id}"> $shop.name</a></li>
+                    <li #if($shop.id == $curr_shop_d ) class="active" #end><a href="/console/allshop/orders?shop_id=${shop.id}"> $shop.name</a></li>
                 #end
             </ul>
         </div>
@@ -51,11 +56,11 @@
             <h2 class="sub-header">Section title</h2>
 
             <div class="table-responsive">
-                <table class="table table-condensed" >
+                <table class="table table-condensed">
                     <thead>
                     <tr>
-                    	<th>店铺id</th>
-                    	<th>店铺名称</th>
+                        <th>店铺id</th>
+                        <th>店铺名称</th>
                         <th>订单id</th>
                         <th>订单号</th>
                         <th>创建时间</th>
@@ -63,45 +68,51 @@
                         <th>地址</th>
                         <th>总价</th>
                         <th>是否是微信支付</th>
-                        <th nowrap>订单快照</th> 
-                        <th >催单描述</th>
+                        <th nowrap>订单快照</th>
+                        <th>催单描述</th>
                         <th nowrap>催单时间</th>
-                        <th >订单状态</th>
+                        <th>订单状态</th>
                         <th nowrap>配送操作</th>
                         <th nowrap>退单操作</th>
                         <th nowrap>驳回操作</th>
+                        <th nowrap>确认收货操作</th>
                     </tr>
                     </thead>
                     #foreach($order in $orderls)
-                    <tr>
-                    	<td>${order.order.shop_id}</td>
-                    	<td>${order.order.shop_name4V}</td>
-                        <td>${order.order.id}</td>
-                        <td class="" id="e-${item.shop_id}-serialNo-$item.id">$order.order.order_id</td>
-                        <td class="" id="e-{$item.shop_id}-name-$item.id">$order.order.create_time</td>
-                        <td class="" id="e-{$item.shop_id}-status-$item.id"> #if($order.order.status ==1 ) 下单成功 #end  #if($order.order.status ==2) 打印完成 #end #if($order.order.status !=1 && $order.order.status !=2) 待支付#end</td>
-                        <td class="" id="e-{$item.shop_id}-address-$item.id">${order.order.address}  ${order.order.phone}</td>
-                        <td class="" id="e-{$item.shop_id}-price-$item.id">${order.order.price4V}元</td>
-                        <td class="" id="e-{$item.shop_id}-msg-$item.order_id">${order.order.act} - ${order.order.msg}</td>
-                        <td class="" id="e-{$item.category_id}-category_id-$item.id">$order.order.info</td>
-                        <td class="" nowrap><p class="text-danger">$order.remindDes</p></td>
-                        <td class="">$order.remindTime</td>
-                        <td class="" nowrap>$order.orderStatusDes</td>
-                        <td class="" nowrap>#if($order.showConfirm) <button type="button" class="btn btn-success" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">确认配送</button>#else #end</td>
-                        <td class="" nowrap>#if($order.showCancel) <button type="button" class="btn btn-danger" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">退单</button>#elseif($order.order.order_status ==4) #else 已经退单#end</td>
-                        <td class="" nowrap>#if($order.showRejected) <button type="button" class="btn btn-warning" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">驳回</button>#else #end</td>        
-                    </tr>
+                        <tr>
+                            <td>${order.order.shop_id}</td>
+                            <td>${order.order.shop_name4V}</td>
+                            <td>${order.order.id}</td>
+                            <td class="" id="e-${item.shop_id}-serialNo-$item.id">$order.order.order_id</td>
+                            <td class="" id="e-{$item.shop_id}-name-$item.id">$order.order.create_time</td>
+                            <td class="" id="e-{$item.shop_id}-status-$item.id"> #if($order.order.status ==1 ) 下单成功 #end  #if($order.order.status ==2) 打印完成 #end #if($order.order.status !=1 && $order.order.status !=2) 待支付#end</td>
+                            <td class="" id="e-{$item.shop_id}-address-$item.id">${order.order.address}  ${order.order.phone}</td>
+                            <td class="" id="e-{$item.shop_id}-price-$item.id">${order.order.price4V}元</td>
+                            <td class="" id="e-{$item.shop_id}-msg-$item.order_id">${order.order.act} - ${order.order.msg}</td>
+                            <td class="" id="e-{$item.category_id}-category_id-$item.id">$order.order.info</td>
+                            <td class="" nowrap><p class="text-danger">$order.remindDes</p></td>
+                            <td class="">$order.remindTime</td>
+                            <td class="" nowrap>$order.orderStatusDes</td>
+                            <td class="" nowrap>#if($order.showConfirm)
+                                <button type="button" class="btn btn-success" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">确认配送</button>#else #end</td>
+                            <td class="" nowrap>#if($order.showCancel)
+                                <button type="button" class="btn btn-danger" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">退单</button>#elseif($order.order.order_status ==4) #else 已经退单#end</td>
+                            <td class="" nowrap>#if($order.showRejected)
+                                <button type="button" class="btn btn-warning" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">驳回</button>#else #end</td>
+                            <td class="" nowrap>#if($order.showUserConfirm)
+                                <button type="button" class="btn btn-primary" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">确认收货</button>#else #end</td>
+                        </tr>
                     #end
                     </tbody>
                 </table>
                 <nav>
                     <ul class="pager">
                         #if($previous_f)
-                        <li>
-                            <a href="/console/allshop/orders?operation=$operation&shop_id=${shop.id}&from=$previous_f&offset=20">Previous</a></li>
+                            <li>
+                                <a href="/console/allshop/orders?operation=$operation&shop_id=${shop.id}&from=$previous_f&offset=20">Previous</a></li>
                         #end
                         #if($next_f)
-                        <li><a href="/console/allshop/orders?operation=$operation&shop_id=${shop.id}&from=$next_f&offset=20">Next</a></li>
+                            <li><a href="/console/allshop/orders?operation=$operation&shop_id=${shop.id}&from=$next_f&offset=20">Next</a></li>
                         #end
                     </ul>
                 </nav>
@@ -117,95 +128,108 @@
 <script src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="http://www.appelsiini.net/download/jquery.jeditable.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-    $('.edit').editable('/console/shop/ud',{
-    tooltip : 'Click to edit...',
-    callback : function(value, settings) {
-    location.reload() ;
-    }
+    $(document).ready(function () {
+        $('.edit').editable('/console/shop/ud', {
+            tooltip: 'Click to edit...',
+            callback: function (value, settings) {
+                location.reload();
+            }
+        });
+        $('.edit_area').editable('/console/shop/ud', {
+            type: 'textarea',
+            cancel: 'Cancel',
+            submit: 'OK',
+            indicator: '<img src="img/indicator.gif">',
+            tooltip: 'Click to edit...'
+        });
     });
-    $('.edit_area').editable('/console/shop/ud' ,{
-    type : 'textarea',
-    cancel : 'Cancel',
-    submit : 'OK',
-    indicator : '<img src="img/indicator.gif">',
-    tooltip : 'Click to edit...'
+    $(".btn-danger").click(function () {
+        var result = confirm("是否点击退单了？"),
+                oThis = $(this);
+        if (result) {
+            $.ajax({
+                type: "POST", url: "/console/allshop/order_cancel",
+                data: {order_id: oThis.data('orderid'), shop_id: oThis.data('shopid')},
+                success: function (data) {
+                    alert(data);
+                    location.reload();
+                }
+            });
+        }
     });
+    $(".btn-success").click(function () {
+        var result = confirm("确认配送？"),
+                oThis = $(this);
+        if (result) {
+            $.ajax({
+                type: "POST", url: "/console/allshop/order_comfirm",
+                data: {order_id: oThis.data('orderid'), shop_id: oThis.data('shopid')},
+                success: function (data) {
+                    alert(data);
+                    location.reload();
+                }
+            });
+        }
     });
-    $(".btn-danger").click(function(){
-		var result = confirm("是否点击退单了？"),
-			oThis = $(this);
-		if(result){
-		$.ajax({
-			type:"POST",url:"/console/allshop/order_cancel",
-			data:{order_id:oThis.data('orderid'),shop_id:oThis.data('shopid')},
-			success:function(data){
-				  alert(data);
-				  location.reload();
-				}
-			});
-		}
-	});
-	 $(".btn-success").click(function(){
-		var result = confirm("确认配送？"),
-			oThis = $(this);
-		if(result){
-		$.ajax({
-			type:"POST",url:"/console/allshop/order_comfirm",
-			data:{order_id:oThis.data('orderid'),shop_id:oThis.data('shopid')},
-			success:function(data){
-				  alert(data);
-				  location.reload();
-				}
-			});
-		}
-	});
-	 $(".btn-warning").click(function(){
-		var result = confirm("是否要驳回？（此操作只作用于老板误点击无法配送或者是用户误点击取消订单）"),
-			oThis = $(this);
-		if(result){
-		$.ajax({
-			type:"POST",url:"/console/allshop/order_reject",
-			data:{order_id:oThis.data('orderid'),shop_id:oThis.data('shopid')},
-			success:function(data){
-				  alert(data);
-				  location.reload();
-				}
-			});
-		}
-	});
-    $("#query_input").keydown(function(e){
-    var curKey = e.which;
-    if(curKey == 13)
-    {
-      $("#query_form").submit();
-    }
+    $(".btn-warning").click(function () {
+        var result = confirm("是否要驳回？（此操作只作用于老板误点击无法配送或者是用户误点击取消订单）"),
+                oThis = $(this);
+        if (result) {
+            $.ajax({
+                type: "POST", url: "/console/allshop/order_reject",
+                data: {order_id: oThis.data('orderid'), shop_id: oThis.data('shopid')},
+                success: function (data) {
+                    alert(data);
+                    location.reload();
+                }
+            });
+        }
+    });
+    $(".btn-primary").click(function () {
+        var result = confirm("是否要点击确认收货？"),
+                oThis = $(this);
+        if (result) {
+            $.ajax({
+                type: "POST", url: "/console/allshop/order_user_confirm",
+                data: {order_id: oThis.data('orderid'), shop_id: oThis.data('shopid')},
+                success: function (data) {
+                    alert(data);
+                    location.reload();
+                }
+            });
+        }
+    });
+    $("#query_input").keydown(function (e) {
+        var curKey = e.which;
+        if (curKey == 13) {
+            $("#query_form").submit();
+        }
     });
     function fileChange(item) {
-            var ss = (item.value).split('.');
-            if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
-                $("#fileName").val(item.value);
-            } else {
-                var obj = document.getElementById("inputfile");
-               obj.outerHTML = obj.outerHTML;
-                $("#inputfile").val("");
-                alert("用户源配置文件格式错误");
-            }
+        var ss = (item.value).split('.');
+        if (ss.length == 2 && /(gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG)$/.test(ss[1])) {
+            $("#fileName").val(item.value);
+        } else {
+            var obj = document.getElementById("inputfile");
+            obj.outerHTML = obj.outerHTML;
+            $("#inputfile").val("");
+            alert("用户源配置文件格式错误");
         }
-    $(".form-add").click(function(){
-		var result = confirm("是否确认提交"),
-		oThis = $(this);
-		if(result){
-			var pic = oThis.data('id');
-			var picVal =$('#'+ pic).val();
-			if(picVal == ''){
-			  alert("请上传图片");
-			  return false;
-			}
-			return true;
-		}
-		return false;
-	});
+    }
+    $(".form-add").click(function () {
+        var result = confirm("是否确认提交"),
+                oThis = $(this);
+        if (result) {
+            var pic = oThis.data('id');
+            var picVal = $('#' + pic).val();
+            if (picVal == '') {
+                alert("请上传图片");
+                return false;
+            }
+            return true;
+        }
+        return false;
+    });
 </script>
 </body>
 </html>

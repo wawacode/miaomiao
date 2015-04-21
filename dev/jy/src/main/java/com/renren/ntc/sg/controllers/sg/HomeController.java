@@ -134,8 +134,7 @@ public class HomeController {
         }
         response.put("data", data);
         response.put("code", 0);
-        return "@" + response.toJSONString();
-//        return "r:/sg/shop?shop_id=" + shop_id + "&lat=" + lat + "&lng=" + lng  ;
+        return "@json:" + response.toJSONString();
     }
 
     @Get("near")
@@ -182,7 +181,7 @@ public class HomeController {
         data.put("shops",shops) ;
         response.put("data", data);
         response.put("code", 0);
-        return "@" + response.toJSONString();
+        return "@json:" + response.toJSONString();
     }
 
     private boolean isshopArea(long shop_id, float lat, float lng) {
@@ -236,7 +235,7 @@ public class HomeController {
                 jarr.add(jb);
              }
         }
-        return "@" + jarr.toJSONString();
+        return "@json:"+ jarr.toJSONString();
     }
 
     @Get("about")

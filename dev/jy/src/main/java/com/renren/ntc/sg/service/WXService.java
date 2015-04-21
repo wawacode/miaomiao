@@ -548,7 +548,7 @@ public class WXService {
         long end = System.currentTimeMillis();
         System.out.println("cos" + (end - now));
 //        payOk("d:\\downloads\\mm.txt");
-        System.out.println(wx.getWxRefundInfo("C2015040511215140916767"));
+        System.out.println(wx.queryPaySuc("C201504191646150038496"));
     }
 
     public String getPre_id(String open_id,String out_trade_no,int total_fee,String attach,String body) {

@@ -13,6 +13,7 @@ import com.renren.ntc.sg.bean.ShopOrderReport;
 import com.renren.ntc.sg.bean.ShopOrderReport.ShopOrderFlow;
 import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
+import com.renren.ntc.sg.constant.ShopInfo;
 import com.renren.ntc.sg.mail.MailSendInfo;
 import com.renren.ntc.sg.mail.MailSendServer;
 import com.renren.ntc.sg.service.LoggerUtils;
@@ -37,6 +38,9 @@ import com.renren.ntc.sg.service.LoggerUtils;
         int allshopTotalPrice=0;
         for(Shop shop : shops){
             long shopId = shop.getId();
+            if(ShopInfo.isExistReport(shopId)){
+            	continue;
+            }
             List<Order> orders = orderDao.getRealOrder(Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0)), Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 23, 59, 59)), SUtils.generOrderTableName(shopId),shopId);
             ShopOrderReport shopOrderReport = new ShopOrderReport();
             shopOrderReport.setShopId(shopId);

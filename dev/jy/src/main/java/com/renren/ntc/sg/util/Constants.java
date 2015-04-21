@@ -140,5 +140,11 @@ public class Constants {
 	public static final String USER_CONFIRM_MSG_2_BOSS_TEMP_ID = "2397";
 
     public static final String KF_NOTIFICATION_TEMP_ID = "2452";
+    
+    public static final int USER_REMIND_KF_REDIS_EXPIRE_TIME = 24 * 3600;
+    
+    public static final String SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS = "#shop_name#={shop_name}&#date#={date}&#total_count#={totalCount}&#total_price#={total_price}&#confirm_count#={confirm_count}&#confirm_price#={confirm_price}&#final_confirm_price#={final_confirm_price}";
+    
+    public static final String SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID = "2484";
 	
 }

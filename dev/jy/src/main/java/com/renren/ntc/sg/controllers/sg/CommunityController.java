@@ -140,7 +140,7 @@ public class CommunityController {
                 for (GeoQueryResult res : resuls) {
                     ShopLocation shopLoc = res.getShopLocation();
                     JSONObject com = new JSONObject();
-                    LoggerUtils.getInstance().log(String.format("near find  shop_id  %d ,lat %f , lng %f ", shopLoc.getShop_id(), shopLoc.getLatitude(), shopLoc.getLongitude()));
+//                    LoggerUtils.getInstance().log(String.format("near find  shop_id  %d ,lat %f , lng %f ", shopLoc.getShop_id(), shopLoc.getLatitude(), shopLoc.getLongitude()));
                     //这里 其实是小区ID；
                     Community community = communityDao.get(shopLoc.getShop_id());
                     if (null == community) {
@@ -170,7 +170,7 @@ public class CommunityController {
         data.put("communitys", communitys);
         response.put("data", data);
         response.put("code", 0);
-        return "@" + response.toJSONString();
+        return "@json:" + response.toJSONString();
     }
 
     @Get("search")

@@ -89,6 +89,7 @@ public class LoginController extends BasicConsoleController {
     @Post("valid")
     public String Login(Invocation inv, @Param("phone") String phone, @Param("pwd") String pwd, @Param("origURL") String origURL) {
 
+        System.out.println(String.format("%s ,%s ",phone,pwd));
         inv.getResponse().setHeader("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
         result.put("code", -1);
@@ -109,6 +110,7 @@ public class LoginController extends BasicConsoleController {
         result.put("origURL", origURL);
         RegistUser u = userDAO.getUser(phone, pwd);
         if (null == u) {
+            System.out.println(String.format("get catstaffDao  %s %s",phone,pwd));
             Catstaff c = catstaffDao.getCatStaff(phone, pwd);
             if (null != c) {
                 if(ifkf(c)){
@@ -125,16 +127,16 @@ public class LoginController extends BasicConsoleController {
                 List<Long> shop_ids = catstaffCommitDao.getShop_ids(c.getPhone());
                 List<Shop> shops = shopDAO.getShops(shop_ids);
 
-                if (null == shops || shops.size() == 0) {
-                    result.put("code", -3);
-                    result.put("msg", "没有可用店铺");
-                    return "@json:" + result.toJSONString();
-                }
+//                if (null == shops || shops.size() == 0) {
+//                    result.put("code", -3);
+//                    result.put("msg", "没有可用店铺");
+//                    return "@json:" + result.toJSONString();
+//                }
                 CookieManager.getInstance().saveCookie(inv.getResponse(), Constants.COOKIE_KEY_REGISTUSER,
                         SUtils.wrapper(SUtils.getStaffKey(c.getId())));
                 JSONObject resultJson = new JSONObject();
                 JSONArray s = (JSONArray) JSON.toJSON(shops);
-                resultJson.put("shop", shops);
+                resultJson.put("shop", s);
                 resultJson.put("token", SUtils.wrapper(SUtils.getStaffKey(c.getId())));
                 return "@json:" + getDataResult(0, resultJson);
             }
