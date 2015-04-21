@@ -23,13 +23,22 @@ public class DailyVerifyReport {
 		String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 23, 59, 59));
 		List<Shop> shops = shopDAO.getAllShopsByAudit(1);
 		for(Shop shop : shops){
-			int wxTotalPrice = orderDao.getWXReportTotalPriceByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
+			Integer wxTotalPrice = orderDao.getWXReportTotalPriceByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
 		   List<Order> orders = orderDao.getWXReportByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
 		   for(Order order : orders){
 			   System.out.println("wx shop_id="+shop.getId()+",orderno="+order.getOrder_id()+",price="+order.getPrice());
 		   }
-		   int wxuserConfirmPrice= orderDao.getWXReportUConfirmTotalPriceByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
-		   int wxCancelPrice = orderDao.getWXReportCancelByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
+		   Integer wxuserConfirmPrice= orderDao.getWXReportUConfirmTotalPriceByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
+		   Integer wxCancelPrice = orderDao.getWXReportCancelByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
+		   if(wxTotalPrice == null){
+			   wxTotalPrice = 0;
+		   }
+		   if(wxuserConfirmPrice ==null){
+			   wxuserConfirmPrice = 0;
+		   }
+		   if(wxCancelPrice == null){
+			   wxCancelPrice = 0;
+		   }
 		   List<Order> cancelOrders = orderDao.getWXReportCancelDetailByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
 		   for(Order cancelOrder : cancelOrders){
 			   System.out.println("wx cancel shop_id="+shop.getId()+",orderno="+cancelOrder.getOrder_id()+",price="+cancelOrder.getPrice());
