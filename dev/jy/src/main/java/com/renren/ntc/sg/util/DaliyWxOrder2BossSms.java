@@ -5,6 +5,8 @@ import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.paoding.rose.scanning.context.RoseAppContext;
 
 import com.renren.ntc.sg.bean.Order;
@@ -13,6 +15,7 @@ import com.renren.ntc.sg.biz.dao.OrdersDAO;
 import com.renren.ntc.sg.biz.dao.ShopDAO;
 import com.renren.ntc.sg.constant.OrderStatus;
 import com.renren.ntc.sg.constant.ShopInfo;
+import com.renren.ntc.sg.service.LoggerUtils;
 import com.renren.ntc.sg.service.SMSService;
 /**
  * 每天晚上12点给老板发短信 
@@ -39,6 +42,7 @@ public class DaliyWxOrder2BossSms {
 			if(ShopInfo.isExistReport(shop.getId())){
             	continue;
             }
+			String shopName = StringUtils.isBlank(shop.getName()) ? "" :shop.getName();
 			List<Order> orders = orderDao.getWXReportDetailByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
 			int totalPrice = 0;
 			int confirmPrice = 0;
@@ -56,7 +60,8 @@ public class DaliyWxOrder2BossSms {
 				}
 			}
 			try {
-			 String message = Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS.replace("{date}", now).replace("{totalCount}", orderSize+"").replace("{total_price}", ((float)totalPrice/100)+"").replace("{confirm_price}", ((float)confirmPrice/100)+"").replace("{confirm_count}", orderConfirmSize+"").replace("{final_confirm_price}", ((float)confirmPrice/100)+"");
+			 String message = Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS.replace("{date}", now).replace("{totalCount}", orderSize+"").replace("{total_price}", ((float)totalPrice/100)+"").replace("{confirm_price}", ((float)confirmPrice/100)+"").replace("{confirm_count}", orderConfirmSize+"").replace("{final_confirm_price}", ((float)confirmPrice/100)+"").replace("{shop_name}", shopName);
+			 LoggerUtils.getInstance().log("send wx total pay to boss shopid="+shop.getId()+",message="+message);
 			 message = SUtils.span(message);
 	         message = URLEncoder.encode(message, "utf-8");
 		     sMSService.sendSmsInfo(Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID, shop.getOwner_phone(), message, "send wx total pay to boss shopid="+shop.getId());
