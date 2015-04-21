@@ -14,7 +14,7 @@
             <arg line="--line-break 0"/>
             <srcfile/>
             <arg line="-o"/>
-            <mapper type="glob" from="*.css" to="${src}/css/*-min.css"/>
+            <mapper type="glob" from="*.css" to="e:\*-min.css"/>
             <targetfile/>
         </apply>
     </target>

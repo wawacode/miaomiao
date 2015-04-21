@@ -120,13 +120,24 @@
 
                 return totalPrice / 100.0;
             },
+            getBaseTotalPrice: function () {
+                var totalBasePrice = 0.0;
+                var items = this._shoppingItems();
+                for (var item_idx = 0; item_idx < items.length; item_idx++) {
+                    if(items[item_idx].category_id != 20) {
+                        totalBasePrice += parseFloat(items[item_idx].price || 0.0) * parseInt(items[item_idx].count || 0);
+                    }
+                }
+
+                return totalBasePrice / 100.0;
+            },
 
             cartReadyToShip: function () {
 
                 var shop = ShopService.getDefaultShop() || {},
                     basePrice = shop.base_price || 2000;
 
-                return this.getTotalPrice() >= basePrice/100.0;
+                return this.getBaseTotalPrice() >= basePrice/100.0;
             },
 
             cartNotReadyLeftPrice: function () {
@@ -149,8 +160,7 @@
                     handler(message);
                 });
             },
-
-            itemChangeEventInProductList: function (item) {
+    1            itemChangeEventInProductList: function (item) {
                 $timeout(function(){
                     $rootScope.$broadcast('MMEVENT_ItemSelectionChangedInProductList', {
                         item: item
