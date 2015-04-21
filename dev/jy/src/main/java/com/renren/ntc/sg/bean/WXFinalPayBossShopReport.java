@@ -12,6 +12,7 @@ public class WXFinalPayBossShopReport {
 	private float wxTotalPrice;
 	private float realPayPrice;
 	private List<WXPayDetail> shopOrderFlows;
+	private int wxOrderSize;
 
 	public WXFinalPayBossShopReport() {
 
@@ -152,5 +153,13 @@ public class WXFinalPayBossShopReport {
 
 	public void setRealPayPrice(float realPayPrice) {
 		this.realPayPrice = realPayPrice;
+	}
+
+	public int getWxOrderSize() {
+		return wxOrderSize;
+	}
+
+	public void setWxOrderSize(int wxOrderSize) {
+		this.wxOrderSize = wxOrderSize;
 	}
 }
