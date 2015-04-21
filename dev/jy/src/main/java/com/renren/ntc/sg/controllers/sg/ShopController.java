@@ -67,7 +67,7 @@ public class ShopController {
         data.put("items", itemls);
         jb.put("data",data);
         jb.put("code",0);
-        return "@" + jb.toJSONString();
+        return "@json:" + jb.toJSONString();
     }
 
 
@@ -100,7 +100,7 @@ public class ShopController {
 
         jb.put("data",data);
         jb.put("code",0);
-        return "@" + jb.toJSONString() ;
+        return "@json:" + jb.toJSONString() ;
     }
 
 
@@ -123,7 +123,7 @@ public class ShopController {
         data.put("shop",shopJson);
         jb.put("data",data);
         jb.put("code",0);
-        return "@" + jb.toJSONString() ;
+        return "@json:" + jb.toJSONString() ;
     }
 
     @Get("category/get")
@@ -195,7 +195,7 @@ public class ShopController {
         data.put("categoryls", jarr) ;
         jb.put("code",0);
         jb.put("data",data);
-        return "@" + jb.toJSONString() ;
+        return "@json:" + jb.toJSONString() ;
     }
 
 
@@ -248,14 +248,14 @@ public class ShopController {
         data.put("items", jarr) ;
         jb.put("code",0);
         jb.put("data",data);
-        return "@" + jb.toJSONString() ;
+        return "@json:" + jb.toJSONString() ;
     }
 
 
     @Get("create")
     public String query (Invocation inv ,@Param("chn") String chn){
 
-        return "@" ;
+        return "@json:" ;
     }
 
 }

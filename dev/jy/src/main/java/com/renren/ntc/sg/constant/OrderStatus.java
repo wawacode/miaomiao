@@ -6,7 +6,7 @@ import java.util.Map;
 
 
 public enum OrderStatus {
-	TOCONFIREMED(0,"订单待确认"),DELIVERIES(1,"配送中"),USERCANCEL(2,"用户取消订单"),BOSSCANCEL(3,"商家取消订单"),CONFIREMED(4,"确认收货"),KFCANCEL(5,"客服取消订单");
+	TOCONFIREMED(0,"订单待确认"),DELIVERIES(1,"配送中"),USERCANCEL(2,"用户取消订单"),BOSSCANCEL(3,"商家取消订单"),CONFIREMED(4,"确认收货"), KFCANCEL(5,"客服取消订单");
 	private int code;
 	private String desc;
 	private static final Map<Integer, String> orderStatusMap = new HashMap<Integer, String>();  

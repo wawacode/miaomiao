@@ -141,4 +141,6 @@ public interface OrdersDAO {
     @SQL("select " + FIELDS + " from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between  :3 and :4 and order_status=5")
     List<Order> getWXReportCancelDetailByWXCondition(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime);
 
+    @SQL("select " + FIELDS + " from ##(:tableName)  where order_status in (2,3,5) and shop_id =:1 and ( status =1 or status = 2) order by create_time desc limit :3,:4 ")
+    List<Order> get10OrdersByTypeCancel(long shop_id, int order_status, int from, int offset, String s);
 }

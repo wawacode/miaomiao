@@ -170,7 +170,7 @@ public class CommunityController {
         data.put("communitys", communitys);
         response.put("data", data);
         response.put("code", 0);
-        return "@" + response.toJSONString();
+        return "@json:" + response.toJSONString();
     }
 
     @Get("search")

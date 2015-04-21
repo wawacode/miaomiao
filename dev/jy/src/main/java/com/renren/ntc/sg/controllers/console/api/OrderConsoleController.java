@@ -156,8 +156,14 @@ public class OrderConsoleController extends BasicConsoleController{
         if ( 0 == offset){
             offset = 50 ;
         }
-
-        List<Order> orderls = ordersDAO.get10OrdersByType(shop_id,order_status,from,offset,SUtils.generOrderTableName(shop_id));
+        List<Order> orderls = null;
+        if(order_status==OrderStatus.KFCANCEL.getCode() ||
+                order_status == OrderStatus.BOSSCANCEL.getCode() ||
+                order_status == OrderStatus.USERCANCEL.getCode()) {
+            orderls = ordersDAO.get10OrdersByTypeCancel(shop_id, order_status, from, offset, SUtils.generOrderTableName(shop_id));
+        }else {
+           orderls = ordersDAO.get10OrdersByType(shop_id, order_status, from, offset, SUtils.generOrderTableName(shop_id));
+        }
         JSONObject resultJson = new JSONObject();
         if(from != 0){
             int begin = from;
