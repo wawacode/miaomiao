@@ -75,7 +75,9 @@ public class DaliyWxFinalOrderDetailUtil {
 				wxpDetail.setOrderPrice((float)order.getPrice()/100);
 				wxpDetail.setOrderId(order.getOrder_id());
 				if(order.getOrder_status() == OrderStatus.CONFIREMED.getCode()){
+					if(isToday){
 					totalConfirmPrice +=order.getPrice();
+					}
 				}else if(order.getOrder_status() == OrderStatus.KFCANCEL.getCode()){
 					if(isToday){
 						kfCancelPrice += order.getPrice();

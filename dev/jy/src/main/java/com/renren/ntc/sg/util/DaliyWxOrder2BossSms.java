@@ -56,8 +56,10 @@ public class DaliyWxOrder2BossSms {
 				}
 				if(order.getOrder_status() == OrderStatus.CONFIREMED.getCode()){
 					System.out.println("shop_id="+shop.getId()+"confirm,"+"orderid="+order.getId());
+					if(isToday){
 					confirmPrice += order.getPrice();
 					orderConfirmSize++;
+					}
 				}
 			}
 			try {
