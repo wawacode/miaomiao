@@ -56,7 +56,7 @@ public class DaliyWxOrder2BossSms {
 				}
 			}
 			try {
-			 String message = Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS.replace("{date}", now).replace("{totalCount}", orderSize+"").replace("{total_price}", ((float)totalPrice/100)+"").replace("{confirm_price}", ((float)confirmPrice/100)+"").replace("{confirm_count}", orderConfirmSize+"");
+			 String message = Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS.replace("{date}", now).replace("{totalCount}", orderSize+"").replace("{total_price}", ((float)totalPrice/100)+"").replace("{confirm_price}", ((float)confirmPrice/100)+"").replace("{confirm_count}", orderConfirmSize+"").replace("{final_confirm_price}", ((float)confirmPrice/100)+"");
 			 message = SUtils.span(message);
 	         message = URLEncoder.encode(message, "utf-8");
 		     sMSService.sendSmsInfo(Constants.SEND_BOSS_WX_PAY_BY_USER_CONFIRM_SMS_TID, shop.getOwner_phone(), message, "send wx total pay to boss shopid="+shop.getId());
