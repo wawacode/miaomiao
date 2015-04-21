@@ -67,15 +67,21 @@ public class DaliyWxFinalOrderDetailUtil {
 			for(Order order : orders){
 				WXPayDetail  wxpDetail = wShopReport.new WXPayDetail();
 				Date orderCreateTime = order.getCreate_time();
+				Date confirmTime = order.getUser_confirm_time();
 				boolean isToday = Dateutils.isBetweenDate(beginDate, endDate, orderCreateTime);
+				boolean isConfirmToday = false;
+				if(confirmTime != null){
+					isConfirmToday = Dateutils.isBetweenDate(beginDate, endDate, confirmTime);
+				}
 				if(isToday){
 					orderSize++;
 					totalPrice += order.getPrice();
 				}
+				
 				wxpDetail.setOrderPrice((float)order.getPrice()/100);
 				wxpDetail.setOrderId(order.getOrder_id());
 				if(order.getOrder_status() == OrderStatus.CONFIREMED.getCode()){
-					if(isToday){
+					if(isConfirmToday){
 					totalConfirmPrice +=order.getPrice();
 					}
 				}else if(order.getOrder_status() == OrderStatus.KFCANCEL.getCode()){

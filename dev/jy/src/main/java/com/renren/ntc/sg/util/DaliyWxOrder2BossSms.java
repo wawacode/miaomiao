@@ -50,13 +50,18 @@ public class DaliyWxOrder2BossSms {
 			int orderConfirmSize = 0;
 			for(Order order : orders){
 				boolean isToday = Dateutils.isBetweenDate(beginDate, endDate, order.getCreate_time());
+				Date confirmTime = order.getUser_confirm_time();
+				boolean isConfirmToday = false;
+				if(confirmTime != null){
+					isConfirmToday = Dateutils.isBetweenDate(beginDate, endDate, confirmTime);
+				}
 				if(isToday){
 					orderSize++;
 					totalPrice += order.getPrice();
 				}
 				if(order.getOrder_status() == OrderStatus.CONFIREMED.getCode()){
+					if(isConfirmToday){
 					System.out.println("shop_id="+shop.getId()+"confirm,"+"orderid="+order.getId());
-					if(isToday){
 					confirmPrice += order.getPrice();
 					orderConfirmSize++;
 					}
