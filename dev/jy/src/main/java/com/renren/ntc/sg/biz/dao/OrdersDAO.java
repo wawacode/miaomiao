@@ -125,5 +125,20 @@ public interface OrdersDAO {
     
     @SQL("select "+ FIELDS +" from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and ((create_time between :3 and :4) or (order_status = 4 and user_confirm_time between :3 and :4))")
     List<Order> getWXReportDetailByWXCondition(@SQLParam("tableName") String tableName,long shopId,String confirmBeginTime,String confirmEndTime);
+    
+    @SQL("select sum(price) from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between  :3 and :4")
+    int getWXReportTotalPriceByWXCondition(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime);
+    
+    @SQL("select " + FIELDS + " from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between  :3 and :4")
+    List<Order>  getWXReportByWXCondition(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime);
+    
+    @SQL("select sum(price) from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and order_status =4 and user_confirm_time between  :3 and :4")
+    int getWXReportUConfirmTotalPriceByWXCondition(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime);
+    
+    @SQL("select sum(price) from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between  :3 and :4 and order_status=5")
+    int getWXReportCancelByWXCondition(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime);
+    
+    @SQL("select " + FIELDS + " from ##(:tableName)   where shop_id =:2 and act = 'wx' and (status = 1 or status =2) and create_time between  :3 and :4 and order_status=5")
+    List<Order> getWXReportCancelDetailByWXCondition(@SQLParam("tableName") String tableName,long shopId,String beginTime,String endTime);
 
 }
