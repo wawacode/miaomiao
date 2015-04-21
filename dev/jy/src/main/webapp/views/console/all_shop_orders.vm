@@ -75,6 +75,7 @@
                         <th nowrap>配送操作</th>
                         <th nowrap>退单操作</th>
                         <th nowrap>驳回操作</th>
+                        <th nowrap>确认收货操作</th>
                     </tr>
                     </thead>
                     #foreach($order in $orderls)
@@ -98,6 +99,8 @@
                                 <button type="button" class="btn btn-danger" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">退单</button>#elseif($order.order.order_status ==4) #else 已经退单#end</td>
                             <td class="" nowrap>#if($order.showRejected)
                                 <button type="button" class="btn btn-warning" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">驳回</button>#else #end</td>
+                            <td class="" nowrap>#if($order.showUserConfirm)
+                                <button type="button" class="btn btn-primary" data-orderid="${order.order.order_id}" data-shopid="${order.order.shop_id}">确认收货</button>#else #end</td>
                         </tr>
                     #end
                     </tbody>
@@ -174,6 +177,20 @@
         if (result) {
             $.ajax({
                 type: "POST", url: "/console/allshop/order_reject",
+                data: {order_id: oThis.data('orderid'), shop_id: oThis.data('shopid')},
+                success: function (data) {
+                    alert(data);
+                    location.reload();
+                }
+            });
+        }
+    });
+    $(".btn-primary").click(function () {
+        var result = confirm("是否要点击确认收货？"),
+                oThis = $(this);
+        if (result) {
+            $.ajax({
+                type: "POST", url: "/console/allshop/order_user_confirm",
                 data: {order_id: oThis.data('orderid'), shop_id: oThis.data('shopid')},
                 success: function (data) {
                     alert(data);

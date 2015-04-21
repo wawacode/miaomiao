@@ -156,6 +156,12 @@ public class OrderService {
         }else {
 			orderDetail.setShowRejected(false);
 		}
+        if(orderDetail.getOrder().getOrder_status() == OrderStatus.TOCONFIREMED.getCode() ||
+        		orderDetail.getOrder().getOrder_status() == OrderStatus.DELIVERIES.getCode()){
+        	orderDetail.setShowUserConfirm(true);
+        }else {
+        	orderDetail.setShowUserConfirm(false);
+		}
         
     }
 

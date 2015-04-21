@@ -302,6 +302,35 @@ public class AllShopConsoleController {
 
     }
     
+    @Get("order_user_confirm")
+    @Post("order_user_confirm")
+    public String order_user_confirm(Invocation inv, @Param("shop_id") long shop_id, @Param("order_id") String order_id) {
+        if(StringUtils.isBlank(order_id) || shop_id ==0  ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Shop shop = shopDAO.getShop(shop_id);
+        if ( null == shop ){
+            return "@json:"+Constants.PARATERERROR;
+        }
+        Order o = ordersDAO.getOrder(order_id,SUtils.generOrderTableName(shop_id));
+        long userId = o.getUser_id();
+        LoggerUtils.getInstance().log(String.format("kf %s order_user_confirm shop  %d  order %s", userId ,shop_id , order_id));
+        JSONObject orderInfo = orderService.getJson(o.getOrder_info());
+        orderInfo.put("order_msg", "kf user_comfirm");
+        orderInfo.put("operator_time", Dateutils.tranferDate2Str(new Date()));
+        ordersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(), SUtils.generOrderTableName(shop_id));
+        userOrdersDAO.updateOrderStatus(order_id, orderInfo.toJSONString(), OrderStatus.CONFIREMED.getCode(), SUtils.generUserOrderTableName(userId));
+        String wxAct = o.getAct();
+        if(StringUtils.isNotBlank(wxAct) && wxAct.equals("wx")){
+        	LoggerUtils.getInstance().log("kf userconfirm shop id="+shop_id+",order id="+o.getOrder_id()+",is wx send!!!");
+        	 smsService.sendConfirmSMS2Boss(o, shop);
+        }else {
+			LoggerUtils.getInstance().log("kf userconfirm shop id="+shop_id+",order id="+o.getOrder_id()+",is not wx dont send!!");
+		}
+        return "@订单确认成功";
+
+    }
+    
     @Post("query")
     @Get("query")
     public String del(Invocation inv, @Param("query") String text) {
