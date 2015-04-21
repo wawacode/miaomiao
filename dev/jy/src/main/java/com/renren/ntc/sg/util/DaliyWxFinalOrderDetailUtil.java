@@ -37,6 +37,8 @@ public class DaliyWxFinalOrderDetailUtil {
 		ShopDAO shopDAO = rose.getBean(ShopDAO.class);
 		OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
 		BossDAO bossDAO = rose.getBean(BossDAO.class);
+		Date beginDate = Dateutils.getDateByCondition(dateInt, 0, 0, 0);
+		Date endDate = Dateutils.getDateByCondition(dateInt, 23, 59, 59);
 		String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0));
 		String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 23, 59, 59));
 		List<Shop> shops = shopDAO.getAllShopsByAudit(1);
@@ -51,7 +53,7 @@ public class DaliyWxFinalOrderDetailUtil {
 				bossName = boss.getName();
 				bossName = StringUtils.isBlank(bossName)?"":bossName;
 			}
-			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
+			List<Order> orders = orderDao.getWXReportDetailByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(),beginTimeStr,endTimeStr);
 			WXFinalPayBossShopReport wShopReport = new WXFinalPayBossShopReport();
 			wShopReport.setShopId(shop.getId());
 			wShopReport.setShopName(shop.getName());
@@ -63,13 +65,19 @@ public class DaliyWxFinalOrderDetailUtil {
 			int totalPrice = 0;
 			for(Order order : orders){
 				WXPayDetail  wxpDetail = wShopReport.new WXPayDetail();
-				totalPrice += order.getPrice();
+				Date orderCreateTime = order.getCreate_time();
+				boolean isToday = Dateutils.isBetweenDate(beginDate, endDate, orderCreateTime);
+				if(isToday){
+					totalPrice += order.getPrice();
+				}
 				wxpDetail.setOrderPrice((float)order.getPrice()/100);
 				wxpDetail.setOrderId(order.getOrder_id());
 				if(order.getOrder_status() == OrderStatus.CONFIREMED.getCode()){
 					totalConfirmPrice +=order.getPrice();
 				}else if(order.getOrder_status() == OrderStatus.KFCANCEL.getCode()){
-					kfCancelPrice += order.getPrice();
+					if(isToday){
+						kfCancelPrice += order.getPrice();
+					}
 				}
 				String msg = order.getMsg();
 				int wxDiscount = 0;
@@ -91,7 +99,9 @@ public class DaliyWxFinalOrderDetailUtil {
 				wxpDetail.setRealPrice((float)(order.getPrice() - wxDiscount)/100);
 				wxpDetail.setOrderTimeStr(Dateutils.tranferDate2Str(order.getCreate_time()));
 				processWxRefund(order, wxpDetail);
-				wxpDetails.add(wxpDetail);	
+				if(isToday){
+					wxpDetails.add(wxpDetail);	
+				}
 			}
 			totalWxOrderPrice += totalPrice;
 			totalKfCancelPrice += kfCancelPrice;
@@ -107,7 +117,7 @@ public class DaliyWxFinalOrderDetailUtil {
 		}
 		MailSendServer mailSendServer = com.renren.ntc.sg.mail.MailSendServer.getServer("smtp.163.com", 25, "lee_yeah1@163.com", "Lee1qaz2wsx",
 	              "lee_yeah1@163.com");
-		  mailSendServer.sendTextInfo(new MailSendInfo("喵喵微信支付每日订单详情(每日的货到付款和每日用户点击确认订单的列表)",getHtmlInfo(wxpayShopReports,totalWxOrderPrice,totalKfCancelPrice), mailLists, new String[0]),false);
+		  mailSendServer.sendTextInfo(new MailSendInfo("喵喵微信支付每日订单详情(每日的微信支付和每日用户点击确认订单的列表)",getHtmlInfo(wxpayShopReports,totalWxOrderPrice,totalKfCancelPrice), mailLists, new String[0]),false);
 		  //isRun = false;
 	}
 	

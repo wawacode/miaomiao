@@ -2,6 +2,7 @@ package com.renren.ntc.sg.util;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 
 import net.paoding.rose.scanning.context.RoseAppContext;
@@ -28,6 +29,8 @@ public class DaliyWxOrder2BossSms {
 		ShopDAO shopDAO = rose.getBean(ShopDAO.class);
 		OrdersDAO orderDao = rose.getBean(OrdersDAO.class);
 		SMSService sMSService = rose.getBean(SMSService.class);
+		Date beginDate = Dateutils.getDateByCondition(dateInt, 0, 0, 0);
+		Date endDate = Dateutils.getDateByCondition(dateInt, 23, 59, 59);
 		String beginTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0));
 		String endTimeStr = Dateutils.tranferDate2Str(Dateutils.getDateByCondition(dateInt, 23, 59, 59));
 		String now = Dateutils.tranferDefaultDate2Str(Dateutils.getDateByCondition(dateInt, 0, 0, 0));
@@ -36,14 +39,17 @@ public class DaliyWxOrder2BossSms {
 			if(ShopInfo.isExistReport(shop.getId())){
             	continue;
             }
-			List<Order> orders = orderDao.getShopPayDetail(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
+			List<Order> orders = orderDao.getWXReportDetailByWXCondition(SUtils.generOrderTableName(shop.getId()), shop.getId(), beginTimeStr, endTimeStr);
 			int totalPrice = 0;
 			int confirmPrice = 0;
 			int orderSize = 0;
 			int orderConfirmSize = 0;
 			for(Order order : orders){
-				orderSize++;
-				totalPrice += order.getPrice();
+				boolean isToday = Dateutils.isBetweenDate(beginDate, endDate, order.getCreate_time());
+				if(isToday){
+					orderSize++;
+					totalPrice += order.getPrice();
+				}
 				if(order.getOrder_status() == OrderStatus.CONFIREMED.getCode()){
 					confirmPrice += order.getPrice();
 					orderConfirmSize++;

@@ -138,5 +138,12 @@ public class Dateutils {
 		return tranferDate2Str(now.getTime());
 		
 	}
+	
+	public static boolean isBetweenDate(Date beginDate,Date endDate,Date nowDate){
+		if(nowDate.getTime() >= beginDate.getTime() && nowDate.getTime() <= endDate.getTime()){
+			return true;
+		}
+		return false;
+	}
 
 }
